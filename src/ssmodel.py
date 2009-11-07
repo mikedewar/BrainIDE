@@ -1,82 +1,85 @@
 """An unforced state space model module: 	
  with Kalman filter & RTS smoother attributes"""
 
-import numpy, pylab
+import pylab as pb
 
 class ssmodel:
-	"""class defining a linear, gaussian, discrete-time state space model
+	"""class defining a linear, gaussian, discrete-time state space model.
+
+	Arguments
+	----------
+	A : matrix
+		State transition matrix.
+	C : matrix
+		Observation matrix.
+	Sw : matrix
+		State covariance matrix.
+	Sv : matrix
+		Observation noise covariance matrix
+	x0: matrix
+		Initial state vector
 	
-	properties:
-	
-	A - state transition matrix
-	C - observation matrix
-	Sw - state noise covariance matrix
-	Sv - observation noise covariance matrix
-	T - number of time points
-	time - list of time indices
-	nx - number of states
-	ny - number of outputs
-	x0 - intial state
-	X - state sequence
-	K - Kalman matrix
-	M - Cross covariance matrix sequence
-	P - Covariance matrix sequence
+	Attributes
+	----------
+	A : matrix
+		State transition matrix.
+	C : matrix
+		Observation matrix.
+	Sw : matrix
+		State covariance matrix.
+	Sv : matrix
+		Observation noise covariance matrix
+	nx: int
+		number of states
+	ny: int 
+		number of outputs
+	x0: matrix
+		intial state
+	X: list of matrix
+		state sequence
+	K: list of matrix 
+		Kalman gain sequence
+	M: list of matrix
+		Cross covariance matrix sequence
+	P: list of matrix
+		Covariance matrix sequence
 	"""
 	
-	def __init__(self,A,C,Sw,Sv):
-		"""
-		Arguments
-		----------
-		A : matrix
-			State transition matrix.
-		C : matrix
-			Observation matrix.
-		Sw : matrix
-			State covariance matrix.
-		Sv : matrix
-			Observation noise covariance matrix			
-		"""
-
-		"""State State model parameters"""
-		self.A = numpy.matrix(A)
-		self.C = numpy.matrix(C)
-		self.Sw = numpy.matrix(Sw)
-		self.Sv = numpy.matrix(Sv)		
-		self.ny,self.nx = self.C.shape
-
-		# Dimension consistency
-		assert self.A.shape == (self.nx,self.nx), 'ssmodel consistency check failed (A)'
-		assert self.C.shape == (self.ny,self.nx), 'ssmodel consistency check failed (C)'
-		assert self.Sw.shape == (self.nx,self.nx), 'ssmodel consistency check failed (Sw)'
-		assert self.Sv.shape == (self.ny,self.ny), 'ssmodel consistency check failed (Sv)'
+	def __init__(self,A,C,Sw,Sv,x0):
 		
+		ny, nx = C.shape
 		
-		self.x0 = numpy.matrix(numpy.zeros([self.nx,1]))
-		self.X = zerosList(self.nx,1,T)
-		self.Y = zerosList(self.ny,1,T)
-
+		assert A.shape == (nx, nx), 'ssmodel consistency check failed (A)'
+		assert C.shape == (ny, nx), 'ssmodel consistency check failed (C)'
+		assert Sw.shape == (nx, nx), 'ssmodel consistency check failed (Sw)'
+		assert Sv.shape == (ny, ny), 'ssmodel consistency check failed (Sv)'
+		assert x0.shape == (nx,1)
 		
-		# filter quantities
-		self.K = numpy.matrix(numpy.zeros([self.nx,self.ny]))
-		self.M = zerosList(self.nx,self.nx,T)
-		self.P = zerosList(self.nx,self.nx,T)
+		self.A = pb.matrix(A)
+		self.C = pb.matrix(C)
+		self.Sw = pb.matrix(Sw)
+		self.Sv = pb.matrix(Sv)		
+		self.ny = ny
+		self.nx = nx
+		self.x0 = x0
+		
 		# initial condition
-		self.P0 = 40000* numpy.matrix(numpy.ones((self.nx,self.nx)))
+		self.P0 = 40000* pb.matrix(pb.ones((self.nx,self.nx)))
 
 	
 	def simulate(self,T):
 		"""simulates the state space model"""
 
-		x = numpy.matrix(self.x0)
+		x = pb.matrix(self.x0)
 		x.shape = self.nx, 1
 
-		if self.Sw.any()<>0: self.Swc = numpy.linalg.cholesky(self.Sw)  
-		if self.Sv.any()<>0:self.Svc = numpy.linalg.cholesky(self.Sv) 
+		if self.Sw.any()<>0: self.Swc = pb.linalg.cholesky(self.Sw)  
+		if self.Sv.any()<>0:self.Svc = pb.linalg.cholesky(self.Sv) 
 
 		for t in range(T):
 
-			v = numpy.random.randn(self.ny,1)
-			w = numpy.random.randn(self.nx,1)
+			v = pb.random.randn(self.ny,1)
+			w = pb.random.randn(self.nx,1)
 			
 			self.X[t] = x
 			self.Y[t] = self.C*x + self.Svc*v
@@ -100,7 +103,7 @@ class ssmodel:
 		def Kupdate(A,C,P,Sv,x,y):
 			K = (P*C.T) * (C*P*C.T + Sv).I
 			x = x + K*(y-(C*x))
-			P = (numpy.eye(self.nx)-K*C)*P;
+			P = (pb.eye(self.nx)-K*C)*P;
 			return x,P,K
 
 		## initialise	
@@ -140,7 +143,7 @@ class ssmodel:
 		
 		# predictor
 		def Kpred(A,C,P,Sw,x):
-			assert type(x) is numpy.matrix
+			assert type(x) is pb.matrix
 			assert x.shape == (self.nx,1), str(x.shape)
 			x = A*x 
 			P = A*P*A.T + Sw;
@@ -150,7 +153,7 @@ class ssmodel:
 		def Kupdate(A,C,P,Sv,x,y):
 			K = (P*C.T) * (C*P*C.T + Sv).I
 			x = x + K*(y-(C*x))
-			P = (numpy.eye(self.nx)-K*C)*P;
+			P = (pb.eye(self.nx)-K*C)*P;
 			return x,P,K
 		
 		## initialise	
@@ -195,7 +198,7 @@ class ssmodel:
 		Pb[0] = PStore[0]
 		# iterate a final time to calucate the cross covariance matrices
  		M = [None]*T
-		M[-1]=(numpy.eye(nx)-KStore[-1]*self.C) * self.A*PStore[-2]
+		M[-1]=(pb.eye(nx)-KStore[-1]*self.C) * self.A*PStore[-2]
 		for t in range(T-2,1,-1):
 		    M[t]=PStore[t]*S[t-1].T + S[t]*(M[t+1] - self.A*PStore[t])*S[t-1].T
 		M[1] = matlib.eye(self.nx)
