@@ -23,15 +23,25 @@ class ssmodel:
 	P - Covariance matrix sequence
 	"""
 	
-	def __init__(self,A,C,Sw,Sv,T):
+	def __init__(self,A,C,Sw,Sv):
+		"""
+		Arguments
+		----------
+		A : matrix
+			State transition matrix.
+		C : matrix
+			Observation matrix.
+		Sw : matrix
+			State covariance matrix.
+		Sv : matrix
+			Observation noise covariance matrix			
+		"""
 
 		"""State State model parameters"""
 		self.A = numpy.matrix(A)
 		self.C = numpy.matrix(C)
 		self.Sw = numpy.matrix(Sw)
-		self.Sv = numpy.matrix(Sv)
-		self.T = T
-		self.time = range(T)		
+		self.Sv = numpy.matrix(Sv)		
 		self.ny,self.nx = self.C.shape
 
 		# Dimension consistency
@@ -54,7 +64,7 @@ class ssmodel:
 		self.P0 = 40000* numpy.matrix(numpy.ones((self.nx,self.nx)))
 
 	
-	def simulate(self):
+	def simulate(self,T):
 		"""simulates the state space model"""
 
 		x = numpy.matrix(self.x0)
@@ -63,7 +73,7 @@ class ssmodel:
 		if self.Sw.any()<>0: self.Swc = numpy.linalg.cholesky(self.Sw)  
 		if self.Sv.any()<>0:self.Svc = numpy.linalg.cholesky(self.Sv) 
 
-		for t in self.time:
+		for t in range(T):
 
 			v = numpy.random.randn(self.ny,1)
 			w = numpy.random.randn(self.nx,1)
@@ -72,9 +82,7 @@ class ssmodel:
 			self.Y[t] = self.C*x + self.Svc*v
 			x = self.A*x + self.Swc*w
 	
-
-	
-	def kfilter(self):
+	def kfilter(self,Y):
 		"""Kalman Filter
 
 		xhatPredStore: Predicted state
@@ -89,9 +97,9 @@ class ssmodel:
 			return x,P
 
 		# Corrector
-		def Kupdate(A,C,P,Sv,x,z):
+		def Kupdate(A,C,P,Sv,x,y):
 			K = (P*C.T) * (C*P*C.T + Sv).I
-			x = x + K*(z-(C*x))
+			x = x + K*(y-(C*x))
 			P = (numpy.eye(self.nx)-K*C)*P;
 			return x,P,K
 
@@ -101,29 +109,33 @@ class ssmodel:
 		ny = self.ny
 		T = self.T
 		# filter quantities
-		xhatPredStore = zerosList(nx,1,T)
-		PPredStore = zerosList(nx,nx,T)
-		xhatStore = zerosList(nx,1,T)
-		PStore = zerosList(nx,nx,T)
-		KStore = zerosList(nx,ny,T)
+		xhatPredStore = []
+		PPredStore = []
+		xhatStore = []
+		PStore = []
+		KStore = []
 		# initialise the filter
-		xhat,P = Kpred(self.A,self.C,self.P0,self.Sw,xhat)
+		xhat, P = Kpred(self.A, self.C, self.P0, self.Sw, xhat)
 		xhatPredStore[0], PPredStore[0] = xhat, P
 		## filter
-		for t in self.time:
-			# update state estimate with measurement and store Kalman gain
-			xhat, P, KStore[t] = Kupdate(self.A,self.C,P,self.Sv,xhat,self.Y[t])
-			# store corrected values of xhat and P
-			xhatStore[t], PStore[t] = xhat, P
-			# predict new state
+		for y in Y:
+			# store
+			xhatPredStore.append(xhat)
+			PPredStore.append(P)
+			# correct
+			xhat, P, K = Kupdate(self.A,self.C,P,self.Sv,xhat,y)
+			# store
+			KStore.append(K)
+			xhatStore.append(xhat) 
+			PStore.append(P)
+			# predict
 			xhat, P = Kpred(self.A,self.C,P,self.Sw,xhat);
-			xhatPredStore[t],PPredStore[t] = xhat,P
 						
 		self.K = KStore
 		self.X = xhatStore
 		self.P = PStore	
 	
-	def rtssmooth(self):
+	def rtssmooth(self,Y):
 		"""Rauch Tung Streibel(RTS) smoother"""
 		
 		# predictor
@@ -135,9 +147,9 @@ class ssmodel:
 			return x,P
 		
 		# corrector
-		def Kupdate(A,C,P,Sv,x,z):
+		def Kupdate(A,C,P,Sv,x,y):
 			K = (P*C.T) * (C*P*C.T + Sv).I
-			x = x + K*(z-(C*x))
+			x = x + K*(y-(C*x))
 			P = (numpy.eye(self.nx)-K*C)*P;
 			return x,P,K
 		
@@ -145,52 +157,52 @@ class ssmodel:
 		xhat = self.x0
 		nx = self.nx
 		ny = self.ny
-		T = self.T
+		T = len(Y)
 		# filter quantities
-		xhatPredStore = zerosList(nx,1,T)
-		PPredStore = zerosList(nx,nx,T)
-		xhatStore = zerosList(nx,1,T)
-		PStore = zerosList(nx,nx,T)
-		KStore = zerosList(nx,ny,T)
-		# smoother quantities
-		xb = zerosList(nx,1,T)
-		Pb = zerosList(nx,nx,T)
-		M = zerosList(nx,nx,T)
-		S = zerosList(nx,nx,T)
+		xhatPredStore = []
+		PPredStore = []
+		xhatStore = []
+		PStore = []
+		KStore = []
 		# initialise the filter
-		xhat,P = Kpred(self.A,self.C,self.P[0],self.Sw,xhat)
+		xhat, P = Kpred(self.A, self.C, self.P0, self.Sw, xhat)
 		xhatPredStore[0], PPredStore[0] = xhat, P
 		## filter
-		for t in self.time:
-		    # store prediction values of xhat and P
-		    xhatPredStore[t], PPredStore[t] = xhat, P
-		    # update state estimate with measurement and store Kalman gain
-		    xhat, P, KStore[t] = Kupdate(self.A,self.C,P,self.Sv,xhat,self.Y[t])
-		    # store corrected values of xhat and P
-		    xhatStore[t], PStore[t] = xhat, P
-	    	# predict new state
-		    xhat, P = Kpred(self.A,self.C,P,self.Sw,xhat);
-
-
+		for y in Y:
+			# store
+			xhatPredStore.append(xhat)
+			PPredStore.append(P)
+			# correct
+			xhat, P, K = Kupdate(self.A,self.C,P,self.Sv,xhat,y)
+			# store
+			KStore.append(K)
+			xhatStore.append(xhat) 
+			PStore.append(P)
+			# predict
+			xhat, P = Kpred(self.A,self.C,P,self.Sw,xhat);
 		# initialise the smoother
+		xb = [None]*T
+		Pb = [None]*T
+		S = [None]*T
 		xb[-1], Pb[-1] = xhatStore[-1], PStore[-1]
 		## smooth
 		for t in range(T-2,0,-1):
 			S[t] = PStore[t]*self.A.T * PPredStore[t+1].I
 			xb[t] = xhatStore[t] + S[t]*(xb[t+1] - xhatPredStore[t])
 			Pb[t] = PStore[t] + S[t] * (Pb[t+1] - PPredStore[t+1]) * S[t].T
+		# finalise
+		xb[0] = xhatStore[0]
+		Pb[0] = PStore[0]
 		# iterate a final time to calucate the cross covariance matrices
- 		M[-1]=(numpy.eye(nx)-KStore[-1]*self.C) * self.A*PStore[-2]
+ 		M = [None]*T
+		M[-1]=(numpy.eye(nx)-KStore[-1]*self.C) * self.A*PStore[-2]
 		for t in range(T-2,1,-1):
 		    M[t]=PStore[t]*S[t-1].T + S[t]*(M[t+1] - self.A*PStore[t])*S[t-1].T
-		
+		M[1] = matlib.eye(self.nx)
+		M[0] = matlib.eye(self.nx)
+		# store
 		self.K = KStore
 		self.M = M
 		self.X = xb
 		self.P = Pb
-		
-def zerosList(rows,cols,listLength):
-	"""returns a list of zero matrices"""
-	return [numpy.matrix(numpy.zeros((rows,cols)))]*listLength
 	
-
