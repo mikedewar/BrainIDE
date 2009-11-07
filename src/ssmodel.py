@@ -51,10 +51,9 @@ class ssmodel:
 		
 		ny, nx = C.shape
 		
-		assert A.shape == (nx, nx), 'ssmodel consistency check failed (A)'
-		assert C.shape == (ny, nx), 'ssmodel consistency check failed (C)'
-		assert Sw.shape == (nx, nx), 'ssmodel consistency check failed (Sw)'
-		assert Sv.shape == (ny, ny), 'ssmodel consistency check failed (Sv)'
+		assert A.shape == (nx, nx)
+		assert Sw.shape == (nx, nx)
+		assert Sv.shape == (ny, ny)
 		assert x0.shape == (nx,1)
 		
 		self.A = pb.matrix(A)
@@ -66,6 +65,7 @@ class ssmodel:
 		self.x0 = x0
 		
 		# initial condition
+		# TODO - not sure about this as a prior...
 		self.P0 = 40000* pb.matrix(pb.ones((self.nx,self.nx)))
 		
 		log.info('initialised state space model')
