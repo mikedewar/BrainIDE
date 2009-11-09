@@ -1,7 +1,9 @@
-"""An unforced state space model module: 	
- with Kalman filter & RTS smoother attributes"""
-
 import pylab as pb
+from numpy import matlib
+import sys
+import logging
+logging.basicConfig(stream=sys.stdout,level=logging.INFO)
+log = logging.getLogger('ssmodel')
 
 class ssmodel:
 	"""class defining a linear, gaussian, discrete-time state space model.
@@ -49,10 +51,9 @@ class ssmodel:
 		
 		ny, nx = C.shape
 		
-		assert A.shape == (nx, nx), 'ssmodel consistency check failed (A)'
-		assert C.shape == (ny, nx), 'ssmodel consistency check failed (C)'
-		assert Sw.shape == (nx, nx), 'ssmodel consistency check failed (Sw)'
-		assert Sv.shape == (ny, ny), 'ssmodel consistency check failed (Sv)'
+		assert A.shape == (nx, nx)
+		assert Sw.shape == (nx, nx)
+		assert Sv.shape == (ny, ny)
 		assert x0.shape == (nx,1)
 		
 		self.A = pb.matrix(A)
@@ -64,35 +65,88 @@ class ssmodel:
 		self.x0 = x0
 		
 		# initial condition
+		# TODO - not sure about this as a prior...
 		self.P0 = 40000* pb.matrix(pb.ones((self.nx,self.nx)))
-
+		
+		log.info('initialised state space model')
 	
-	def simulate(self,T):
-		"""simulates the state space model"""
+	def transition_dist(self,x):
+		mean = self.A*x
+		return pb.multivariate_normal(mean.A.flatten(),self.Sw,[1]).T
+	
+	def observation_dist(self,x):
+		mean = self.C*x
+		return pb.multivariate_normal(mean.A.flatten(),self.Sv,[1]).T
+		
+	def gen(self,T):
+		"""
+		generator for the state space model
+		
+		Arguments
+		----------
+		T : int
+			number of time points to generate
 
-		x = pb.matrix(self.x0)
-		x.shape = self.nx, 1
-
-		if self.Sw.any()<>0: self.Swc = pb.linalg.cholesky(self.Sw)  
-		if self.Sv.any()<>0:self.Svc = pb.linalg.cholesky(self.Sv) 
-
+		Yields
+		----------
+		x : matrix
+			next state vector
+		y : matrix
+			next observation
+		"""	
+		x = self.x0
 		for t in range(T):
+			y = self.observation_dist(x)
+			yield x,y
+			x = self.transition_dist(x)
 
-			v = pb.random.randn(self.ny,1)
-			w = pb.random.randn(self.nx,1)
-			
-			self.X[t] = x
-			self.Y[t] = self.C*x + self.Svc*v
-			x = self.A*x + self.Swc*w
+	def simulate(self,T):
+		"""
+		simulates the state space model
+
+		Arguments
+		----------
+		T : int
+			number of time points to generate
+
+		Returns
+		----------
+		X : list of matrix
+			array of state vectors
+		Y : list of matrix
+			array of observation vectors
+		"""
+		
+		log.info('sampling from the state space model')
+		
+		X = []
+		Y = []
+		for (x,y) in self.gen(T):
+			X.append(x)
+			Y.append(y)
+		return X,Y
+	
 	
 	def kfilter(self,Y):
-		"""Kalman Filter
-
-		xhatPredStore: Predicted state
-		xhatSrore -Aanalysed state
-		PPredStore:Predicted covariance
-		PStore: Aanalysed covariance """
-
+		"""Vanilla implementation of the Kalman Filter
+		
+		Arguments
+		----------
+		Y : list of matrix
+			A list of observation vectors
+			
+		Returns
+		----------	
+		X : list of matrix
+			A list of state estimates
+		P : list of matrix
+			A list of state covariance matrices
+		K : list of matrix
+			A list of Kalman gains
+		"""
+		
+		log.info('running the Kalman filter')
+		
 		# Predictor
 		def Kpred(A,C,P,Sw,x):
 			x = A*x 
@@ -110,7 +164,6 @@ class ssmodel:
 		xhat = self.x0
 		nx = self.nx
 		ny = self.ny
-		T = self.T
 		# filter quantities
 		xhatPredStore = []
 		PPredStore = []
@@ -119,7 +172,6 @@ class ssmodel:
 		KStore = []
 		# initialise the filter
 		xhat, P = Kpred(self.A, self.C, self.P0, self.Sw, xhat)
-		xhatPredStore[0], PPredStore[0] = xhat, P
 		## filter
 		for y in Y:
 			# store
@@ -133,28 +185,43 @@ class ssmodel:
 			PStore.append(P)
 			# predict
 			xhat, P = Kpred(self.A,self.C,P,self.Sw,xhat);
-						
-		self.K = KStore
-		self.X = xhatStore
-		self.P = PStore	
+		
+		return xhatStore, PStore, KStore
 	
 	def rtssmooth(self,Y):
-		"""Rauch Tung Streibel(RTS) smoother"""
+		"""Rauch Tung Streibel(RTS) smoother
+		
+		Arguments
+		----------
+		Y : list of matrix
+			A list of observation vectors
+		
+		Returns
+		----------	
+		X : list of matrix
+			A list of state estimates
+		P : list of matrix
+			A list of state covariance matrices
+		K : list of matrix
+			A list of Kalman gains
+		M : list of matrix
+			A list of cross covariance matrices
+		"""
+		
+		log.info('running the RTS Smoother')
 		
 		# predictor
 		def Kpred(A,C,P,Sw,x):
-			assert type(x) is pb.matrix
-			assert x.shape == (self.nx,1), str(x.shape)
 			x = A*x 
 			P = A*P*A.T + Sw;
-			return x,P
+			return x, P
 		
 		# corrector
 		def Kupdate(A,C,P,Sv,x,y):
 			K = (P*C.T) * (C*P*C.T + Sv).I
 			x = x + K*(y-(C*x))
 			P = (pb.eye(self.nx)-K*C)*P;
-			return x,P,K
+			return x, P, K
 		
 		## initialise	
 		xhat = self.x0
@@ -169,7 +236,6 @@ class ssmodel:
 		KStore = []
 		# initialise the filter
 		xhat, P = Kpred(self.A, self.C, self.P0, self.Sw, xhat)
-		xhatPredStore[0], PPredStore[0] = xhat, P
 		## filter
 		for y in Y:
 			# store
@@ -203,9 +269,10 @@ class ssmodel:
 		    M[t]=PStore[t]*S[t-1].T + S[t]*(M[t+1] - self.A*PStore[t])*S[t-1].T
 		M[1] = matlib.eye(self.nx)
 		M[0] = matlib.eye(self.nx)
-		# store
-		self.K = KStore
-		self.M = M
-		self.X = xb
-		self.P = Pb
-	
+		
+		return xb, Pb, KStore, M
+
+
+if __name__ == "__main__":
+	import os
+	os.system('py.test')
