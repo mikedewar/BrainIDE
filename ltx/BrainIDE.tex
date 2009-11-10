@@ -1,0 +1,400 @@
+
+%% bare_jrnl.tex
+%% V1.3
+%% 2007/01/11
+%% by Michael Shell
+%% see http://www.michaelshell.org/
+%% for current contact information.
+%%
+%% This is a skeleton file demonstrating the use of IEEEtran.cls
+%% (requires IEEEtran.cls version 1.7 or later) with an IEEE journal paper.
+%%
+%% Support sites:
+%% http://www.michaelshell.org/tex/ieeetran/
+%% http://www.ctan.org/tex-archive/macros/latex/contrib/IEEEtran/
+%% and
+%% http://www.ieee.org/
+
+
+\documentclass[journal]{IEEEtran}
+
+\usepackage{graphicx}
+\usepackage{color}                    % For creating coloured text and background
+\usepackage{amsmath,amssymb,amsfonts} % Typical maths resource packages
+% correct bad hyphenation here
+\hyphenation{op-tical net-works semi-conduc-tor}
+
+
+\begin{document}
+
+% can use linebreaks \\ within to get better formatting as desired
+\title{Estimation of Spatiotemporal Integro-Difference Equations for Dynamical Neural Field Models}
+
+\author{Dean~Freestone,~\IEEEmembership{Graduate Student Member,~IEEE,}
+        Parham~Aram,~\IEEEmembership{Graduate Student Member,~IEEE,}
+        Michael~Dewar,~\IEEEmembership{Member,~IEEE,}
+        Kenneth~Scerri,~\IEEEmembership{Member,~IEEE,}
+        and Visakan~Kadirkamanathan,~\IEEEmembership{Member,~IEEE,}
+        and~other~Bosses/Supervisors,~\IEEEmembership{Member,~IEEE.}% <-this % stops a space% <-this % stops a space
+
+\thanks{D. Freestone is with the Department
+of Electrical and Electronic Engineering, University of Melbourne, Melbourne,
+Vic, 3010 Australia {\tt\small dfreestone@bionicear.org}.}% <-this % stops a space
+\thanks{P. Aram is with Sheffield...}
+\thanks{M. Dewar is with Edinburgh...}
+\thanks{K. Scerri is with Malta...}
+\thanks{V. Kadirkamanathan is with Sheffield...}
+
+\thanks{Manuscript received Month Day, Year; revised Month Day, Year.}}
+
+
+% The paper headers
+\markboth{Journal of \"{U}ber C\~{o}\~{o}l Engineering,~Vol.~1, No.~1, Christmas~2009}%
+{Shell \MakeLowercase{\textit{et al.}}: Bare Demo of IEEEtran.cls for Journals}
+
+\maketitle
+
+\begin{abstract}
+Will save this for last.
+\end{abstract}
+
+
+% Note that keywords are not normally used for peerreview papers.
+\begin{IEEEkeywords}
+Integro-Difference Equation (IDE), Neural Field Model, Cortical Connectivity.
+\end{IEEEkeywords}
+
+\IEEEpeerreviewmaketitle
+
+\section{Introduction}
+
+\IEEEPARstart{T}{he} human brain is arguably the world's most complex system. Approximately 100 billion neurons and 60 trillion synapses operate in concert to process information, resulting in the cognition that determines our behavior. The brain's efficiency, robustness, and adaptability are unparalleled by any man-made device and, despite decades of concerted research, our understanding of its complex dynamics remains modest. This has led researchers to study different scales of dynamics: starting from individual proteins, synapses, and neurons; moving through to neuronal networks and ensembles of neuronal networks. Whilst our understanding of the function of neurons is well developed, the overall behavior of the brain's meso and macro-scale dynamics remains largely a mystery.  Understanding the brain at this level is extremely important since this is the level where pathologies such as epilepsy, Parkinson's disease and schizophrenia are manifested.
+
+To date, there has been a considerable volume of work in generating physiologically plausible neural field models to fill the void of understanding brain dynamics at this meso/macroscopic scale. Mathematical neural field  models have provided insights into the underlying physics and dynamics of electroencephalography (EEG) and magnetoencephalography (MEG) (see~\cite{Deco2008}~\cite{David2003} for recent reviews). These models have demonstrated possible mechanisms for the genesis of neural rhythms (such as the alpha and gamma rhythms) \cite{Liley1999} \cite{RENNIE2000}, epileptic seizure generation \cite{DaSilva2003},~\cite{Suffczynski2004} and~\cite{Wendling2005} and insights into other pathologies (ref, Parkinsons Scitzo) that would be impossible to gain from experimental data . Unfortunately, to date the use of these models in the clinic has very limited, since these models are very general and pathologies almost always have unique underlying patient specific causes. Data from EEG and functional magnetic resonance imaging (fMRI) offers the patient specific link to macro-scale cortical dynamics, making these tools readily applicable to the clinic. However the underlying system properties, or system states, are hidden from EEG and fMRI data, making predictions of the underlying physiology inherently difficult.
+
+For models to be clinically viable they must be patient specific. A possible approach to achieve this would be to use a general neural field model, like the \textcolor[rgb]{1.00,0.00,0.00}{Wilson Cohen Jansen and Ritt model ref}, and fit it to a patients EEG data. Fitting the general neural field models to individuals is a highly non-trivial task, and until very recently this has not been reported in the literature. This is most likely due to the large parameter set that most models use in order to be physiologically plausible. To our knowledge, the first (and only) published research that attempts parameter estimation with a neural field model used an unscented Kalman filter to track parameters of the Wilson-Cowan neural field equations~\cite{schiff2008kalman}.  This work marks the first step in what has the potential to revolutionize the treatment of many neurological diseases where therapeutic electrical stimulation is viable. Generating patient specific models allows that application of a range of techniques from control systems theory, where tailored electrical stimulation could be used therapeutically in a closed loop fashion.  Currently available epileptic seizure prediction and control devices (i.e., the vagal nerve stimulator) are implemented in an ``open loop".  That is, the therapeutic electrical stimulation waveforms are adjusted for each patient by trial and error, disregarding the patient's neurodynamics and information about their particular pathologies. Given access to an accurate model, the application of control theory in these circumstances would allow for robust therapeutic stimulations.
+The work from Schiff and Sauer~\cite{schiff2008kalman} successfully demonstrated  estimation of two parameters from the WC equations, whilst the other parameters were fixed. This motivates the question, what parameters are the most important? How patient specific do the assumed parameters have to be for the model to be useful? In this paper we address both of these questions and provide a theoretical platform to perform patient specific grey-box modeling of the human neocortex.
+
+\section{The Importance of Cortical Structure}
+
+The neural field models use statistics of the cortex to relate mean firing rates of pre-synaptic neural populations to post-synaptic mean membrane potentials. Each neural population represents a functional cortical processing unit referred to as a column. The columnar organization of the cortex is not discrete, but is continuous, where pyramidal cells are members of many columns. In general, cortical structure can be modeled in a physiologically plausible manner as being locally homogeneous (in short range intracortical connectivity) and heterogeneous (in long range corticocortical and corticothalamic connectivity)~\cite{Jirsa2009}~\cite{Qubbaj2007}. Locally, each column is thought to have symmetric short range local excitation, with surround inhibition~\cite{Braitenberg1998}. For example, this structural organisation is most studied in the visual system, where the surrounding inhibition effectively tunes column to a particular receptive visual field~\cite{Sullivan2006}.
+Recent studies using neural field models have demonstrated the theoretical implications of the connectivity structure, where the connectivity kernel governs the bifurcation points of the models~\cite{Hutt2005} and types of oscillations that can be generated~\cite{Schmidt2009}. This implies that if we could estimate the connectivity structure for individuals we may be able to model patient specific dynamics.
+
+Estimating function cortical connectivity via EEG measures is currently a highly active area of research. There is a lot of interest in understanding the hierarchy of brain regions are involved in specific tasks. Most works are based on auto-regressive (AR) modeling of the times series. Studies have concentrated on finding functional connectivity patterns using information contained in the AR coefficients. This approach has yielded interesting results but is limited in the sense that structure is not estimated hence this work cannot be related to the theoretical bifurcation analysis and the underlying system structure. (Granger causality, DTF, partial coherence)
+An alternative approach to estimating the connectivity structure between brain regions is dynamic causal modeling (DCM). The DCM approach essentially studies the causality of information transform between pre-determined brain regions. DCM asks what connectivity structure between brain regions best explains a data set. The approach has generated several publications (ref) and generated evidence in understanding specific hierarchical networks of neural information processing.
+Changes in connectivity would reflect learning.
+Longrange connectivity can be estimated using DTI~\cite{Knock2009}, however this short range connectivity can not..
+In this work we aim to estimate local intracortical connectivity. This is most invariant.
+\section{Neural Field Model}
+
+The Wilson-Cowan model has shown to be descriptive of a range of neurodynamics of the cortex. The model is capable of generating patterns of activity such as Turing patterns, spirals, .... The general form of the model is described here.
+The post-synaptic potentials generated at a neuronal population $s$ by action potentials arriving from all other connected populations at position $r$ can be described by
+\begin{equation}\label{Eq1}
+v\left( {s,t} \right) = \int_{ - \infty }^t {h\left( {t - t'} \right)J\left( {r,t'} \right)dt'}.
+\end{equation}
+The post-synaptic response kernel $h(t)$ is described by
+\begin{equation}\label{Eq2}
+h(t) = \left\{ {\begin{array}{*{20}{c}}
+   {\exp ( - {t \mathord{\left/
+ {\vphantom {t \tau }} \right.
+ \kern-\nulldelimiterspace} \tau })} & {t \ge 0}  \\
+   0 & {t < 0}  \\
+\end{array}} \right.,
+\end{equation}
+where $\tau$ is the synaptic time constant and typically has values from 10-20~ms (\textcolor[rgb]{1.00,0.00,0.00}{refs}). The synaptic response kernel can be more elaborate, using a rise and fall time constant, however this simple form serves our purposes. Equation~\ref{Eq1} relates average firing rate of a presynaptic neural population to the mean membrane potential of the post-synaptic neurons. The mean firing rate, $J$, is convolved with the response kernel to give membrane potential since the firing rate is assumed to follow a (homogeneous?) Poisson process. Nonlocal interactions between cortical populations are described by	
+\begin{equation}\label{Eq3}
+J\left( {s,t} \right) = \int_\Omega  {W\left( {s,r} \right)P\left( {v\left( {r,\bar t} \right)} \right)dr}  + E\left( {s,t} \right)
+\end{equation}
+where $\bar t = t - \frac{{\left| {s - r} \right|}}{d}$, $P$ is a mean pulse rate of population at $y$, $W$ is the connectivity kernel, $E$ is an external input, $\Omega$ is the spatial domain and $d$ is the propagation velocity from $r$ to $s$.
+
+The average firing rate of the presynaptic neurons rate to the pre-synaptic membrane potential by the sigmoid function
+\begin{equation}\label{Eq4}
+P\left( {v\left( {r,\bar t} \right)} \right) = {R_0}{\left( {1 + \exp \left( {\beta \left( {{v_0}\left( r \right) - v\left( {r,\bar t} \right)} \right)} \right)} \right)^{ - 1}}.
+\end{equation}
+Even though $v_0$ is a constant, we show express it as a field allowing for inhomogenaities and for clarity in constructing the state-space representation in the next section. The parameters in equation~\ref{Eq4} are... $v_0$ is typically 6~mV, $R_0$ is 5~$s^{-1}$ and $\beta$ is 0.56~mV$^{-1}$ (from Wendling and David papers). By combining equations~\ref{Eq1} and \ref{Eq3} we get the spatiotemporal model
+\begin{equation}\label{Eq5}
+v\left( {s,t} \right) = \int\limits_{ - \infty }^t {\int\limits_\Omega  {h\left( {t - t'} \right)W\left( {s,r} \right)P\left( {v\left( {r,\bar t} \right)} \right)dy} dt'}  + E\left( {s,t} \right).
+\end{equation}
+To arrive at the final form of the model we shall state the synaptic response kernel as a Green's function
+\begin{equation}\label{Eq6}
+Lh\left( t \right) = \delta \left( t \right),
+\end{equation}
+where $L$ is a temporal differential operator and $\delta(t)$ is the Dirac-delta function. This provides the most general form
+\begin{equation}\label{Eq7}
+L\left( {\frac{\partial }{{dt}}} \right)v\left( {s,t} \right) = \int_\Omega  {W\left( {s,r} \right)P\left( {v\left( {r,\bar t} \right)} \right)dr}  + E\left( {s,t} \right),
+\end{equation}
+where $L$ is a polynomial of order $n$ with constant coefficients. This provides an $n^{th}$ order model. Most studies considering this model use first or second order time derivatives. We shall use the first order model giving
+\begin{equation}\label{Eq8}
+\frac{{dv\left( {s,t} \right)}}{{dt}} + \frac{{v\left( {s,t} \right)}}{\tau } = \int_\Omega  {W\left( {s,r} \right)P\left( {v\left( {r,\bar t} \right)} \right)dr}  + E\left( {s,t} \right).
+\end{equation}
+The neural field model can be represented as a discrete-time stochastic IDE by
+\begin{equation}\label{Eq9}
+{v_{t + 1}}\left( s \right) = \int_\Omega  {W\left( {s,r} \right)P\left( {{v_{\bar t}}\left( r \right)} \right)dr}  + {\varepsilon _t}\left( s \right) - \frac{1}{\tau }{v_t}\left( s \right),
+\end{equation}
+where $\epsilon(t)$ is the discrete time stochastic input. The IDE representation of equation~\ref{Eq9} is discrete in time and continuous in space. The neural field model is popular due to being parsimonious yet having a strong link with the underlying physiology.
+
+\subsection{Assumptions and Simplifications}
+We will assume the synaptic response kernel has the same shape (scaled by the connectivity kernel) irrespective of the respective presynaptic population. In this case inhibition can be modeled by having a negative response kernel and excitation with a positive kernel, where the kernel provides the (scaled) polarity. Standing, but not traveling waves? This is a common assumption when dealing with models in this form. We will also assume the velocity of the action potentials is infinite. This is also a common assumption that is made in the neural field modeling community. Recent studies have demonstrated the importance of having a fast, but finite, propagation velocity for models to make realistic and complete predictions of cortical dynamics (Coombes paper, and Atay paper). The purpose of this paper, however, is not to precisely simulate complex cortical dynamics, but to create a useful platform where estimation of hidden states is possible for the purpose of detecting abnormal neural states with intentions of generating informed patient specific control sequences. Therefore, the model simply has to be 'good enough' for this purpose. Starting with this simplified version of the general model is a logical choice. The next assumption we will make is spatial homogeneity such that synaptic interaction between neural populations is only dependant on their spatial separation, and not on their spatial location. Again, this is a common assumption in this field.  This assumption is not essential for our IDE estimation techniques, where a heterogeneous structure is possible. The IDE estimation is derived for a general heterogeneous structure, however for clarity of results we shall only present the heterogeneous case. With these assumptions we have the model in the form
+\begin{equation}\label{Eq10}
+{v_{t + 1}}\left( s \right) = \int_\Omega  {W\left( {\left| {s - r} \right|} \right)P\left( {{v_t}\left( r \right)} \right)dy}  + {\varepsilon _t}\left( s \right) - \frac{1}{\tau }{v_t}\left( s \right).
+\end{equation}
+In addition to the assumptions above we shall linearize the model by approximating the sigmoid function $P$ as a piece-wise linear function, $P_{L}$, where
+\begin{equation}\label{Eq11}
+\begin{array}{*{20}{c}}
+   {{P_{L}}\left( {{v_t}\left( r \right)} \right) = 0,} \hfill & {f\left( {{v_t}\left( r \right)} \right) \le 0} \hfill  \\
+   {{P_{L}}\left( {{v_t}\left( r \right)} \right) = f\left( {{v_t}\left( r \right)} \right),} \hfill & {0 < f\left( {{v_t}\left( r \right)} \right) < {R_0}} \hfill  \\
+   {{P_{L}}\left( {{v_t}\left( r \right)} \right) = {R_0},} \hfill & {f\left( {{v_t}\left( r \right)} \right) \ge {R_0}} \hfill  \\
+\end{array}
+\end{equation}
+and
+\begin{equation}\label{Eq12}
+f\left( {{v_t}\left( r \right)} \right) = \frac{{{R_0}}}{2}\left( {1 + \frac{\beta }{2}\left( {{v_t}\left( r \right) - {v_0}\left( r \right)} \right)} \right).
+\end{equation}
+For the derivation of the state-space model we shall assume that the model is operating in the active dynamic region, since this is the most interesting case, and the other cases correspond to the neural populations either being saturated (at $R_0$) or being silent. We shall show be stability analysis that the model will not saturate for the given parameters and nor will it be silent since it is continuously driven by noise. Substituting equation~\ref{Eq11} into equation~\ref{Eq10} and expanding we get
+\begin{align}\label{Eq13}
+ {v_{t + 1}}\left( s \right) = \frac{{{R_0}}}{2}\int_\Omega  {W\left( {\left| {s - r} \right|} \right){{\bar v}_0}\left( r \right)dr}  \nonumber \\
+  + \frac{{{R_0}}}{2}\beta \int_\Omega  {W\left( {\left| {s - r} \right|} \right){v_t}\left( r \right)dr}  \\
+  + {\varepsilon _t}\left( s \right) - \frac{1}{\tau }{v_t}\left( s \right), \nonumber
+\end{align}
+where ${\bar v_0}\left( r \right) = 1 - \frac{\beta }{2}{v_0}\left( r \right)$.
+
+\section{State-Space Neural Field Model}
+In this section we shall reconstruct the model in a state-space form that is a novel representation of the neural field equations. The benefit of restating the model in this format is that it becomes easier to simulate and allows the connectivity to be inferred from data. To simplify the notation in the derivation we will let the external input $\epsilon(t)=0$. Also, we shall define
+\begin{equation}\label{Eq14}
+W\left( {s,r} \right) = {\theta ^T}\psi \left( {s,r} \right)
+\end{equation}
+and
+\begin{equation}\label{Eq15}
+{v_t}\left( s \right) = \phi {\left( s \right)^T}{x_t},
+\end{equation}
+where $\Theta \in \mathbb{R}^n$ is a vector of unknown parameters (amplitudes of kernels), $\psi(s,r)$ is a matrix that can be considered a field that is scaled by $\Theta$, and $\phi(s)$ is a vector of basis functions that decomposes the field and $x_t \in\mathbb{R}^n$ is the state vector at sampling time $t$. The voltage field at $t$ is comprised of a scaled version (by the state $x_t$) of the basis functions $\phi(s)$.
+ The spatial kernel $W$ and the field $v$ are decomposed using the same basis functions, and we will define them as being complete and orthogonal. Also, we shall define
+\begin{equation}\label{Eq16}
+\Phi \left( s \right) = \int_\Omega  {\psi \left( {s,r} \right)\phi {{\left( r \right)}^T}dr}
+\end{equation}
+and
+\begin{equation}\label{Eq17}
+\Gamma \left( s \right) = \int_\Omega  {\psi \left( {s,r} \right){{\bar v}_0}\left( r \right)dr}.
+\end{equation}
+By substituting equations~\ref{Eq14} and \ref{Eq15} into equation~\ref{Eq13} we get
+\begin{align}\label{Eq18}
+ {v_{t + 1}}\left( s \right) = \frac{{{R_0}}}{2}{\theta ^T}\int_\Omega  {\psi \left( {s,r} \right){{\bar v}_0}\left( r \right)dr} \nonumber \\
+  + \frac{{{R_0}}}{2}\beta {\theta ^T}\int_\Omega  {\psi \left( {s,r} \right)\phi {{\left( r \right)}^T}dr} {x_t} \\
+  - \frac{1}{\tau }\phi {\left( s \right)^T}{x_t} \nonumber
+\end{align}
+and substituting in equations~\ref{Eq16} and \ref{Eq17} into equation~\ref{Eq18} we get
+\begin{equation}\label{Eq19}
+{v_{t + 1}}\left( s \right) = \frac{{{R_0}}}{2}{\theta ^T}\Gamma \left( s \right) + \frac{{{R_0}}}{2}\beta {\theta ^T}\Phi \left( s \right){x_t} - \frac{1}{\tau }\phi {\left( s \right)^T}{x_t}.
+\end{equation}
+By substituting the field for the basis functions weighted by the state vector we get
+\begin{equation}\label{Eq20}
+\phi {\left( s \right)^T}{x_{t + 1}} = \frac{{{R_0}}}{2}{\theta ^T}\Gamma \left( s \right) + \frac{{{R_0}}}{2}\beta {\theta ^T}\Phi \left( s \right){x_t} - \frac{1}{\tau }\phi {\left( s \right)^T}{x_t}.
+\end{equation}
+Multiplying both sides by $\phi(s)$ and integrating over $s$ we get
+\begin{align}\label{21}
+ \int_\Omega  {\phi \left( s \right)\phi {{\left( s \right)}^T}ds{x_{t + 1}}}  = \frac{{{R_0}}}{2}\int_\Omega  {\phi \left( s \right){\theta ^T}\Gamma \left( s \right)ds}  \nonumber \\
+  + \frac{{{R_0}}}{2}\beta \int_\Omega  {\phi \left( s \right){\theta ^T}\Phi \left( s \right)ds} {x_t} \\
+  - \frac{1}{\tau }\int_\Omega  {\phi \left( s \right)\phi {{\left( s \right)}^T}ds} {x_t}. \nonumber
+\end{align}
+Now we define
+\begin{equation}\label{22}
+\Psi  = \int_\Omega  {\phi \left( s \right)\phi {{\left( s \right)}^T}ds}
+\end{equation}
+and
+\begin{equation}\label{23}
+\Upsilon  = \int_\Omega  {\phi \left( s \right){\theta ^T}\Phi \left( s \right)ds}
+\end{equation}
+and
+\begin{equation}\label{24}
+\Pi  = \int_\Omega  {\phi \left( s \right){\theta ^T}\Gamma \left( s \right)ds},
+\end{equation}
+where $\Psi$ is a square positive definite matrix. Substituting equations~\ref{22}, ~\ref{23} and \ref{24} into equation~\ref{21} we get
+\begin{equation}\label{25}
+\Psi {x_{t + 1}} = \frac{{{R_0}}}{2}\Pi  + \frac{{{R_0}}}{2}\beta \Upsilon {x_t} - \frac{1}{\tau }\Psi {x_t}.
+\end{equation}
+Since $\Psi$ is a square positive definite matrix we can invert it to isolate $x_t$ yielding
+\begin{equation}\label{26}
+{x_{t + 1}} = \frac{{{R_0}}}{2}{\Psi _x}^{ - 1}\Pi  + \left( {\frac{{{R_0}}}{2}\beta {\Psi _x}^{ - 1}\Upsilon  - \frac{1}{\tau }{\bf{I}}} \right){x_t},
+\end{equation}
+where \textbf{I} is the identity matrix. The model can now be written in the canonical state-space form
+\begin{equation}\label{27}
+\begin{array}{c}
+ {x_{t + 1}} = A{x_t} + Bu \\
+ {v_t}\left( s \right) = C{x_t}, \\
+ \end{array}
+\end{equation}
+where 
+\begin{equation}\label{28}
+\begin{array}{l}
+ A = \frac{{{R_0}}}{4}\beta {\Psi _x}^{ - 1}\Upsilon  - \frac{1}{\tau }{\bf{I}} \\
+ B = \frac{{{R_0}}}{2}{\Psi _x}^{ - 1}\Pi  \\
+ C = {\phi ^T}\left( s \right) \\
+ u = 1. \\
+ \end{array}
+\end{equation}
+Next we shall demonstrate the stability of the model and in the following section the estimator for the state vector and connectivity structure is derived.
+
+\section{Stability Analysis}
+Using the analytically calculated basis functions. Need to show that the linearized model will not blow up.
+
+\section{Estimation of the IDE Neural Field Model}
+Based on the other papers.
+
+\section{Comparison of Estimated and True Connectivity}
+Try and estimate the linear and nonlinear model based on the linear estimator. Might work ok?
+
+\subsection{Linear Model}
+
+\subsection{Nonlinear Model}
+
+\section{Discussion}
+
+% An example of a floating figure using the graphicx package.
+% Note that \label must occur AFTER (or within) \caption.
+% For figures, \caption should occur after the \includegraphics.
+% Note that IEEEtran v1.7 and later has special internal code that
+% is designed to preserve the operation of \label within \caption
+% even when the captionsoff option is in effect. However, because
+% of issues like this, it may be the safest practice to put all your
+% \label just after \caption rather than within \caption{}.
+%
+% Reminder: the "draftcls" or "draftclsnofoot", not "draft", class
+% option should be used if it is desired that the figures are to be
+% displayed while in draft mode.
+%
+%\begin{figure}[!t]
+%\centering
+%\includegraphics[width=2.5in]{myfigure}
+% where an .eps filename suffix will be assumed under latex,
+% and a .pdf suffix will be assumed for pdflatex; or what has been declared
+% via \DeclareGraphicsExtensions.
+%\caption{Simulation Results}
+%\label{fig_sim}
+%\end{figure}
+
+% Note that IEEE typically puts floats only at the top, even when this
+% results in a large percentage of a column being occupied by floats.
+%
+% An example of a double column floating figure using two subfigures.
+% (The subfig.sty package must be loaded for this to work.)
+% The subfigure \label commands are set within each subfloat command, the
+% \label for the overall figure must come after \caption.
+% \hfil must be used as a separator to get equal spacing.
+% The subfigure.sty package works much the same way, except \subfigure is
+% used instead of \subfloat.
+%
+%\begin{figure*}[!t]
+%\centerline{\subfloat[Case I]\includegraphics[width=2.5in]{subfigcase1}%
+%\label{fig_first_case}}
+%\hfil
+%\subfloat[Case II]{\includegraphics[width=2.5in]{subfigcase2}%
+%\label{fig_second_case}}}
+%\caption{Simulation results}
+%\label{fig_sim}
+%\end{figure*}
+%
+% Note that often IEEE papers with subfigures do not employ subfigure
+% captions (using the optional argument to \subfloat), but instead will
+% reference/describe all of them (a), (b), etc., within the main caption.
+
+% An example of a floating table. Note that, for IEEE style tables, the
+% \caption command should come BEFORE the table. Table text will default to
+% \footnotesize as IEEE normally uses this smaller font for tables.
+% The \label must come after \caption as always.
+%
+%\begin{table}[!t]
+%% increase table row spacing, adjust to taste
+%\renewcommand{\arraystretch}{1.3}
+% if using array.sty, it might be a good idea to tweak the value of
+% \extrarowheight as needed to properly center the text within the cells
+%\caption{An Example of a Table}
+%\label{table_example}
+%\centering
+%% Some packages, such as MDW tools, offer better commands for making tables
+%% than the plain LaTeX2e tabular which is used here.
+%\begin{tabular}{|c||c|}
+%\hline
+%One & Two\\
+%\hline
+%Three & Four\\
+%\hline
+%\end{tabular}
+%\end{table}
+
+% Note that IEEE does not put floats in the very first column - or typically
+% anywhere on the first page for that matter. Also, in-text middle ("here")
+% positioning is not used. Most IEEE journals use top floats exclusively.
+% Note that, LaTeX2e, unlike IEEE journals, places footnotes above bottom
+% floats. This can be corrected via the \fnbelowfloat command of the
+% stfloats package.
+
+\section{Conclusion}
+The conclusion goes here.
+
+\appendices
+\section{}
+Appendix one text goes here.
+
+% you can choose not to have a title for an appendix
+% if you want by leaving the argument blank
+\section{}
+Appendix two text goes here.
+
+% use section* for acknowledgement
+\section*{Acknowledgment}
+The authors would like to thank...
+
+\ifCLASSOPTIONcaptionsoff
+  \newpage
+\fi
+
+
+
+% references section
+
+\bibliographystyle{IEEEtran}
+\bibliography{IEEEabrv,BrainIDE}
+
+
+% biography section
+%
+% If you have an EPS/PDF photo (graphicx package needed) extra braces are
+% needed around the contents of the optional argument to biography to prevent
+% the LaTeX parser from getting confused when it sees the complicated
+% \includegraphics command within an optional argument. (You could create
+% your own custom macro containing the \includegraphics command to make things
+% simpler here.)
+%\begin{biography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{mshell}}]{Michael Shell}
+% or if you just want to reserve a space for a photo:
+
+\begin{IEEEbiography}{Dean Freestone}
+Biography text here.
+\end{IEEEbiography}
+
+% if you will not have a photo at all:
+\begin{IEEEbiography}{Parham Aram}
+Biography text here.
+\end{IEEEbiography}
+
+% insert where needed to balance the two columns on the last page with
+% biographies
+%\newpage
+
+\begin{IEEEbiography}{Michael Dewar}
+Biography text here.
+\end{IEEEbiography}
+
+\begin{IEEEbiography}{Kenneth Scerri}
+Biography text here.
+\end{IEEEbiography}
+
+\begin{IEEEbiography}{Visakan Kadirkamanathani}
+Biography text here.
+\end{IEEEbiography}
+
+\begin{IEEEbiography}{Other Bosses}
+Biography text here.
+\end{IEEEbiography}
+
+% that's all folks
+\end{document} 
