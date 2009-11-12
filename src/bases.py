@@ -45,7 +45,7 @@ class gaussianBasis(basis):
 		# constant - The convolution coefficient
 		self.constant = float(constant)
 		# evaluate
-		self.evaluate = lambda s: self.constant * np.exp(-.5*(s-self.centre).T*self.width.I*(s-self.centre))
+		self.evaluate = lambda s: self.constant * np.exp(-(s-self.centre).T*self.width.I*(s-self.centre))
 
 	def __repr__(self):	
 		return 'Gaussian basis: ' +'centre= '+str(self.centre) + ', width= ' + str(self.width)
