@@ -112,6 +112,7 @@ class ide:
 		for i in range(nx):
 			for j in range(nx):
 				Psi_theta[i,j] = theta.T * gamma[i][j]
+		self.Psi_theta=	Psi_theta	
 		# form invPsi_x
 		if hasattr(self,'invPsi_x'):
 			invPsi_x = self.invPsi_x
@@ -188,8 +189,10 @@ class ide:
 		self.gen_ssmodel()
 		# generate a random state sequence
 		X= [pb.matrix(np.random.rand(self.ssmodel.nx,1)) for t in range(self.T)]
-		P=[pb.matrix(pb.zeros((self.ssmodel.nx,self.ssmodel.nx)))]*self.T
-		M=[pb.matrix(pb.zeros((self.ssmodel.nx,self.ssmodel.nx)))]*self.T
+		P=[1000*pb.matrix(pb.ones((self.ssmodel.nx,self.ssmodel.nx)))]*self.T
+		M=[1000*pb.matrix(pb.ones((self.ssmodel.nx,self.ssmodel.nx)))]*self.T
+		#P=[10000*pb.matrix(pb.eye((self.ssmodel.nx)))]*self.T
+		#M=[10000*pb.matrix(pb.eye((self.ssmodel.nx)))]*self.T
 
 		# introduce the observations
 		# iterate
@@ -199,8 +202,9 @@ class ide:
 		while keep_going:
 			self.estimate_kernel(X,P,M)
 			self.gen_ssmodel()
-			X, P, KStore, M=self.estimate_field(Y)
+			X, P, KStore,M=self.estimate_field(Y)
 			print it_count, " current estimate: ", self.kernel.weights
+			print it_count,"current estimate of Frobenius Norm: ", self.FroNorm()
 			if it_count == max_it:
 				keep_going = 0
 			it_count += 1
@@ -209,5 +213,9 @@ class ide:
 		'''returns a list of the eigenvalues of the models A matrix'''
 		u,v = pb.linalg.eig(self.ssmodel.A)
 		return [i for i in u]
-		
+	
+	def FroNorm(self):
+		'''returns Frobenius Norm'''
+		u= np.sqrt(np.trace(self.ssmodel.A.T*self.ssmodel.A))
+		return u	
 
