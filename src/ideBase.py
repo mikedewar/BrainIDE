@@ -9,11 +9,6 @@ class ideBase:
 	"""class defining common properties of the basis, kernel and field"""
 	def __str__(self):
 		return self.name
-	def plot(self,space):
-		if self.dimension==1:
-			y = np.array([self.evaluate(s) for s in space])
-			pb.plot(space,y[:,0])
-			pb.show()
 
 class ideElement(ideBase):
 	"""class defining common properties of the kernel and field"""
@@ -44,9 +39,9 @@ class kernel(ideElement):
 class field(ideElement):
 	"""class defining a spatial field"""
 	
-	def __init__(self,dimension,bases,weights,name):
+	def __init__(self,dimension,bases,weights):
 		ideElement.__init__(self,dimension,bases,weights)
-		self.name = name
+		self.name = "field"
 		
 
 
