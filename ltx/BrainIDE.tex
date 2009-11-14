@@ -133,6 +133,34 @@ The neural field model can be represented as a discrete-time stochastic IDE by
 \end{equation}
 where $\epsilon(t)$ is the discrete time stochastic input. The IDE representation of equation~\ref{Eq9} is discrete in time and continuous in space. The neural field model is popular due to being parsimonious yet having a strong link with the underlying physiology.
 
+\subsection{Alternate model description}
+
+\begin{figure*}
+\centering
+\includegraphics[scale=0.4]{BasicStructureOfModel.eps}
+\caption[NeuralMassModel]{This figure describes the basic interactions of neural masses that constitute the neural field model.}
+\label{NeuralMassModel}
+\end{figure*}
+
+An alternative description of the model is as follows. The model can be thought of as a continuum of neural masses. To illustrate this idea we shall first describe the interaction of discrete neural masses. Assuming post-synaptic potentials sum linearly, the membrane potential at the soma of neuron $i$ is described as
+\begin{equation}\label{Eq1.1}
+{v_i}\left( t \right) = \sum\nolimits_{j,k} {{w_{ij}}{h_{j}}\left( t \right)} H\left( {t - {t_k}} \right),
+\end{equation}
+where $w_{ij}$ is the synaptic weight from neuron $j$ to $i$, $h(t)$ is the synaptic response kernel, $H$ is the Heaviside step function and action potential arrive at neuron I at times $t_k$. Alternatively the membrane potential can described by
+\begin{equation}\label{1.2}
+{v_i}\left( t \right) = \sum\nolimits_j {\int_{ - \infty }^t {{w_{ij}}{h_j}\left( {t - t'} \right){r_j}\left( t \right)} } dt',
+\end{equation}
+where $r_j(t)$ is the firing rates of the presynaptic neurons. To convert the equation system into and integral differential system we shall take derivative of~\ref{Eq1.1} yielding
+\begin{eqnarray}
+% \nonumber to remove numbering (before each equation)
+  \frac{{d{v_i}\left( t \right)}}{{dt}} &=& \sum\nolimits_{j,k} {\left( {{w_{ij}}{h_j}\left( t \right)\frac{d}{{dt}}H\left( {t - {t_k}} \right) + {w_{ij}}H\left( {t - {t_k}} \right)\frac{d}{{dt}}{h_j}\left( t \right)} \right)} \nonumber \\
+   &=& \sum\nolimits_{j,k} {{w_{ij}}{h_j}\left( t \right)\delta \left( {t - {t_k}} \right)}  - \sum\nolimits_{j,k} {{w_{ij}}H\left( {t - {t_k}} \right)\frac{1}{{{\tau _j}}}{h_j}\left( t \right)}   \nonumber \\
+   &=& \sum\nolimits_{j,k} {{w_{ij}}{h_j}\left( t \right)\delta \left( {t - {t_k}} \right)}  - {v_i}\left( t \right)\sum\nolimits_j {\frac{1}{{{\tau _j}}}} \nonumber  \\
+   &=& \sum\nolimits_j {{w_{ij}}{r_j}\left( t \right)}  - {v_i}\left( t \right)\sum\nolimits_j {\frac{1}{{{\tau _j}}}} \nonumber \\
+   &=& \sum\nolimits_j {{w_{ij}}S\left( {{v_j}\left( t \right)} \right)}  - {v_i}\left( t \right)\sum\nolimits_j {\frac{1}{{{\tau _j}}}}. 
+\end{eqnarray}
+This form can easily be extended to represent a continuous field.
+
 \subsection{Assumptions and Simplifications}
 We will assume the synaptic response kernel has the same shape (scaled by the connectivity kernel) irrespective of the respective presynaptic population. In this case inhibition can be modeled by having a negative response kernel and excitation with a positive kernel, where the kernel provides the (scaled) polarity. This reduced the model to a single field. I am not sure how this will limit the dynamics?? We will also assume the velocity of the action potentials is infinite. This is also a common assumption that is made when modeling intracortical circuits. As stated in Wilson and Cohen's original works, the time constant $\tau$ is much greater than the axonal propagation delays, therefore it is reasonable to approximate the the delays as being infinite. Recent studies have demonstrated the importance of having a fast, but finite, propagation velocity for models to make realistic and complete predictions of cortical dynamics (Coombes paper, and Atay paper). The purpose of this paper, however, is not to precisely simulate complex cortical dynamics, but to create a useful platform where estimation of hidden states is possible for the purpose of detecting abnormal neural states with intentions of generating informed patient specific control sequences. Therefore, the model simply has to be 'good enough' for this purpose. Starting with this simplified version of the general model is a logical choice. The next assumption we will make is spatial homogeneity such that synaptic interaction between neural populations is only dependant on their spatial separation, and not on their spatial location. Again, this is a common assumption when dealing with intracortical connectivity. This assumption is not essential for our IDE estimation techniques, where a heterogeneous structure is possible. The IDE estimation is derived for a general heterogeneous structure, however for clarity of results we shall only present the heterogeneous case. With these assumptions we have the model in the form
 \begin{equation}\label{Eq10}
