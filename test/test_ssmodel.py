@@ -47,7 +47,7 @@ def test_kfilter():
 	Xo, Y = model.simulate(T)
 	X, P, K = model.kfilter(Y)
 	for (x, xo, p) in zip(X,Xo,P):
-		assert within_dist(xo,p,x)
+		assert within_dist(x,p,xo)
 
 def test_rtssmoother():
 	model = setup()
@@ -55,7 +55,7 @@ def test_rtssmoother():
 	Xo, Y = model.simulate(T)
 	X, P, K, M = model.rtssmooth(Y)
 	for (x, xo, p) in zip(X,Xo,P):
-		assert within_dist(xo,p,x)
+		assert within_dist(x,p,xo)
 
 if __name__ == "__main__":
 	import os
