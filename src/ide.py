@@ -189,8 +189,8 @@ class ide:
 		self.gen_ssmodel()
 		# generate a random state sequence
 		X= [pb.matrix(np.random.rand(self.ssmodel.nx,1)) for t in range(self.T)]
-		P=[1000*pb.matrix(pb.ones((self.ssmodel.nx,self.ssmodel.nx)))]*self.T
-		M=[1000*pb.matrix(pb.ones((self.ssmodel.nx,self.ssmodel.nx)))]*self.T
+		P=[pb.matrix(pb.ones((self.ssmodel.nx,self.ssmodel.nx)))]*self.T
+		M=[pb.matrix(pb.ones((self.ssmodel.nx,self.ssmodel.nx)))]*self.T
 		#P=[10000*pb.matrix(pb.eye((self.ssmodel.nx)))]*self.T
 		#M=[10000*pb.matrix(pb.eye((self.ssmodel.nx)))]*self.T
 
