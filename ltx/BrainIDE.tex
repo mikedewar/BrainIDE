@@ -90,7 +90,7 @@ Longrange connectivity can be estimated using DTI~\cite{Knock2009}, however this
 \section{Neural Field Model}
 In this section we describe a variant of the  Wilson and Cowan neural field model~\cite{Wilson1973} that will be used to create our connectivity estimator. This model has shown to be descriptive of a range of neurodynamics of the cortex such as evoked potentials and epileptic behavior and is capable of generating complex patterns of activity such as Turing patterns, spirals and traveling oscillations. The general form of the model is described here. The post-synaptic potentials generated at a neuronal population $s$ by action potentials arriving from all other connected populations at position $r$ can be described by
 \begin{equation}\label{Eq1}
-v\left( {s,t} \right) = \int_{ - \infty }^t {h\left( {t - t'} \right)J\left( {r,t'} \right)dt'}.
+v\left( {s,t} \right) = \int_{ - \infty }^t {h\left( {t - t'} \right)J\left( {s,t'} \right)dt'}.
 \end{equation}
 The post-synaptic response kernel $h(t)$ is described by
 \begin{equation}\label{Eq2}
@@ -113,7 +113,7 @@ P\left( {v\left( {r,\bar t} \right)} \right) = {R_0}{\left( {1 + \exp \left( {\b
 \end{equation}
 Even though $v_0$ is a constant, we show express it as a field allowing for inhomogenaities and for clarity in constructing the state-space representation in the next section. The parameters in equation~\ref{Eq4} are... $v_0$ is typically 6~mV, $R_0$ is 5~$s^{-1}$ and $\beta$ is 0.56~mV$^{-1}$ (from Wendling and David papers). By combining equations~\ref{Eq1} and \ref{Eq3} we get the spatiotemporal model
 \begin{equation}\label{Eq5}
-v\left( {s,t} \right) = \int\limits_{ - \infty }^t {\int\limits_\Omega  {h\left( {t - t'} \right)W\left( {s,r} \right)P\left( {v\left( {r,\bar t} \right)} \right)dy} dt'}  + E\left( {s,t} \right).
+v\left(s,t\right) = \int\limits_{-\infty}^t\int\limits_\Omega \left[ h\left(t - t'\right)W\left(s,r\right)P\left( v\left( r,\bar t \right)\right)+E\left(s,t'\right)\right] dr dt'
 \end{equation}
 To arrive at the final form of the model we shall state the synaptic response kernel as a Green's function
 \begin{equation}\label{Eq6}
@@ -153,7 +153,7 @@ f\left( {{v_t}\left( r \right)} \right) = \frac{{{R_0}}}{2}\left( {1 + \frac{\be
 For the derivation of the state-space model we shall assume that the model is operating in the active dynamic region, since this is the most interesting case, and the other cases correspond to the neural populations either being saturated (at $R_0$) or being silent. We shall show be stability analysis that the model will not saturate for the given parameters and nor will it be silent since it is continuously driven by noise. Substituting equation~\ref{Eq11} into equation~\ref{Eq10} and expanding we get
 \begin{align}\label{Eq13}
  {v_{t + 1}}\left( s \right) = \frac{{{R_0}}}{2}\int_\Omega  {W\left( {\left| {s - r} \right|} \right){{\bar v}_0}\left( r \right)dr}  \nonumber \\
-  + \frac{{{R_0}}}{2}\beta \int_\Omega  {W\left( {\left| {s - r} \right|} \right){v_t}\left( r \right)dr}  \\
+  + \frac{{{R_0}}}{4}\beta \int_\Omega  {W\left( {\left| {s - r} \right|} \right){v_t}\left( r \right)dr}  \\
   + {\varepsilon _t}\left( s \right) - \frac{1}{\tau }{v_t}\left( s \right), \nonumber
 \end{align}
 where ${\bar v_0}\left( r \right) = 1 - \frac{\beta }{2}{v_0}\left( r \right)$.
