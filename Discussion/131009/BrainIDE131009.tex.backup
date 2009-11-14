@@ -1,0 +1,47 @@
+\documentclass[a4paper,12pt]{article}
+ \setlength{\textwidth}{460pt}
+ \setlength{\textheight}{660pt}
+ \setlength{\headheight}{12pt}
+ \setlength{\headsep}{0pt}
+\setlength{\topmargin}{0pt}
+\setlength{\oddsidemargin}{0pt}
+\usepackage{enumerate}
+% Maths
+\usepackage{amssymb,amsmath,amsthm}
+\usepackage{amsfonts}
+% Graphics Package
+%\usepackage{graphicx}
+\usepackage[pdftex]{graphicx}
+\usepackage[font=footnotesize]{subfig}
+
+%opening
+% \title{}
+% \author{}
+
+\begin{document}
+\begin{enumerate}
+ 	\item Can you explain how you get from (5) to (7)?
+	\begin{itemize}
+ 		\item Answer:
+\end{itemize}
+	\item What is the external input? is it the same as field disturbance? if it is we can't set it to zero, and if it is not we need to consider field disturbance.
+	\begin{itemize}
+	 	\item  Answer:
+	\end{itemize}
+	\item For the simulation are we treating  $v_0(r)$ as a constant? otherwise I think it causes some difficulty for us in (17) as we need to be able to calculate the convolution integral.
+		\item Answer:
+	\item We need observation noise in (27)- I have a silly question, the signal we are measuring by implanted EEG is $v_t$ right?
+\end{enumerate}
+\section*{Some comments}
+Our basis functions are not orthonormal(see above 16).  Although it might worth investigating since it makes things easier.
+There are some typo in equations:
+equation1:
+\begin{equation}\label{Eq1}
+v\left( {s,t} \right) = \int_{ - \infty }^t {h\left( {t - t'} \right)J\left( {s,t'} \right)dt'}.
+\end{equation}
+equation5:
+\begin{equation}\label{Eq5}
+v\left(s,t\right) = \int\limits_{-\infty}^t\int\limits_\Omega h\left(t - t'\right)W\left(s,r\right)P\left( v\left( r,\bar t \right)\right)dr dt'
+\end{equation}
+
+\end{document}
