@@ -137,27 +137,27 @@ where $\epsilon(t)$ is the discrete time stochastic input. The IDE representatio
 
 \begin{figure*}
 \centering
-\includegraphics[scale=0.4]{BasicStructureOfModel.eps}
+\includegraphics[scale=0.4]{NeuralMassFigure.eps}
 \caption[NeuralMassModel]{This figure describes the basic interactions of neural masses that constitute the neural field model.}
 \label{NeuralMassModel}
 \end{figure*}
 
-An alternative description of the model is as follows. The model can be thought of as a continuum of neural masses. To illustrate this idea we shall first describe the interaction of discrete neural masses. Assuming post-synaptic potentials sum linearly, the membrane potential at the soma of neuron $i$ is described as
+An alternative description of the model is as follows. The model can be thought of as a continuum of neural masses. To illustrate this idea we shall first describe the interaction of discrete neural masses as seen in Figure~\ref{NeuralMassModel}. Assuming post-synaptic potentials sum linearly, the membrane potential at the soma of neuron $i$ is described as
 \begin{equation}\label{Eq1.1}
-{v_i}\left( t \right) = \sum\nolimits_{j,k} {{w_{ij}}{h_{j}}\left( t \right)} H\left( {t - {t_k}} \right),
+{v_i}\left( t \right) = \sum\nolimits_{j,k} {{w_{ij}}{h_{j}}\left( t - {t_k}\right)} H\left( {t - {t_k}} \right),
 \end{equation}
-where $w_{ij}$ is the synaptic weight from neuron $j$ to $i$, $h(t)$ is the synaptic response kernel, $H$ is the Heaviside step function and action potential arrive at neuron I at times $t_k$. Alternatively the membrane potential can described by
+where $w_{ij}$ is the synaptic weight from neuron $j$ to $i$, $h(t)$ is the synaptic response kernel, $H$ is the Heaviside step function and action potential arrive at neuron $i$ at times $t_k$. Alternatively the membrane potential can described by the convolution of synaptic response kernel with the pre-synaptic firing rate $r_j(t)$ where
 \begin{equation}\label{1.2}
-{v_i}\left( t \right) = \sum\nolimits_j {\int_{ - \infty }^t {{w_{ij}}{h_j}\left( {t - t'} \right){r_j}\left( t \right)} } dt',
+{v_i}\left( t \right) = \sum\nolimits_j {\int_{ - \infty }^t {{w_{ij}}{h_j}\left( {t - t'} \right){r_j}\left( t \right)} } dt'.
 \end{equation}
-where $r_j(t)$ is the firing rates of the presynaptic neurons. To convert the equation system into and integral differential system we shall take derivative of~\ref{Eq1.1} yielding
+To convert the equation system into and integral differential system we shall take derivative of~\ref{Eq1.1} yielding
 \begin{eqnarray}
 % \nonumber to remove numbering (before each equation)
-  \frac{{d{v_i}\left( t \right)}}{{dt}} &=& \sum\nolimits_{j,k} {\left( {{w_{ij}}{h_j}\left( t \right)\frac{d}{{dt}}H\left( {t - {t_k}} \right) + {w_{ij}}H\left( {t - {t_k}} \right)\frac{d}{{dt}}{h_j}\left( t \right)} \right)} \nonumber \\
-   &=& \sum\nolimits_{j,k} {{w_{ij}}{h_j}\left( t \right)\delta \left( {t - {t_k}} \right)}  - \sum\nolimits_{j,k} {{w_{ij}}H\left( {t - {t_k}} \right)\frac{1}{{{\tau _j}}}{h_j}\left( t \right)}   \nonumber \\
-   &=& \sum\nolimits_{j,k} {{w_{ij}}{h_j}\left( t \right)\delta \left( {t - {t_k}} \right)}  - {v_i}\left( t \right)\sum\nolimits_j {\frac{1}{{{\tau _j}}}} \nonumber  \\
+  \frac{{d{v_i}\left( t \right)}}{{dt}} &=& \sum\nolimits_{j,k} {\left( {{w_{ij}}{h_j}\left( t- {t_k} \right)\frac{d}{{dt}}H\left( {t - {t_k}} \right) + {w_{ij}}H\left( {t - {t_k}} \right)\frac{d}{{dt}}{h_j}\left( t- {t_k} \right)} \right)} \nonumber \\
+   &=& \sum\nolimits_{j,k} {{w_{ij}}{h_j}\left( t- {t_k} \right)\delta \left( {t - {t_k}} \right)}  - \sum\nolimits_{j,k} {{w_{ij}}H\left( {t - {t_k}} \right)\frac{1}{{{\tau _j}}}{h_j}\left( t- {t_k} \right)}   \nonumber \\
+   &=& \sum\nolimits_{j,k} {{w_{ij}}{h_j}\left( t- {t_k} \right)\delta \left( {t - {t_k}} \right)}  - {v_i}\left( t \right)\sum\nolimits_j {\frac{1}{{{\tau _j}}}} \nonumber  \\
    &=& \sum\nolimits_j {{w_{ij}}{r_j}\left( t \right)}  - {v_i}\left( t \right)\sum\nolimits_j {\frac{1}{{{\tau _j}}}} \nonumber \\
-   &=& \sum\nolimits_j {{w_{ij}}S\left( {{v_j}\left( t \right)} \right)}  - {v_i}\left( t \right)\sum\nolimits_j {\frac{1}{{{\tau _j}}}}. 
+   &=& \sum\nolimits_j {{w_{ij}}P\left( {{v_j}\left( t \right)} \right)}  - {v_i}\left( t \right)\sum\nolimits_j {\frac{1}{{{\tau _j}}}}.
 \end{eqnarray}
 This form can easily be extended to represent a continuous field.
 
