@@ -107,13 +107,19 @@ J\left( {s,t} \right) = \int_\Omega  {W\left( {s,r} \right)P\left( {v\left( {r,\
 \end{equation}
 where $\bar t = t - \frac{{\left| {s - r} \right|}}{d}$, $P$ is a mean pulse rate of population at $y$, $W$ is the connectivity kernel, $E$ is an external input, $\Omega$ is the spatial domain and $d$ is the propagation velocity from $r$ to $s$.
 
-The average firing rate of the presynaptic neurons rate to the pre-synaptic membrane potential by the sigmoid function
+The average firing rate of the presynaptic neurons rate to the pre-synaptic membrane potential by the Heaviside step function
 \begin{equation}\label{Eq4}
-P\left( {v\left( {r,\bar t} \right)} \right) = {R_0}{\left( {1 + \exp \left( {\beta \left( {{v_0}\left( r \right) - v\left( {r,\bar t} \right)} \right)} \right)} \right)^{ - 1}}.
+P\left( {v\left( {r,\bar t} \right)} \right) = {r_0}S\left( {v\left( {r,\bar t} \right) - {v_0}\left( r \right)} \right)
 \end{equation}
-Even though $v_0$ is a constant, we show express it as a field allowing for inhomogeneities and for clarity in constructing the state-space representation in the next section. The parameters in equation~\ref{Eq4} are... $v_0$ is typically 6~mV, $R_0$ is 5~$s^{-1}$ and $\beta$ is 0.56~mV$^{-1}$ (from Wendling and David papers). By combining equations~\ref{Eq1} and \ref{Eq3} we get the spatiotemporal model
+\begin{equation}\label{Eq4.1}
+S\left( {v\left( {r,\bar t} \right) - {v_0}\left( r \right)} \right) = \left\{ {\begin{array}{*{20}{c}}
+   1 & {v\left( {r,\bar t} \right) \ge {v_0}\left( r \right)}  \\
+   0 & {otherwise}  \\
+\end{array}} \right.
+\end{equation}
+Even though $v_0$ is a constant in this research we show express it as a field allowing for inhomogeneities and for clarity and generality in constructing the state-space representation in the next section. The parameters in equation~\ref{Eq4} are... $v_0$ is typically 6~mV, $r_0$ is 5~$s^{-1}$ (from Wendling and David papers). By combining equations~\ref{Eq1} and \ref{Eq3} we get the spatiotemporal model
 \begin{equation}\label{Eq5}
-v\left(s,t\right) = \int\limits_{-\infty}^t\int\limits_\Omega \left[ h\left(t - t'\right)W\left(s,r\right)P\left( v\left( r,\bar t \right)\right)+E\left(s,t'\right)\right] dr dt'
+v\left(s,t\right) = \int\limits_{-\infty}^t\int\limits_\Omega  h\left(t - t'\right)W\left(s,r\right)P\left( v\left( r,\bar t \right)\right)dr dt'+E\left(s,t'\right)
 \end{equation}
 To arrive at the final form of the model we shall state the synaptic response kernel as a Green's function
 \begin{equation}\label{Eq6}
@@ -127,13 +133,29 @@ where $L$ is a polynomial of order $n$ with constant coefficients. This provides
 \begin{equation}\label{Eq8}
 \frac{{dv\left( {s,t} \right)}}{{dt}} + \frac{{v\left( {s,t} \right)}}{\tau } = \int_\Omega  {W\left( {s,r} \right)P\left( {v\left( {r,\bar t} \right)} \right)dr}  + E\left( {s,t} \right).
 \end{equation}
-The neural field model can be represented as a discrete-time stochastic IDE by
-\begin{equation}\label{Eq9}
-{v_{t + 1}}\left( s \right) = \int_\Omega  {W\left( {s,r} \right)P\left( {{v_{\bar t}}\left( r \right)} \right)dr}  + {\varepsilon _t}\left( s \right) - \frac{1}{\tau }{v_t}\left( s \right),
+\subsection{Alternate Model Description I}
+An alternate and equivalent way to remove the temporal integration is through the Laplace transform. We start by considering a discrete neural mass $i$ with inputs with zero delay from another discrete mass $j$ and
+\begin{equation}\label{Eq9.1}
+{v_i}\left( t \right) = \int_{ - \infty }^t {{h_j}(t - t'){w_{ij}}P\left( {{v_j}\left( t \right)} \right)dt'},
 \end{equation}
-where $\epsilon(t)$ is the discrete time stochastic input. The IDE representation of equation~\ref{Eq9} is discrete in time and continuous in space. The neural field model is popular due to being parsimonious yet having a strong link with the underlying physiology.
+where $w_{ij}$ can be considered the synaptic efficiency from $j$ to $i$. Now we take the Laplace transform yielding
+\begin{eqnarray}
+% \nonumber to remove numbering (before each equation)
+  {V_i}\left( s \right) &=& {H_j}\left( s \right){w_{ij}}P\left( {{V_j}\left( s \right)} \right) \nonumber \\
+   &=& {\left( {s + \frac{1}{\tau }} \right)^{ - 1}}{w_{ij}}P\left( {{V_j}\left( s \right)} \right)  \\
+  \Rightarrow s{V_i}\left( s \right) + \frac{1}{\tau }{V_i}\left( s \right) &=& {w_{ij}}P\left( {{V_j}\left( s \right)} \right).
+\end{eqnarray}
+Now taking the inverse Laplace transform we get
+\begin{equation}\label{9.3}
+\frac{{d{v_i}\left( t \right)}}{{dt}} + \frac{1}{\tau }{v_i}\left( t \right) = {w_{ij}}P\left( {{v_j}\left( t \right)} \right).
+\end{equation}
+Next we convert the model from discrete neural masses to a continuum by
+\begin{equation}\label{Eq9.4}
+\frac{{dv\left( {s,t} \right)}}{{dt}} + \frac{1}{\tau }{v\left( {s,t} \right)} = \int_\Omega  {W\left( {s,r} \right)P\left( {v\left( {r,\bar t} \right)} \right)dr}  + E\left( {s,t} \right).
+\end{equation}
+The neural field model is popular due to being parsimonious yet having a strong link with the underlying physiology.
 
-\subsection{Alternate model description}
+\subsection{Alternate Model Description II}
 
 \begin{figure*}
 \centering
@@ -155,38 +177,19 @@ To convert the equation system into and integral differential system we shall ta
 % \nonumber to remove numbering (before each equation)
   \frac{{d{v_i}\left( t \right)}}{{dt}} &=& \sum\nolimits_{j,k} {\left( {{w_{ij}}{h_j}\left( t- {t_k} \right)\frac{d}{{dt}}H\left( {t - {t_k}} \right) + {w_{ij}}H\left( {t - {t_k}} \right)\frac{d}{{dt}}{h_j}\left( t- {t_k} \right)} \right)} \nonumber \\
    &=& \sum\nolimits_{j,k} {{w_{ij}}{h_j}\left( t- {t_k} \right)\delta \left( {t - {t_k}} \right)}  - \sum\nolimits_{j,k} {{w_{ij}}H\left( {t - {t_k}} \right)\frac{1}{{{\tau _j}}}{h_j}\left( t- {t_k} \right)}   \nonumber \\
-   &=& \sum\nolimits_{j,k} {{w_{ij}}{h_j}\left( t- {t_k} \right)\delta \left( {t - {t_k}} \right)}  - {v_i}\left( t \right)\sum\nolimits_j {\frac{1}{{{\tau _j}}}} \nonumber  \\
+   &=& \sum\nolimits_{j,k} {{w_{ij}}\delta \left( {t - {t_k}} \right)}  - {v_i}\left( t \right)\sum\nolimits_j {\frac{1}{{{\tau _j}}}} \nonumber  \\
    &=& \sum\nolimits_j {{w_{ij}}{r_j}\left( t \right)}  - {v_i}\left( t \right)\sum\nolimits_j {\frac{1}{{{\tau _j}}}} \nonumber \\
    &=& \sum\nolimits_j {{w_{ij}}P\left( {{v_j}\left( t \right)} \right)}  - {v_i}\left( t \right)\sum\nolimits_j {\frac{1}{{{\tau _j}}}}.
 \end{eqnarray}
 This form can easily be extended to represent a continuous field.
 
 \subsection{Assumptions and Simplifications}
-We will assume the synaptic response kernel has the same shape (scaled by the connectivity kernel) irrespective of the respective presynaptic population. In this case inhibition can be modeled by having a negative response kernel and excitation with a positive kernel, where the kernel provides the (scaled) polarity. This reduced the model to a single field. I am not sure how this will limit the dynamics?? We will also assume the velocity of the action potentials is infinite. This is also a common assumption that is made when modeling intracortical circuits. As stated in Wilson and Cohen's original works, the time constant $\tau$ is much greater than the axonal propagation delays, therefore it is reasonable to approximate the the delays as being infinite. Recent studies have demonstrated the importance of having a fast, but finite, propagation velocity for models to make realistic and complete predictions of cortical dynamics (Coombes paper, and Atay paper). The purpose of this paper, however, is not to precisely simulate complex cortical dynamics, but to create a useful platform where estimation of hidden states is possible for the purpose of detecting abnormal neural states with intentions of generating informed patient specific control sequences. Therefore, the model simply has to be 'good enough' for this purpose. Starting with this simplified version of the general model is a logical choice. The next assumption we will make is spatial homogeneity such that synaptic interaction between neural populations is only dependant on their spatial separation, and not on their spatial location. Again, this is a common assumption when dealing with intracortical connectivity. This assumption is not essential for our IDE estimation techniques, where a heterogeneous structure is possible. The IDE estimation is derived for a general heterogeneous structure, however for clarity of results we shall only present the heterogeneous case. With these assumptions we have the model in the form
+We assume the velocity of the action potentials is infinite. This is also a common assumption that is made when modeling intracortical circuits. As stated in Wilson and Cohen's original works, the time constant $\tau$ is much greater than the axonal propagation delays, therefore it is reasonable to approximate the the delays as being infinite. Recent studies have demonstrated the importance of having a fast, but finite, propagation velocity for models to make realistic and complete predictions of cortical dynamics (Coombes paper, and Atay paper). The purpose of this paper, however, is not to precisely simulate complex cortical dynamics, but to create a useful platform where estimation of hidden states is possible for the purpose of detecting abnormal neural states with intentions of generating informed patient specific control sequences. Therefore, the model simply has to be 'good enough' for this purpose. Starting with this simplified version of the general model is a logical choice. The next assumption we will make is spatial homogeneity such that synaptic interaction between neural populations is only dependant on their spatial separation, and not on their spatial location. Again, this is a common assumption when dealing with intracortical connectivity. This assumption is not essential for our IDE estimation techniques, where a heterogeneous structure is possible. The IDE estimation is derived for a general heterogeneous structure, however for clarity of results we shall only present the heterogeneous case. We will assume the synaptic response kernel has the same shape (scaled by the connectivity kernel) irrespective of the respective presynaptic population. In this case inhibition can be modeled by having a negative response kernel and excitation with a positive kernel, where the kernel provides the (scaled) polarity. This reduced the model to a single field. I am not sure how this will limit the dynamics??
+With these assumptions we have the model in the form
 \begin{equation}\label{Eq10}
 {v_{t + 1}}\left( s \right) = \int_\Omega  {W\left( {\left| {s - r} \right|} \right)P\left( {{v_t}\left( r \right)} \right)dy}  + {\varepsilon _t}\left( s \right) - \frac{1}{\tau }{v_t}\left( s \right).
 \end{equation}
-In addition to the assumptions above we shall linearize the model by approximating the sigmoid function $P$ as a piece-wise linear function, $P_{L}$, where
-\begin{equation}\label{Eq11}
-\begin{array}{*{20}{c}}
-   {{P_{L}}\left( {{v_t}\left( r \right)} \right) = 0,} \hfill & {f\left( {{v_t}\left( r \right)} \right) \le 0} \hfill  \\
-   {{P_{L}}\left( {{v_t}\left( r \right)} \right) = f\left( {{v_t}\left( r \right)} \right),} \hfill & {0 < f\left( {{v_t}\left( r \right)} \right) < {R_0}} \hfill  \\
-   {{P_{L}}\left( {{v_t}\left( r \right)} \right) = {R_0},} \hfill & {f\left( {{v_t}\left( r \right)} \right) \ge {R_0}} \hfill  \\
-\end{array}
-\end{equation}
-and
-\begin{equation}\label{Eq12}
-f\left( {{v_t}\left( r \right)} \right) = \frac{{{R_0}}}{2}\left( {1 + \frac{\beta }{2}\left( {{v_t}\left( r \right) - {v_0}\left( r \right)} \right)} \right).
-\end{equation}
-For the derivation of the state-space model we shall assume that the model is operating in the active dynamic region, since this is the most interesting case, and the other cases correspond to the neural populations either being saturated (at $R_0$) or being silent. We shall show be stability analysis that the model will not saturate for the given parameters and nor will it be silent since it is continuously driven by noise. Substituting equation~\ref{Eq11} into equation~\ref{Eq10} and expanding we get
-\begin{align}\label{Eq13}
- {v_{t + 1}}\left( s \right) = \frac{{{R_0}}}{2}\int_\Omega  {W\left( {\left| {s - r} \right|} \right){{\bar v}_0}\left( r \right)dr}  \nonumber \\
-  + \frac{{{R_0}}}{4}\beta \int_\Omega  {W\left( {\left| {s - r} \right|} \right){v_t}\left( r \right)dr}  \\
-  + {\varepsilon _t}\left( s \right) - \frac{1}{\tau }{v_t}\left( s \right), \nonumber
-\end{align}
-where ${\bar v_0}\left( r \right) = 1 - \frac{\beta }{2}{v_0}\left( r \right)$.
 
-Alternatively we replace the sigmoidal firing mechanism with a Heaviside function.
 \section{State-Space Neural Field Model}
 In this section we shall reconstruct the model in a state-space form that is a novel representation of the neural field equations. The benefit of restating the model in this format is that it becomes easier to simulate and allows the connectivity to be inferred from data. To simplify the notation in the derivation we will let the external input $\epsilon(t)=0$. Also, we shall define
 \begin{equation}\label{Eq14}
