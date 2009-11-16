@@ -170,7 +170,7 @@ where $w_{ij}$ is the synaptic weight from neuron $j$ to $i$, $h(t)$ is the syna
 \begin{equation}\label{VoltageFromRate}
 {v_i}\left( t \right) = \sum\nolimits_j {\int_{ - \infty }^t {{w_{ij}}{h_j}\left( {t - t'} \right){r_j}\left( t \right)} } dt'.
 \end{equation}
-To convert the equation system into and integral differential system we shall take derivative of~\ref{Eq1.1} yielding
+To convert the equation system into and integral differential system we shall take derivative of~\ref{EqVoltageFromPSPs} yielding
 \begin{eqnarray}
 % \nonumber to remove numbering (before each equation)
   \frac{{d{v_i}\left( t \right)}}{{dt}} &=& \sum\nolimits_{j,k} {\left( {{w_{ij}}{h_j}\left( t- {t_k} \right)\frac{d}{{dt}}u\left( {t - {t_k}} \right) + {w_{ij}}u\left( {t - {t_k}} \right)\frac{d}{{dt}}{h_j}\left( t- {t_k} \right)} \right)} \nonumber \\
@@ -182,16 +182,16 @@ To convert the equation system into and integral differential system we shall ta
 This form can easily be extended to represent a continuous field.
 
 \subsection{Assumptions and Simplifications}
-We assume the velocity of the action potentials is infinite. This is also a common assumption that is made when modeling intracortical circuits. As stated in Wilson and Cohen's original works, the time constant $\tau$ is much greater than the axonal propagation delays, therefore it is reasonable to approximate the the delays as being infinite. Recent studies have demonstrated the importance of having a fast, but finite, propagation velocity for models to make realistic and complete predictions of cortical dynamics (Coombes paper, and Atay paper). The purpose of this paper, however, is not to precisely simulate complex cortical dynamics, but to create a useful platform where estimation of hidden states is possible for the purpose of detecting abnormal neural states with intentions of generating informed patient specific control sequences. Therefore, the model simply has to be 'good enough' for this purpose. Starting with this simplified version of the general model is a logical choice. The next assumption we will make is spatial homogeneity such that synaptic interaction between neural populations is only dependant on their spatial separation, and not on their spatial location. Again, this is a common assumption when dealing with intracortical connectivity. This assumption is not essential for our IDE estimation techniques, where a heterogeneous structure is possible. The IDE estimation is derived for a general heterogeneous structure, however for clarity of results we shall only present the heterogeneous case. We will assume the synaptic response kernel has the same shape (scaled by the connectivity kernel) irrespective of the respective presynaptic population. In this case inhibition can be modeled by having a negative response kernel and excitation with a positive kernel, where the kernel provides the (scaled) polarity. This reduced the model to a single field. I am not sure how this will limit the dynamics??
+We assume the velocity of the action potentials is infinite. This is also a common assumption that is made when modeling intracortical circuits. As stated in Wilson and Cohen's original works, the time constant $\tau$ is much greater than the axonal propagation delays, therefore it is reasonable to approximate the the delays as being infinite. Recent studies have demonstrated the importance of having a fast, but finite, propagation velocity for models to make realistic and complete predictions of cortical dynamics~\cite{Atay2005}. The purpose of this paper, however, is not to precisely simulate complex cortical dynamics, but to create a useful platform where estimation of hidden states is possible for the purpose of detecting abnormal neural states with intentions of generating informed patient specific control sequences. Therefore, the model simply has to be 'good enough' for this purpose. Starting with this simplified version of the general model is a logical choice. The next assumption we will make is spatial homogeneity such that synaptic interaction between neural populations is only dependant on their spatial separation, and not on their spatial location. Again, this is a common assumption when dealing with intracortical connectivity. This assumption is not essential for our IDE estimation techniques, where a heterogeneous structure is possible. The IDE estimation is derived for a general heterogeneous structure, however for clarity of results we shall only present the heterogeneous case. We will assume the synaptic response kernel has the same shape (scaled by the connectivity kernel) irrespective of the respective presynaptic population. In this case inhibition can be modeled by having a negative response kernel and excitation with a positive kernel, where the kernel provides the (scaled) polarity. This reduced the model to a single field. I am not sure how this will limit the dynamics??
 With these assumptions we have the model in the form
 \begin{equation}\label{SimplifiedModel}
-\frac{{dv\left( {s,t} \right)}}{{dt}} = \int_\Omega  {w\left( {s-r} \right)P\left( {v\left( {r,t} \right)} \right)dr}  - \alpha{v\left( {s,t} \right)} + e\left( {s,t} \right).
+\frac{{dv\left( {r,t} \right)}}{{dt}} = \int_\Omega  {w\left( {r-r'} \right)P\left( {v\left( {r',t} \right)} \right)dr'}  - \alpha{v\left( {r,t} \right)} + e\left( {r,t} \right).
 \end{equation}
 
 \subsection{IDE Formulation}
 
 \begin{equation}\label{new_spatiotemporal_kernels}
-\frac{{dv\left( {s,t} \right)}}{{dt}} = \int_\Omega  {k\left( {s - r} \right)\tilde v\left( {r,t} \right) - \alpha \delta \left( {s - r} \right)\bar v\left( {s,t} \right)dr}  + e\left( {s,t} \right)
+\frac{{dv\left( {r,t} \right)}}{{dt}} = \int_\Omega  {k\left( {r - r'} \right)\tilde v\left( {r',t} \right) - \alpha \delta \left( {r - r'} \right)\bar v\left( {r,t} \right)dr'}  + e\left( {r,t} \right)
 \end{equation}
 
 \begin{equation}\label{define_v_tilde}
@@ -210,78 +210,89 @@ With these assumptions we have the model in the form
 
 
 \section{State-Space Neural Field Model}
-In this section we shall reconstruct the model in a state-space form that is a novel representation of the neural field equations. The benefit of restating the model in this format is that it becomes easier to simulate and allows the connectivity to be inferred from data. To simplify the notation in the derivation we will let the external input $\epsilon(t)=0$. Also, we shall define
-\begin{equation}\label{Eq14}
-W\left( {s,r} \right) = {\theta ^T}\psi \left( {s,r} \right)
+In this section we shall reconstruct the model in a state-space form that is a novel representation of the neural field equations. The benefit of restating the model in this format is that it becomes easier to simulate and allows the connectivity to be inferred from data. \begin{equation}
+ v_{t+1}(\mathbf s)=\int_{\mathcal S} \alpha \delta(\mathbf s-\mathbf r)\bar v_t(\mathbf r)d \mathbf r+\int_{\mathcal S} W(\mathbf s -\mathbf r)\tilde v_t(\mathbf r)d\mathbf r+e_t(\mathbf s)
+\label{eq:cortexfield}
 \end{equation}
-and
-\begin{equation}\label{Eq15}
-{v_t}\left( s \right) = \phi {\left( s \right)^T}{x_t},
+decomposing the field and the kernel we have
+\begin{equation}
+\bar v_t(\mathbf s)=\boldsymbol \phi^{\top}(\mathbf s)\bar{\mathbf x}_t
+\label{eq:cortexfieldlv0}
 \end{equation}
-where $\theta \in \mathbb{R}^n$ is a vector of unknown parameters (amplitudes of kernels), $\psi(s,r)$ is a matrix that can be considered a field that is scaled by $\theta$, and $\phi(s)$ is a vector of basis functions that decomposes the field and $x_t \in\mathbb{R}^n$ is the state vector at sampling time $t$. The voltage field at $t$ is comprised of a scaled version (by the state $x_t$) of the basis functions $\phi(s)$.
- The spatial kernel $W$ and the field $v$ are decomposed using the same basis functions, and we will define them as being complete and orthogonal. Also, we shall define
-\begin{equation}\label{Eq16}
-\Phi \left( s \right) = \int_\Omega  {\psi \left( {s,r} \right)\phi {{\left( r \right)}^T}dr}
+\begin{equation}
+\tilde v_t(\mathbf s)=\boldsymbol \phi^{\top}(\mathbf s)\tilde{\mathbf x}_t
+\label{eq:cortexfieldgv0}
 \end{equation}
-and
-\begin{equation}\label{Eq17}
-\Gamma \left( s \right) = \int_\Omega  {\psi \left( {s,r} \right){{\bar v}_0}\left( r \right)dr}.
+\begin{equation}
+ W(\mathbf s -\mathbf r)=\boldsymbol \theta^{\top}\psi(\mathbf s -\mathbf r)
+\label{eq:kerneldecomposition}
 \end{equation}
-By substituting equations~\ref{Eq14} and \ref{Eq15} into equation~\ref{Eq13} we get
-\begin{align}\label{Eq18}
- {v_{t + 1}}\left( s \right) = \frac{{{R_0}}}{2}{\theta ^T}\int_\Omega  {\psi \left( {s,r} \right){{\bar v}_0}\left( r \right)dr} \nonumber \\
-  + \frac{{{R_0}}}{2}\beta {\theta ^T}\int_\Omega  {\psi \left( {s,r} \right)\phi {{\left( r \right)}^T}dr} {x_t} \\
-  - \frac{1}{\tau }\phi {\left( s \right)^T}{x_t} \nonumber
-\end{align}
-and substituting in equations~\ref{Eq16} and \ref{Eq17} into equation~\ref{Eq18} we get
-\begin{equation}\label{Eq19}
-{v_{t + 1}}\left( s \right) = \frac{{{R_0}}}{2}{\theta ^T}\Gamma \left( s \right) + \frac{{{R_0}}}{2}\beta {\theta ^T}\Phi \left( s \right){x_t} - \frac{1}{\tau }\phi {\left( s \right)^T}{x_t}.
+Substituting (\ref{eq:cortexfieldlv0}), (\ref{eq:cortexfieldgv0}) and (\ref{eq:kerneldecomposition}) in (\ref{eq:cortexfield}) we get
+\begin{equation}
+ \boldsymbol \phi^{\top}(\mathbf s)\bar{\mathbf x}_{t+1}+\boldsymbol \phi^{\top}(\mathbf s)\tilde{\mathbf x}_{t+1}=
+\int_\mathcal{S}\alpha\delta(\mathbf s- \mathbf r)\boldsymbol\phi^{\top}(\mathbf r)\bar{\mathbf x}_td\mathbf r+\int_\mathcal{S}\boldsymbol \theta^{\top}\boldsymbol\psi(\mathbf s -\mathbf r)\boldsymbol\phi^{\top}(\mathbf r)\tilde{\mathbf x}_td\mathbf r+e_t(\mathbf s)
+\label{eq:decomposedcortexfield}
 \end{equation}
-By substituting the field for the basis functions weighted by the state vector we get
-\begin{equation}\label{Eq20}
-\phi {\left( s \right)^T}{x_{t + 1}} = \frac{{{R_0}}}{2}{\theta ^T}\Gamma \left( s \right) + \frac{{{R_0}}}{2}\beta {\theta ^T}\Phi \left( s \right){x_t} - \frac{1}{\tau }\phi {\left( s \right)^T}{x_t}.
+\begin{equation}
+ \boldsymbol \phi^{\top}(\mathbf s)(\bar{\mathbf x}_{t+1}+\tilde{\mathbf x}_{t+1})=\alpha \boldsymbol\phi^{\top}(\mathbf s)\bar{\mathbf x}_{t}+\boldsymbol \theta^{\top}\int_{\mathcal S}\boldsymbol\psi(\mathbf s -\mathbf r)\boldsymbol\phi^{\top}(\mathbf r)\tilde{\mathbf x}_td\mathbf r+e_t(\mathbf s)
 \end{equation}
-Multiplying both sides by $\phi(s)$ and integrating over $s$ we get
-\begin{align}\label{21}
- \int_\Omega  {\phi \left( s \right)\phi {{\left( s \right)}^T}ds{x_{t + 1}}}  = \frac{{{R_0}}}{2}\int_\Omega  {\phi \left( s \right){\theta ^T}\Gamma \left( s \right)ds}  \nonumber \\
-  + \frac{{{R_0}}}{2}\beta \int_\Omega  {\phi \left( s \right){\theta ^T}\Phi \left( s \right)ds} {x_t} \\
-  - \frac{1}{\tau }\int_\Omega  {\phi \left( s \right)\phi {{\left( s \right)}^T}ds} {x_t}. \nonumber
-\end{align}
+by defining
+\begin{equation}
+ \boldsymbol\Phi(\mathbf s)=\int_{\mathcal S}\boldsymbol\psi(\mathbf s -\mathbf r)\boldsymbol\phi^{\top}(\mathbf r)d\mathbf r
+\label{eq:convolution}
+\end{equation}
+we have
+\begin{equation}
+ \boldsymbol \phi^{\top}(\mathbf s)(\bar{\mathbf x}_{t+1}+\tilde{\mathbf x}_{t+1})=\alpha \boldsymbol\phi^{\top}(\mathbf s)\bar{\mathbf x}_{t}+\boldsymbol \theta^{\top}\boldsymbol\Phi(\mathbf s)\tilde{\mathbf x}_t+e_t(\mathbf s)
+\label{eq:cortexfieldwithPhi}
+\end{equation}
+Premultiplying (\ref{eq:cortexfieldwithPhi}) by $\boldsymbol\phi(\mathbf s) $, and integrating over $\mathbf s$
+\begin{equation}
+\int_{\mathcal S} \boldsymbol\phi(\mathbf s)\boldsymbol \phi^{\top}(\mathbf s)d\mathbf s(\bar{\mathbf x}_{t+1}+\tilde{\mathbf x}_{t+1})=\alpha\int_{\mathcal S} \boldsymbol\phi(\mathbf s)\boldsymbol \phi^{\top}(\mathbf s)d\mathbf s \bar{\mathbf x}_{t}+\int_{\mathcal S} \boldsymbol\phi(\mathbf s)\boldsymbol \theta^{\top}\boldsymbol\Phi(\mathbf s)d\mathbf s\tilde{\mathbf x}_t+\int_{\mathcal S} \boldsymbol\phi(\mathbf s)e_t(\mathbf s)d\mathbf s
+\label{eq:cortexfieldversion2}
+\end{equation}
 Now we define
-\begin{equation}\label{22}
-\Psi  = \int_\Omega  {\phi \left( s \right)\phi {{\left( s \right)}^T}ds}
+\begin{equation}
+ \boldsymbol\Psi_x(\mathbf s)=\int_{\mathcal S}\boldsymbol\phi(\mathbf s)\boldsymbol\phi^{\top}(\mathbf s)d\mathbf s
+\label{eq:psix}
 \end{equation}
-and
-\begin{equation}\label{23}
-\Upsilon  = \int_\Omega  {\phi \left( s \right){\theta ^T}\Phi \left( s \right)ds}
+\begin{equation}
+  \boldsymbol\Psi_{\theta}(\mathbf s)=\int_{\mathcal S} \boldsymbol\phi(\mathbf s)\boldsymbol \theta^{\top}\boldsymbol\Phi(\mathbf s)d\mathbf s
+\label{eq:psitheta}
 \end{equation}
-and
-\begin{equation}\label{24}
-\Pi  = \int_\Omega  {\phi \left( s \right){\theta ^T}\Gamma \left( s \right)ds},
+substituting (\ref{eq:psix}) and (\ref{eq:psitheta}) in (\ref{eq:cortexfieldversion2}) we get
+\begin{equation}
+\boldsymbol\Psi_x(\mathbf s)(\bar{\mathbf x}_{t+1}+\tilde{\mathbf x}_{t+1})=\alpha\boldsymbol\Psi_x(\mathbf s) \bar{\mathbf x}_{t}+\boldsymbol\Psi_{\theta}(\mathbf s)\tilde{\mathbf x}_t+\int_{\mathcal S} \boldsymbol\phi(\mathbf s)e_t(\mathbf s)d\mathbf s
 \end{equation}
-where $\Psi$ is a square positive definite matrix. Substituting equations~\ref{22}, ~\ref{23} and \ref{24} into equation~\ref{21} we get
-\begin{equation}\label{25}
-\Psi {x_{t + 1}} = \frac{{{R_0}}}{2}\Pi  + \frac{{{R_0}}}{2}\beta \Upsilon {x_t} - \frac{1}{\tau }\Psi {x_t}.
+pre-multiplying both sides by $\boldsymbol\Psi_x^{-1}$
+\begin{equation}
+\bar{\mathbf x}_{t+1}+\tilde{\mathbf x}_{t+1}=\alpha\bar{\mathbf x}_{t}+\boldsymbol\Psi_x^{-1}\boldsymbol\Psi_{\theta}\tilde{\mathbf x}_t+\boldsymbol\Psi_x^{-1}\int_{\mathcal S} \boldsymbol\phi(\mathbf s)e_t(\mathbf s)d\mathbf s
 \end{equation}
-Since $\Psi$ is a square positive definite matrix we can invert it to isolate $x_t$ yielding
-\begin{equation}\label{26}
-{x_{t + 1}} = \frac{{{R_0}}}{2}{\Psi _x}^{ - 1}\Pi  + \left( {\frac{{{R_0}}}{2}\beta {\Psi _x}^{ - 1}\Upsilon  - \frac{1}{\tau }{\bf{I}}} \right){x_t},
+????????????????????????????????
+\subsection{Observation equation}
+\begin{eqnarray}
+ \mathbf y_t(\mathbf s)&=&\\
+&=&\int_{\mathcal S}H(\mathbf s-\mathbf r)v_t(\mathbf r)d\mathbf r+\boldsymbol\epsilon_t \\
+&=&\int_{\mathcal S}H(\mathbf s-\mathbf r)\bar v_t(\mathbf r)d\mathbf r+\int_{\mathcal S}H(\mathbf s-\mathbf r)\tilde v_t(\mathbf r)d\mathbf r+\epsilon_t
+\label{eq:observationequation}
+\end{eqnarray}
+
+ we decompose $ H(\mathbf s-\mathbf r)$ as
+ \begin{equation}
+  H(\mathbf s-\mathbf r)= \mathbf c^{\top}\mu(\mathbf s-\mathbf r)
+\label{eq:decomposedobservationkernel}
 \end{equation}
-where \textbf{I} is the identity matrix. The model can now be written in the canonical state-space form
-\begin{equation}\label{27}
-\begin{array}{c}
- {x_{t + 1}} = A{x_t} + Bu \\
- {v_t}\left( s \right) = C{x_t}, \\
- \end{array}
+and substituting  (\ref{eq:cortexfieldlv0}), (\ref{eq:cortexfieldgv0}) and (\ref{eq:decomposedobservationkernel}) in (\ref{eq:observationequation}) we get
+\begin{equation}
+ \mathbf y_t(\mathbf s)=\int_{\mathcal S}\mathbf c^{\top}\mu(\mathbf s-\mathbf r)\phi^{\top}(\mathbf r)\bar{\mathbf x}_{t}d\mathbf r+\int_{\mathcal S}\mathbf c^{\top}\mu(\mathbf s-\mathbf r)\phi^{\top}(\mathbf r)\tilde{\mathbf x}_{t}d\mathbf r+\epsilon_t
+\end{equation}
+and finally we have
+\begin{equation}
+\mathbf y_t(\mathbf s)= \begin{bmatrix}\mathbf c^{\top}\mathbf M(\mathbf s)&\mathbf c^{\top}\mathbf M(\mathbf s)\end{bmatrix}\underline{\mathbf x}_t+\epsilon_t
 \end{equation}
 where
-\begin{equation}\label{28}
-\begin{array}{l}
- A = \frac{{{R_0}}}{4}\beta {\Psi _x}^{ - 1}\Upsilon  - \frac{1}{\tau }{\bf{I}} \\
- B = \frac{{{R_0}}}{2}{\Psi _x}^{ - 1}\Pi  \\
- C = {\phi ^T}\left( s \right) \\
- u = 1. \\
- \end{array}
+\begin{equation}
+ \mathbf M(\mathbf s)=\int_{\mathcal S}\mu(\mathbf s-\mathbf r)\phi^{\top}(\mathbf r)d\mathbf r
 \end{equation}
 Next we shall demonstrate the stability of the model and in the following section the estimator for the state vector and connectivity structure is derived.
 
