@@ -305,69 +305,60 @@ Next we shall demonstrate the stability of the model and in the following sectio
 
 \subsection{State-Space Model Alternative Approach}
 First we define
-\begin{equation}\label{DefineKappa}
-\kappa \left( r' \right) = \left\{ {\begin{array}{*{20}{c}}
-   {{\nu _0}} & {v\left( {r',t} \right) \ge {v_0}}  \\
-   0 & {otherwise}  \\
-\end{array}} \right.
-\end{equation}
 
 \begin{eqnarray}
 % \nonumber to remove numbering (before each equation)
-  {v_{t + 1}}\left( r \right)  &=& \int_\Omega  {k\left( {r - r'} \right)\kappa \left( r' \right) - \alpha \delta \left( {r - r'} \right)v\left( {r,t} \right)dr'}  + \varepsilon\left( {r,t} \right) \\
-   &=& \int_\Omega  {k\left( {r - r'} \right)\kappa \left( r' \right)dr'}  - \alpha\int_\Omega  { \delta \left( {r - r'} \right)v\left( {r,t} \right)dr'}  + \varepsilon\left( {r,t} \right)
+  {v_{t + 1}}\left( r \right) &=& \int_\Omega  {k\left( {r - r'} \right)p\left( {{v_t}\left( {r'} \right)} \right) - \alpha v\left( {r,t} \right)dr'}  + \varepsilon \left( {r,t} \right) \\
+   &=& \int_\Omega  {k\left( {r - r'} \right)p\left( {{v_t}\left( {r'} \right)} \right)dr'}  - \alpha v\left( {r,t} \right) + \varepsilon \left( {r,t} \right)
 \end{eqnarray}
+
 Defining
-\begin{equation}\label{FieldDecomp}
-{v_t}\left( r \right) = {\phi ^T}\left( r \right){x_t}
+\begin{equation}\label{Def1}
+   {v_t}\left( r \right) = {\phi ^T}\left( r \right){x_t}
 \end{equation}
-\begin{equation}\label{KernelDecomp}
+\begin{equation}\label{Def2}
 k\left( {r - r'} \right) = {\theta ^T}\psi \left( {r - r'} \right)
 \end{equation}
-Making substitutions
+Since we assume knowledge of $\phi(r')$ and $p(.)$, and $\phi(r')$ is independent of $x_t$ we can uniquely define the functions $\kappa(.)$ and $\rho(.)$ such that
 \begin{eqnarray}
 % \nonumber to remove numbering (before each equation)
-  {\phi ^T}\left( r \right){x_{t+1}}  &=& {\theta ^T}\int_\Omega  {\psi \left( {r - r'} \right)\kappa \left( r' \right)dr'}  - \alpha \int_\Omega  {\delta \left( {r - r'} \right){\phi ^T}\left( r \right){x_t}dr'}  + \varepsilon \left( {r,t} \right) \\
-   &=& {\theta ^T}\int_\Omega  {\psi \left( {r - r'} \right)\kappa \left( r' \right)dr'}  - \alpha {\phi ^T}\left( r \right){x_t} + \varepsilon \left( {r,t} \right)
+  p\left( {{v_t}\left( {r'} \right)} \right)  &=& p\left( {{\phi ^T}\left( {r'} \right){x_t}} \right) \\
+   &=& \kappa \left( {{\phi ^T}\left( {r'} \right)} \right)\rho \left( {{x_t}} \right) 
 \end{eqnarray}
+Making substitutions we get
+\begin{equation}\label{Subs}
+{\phi ^T}\left( r \right){x_{t + 1}} = {\theta ^T}\int_\Omega  {\psi \left( {r - r'} \right)\kappa \left( {{\phi ^T}\left( {r'} \right)} \right)dr'} \rho \left( {{x_t}} \right) - \alpha {\phi ^T}\left( r \right){x_t} + \varepsilon \left( {r,t} \right)
+\end{equation}
+now defining
+\begin{equation}\label{Def4}
+\Phi \left( r \right) = \int_\Omega  {\psi \left( {r - r'} \right)\kappa \left( {{\phi ^T}\left( {r'} \right)} \right)dr'}
+\end{equation}
+\begin{equation}\label{Sub2}
+{\phi ^T}\left( r \right){x_{t + 1}} = {\theta ^T}\Phi \left( r \right)\rho \left( {{x_t}} \right) - \alpha {\phi ^T}\left( r \right){x_t} + \varepsilon \left( {r,t} \right)
+\end{equation}
+cross multiply in integrate over $r'$
+\begin{equation}\label{CorssMultAndInt}
+\int_\Omega  {\phi \left( r \right){\phi ^T}\left( r \right)dr} {x_{t + 1}} = {\theta ^T}\int_\Omega  {\phi \left( r \right)\Phi \left( r \right)dr} \rho \left( {{x_t}} \right) - \alpha \int_\Omega  {\phi \left( r \right){\phi ^T}\left( r \right)dr} {x_t} + \int_\Omega  {\phi \left( r \right)\varepsilon \left( {r,t} \right)dr}
+\end{equation}
 Now we define
-\begin{equation}\label{DefFiringConnectivity}
-\Phi \left( r \right) = \int_\Omega  {\psi \left( {r - r'} \right)\kappa \left( r' \right)dr'}.
+\begin{equation}\label{Def5}
+{\Psi _x} = \int_\Omega  {\phi \left( r \right){\phi ^T}\left( r \right)dr} 
 \end{equation}
-Substituting in
-\begin{equation}\label{Dunno}
-{\phi ^T}\left( r \right){x_{t+1}} = {\theta ^T}\Phi \left( r \right) - \alpha {\phi ^T}\left( r \right){x_t} + \varepsilon \left( {r,t} \right)
-\end{equation}
-Cross multiply by $\phi(r)$ and integrating over $r$ we get
-\begin{equation}\label{TooTired}
-\int_\Omega  {\phi \left( r \right){\phi ^T}\left( r \right)dr} {x_{t+1}} = \int_\Omega  {\phi \left( r \right){\theta ^T}\Phi \left( r \right)dr}  - \alpha \int_\Omega  {\phi \left( r \right){\phi ^T}\left( r \right)dr} {x_t} + \int_\Omega  {\phi \left( r \right)\varepsilon \left( {r,t} \right)dr}
-\end{equation}
-Now let us define
-\begin{equation}\label{DefinePsix}
-{\Psi _x} = \int_\Omega  {\phi \left( r \right){\phi ^T}\left( r \right)dr}
-\end{equation}
-\begin{equation}\label{DefinePsiTheta}
-{\Psi _\theta } = \int_\Omega  {\phi \left( r \right){\theta ^T}\Phi \left( r \right)dr}.
+\begin{equation}\label{Def6}
+{\Psi _\theta } = \int_\Omega  {\phi \left( r \right)\Phi \left( r \right)dr}
 \end{equation}
 Making substitutions
-\begin{equation}\label{poo}
-{\Psi _x}{x_{t+1}} = {\Psi _\theta } - \alpha {\Psi _x}{x_t} + \int_\Omega  {\phi \left( r \right)\varepsilon \left( {r,t} \right)dr}.
+\begin{equation}\label{Subs3}
+{\Psi _x}{x_{t + 1}} = {\theta ^T}{\Psi _\theta }\rho \left( {{x_t}} \right) - \alpha {\Psi _x}{x_t} + \int_\Omega  {\phi \left( r \right)\varepsilon \left( {r,t} \right)dr}
 \end{equation}
-Isolating the state we get
-\begin{equation}\label{IsolatingState}
-{x_{t+1}} = {\Psi _x}^{ - 1}{\Psi _\theta } - \alpha {x_t} + {\Psi _x}^{ - 1}\int_\Omega  {\phi \left( r \right)\varepsilon \left( {r,t} \right)dr}
+Now we isolate the state by inverting $\Psi_x$
+\begin{equation}\label{IsolateState}
+{x_{t + 1}} = {\Psi _x}^{ - 1}{\theta ^T}{\Psi _\theta }\rho \left( {{x_t}} \right) - \alpha {x_t} + {\Psi _x}^{ - 1}\int_\Omega  {\phi \left( r \right)\varepsilon \left( {r,t} \right)dr}
 \end{equation}
-
-\begin{equation}\label{SSmodel}
-{x_{t+1}} = A{x_t} + Bu + {\Psi _x}^{ - 1}\int_\Omega  {\phi \left( r \right)\varepsilon \left( {r,t} \right)dr}
+Gives the state-space model
+\begin{equation}\label{StateSpaceModel}
+{x_{t + 1}} = f\left( {x,\theta } \right) + {\Psi _x}^{ - 1}\int_\Omega  {\phi \left( r \right)\varepsilon \left( {r,t} \right)dr}
 \end{equation}
-\begin{eqnarray}
-% \nonumber to remove numbering (before each equation)
-  A &=& -\alpha \\
-  B &=& {\Psi _x}^{ - 1}{\Psi _\theta } \\
-  u &=& 1 
-\end{eqnarray}
-Here we have a horrible nonlinearity with term $B = \Psi _x^{ - 1}\Psi_\theta$, which is on or off depending on if the field is past the threshold. Unfortunately, this is the place where the spatial kernel parameters live. The unscented Kalman filter or a particle filter could possibly estimate C. What do you think?
 
 \section{Stability Analysis}
 Using the analytically calculated basis functions. Need to show that the linearized model will not blow up.
