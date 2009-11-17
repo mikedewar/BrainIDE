@@ -79,7 +79,7 @@ The work from Schiff and Sauer~\cite{schiff2008kalman} successfully demonstrated
 
 \section{The Importance of Cortical Structure}
 
-The neural field models use statistics of the cortex to relate mean firing rates of pre-synaptic neural populations to post-synaptic mean membrane potentials. Each neural population represents a functional cortical processing unit referred to as a column. The columnar organization of the cortex is not discrete, but is continuous, where pyramidal cells are members of many columns. In general, cortical structure can be modeled in a physiologically plausible manner as being locally homogeneous (in short range intracortical connectivity) and heterogeneous (in long range corticocortical and corticothalamic connectivity)~\cite{Jirsa2009}~\cite{Qubbaj2007}. Locally, each column is thought be connected via symmetric short range local excitation, with surround inhibition~\cite{Braitenberg1998}. For example, this structural organization is most studied in the visual system, where the surrounding inhibition effectively tunes a cortical column to a particular receptive visual field~\cite{Sullivan2006}.
+Neural field models use statistics of the cortex to relate mean firing rates of pre-synaptic neural populations to post-synaptic mean membrane potentials. Each neural population represents a functional cortical processing unit referred to as a column. The columnar organization of the cortex is not discrete, but is continuous, where pyramidal cells are members of many columns. In general, cortical structure can be modeled in a physiologically plausible manner as being locally homogeneous (in short range intracortical connectivity) and heterogeneous (in long range corticocortical and corticothalamic connectivity)~\cite{Jirsa2009}~\cite{Qubbaj2007}. Locally, each column is thought be connected via symmetric short range local excitation, with surround inhibition~\cite{Braitenberg1998}. For example, this structural organization is most studied in the visual system, where the surrounding inhibition effectively tunes a cortical column to a particular receptive visual field~\cite{Sullivan2006}.
 
 Recent studies using neural field models have demonstrated the theoretical implications of the connectivity structure of the cortical columns, where the connectivity kernel governs the bifurcation points of the models~\cite{Hutt2005} and types of oscillations that can be generated~\cite{Schmidt2009}. This implies that if we could estimate the connectivity structure for an individual, than we could model patient specific neurodynamics. Estimating functional cortical connectivity via EEG measures is currently a highly active area of research. There is a lot of interest in understanding the hierarchy of brain regions are involved in specific tasks, motivating the use of techniques like DCM. Other comparable methods are based on auto-regressive (AR) modeling of the EEG, MEG or fMRI times series. Studies have concentrated on finding functional connectivity patterns using information contained in the AR coefficients using techniques like Granger causality~\cite{Hesse2003}, the direct transfer function~\cite{Kaminski1991}, and partial directed coherence~\cite{Sameshima1999}). Again, like the DCM approach, these methods estimate long range connectivity patterns that does not provide a clear relationship between the continuum field models and data. Analysis of the connectivity estimates provided from these approaches has involved graph theoretical techniques (small worldedness).
 
@@ -190,6 +190,7 @@ With these assumptions we have the model in the form
 
 \subsection{IDE Formulation}
 
+For the state-space derivation, to create an estimator, the model can be reformulated like so
 \begin{equation}\label{new_spatiotemporal_kernels}
 \frac{{dv\left( {r,t} \right)}}{{dt}} = \int_\Omega  {k\left( {r - r'} \right)\tilde v\left( {r',t} \right) - \alpha \delta \left( {r - r'} \right)\bar v\left( {r,t} \right)dr'}  + e\left( {r,t} \right)
 \end{equation}
@@ -208,23 +209,29 @@ With these assumptions we have the model in the form
 \end{array}} \right.
 \end{equation}
 
+\begin{figure*}
+\centering
+\includegraphics[scale=0.4]{ExampleFieldDecomposition.eps}
+\caption[ExampleFieldDecomposition]{Illustration of a one dimensional field decomposition using 5 Gaussian basis functions, each weighted an element of the state vector. Each basis function has a width of 0.01 and is uniformly positioned with a separation of 0.25 (with arbitrary units).}
+\label{ExampleFieldDecomposition}
+\end{figure*}
 
 \section{State-Space Neural Field Model}
 In this section we shall reconstruct the model in a state-space form that is a novel representation of the neural field equations. The benefit of restating the model in this format is that it becomes easier to simulate and allows the connectivity to be inferred from data. \begin{equation}
- v_{t+1}(\mathbf s)=\int_{\mathcal S} \alpha \delta(\mathbf s-\mathbf r)\bar v_t(\mathbf r)d \mathbf r+\int_{\mathcal S} W(\mathbf s -\mathbf r)\tilde v_t(\mathbf r)d\mathbf r+e_t(\mathbf s)
+ v_{t+1}(\mathbf s)=\int_{\mathcal S} \alpha \delta(\mathbf s-\mathbf r)\bar v_t(\mathbf r)d \mathbf r+\int_{\mathcal S} w(\mathbf s -\mathbf r)\tilde v_t(\mathbf r)d\mathbf r+e_t(\mathbf s)
 \label{eq:cortexfield}
 \end{equation}
 decomposing the field and the kernel we have
 \begin{equation}
-\bar v_t(\mathbf s)=\boldsymbol \phi^{\top}(\mathbf s)\bar{\mathbf x}_t
+\bar v_t(\mathbf r)=\boldsymbol \phi^{\top}(\mathbf r)\bar{\mathbf x}_t
 \label{eq:cortexfieldlv0}
 \end{equation}
 \begin{equation}
-\tilde v_t(\mathbf s)=\boldsymbol \phi^{\top}(\mathbf s)\tilde{\mathbf x}_t
+\tilde v_t(\mathbf r)=\boldsymbol \phi^{\top}(\mathbf r)\tilde{\mathbf x}_t=\nu_0
 \label{eq:cortexfieldgv0}
 \end{equation}
 \begin{equation}
- W(\mathbf s -\mathbf r)=\boldsymbol \theta^{\top}\psi(\mathbf s -\mathbf r)
+ w(\mathbf r -\mathbf r')=\boldsymbol \theta^{\top}\psi(\mathbf r -\mathbf r')
 \label{eq:kerneldecomposition}
 \end{equation}
 Substituting (\ref{eq:cortexfieldlv0}), (\ref{eq:cortexfieldgv0}) and (\ref{eq:kerneldecomposition}) in (\ref{eq:cortexfield}) we get
@@ -296,6 +303,72 @@ where
 \end{equation}
 Next we shall demonstrate the stability of the model and in the following section the estimator for the state vector and connectivity structure is derived.
 
+\subsection{State-Space Model Alternative Approach}
+First we define
+\begin{equation}\label{DefineKappa}
+\kappa \left( r' \right) = \left\{ {\begin{array}{*{20}{c}}
+   {{\nu _0}} & {v\left( {r',t} \right) \ge {v_0}}  \\
+   0 & {otherwise}  \\
+\end{array}} \right.
+\end{equation}
+
+\begin{eqnarray}
+% \nonumber to remove numbering (before each equation)
+  {v_{t + 1}}\left( r \right)  &=& \int_\Omega  {k\left( {r - r'} \right)\kappa \left( r' \right) - \alpha \delta \left( {r - r'} \right)v\left( {r,t} \right)dr'}  + \varepsilon\left( {r,t} \right) \\
+   &=& \int_\Omega  {k\left( {r - r'} \right)\kappa \left( r' \right)dr'}  - \alpha\int_\Omega  { \delta \left( {r - r'} \right)v\left( {r,t} \right)dr'}  + \varepsilon\left( {r,t} \right)
+\end{eqnarray}
+Defining
+\begin{equation}\label{FieldDecomp}
+{v_t}\left( r \right) = {\phi ^T}\left( r \right){x_t}
+\end{equation}
+\begin{equation}\label{KernelDecomp}
+k\left( {r - r'} \right) = {\theta ^T}\psi \left( {r - r'} \right)
+\end{equation}
+Making substitutions
+\begin{eqnarray}
+% \nonumber to remove numbering (before each equation)
+  {\phi ^T}\left( r \right){x_{t+1}}  &=& {\theta ^T}\int_\Omega  {\psi \left( {r - r'} \right)\kappa \left( r' \right)dr'}  - \alpha \int_\Omega  {\delta \left( {r - r'} \right){\phi ^T}\left( r \right){x_t}dr'}  + \varepsilon \left( {r,t} \right) \\
+   &=& {\theta ^T}\int_\Omega  {\psi \left( {r - r'} \right)\kappa \left( r' \right)dr'}  - \alpha {\phi ^T}\left( r \right){x_t} + \varepsilon \left( {r,t} \right)
+\end{eqnarray}
+Now we define
+\begin{equation}\label{DefFiringConnectivity}
+\Phi \left( r \right) = \int_\Omega  {\psi \left( {r - r'} \right)\kappa \left( r' \right)dr'}.
+\end{equation}
+Substituting in
+\begin{equation}\label{Dunno}
+{\phi ^T}\left( r \right){x_{t+1}} = {\theta ^T}\Phi \left( r \right) - \alpha {\phi ^T}\left( r \right){x_t} + \varepsilon \left( {r,t} \right)
+\end{equation}
+Cross multiply by $\phi(r)$ and integrating over $r$ we get
+\begin{equation}\label{TooTired}
+\int_\Omega  {\phi \left( r \right){\phi ^T}\left( r \right)dr} {x_{t+1}} = \int_\Omega  {\phi \left( r \right){\theta ^T}\Phi \left( r \right)dr}  - \alpha \int_\Omega  {\phi \left( r \right){\phi ^T}\left( r \right)dr} {x_t} + \int_\Omega  {\phi \left( r \right)\varepsilon \left( {r,t} \right)dr}
+\end{equation}
+Now let us define
+\begin{equation}\label{DefinePsix}
+{\Psi _x} = \int_\Omega  {\phi \left( r \right){\phi ^T}\left( r \right)dr}
+\end{equation}
+\begin{equation}\label{DefinePsiTheta}
+{\Psi _\theta } = \int_\Omega  {\phi \left( r \right){\theta ^T}\Phi \left( r \right)dr}.
+\end{equation}
+Making substitutions
+\begin{equation}\label{poo}
+{\Psi _x}{x_{t+1}} = {\Psi _\theta } - \alpha {\Psi _x}{x_t} + \int_\Omega  {\phi \left( r \right)\varepsilon \left( {r,t} \right)dr}.
+\end{equation}
+Isolating the state we get
+\begin{equation}\label{IsolatingState}
+{x_{t+1}} = {\Psi _x}^{ - 1}{\Psi _\theta } - \alpha {x_t} + {\Psi _x}^{ - 1}\int_\Omega  {\phi \left( r \right)\varepsilon \left( {r,t} \right)dr}
+\end{equation}
+
+\begin{equation}\label{SSmodel}
+{x_{t+1}} = A{x_t} + Bu + {\Psi _x}^{ - 1}\int_\Omega  {\phi \left( r \right)\varepsilon \left( {r,t} \right)dr}
+\end{equation}
+\begin{eqnarray}
+% \nonumber to remove numbering (before each equation)
+  A &=& -\alpha \\
+  B &=& {\Psi _x}^{ - 1}{\Psi _\theta } \\
+  u &=& 1 
+\end{eqnarray}
+Here we have a horrible nonlinearity with term $B = \Psi _x^{ - 1}\Psi_\theta$, which is on or off depending on if the field is past the threshold. Unfortunately, this is the place where the spatial kernel parameters live. The unscented Kalman filter or a particle filter could possibly estimate C. What do you think?
+
 \section{Stability Analysis}
 Using the analytically calculated basis functions. Need to show that the linearized model will not blow up.
 
@@ -304,10 +377,6 @@ Based on the other papers.
 
 \section{Comparison of Estimated and True Connectivity}
 Try and estimate the linear and nonlinear model based on the linear estimator. Might work ok?
-
-\subsection{Linear Model}
-
-\subsection{Nonlinear Model}
 
 \section{Discussion}
 
