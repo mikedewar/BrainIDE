@@ -30,11 +30,13 @@
 % can use linebreaks \\ within to get better formatting as desired
 \title{Estimation of Spatiotemporal Integro-Difference Equations for Dynamical Neural Field Models}
 
-\author{Dean~Freestone,~\IEEEmembership{Graduate Student Member,~IEEE,}
+\author{Dean~R.~Freestone,~\IEEEmembership{Graduate Student Member,~IEEE,}
         Parham~Aram,~\IEEEmembership{Graduate Student Member,~IEEE,}
         Michael~Dewar,~\IEEEmembership{Member,~IEEE,}
         Kenneth~Scerri,~\IEEEmembership{Member,~IEEE,}
-        and Visakan~Kadirkamanathan,~\IEEEmembership{Member,~IEEE,}
+        Visakan~Kadirkamanathan,~\IEEEmembership{Member,~IEEE,}
+        David~B.~Grayden,~\IEEEmembership{Member,~IEEE,}
+        Anthony~N.~Burkitt,~\IEEEmembership{Member,~IEEE,}
         and~other~Bosses/Supervisors,~\IEEEmembership{Member,~IEEE.}% <-this % stops a space% <-this % stops a space
 
 \thanks{D. Freestone is with the Department
@@ -186,37 +188,33 @@ We assume that the propagation delay of action potentials is zero. This is a com
 \frac{{dv\left( {r,t} \right)}}{{dt}} = \int_\Omega  {w\left( {r-r'} \right)p\left( {v\left( {r',t} \right)} \right)dr'}  - \alpha{v\left( {r,t} \right)} + e\left( {r,t} \right).
 \end{equation}
 In order to make the problem trackable, in terms of model order, we assume that we can decompose the field (membranes voltages) into a set of $n_\phi$ Gaussian basis functions. We will also assume that we know the location and width of the basis function that is required to decompose the field. The state of the system is the height basis functions, rather than the membrane potential. Therefore, the number of basis functions required to decompose the field is equal to the number of states. Also, we assume that we can represent the connectivity by a regular grid of three connectivity Gaussian basis functions (corresponding to short, mid and long range connectivity) of known width. The height of the connectivity basis functions ($\theta$ parameter) is to be estimated.
-%\subsection{IDE Formulation}
-%
-%For the state-space derivation, to create an estimator, the model can be reformulated like so
-%\begin{equation}\label{new_spatiotemporal_kernels}
-%\frac{{dv\left( {r,t} \right)}}{{dt}} = \int_\Omega  {k\left( {r - r'} \right)\tilde v\left( {r',t} \right) - \alpha \delta \left( {r - r'} \right)\bar v\left( {r,t} \right)dr'}  + e\left( {r,t} \right)
-%\end{equation}
-%
-%\begin{equation}\label{define_v_tilde}
-%\tilde v\left( {r,t} \right) = \left\{ {\begin{array}{*{20}{c}}
-%   {v\left( {r,t} \right)} & {v\left( {r,t} \right) \ge {v_0}}  \\
-%   0 & {otherwise}  \\
-%\end{array}} \right.
-%\end{equation}
-%
-%\begin{equation}\label{define_v_bar}
-%\bar v\left( {r,t} \right) = \left\{ {\begin{array}{*{20}{c}}
-%   {v\left( {r,t} \right)} & {v\left( {r,t} \right) < {v_0}}  \\
-%   0 & {otherwise}  \\
-%\end{array}} \right.
-%\end{equation}
-%
-%\begin{figure*}
-%\centering
-%\includegraphics[scale=0.4]{ExampleFieldDecomposition.eps}
-%\caption[ExampleFieldDecomposition]{Illustration of a one dimensional field decomposition using 5 Gaussian basis functions, each weighted an element of the state vector. Each basis function has a width of 0.01 and is uniformly positioned with a separation of 0.25 (with arbitrary units).}
-%\label{ExampleFieldDecomposition}
-%\end{figure*}
-%
+\subsection{IDE Formulation}
+For the state-space derivation, to create an estimator, the model can be reformulated like so
+\begin{equation}\label{new_spatiotemporal_kernels}
+\frac{{dv\left( {r,t} \right)}}{{dt}} = \int_\Omega  {k\left( {r - r'} \right)\tilde v\left( {r',t} \right) - \alpha \delta \left( {r - r'} \right)\bar v\left( {r,t} \right)dr'}  + e\left( {r,t} \right)
+\end{equation}
+\begin{equation}\label{define_v_tilde}
+\tilde v\left( {r,t} \right) = \left\{ {\begin{array}{*{20}{c}}
+   {v\left( {r,t} \right)} & {v\left( {r,t} \right) \ge {v_0}}  \\
+   0 & {otherwise}  \\
+\end{array}} \right.
+\end{equation}
+\begin{equation}\label{define_v_bar}
+\bar v\left( {r,t} \right) = \left\{ {\begin{array}{*{20}{c}}
+   {v\left( {r,t} \right)} & {v\left( {r,t} \right) < {v_0}}  \\
+   0 & {otherwise}  \\
+\end{array}} \right.
+\end{equation}
+\begin{figure*}
+\centering
+\includegraphics[scale=0.3]{ExampleFieldDecomposition.eps}
+\caption[ExampleFieldDecomposition]{Illustration of a one dimensional field decomposition using 5 Gaussian basis functions, each weighted an element of the state vector. Each basis function has a width of 0.01 and is uniformly positioned with a separation of 0.25 (with arbitrary units).}
+\label{ExampleFieldDecomposition}
+\end{figure*}
+
 \section{State-Space Neural Field Model}
 In this section we shall reconstruct the model in a state-space form that is a novel representation of the neural field equations. The benefit of restating the model in this format is that it becomes easier to simulate and allows the connectivity to be inferred from data. \begin{equation}
- v_{t+1}(\mathbf s)=\int_{\mathcal S} \alpha \delta(\mathbf s-\mathbf r)\bar v_t(\mathbf r)d \mathbf r+\int_{\mathcal S} w(\mathbf s -\mathbf r)\tilde v_t(\mathbf r)d\mathbf r+e_t(\mathbf s)
+ v_{t+1}(\mathbf r)=\int_{\Omega} \alpha \delta(\mathbf r-\mathbf r')\bar v_t(\mathbf r)d \mathbf r'+\int_{\Omega} w(\mathbf r -\mathbf r')\tilde v_t(\mathbf r')d\mathbf r'+e_t(\mathbf r)
 \label{eq:cortexfield}
 \end{equation}
 decomposing the field and the kernel we have
@@ -225,7 +223,7 @@ decomposing the field and the kernel we have
 \label{eq:cortexfieldlv0}
 \end{equation}
 \begin{equation}
-\tilde v_t(\mathbf r)=\boldsymbol \phi^{\top}(\mathbf r)\tilde{\mathbf x}_t=\nu_0 + \boldsymbol \phi^{\top}(\mathbf r)\bar{\mathbf x}_t
+\tilde v_t(\mathbf r)=\boldsymbol \phi^{\top}(\mathbf r)\tilde{\mathbf x}_t=\nu_0
 \label{eq:cortexfieldgv0}
 \end{equation}
 \begin{equation}
@@ -234,127 +232,167 @@ decomposing the field and the kernel we have
 \end{equation}
 Substituting (\ref{eq:cortexfieldlv0}), (\ref{eq:cortexfieldgv0}) and (\ref{eq:kerneldecomposition}) in (\ref{eq:cortexfield}) we get
 \begin{equation}
- \boldsymbol \phi^{\top}(\mathbf s)\bar{\mathbf x}_{t+1}+\boldsymbol \phi^{\top}(\mathbf s)\tilde{\mathbf x}_{t+1}=
-\int_\mathcal{S}\alpha\delta(\mathbf s- \mathbf r)\boldsymbol\phi^{\top}(\mathbf r)\bar{\mathbf x}_td\mathbf r+\int_\mathcal{S}\boldsymbol \theta^{\top}\boldsymbol\psi(\mathbf s -\mathbf r)\boldsymbol\phi^{\top}(\mathbf r)\tilde{\mathbf x}_td\mathbf r+e_t(\mathbf s)
+ \boldsymbol \phi^{\top}(\mathbf r)\bar{\mathbf x}_{t+1}+\boldsymbol \phi^{\top}(\mathbf r)\tilde{\mathbf x}_{t+1}=
+\int_\Omega\alpha\delta(\mathbf r- \mathbf r')\boldsymbol\phi^{\top}(\mathbf r)\bar{\mathbf x}_td\mathbf r'+\int_\Omega\boldsymbol \theta^{\top}\boldsymbol\psi(\mathbf r -\mathbf r')\boldsymbol\phi^{\top}(\mathbf r')\tilde{\mathbf x}_td\mathbf r'+e_t(\mathbf r)
 \label{eq:decomposedcortexfield}
 \end{equation}
 \begin{equation}
- \boldsymbol \phi^{\top}(\mathbf s)(\bar{\mathbf x}_{t+1}+\tilde{\mathbf x}_{t+1})=\alpha \boldsymbol\phi^{\top}(\mathbf s)\bar{\mathbf x}_{t}+\boldsymbol \theta^{\top}\int_{\mathcal S}\boldsymbol\psi(\mathbf s -\mathbf r)\boldsymbol\phi^{\top}(\mathbf r)\tilde{\mathbf x}_td\mathbf r+e_t(\mathbf s)
+ \boldsymbol \phi^{\top}(\mathbf r)(\bar{\mathbf x}_{t+1}+\tilde{\mathbf x}_{t+1})=\alpha \boldsymbol\phi^{\top}(\mathbf r)\bar{\mathbf x}_{t}+\boldsymbol \theta^{\top}\int_{\Omega}\boldsymbol\psi(\mathbf r -\mathbf r')\boldsymbol\phi^{\top}(\mathbf r')\tilde{\mathbf x}_td\mathbf r'+e_t(\mathbf r)
 \end{equation}
 by defining
 \begin{equation}
- \boldsymbol\Phi(\mathbf s)=\int_{\mathcal S}\boldsymbol\psi(\mathbf s -\mathbf r)\boldsymbol\phi^{\top}(\mathbf r)d\mathbf r
+ \boldsymbol\Phi(\mathbf r)=\int_{\Omega}\boldsymbol\psi(\mathbf r -\mathbf r')\boldsymbol\phi^{\top}(\mathbf r')d\mathbf r'
 \label{eq:convolution}
 \end{equation}
 we have
 \begin{equation}
- \boldsymbol \phi^{\top}(\mathbf s)(\bar{\mathbf x}_{t+1}+\tilde{\mathbf x}_{t+1})=\alpha \boldsymbol\phi^{\top}(\mathbf s)\bar{\mathbf x}_{t}+\boldsymbol \theta^{\top}\boldsymbol\Phi(\mathbf s)\tilde{\mathbf x}_t+e_t(\mathbf s)
+ \boldsymbol \phi^{\top}(\mathbf r)(\bar{\mathbf x}_{t+1}+\tilde{\mathbf x}_{t+1})=\alpha \boldsymbol\phi^{\top}(\mathbf r)\bar{\mathbf x}_{t}+\boldsymbol \theta^{\top}\boldsymbol\Phi(\mathbf r)\tilde{\mathbf x}_t+e_t(\mathbf r)
 \label{eq:cortexfieldwithPhi}
 \end{equation}
-Premultiplying (\ref{eq:cortexfieldwithPhi}) by $\boldsymbol\phi(\mathbf s) $, and integrating over $\mathbf s$
+Premultiplying (\ref{eq:cortexfieldwithPhi}) by $\boldsymbol\phi(\mathbf r) $, and integrating over $\mathbf r$
 \begin{equation}
-\int_{\mathcal S} \boldsymbol\phi(\mathbf s)\boldsymbol \phi^{\top}(\mathbf s)d\mathbf s(\bar{\mathbf x}_{t+1}+\tilde{\mathbf x}_{t+1})=\alpha\int_{\mathcal S} \boldsymbol\phi(\mathbf s)\boldsymbol \phi^{\top}(\mathbf s)d\mathbf s \bar{\mathbf x}_{t}+\int_{\mathcal S} \boldsymbol\phi(\mathbf s)\boldsymbol \theta^{\top}\boldsymbol\Phi(\mathbf s)d\mathbf s\tilde{\mathbf x}_t+\int_{\mathcal S} \boldsymbol\phi(\mathbf s)e_t(\mathbf s)d\mathbf s
+\int_{\Omega} \boldsymbol\phi(\mathbf r)\boldsymbol \phi^{\top}(\mathbf r)d\mathbf s(\bar{\mathbf x}_{t+1}+\tilde{\mathbf x}_{t+1})=\alpha\int_{\Omega} \boldsymbol\phi(\mathbf r)\boldsymbol \phi^{\top}(\mathbf r)d\mathbf r \bar{\mathbf x}_{t}+\int_{\Omega} \boldsymbol\phi(\mathbf r)\boldsymbol \theta^{\top}\boldsymbol\Phi(\mathbf r)d\mathbf r\tilde{\mathbf x}_t+\int_{\Omega} \boldsymbol\phi(\mathbf r)e_t(\mathbf r)d\mathbf r
 \label{eq:cortexfieldversion2}
 \end{equation}
 Now we define
 \begin{equation}
- \boldsymbol\Psi_x(\mathbf s)=\int_{\mathcal S}\boldsymbol\phi(\mathbf s)\boldsymbol\phi^{\top}(\mathbf s)d\mathbf s
+ \boldsymbol\Psi_x(\mathbf r)=\int_{\Omega}\boldsymbol\phi(\mathbf r)\boldsymbol\phi^{\top}(\mathbf r)d\mathbf r
 \label{eq:psix}
 \end{equation}
 \begin{equation}
-  \boldsymbol\Psi_{\theta}(\mathbf s)=\int_{\mathcal S} \boldsymbol\phi(\mathbf s)\boldsymbol \theta^{\top}\boldsymbol\Phi(\mathbf s)d\mathbf s
+  \boldsymbol\Psi_{\theta}(\mathbf r)=\int_{\Omega} \boldsymbol\phi(\mathbf r)\boldsymbol \theta^{\top}\boldsymbol\Phi(\mathbf r)d\mathbf r
 \label{eq:psitheta}
 \end{equation}
 substituting (\ref{eq:psix}) and (\ref{eq:psitheta}) in (\ref{eq:cortexfieldversion2}) we get
 \begin{equation}
-\boldsymbol\Psi_x(\mathbf s)(\bar{\mathbf x}_{t+1}+\tilde{\mathbf x}_{t+1})=\alpha\boldsymbol\Psi_x(\mathbf s) \bar{\mathbf x}_{t}+\boldsymbol\Psi_{\theta}(\mathbf s)\tilde{\mathbf x}_t+\int_{\mathcal S} \boldsymbol\phi(\mathbf s)e_t(\mathbf s)d\mathbf s
+\boldsymbol\Psi_x(\mathbf r)(\bar{\mathbf x}_{t+1}+\tilde{\mathbf x}_{t+1})=\alpha\boldsymbol\Psi_x(\mathbf r) \bar{\mathbf x}_{t}+\boldsymbol\Psi_{\theta}(\mathbf r)\tilde{\mathbf x}_t+\int_{\Omega} \boldsymbol\phi(\mathbf r)e_t(\mathbf r)d\mathbf r
 \end{equation}
 pre-multiplying both sides by $\boldsymbol\Psi_x^{-1}$
 \begin{equation}
-\bar{\mathbf x}_{t+1}+\tilde{\mathbf x}_{t+1}=\alpha\bar{\mathbf x}_{t}+\boldsymbol\Psi_x^{-1}\boldsymbol\Psi_{\theta}\tilde{\mathbf x}_t+\boldsymbol\Psi_x^{-1}\int_{\mathcal S} \boldsymbol\phi(\mathbf s)e_t(\mathbf s)d\mathbf s
+\bar{\mathbf x}_{t+1}+\tilde{\mathbf x}_{t+1}=\alpha\bar{\mathbf x}_{t}+\boldsymbol\Psi_x^{-1}\boldsymbol\Psi_{\theta}\tilde{\mathbf x}_t+\boldsymbol\Psi_x^{-1}\int_{\Omega} \boldsymbol\phi(\mathbf r)e_t(\mathbf r)d\mathbf r
 \end{equation}
 ????????????????????????????????
 \subsection{Observation equation}
 \begin{eqnarray}
- \mathbf y_t(\mathbf s)&=&\\
-&=&\int_{\mathcal S}H(\mathbf s-\mathbf r)v_t(\mathbf r)d\mathbf r+\boldsymbol\epsilon_t \\
-&=&\int_{\mathcal S}H(\mathbf s-\mathbf r)\bar v_t(\mathbf r)d\mathbf r+\int_{\mathcal S}H(\mathbf s-\mathbf r)\tilde v_t(\mathbf r)d\mathbf r+\epsilon_t
+ \mathbf y_t(\mathbf r)&=&\\
+&=&\int_{\Omega}H(\mathbf r-\mathbf r')v_t(\mathbf r')d\mathbf r'+\boldsymbol\epsilon_t \\
+&=&\int_{\Omega}H(\mathbf r-\mathbf r')\bar v_t(\mathbf r')d\mathbf r'+\int_{\Omega}H(\mathbf r-\mathbf r')\tilde v_t(\mathbf r')d\mathbf r'+\epsilon_t
 \label{eq:observationequation}
 \end{eqnarray}
 
- we decompose $ H(\mathbf s-\mathbf r)$ as
+ we decompose $ H(\mathbf r-\mathbf r')$ as
  \begin{equation}
-  H(\mathbf s-\mathbf r)= \mathbf c^{\top}\mu(\mathbf s-\mathbf r)
+  H(\mathbf r-\mathbf r')= \mathbf c^{\top}\mu(\mathbf r-\mathbf r')
 \label{eq:decomposedobservationkernel}
 \end{equation}
 and substituting  (\ref{eq:cortexfieldlv0}), (\ref{eq:cortexfieldgv0}) and (\ref{eq:decomposedobservationkernel}) in (\ref{eq:observationequation}) we get
 \begin{equation}
- \mathbf y_t(\mathbf s)=\int_{\mathcal S}\mathbf c^{\top}\mu(\mathbf s-\mathbf r)\phi^{\top}(\mathbf r)\bar{\mathbf x}_{t}d\mathbf r+\int_{\mathcal S}\mathbf c^{\top}\mu(\mathbf s-\mathbf r)\phi^{\top}(\mathbf r)\tilde{\mathbf x}_{t}d\mathbf r+\epsilon_t
+ \mathbf y_t(\mathbf r)=\int_{\Omega}\mathbf c^{\top}\mu(\mathbf r-\mathbf r')\phi^{\top}(\mathbf r')\bar{\mathbf x}_{t}d\mathbf r'+\int_{\Omega}\mathbf c^{\top}\mu(\mathbf r-\mathbf r')\phi^{\top}(\mathbf r')\tilde{\mathbf x}_{t}d\mathbf r'+\epsilon_t
 \end{equation}
 and finally we have
 \begin{equation}
-\mathbf y_t(\mathbf s)= \begin{bmatrix}\mathbf c^{\top}\mathbf M(\mathbf s)&\mathbf c^{\top}\mathbf M(\mathbf s)\end{bmatrix}\underline{\mathbf x}_t+\epsilon_t
+\mathbf y_t(\mathbf r)= \begin{bmatrix}\mathbf c^{\top}\mathbf M(\mathbf r)&\mathbf c^{\top}\mathbf M(\mathbf r)\end{bmatrix}\underline{\mathbf x}_t+\epsilon_t
 \end{equation}
 where
 \begin{equation}
- \mathbf M(\mathbf s)=\int_{\mathcal S}\mu(\mathbf s-\mathbf r)\phi^{\top}(\mathbf r)d\mathbf r
+ \mathbf M(\mathbf r)=\int_{\Omega}\mu(\mathbf r-\mathbf r')\phi^{\top}(\mathbf r')d\mathbf r'
 \end{equation}
 Next we shall demonstrate the stability of the model and in the following section the estimator for the state vector and connectivity structure is derived.
 
-\subsection{State-Space Neural Field Model}
-In this section we shall reconstruct the model in a state-space form that is a novel representation of the neural field equations. The benefit of restating the model in this format is that it becomes easier to simulate and allows the connectivity to be inferred from data. We begin with the model in the form
-\begin{eqnarray}\label{InitialModel}
-% \nonumber to remove numbering (before each equation)
-  {v_{t + 1}}\left( r \right) &=& \int_\Omega  {k\left( {r - r'} \right)p\left( {{v_t}\left( {r'} \right)} \right) - \alpha v\left( {r,t} \right)dr'}  + \varepsilon \left( {r,t} \right) \nonumber \\
-   &=& \int_\Omega  {k\left( {r - r'} \right)p\left( {{v_t}\left( {r'} \right)} \right)dr'}  - \alpha v\left( {r,t} \right) + \varepsilon \left( {r,t} \right).
-\end{eqnarray}
-Next we defining the basis functions the decompositions of the field and connectivity kernel, where $\phi(s)$ is a vector is Gaussian basis functions, $x_t$ is the state, $\psi(r-r')$ is a vector of three connectivity basis functions and $\theta$ is the corresponding weight of the connectivity
-\begin{equation}\label{FieldDecomp}
-   {v_t}\left( r \right) = {\phi ^T}\left( r \right){x_t}
+%\subsection{State-Space Neural Field Model}
+%In this section we shall reconstruct the model in a state-space form that is a novel representation of the neural field equations. The benefit of restating the model in this format is that it becomes easier to simulate and allows the connectivity to be inferred from data. We begin with the model in the form
+%\begin{eqnarray}\label{InitialModel}
+%% \nonumber to remove numbering (before each equation)
+%  {v_{t + 1}}\left( r \right) &=& \int_\Omega  {k\left( {r - r'} \right)p\left( {{v_t}\left( {r'} \right)} \right) - \alpha v\left( {r,t} \right)dr'}  + \varepsilon_t \left( {r} \right) \nonumber \\
+%   &=& \int_\Omega  {k\left( {r - r'} \right)p\left( {{v_t}\left( {r'} \right)} \right)dr'}  - \alpha v\left( {r,t} \right) + \varepsilon_t \left( {r} \right).
+%\end{eqnarray}
+%Next we defining the basis functions the decompositions of the field and connectivity kernel, where $\phi(s)$ is a vector is Gaussian basis functions, $x_t$ is the state, $\psi(r-r')$ is a vector of three connectivity basis functions and $\theta$ is the corresponding weight of the connectivity
+%\begin{equation}\label{FieldDecomp}
+%   {v_t}\left( r \right) = {\phi ^T}\left( r \right){x_t}
+%\end{equation}
+%\begin{equation}\label{KernelDecomp}
+%k\left( {r - r'} \right) = {\theta ^T}\psi \left( {r - r'} \right).
+%\end{equation}
+%Assume we know $\phi(r')$ and it is constant, and the form of the activation function $p(.)$ is known, and $\phi(r')$ is independent of $x_t$, then we can uniquely define the function $\rho(.)$ such that
+%\begin{eqnarray}\label{NonlinearState}
+%% \nonumber to remove numbering (before each equation)
+%  p\left( {{v_t}\left( {r'} \right)} \right)  &=& p\left( {{\phi ^T}\left( {r'} \right){x_t}} \right) \nonumber \\
+%   &=& \phi ^T\left(r'\right)\rho \left( {{x_t}} \right).
+%\end{eqnarray}
+%Making substitutions of~\ref{FieldDecomp}, \ref{KernelDecomp} and \ref{NonlinearState} into \ref{InitialModel} we get
+%\begin{equation}\label{ModelDecomposed}
+%{\phi ^T}\left( r \right){x_{t + 1}} = {\theta ^T}\int_\Omega  {\psi \left( {r - r'} \right){\phi ^T}\left( {r'}\right)dr'} \rho \left( {{x_t}} \right) - \alpha {\phi ^T}\left( r \right){x_t} + \varepsilon_t \left( {r} \right)
+%\end{equation}
+%Now we define
+%\begin{equation}\label{DefPhi}
+%\Phi \left( r \right) = \int_\Omega  {\psi \left( {r - r'} \right){\phi ^T}\left( {r'} \right)dr'}.
+%\end{equation}
+%Substituting~\ref{DefPhi} into \ref{ModelDecomposed} we get
+%\begin{equation}\label{Sub2}
+%{\phi ^T}\left( r \right){x_{t + 1}} = {\theta ^T}\Phi \left( r \right)\rho \left( {{x_t}} \right) - \alpha {\phi ^T}\left( r \right){x_t} + \varepsilon_t \left( {r} \right).
+%\end{equation}
+%Cross multiplying by $\phi(r)$ in integrating over $r$ gives
+%\begin{equation}\label{CorssMultAndInt}
+%\int_\Omega  {\phi \left( r \right){\phi ^T}\left( r \right)dr} {x_{t + 1}} = {\theta ^T}\int_\Omega  {\phi \left( r \right)\Phi \left( r \right)dr} \rho \left( {{x_t}} \right) - \alpha \int_\Omega  {\phi \left( r \right){\phi ^T}\left( r \right)dr} {x_t} + \int_\Omega  {\phi \left( r \right)\varepsilon_t \left( {r} \right)dr}.
+%\end{equation}
+%Now we define
+%\begin{equation}\label{DefPsix}
+%{\Psi _x} = \int_\Omega  {\phi \left( r \right){\phi ^T}\left( r \right)dr}
+%\end{equation}
+%\begin{equation}\label{DefPsitheta}
+%{\Psi _\theta } = \int_\Omega  {\phi \left( r \right)\Phi \left( r \right)dr}.
+%\end{equation}
+%Substituting~\ref{DefPsix} and \ref{DefPsitheta} into \ref{CorssMultAndInt} we get
+%\begin{equation}\label{Subs3}
+%{\Psi _x}{x_{t + 1}} = {\theta ^T}{\Psi _\theta }\rho \left( {{x_t}} \right) - \alpha {\Psi _x}{x_t} + \int_\Omega  {\phi \left( r \right)\varepsilon_t \left( {r} \right)dr}.
+%\end{equation}
+%Now we isolate the state by inverting $\Psi_x$
+%\begin{equation}\label{IsolateState}
+%{x_{t + 1}} = {\Psi _x}^{ - 1}{\theta ^T}{\Psi _\theta }\rho \left( {{x_t}} \right) - \alpha {x_t} + {\Psi _x}^{ - 1}\int_\Omega  {\phi \left( r \right)\varepsilon_t \left( {r} \right)dr}.
+%\end{equation}
+%This gives the state-space model
+%\begin{equation}\label{StateSpaceModel}
+%{x_{t + 1}} = f\left( {x,\theta } \right) + {\Psi _x}^{ - 1}\int_\Omega  {\phi \left( r \right)\varepsilon_t \left( {r} \right)dr}.
+%\end{equation}
+
+\section{State-Space Model}
+If we are going to use a particle filter or a extended Kalman filter we might as well go for this case. If the temporal and spatial part of the nonlinearity can not be separated, than this is the best choice.
+\begin{equation}\label{SystemEq}
+{v_{t + 1}}\left( {\bf{r}} \right) = \int_\Omega  {w\left( {{\bf{r}} - {\bf{r'}}} \right)p\left( {{v_t}\left( {{\bf{r'}}} \right)} \right)d{\bf{r'}}}  - \alpha {v_t}\left( {\bf{r}} \right) + {\varepsilon _t}\left( {\bf{r}} \right)
 \end{equation}
-\begin{equation}\label{KernelDecomp}
-k\left( {r - r'} \right) = {\theta ^T}\psi \left( {r - r'} \right).
+Defining
+\begin{equation}\label{CombiningKernels}
+k\left( {{\bf{r}} - {\bf{r'}}} \right) = w\left( {{\bf{r}} - {\bf{r'}}} \right) - \hat{\alpha}\delta \left( {{\bf{r}} - {\bf{r'}}} \right).
 \end{equation}
-Assume we know $\phi(r')$ and it is constant, and the form of the activation function $p(.)$ is known, and $\phi(r')$ is independent of $x_t$, then we can uniquely define the function $\rho(.)$ such that
-\begin{eqnarray}\label{NonlinearState}
-% \nonumber to remove numbering (before each equation)
-  p\left( {{v_t}\left( {r'} \right)} \right)  &=& p\left( {{\phi ^T}\left( {r'} \right){x_t}} \right) \nonumber \\
-   &=& \phi ^T\left(r'\right)\rho \left( {{x_t}} \right).
-\end{eqnarray}
-Making substitutions of~\ref{FieldDecomp}, \ref{KernelDecomp} and \ref{NonlinearState} into \ref{InitialModel} we get
-\begin{equation}\label{ModelDecomposed}
-{\phi ^T}\left( r \right){x_{t + 1}} = {\theta ^T}\int_\Omega  {\psi \left( {r - r'} \right){\phi ^T}\left( {r'}\right)dr'} \rho \left( {{x_t}} \right) - \alpha {\phi ^T}\left( r \right){x_t} + \varepsilon \left( {r,t} \right)
+Making substitution we get
+\begin{equation}\label{OneKernelModel}
+{v_{t + 1}}\left( {\bf{r}} \right) = \int_\Omega  {k\left( {{\bf{r}} - {\bf{r'}}} \right)p\left( {{v_t}\left( {{\bf{r'}}} \right)} \right)d{\bf{r'}}}  + {\varepsilon _t}\left( {\bf{r}} \right).
 \end{equation}
-Now we define
-\begin{equation}\label{DefPhi}
-\Phi \left( r \right) = \int_\Omega  {\psi \left( {r - r'} \right){\phi ^T}\left( {r'} \right)dr'}.
+Defining
+\begin{equation}\label{DefFieldDecomp}
+{v_t}\left( {\bf{r}} \right) = {\phi ^T}\left( {\bf{r}} \right){x_t}
 \end{equation}
-Substituting~\ref{DefPhi} into \ref{ModelDecomposed} we get
-\begin{equation}\label{Sub2}
-{\phi ^T}\left( r \right){x_{t + 1}} = {\theta ^T}\Phi \left( r \right)\rho \left( {{x_t}} \right) - \alpha {\phi ^T}\left( r \right){x_t} + \varepsilon \left( {r,t} \right).
+\begin{equation}\label{DefKernelDecomp}
+k\left( {{\bf{r}} - {\bf{r'}}} \right) = {\theta ^T}\psi \left( {{\bf{r}} - {\bf{r'}}} \right)
 \end{equation}
-Cross multiplying by $\phi(r)$ in integrating over $r$ gives
-\begin{equation}\label{CorssMultAndInt}
-\int_\Omega  {\phi \left( r \right){\phi ^T}\left( r \right)dr} {x_{t + 1}} = {\theta ^T}\int_\Omega  {\phi \left( r \right)\Phi \left( r \right)dr} \rho \left( {{x_t}} \right) - \alpha \int_\Omega  {\phi \left( r \right){\phi ^T}\left( r \right)dr} {x_t} + \int_\Omega  {\phi \left( r \right)\varepsilon \left( {r,t} \right)dr}.
+Now we have four basis functions (the fourth being the delta/local connectivity) and four parameters to estimate. Making substitutions
+\begin{equation}\label{DecompModel}
+{\phi ^T}\left( {\bf{r}} \right){x_t} = {\theta ^T}\int_\Omega  {\psi \left( {{\bf{r}} - {\bf{r'}}} \right)p\left( {{\phi ^T}\left( {{\bf{r'}}} \right){x_t}} \right)d{\bf{r'}}}  + {\varepsilon _t}\left( {\bf{r}} \right)
 \end{equation}
-Now we define
-\begin{equation}\label{DefPsix}
-{\Psi _x} = \int_\Omega  {\phi \left( r \right){\phi ^T}\left( r \right)dr}
+Cross multiply and integrate over $\bf{r}$
+\begin{equation}\label{Poo}
+\int_\Omega  {\phi \left( {\bf{r}} \right){\phi ^T}\left( {\bf{r}} \right)d{\bf{r}}{x_t}}  = \int_\Omega  {\phi \left( {\bf{r}} \right){\theta ^T}\int_\Omega  {\psi \left( {{\bf{r}} - {\bf{r'}}} \right)p\left( {{\phi ^T}\left( {{\bf{r'}}} \right){x_t}} \right)d{\bf{r'}}} d{\bf{r}}}  + \int_\Omega  {\phi \left( {\bf{r}} \right){\varepsilon _t}\left( {\bf{r}} \right)d{\bf{r}}}
 \end{equation}
-\begin{equation}\label{DefPsitheta}
-{\Psi _\theta } = \int_\Omega  {\phi \left( r \right)\Phi \left( r \right)dr}.
+Defining
+\begin{equation}\label{DefPsi}
+\Psi  = \int_\Omega  {\phi \left( {\bf{r}} \right){\phi ^T}\left( {\bf{r}} \right)d{\bf{r}}}
 \end{equation}
-Substituting~\ref{DefPsix} and \ref{DefPsitheta} into \ref{CorssMultAndInt} we get 
-\begin{equation}\label{Subs3}
-{\Psi _x}{x_{t + 1}} = {\theta ^T}{\Psi _\theta }\rho \left( {{x_t}} \right) - \alpha {\Psi _x}{x_t} + \int_\Omega  {\phi \left( r \right)\varepsilon \left( {r,t} \right)dr}.
+Making substitution
+\begin{equation}\label{SS Model}
+{x_t} = {\Psi ^{ - 1}}\int_\Omega  {\phi \left( {\bf{r}} \right){\theta ^T}\int_\Omega  {\psi \left( {{\bf{r}} - {\bf{r'}}} \right)p\left( {{\phi ^T}\left( {{\bf{r'}}} \right){x_t}} \right)d{\bf{r'}}} d{\bf{r}}}  + {\Psi ^{ - 1}}\int_\Omega  {\phi \left( {\bf{r}} \right){\varepsilon _t}\left( {\bf{r}} \right)d{\bf{r}}}
 \end{equation}
-Now we isolate the state by inverting $\Psi_x$
-\begin{equation}\label{IsolateState}
-{x_{t + 1}} = {\Psi _x}^{ - 1}{\theta ^T}{\Psi _\theta }\rho \left( {{x_t}} \right) - \alpha {x_t} + {\Psi _x}^{ - 1}\int_\Omega  {\phi \left( r \right)\varepsilon \left( {r,t} \right)dr}.
-\end{equation}
-This gives the state-space model
-\begin{equation}\label{StateSpaceModel}
-{x_{t + 1}} = f\left( {x,\theta } \right) + {\Psi _x}^{ - 1}\int_\Omega  {\phi \left( r \right)\varepsilon \left( {r,t} \right)dr}.
+\begin{equation}\label{AbbrevSSModel}
+{x_{t + 1}} = f\left( {x;\theta } \right) + {\Psi ^{ - 1}}\int_\Omega  {\phi \left( {\bf{r}} \right){\varepsilon _t}\left( {\bf{r}} \right)d{\bf{r}}}
 \end{equation}
 
 \section{Stability Analysis}
@@ -485,7 +523,7 @@ The authors would like to thank...
 %\begin{biography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{mshell}}]{Michael Shell}
 % or if you just want to reserve a space for a photo:
 
-\begin{IEEEbiography}{Dean Freestone}
+\begin{IEEEbiography}{Dean R. Freestone}
 Biography text here.
 \end{IEEEbiography}
 
