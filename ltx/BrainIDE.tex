@@ -67,55 +67,57 @@ Integro-Difference Equation (IDE), Neural Field Model, Cortical Connectivity.
 \IEEEpeerreviewmaketitle
 
 \section{Introduction}
+\IEEEPARstart{T}{he} human brain is arguably the world's most complex system. Approximately 100 billion neurons and 60 trillion synapses operate in concert to process information, resulting in the cognition that determines our behavior. The brain's efficiency, robustness, and adaptability are unparalleled by any man-made device and, despite decades of concerted research, our understanding of its complex dynamics remains modest. This has led researchers to study different scales of dynamics: starting from individual proteins, synapses, and neurons; moving through to neuronal networks and ensembles of neuronal networks. While our understanding of the function of neurons is well developed, the overall behavior of the brain's meso and macro-scale dynamics remains largely a mystery.  Understanding the brain at this level is extremely important since this is the scale where pathologies such as epilepsy, Parkinson's disease and schizophrenia are manifested.
 
-\IEEEPARstart{T}{he} human brain is arguably the world's most complex system. Approximately 100 billion neurons and 60 trillion synapses operate in concert to process information, resulting in the cognition that determines our behavior. The brain's efficiency, robustness, and adaptability are unparalleled by any man-made device and, despite decades of concerted research, our understanding of its complex dynamics remains modest. This has led researchers to study different scales of dynamics: starting from individual proteins, synapses, and neurons; moving through to neuronal networks and ensembles of neuronal networks. Whilst our understanding of the function of neurons is well developed, the overall behavior of the brain's meso and macro-scale dynamics remains largely a mystery.  Understanding the brain at this level is extremely important since this is the scale where pathologies such as epilepsy, Parkinson's disease and schizophrenia are manifested.
+To date, there has been a considerable volume of work in generating physiologically plausible neural field models to fill the void of understanding brain dynamics at the meso/macroscopic scale. Mathematical neural field  models provide insights into the underlying physics and dynamics of electroencephalography (EEG) and magnetoencephalography (MEG) (see~\cite{Deco2008}~\cite{David2003} for recent reviews). These models have demonstrated possible mechanisms for the genesis of neural rhythms (such as the alpha and gamma rhythms) \cite{Liley1999} \cite{RENNIE2000}, epileptic seizure generation \cite{DaSilva2003},~\cite{Suffczynski2004} and~\cite{Wendling2005} and insights into other pathologies~\cite{Moran2008} \cite{Schiff2009} that would be impossible to gain from experimental data alone. Unfortunately, to date the use of these models in the clinic has been limited, since the neural field model are constructed for a general brain dynamics and pathologies almost always have unique underlying patient specific causes. Data from EEG and functional magnetic resonance imaging (fMRI) offers the patient specific link to macro-scale cortical dynamics, making these tools readily applicable to the clinic. However the underlying system properties, or system states, are hidden from EEG and fMRI data, making predictions of the underlying physiology inherently difficult.
 
-To date, there has been a considerable volume of work in generating physiologically plausible neural field models to fill the void of understanding brain dynamics at the meso/macroscopic scale. Mathematical neural field  models have provided insights into the underlying physics and dynamics of electroencephalography (EEG) and magnetoencephalography (MEG) (see~\cite{Deco2008}~\cite{David2003} for recent reviews). These models have demonstrated possible mechanisms for the genesis of neural rhythms (such as the alpha and gamma rhythms) \cite{Liley1999} \cite{RENNIE2000}, epileptic seizure generation \cite{DaSilva2003},~\cite{Suffczynski2004} and~\cite{Wendling2005} and insights into other pathologies~\cite{Moran2008} \cite{Schiff2009} that would be impossible to gain from experimental data alone. Unfortunately, to date the use of these models in the clinic has been limited, since the neural field model are constructed for a general brain dynamics and pathologies almost always have unique underlying patient specific causes. Data from EEG and functional magnetic resonance imaging (fMRI) offers the patient specific link to macro-scale cortical dynamics, making these tools readily applicable to the clinic. However the underlying system properties, or system states, are hidden from EEG and fMRI data, making predictions of the underlying physiology inherently difficult.
+For models to be clinically viable they must be patient specific. A possible approach to achieve this would be to use a general neural field model, like the Wilson and Cohen~\cite{Wilson1973} model or a neural mass model like the Jansen and Ritt model~\cite{Jansen1995}, and fit it to a patients EEG data. Fitting the neural models to individuals is a highly non-trivial task, and until very recently this has not been reported in the literature. An estimation frame work for neural field model known as dynamical causal modeling (DCM)~\cite{David2003} \cite{David2006} has recently been proposed for studying evoked potential dynamics. Via a Bayesian inference scheme, DCM estimates the long range connectivity structure between the specific isolated brain regions that best explains a given data set. The interconnected brain regions are modeled by the Jansen and Ritt equations. The approach has proven very useful in understanding specific hierarchical networks of neural information processing. Another recent publication describing a parameter estimation method with a neural field model used an unscented Kalman filter with the Wilson-Cowan neural field equations~\cite{schiff2008kalman}.  This work takes a more system theoretic approach to the neural estimation problem and marks a first step in what has the potential to revolutionize the treatment of many neurological diseases where therapeutic electrical stimulation is viable.
 
-For models to be clinically viable they must be patient specific. A possible approach to achieve this would be to use a general neural field model, like the Wilson and Cohen~\cite{Wilson1973} or Jansen and Ritt model~\cite{Jansen1995}, and fit it to a patients EEG data. Fitting the general neural field models to individuals is a highly non-trivial task, and until very recently this has not been reported in the literature. An estimation frame work for neural field model known as dynamical causal modeling (DCM)~\cite{David2003} \cite{David2006} has recently been proposed for studying evoked potential dynamics. Via a Bayesian inference scheme, DCM estimates the long range connectivity structure between the specific isolated brain regions that best explains a given data set. The approach has proven very useful in understanding specific hierarchical networks of neural information processing. Another recent publication describing parameter estimation method with a neural field model used an unscented Kalman filter with the Wilson-Cowan neural field equations~\cite{schiff2008kalman}.  This work takes a more system theoretic approach to the neural estimation problem and marks a first step in what has the potential to revolutionize the treatment of many neurological diseases where therapeutic electrical stimulation is viable.
-
-Generating patient specific models allows that application of a range of techniques from control systems theory, where tailored electrical stimulation could be used therapeutically in a closed loop fashion.  Currently available epileptic seizure prediction and control devices (i.e., the vagal nerve stimulator) are implemented in an ``open loop".  That is, the therapeutic electrical stimulation waveforms are adjusted for each patient by trial and error, disregarding the patient's neurodynamics and information about their particular pathologies. Given access to an accurate model, the application of control theory in these circumstances would allow for robust therapeutic stimulations.
-The work from Schiff and Sauer~\cite{schiff2008kalman} successfully demonstrated  estimation of two parameters from the WC equations, whilst the other parameters were fixed. This motivates the question, what parameters are the most important? How patient specific do the assumed parameters have to be for the model to be useful? In this paper we address both of these questions and provide a theoretical platform to perform patient specific grey-box modeling of the human neocortex.
+Generating patient specific models allows the application of a range of techniques from control systems theory, where tailored electrical stimulation could be used therapeutically in a closed loop fashion.  Currently available epileptic seizure prediction and control devices (i.e., the vagal nerve stimulator) are implemented in an ``open loop".  That is, the therapeutic electrical stimulation waveforms are adjusted for each patient by trial and error, disregarding the patient's neurodynamics and information about their particular pathologies. Given access to an accurate model, the application of control theory in these circumstances would allow for robust therapeutic stimulations.
+The work from Schiff and Sauer~\cite{schiff2008kalman} successfully demonstrated  it is possible to estimate parameters from the WC equations. This motivates the question, what parameters are the most important? How patient specific do the assumed parameters have to be for the model to be useful? In this paper, we address both of these questions and provide a theoretical platform to perform patient-specific grey-box modeling of the human neocortex.
 
 \section{The Importance of Cortical Structure}
-
 Neural field models use statistics of the cortex to relate mean firing rates of pre-synaptic neural populations to post-synaptic mean membrane potentials. Each neural population represents a functional cortical processing unit referred to as a column. The columnar organization of the cortex is not discrete, but is continuous, where pyramidal cells are members of many columns. In general, cortical structure can be modeled in a physiologically plausible manner as being locally homogeneous (in short range intracortical connectivity) and heterogeneous (in long range corticocortical and corticothalamic connectivity)~\cite{Jirsa2009}~\cite{Qubbaj2007}. Locally, each column is thought be connected via symmetric short range local excitation, with surround inhibition~\cite{Braitenberg1998}. For example, this structural organization is most studied in the visual system, where the surrounding inhibition effectively tunes a cortical column to a particular receptive visual field~\cite{Sullivan2006}.
 
-Recent studies using neural field models have demonstrated the theoretical implications of the connectivity structure of the cortical columns, where the connectivity kernel governs the bifurcation points of the models~\cite{Hutt2005} and types of oscillations that can be generated~\cite{Schmidt2009}. This implies that if we could estimate the connectivity structure for an individual, than we could model patient specific neurodynamics. Estimating functional cortical connectivity via EEG measures is currently a highly active area of research. There is a lot of interest in understanding the hierarchy of brain regions are involved in specific tasks, motivating the use of techniques like DCM. Other comparable methods are based on auto-regressive (AR) modeling of the EEG, MEG or fMRI times series. Studies have concentrated on finding functional connectivity patterns using information contained in the AR coefficients using techniques like Granger causality~\cite{Hesse2003}, the direct transfer function~\cite{Kaminski1991}, and partial directed coherence~\cite{Sameshima1999}). Again, like the DCM approach, these methods estimate long range connectivity patterns that does not provide a clear relationship between the continuum field models and data. Analysis of the connectivity estimates provided from these approaches has involved graph theoretical techniques (small worldedness).
+Recent studies using neural field models have demonstrated the theoretical implications of specific connectivity structure of the cortical columns in neural field models, where the connectivity kernel governs the bifurcation points of the system~\cite{Hutt2005} and types of oscillations that can be generated~\cite{Schmidt2009}. This implies that if we could estimate the connectivity structure for an individual, then we could capture the essential patient specific neurodynamics that lead to various oscillatory states. Estimating functional cortical connectivity via EEG measures is currently a highly active area of research. There is a lot of interest in understanding the hierarchy of brain regions that are involved in specific tasks, motivating the use of techniques like DCM. Other comparable methods are based on auto-regressive (AR) modeling of the EEG, MEG, or fMRI times series. Studies have concentrated on finding functional connectivity patterns using information contained in the AR coefficients using techniques like Granger causality~\cite{Hesse2003}, the direct transfer function~\cite{Kaminski1991}, and partial directed coherence~\cite{Sameshima1999}. Again, like the DCM approach, these methods estimate long range connectivity patterns that does not provide a clear relationship between the continuum field models and data.
+%Analysis of the connectivity estimates provided from these approaches has involved graph theoretical techniques (small worldedness).
 
-Until now, estimation of local intracortical connectivity structure has not been attempted. Recently, it has been shown that it is possible to estimate local coupling of systems governed by integro-difference equations by formulating a state-space model~\cite{Dewar2009}. The key development in this work was to define the state-space model order independent of the number of observations (or ECoG recording electrodes in this case). In addition, the appropriate model selection tools have been developed~\cite{Scerri2009} allowing for the application of this technique to neural fields. Modeling the neural dynamics within this framework has a distinct advantage over AR models, such that the number of parameters to define the connectivity basis functions is considerably smaller than the number of AR coefficients typically required to achieve the relevant information criteria. In this paper we demonstrate for the first time how intracortical connectivity can be inferred from ECoG data, based on a variant of the  Wilson and Cowan neural field model~\cite{Wilson1973}. This work provides a fundamental link between the theoretical advances in neural field modeling and patient specific data.
-
-Long range connectivity can be estimated using DTI~\cite{Knock2009}, however this short range connectivity can not..
+Until now, estimation of local intracortical connectivity structure has not been attempted. Recently, it has been shown that it is possible to estimate local coupling of systems governed by integro-difference equations by formulating a state-space model~\cite{Dewar2009}. The key development in this work was to define a state-space model with an order independent of the number of observations (or ECoG recording electrodes in this case). In addition, the appropriate model selection tools have been developed~\cite{Scerri2009} allowing for the application of this technique to neural fields. Modeling the neural dynamics within this framework has a distinct advantage over AR models, such that the number of parameters to define the connectivity basis functions (three in the paper) is considerably smaller than the number of AR coefficients typically required to achieve the relevant information criteria (AIC or BIC). In this paper, we demonstrate for the first time how intracortical connectivity can be inferred from ECoG data, based on a variant of the  Wilson and Cowan neural field model~\cite{Wilson1973}. This work provides a fundamental link between the theoretical advances in neural field modeling and patient specific data.
+%Long range connectivity can be estimated using DTI~\cite{Knock2009}, however this short range connectivity can not..
 
 \section{Neural Field Model}
-In this section we describe a variant of the  Wilson and Cowan neural field model~\cite{Wilson1973} that will be used to create our connectivity estimator. This model has shown to be descriptive of a range of neurodynamics of the cortex such as evoked potentials, visual hallucinations and epileptic behavior. It is also capable of generating complex patterns of activity such as Turing patterns, spirals and traveling oscillations. The general form of the model is described here. The post-synaptic potentials generated at a neuronal population $r$ by action potentials arriving from all other connected populations at position $r'$ can be described by
+In this section, we describe a variant of the  Wilson and Cowan neural field model~\cite{Wilson1973} that will be used to create our intracortical connectivity estimator. This model is descriptive of a range of neurodynamics of the cortex such as evoked potentials, visual hallucinations, and epileptic behavior. It is also capable of generating complex patterns of activity such as Turing patterns, spirals, and traveling oscillations. The neural field model is popular due to being parsimonious yet having a strong link with the underlying physiology.
+The model relates the average number of action potentials $f$ arriving at $r$ to the local post synaptic membrane voltage. The post-synaptic potentials generated at a neuronal population at location $r$ by action potentials arriving from all other connected populations at locations $r'$ can be described by
 \begin{equation}\label{SpikesToPotential}
 v\left( {r,t} \right) = \int_{ - \infty }^t {h\left( {t - t'} \right)f\left( {r,t'} \right)dt'} + e\left( {r,t} \right).
 \end{equation}
-Equation~\ref{SpikesToPotential} relates, $f$, or the average number of action potentials arriving at $r$ to the post synaptic potential at $r$, to the local membrane voltage. The term $e(r,t)$ can be considered the potential generated by unmodeled inputs and spontaneous background activity. The post-synaptic response kernel $h(t)$ is described by
+The term $e(r,t)$ can be considered the potential generated by unmodeled inputs and spontaneous background activity. The post-synaptic response kernel $h(t)$ is described by
 \begin{equation}\label{SynapticRespKernel}
 h(t) = \left\{ {\begin{array}{*{20}{c}}
    {\exp ( - \alpha t)} & {t \ge 0}  \\
    0 & {t < 0}  \\
 \end{array}} \right.
 \end{equation}
-where $\alpha=\tau^{-1}$ and $\tau$ is the synaptic time constant. The synaptic response kernel can be more elaborate, using a rise and fall time constants, however this simple form serves our purposes. Nonlocal interactions between cortical populations are described by	
+where $\alpha=\tau^{-1}$ and $\tau$ is the synaptic time constant. The synaptic response kernel can be more elaborate, using rise and fall time constants, however, this simple form serves our purposes. Nonlocal interactions between cortical populations are described by	
 \begin{equation}\label{RateBasedInteractions}
 f\left( {r,t} \right) = \int_\Omega  {w\left( {r,r'} \right)p\left( {v\left( {r',\bar t} \right)} \right)dr'}
 \end{equation}
-where $\bar t = t - d\left| {r - r'} \right|$, $p$ is spiking rate of populations $r'$, $w$ is the spatial connectivity kernel, $\Omega$ is the spatial domain, representing a cortical sheet or surface and $d$ is the propagation delay from $r'$ to $r$.
+where $\bar t = t - d\left| {r - r'} \right|$, $d$ is the propagation delay of action potentials, $p$ is spiking rate of populations $r'$, $w$ is the spatial connectivity kernel, and $\Omega$ is the spatial domain, representing a cortical sheet or surface.
 
-The average firing rate of the presynaptic neurons is related to the postsynaptic membrane potential by the Heaviside step function
-\begin{equation}\label{RateOfPreSynPops}
-p\left( {v\left( {r,\bar t} \right)} \right) = {\nu_0}u\left( {v\left( {r,\bar t} \right) - {v_0}\left( r \right)} \right)
+The average firing rate of the presynaptic neurons is related to the postsynaptic membrane potential by the sigmoidal activation function
+\begin{equation}\label{ActivationFunction}
+p\left( {{v_t}\left( {r'} \right)} \right) = \frac{{{\nu _0}}}{{1 + \exp \left( {\beta \left( {{v_0}\left( r \right) - {v_t}\left( {r'} \right)} \right)} \right)}}.
 \end{equation}
-\begin{equation}\label{HeavisideDef}
-u\left( {v\left( {r,\bar t} \right) - {v_0}\left( r \right)} \right) = \left\{ {\begin{array}{*{20}{c}}
-   1 & {v\left( {r,\bar t} \right) \ge {v_0}\left( r \right)}  \\
-   0 & {otherwise}  \\
-\end{array}} \right.
-\end{equation}
-Even though we will model  $v_0$ as being homogeneous across the cortical sheet we will express it as being spatially dependant allowing for generality when constructing the state-space representation in the next section. The parameters in equation~\ref{RateOfPreSynPops} are... $v_0$ is typically 6~mV, $\nu_0$ is 5~$s^{-1}$ (from Wendling and David papers). By combining equations~\ref{SpikesToPotential} and \ref{RateBasedInteractions} we get the spatiotemporal model
+%\begin{equation}\label{RateOfPreSynPops}
+%p\left( {v\left( {r,\bar t} \right)} \right) = {\nu_0}u\left( {v\left( {r,\bar t} \right) - {v_0}\left( r \right)} \right)
+%\end{equation}
+%\begin{equation}\label{HeavisideDef}
+%u\left( {v\left( {r,\bar t} \right) - {v_0}\left( r \right)} \right) = \left\{ {\begin{array}{*{20}{c}}
+%   1 & {v\left( {r,\bar t} \right) \ge {v_0}\left( r \right)}  \\
+%   0 & {otherwise}  \\
+%\end{array}} \right.
+%\end{equation}
+Even though we will model  $v_0$ as being homogeneous across the cortical sheet we will express it as being spatially dependant allowing for generality when constructing the state-space representation in the next section. The parameters in equation~\ref{ActivationFunction} are detailed in Table 1. By combining equations~\ref{SpikesToPotential} and \ref{RateBasedInteractions} we get the spatiotemporal model
 \begin{equation}\label{FullDoubleIntModel}
 v\left(r,t\right) = \int\limits_{-\infty}^t\int\limits_\Omega  h\left(t - t'\right)w\left(r,r'\right)p\left( v\left( r',\bar t \right)\right)dr' dt'+e\left(r,t\right)
 \end{equation}
@@ -131,91 +133,87 @@ where $L$ is a polynomial of order $n$ with constant coefficients that provides 
 \begin{equation}\label{FinalForm1}
 \frac{{dv\left( {r,t} \right)}}{{dt}} + \alpha{v\left( {r,t} \right)} = \int_\Omega  {w\left( {r,r'} \right)p\left( {v\left( {r',\bar t} \right)} \right)dr'}  +e\left( {r,t} \right).
 \end{equation}
-\subsection{Alternate Model Description I}
-An alternate and equivalent way to remove the temporal integration using the Laplace transform . We start by considering a discrete neural mass $i$ with inputs with zero delay from another discrete mass $j$ and
-\begin{equation}\label{TwoDiscreteMasses}
-{v_i}\left( t \right) = \int_{ - \infty }^t {{h_j}(t - t'){w_{ij}}p\left( {{v_j}\left( t \right)} \right)dt'},
-\end{equation}
-where $w_{ij}$ can be considered the synaptic efficiency from $j$ to $i$. Now we take the Laplace transform $\mathcal{L}(v_i(t))=V(s)$ yielding
-\begin{eqnarray}
-% \nonumber to remove numbering (before each equation)
-  {V_i}\left( s \right) &=& {H_j}\left( s \right){w_{ij}}P\left( {{V_j}\left( s \right)} \right) \nonumber \\
-   &=& {\left( {s + \alpha} \right)^{ - 1}}{w_{ij}}P\left( {{V_j}\left( s \right)} \right)  \\
-  \Rightarrow s{V_i}\left( s \right) + \alpha{V_i}\left( s \right) &=& {w_{ij}}P\left( {{V_j}\left( s \right)} \right).
-\end{eqnarray}
-Now taking the inverse Laplace transform we get
-\begin{equation}\label{InverseLaplace}
-\frac{{d{v_i}\left( t \right)}}{{dt}} + \alpha{v_i}\left( t \right) = {w_{ij}}p\left( {{v_j}\left( t \right)} \right).
-\end{equation}
-Next we convert the model from discrete neural masses to a continuum by
-\begin{equation}\label{Discrete2Continuum}
-\frac{{dv\left( {r,t} \right)}}{{dt}} + \alpha{v\left( {r,t} \right)} = \int_\Omega  {w\left( {r,r'} \right)p\left( {v\left( {r',\bar t} \right)} \right)dr'}  + e\left( {s,t} \right).
-\end{equation}
-The neural field model is popular due to being parsimonious yet having a strong link with the underlying physiology.
-
-\subsection{Alternate Model Description II}
-
-\begin{figure*}
-\centering
-\includegraphics[scale=0.4]{NeuralMassFigure.eps}
-\caption[NeuralMassModel]{This figure describes the basic interactions of neural masses that constitute the neural field model.}
-\label{NeuralMassModel}
-\end{figure*}
-
-An alternative description of the model is as follows. The model can be thought of as a continuum of neural masses. To illustrate this idea we shall first describe the interaction of discrete neural masses as seen in Figure~\ref{NeuralMassModel}. Assuming post-synaptic potentials sum linearly, the membrane potential at the soma of neuron $i$ is described as
-\begin{equation}\label{VoltageFromPSPs}
-{v_i}\left( t \right) = \sum\nolimits_{j,k} {{w_{ij}}{h_{j}}\left( t - {t_k}\right)} u\left( {t - {t_k}} \right),
-\end{equation}
-where $w_{ij}$ is the synaptic weight from neuron $j$ to $i$, $h(t)$ is the synaptic response kernel, $S$ is the Heaviside step function and action potential arrive at neuron $i$ at times $t_k$. Alternatively the membrane potential can described by the convolution of synaptic response kernel with the pre-synaptic firing rate $r_j(t)$ where
-\begin{equation}\label{VoltageFromRate}
-{v_i}\left( t \right) = \sum\nolimits_j {\int_{ - \infty }^t {{w_{ij}}{h_j}\left( {t - t'} \right){r_j}\left( t \right)} } dt'.
-\end{equation}
-To convert the equation system into and integral differential system we shall take derivative of~\ref{EqVoltageFromPSPs} yielding
-\begin{eqnarray}
-% \nonumber to remove numbering (before each equation)
-  \frac{{d{v_i}\left( t \right)}}{{dt}} &=& \sum\nolimits_{j,k} {\left( {{w_{ij}}{h_j}\left( t- {t_k} \right)\frac{d}{{dt}}u\left( {t - {t_k}} \right) + {w_{ij}}u\left( {t - {t_k}} \right)\frac{d}{{dt}}{h_j}\left( t- {t_k} \right)} \right)} \nonumber \\
-   &=& \sum\nolimits_{j,k} {{w_{ij}}{h_j}\left( t- {t_k} \right)\delta \left( {t - {t_k}} \right)}  - \sum\nolimits_{j,k} {{w_{ij}}u\left( {t - {t_k}} \right)\alpha_j{h_j}\left( t- {t_k} \right)}   \nonumber \\
-   &=& \sum\nolimits_{j,k} {{w_{ij}}\delta \left( {t - {t_k}} \right)}  - {v_i}\left( t \right)\sum\nolimits_j {\alpha_j} \nonumber  \\
-   &=& \sum\nolimits_j {{w_{ij}}{\nu_j}\left( t \right)}  - {v_i}\left( t \right)\sum\nolimits_j {\alpha_j} \nonumber \\
-   &=& \sum\nolimits_j {{w_{ij}}p\left( {{v_j}\left( t \right)} \right)}  - {v_i}\left( t \right)\sum\nolimits_j {\alpha_j}.
-\end{eqnarray}
-This form can easily be extended to represent a continuous field.
+%\subsection{Alternate Model Description I}
+%An alternate and equivalent way to remove the temporal integration using the Laplace transform . We start by considering a discrete neural mass $i$ with inputs with zero delay from another discrete mass $j$ and
+%\begin{equation}\label{TwoDiscreteMasses}
+%{v_i}\left( t \right) = \int_{ - \infty }^t {{h_j}(t - t'){w_{ij}}p\left( {{v_j}\left( t \right)} \right)dt'},
+%\end{equation}
+%where $w_{ij}$ can be considered the synaptic efficiency from $j$ to $i$. Now we take the Laplace transform $\mathcal{L}(v_i(t))=V(s)$ yielding
+%\begin{eqnarray}
+%% \nonumber to remove numbering (before each equation)
+%  {V_i}\left( s \right) &=& {H_j}\left( s \right){w_{ij}}P\left( {{V_j}\left( s \right)} \right) \nonumber \\
+%   &=& {\left( {s + \alpha} \right)^{ - 1}}{w_{ij}}P\left( {{V_j}\left( s \right)} \right)  \\
+%  \Rightarrow s{V_i}\left( s \right) + \alpha{V_i}\left( s \right) &=& {w_{ij}}P\left( {{V_j}\left( s \right)} \right).
+%\end{eqnarray}
+%Now taking the inverse Laplace transform we get
+%\begin{equation}\label{InverseLaplace}
+%\frac{{d{v_i}\left( t \right)}}{{dt}} + \alpha{v_i}\left( t \right) = {w_{ij}}p\left( {{v_j}\left( t \right)} \right).
+%\end{equation}
+%Next we convert the model from discrete neural masses to a continuum by
+%\begin{equation}\label{Discrete2Continuum}
+%\frac{{dv\left( {r,t} \right)}}{{dt}} + \alpha{v\left( {r,t} \right)} = \int_\Omega  {w\left( {r,r'} \right)p\left( {v\left( {r',\bar t} \right)} \right)dr'}  + e\left( {s,t} \right).
+%\end{equation}
+%
+%\subsection{Alternate Model Description II}
+%\begin{figure*}
+%\centering
+%\includegraphics[scale=0.4]{NeuralMassFigure.eps}
+%\caption[NeuralMassModel]{This figure describes the basic interactions of neural masses that constitute the neural field model.}
+%\label{NeuralMassModel}
+%\end{figure*}
+%An alternative description of the model is as follows. The model can be thought of as a continuum of neural masses. To illustrate this idea, we shall first describe the interaction of discrete neural masses as seen in Figure~\ref{NeuralMassModel}. Assuming that post-synaptic potentials sum linearly, the membrane potential at the soma of neuron $i$ is described as
+%\begin{equation}\label{VoltageFromPSPs}
+%{v_i}\left( t \right) = \sum\nolimits_{j,k} {{w_{ij}}{h_{j}}\left( t - {t_k}\right)} u\left( {t - {t_k}} \right),
+%\end{equation}
+%where $w_{ij}$ is the synaptic weight from neuron $j$ to $i$, $h(t)$ is the synaptic response kernel, $S$ is the Heaviside step function and action potential arrive at neuron $i$ at times $t_k$. Alternatively the membrane potential can described by the convolution of synaptic response kernel with the pre-synaptic firing rate $r_j(t)$ where
+%\begin{equation}\label{VoltageFromRate}
+%{v_i}\left( t \right) = \sum\nolimits_j {\int_{ - \infty }^t {{w_{ij}}{h_j}\left( {t - t'} \right){r_j}\left( t \right)} } dt'.
+%\end{equation}
+%To convert the equation system into an integral differential system, we shall take derivative of~\ref{EqVoltageFromPSPs} yielding
+%\begin{eqnarray}
+%% \nonumber to remove numbering (before each equation)
+%  \frac{{d{v_i}\left( t \right)}}{{dt}} &=& \sum\nolimits_{j,k} {\left( {{w_{ij}}{h_j}\left( t- {t_k} \right)\frac{d}{{dt}}u\left( {t - {t_k}} \right) + {w_{ij}}u\left( {t - {t_k}} \right)\frac{d}{{dt}}{h_j}\left( t- {t_k} \right)} \right)} \nonumber \\
+%   &=& \sum\nolimits_{j,k} {{w_{ij}}{h_j}\left( t- {t_k} \right)\delta \left( {t - {t_k}} \right)}  - \sum\nolimits_{j,k} {{w_{ij}}u\left( {t - {t_k}} \right)\alpha_j{h_j}\left( t- {t_k} \right)}   \nonumber \\
+%   &=& \sum\nolimits_{j,k} {{w_{ij}}\delta \left( {t - {t_k}} \right)}  - {v_i}\left( t \right)\sum\nolimits_j {\alpha_j} \nonumber  \\
+%   &=& \sum\nolimits_j {{w_{ij}}{\nu_j}\left( t \right)}  - {v_i}\left( t \right)\sum\nolimits_j {\alpha_j} \nonumber \\
+%   &=& \sum\nolimits_j {{w_{ij}}p\left( {{v_j}\left( t \right)} \right)}  - {v_i}\left( t \right)\sum\nolimits_j {\alpha_j}.
+%\end{eqnarray}
+%This form can easily be extended to represent a continuous field.
 
 \subsection{Assumptions and Simplifications}
-We assume the velocity of the action potentials is infinite. This is also a common assumption that is made when modeling intracortical circuits. As stated in Wilson and Cohen's original works, the time constant $\tau$ is much greater than the axonal propagation delays, therefore it is reasonable to approximate the the delays as being infinite. Recent studies have demonstrated the importance of having a fast, but finite, propagation velocity for models to make realistic and complete predictions of cortical dynamics~\cite{Atay2005}. The purpose of this paper, however, is not to precisely simulate complex cortical dynamics, but to create a useful platform where estimation of hidden states is possible for the purpose of detecting abnormal neural states with intentions of generating informed patient specific control sequences. Therefore, the model simply has to be 'good enough' for this purpose. Starting with this simplified version of the general model is a logical choice. The next assumption we will make is spatial homogeneity such that synaptic interaction between neural populations is only dependant on their spatial separation, and not on their spatial location. Again, this is a common assumption when dealing with intracortical connectivity. This assumption is not essential for our IDE estimation techniques, where a heterogeneous structure is possible. The IDE estimation is derived for a general heterogeneous structure, however for clarity of results we shall only present the heterogeneous case. We will assume the synaptic response kernel has the same shape (scaled by the connectivity kernel) irrespective of the respective presynaptic population. In this case inhibition can be modeled by having a negative response kernel and excitation with a positive kernel, where the kernel provides the (scaled) polarity. This reduced the model to a single field. I am not sure how this will limit the dynamics??
-With these assumptions we have the model in the form
+We assume that the propagation delay of action potentials is zero. This is a common assumption that is made when modeling intracortical circuits (\textcolor[rgb]{1.00,0.00,0.00}{refs}). As stated in Wilson and Cohen's original works, the time constant $\tau$ is much greater than the axonal propagation delays, therefore it is reasonable to approximate the the delays as being negligible. Recent studies have demonstrated the importance of having a fast, but finite, propagation velocity for models to make realistic and complete predictions of cortical dynamics~\cite{Atay2005}. The purpose of this paper, however, is not to precisely simulate complex cortical dynamics, but to create a useful platform where estimation of hidden states is possible for the purpose of detecting abnormal neural states with intentions of generating informed patient specific control sequences. Therefore, the model simply has to be `good enough' for this purpose. Starting with this simplified version of the general model is a logical choice. The next assumption we will make is spatial homogeneity such that synaptic interaction between neural populations is only dependant on their spatial separation, not on their spatial location. Again, this is a common assumption when dealing with intracortical connectivity (\textcolor[rgb]{1.00,0.00,0.00}{ref}). This assumption is not essential for our IDE estimation techniques, where a heterogeneous structure is possible. The IDE estimation is derived for a general heterogeneous structure however, for clarity of results we shall only present the heterogeneous case. We will assume the synaptic response kernel has the same shape (scaled by the connectivity kernel) irrespective of the respective presynaptic population. In this case, inhibition can be modeled by having a negative response kernel and excitation with a positive response kernel, where the connectivity kernel provides the (scaled) polarity. This reduces the model to a single field. We will also assume the activation function $p(.)$ is a Heaviside step function. This is in agreement with the work of Schiff and Sauer~\cite{schiff2008kalman}. With these assumptions, the model has the form
 \begin{equation}\label{SimplifiedModel}
-\frac{{dv\left( {r,t} \right)}}{{dt}} = \int_\Omega  {w\left( {r-r'} \right)P\left( {v\left( {r',t} \right)} \right)dr'}  - \alpha{v\left( {r,t} \right)} + e\left( {r,t} \right).
+\frac{{dv\left( {r,t} \right)}}{{dt}} = \int_\Omega  {w\left( {r-r'} \right)p\left( {v\left( {r',t} \right)} \right)dr'}  - \alpha{v\left( {r,t} \right)} + e\left( {r,t} \right).
 \end{equation}
-
-\subsection{IDE Formulation}
-
-For the state-space derivation, to create an estimator, the model can be reformulated like so
-\begin{equation}\label{new_spatiotemporal_kernels}
-\frac{{dv\left( {r,t} \right)}}{{dt}} = \int_\Omega  {k\left( {r - r'} \right)\tilde v\left( {r',t} \right) - \alpha \delta \left( {r - r'} \right)\bar v\left( {r,t} \right)dr'}  + e\left( {r,t} \right)
-\end{equation}
-
-\begin{equation}\label{define_v_tilde}
-\tilde v\left( {r,t} \right) = \left\{ {\begin{array}{*{20}{c}}
-   {v\left( {r,t} \right)} & {v\left( {r,t} \right) \ge {v_0}}  \\
-   0 & {otherwise}  \\
-\end{array}} \right.
-\end{equation}
-
-\begin{equation}\label{define_v_bar}
-\bar v\left( {r,t} \right) = \left\{ {\begin{array}{*{20}{c}}
-   {v\left( {r,t} \right)} & {v\left( {r,t} \right) < {v_0}}  \\
-   0 & {otherwise}  \\
-\end{array}} \right.
-\end{equation}
-
-\begin{figure*}
-\centering
-\includegraphics[scale=0.4]{ExampleFieldDecomposition.eps}
-\caption[ExampleFieldDecomposition]{Illustration of a one dimensional field decomposition using 5 Gaussian basis functions, each weighted an element of the state vector. Each basis function has a width of 0.01 and is uniformly positioned with a separation of 0.25 (with arbitrary units).}
-\label{ExampleFieldDecomposition}
-\end{figure*}
-
+In order to make the problem trackable, in terms of model order, we assume that we can decompose the field (membranes voltages) into a set of $n_\phi$ Gaussian basis functions. We will also assume that we know the location and width of the basis function that is required to decompose the field. The state of the system is the height basis functions, rather than the membrane potential. Therefore, the number of basis functions required to decompose the field is equal to the number of states. Also, we assume that we can represent the connectivity by a regular grid of three connectivity Gaussian basis functions (corresponding to short, mid and long range connectivity) of known width. The height of the connectivity basis functions ($\theta$ parameter) is to be estimated.
+%\subsection{IDE Formulation}
+%
+%For the state-space derivation, to create an estimator, the model can be reformulated like so
+%\begin{equation}\label{new_spatiotemporal_kernels}
+%\frac{{dv\left( {r,t} \right)}}{{dt}} = \int_\Omega  {k\left( {r - r'} \right)\tilde v\left( {r',t} \right) - \alpha \delta \left( {r - r'} \right)\bar v\left( {r,t} \right)dr'}  + e\left( {r,t} \right)
+%\end{equation}
+%
+%\begin{equation}\label{define_v_tilde}
+%\tilde v\left( {r,t} \right) = \left\{ {\begin{array}{*{20}{c}}
+%   {v\left( {r,t} \right)} & {v\left( {r,t} \right) \ge {v_0}}  \\
+%   0 & {otherwise}  \\
+%\end{array}} \right.
+%\end{equation}
+%
+%\begin{equation}\label{define_v_bar}
+%\bar v\left( {r,t} \right) = \left\{ {\begin{array}{*{20}{c}}
+%   {v\left( {r,t} \right)} & {v\left( {r,t} \right) < {v_0}}  \\
+%   0 & {otherwise}  \\
+%\end{array}} \right.
+%\end{equation}
+%
+%\begin{figure*}
+%\centering
+%\includegraphics[scale=0.4]{ExampleFieldDecomposition.eps}
+%\caption[ExampleFieldDecomposition]{Illustration of a one dimensional field decomposition using 5 Gaussian basis functions, each weighted an element of the state vector. Each basis function has a width of 0.01 and is uniformly positioned with a separation of 0.25 (with arbitrary units).}
+%\label{ExampleFieldDecomposition}
+%\end{figure*}
+%
 \section{State-Space Neural Field Model}
 In this section we shall reconstruct the model in a state-space form that is a novel representation of the neural field equations. The benefit of restating the model in this format is that it becomes easier to simulate and allows the connectivity to be inferred from data. \begin{equation}
  v_{t+1}(\mathbf s)=\int_{\mathcal S} \alpha \delta(\mathbf s-\mathbf r)\bar v_t(\mathbf r)d \mathbf r+\int_{\mathcal S} w(\mathbf s -\mathbf r)\tilde v_t(\mathbf r)d\mathbf r+e_t(\mathbf s)
@@ -227,7 +225,7 @@ decomposing the field and the kernel we have
 \label{eq:cortexfieldlv0}
 \end{equation}
 \begin{equation}
-\tilde v_t(\mathbf r)=\boldsymbol \phi^{\top}(\mathbf r)\tilde{\mathbf x}_t=\nu_0
+\tilde v_t(\mathbf r)=\boldsymbol \phi^{\top}(\mathbf r)\tilde{\mathbf x}_t=\nu_0 + \boldsymbol \phi^{\top}(\mathbf r)\bar{\mathbf x}_t
 \label{eq:cortexfieldgv0}
 \end{equation}
 \begin{equation}
@@ -303,71 +301,69 @@ where
 \end{equation}
 Next we shall demonstrate the stability of the model and in the following section the estimator for the state vector and connectivity structure is derived.
 
-\subsection{State-Space Model Alternative Approach}
-First we define
-
-\begin{eqnarray}
+\subsection{State-Space Neural Field Model}
+In this section we shall reconstruct the model in a state-space form that is a novel representation of the neural field equations. The benefit of restating the model in this format is that it becomes easier to simulate and allows the connectivity to be inferred from data. We begin with the model in the form
+\begin{eqnarray}\label{InitialModel}
 % \nonumber to remove numbering (before each equation)
-  {v_{t + 1}}\left( r \right) &=& \int_\Omega  {k\left( {r - r'} \right)p\left( {{v_t}\left( {r'} \right)} \right) - \alpha v\left( {r,t} \right)dr'}  + \varepsilon \left( {r,t} \right) \\
-   &=& \int_\Omega  {k\left( {r - r'} \right)p\left( {{v_t}\left( {r'} \right)} \right)dr'}  - \alpha v\left( {r,t} \right) + \varepsilon \left( {r,t} \right)
+  {v_{t + 1}}\left( r \right) &=& \int_\Omega  {k\left( {r - r'} \right)p\left( {{v_t}\left( {r'} \right)} \right) - \alpha v\left( {r,t} \right)dr'}  + \varepsilon \left( {r,t} \right) \nonumber \\
+   &=& \int_\Omega  {k\left( {r - r'} \right)p\left( {{v_t}\left( {r'} \right)} \right)dr'}  - \alpha v\left( {r,t} \right) + \varepsilon \left( {r,t} \right).
 \end{eqnarray}
-
-Defining
-\begin{equation}\label{Def1}
+Next we defining the basis functions the decompositions of the field and connectivity kernel, where $\phi(s)$ is a vector is Gaussian basis functions, $x_t$ is the state, $\psi(r-r')$ is a vector of three connectivity basis functions and $\theta$ is the corresponding weight of the connectivity
+\begin{equation}\label{FieldDecomp}
    {v_t}\left( r \right) = {\phi ^T}\left( r \right){x_t}
 \end{equation}
-\begin{equation}\label{Def2}
-k\left( {r - r'} \right) = {\theta ^T}\psi \left( {r - r'} \right)
+\begin{equation}\label{KernelDecomp}
+k\left( {r - r'} \right) = {\theta ^T}\psi \left( {r - r'} \right).
 \end{equation}
-Since we assume knowledge of $\phi(r')$ and $p(.)$, and $\phi(r')$ is independent of $x_t$ we can uniquely define the functions $\kappa(.)$ and $\rho(.)$ such that
-\begin{eqnarray}
+Assume we know $\phi(r')$ and it is constant, and the form of the activation function $p(.)$ is known, and $\phi(r')$ is independent of $x_t$, then we can uniquely define the function $\rho(.)$ such that
+\begin{eqnarray}\label{NonlinearState}
 % \nonumber to remove numbering (before each equation)
-  p\left( {{v_t}\left( {r'} \right)} \right)  &=& p\left( {{\phi ^T}\left( {r'} \right){x_t}} \right) \\
-   &=& \kappa \left( {{\phi ^T}\left( {r'} \right)} \right)\rho \left( {{x_t}} \right) 
+  p\left( {{v_t}\left( {r'} \right)} \right)  &=& p\left( {{\phi ^T}\left( {r'} \right){x_t}} \right) \nonumber \\
+   &=& \phi ^T\left(r'\right)\rho \left( {{x_t}} \right).
 \end{eqnarray}
-Making substitutions we get
-\begin{equation}\label{Subs}
-{\phi ^T}\left( r \right){x_{t + 1}} = {\theta ^T}\int_\Omega  {\psi \left( {r - r'} \right)\kappa \left( {{\phi ^T}\left( {r'} \right)} \right)dr'} \rho \left( {{x_t}} \right) - \alpha {\phi ^T}\left( r \right){x_t} + \varepsilon \left( {r,t} \right)
-\end{equation}
-now defining
-\begin{equation}\label{Def4}
-\Phi \left( r \right) = \int_\Omega  {\psi \left( {r - r'} \right)\kappa \left( {{\phi ^T}\left( {r'} \right)} \right)dr'}
-\end{equation}
-\begin{equation}\label{Sub2}
-{\phi ^T}\left( r \right){x_{t + 1}} = {\theta ^T}\Phi \left( r \right)\rho \left( {{x_t}} \right) - \alpha {\phi ^T}\left( r \right){x_t} + \varepsilon \left( {r,t} \right)
-\end{equation}
-cross multiply in integrate over $r'$
-\begin{equation}\label{CorssMultAndInt}
-\int_\Omega  {\phi \left( r \right){\phi ^T}\left( r \right)dr} {x_{t + 1}} = {\theta ^T}\int_\Omega  {\phi \left( r \right)\Phi \left( r \right)dr} \rho \left( {{x_t}} \right) - \alpha \int_\Omega  {\phi \left( r \right){\phi ^T}\left( r \right)dr} {x_t} + \int_\Omega  {\phi \left( r \right)\varepsilon \left( {r,t} \right)dr}
+Making substitutions of~\ref{FieldDecomp}, \ref{KernelDecomp} and \ref{NonlinearState} into \ref{InitialModel} we get
+\begin{equation}\label{ModelDecomposed}
+{\phi ^T}\left( r \right){x_{t + 1}} = {\theta ^T}\int_\Omega  {\psi \left( {r - r'} \right){\phi ^T}\left( {r'}\right)dr'} \rho \left( {{x_t}} \right) - \alpha {\phi ^T}\left( r \right){x_t} + \varepsilon \left( {r,t} \right)
 \end{equation}
 Now we define
-\begin{equation}\label{Def5}
-{\Psi _x} = \int_\Omega  {\phi \left( r \right){\phi ^T}\left( r \right)dr} 
+\begin{equation}\label{DefPhi}
+\Phi \left( r \right) = \int_\Omega  {\psi \left( {r - r'} \right){\phi ^T}\left( {r'} \right)dr'}.
 \end{equation}
-\begin{equation}\label{Def6}
-{\Psi _\theta } = \int_\Omega  {\phi \left( r \right)\Phi \left( r \right)dr}
+Substituting~\ref{DefPhi} into \ref{ModelDecomposed} we get
+\begin{equation}\label{Sub2}
+{\phi ^T}\left( r \right){x_{t + 1}} = {\theta ^T}\Phi \left( r \right)\rho \left( {{x_t}} \right) - \alpha {\phi ^T}\left( r \right){x_t} + \varepsilon \left( {r,t} \right).
 \end{equation}
-Making substitutions
+Cross multiplying by $\phi(r)$ in integrating over $r$ gives
+\begin{equation}\label{CorssMultAndInt}
+\int_\Omega  {\phi \left( r \right){\phi ^T}\left( r \right)dr} {x_{t + 1}} = {\theta ^T}\int_\Omega  {\phi \left( r \right)\Phi \left( r \right)dr} \rho \left( {{x_t}} \right) - \alpha \int_\Omega  {\phi \left( r \right){\phi ^T}\left( r \right)dr} {x_t} + \int_\Omega  {\phi \left( r \right)\varepsilon \left( {r,t} \right)dr}.
+\end{equation}
+Now we define
+\begin{equation}\label{DefPsix}
+{\Psi _x} = \int_\Omega  {\phi \left( r \right){\phi ^T}\left( r \right)dr}
+\end{equation}
+\begin{equation}\label{DefPsitheta}
+{\Psi _\theta } = \int_\Omega  {\phi \left( r \right)\Phi \left( r \right)dr}.
+\end{equation}
+Substituting~\ref{DefPsix} and \ref{DefPsitheta} into \ref{CorssMultAndInt} we get 
 \begin{equation}\label{Subs3}
-{\Psi _x}{x_{t + 1}} = {\theta ^T}{\Psi _\theta }\rho \left( {{x_t}} \right) - \alpha {\Psi _x}{x_t} + \int_\Omega  {\phi \left( r \right)\varepsilon \left( {r,t} \right)dr}
+{\Psi _x}{x_{t + 1}} = {\theta ^T}{\Psi _\theta }\rho \left( {{x_t}} \right) - \alpha {\Psi _x}{x_t} + \int_\Omega  {\phi \left( r \right)\varepsilon \left( {r,t} \right)dr}.
 \end{equation}
 Now we isolate the state by inverting $\Psi_x$
 \begin{equation}\label{IsolateState}
-{x_{t + 1}} = {\Psi _x}^{ - 1}{\theta ^T}{\Psi _\theta }\rho \left( {{x_t}} \right) - \alpha {x_t} + {\Psi _x}^{ - 1}\int_\Omega  {\phi \left( r \right)\varepsilon \left( {r,t} \right)dr}
+{x_{t + 1}} = {\Psi _x}^{ - 1}{\theta ^T}{\Psi _\theta }\rho \left( {{x_t}} \right) - \alpha {x_t} + {\Psi _x}^{ - 1}\int_\Omega  {\phi \left( r \right)\varepsilon \left( {r,t} \right)dr}.
 \end{equation}
-Gives the state-space model
+This gives the state-space model
 \begin{equation}\label{StateSpaceModel}
-{x_{t + 1}} = f\left( {x,\theta } \right) + {\Psi _x}^{ - 1}\int_\Omega  {\phi \left( r \right)\varepsilon \left( {r,t} \right)dr}
+{x_{t + 1}} = f\left( {x,\theta } \right) + {\Psi _x}^{ - 1}\int_\Omega  {\phi \left( r \right)\varepsilon \left( {r,t} \right)dr}.
 \end{equation}
 
 \section{Stability Analysis}
-Using the analytically calculated basis functions. Need to show that the linearized model will not blow up.
+This section will not probably be included
 
 \section{Estimation of the IDE Neural Field Model}
-Based on the other papers.
+Based on the other papers. Although it appears to be a job for a nonlinear versions of the Kalman filter.
 
 \section{Comparison of Estimated and True Connectivity}
-Try and estimate the linear and nonlinear model based on the linear estimator. Might work ok?
 
 \section{Discussion}
 
