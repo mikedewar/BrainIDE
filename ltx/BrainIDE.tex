@@ -375,13 +375,13 @@ Defining
 \begin{equation}\label{DefKernelDecomp}
 k\left( {{\bf{r}} - {\bf{r'}}} \right) = {\theta ^T}\psi \left( {{\bf{r}} - {\bf{r'}}} \right)
 \end{equation}
-Now we have four basis functions (the fourth being the delta/local connectivity) and four parameters to estimate. Making substitutions
+Now we have four basis functions (the fourth being the delta/local connectivity) and four parameters to estimate. Each connectivity basis function is equivalent to a layer in the WC model. Making substitutions
 \begin{equation}\label{DecompModel}
-{\phi ^T}\left( {\bf{r}} \right){x_t} = {\theta ^T}\int_\Omega  {\psi \left( {{\bf{r}} - {\bf{r'}}} \right)p\left( {{\phi ^T}\left( {{\bf{r'}}} \right){x_t}} \right)d{\bf{r'}}}  + {\varepsilon _t}\left( {\bf{r}} \right)
+{\phi ^T}\left( {\bf{r}} \right){x_{t+1}} = {\theta ^T}\int_\Omega  {\psi \left( {{\bf{r}} - {\bf{r'}}} \right)p\left( {{\phi ^T}\left( {{\bf{r'}}} \right){x_t}} \right)d{\bf{r'}}}  + {\varepsilon _t}\left( {\bf{r}} \right)
 \end{equation}
 Cross multiply and integrate over $\bf{r}$
 \begin{equation}\label{Poo}
-\int_\Omega  {\phi \left( {\bf{r}} \right){\phi ^T}\left( {\bf{r}} \right)d{\bf{r}}{x_t}}  = \int_\Omega  {\phi \left( {\bf{r}} \right){\theta ^T}\int_\Omega  {\psi \left( {{\bf{r}} - {\bf{r'}}} \right)p\left( {{\phi ^T}\left( {{\bf{r'}}} \right){x_t}} \right)d{\bf{r'}}} d{\bf{r}}}  + \int_\Omega  {\phi \left( {\bf{r}} \right){\varepsilon _t}\left( {\bf{r}} \right)d{\bf{r}}}
+\int_\Omega  {\phi \left( {\bf{r}} \right){\phi ^T}\left( {\bf{r}} \right)d{\bf{r}}{x_{t+1}}}  = \int_\Omega  {\phi \left( {\bf{r}} \right){\theta ^T}\int_\Omega  {\psi \left( {{\bf{r}} - {\bf{r'}}} \right)p\left( {{\phi ^T}\left( {{\bf{r'}}} \right){x_t}} \right)d{\bf{r'}}} d{\bf{r}}}  + \int_\Omega  {\phi \left( {\bf{r}} \right){\varepsilon _t}\left( {\bf{r}} \right)d{\bf{r}}}
 \end{equation}
 Defining
 \begin{equation}\label{DefPsi}
@@ -389,7 +389,7 @@ Defining
 \end{equation}
 Making substitution
 \begin{equation}\label{SS Model}
-{x_t} = {\Psi ^{ - 1}}\int_\Omega  {\phi \left( {\bf{r}} \right){\theta ^T}\int_\Omega  {\psi \left( {{\bf{r}} - {\bf{r'}}} \right)p\left( {{\phi ^T}\left( {{\bf{r'}}} \right){x_t}} \right)d{\bf{r'}}} d{\bf{r}}}  + {\Psi ^{ - 1}}\int_\Omega  {\phi \left( {\bf{r}} \right){\varepsilon _t}\left( {\bf{r}} \right)d{\bf{r}}}
+{x_{t+1}} = {\Psi ^{ - 1}}\int_\Omega  {\phi \left( {\bf{r}} \right){\theta ^T}\int_\Omega  {\psi \left( {{\bf{r}} - {\bf{r'}}} \right)p\left( {{\phi ^T}\left( {{\bf{r'}}} \right){x_t}} \right)d{\bf{r'}}} d{\bf{r}}}  + {\Psi ^{ - 1}}\int_\Omega  {\phi \left( {\bf{r}} \right){\varepsilon _t}\left( {\bf{r}} \right)d{\bf{r}}}
 \end{equation}
 \begin{equation}\label{AbbrevSSModel}
 {x_{t + 1}} = f\left( {x;\theta } \right) + {\Psi ^{ - 1}}\int_\Omega  {\phi \left( {\bf{r}} \right){\varepsilon _t}\left( {\bf{r}} \right)d{\bf{r}}}
