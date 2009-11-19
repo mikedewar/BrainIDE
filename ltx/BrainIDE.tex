@@ -205,12 +205,12 @@ For the state-space derivation, to create an estimator, the model can be reformu
    0 & {otherwise}  \\
 \end{array}} \right.
 \end{equation}
-\begin{figure*}
-\centering
-\includegraphics[scale=0.3]{ExampleFieldDecomposition.eps}
-\caption[ExampleFieldDecomposition]{Illustration of a one dimensional field decomposition using 5 Gaussian basis functions, each weighted an element of the state vector. Each basis function has a width of 0.01 and is uniformly positioned with a separation of 0.25 (with arbitrary units).}
-\label{ExampleFieldDecomposition}
-\end{figure*}
+% \begin{figure*}
+% \centering
+% \includegraphics[scale=0.3]{ExampleFieldDecomposition.eps}
+% \caption[ExampleFieldDecomposition]{Illustration of a one dimensional field decomposition using 5 Gaussian basis functions, each weighted an element of the state vector. Each basis function has a width of 0.01 and is uniformly positioned with a separation of 0.25 (with arbitrary units).}
+% \label{ExampleFieldDecomposition}
+% \end{figure*}
 
 \section{State-Space Neural Field Model}
 In this section we shall reconstruct the model in a state-space form that is a novel representation of the neural field equations. The benefit of restating the model in this format is that it becomes easier to simulate and allows the connectivity to be inferred from data. \begin{equation}
@@ -394,7 +394,64 @@ Making substitution
 \begin{equation}\label{AbbrevSSModel}
 {x_{t + 1}} = f\left( {x;\theta } \right) + {\Psi ^{ - 1}}\int_\Omega  {\phi \left( {\bf{r}} \right){\varepsilon _t}\left( {\bf{r}} \right)d{\bf{r}}}
 \end{equation}
+\section{Alternative model-Unlimited function for $p(v_t(r))$}
+We assume
+\begin{equation}
+ p(v_t(r))=\beta(v_t(\mathbf r)-v_0))=\beta v'_t(\mathbf r)
+\end{equation}
+adding $-v_0$ to the both side of the equation we have
+\begin{equation}
+ v_{t+1}(\mathbf s)-v_0=\beta\int_{\Omega} W(\mathbf s-\mathbf r) v'_t(\mathbf r)d\mathbf r-\frac{1}{\tau} v_t(\mathbf s)-v_0+e_t(\mathbf s)
+\end{equation}
+we add $\frac{1}{\tau}v_0-\frac{1}{\tau}v_0$ to the right side of the equation
+\begin{equation}
+ v'_{t+1}(\mathbf s)=\beta\int_{\Omega} W(\mathbf s-\mathbf r) v'_t(\mathbf r)d\mathbf r-\frac{1}{\tau} v'_t(\mathbf s)-(1+\frac{1}{\tau})v_0+e_t(\mathbf s)
+\end{equation}
 
+\begin{equation}
+ v'_t(\mathbf s)=\boldsymbol \phi^{\top}(\mathbf s){\mathbf x}_t
+\end{equation}
+\begin{equation}
+ w(\mathbf s -\mathbf r)=\boldsymbol \theta^{\top}\psi(\mathbf s -\mathbf r)
+\end{equation}
+\begin{equation}
+\boldsymbol \phi^{\top}(\mathbf s){\mathbf x}_{t+1}=\beta\boldsymbol \theta^{\top}\boldsymbol\Phi(\mathbf s)\mathbf x_t-\frac{1}{\tau×}\boldsymbol \phi^{\top}(\mathbf s){\mathbf x}_t-(1+\frac{1}{\tau})v_0+e_t(\mathbf s)
+\end{equation}
+where
+\begin{equation}
+ \boldsymbol\Phi(\mathbf s)=\int_\Omega \psi(\mathbf s -\mathbf r)\boldsymbol \phi^{\top}(\mathbf r)d\mathbf r
+\end{equation}
+Cross multiplying by $\phi(s)$ and integrating over $\mathbf s$ gives
+\begin{equation}
+\int_{\Omega}\boldsymbol \phi(\mathbf s)\boldsymbol \phi^{\top}(\mathbf s)d\mathbf s{\mathbf x}_{t+1}=\beta\int_{\Omega}\boldsymbol \phi(\mathbf s) \theta^{\top}\boldsymbol\Phi(\mathbf s)d\mathbf s\mathbf x_t-\frac{1}{\tau×}\int_{\Omega}\boldsymbol \phi(\mathbf s)\boldsymbol \phi^{\top}(\mathbf s)d\mathbf s{\mathbf x}_t-(1+\frac{1}{\tau})v_0\int_{\Omega}\boldsymbol \phi(\mathbf s)d\mathbf s+\int_{\Omega}\boldsymbol \phi(\mathbf s)e_t(\mathbf s)d\mathbf s
+\end{equation}
+we define
+\begin{equation}
+ \boldsymbol\psi(\mathbf s)=\int_{\Omega}\boldsymbol \phi(\mathbf s)\boldsymbol \phi^{\top}(\mathbf s)d\mathbf s
+\end{equation}
+and
+\begin{equation}
+ \Gamma(\mathbf s)=\int_{\Omega}\boldsymbol \phi(\mathbf s) \theta^{\top}\boldsymbol\Phi(\mathbf s)d\mathbf s
+\end{equation}
+therefore
+\begin{equation}
+\boldsymbol\psi(\mathbf s){\mathbf x}_{t+1}=\beta\Gamma(\mathbf s)\mathbf x_t-\frac{1}{\tau×}\boldsymbol\psi(\mathbf s){\mathbf x}_t-(1+\frac{1}{\tau})v_0\int_{\Omega}\boldsymbol \phi(\mathbf s)d\mathbf s+\int_{\Omega}\boldsymbol \phi(\mathbf s)e_t(\mathbf s)d\mathbf s
+\end{equation}
+Multiplying by $\psi(\mathbf s)^{-1}$
+\begin{equation}
+ {\mathbf x}_{t+1}=\beta\psi(\mathbf s)^{-1}\Gamma(\mathbf s)\mathbf x_t-\frac{1}{\tau×}{\mathbf x}_t-(1+\frac{1}{\tau})v_0\psi(\mathbf s)^{-1}\int_{\Omega}\boldsymbol \phi(\mathbf s)d\mathbf s+\psi(\mathbf s)^{-1}\int_{\Omega}\boldsymbol \phi(\mathbf s)e_t(\mathbf s)d\mathbf s
+\end{equation}
+therefore
+\begin{equation}
+ {\mathbf x}_{t+1}=(\beta\psi(\mathbf s)^{-1}\Gamma(\mathbf s)-\frac{1}{\tau×}\mathbf I){\mathbf x}_t-\frac{1}{\tau×}{\mathbf x}_t-(1+\frac{1}{\tau})v_0\psi(\mathbf s)^{-1}\int_{\Omega}\boldsymbol \phi(\mathbf s)d\mathbf s+\psi(\mathbf s)^{-1}\int_{\Omega}\boldsymbol \phi(\mathbf s)e_t(\mathbf s)d\mathbf s
+\end{equation}
+\begin{equation}
+ {\mathbf x}_{t+1}=\mathbf A(\boldsymbol\theta){\mathbf x}_t-(1+\frac{1}{\tau})v_0\psi(\mathbf s)^{-1}\int_{\Omega}\boldsymbol \phi(\mathbf s)d\mathbf s+\psi(\mathbf s)^{-1}\int_{\Omega}\boldsymbol \phi(\mathbf s)e_t(\mathbf s)d\mathbf s
+\end{equation}
+where
+\begin{equation}
+\mathbf A(\boldsymbol\theta)=(\beta\psi(\mathbf s)^{-1}\Gamma(\mathbf s)-\frac{1}{\tau×}\mathbf I)
+\end{equation}
 \section{Stability Analysis}
 This section will not probably be included
 
