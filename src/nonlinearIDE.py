@@ -13,23 +13,29 @@ class IDE():
 		space = self.space
 		for t in range(T):
 			new_field = field()
-			for s in space:
-				new_field[s] = sum([
-					kernel(s,r)*act_fun(fields[-1][r]) for r in space
+			for si,s in enuermate(space):
+				new_field[si] = sum([
+					kernel(s,r)*act_fun(fields[-1](r)) for r in space
 				])
 			field_list.append(new_field)
 		return fields[1:]
 
 class Field():
 	
-	def __init__(self):
+	def __init__(self, space, smoothness=1):
+		self.space = space
 		self.vals = pb.zeros(space.shape)
-	
-	def __getitem__(self,s):
-		return self.vals[s]
+		self.smoothness = smoothness
 		
-	def __setitem__(self,s,val):
-		self.vals[s] = val
+	def __call__(self,s):
+			return pb.sum([
+				v*gaussian(s,locn,self.smoothness) 
+				for v,locn in zip(self.vals,self.space)
+			])
+			
+	def __setitem__(self,si,val):
+		self.vals[si] = val
+		print self.vals
 	
 class Kernel():
 	
@@ -37,23 +43,23 @@ class Kernel():
 		self.weights = weights
 		self.widths = widths
 	
-	def gaussian(self, x, centre, width):
-		return pb.exp(-0.5*(x-centre)**2/width)
-		
-	
 	def __call__(self,s,r):
 			return pb.sum([
-				w*self.gaussian(abs(s-r),0,c) 
+				w*gaussian(abs(s-r),0,c) 
 				for w,c in zip(self.weights,self.widths)
 			])
-		
+
+def gaussian(x, centre, width):
+	return pb.exp(-0.5*(x-centre)**2/width)
 				
 if __name__ == "__main__":
-	k = Kernel([0.85,-0.8,0.1],[1,2,8])
 	space = pb.arange(-10,10,0.1)
-	y = [k(s,0) for s in space]
-	print sum(y)
-	pb.plot(space,y)
+	k = Kernel([0.85,-0.8,0.1], [1,2,8])
+	f = Field(space)
+	f[100] = 1
+	print f.vals
+	
+	pb.plot([f(s) for s in space])
 	pb.show()
 	
 	
