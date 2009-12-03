@@ -4,21 +4,21 @@ import sys
 sys.path.append("../src")
 import ssmodel, ideBase, ide, bases
 
-def setup(kernel_weights = [1,-1,.5]):
+def setup(kernel_weights = [.5,-0.3,.05]):
 	dim=1
-	space = np.arange(0,20,0.2)
+	space = np.arange(0,80,0.2)
 	T=400
-	obs_locns = np.arange(0.5,21,0.5)
-	min_field, max_field, inc = 1.8, 18, 1.8
+	obs_locns = np.linspace(0,80,10)
+	min_field, max_field, inc = 0, 80, 8
 	#Define field
-	field_bases = [bases.gaussianBasis(dim,centre,1) for centre in np.arange(min_field,max_field+inc,inc)]
+	field_bases = [bases.gaussianBasis(dim,centre,5) for centre in np.arange(min_field,max_field+inc,inc)]
 	field_weights = [0]*len(field_bases)
 	field_weights[6] = 1
 	f = ideBase.field(dim,field_bases,field_weights)
 	#Define Kernel
 	#--------------
 	#This is the connectivity kernel
-	kernel_bases = [bases.gaussianBasis(dim,0,.1),bases.gaussianBasis(dim,0,.5),bases.gaussianBasis(dim,0,1)]  
+	kernel_bases = [bases.gaussianBasis(dim,0,1.8**2),bases.gaussianBasis(dim,0,6**2),bases.gaussianBasis(dim,0,18**2)] #Brain kernel
 	#-------------------------------
 	#This is  the kernel from Mike paper
 	#------------------------------------------------------------------
@@ -48,7 +48,7 @@ def kernel_estimate(model):
 	
 def plot_kernel(model, *args, **kwargs):
 	'''plot the kernel'''
-	u=np.linspace(-3,3,100)
+	u=np.linspace(-40,40,100)
 	z=[]	
 	for i in u:
 		z.append(float(model.kernel.evaluate(i)))
@@ -57,8 +57,8 @@ def plot_kernel(model, *args, **kwargs):
 if __name__ == "__main__":
 	
 	# the weights correspond to three Gaussians.
-	#Their variances are, respectively, [0.1, 0.5, 1]
-	weights = [1,-1,1]
+	#Their variances are, respectively, [1.8, 6, 18]
+	kernel_weights =[.5,-0.3,.05]
 	# initialise and simulate the model
 	model = setup()
 	# plot the true kernel
