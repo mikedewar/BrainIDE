@@ -1,4 +1,5 @@
 import pylab as pb
+import numpy as np
 import matplotlib.axes3d
 
 class IDE():
@@ -17,21 +18,29 @@ class IDE():
 		Sw=self.field_noise_variance*Psi_xinv* self.field.field_noise()*Psi_xinv.T
 		Swc=pb.linalg.cholesky(Sw)
 				
-		#X=[]		
-		#x=init_field
-		#X.append(x)
+		X=[]		
+		x=init_field
+		X.append(x)
 
-		
-		#for t in range(T):
-		#	w = pb.random.randn(self.Field.nx,1)
-		#	sum_s=0
-		#	for s in space:
-		#		sum_r=0
-		#		for r in space:
-		#			sum_r+=self.field.field_bases(s)*self.act_fun(self.field.field_bases(r).T*x)*self.kernel(abs(s-r))
-		#		sum_s+=(stepsize**2)*sum_r
-		#	x=Psi_xinv*sum_s-self.alpha*x+Swc*w
-		#	X.append(x)					
+		##Calculate K(-r)
+		kernel_mir_yaxis=self.kernel.kernel_mir_yaxis()
+		##simulation
+		for t in range(T):
+			w = np.random.randn(self.field.nx,1)
+			sum_s=[]
+			for s in self.field.space:
+				sum_r=0		
+				for r in self.field.space:			
+					sum_r+=kernel_mir_yaxis(abs(s-r))*self.act_fun(self.field.field_bases(r).T*x)
+					#sum_r+=kernel_mir_yaxis(abs(s-r))*self.field.field_bases(r).T*x
+				sum_s.append(stepsize*sum_r)
+			sum_int=0
+			for i in range(len(self.field.space)):
+				sum_int+=stepsize*self.field.field_bases(self.field.space[i])*sum_s[i]
+
+			x=Psi_xinv*sum_int-self.alpha*x+Swc*w
+			X.append(x)
+		return X
 
 
 
@@ -104,6 +113,9 @@ class Kernel():
 		self.evaluate = lambda s: sum([w*gaussian(s,cen,wid,dimension) for w,cen,wid, in zip(self.weights,self.centers,self.widths)
 				])
 
+	def kernel_mir_yaxis(self):
+		return Kernel(self.weights,(-pb.array(self.centers)),self.widths, self.dimension)
+		
 	def __call__(self,s):
 		return self.evaluate(s)
 
@@ -144,6 +156,9 @@ class ActivationFunction():
 		return self.max_firing_rate/(1+pb.exp(self.slope*(self.threshold-v)))
 
 
+
+
+
 def gaussian(s, centre, width,dimension):
 		dimension = dimension
 		centre = pb.matrix(centre)
@@ -174,7 +189,7 @@ if __name__ == "__main__":
 	f_widths=[1]*nx
 	#f_weights=[1]*11
 	f_weights=[1]*nx
-	T=20	
+	T=5	
 	#f_space = pb.arange(-10,90,.1)
 	f_space = pb.arange(-5,25,0.5)
 	f=Field(f_weights,f_centers,f_widths,1,f_space,nx)
@@ -183,12 +198,15 @@ if __name__ == "__main__":
 
 	#k_centers=pb.array([0,0,0])
 	k_centers=[-.5,0,.5]
+	#k_centers=[0]
 	#k_weights = pb.array([.5,-.3,.05])
 	k_weights =[-1,1,.5]
+	#k_weights =[1]
 	#k_widths = pb.array([1.8,36,18**2]) 
 	k_widths = [.1,.1,.1]
+	#k_widths = [.1]
 	#k_space = pb.linspace(-40,40,1)
-	k_space = pb.arange(-3,3,0.01)
+	k_space = pb.arange(-3,3,0.5)
 	k=Kernel(k_weights,k_centers,k_widths,1)
 	#k.plot(k_space)
 	alpha=.05
@@ -196,5 +214,6 @@ if __name__ == "__main__":
 	act_func=ActivationFunction()	
 	model=IDE(k, f, act_func,alpha,field_noise_variance)
 	init_field=[0]*nx
-	init_field[5]=.2
+	init_field[6]=1
+	init_field=pb.matrix(init_field).T
 
