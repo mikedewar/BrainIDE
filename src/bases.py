@@ -45,6 +45,7 @@ class gaussianBasis(basis):
 		# constant - The convolution coefficient
 		self.constant = float(constant)
 		# evaluate
+		#self.evaluate = lambda s: self.constant * np.exp(-(s-self.centre).T*self.width.I*(s-self.centre))
 		self.evaluate = lambda s: self.constant * np.exp(-(s-self.centre).T*self.width.I*(s-self.centre))
 
 	def __repr__(self):	
@@ -53,13 +54,12 @@ class gaussianBasis(basis):
 	def __mul__(self,g):
 		'''inner product of two gaussian basis functions'''
 		assert g.__class__ is gaussianBasis, 'inner product error'
-		cij=self.width + g.width
-		uij=cij.I * (self.width*self.centre + g.width*g.centre)		
-		rij=(self.centre.T * self.width * self.centre) + (g.centre.T * g.width * g.centre) - (uij.T * cij * uij)
-		#rij=(self.centre-g.centre).T*(self.width+g.width).I*self.width*g.width*(self.centre-g.centre)
-		
+		cij=self.width.I + g.width.I
+		uij=cij.I * (self.width.I*self.centre + g.width.I*g.centre)		
+		#rij=(self.centre.T * self.width * self.centre) + (g.centre.T * g.width * g.centre) - (uij.T * cij * uij)
+		rij=(self.centre-g.centre).T*(self.width.I+g.width.I).I*self.width.I*g.width.I*(self.centre-g.centre)
 		return self.constant * g.constant * (np.pi)**(self.dimension * 0.5) * np.linalg.det( cij.I ) **(0.5) * np.exp(-rij)
-		
+		 
 	def conv(self,g):
 		'''convolution of two gaussian basis functions'''
 		
@@ -72,7 +72,7 @@ class gaussianBasis(basis):
 		centre = self.centre + g.centre # the centre of the gaussian
 		width = invC_mj * self.width.I * g.width.I # the covariance matrix
 
-		h = gaussianBasis(self.dimension, centre, width, constant) # form a gaussian object
+		h = gaussianBasis(self.dimension, centre, width.I, constant) # form a gaussian object
 
 		return h
 
