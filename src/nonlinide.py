@@ -1,24 +1,68 @@
 import pylab as pb
 import matplotlib.axes3d
 
+class IDE():
+	
+	def __init__(self, kernel, field, act_fun,alpha,field_noise_variance):
+		self.kernel = kernel
+		self.field = field
+		self.act_fun = act_fun
+		self.alpha=alpha
+		self.field_noise_variance=field_noise_variance
+
+	def sim(self,init_field,T,stepsize=10):
+		Psi_x=(stepsize*sum([self.field.field_bases(s)*self.field.field_bases(s).T for s in self.field.space]))
+		Psi_xinv=Psi_x.I
+		Sw=self.field_noise_variance*Psi_xinv* self.field.field_noise()*Psi_xinv.T
+		#return Sw		
+		Swc=pb.linalg.cholesky(Sw)
+		X=[]		
+		x=init_field
+		X.append(x)
+
+		
+		for t in range(T):
+			w = pb.random.randn(self.Field.nx,1)
+			sum_s=0
+			for s in space:
+				sum_r=0
+				for r in space:
+					sum_r+=self.field.field_bases(s)*self.act_fun(self.field.field_bases(r).T*x)*self.kernel(abs(s-r))
+				sum_s+=(stepsize**2)*sum_r
+			x=Psi_xinv*sum_s-self.alpha*x+Swc*w
+			X.append(x)					
+
 
 
 class Field():
 	
-	def __init__(self, weights,centers, widths, dimension,N):
+	def __init__(self, weights,centers, widths, dimension,space,nx):
 
-		self.N=N
+		self.nx=nx
 		self.weights = weights
-		self.widths=N*widths
+		self.widths=self.nx*widths
 		self.centers=centers
 		self.dimension=dimension
-		
-		self.evaluate = lambda s: sum([w*gaussian(s,cen,wid,dimension) for w,cen,wid, in zip(self.weights,self.centers,self.widths)
+		self.space = pb.array(space)
+		self.evaluate = lambda s: sum([w*gaussian(s,cen,wid,self.dimension) for w,cen,wid, in zip(self.weights,self.centers,self.widths)
 				])
 
 	def __call__(self,s):
 		return float(self.evaluate(s))		
 
+	def field_bases(self,s):
+		return pb.matrix([gaussian(s,cen,wid,self.dimension) for w,cen,wid, in zip(self.weights,self.centers,self.widths)]).T
+
+
+
+	def field_noise(self,stepsize=10):
+		sum_s=0
+		for s in self.space:
+			sum_r=0
+			for r in self.space:
+				sum_r=self.field_bases(s)*gaussian(abs(s-r),0,10,1)*self.field_bases(r).T
+			sum_s+=(stepsize**2)*sum_r
+		return	pb.matrix(sum_s) #(This is the bit in integral)
 
 	def plot(self,space):
 
@@ -53,7 +97,7 @@ class Kernel():
 				])
 
 	def __call__(self,s):
-		return float(self.evaluate(s))
+		return self.evaluate(s)
 
 
 	def plot(self,space):
@@ -97,7 +141,7 @@ def gaussian(s, centre, width,dimension):
 		centre = pb.matrix(centre)
 		centre.shape = (dimension,1)
 		width = pb.matrix(width)
-		return pb.exp(-(s-centre).T*width.I*(s-centre))
+		return float(pb.exp(-(s-centre).T*width.I*(s-centre)))
 
 def circle(x,y,r):
 	u=np.linspace(0,2*np.pi,200)
@@ -116,18 +160,23 @@ if __name__ == "__main__":
 	f_centers=pb.arange(min_field,max_field+inc,inc)
 	f_widths=[5]
 	f_weights=[1]*11
-	N=11	
-	f=Field(f_weights,f_centers,f_widths,1,11)
-	f_space = pb.linspace(-10,90,500)
-	f.plot(f_space)
+	nx=11
+	T=20	
+	f_space = pb.arange(-10,90,1)
+	f=Field(f_weights,f_centers,f_widths,1,f_space,11)
+
+	#f.plot(f_space)
 
 	k_centers=pb.array([0,0,0])
 	k_weights = pb.array([.5,-.3,.05])
 	k_widths = pb.array([1.8,36,18**2]) 
-	k_space = pb.linspace(-40,40,500)
+	k_space = pb.linspace(-40,40,1)
 	k=Kernel(k_weights,k_centers,k_widths,1)
-	k.plot(k_space)
-	
-
-
+	#k.plot(k_space)
+	alpha=.05
+	field_noise_variance=0.8 
+	act_func=ActivationFunction()	
+	model=IDE(k, f, act_func,alpha,field_noise_variance)
+	init_field=[0]*nx
+	init_field[5]=.2
 
