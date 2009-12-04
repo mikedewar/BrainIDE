@@ -11,7 +11,7 @@ class IDE():
 		self.alpha=alpha
 		self.field_noise_variance=field_noise_variance
 
-	def sim(self,init_field,T,stepsize=.5):
+	def sim(self,init_field,T,stepsize=.2):
 		#This is to check, this bit can be done Analitically		
 		Psi_x=(stepsize*sum([self.field.field_bases(s)*self.field.field_bases(s).T for s in self.field.space]))
 		Psi_xinv=Psi_x.I
@@ -22,8 +22,7 @@ class IDE():
 		x=init_field
 		X.append(x)
 
-		##Calculate K(-r)
-		kernel_mir_yaxis=self.kernel.kernel_mir_yaxis()
+
 		##simulation
 		for t in range(T):
 			w = np.random.randn(self.field.nx,1)
@@ -31,14 +30,14 @@ class IDE():
 			for s in self.field.space:
 				sum_r=0		
 				for r in self.field.space:			
-					sum_r+=kernel_mir_yaxis(abs(s-r))*self.act_fun(self.field.field_bases(r).T*x)
-					#sum_r+=kernel_mir_yaxis(abs(s-r))*self.field.field_bases(r).T*x
+					#sum_r+=self.kernel(s-r)*self.act_fun(self.field.field_bases(r).T*x)
+					sum_r+=self.kernel(s-r)*self.field.field_bases(r).T*x
 				sum_s.append(stepsize*sum_r)
 			sum_int=0
 			for i in range(len(self.field.space)):
 				sum_int+=stepsize*self.field.field_bases(self.field.space[i])*sum_s[i]
 
-			x=Psi_xinv*sum_int-self.alpha*x+Swc*w
+			x=Psi_xinv*sum_int#-self.alpha*x+Swc*w
 			X.append(x)
 		return X
 
@@ -65,12 +64,12 @@ class Field():
 
 
 
-	def field_noise(self,stepsize=.5):
+	def field_noise(self,stepsize=.2):
 		sum_s=[]
 		for s in self.space:
 			sum_r=0		
 			for r in self.space:			
-				sum_r+=gaussian(abs(s-r),0,1,1)*self.field_bases(r).T
+				sum_r+=gaussian(s-r,0,1,1)*self.field_bases(r).T
 			sum_s.append(stepsize*sum_r)
 		sum_int=0
 		for i in range(len(self.space)):
@@ -113,9 +112,6 @@ class Kernel():
 		self.evaluate = lambda s: sum([w*gaussian(s,cen,wid,dimension) for w,cen,wid, in zip(self.weights,self.centers,self.widths)
 				])
 
-	def kernel_mir_yaxis(self):
-		return Kernel(self.weights,(-pb.array(self.centers)),self.widths, self.dimension)
-		
 	def __call__(self,s):
 		return self.evaluate(s)
 
@@ -189,16 +185,16 @@ if __name__ == "__main__":
 	f_widths=[1]*nx
 	#f_weights=[1]*11
 	f_weights=[1]*nx
-	T=5	
+	T=3	
 	#f_space = pb.arange(-10,90,.1)
-	f_space = pb.arange(-5,25,0.5)
+	f_space = pb.arange(-5,25,0.2)
 	f=Field(f_weights,f_centers,f_widths,1,f_space,nx)
 
 	#f.plot(f_space)
 
 	#k_centers=pb.array([0,0,0])
 	k_centers=[-.5,0,.5]
-	#k_centers=[0]
+	#k_centers=[1]
 	#k_weights = pb.array([.5,-.3,.05])
 	k_weights =[-1,1,.5]
 	#k_weights =[1]
@@ -206,7 +202,7 @@ if __name__ == "__main__":
 	k_widths = [.1,.1,.1]
 	#k_widths = [.1]
 	#k_space = pb.linspace(-40,40,1)
-	k_space = pb.arange(-3,3,0.5)
+	k_space = pb.arange(-3,3,0.2)
 	k=Kernel(k_weights,k_centers,k_widths,1)
 	#k.plot(k_space)
 	alpha=.05
