@@ -377,14 +377,17 @@ where
   p\left( {{v_{t + 1}}|{v_t}} \right) &=& ??? \\
   p\left( {{v_0}} \right) &=& \mathcal{GP}\left( {{\mu _0},{\pi _0}} \right).
 \end{eqnarray}
-We can not calculate the posterior in this Bayesian model for some reason (Mike and Ken can ellaborate), so we need to decompose the field into weighted basis functions. Therefore we define
+We can not calculate the posterior in this Bayesian model for some reason (Mike and Ken can ellaborate), so we need to decompose the field into weighted basis functions.
+
+In order to implement standard estimation techniques we propose a decomposition of the The field using a set of Gaussian basis functions. Decomposition allows a continuous field to be represented by a finite dimensional state vector. This allows for the application of standard nonlinear, non-Gaussian state estimation methods such as sequential Monte-Carlo techniques like particle filtering. The field decomposition is described by
 \begin{equation}\label{DefFieldDecomp}
-{v_t}\left( {\bf{r}} \right) = {\phi ^T}\left( {\bf{r}} \right){x_t}
+{v_t}\left( {\bf{r}} \right) = {\phi ^T}\left( {\bf{r}} \right){x_t}.
 \end{equation}
+where $\phi(r)$ is the Gaussian basis functions that are scaled by the the state vector. The connectivity kernel can all be decomposed into a set of basis functions
 \begin{equation}\label{DefKernelDecomp}
 k( \mathbf{r} , \mathbf{r'} ) = \theta^T(\mathbf{r})\psi(\mathbf{r} , \mathbf{r'} )
 \end{equation}
-Will will assume we know the parametric form of the basis functions, where the parameter $\theta$ is unknown. Each connectivity basis function can be considered a layer in the WC model. Making substitutions we get
+Will will assume we know the parametric form of the basis functions, where the parameter $\theta$ is unknown. Each connectivity basis function can be considered a layer in the WC model, representing short range excitation, surround inhibition and long range excitation. Making substitutions we get
 \begin{equation}\label{DecompModel}
 {\phi ^T}\left( \mathbf{r} \right){x_{t+1}} = \theta^T(\mathbf{r})\int_\Omega  {\psi \left( {{\bf{r}} , {\mathbf{r'}}} \right)f\left( {{\phi ^T}\left( {{\mathbf{r'}}} \right){x_t}} \right)d{\mathbf{r'}}}  - \alpha\phi^T(r)x_t + {\varepsilon _t}\left( {\mathbf{r}} \right).
 \end{equation}
@@ -414,7 +417,7 @@ with observation equation
 \end{equation}
 
 \section{Estimation of the Nonlinear Homogeneous IDE Neural Field Model}
-Based on the other papers. Although it appears to be a job for a nonlinear versions of the Kalman filter.
+
 
 \section{Comparison of Estimated and True Connectivity}
 
