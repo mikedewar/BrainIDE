@@ -1,6 +1,5 @@
 import pylab as pb
 import numpy as np
-import matplotlib.axes3d
 
 class IDE():
 
@@ -16,7 +15,10 @@ class IDE():
 		
 
 	def sim(self,init_field,T):
-		#This is to check, this bit can be done Analitically		
+		print "simulating nonlinear IDE"
+		#This is to check, this bit can be done Analitically
+		
+		print "calculating Psi_x inverse"		
 		Psi_x=(self.stepsize**2)*sum([self.field.field_bases(s)*self.field.field_bases(s).T for s in self.field.space])
 		Psi_xinv=Psi_x.I
 
@@ -29,19 +31,31 @@ class IDE():
 
 
 		##simulation
-		#states		
+		#states
+		
+		# do some splurging!
+		print "pre-calculating basis function vectors"
+		ns = len(self.field.space)
+		K = np.zeros((ns,ns),dtype=object)
+		for si,s in enumerate(self.field.space):
+			for ri,r in enumerate(self.field.space):
+				K[si,ri] = self.kernel(s-r)
+		fbases = np.empty(ns,dtype=object)
+		for ri,r in enumerate(self.field.space):
+			fbases[ri] = self.field.field_bases(r)
+		
+		print "iterating"
 		for t in range(T):
+			print t
 			w = pb.matrix(np.random.randn(self.field.nx,1))
 			sum_s=[]
-			for s in self.field.space:
-				sum_r=0		
-				for r in self.field.space:			
-					sum_r+=self.kernel(s-r)*self.act_fun(self.field.field_bases(r).T*x)
-					#sum_r+=self.kernel(s-r)*self.field.field_bases(r).T*x
+			for si,s in enumerate(self.field.space):
+				sum_r = pb.sum([K[si,ri]*self.act_fun(f.T*x) for ri,f in enumerate(fbases)])
 				sum_s.append(self.field.field_bases(s)*sum_r)
 			sum_int=(self.stepsize**4)*sum(sum_s)
 			x=Psi_xinv*sum_int-self.alpha*x+Swc*w
 			X.append(x)
+
 		#observations
 		Y=[]
 		Svc=pb.linalg.cholesky(self.obs_noise_covariance)
@@ -77,8 +91,6 @@ class Field():
 	def field_bases(self,s):
 		return pb.matrix([gaussian(s,cen,wid,self.dimension) for w,cen,wid, in zip(self.weights,self.centers,self.widths)]).T
 
-
-
 	def field_noise(self):
 		sum_s=[]
 		for s in self.space:
@@ -88,10 +100,6 @@ class Field():
 			sum_s.append((self.stepsize**2)*self.field_bases(s)*sum_r)
 
 		return (self.stepsize**2)*sum(sum_s)
-
-
-
-
 
 	def plot(self,centers):
 		for center in centers:
@@ -187,14 +195,14 @@ if __name__ == "__main__":
 	stepsize=0.5	
 	f_space=gen_spatial_lattice(0,5,0,5,stepsize)
 	f=Field(f_weights,f_centers,f_widths,2,f_space,nx,stepsize)
-	f.plot(f_centers)
+	#f.plot(f_centers)
 	#------------Kernel-------------
 	k_centers=[np.matrix([[.5,.5]])]
 	k_weights =[.1]
 	k_widths=[pb.matrix([[1,0],[0,1]])]
 	k_space = pb.linspace(-2,3,50) #This is just to plot the kernel, doesn't affect the simulation
 	k=Kernel(k_weights,k_centers,k_widths,2)
-	k.plot(k_space)
+	# k.plot(k_space)
 	#-------Brain----------------
 	alpha=.05
 	field_noise_variance=0.8 
