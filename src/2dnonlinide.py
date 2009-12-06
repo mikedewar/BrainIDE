@@ -3,8 +3,8 @@ import numpy as np
 import matplotlib.axes3d
 
 class IDE():
-	
-	def __init__(self, kernel, field, act_fun,alpha,field_noise_variance,obs_noise_covariance,obs_locns,stepsize):
+
+	def __init__(self,kernel,field,act_fun,alpha,field_noise_variance,obs_noise_covariance,obs_locns,stepsize):
 		self.kernel = kernel
 		self.field = field
 		self.act_fun = act_fun
@@ -13,13 +13,16 @@ class IDE():
 		self.obs_locns=obs_locns
 		self.obs_noise_covariance=obs_noise_covariance
 		self.stepsize=stepsize
+		
 
 	def sim(self,init_field,T):
 		#This is to check, this bit can be done Analitically		
-		Psi_x=(self.stepsize*sum([self.field.field_bases(s)*self.field.field_bases(s).T for s in self.field.space]))
+		Psi_x=(self.stepsize**2)*sum([self.field.field_bases(s)*self.field.field_bases(s).T for s in self.field.space])
 		Psi_xinv=Psi_x.I
+
 		Sw=self.field_noise_variance*Psi_xinv* self.field.field_noise()*Psi_xinv.T
-		Swc=pb.linalg.cholesky(Sw)		
+		Swc=pb.linalg.cholesky(Sw)
+				
 		X=[]		
 		x=init_field
 		X.append(x)
@@ -36,7 +39,7 @@ class IDE():
 					sum_r+=self.kernel(s-r)*self.act_fun(self.field.field_bases(r).T*x)
 					#sum_r+=self.kernel(s-r)*self.field.field_bases(r).T*x
 				sum_s.append(self.field.field_bases(s)*sum_r)
-			sum_int=(self.stepsize**2)*sum(sum_s)
+			sum_int=(self.stepsize**4)*sum(sum_s)
 			x=Psi_xinv*sum_int-self.alpha*x+Swc*w
 			X.append(x)
 		#observations
@@ -48,11 +51,11 @@ class IDE():
 			for s in self.obs_locns:
 				sum_r=0
 				for r in self.field.space:
-					sum_r+=gaussian(s-r,0,1,1)*float((self.field.field_bases(r).T*X[t]))
-				y.append(self.stepsize*sum_r)
+					sum_r+=gaussian(s-r,pb.matrix([0,0]),pb.matrix([[1,0],[0,1]]),2)*float((self.field.field_bases(r).T*X[t]))
+				y.append((self.stepsize**2)*sum_r)
 			Y.append(pb.matrix(y).T+Svc*v)
 		return X,Y
-		
+
 
 class Field():
 	
@@ -65,7 +68,6 @@ class Field():
 		self.dimension=dimension
 		self.space = pb.array(space)
 		self.stepsize=stepsize
-
 		self.evaluate = lambda s: sum([w*gaussian(s,cen,wid,self.dimension) for w,cen,wid, in zip(self.weights,self.centers,self.widths)
 				])
 
@@ -82,33 +84,20 @@ class Field():
 		for s in self.space:
 			sum_r=0		
 			for r in self.space:			
-				sum_r+=gaussian(s-r,0,1,1)*self.field_bases(r).T
-			sum_s.append(self.field_bases(s)*sum_r)		
+				sum_r+=gaussian(s-r,pb.matrix([0,0]),pb.matrix([[1,0],[0,1]]),2)*self.field_bases(r).T
+			sum_s.append((self.stepsize**2)*self.field_bases(s)*sum_r)
+
 		return (self.stepsize**2)*sum(sum_s)
 
 
 
 
 
-	def plot(self,space):
-
-		if self.dimension==1:
-			y=[]
-			z=[]
-			specs=zip(self.weights,self.centers,self.widths)
-			for j in specs:
-				for i in space:
-					z.append(float(j[0]*gaussian(i,j[1],j[2],1)))
-				y.append(z)
-				z=[]
-		[pb.plot(space,y[i],'k') for i in range(self.nx)]
-		pb.show()	
-
-		if self.dimension==2:
-			for i in range(len(centers)):
-				for j in range(len(centers)):
-					circle(j*15,i*15,self.width[0])	
-			pb.show()
+	def plot(self,centers):
+		for center in centers:
+			circle(center,2*self.widths[0][0,0])
+		pb.title('field decomposition')	
+		pb.show()
 
 
 class Kernel():
@@ -126,19 +115,18 @@ class Kernel():
 		return self.evaluate(s)
 
 
-	def plot(self,space):		
-		y=[]
-		for i in space:
-			y.append(self.__call__(i))		
-		pb.plot(space,y,'k')
+	def plot(self,space):
+		y = pb.zeros((space.shape[0],space.shape[0]))
+		for i in range(len(space)):
+			for j in range(len(space)):
+				y[i,j]=self.__call__(pb.matrix([[space[i]],[space[j]]]))			
+		fig = pb.figure()
+		ax = matplotlib.axes3d.Axes3D(fig)
+		s1,s2=pb.meshgrid(space,space)
+		ax.plot_wireframe(s1,s2,y,color='k')
+		pb.title('kernel')
 		pb.show()
-
-
 		
-
-
-
-
 class ActivationFunction():
 	
 	def __init__(self,threshold=0.1,max_firing_rate=1,slope=0.2):
@@ -151,10 +139,6 @@ class ActivationFunction():
 
 		return self.max_firing_rate/(1+pb.exp(self.slope*(self.threshold-v)))
 
-
-
-
-
 def gaussian(s, centre, width,dimension):
 		dimension = dimension
 		centre = pb.matrix(centre)
@@ -162,41 +146,68 @@ def gaussian(s, centre, width,dimension):
 		width = pb.matrix(width)
 		return float(pb.exp(-(s-centre).T*width.I*(s-centre)))
 
+def circle(center_matrix,r):
+	u=pb.linspace(0,2*np.pi,200)
+	x0=pb.zeros_like(u)
+	y0=pb.zeros_like(u)
+	for i in range(len(u)):
+		x0[i]=r*pb.sin(u[i])+center_matrix[0,0]
+		y0[i]=r*pb.cos(u[i])+center_matrix[0,1]
+	pb.plot(x0,y0)
+	
 
+
+def gen_obs_locations(xmin,xmax,ymin,ymax,resolution=1):
+
+	x_range = pb.arange(xmin,xmax+resolution,resolution)
+	y_range = pb.arange(ymin,ymax+resolution,resolution)
+	return [np.matrix([[i,j]]).T for i in x_range for j in y_range]
+	
+
+def gen_spatial_lattice(xmin,xmax,ymin,ymax,stepsize):
+
+	x_space=pb.arange(xmin,xmax+stepsize,stepsize)
+	y_space=pb.arange(ymin,ymax+stepsize,stepsize)
+
+	space=[]
+	for si1,s1 in enumerate(x_space):			
+		for si2,s2 in enumerate(y_space):
+			space.append(pb.matrix([[s1],[s2]]))
+	return space
 
 
 if __name__ == "__main__":
 
 	#-------------field--------------------
-	min_field, max_field, inc = 1.8, 18, 1.8
-	f_centers=pb.arange(min_field,max_field+inc,inc)
+	f_centers=[np.matrix([[i,j]]) for i in [1,4] for j in [1,4]]
 	nx=len(f_centers)
-	f_widths=[1]*nx
+	f_widths=[pb.matrix([[1,0],[0,1]])]*nx
 	f_weights=[1]*nx
+
 	stepsize=0.5	
-	f_space = pb.arange(-5,25,stepsize)
-	f=Field(f_weights,f_centers,f_widths,1,f_space,nx,stepsize)
-	f.plot(f_space)
+	f_space=gen_spatial_lattice(0,5,0,5,stepsize)
+	f=Field(f_weights,f_centers,f_widths,2,f_space,nx,stepsize)
+	f.plot(f_centers)
 	#------------Kernel-------------
-	k_centers=[-.5,0,.5]
-	k_weights =[-1,1,.5]
-	k_widths = [.1,.1,.1]
-	k_space = pb.arange(-3,3,0.1)#This is just to plot the kernel and doesn't affect simulation
-	k=Kernel(k_weights,k_centers,k_widths,1)
+	k_centers=[np.matrix([[.5,.5]])]
+	k_weights =[.1]
+	k_widths=[pb.matrix([[1,0],[0,1]])]
+	k_space = pb.linspace(-2,3,50) #This is just to plot the kernel, doesn't affect the simulation
+	k=Kernel(k_weights,k_centers,k_widths,2)
 	k.plot(k_space)
 	#-------Brain----------------
 	alpha=.05
 	field_noise_variance=0.8 
 	act_func=ActivationFunction()
 	#----------observations--------------------------
-	obs_locns = pb.arange(0.5,21,1)
-	obs_noise_covariance =.2*np.eye(len(obs_locns),len(obs_locns))	
+	obs_locns =gen_obs_locations(0,5,0,5,resolution=1)
+	obs_noise_covariance =.2*np.eye(len(obs_locns),len(obs_locns))
 	#----------initialasation----------------------------
 	init_field=[0]*nx
-	init_field[6]=1
+	init_field[2]=1
 	init_field=pb.matrix(init_field).T
 	#--------------model and simulation------------------
 	T=3
-	model=IDE(k, f, act_func,alpha,field_noise_variance,obs_noise_covariance,obs_locns,stepsize)
+	model=IDE(k,f, act_func,alpha,field_noise_variance,obs_noise_covariance,obs_locns,stepsize)
 	X,Y=model.sim(init_field,T)
 
