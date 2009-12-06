@@ -51,14 +51,17 @@ class IDE():
 		print "iterating"
 		for t in range(T):
 			print t
+			print "\t calculating noise"
 			w = Swc*pb.matrix(np.random.randn(self.field.nx,1))
 			v = Svc*pb.matrix(np.random.randn(len(self.obs_locns),1))
 			sum_int = 0
 			y = []
+			print "\t summing over space for state"
 			for si, fs in enumerate(fbases):
 				sum_int += fs * pb.sum([
 					K[si,ri]*self.act_fun(fr.T*x) for ri,fr in enumerate(fbases)
 				])
+			print "\t sampling for y"
 			for si, s in enumerate(self.obs_locns):
 				y.append((self.stepsize**2)*pb.sum([
 					H[si,ri]*float((fr.T*X[t])) for ri,fr in enumerate(fbases)
@@ -186,7 +189,7 @@ def gen_spatial_lattice(xmin,xmax,ymin,ymax,stepsize):
 if __name__ == "__main__":
 
 	#-------------field--------------------
-	f_centers=[np.matrix([[i,j]]) for i in [1,4] for j in [1,4]]
+	f_centers=[np.matrix([[i,j]]) for i in pb.arange(0,5) for j in pb.arange(0,5)]
 	nx=len(f_centers)
 	f_widths=[pb.matrix([[1,0],[0,1]])]*nx
 	f_weights=[1]*nx
@@ -194,7 +197,7 @@ if __name__ == "__main__":
 	stepsize=0.5	
 	f_space=gen_spatial_lattice(0,5,0,5,stepsize)
 	f=Field(f_weights,f_centers,f_widths,2,f_space,nx,stepsize)
-	#f.plot(f_centers)
+	f.plot(f_centers)
 	#------------Kernel-------------
 	k_centers=[np.matrix([[.5,.5]])]
 	k_weights =[.1]
