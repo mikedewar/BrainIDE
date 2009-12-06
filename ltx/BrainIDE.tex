@@ -385,15 +385,15 @@ In order to implement standard estimation techniques we propose a decomposition 
 \end{equation}
 where $\phi(r)$ is the Gaussian basis functions that are scaled by the the state vector. The connectivity kernel can all be decomposed into a set of basis functions
 \begin{equation}\label{DefKernelDecomp}
-k( \mathbf{r} , \mathbf{r'} ) = \theta^T(\mathbf{r})\psi(\mathbf{r} , \mathbf{r'} )
+k( \mathbf{r} , \mathbf{r'} ) = \theta^T\psi(\mathbf{r} , \mathbf{r'} )
 \end{equation}
 Will will assume we know the parametric form of the basis functions, where the parameter $\theta$ is unknown. Each connectivity basis function can be considered a layer in the WC model, representing short range excitation, surround inhibition and long range excitation. Making substitutions we get
 \begin{equation}\label{DecompModel}
-{\phi ^T}\left( \mathbf{r} \right){x_{t+1}} = \theta^T(\mathbf{r})\int_\Omega  {\psi \left( {{\bf{r}} , {\mathbf{r'}}} \right)f\left( {{\phi ^T}\left( {{\mathbf{r'}}} \right){x_t}} \right)d{\mathbf{r'}}}  - \alpha\phi^T(r)x_t + {\varepsilon _t}\left( {\mathbf{r}} \right).
+{\phi ^T}\left( \mathbf{r} \right){x_{t+1}} = \theta^T\int_\Omega  {\psi \left( {{\bf{r}} , {\mathbf{r'}}} \right)f\left( {{\phi ^T}\left( {{\mathbf{r'}}} \right){x_t}} \right)d{\mathbf{r'}}}  - \alpha\phi^T(\mathbf{r})x_t + {\varepsilon _t}\left( {\mathbf{r}} \right).
 \end{equation}
-To isolate the state we cross multiply by $\phi(r)$ and integrate over $\bf{r}$
+To isolate the state we cross multiply by $\phi(\mathbf{r})$ and integrate over $\mathbf{r}$
 \begin{equation}\label{Poo}
-\int_\Omega  {\phi \left( {\bf{r}} \right){\phi ^T}\left( {\bf{r}} \right)d{\bf{r}}{x_{t+1}}}  = \int_\Omega  {\phi ( \mathbf{r} )\theta^T(\mathbf{r})\int_\Omega  {\psi \left( {{\bf{r}} , {\bf{r'}}} \right)f\left( {{\phi ^T}\left( {{\bf{r'}}} \right){x_t}} \right)d{\bf{r'}}} d{\bf{r}}}  - \alpha\int_\Omega \phi(r)\phi^T(r)d\bf{r} x_t  + \int_\Omega  {\phi \left( {\bf{r}} \right){\varepsilon _t}\left( {\bf{r}} \right)d{\bf{r}}}.
+\int_\Omega  {\phi \left( {\bf{r}} \right){\phi ^T}\left( {\bf{r}} \right)d{\bf{r}}{x_{t+1}}}  = \int_\Omega  {\phi ( \mathbf{r} )\theta^T\int_\Omega  {\psi \left( {{\bf{r}} , {\bf{r'}}} \right)f\left( {{\phi ^T}\left( {{\bf{r'}}} \right){x_t}} \right)d{\bf{r'}}} d{\bf{r}}}  - \alpha\int_\Omega \phi(\mathbf{r})\phi^T(\mathbf{r})d\mathbf{r} x_t  + \int_\Omega  {\phi \left( {\mathbf{r}} \right){\varepsilon _t}\left( {\mathbf{r}} \right)d{\mathbf{r}}}.
 \end{equation}
 Now we define
 \begin{equation}\label{DefGamma}
@@ -401,11 +401,11 @@ Now we define
 \end{equation}
 Substituting equation~\ref{DefGamma} into \ref{Poo} and rearranging gives
 \begin{equation}\label{SS Model}
-{x_{t+1}} = {\Gamma ^{ - 1}}\int_\Omega  {\phi \left( {\bf{r}} \right)\theta^T(\mathbf{r})\int_\Omega  {\psi \left( {{\bf{r}} , {\bf{r'}}} \right)f\left( {{\phi ^T}\left( {{\bf{r'}}} \right){x_t}} \right)d{\bf{r'}}} d{\bf{r}}}-\alpha x_t + {\Gamma ^{ - 1}}\int_\Omega  {\phi \left( {\bf{r}} \right){\varepsilon _t}\left( {\bf{r}} \right)d{\bf{r}}}.
+{x_{t+1}} = {\Gamma ^{ - 1}}\int_\Omega  {\phi \left( {\bf{r}} \right)\theta^T\int_\Omega  {\psi \left( {{\bf{r}} , {\bf{r'}}} \right)f\left( {{\phi ^T}\left( {{\bf{r'}}} \right){x_t}} \right)d{\bf{r'}}} d{\bf{r}}}-\alpha x_t + {\Gamma ^{ - 1}}\int_\Omega  {\phi \left( {\bf{r}} \right){\varepsilon _t}\left( {\bf{r}} \right)d{\bf{r}}}.
 \end{equation}
-Under the assumption of spatial homogeneity we can write
+We can rearrange to get
 \begin{equation}\label{Homogeneous SS Model}
-{x_{t+1}} = \theta^T{\Gamma ^{ - 1}}\int_\Omega  {\phi \left( {\bf{r}} \right)\int_\Omega  {\psi \left( {{\bf{r}} - {\bf{r'}}} \right)f\left( {{\phi ^T}\left( {{\bf{r'}}} \right){x_t}} \right)d{\bf{r'}}} d{\bf{r}}}-\alpha x_t + {\Gamma ^{ - 1}}\int_\Omega  {\phi \left( {\bf{r}} \right){\varepsilon _t}\left( {\bf{r}} \right)d{\bf{r}}}.
+{x_{t+1}} = {\Gamma ^{ - 1}}\int_\Omega  {\phi \left( {\bf{r}} \right)\int_\Omega  {f\left( {{\phi ^T}\left( {{\bf{r'}}} \right){x_t}} \right)\psi^T \left( {{\bf{r}} - {\bf{r'}}} \right)d{\bf{r'}}} d{\bf{r}}}\theta - \alpha x_t + {\Gamma ^{ - 1}}\int_\Omega  {\phi \left( {\bf{r}} \right){\varepsilon _t}\left( {\bf{r}} \right)d{\bf{r}}}.
 \end{equation}
 This provides the final state-space model
 \begin{equation}\label{AbbrevSSModel}
