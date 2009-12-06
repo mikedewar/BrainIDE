@@ -18,56 +18,55 @@ class IDE():
 		print "simulating nonlinear IDE"
 		#This is to check, this bit can be done Analitically
 		
-		print "calculating Psi_x inverse"		
-		Psi_x=(self.stepsize**2)*sum([self.field.field_bases(s)*self.field.field_bases(s).T for s in self.field.space])
-		Psi_xinv=Psi_x.I
-
-		Sw=self.field_noise_variance*Psi_xinv* self.field.field_noise()*Psi_xinv.T
-		Swc=pb.linalg.cholesky(Sw)
-				
-		X=[]		
-		x=init_field
-		X.append(x)
-
-
-		##simulation
-		#states
-		
 		# do some splurging!
-		print "pre-calculating basis function vectors"
+		print "pre-calculating kernel matrices"
 		ns = len(self.field.space)
 		K = np.zeros((ns,ns),dtype=object)
+		H = np.zeros((ns,ns),dtype=object)
 		for si,s in enumerate(self.field.space):
 			for ri,r in enumerate(self.field.space):
 				K[si,ri] = self.kernel(s-r)
+				H[si,ri] = gaussian(s-r,pb.matrix([0,0]),pb.matrix([[1,0],[0,1]]),2)
+		print "pre-calculating basis function vectors"
 		fbases = np.empty(ns,dtype=object)
 		for ri,r in enumerate(self.field.space):
 			fbases[ri] = self.field.field_bases(r)
 		
+		
+		print "calculating Psi_x"		
+		Psi_x=(self.stepsize**2)*sum([f*f.T for f in fbases])
+		print "calculating Psix_inv"
+		Psi_xinv=Psi_x.I
+		
+		print "calculating field noise covariances"
+		Sw=self.field_noise_variance*Psi_xinv* self.field.field_noise()*Psi_xinv.T
+		Swc=pb.linalg.cholesky(Sw)
+		Svc=pb.linalg.cholesky(self.obs_noise_covariance)
+		
+		Y = []
+		X = []		
+		x=init_field
+		X.append(x)
+		
 		print "iterating"
 		for t in range(T):
 			print t
-			w = pb.matrix(np.random.randn(self.field.nx,1))
-			sum_s=[]
-			for si,s in enumerate(self.field.space):
-				sum_r = pb.sum([K[si,ri]*self.act_fun(f.T*x) for ri,f in enumerate(fbases)])
-				sum_s.append(self.field.field_bases(s)*sum_r)
-			sum_int=(self.stepsize**4)*sum(sum_s)
-			x=Psi_xinv*sum_int-self.alpha*x+Swc*w
-			X.append(x)
-
-		#observations
-		Y=[]
-		Svc=pb.linalg.cholesky(self.obs_noise_covariance)
-		for t in range(T):
-			v = pb.matrix(np.random.randn(len(self.obs_locns),1))
-			y=[]
-			for s in self.obs_locns:
-				sum_r=0
-				for r in self.field.space:
-					sum_r+=gaussian(s-r,pb.matrix([0,0]),pb.matrix([[1,0],[0,1]]),2)*float((self.field.field_bases(r).T*X[t]))
-				y.append((self.stepsize**2)*sum_r)
+			w = Swc*pb.matrix(np.random.randn(self.field.nx,1))
+			v = Svc*pb.matrix(np.random.randn(len(self.obs_locns),1))
+			sum_int = 0
+			y = []
+			for si, fs in enumerate(fbases):
+				sum_int += fs * pb.sum([
+					K[si,ri]*self.act_fun(fr.T*x) for ri,fr in enumerate(fbases)
+				])
+			for si, s in enumerate(self.obs_locns):
+				y.append((self.stepsize**2)*pb.sum([
+					H[si,ri]*float((fr.T*X[t])) for ri,fr in enumerate(fbases)
+				]))
+			sum_int *= (self.stepsize**4)
+			x=Psi_xinv*sum_int-self.alpha*x+w
 			Y.append(pb.matrix(y).T+Svc*v)
+			X.append(x)
 		return X,Y
 
 
