@@ -196,11 +196,12 @@ def gen_spatial_lattice(xmin,xmax,ymin,ymax,stepsize):
 if __name__ == "__main__":
 
 	#-------------field--------------------
-	f_centers=[np.matrix([[i,j]]) for i in pb.arange(0,6,0.5) for j in pb.arange(0,6,0.5)]
+	step = 0.5
+	f_centers=[np.matrix([[i,j]]) for i in pb.arange(0,6,step) for j in pb.arange(0,6,step)]
 	nx=len(f_centers)
 	f_widths=[pb.matrix([[0.1,0],[0,0.1]])]*nx
 	f_weights=[1]*nx
-
+	print "nx : %s"%nx
 	stepsize=0.5	
 	f_space=gen_spatial_lattice(0,5,0,5,stepsize)
 	f=Field(f_weights,f_centers,f_widths,2,f_space,nx,stepsize)
