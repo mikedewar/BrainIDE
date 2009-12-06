@@ -31,7 +31,7 @@ class IDE():
 		fbases = np.empty(ns,dtype=object)
 		for ri,r in enumerate(self.field.space):
 			fbases[ri] = self.field.field_bases(r)
-		
+		self.field.fbases=fbases
 		
 		print "calculating Psi_x"		
 		Psi_x=(self.stepsize**2)*sum([f*f.T for f in fbases])
@@ -94,14 +94,18 @@ class Field():
 		return pb.matrix([gaussian(s,cen,wid,self.dimension) for w,cen,wid, in zip(self.weights,self.centers,self.widths)]).T
 
 	def field_noise(self):
-		sum_s=[]
-		for s in self.space:
-			sum_r=0		
-			for r in self.space:			
-				sum_r+=gaussian(s-r,pb.matrix([0,0]),pb.matrix([[1,0],[0,1]]),2)*self.field_bases(r).T
-			sum_s.append((self.stepsize**2)*self.field_bases(s)*sum_r)
-
-		return (self.stepsize**2)*sum(sum_s)
+		print "pre-calculating covariance matrices"
+		beta= np.zeros((len(self.space),len(self.space)),dtype=object)
+		for si,s in enumerate(self.space):
+			for ri,r in enumerate(self.space):
+				beta[si,ri]=gaussian(s-r,pb.matrix([0,0]),pb.matrix([[1,0],[0,1]]),2)
+		sum_int = 0
+		for si, fs in enumerate(self.fbases):
+			sum_int += fs * sum([
+				beta[si,ri]*fr.T for ri,fr in enumerate(self.fbases)
+				])
+		sum_int *= (self.stepsize**4)
+		return sum_int
 
 	def plot(self,centers):
 		for center in centers:
