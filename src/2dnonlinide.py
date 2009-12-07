@@ -109,15 +109,8 @@ class Field():
 	def plot(self,centers):
 		for center in centers:
 			circle(center,2*self.widths[0][0,0])
-		pb.title('field decomposition')
-		pb.axis('equal')
-		if self.dimension == 1:
-			pass
-		if self.dimension == 2:
-			pb.xlim([self.space[0][0,0], self.space[-1][0,0]])
-			pb.ylim([self.space[0][1,0], self.space[-1][1,0]])
-		else:
-			raise NotImplementedError('what are you, crazy?')
+		pb.title('field decomposition')	
+		pb.show()
 
 
 class Kernel():
@@ -199,17 +192,15 @@ def gen_spatial_lattice(xmin,xmax,ymin,ymax,stepsize):
 if __name__ == "__main__":
 
 	#-------------field--------------------
-	step = 0.5
-	f_centers=[np.matrix([[i,j]]) for i in pb.arange(0,6,step) for j in pb.arange(0,6,step)]
+	f_centers=[np.matrix([[i,j]]) for i in pb.arange(0,5) for j in pb.arange(0,5)]
 	nx=len(f_centers)
-	f_widths=[pb.matrix([[0.1,0],[0,0.1]])]*nx
+	f_widths=[pb.matrix([[1,0],[0,1]])]*nx
 	f_weights=[1]*nx
-	print "nx : %s"%nx
+
 	stepsize=0.5	
 	f_space=gen_spatial_lattice(0,5,0,5,stepsize)
 	f=Field(f_weights,f_centers,f_widths,2,f_space,nx,stepsize)
 	f.plot(f_centers)
-	pb.show()
 	#------------Kernel-------------
 	k_centers=[np.matrix([[.5,.5]])]
 	k_weights =[.1]
