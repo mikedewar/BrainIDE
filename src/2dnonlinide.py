@@ -54,20 +54,19 @@ class IDE():
 			print "\t calculating noise"
 			w = Swc*pb.matrix(np.random.randn(self.field.nx,1))
 			v = Svc*pb.matrix(np.random.randn(len(self.obs_locns),1))
-			sum_int = 0
+			K_at_si=[]
 			y = []
 			print "\t summing over space for state"
-			for si, fs in enumerate(fbases):
-				sum_int += fs * pb.sum([
-					K[si,ri]*self.act_fun(fr.T*x) for ri,fr in enumerate(fbases)
-				])
+			for si in range(len(self.field.space)):
+				K_at_si.append(pb.sum([K[si,ri]*self.act_fun(fr.T*x) for ri,fr in enumerate(fbases)]))
+			sum_s=pb.hstack(fbases)*pb.matrix(K_at_si).T
+			sum_s *= (self.stepsize**4)
 			print "\t sampling for y"
 			for si, s in enumerate(self.obs_locns):
 				y.append((self.stepsize**2)*pb.sum([
 					H[si,ri]*float((fr.T*X[t])) for ri,fr in enumerate(fbases)
 				]))
-			sum_int *= (self.stepsize**4)
-			x=Psi_xinv*sum_int-self.alpha*x+w
+			x=Psi_xinv*sum_s-self.alpha*x+w
 			Y.append(pb.matrix(y).T+Svc*v)
 			X.append(x)
 		return X,Y
@@ -94,18 +93,18 @@ class Field():
 		return pb.matrix([gaussian(s,cen,wid,self.dimension) for w,cen,wid, in zip(self.weights,self.centers,self.widths)]).T
 
 	def field_noise(self):
-		print "pre-calculating covariance matrices"
+		print "calculating covariance matrix"
 		beta= np.zeros((len(self.space),len(self.space)),dtype=object)
 		for si,s in enumerate(self.space):
 			for ri,r in enumerate(self.space):
 				beta[si,ri]=gaussian(s-r,pb.matrix([0,0]),pb.matrix([[1,0],[0,1]]),2)
-		sum_int = 0
-		for si, fs in enumerate(self.fbases):
-			sum_int += fs * sum([
-				beta[si,ri]*fr.T for ri,fr in enumerate(self.fbases)
-				])
-		sum_int *= (self.stepsize**4)
-		return sum_int
+		beta_at_si=[]
+		for si in range(len(self.space)):
+			beta_at_si.append(sum([beta[si,ri]*fr.T for ri,fr in enumerate(self.fbases)]))
+
+		sum_s=pb.hstack(self.fbases)*np.vstack(beta_at_si)
+		sum_s *= (self.stepsize**4)
+		return sum_s
 
 	def plot(self,centers):
 		for center in centers:
@@ -151,7 +150,7 @@ class ActivationFunction():
 		
 	def __call__(self,v):
 
-		return self.max_firing_rate/(1+pb.exp(self.slope*(self.threshold-v)))
+		return float(self.max_firing_rate/(1+pb.exp(self.slope*(self.threshold-v))))
 
 def gaussian(s, centre, width,dimension):
 		dimension = dimension
@@ -221,7 +220,7 @@ if __name__ == "__main__":
 	init_field[2]=1
 	init_field=pb.matrix(init_field).T
 	#--------------model and simulation------------------
-	T=3
+	T=30
 	model=IDE(k,f, act_func,alpha,field_noise_variance,obs_noise_covariance,obs_locns,stepsize)
 	X,Y=model.sim(init_field,T)
 
