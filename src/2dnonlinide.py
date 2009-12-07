@@ -83,7 +83,7 @@ class IDE():
 
 class Field():
 	
-	def __init__(self, weights,centers, widths, dimension,space,nx,stepsize):
+	def __init__(self, weights, centers, widths, dimension, space,nx,stepsize):
 
 		self.nx=nx
 		self.weights = weights
@@ -119,6 +119,13 @@ class Field():
 		for center in centers:
 			circle(center,2*self.widths[0][0,0])
 		pb.title('field decomposition')	
+		if self.dimension == 1:
+			pass
+		if self.dimension == 2:
+			pb.xlim([self.space[0][0,0], self.space[-1][0,0]])
+			pb.ylim([self.space[0][1,0], self.space[-1][1,0]])
+		else:
+			raise NotImplementedError('what are you, crazy?')
 		pb.show()
 
 
@@ -203,7 +210,8 @@ if __name__ == "__main__":
 	#-------------field--------------------
 	f_centers=[np.matrix([[i,j]]) for i in pb.arange(0,5) for j in pb.arange(0,5)]
 	nx=len(f_centers)
-	f_widths=[pb.matrix([[1,0],[0,1]])]*nx
+	width = 0.5
+	f_widths=[width*pb.matrix([[1,0],[0,1]])]*nx
 	f_weights=[1]*nx
 
 	stepsize=0.5	
