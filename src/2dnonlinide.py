@@ -33,14 +33,23 @@ class IDE():
 			fbases[ri] = self.field.field_bases(r)
 		self.field.fbases=fbases
 		
+		print type(fbases[0]) 
+		
 		print "calculating Psi_x"		
 		Psi_x=(self.stepsize**2)*sum([f*f.T for f in fbases])
 		print "calculating Psix_inv"
 		Psi_xinv=Psi_x.I
 		
 		print "calculating field noise covariances"
+		
 		Sw=self.field_noise_variance*Psi_xinv* self.field.field_noise()*Psi_xinv.T
-		Swc=pb.linalg.cholesky(Sw)
+		try:
+			Swc=pb.linalg.cholesky(Sw)
+		except pb.LinAlgError:
+			print Sw
+			print self.field.field_noise()
+			print Psi_xinv
+			raise
 		Svc=pb.linalg.cholesky(self.obs_noise_covariance)
 		
 		Y = []
