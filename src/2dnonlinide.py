@@ -183,7 +183,7 @@ def circle(center_matrix,r):
 		x0[i]=r*pb.sin(u[i])+center_matrix[0,0]
 		y0[i]=r*pb.cos(u[i])+center_matrix[0,1]
 	pb.plot(x0,y0)
-	
+	pb.plot(center_matrix[0,0],center_matrix[0,1],'kx',ms=7)
 
 
 def gen_obs_locations(xmin,xmax,ymin,ymax,resolution=1):
@@ -208,17 +208,20 @@ def gen_spatial_lattice(xmin,xmax,ymin,ymax,stepsize):
 if __name__ == "__main__":
 
 	#-------------field--------------------
-	step = 0.5
-	f_centers=[np.matrix([[i,j]]) for i in pb.arange(0,6,step) for j in pb.arange(0,6,step)]
+	step = 0.4
+	f_centers=[np.matrix([[i,j]]) for i in pb.arange(0,5+step,step) for j in pb.arange(0,5+step,step)]
 	nx=len(f_centers)
 	print "using %s basis functions"%nx
 	width = 0.1
 	f_widths=[width*pb.matrix([[1,0],[0,1]])]*nx
 	f_weights=[1]*nx
 
-	stepsize=0.5	
+	stepsize=0.2	
 	f_space=gen_spatial_lattice(0,5,0,5,stepsize)
+	print "using %s spatial lattice points"%len(f_space)
 	f=Field(f_weights,f_centers,f_widths,2,f_space,nx,stepsize)
+	for s in f_space:
+		pb.plot(s[0,0],s[1,0],'ko',ms=1)
 	f.plot(f_centers)
 	#------------Kernel-------------
 	k_centers=[np.matrix([[.5,.5]])]
