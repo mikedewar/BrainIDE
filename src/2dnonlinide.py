@@ -59,7 +59,7 @@ class IDE():
 		
 		print "iterating"
 		for t in range(T):
-			print t
+			print "time: %s"%t
 			print "\t calculating noise"
 			w = Swc*pb.matrix(np.random.randn(self.field.nx,1))
 			v = Svc*pb.matrix(np.random.randn(len(self.obs_locns),1))
@@ -208,9 +208,11 @@ def gen_spatial_lattice(xmin,xmax,ymin,ymax,stepsize):
 if __name__ == "__main__":
 
 	#-------------field--------------------
-	f_centers=[np.matrix([[i,j]]) for i in pb.arange(0,5) for j in pb.arange(0,5)]
+	step = 0.5
+	f_centers=[np.matrix([[i,j]]) for i in pb.arange(0,6,step) for j in pb.arange(0,6,step)]
 	nx=len(f_centers)
-	width = 0.5
+	print "using %s basis functions"%nx
+	width = 0.1
 	f_widths=[width*pb.matrix([[1,0],[0,1]])]*nx
 	f_weights=[1]*nx
 
