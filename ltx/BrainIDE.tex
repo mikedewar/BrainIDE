@@ -135,6 +135,44 @@ where $L$ is a polynomial of order $n$ with constant coefficients that provides 
 \begin{equation}\label{FinalForm1}
 \frac{{dv\left( {r,t} \right)}}{{dt}} + \alpha{v\left( {r,t} \right)} = \int_\Omega  {w\left( {r,r'} \right)f\left( {v\left( {r',\bar t} \right)} \right)dr'}  +e\left( {r,t} \right).
 \end{equation}
+\subsection{Multi-Layer Model}
+\begin{equation}\label{ExcitatoryLayer}
+\frac{dv_e\left( {r,t} \right)}{{dt}} + \alpha_ev_e\left( {r,t} \right) = \int_\Omega  {w_{ee}\left( {r,r'} \right)f\left( v_e\left( r',\bar t \right) \right) + w_{ei}\left( {r,r'} \right)f\left( v_i\left( r',\bar t \right) \right)dr'}  +\varepsilon_e\left( {r,t} \right)
+\end{equation}
+\begin{equation}\label{InhibitoryLayer}
+\frac{dv_i\left( {r,t} \right)}{{dt}} + \alpha_iv_i\left( {r,t} \right) = \int_\Omega  {w_{ie}\left( {r,r'} \right)f\left( v_e\left( r',\bar t \right) \right) + w_{ii}\left( {r,r'} \right)f\left( v_i\left( r',\bar t \right) \right)dr'}  +\varepsilon_i\left( {r,t} \right)
+\end{equation}
+The subscript $ei$ denotes connectivity from an inhibitory neural element to an excitatory neural element. We can write the model in matrix form
+\begin{equation}\label{matrixEquation}
+\left[ {\begin{array}{*{20}{c}}
+   {\frac{{d{v_e}\left( t \right)}}
+{{dt}}}  \\
+   {\frac{{d{v_i}\left( t \right)}}
+{{dt}}}  \\
+
+ \end{array} } \right] = \int_\Omega  {\left[ {\begin{array}{*{20}{c}}
+   {{w_{ee}}\left( {r,r'} \right)} & {{w_{ei}}\left( {r,r'} \right)}  \\
+   {{w_{ie}}\left( {r,r'} \right)} & {{w_{ii}}\left( {r,r'} \right)}  \\
+
+ \end{array} } \right]} \left[ {\begin{array}{*{20}{c}}
+   {f\left( {{v_e}\left( {r',t} \right)} \right)}  \\
+   {f\left( {{v_i}\left( {r',t} \right)} \right)}  \\
+
+ \end{array} } \right]dr' - \left[ {\begin{array}{*{20}{c}}
+   {{\alpha _e}{v_e}\left( {r,t} \right)}  \\
+   {{\alpha _i}{v_i}\left( {r,t} \right)}  \\
+
+ \end{array} } \right] + \left[ {\begin{array}{*{20}{c}}
+   {{\varepsilon _e}\left( t \right)}  \\
+   {{\varepsilon _i}\left( t \right)}  \\
+
+ \end{array} } \right]
+\end{equation}
+The iEEG observation equation is
+\begin{equation}\label{iEEGObservationEquation}
+    y(k,t) = \int_{\Omega} m(k,r)\left(v_e(r,t) + v_i(r,t)\right)dr' + w(k,t) 
+\end{equation}
+
 %\subsection{Alternate Model Description I}
 %An alternate and equivalent way to remove the temporal integration using the Laplace transform . We start by considering a discrete neural mass $i$ with inputs with zero delay from another discrete mass $j$ and
 %\begin{equation}\label{TwoDiscreteMasses}
@@ -357,15 +395,28 @@ where $L$ is a polynomial of order $n$ with constant coefficients that provides 
 %\end{equation}
 
 \section{State-Space Model}
-We begin the derivation of the state-space model with the discrete time, continuous space IDE neural field model
+We begin the derivation of the state-space model with the discrete time, continuous space IDE neural field model. A one-step Euler method was used to transform the ODE to a discrete time form.
 \begin{equation}\label{SystemEq}
-{v_{t + 1}}\left( {\bf{r}} \right) = \int_\Omega  {k\left( {{\bf{r}} , {\bf{r'}}} \right)f\left( {{v_t}\left( {{\bf{r'}}} \right)} \right)d{\bf{r'}}}  - \alpha {v_t}\left( {\bf{r}} \right) + e_t\left( {\mathbf{r}} \right),
+\frac{v_{t + 1}\left( \mathbf{r} \right) - v_t(\mathbf{r})}{T_s} = \int_\Omega  {k\left( {{\bf{r}} , {\bf{r'}}} \right)f\left( {{v_t}\left( {{\bf{r'}}} \right)} \right)d{\bf{r'}}}  - \alpha {v_t}\left( {\bf{r}} \right) + e_t\left( {\mathbf{r}} \right),
 \end{equation}
-where $e_t(r)\sim \mathcal{GP}(0,R)$. The observation equation for the model is
+\begin{equation}\label{SystemEq}
+v_{t + 1}\left( \mathbf{r} \right)  = T_s\int_\Omega  {k\left( {{\bf{r}} , {\bf{r'}}} \right)f\left( {{v_t}\left( {{\bf{r'}}} \right)} \right)d{\bf{r'}}} - T_s\alpha {v_t}\left( {\bf{r}} \right) + v_t(\mathbf{r}) + T_se_t\left( {\mathbf{r}} \right),
+\end{equation}
+\begin{equation}\label{SystemEq}
+v_{t + 1}\left( \mathbf{r} \right)  = T_s\int_\Omega  {k\left( {{\bf{r}} , {\bf{r'}}} \right)f\left( {{v_t}\left( {{\bf{r'}}} \right)} \right)d{\bf{r'}}} + (1 - T_s\alpha) v_t\left( {\bf{r}} \right) + T_se_t\left( {\mathbf{r}} \right),
+\end{equation}
+\begin{equation}\label{SystemEq}
+v_{t + 1}\left( \mathbf{r} \right)  = T_s\int_\Omega  {k\left( {{\bf{r}} , {\bf{r'}}} \right)f\left( {{v_t}\left( {{\bf{r'}}} \right)} \right)d{\bf{r'}}} + \lambda v_t\left( {\bf{r}} \right) + T_se_t\left( {\mathbf{r}} \right).
+\end{equation}
+where $e_t(r)\sim \mathcal{GP}(0,R)$, $\lambda = 1-T_s\alpha$ and $T_s$ is the time step or sampling step. 
+
+The observation equation for the model is
 \begin{equation}\label{ObservationEquation}
     y_t( k ) = \int_\Omega  m( k,\mathbf{r} )v_t( \mathbf{r}\rm ) d\mathbf{r}  + \varepsilon ( k ),
 \end{equation}
 where $\varepsilon( k )\sim\mathcal{N}(0,\Sigma)$, $k$ indexes the iEEG electrodes, and $m(k,r)$ is the observation kernel relating the neural field to EEG measurements accounting for electrodes characteristics.
+
+
 To infer the state from observations we can write the likelihood function
 \begin{equation}\label{Likelihood}
 p\left( {{y_{1,...,T}}|{v_{1,...,T}}} \right) = \prod\limits_{t = 1}^T {p\left( {{y_t}|{v_t}} \right)} \prod\limits_{t = 2}^T {p\left( {{v_{t + 1}}|{v_t}} \right)} p\left( {{v_0}} \right)
@@ -377,7 +428,7 @@ where
   p\left( {{v_{t + 1}}|{v_t}} \right) &=& ??? \\
   p\left( {{v_0}} \right) &=& \mathcal{GP}\left( {{\mu _0},{\pi _0}} \right).
 \end{eqnarray}
-We can not calculate the posterior in this Bayesian model for some reason (Mike and Ken can ellaborate), so we need to decompose the field into weighted basis functions.
+We can not calculate the posterior in this Bayesian model for some reason (Mike and Ken can elaborate), so we need to decompose the field into weighted basis functions.
 
 In order to implement standard estimation techniques we propose a decomposition of the The field using a set of Gaussian basis functions. Decomposition allows a continuous field to be represented by a finite dimensional state vector. This allows for the application of standard nonlinear, non-Gaussian state estimation methods such as sequential Monte-Carlo techniques like particle filtering. The field decomposition is described by
 \begin{equation}\label{DefFieldDecomp}
