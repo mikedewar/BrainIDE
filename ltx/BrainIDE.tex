@@ -108,7 +108,7 @@ where $\bar t = t - d\left| {r - r'} \right|$, $d$ is the propagation delay of a
 
 The average firing rate of the presynaptic neurons is related to the postsynaptic membrane potential by the sigmoidal activation function
 \begin{equation}\label{ActivationFunction}
-f\left( {{v_t}\left( {r'} \right)} \right) = \frac{{{\nu _0}}}{{1 + \exp \left( {\beta \left( {{v_0}\left( r \right) - {v_t}\left( {r'} \right)} \right)} \right)}}.
+f\left( {{v_t}\left( {r'} \right)} \right) = \frac{{{\nu _0}}}{{1 + \exp \left( {\beta \left( {{v_0}\left( r \right) - {v}\left(r',\bar{t} \right)} \right)} \right)}}.
 \end{equation}
 %\begin{equation}\label{RateOfPreSynPops}
 %p\left( {v\left( {r,\bar t} \right)} \right) = {\nu_0}u\left( {v\left( {r,\bar t} \right) - {v_0}\left( r \right)} \right)
@@ -155,8 +155,8 @@ The subscript $ei$ denotes connectivity from an inhibitory neural element to an 
    {{w_{ie}}\left( {r,r'} \right)} & {{w_{ii}}\left( {r,r'} \right)}  \\
 
  \end{array} } \right]} \left[ {\begin{array}{*{20}{c}}
-   {f\left( {{v_e}\left( {r',t} \right)} \right)}  \\
-   {f\left( {{v_i}\left( {r',t} \right)} \right)}  \\
+   {f\left( {{v_e}\left( {r',\bar{t}} \right)} \right)}  \\
+   {f\left( {{v_i}\left( {r',\bar{t}} \right)} \right)}  \\
 
  \end{array} } \right]dr' - \left[ {\begin{array}{*{20}{c}}
    {{\alpha _e}{v_e}\left( {r,t} \right)}  \\
@@ -168,9 +168,14 @@ The subscript $ei$ denotes connectivity from an inhibitory neural element to an 
 
  \end{array} } \right]
 \end{equation}
+
+\begin{equation}\label{matrix_equation_in_vector_notation}
+   \frac{d\mathbf{V}(r,t)}{dt} = \int_\Omega \mathbf{W}(r,r')f\left(\mathbf{V}(r,t)\right)dr' - \mathbf{A}\mathbf{V}(r,t) + \mathbf{E}(r,t)
+\end{equation}
+
 The iEEG observation equation is
 \begin{equation}\label{iEEGObservationEquation}
-    y(k,t) = \int_{\Omega} m(k,r)\left(v_e(r,t) + v_i(r,t)\right)dr' + w(k,t) 
+    y(k,t) = \int_{\Omega} m(k,r)\left(v_e(r,t) + v_i(r,t)\right)dr' + w(k,t)
 \end{equation}
 
 %\subsection{Alternate Model Description I}
@@ -408,7 +413,7 @@ v_{t + 1}\left( \mathbf{r} \right)  = T_s\int_\Omega  {k\left( {{\bf{r}} , {\bf{
 \begin{equation}\label{SystemEq}
 v_{t + 1}\left( \mathbf{r} \right)  = T_s\int_\Omega  {k\left( {{\bf{r}} , {\bf{r'}}} \right)f\left( {{v_t}\left( {{\bf{r'}}} \right)} \right)d{\bf{r'}}} + \lambda v_t\left( {\bf{r}} \right) + T_se_t\left( {\mathbf{r}} \right).
 \end{equation}
-where $e_t(r)\sim \mathcal{GP}(0,R)$, $\lambda = 1-T_s\alpha$ and $T_s$ is the time step or sampling step. 
+where $e_t(r)\sim \mathcal{GP}(0,R)$, $\lambda = 1-T_s\alpha$ and $T_s$ is the time step or sampling step.
 
 The observation equation for the model is
 \begin{equation}\label{ObservationEquation}
