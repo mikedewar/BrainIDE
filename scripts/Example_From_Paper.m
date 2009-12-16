@@ -7,7 +7,7 @@ LW = 5;
 
 x(1) = 0;                   % define initial state
 
-Q = 2;                     % process disturbance variance
+Q = 1;                     % process disturbance variance
 R = 1;                      % measure noise variance
 N_Samples = 100;             % number of time points
 
@@ -22,7 +22,7 @@ hold on
 % run particle filter to estimate state
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Particle_Variance = 10;
-N_Particles = 100;
+N_Particles = 1000;
 x_p_prior = sqrt(Particle_Variance)*randn(1,N_Particles);                            % subscript p means particle
 % x_p_prior = sqrt(Particle_Variance)*randn(1,1)*ones(1,N_Particles);          % subscript p means particle
 x_p = x_p_prior;
