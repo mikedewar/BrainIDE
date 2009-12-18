@@ -249,7 +249,7 @@ def field_centers(FieldWidth,Massdensity,field_basis_separation,field_basis_widt
 	x_center_outer =pb.linspace(-FieldWidth/2.,FieldWidth/2.,N_masses_in_width/(2.*field_basis_separation/pb.sqrt(2)));
 	y_center_outer = x_center_outer;
 
-	distance_between_centers = abs(x_center_outer[2]-x_center_outer[1]);
+	distance_between_centers = abs(x_center_outer[1]-x_center_outer[0]);
 	x_center_inner = pb.linspace(-FieldWidth/2.+distance_between_centers/2.,FieldWidth/2.-distance_between_centers/2.,N_masses_in_width/		(2.*field_basis_separation/pb.sqrt(2))-1)
 	y_center_inner = x_center_inner
 
