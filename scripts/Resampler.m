@@ -6,10 +6,11 @@ function [new_x new_w] = Resampler(x,w)
     
     c = cumsum(w);              % cumulative dist of weights
     c = c/max(c);               % normalise
-    u1 = rand(1,1)/N;       % with a uniform distribution there is no need to use the sqrt 
+    u1 = rand(1,1)/N;           % with a uniform distribution there is no need to use the sqrt 
 
     i = 1;
-    for j = 1:N       
+    for j = 1:N  
+        
         u(j) = u1 + N_inv*(j-1);    % this guy should never be  > 1 but it is with the definition in the tutorial paper
         
         while u(j) > c(i)           % find where the cdf is greater than u
@@ -21,4 +22,5 @@ function [new_x new_w] = Resampler(x,w)
         i_j(j) = i;
         
     end
+    
 end

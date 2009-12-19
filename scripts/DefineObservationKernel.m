@@ -26,7 +26,9 @@ for CenterIndex_x=1:length(ObservationCentre)
                 
             end
         end
+        
         ObservationFunctionIndex = ObservationFunctionIndex+1;
+        
     end
 end
 
