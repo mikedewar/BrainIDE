@@ -178,27 +178,27 @@ The iEEG observation equation is
     y(k,t) = \int_{\Omega} m(k,r)\left(v_e(r,t) + v_i(r,t)\right)dr' + w(k,t)
 \end{equation}
 
-%\subsection{Alternate Model Description I}
-%An alternate and equivalent way to remove the temporal integration using the Laplace transform . We start by considering a discrete neural mass $i$ with inputs with zero delay from another discrete mass $j$ and
-%\begin{equation}\label{TwoDiscreteMasses}
-%{v_i}\left( t \right) = \int_{ - \infty }^t {{h_j}(t - t'){w_{ij}}p\left( {{v_j}\left( t \right)} \right)dt'},
-%\end{equation}
-%where $w_{ij}$ can be considered the synaptic efficiency from $j$ to $i$. Now we take the Laplace transform $\mathcal{L}(v_i(t))=V(s)$ yielding
-%\begin{eqnarray}
-%% \nonumber to remove numbering (before each equation)
-%  {V_i}\left( s \right) &=& {H_j}\left( s \right){w_{ij}}P\left( {{V_j}\left( s \right)} \right) \nonumber \\
-%   &=& {\left( {s + \alpha} \right)^{ - 1}}{w_{ij}}P\left( {{V_j}\left( s \right)} \right)  \\
-%  \Rightarrow s{V_i}\left( s \right) + \alpha{V_i}\left( s \right) &=& {w_{ij}}P\left( {{V_j}\left( s \right)} \right).
-%\end{eqnarray}
-%Now taking the inverse Laplace transform we get
-%\begin{equation}\label{InverseLaplace}
-%\frac{{d{v_i}\left( t \right)}}{{dt}} + \alpha{v_i}\left( t \right) = {w_{ij}}p\left( {{v_j}\left( t \right)} \right).
-%\end{equation}
-%Next we convert the model from discrete neural masses to a continuum by
-%\begin{equation}\label{Discrete2Continuum}
-%\frac{{dv\left( {r,t} \right)}}{{dt}} + \alpha{v\left( {r,t} \right)} = \int_\Omega  {w\left( {r,r'} \right)p\left( {v\left( {r',\bar t} \right)} \right)dr'}  + e\left( {s,t} \right).
-%\end{equation}
-%
+\subsection{Alternate Model Description I}
+An alternate and equivalent way to remove the temporal integration using the Laplace transform . We start by considering a discrete neural mass $i$ with inputs with zero delay from another discrete mass $j$ and
+\begin{equation}\label{TwoDiscreteMasses}
+{v_i}\left( t \right) = \int_{ - \infty }^t {{h_j}(t - t'){w_{ij}}p\left( {{v_j}\left( t \right)} \right)dt'},
+\end{equation}
+where $w_{ij}$ can be considered the synaptic efficiency from $j$ to $i$. Now we take the Laplace transform $\mathcal{L}(v_i(t))=V(s)$ yielding
+\begin{eqnarray}
+% \nonumber to remove numbering (before each equation)
+  {V_i}\left( s \right) &=& {H_j}\left( s \right){w_{ij}}P\left( {{V_j}\left( s \right)} \right) \nonumber \\
+   &=& {\left( {s + \alpha} \right)^{ - 1}}{w_{ij}}P\left( {{V_j}\left( s \right)} \right)  \\
+  \Rightarrow s{V_i}\left( s \right) + \alpha{V_i}\left( s \right) &=& {w_{ij}}P\left( {{V_j}\left( s \right)} \right).
+\end{eqnarray}
+Now taking the inverse Laplace transform we get
+\begin{equation}\label{InverseLaplace}
+\frac{{d{v_i}\left( t \right)}}{{dt}} + \alpha{v_i}\left( t \right) = {w_{ij}}p\left( {{v_j}\left( t \right)} \right).
+\end{equation}
+Next we convert the model from discrete neural masses to a continuum by
+\begin{equation}\label{Discrete2Continuum}
+\frac{{dv\left( {r,t} \right)}}{{dt}} + \alpha{v\left( {r,t} \right)} = \int_\Omega  {w\left( {r,r'} \right)p\left( {v\left( {r',\bar t} \right)} \right)dr'}  + e\left( {s,t} \right).
+\end{equation}
+
 %\subsection{Alternate Model Description II}
 %\begin{figure*}
 %\centering
@@ -422,18 +422,18 @@ The observation equation for the model is
 where $\varepsilon( k )\sim\mathcal{N}(0,\Sigma)$, $k$ indexes the iEEG electrodes, and $m(k,r)$ is the observation kernel relating the neural field to EEG measurements accounting for electrodes characteristics.
 
 
-To infer the state from observations we can write the likelihood function
-\begin{equation}\label{Likelihood}
-p\left( {{y_{1,...,T}}|{v_{1,...,T}}} \right) = \prod\limits_{t = 1}^T {p\left( {{y_t}|{v_t}} \right)} \prod\limits_{t = 2}^T {p\left( {{v_{t + 1}}|{v_t}} \right)} p\left( {{v_0}} \right)
-\end{equation}
-where
-\begin{eqnarray}
-% \nonumber to remove numbering (before each equation)
-  p\left( {{y_t}|{v_t}} \right) &=& \mathcal{N}\left( {\int_\Omega  {m\left( {k,r} \right)v_t( r )dr} ,R} \right) \\
-  p\left( {{v_{t + 1}}|{v_t}} \right) &=& ??? \\
-  p\left( {{v_0}} \right) &=& \mathcal{GP}\left( {{\mu _0},{\pi _0}} \right).
-\end{eqnarray}
-We can not calculate the posterior in this Bayesian model for some reason (Mike and Ken can elaborate), so we need to decompose the field into weighted basis functions.
+%To infer the state from observations we can write the likelihood function
+%\begin{equation}\label{Likelihood}
+%p\left( {{y_{1,...,T}}|{v_{1,...,T}}} \right) = \prod\limits_{t = 1}^T {p\left( {{y_t}|{v_t}} \right)} \prod\limits_{t = 2}^T {p\left( {{v_{t + 1}}|{v_t}} \right)} p\left( {{v_0}} \right)
+%\end{equation}
+%where
+%\begin{eqnarray}
+%% \nonumber to remove numbering (before each equation)
+%  p\left( {{y_t}|{v_t}} \right) &=& \mathcal{N}\left( {\int_\Omega  {m\left( {k,r} \right)v_t( r )dr} ,R} \right) \\
+%  p\left( {{v_{t + 1}}|{v_t}} \right) &=& ??? \\
+%  p\left( {{v_0}} \right) &=& \mathcal{GP}\left( {{\mu _0},{\pi _0}} \right).
+%\end{eqnarray}
+%We can not calculate the posterior in this Bayesian model for some reason (Mike and Ken can elaborate), so we need to decompose the field into weighted basis functions.
 
 In order to implement standard estimation techniques we propose a decomposition of the The field using a set of Gaussian basis functions. Decomposition allows a continuous field to be represented by a finite dimensional state vector. This allows for the application of standard nonlinear, non-Gaussian state estimation methods such as sequential Monte-Carlo techniques like particle filtering. The field decomposition is described by
 \begin{equation}\label{DefFieldDecomp}

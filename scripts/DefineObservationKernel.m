@@ -1,10 +1,6 @@
 
 % define observation kernels
 
-SensorWidth = 1;        % diameter in mm
-SensorSpacing = 3;     % in mm
-
-BoundryEffectWidth = 4; % how much space to ignore
 
 ObservationCentre = (-FieldWidth/2 + BoundryEffectWidth):SensorSpacing:(FieldWidth/2 - BoundryEffectWidth);
 NSensors = length(ObservationCentre)^2;

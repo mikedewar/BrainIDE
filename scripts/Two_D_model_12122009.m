@@ -47,7 +47,7 @@ theta2 = -0.9;                                                                  
 theta3 = 0.045;
 
 if UseBasisFunctions
-    theta = 0.0001*[theta1 ; theta2; theta3];               % scaled for basis functions
+    theta = 0.001*[theta1 ; theta2; theta3];               % scaled for basis functions
 else
     theta = 2200*[theta1 ; theta2; theta3];
 end
@@ -58,7 +58,7 @@ sigma = 0.5*[sigma1 ; sigma2 ; sigma3];                 % scaled by two to simul
 
 % initialise field basis functions
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-sigma_field = 1;                                       % width of the field basis function
+sigma_field = 2.5;                                       % width of the field basis function
 field_basis_separation = 2;                             % distance wrt masses, must be > 1, diagonal distance
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -75,9 +75,9 @@ time = linspace(0,t_end,NSamples);
 
 % initialise space properties
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-MassDensity = 2;                                        % masses per mm
+MassDensity = 1;                                        % masses per mm
 SpaceStep = 1/MassDensity;
-FieldWidth = 20;                                        % mm in each axis, should be even
+FieldWidth = 40;                                        % mm in each axis, should be even
 N_masses_in_width = MassDensity*FieldWidth+1;
 Space_x = -FieldWidth/2:1/MassDensity:FieldWidth/2;
 Space_y = Space_x;
@@ -85,6 +85,10 @@ Space_y = Space_x;
 
 % initialize observation kernel
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+SensorWidth = 3;        % diameter in mm
+SensorSpacing = 10;     % in mm
+BoundryEffectWidth = 4; % how much space to ignore
+
 DefineObservationKernel
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -123,7 +127,7 @@ end
 % Disturbance properties
 % ~~~~~~~~~~~~~~~~~~~~~~
 DisturbanceMean = 0;
-SigmaDisturbance = 10;           % no basis decomposition
+SigmaDisturbance = 1000;           % no basis decomposition
 if UseBasisFunctions
     R = SigmaDisturbance*chol(Gamma^-1);               % use cholesky decomp
 else
@@ -168,16 +172,14 @@ for t=2:NSamples
         Int_Phi_Mult_With_Convolved_Firing = Mult_By_phi_And_Integrate(Firing_Convolved_With_Kernel(t-1,:,:), ...
             N_field_basis_function, SpaceStep, phi, N_masses_in_width);
 
-        x(:,t) = Ts*Gamma\Int_Phi_Mult_With_Convolved_Firing + lambda*x(:,t-1) + R*randn(N_field_basis_function,1)*SpaceStep^2;
+        x(:,t) = Ts*Gamma\Int_Phi_Mult_With_Convolved_Firing + lambda*x(:,t-1) + Ts*R*randn(N_field_basis_function,1)*SpaceStep^2;
         
         Field(t,:,:) = Create_Field_From_States(phi, x(:,t));
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     else
         
-% can comment out this guy if we use basis functions
-%  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        Field(t,:,:) = squeeze(Ts*UpdatedField(t-1,:,:) + lambda*Field(t-1,:,:) + Disturbance(t-1,:,:));
+        Field(t,:,:) = squeeze(Ts*UpdatedField(t-1,:,:) + lambda*Field(t-1,:,:) + Ts*Disturbance(t-1,:,:));
     end
     
 % generate observations
