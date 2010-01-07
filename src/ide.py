@@ -4,7 +4,7 @@ integrodifference equation model and methods to generate,
 interrogate and estimate the model from data.
 """
 # my modules
-import ssmodel, ideBase, bases
+import ssmodel, ideBase, bases, BlockMatrix
 # built-ins
 import pylab as pb
 import numpy as np
@@ -90,29 +90,32 @@ class ide:
 		
 		s = self.obs_locns
 		# form gamma (this is the hard bit)
-		if hasattr(self,'gamma'):
-			gamma = self.gamma
+		# form U 
+		if hasattr(self,'U'):			
+			pass
 		else:
-			# initialise gamma as a nx x nx nested list
-			gamma = [[0 for x in range(nx)] for y in range(nx)]
+			# initialise gamma as a nx x nx Block Matrix
+			U = np.empty((nx,nx),dtype=object)
+			
 			for i in range(nx):
 				for j in range(nx):
-					g = pb.matrix(pb.zeros([ntheta,1]))
+					u = np.matrix(np.zeros([ntheta,1]))
 					for m in range(ntheta):
 						# form the convolution of phi[j] and psi[m]
 						Phi = phi[j].conv(psi[m])
 						# find the inner product of the resulting basis with phi[i]
-						g[m] = Phi * phi[i]
-					# store each g vector in the nested list
-					gamma[i][j] = g
-			# store the gamma so we don't have to re-generate it each time we do this		
-			self.gamma = gamma
+						u[m] = Phi * phi[i]						
+					# store transpose of each u vector in the Block Matrix			
+					U[i,j] = u.T						
+			# store the U so we don't have to re-generate it each time we do this		
+			self.U = BlockMatrix.block_matrix(U)
+		
 		# form Psi_theta
-		Psi_theta = pb.matrix(pb.zeros([nx,nx]))
+		Psi_theta = np.matrix(np.zeros([nx,nx]))
 		for i in range(nx):
 			for j in range(nx):
-				Psi_theta[i,j] = theta.T * gamma[i][j]
-		self.Psi_theta=	Psi_theta	
+				Psi_theta[i,j] = self.U[i,j]*theta
+		self.Psi_theta = Psi_theta 
 		# form invPsi_x
 		if hasattr(self,'invPsi_x'):
 			invPsi_x = self.invPsi_x
@@ -128,14 +131,41 @@ class ide:
 		# check for stability
 		for u in self.eig():
 			if abs(u) > 1:
-				warnings.warn('unstable system')
+				print 'unstable system'
+				break
 		# form the observation matrix
-		for i in range(ny):
-			for j in range(nx):
-				self.ssmodel.C[i,j] = self.field.bases[j].evaluate(s[i])
-		# form Sw
-		self.ssmodel.Sw = self.field_noise_variance * invPsi_x;
-		self.Sw = self.ssmodel.Sw
+		if not(self.ssmodel.C.any()):			
+			for i in range(ny):
+				for j in range(nx):
+					self.ssmodel.C[i,j] = self.field.bases[j].evaluate(s[i])
+
+		# form Sw		
+		if hasattr(self,'Sw'):
+			pass
+		else:
+			# form Sw
+			#self.ssmodel.Sw = self.field_noise_variance * invPsi_x;
+			#self.Sw = self.ssmodel.Sw			
+			Pi= np.matrix(np.zeros([nx,nx]))				
+			#Define covariance function
+			if self.dimension==1:
+				eta=bases.gaussianBasis(1,0,1)
+			else:
+				eta=bases.gaussianBasis(2,np.matrix([0,0]),np.matrix([[0.05**2,0],[0,0.05**2]]))
+
+			for i in range(nx):
+				for j in range(nx):
+					eta_conv=eta.conv(phi[i])
+					Pi[j,i]=eta_conv*phi[j]			
+			self.ssmodel.Sw = self.field_noise_variance * self.invPsi_x*Pi*self.invPsi_x.T;
+			self.Sw = self.ssmodel.Sw
+
+		if not(hasattr(self.ssmodel,'Delta_Upsilon')):
+			self.Delta_Upsilon=self.U.transpose()*self.invPsi_x* self.Sw.I * self.invPsi_x*self.U
+		if not(hasattr(self.ssmodel,'Delta_upsilon')):
+			self.Delta_upsilon=self.Sw.I*self.invPsi_x*self.U
+
+
 		# populate the ssmodel
 		self.ssmodel.Sv = self.obs_noise_covariance
 		self.ssmodel.x0 = pb.matrix(self.field.weights).T
@@ -158,22 +188,18 @@ class ide:
 			Xi_0 += X[t-1] * X[t].T + M[t]
 			Xi_1 += X[t-1] * X[t-1].T + P[t-1]
 		# form Upsilon
-		Upsilon = pb.matrix(pb.zeros([na,na]))
-		temp = self.invPsi_x * self.Sw.I * self.invPsi_x
+		Upsilon = np.matrix(np.zeros([na,na]))
 		for i in range(nx):
 			for j in range(nx):
-				for k in range(nx):
-					for m in range(nx):
-						Upsilon += Xi_1[i,j] * self.gamma[k][j] * temp[k,m] * self.gamma[m][i].T
+				Upsilon += Xi_1[i,j] * self.Delta_Upsilon[j,i]
 		Upsilon.I
 		# form upsilon
-		upsilon = pb.matrix(pb.zeros([na,1]))
-		temp = Xi_0 * self.Sw.I * self.invPsi_x
+		upsilon = np.matrix(np.zeros([1,na]))
 		for i in range(nx):
 			for j in range(nx):
-				upsilon += temp[i,j] * self.gamma[j][i]
+				upsilon += Xi_0[i,j]*self.Delta_upsilon[j,i]
 		# update the weights
-		weights =  Upsilon.I * upsilon
+		weights = Upsilon.I*upsilon.T
 		self.kernel.weights = [float(x) for x in weights[:,0]]
 		
 		
@@ -189,10 +215,10 @@ class ide:
 		self.gen_ssmodel()
 		# generate a random state sequence
 		X= [pb.matrix(np.random.rand(self.ssmodel.nx,1)) for t in range(self.T)]
-		P=[pb.matrix(pb.ones((self.ssmodel.nx,self.ssmodel.nx)))]*self.T
-		M=[pb.matrix(pb.ones((self.ssmodel.nx,self.ssmodel.nx)))]*self.T
-		#P=[10000*pb.matrix(pb.eye((self.ssmodel.nx)))]*self.T
-		#M=[10000*pb.matrix(pb.eye((self.ssmodel.nx)))]*self.T
+		P=[pb.matrix(pb.zeros((self.ssmodel.nx,self.ssmodel.nx)))]*self.T
+		M=[pb.matrix(pb.zeros((self.ssmodel.nx,self.ssmodel.nx)))]*self.T
+		#P=[1000*pb.matrix(pb.eye((self.ssmodel.nx)))]*self.T
+		#M=[1000*pb.matrix(pb.eye((self.ssmodel.nx)))]*self.T
 
 		# introduce the observations
 		# iterate
@@ -218,4 +244,14 @@ class ide:
 		'''returns Frobenius Norm'''
 		u= np.sqrt(np.trace(self.ssmodel.A.T*self.ssmodel.A))
 		return u	
+
+def Observability(A,C):
+	Observability_matrix=[]
+	for i in range(A.shape[0]):
+		Observability_matrix.append(C*A**i)
+	return np.vstack(Observability_matrix)
+
+def matrixrank(A,tol=1e-8):
+	s = np.linalg.svd(A,compute_uv=0)
+	return np.sum( np.where( s>tol, 1, 0 ))
 

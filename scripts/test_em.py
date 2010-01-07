@@ -1,8 +1,10 @@
 import numpy as np
 import pylab as pb
+import sys
+sys.path.append("../src")
 import ssmodel, ideBase, ide, bases
 
-def setup():
+def setup(kernel_weights = [1,-1,.5]):
 	dim=1
 	space = np.arange(0,20,0.2)
 	T=400
@@ -16,8 +18,7 @@ def setup():
 	#Define Kernel
 	#--------------
 	#This is the connectivity kernel
-	kernel_bases = [bases.gaussianBasis(dim,0,.1),bases.gaussianBasis(dim,0,.5),bases.gaussianBasis(dim,0,1)]
-	kernel_weights = [1,-1,.5] 
+	kernel_bases = [bases.gaussianBasis(dim,0,.1),bases.gaussianBasis(dim,0,.5),bases.gaussianBasis(dim,0,1)]  
 	#-------------------------------
 	#This is  the kernel from Mike paper
 	#------------------------------------------------------------------
@@ -45,12 +46,26 @@ def kernel_estimate(model):
 	X,Y=generate_observation(model)
 	model.em(Y)
 	
-def plot_kernel(model):
+def plot_kernel(model, *args, **kwargs):
 	'''plot the kernel'''
 	u=np.linspace(-3,3,100)
 	z=[]	
 	for i in u:
 		z.append(float(model.kernel.evaluate(i)))
-	pb.plot(u,z)
-	pb.show()
+	pb.plot(u,z, *args, **kwargs)
 	
+if __name__ == "__main__":
+	
+	# the weights correspond to three Gaussians.
+	#Their variances are, respectively, [0.1, 0.5, 1]
+	weights = [1,-1,1]
+	# initialise and simulate the model
+	model = setup()
+	# plot the true kernel
+	plot_kernel(model,'k-',lw=2)
+	# estimate the kernel
+	kernel_estimate(model)
+	# plot the estimated kernel
+	plot_kernel(model)
+	# draw the graph
+	pb.show()
