@@ -563,47 +563,9 @@ The conclusion goes here.
 
 \appendices
 \section{Ken's Discretization}
-Spatio-temporal interactions can be described by the continuous space continuous time stochastic differential equation
-\begin{equation}\label{differential eq}	
-\tau dv\left( r,t \right) = \left( -v\left( r,t \right) + \int_\Omega  {w\left( r,r' \right)f\left( {v\left( r',t \right)} \right)dr'} \right) dt  + d e\left( r,t \right).
+\begin{equation}\label{StartForDiscretization}
+\tau\frac{dv\left( r,t \right)}{dt} = -v\left( r,t \right) + \int_\Omega  {w\left( r,r' \right)f\left( {v\left( r',t \right)} \right)dr'}  + e\left( r,t \right).
 \end{equation}
-where $e\left( r,t \right)$ is a zero mean temporal Wiener process with incremental covariance $\Sigma_e(r)dt$. (not too sure about this noise since it needs to be white temporally but coloured spatially - which in continuous space-time I have never seen written ... has anyone?)
-To simplify the notation, but without loss of generality, \ref{differential eq} can be rewritten as
-\begin{equation}\label{differential simplified}
-	dv\left( r,t \right) = q\left(v(r,t) \right) dt  + d e\left( r,t \right)
-\end{equation}
-Had $q\left(v(r,t) \right)$ been a linear function in $v$, then \ref{differential simplified} could be rewritten as
-\begin{equation}\label{differential linear}
-	dv\left( r,t \right) = Av(r,t)dt  + d e\left( r,t \right)
-\end{equation}
-Considering temporal sampling instances $\delta$ apart given by $\{t_k = 0,~1,~2, \ldots$ \}, then a solution to \ref{differential linear} at each sampling time is given by
-\begin{equation}\label{linear solution}
-	v(r,t_k+\delta) = \exp\{A(\delta)\}x(t) + \int_{t_k}^{t_k+\delta}\exp\{A(t_k+\delta-\tau)\}de(r,\tau)
-\end{equation}
-Let the discrete time random variable $e'(r,t_k)$ be
-\begin{equation}\label{discrete noise}
-	e'(r,t_k) = \int_{t_k}^{t_k+\delta}\exp\{A(t_k+\delta-\tau)\}de(r,\tau)
-\end{equation}
-then, $e'(r,t_k)$ is a zero mean, temporally white noise term with covariance
-\begin{equation}\label{covariance of noise}
-	E\left[e'(r,t_k),e'^\top(r,t_k) \right] = \int_t^{t+\delta}\exp\{A(t_k+\delta-\tau)\} \Sigma_e(r) \exp\{A(t+\delta-\tau)\} d\tau
-\end{equation}
-
-But we are not so luck as to be able to go from \ref{differential simplified} to \ref{differential linear} and thus I doubt if we can obtain an exact solution to \ref{differential simplified} without an approximation. Agreed?
-
-A possible approximate solution is the one you have already used. Thus, interpreting the difference equation \ref{differential simplified} as an integral equation gives
-\begin{equation}\label{euler}
-	v\left(r,t\right) =  v(r,t_0) + \int_{t_0}^{t} q\left(v(r,\tau) \right) d\tau  + \int_{t_0}^{t} d e\left(r,\tau\right)
-\end{equation}
-Using an Euler approximation, \ref{euler} can be approximated at each sampling time by
-\begin{equation}\label{euler approx 1}
-	v\left(r,t_{k+1} \right) =  v(r,t_k) + q\left(v(r,t_k)\right) (t_{k+1} - t_k) + (e(r,t_{k+1}) - e(r,t_k))
-\end{equation}
-which can be rewritten as
-\begin{equation}\label{euler approx 2}
-	v\left(r,t_k + \delta \right) =  v(r,t_k) + \delta q\left(v(r,t_k)\right) + e'(r,t_k)
-\end{equation}
-where $e'(r,t_k)$ is a zero mean Gaussian random variable with covariance $\delta\Sigma_e$. (Note that, because of the way the noise is defined in \ref{differential eq} it is not $\delta^2$ but $\delta$)
 
 % you can choose not to have a title for an appendix
 % if you want by leaving the argument blank
