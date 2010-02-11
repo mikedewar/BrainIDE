@@ -126,10 +126,12 @@ end
 
 % Disturbance properties
 % ~~~~~~~~~~~~~~~~~~~~~~
-DisturbanceMean = 0;
-SigmaDisturbance = 1000;           % no basis decomposition
+DisturbanceMean = 0*ones(N_field_basis_function,1);
+SigmaDisturbance = 8000*eye(N_field_basis_function,N_field_basis_function);           % no basis decomposition
 if UseBasisFunctions
-    R = SigmaDisturbance*chol(Gamma^-1);               % use cholesky decomp
+    R = chol(Gamma^-1);               % use cholesky decomp
+    DisturbanceCovariance = R*SigmaDisturbance*R';
+    DisturbanceMean = R*DisturbanceMean;
 else
     Disturbance = sqrt(SigmaDisturbance)*randn(NSamples,N_masses_in_width,N_masses_in_width);
 end
@@ -171,10 +173,17 @@ for t=2:NSamples
         
         Int_Phi_Mult_With_Convolved_Firing = Mult_By_phi_And_Integrate(Firing_Convolved_With_Kernel(t-1,:,:), ...
             N_field_basis_function, SpaceStep, phi, N_masses_in_width);
-
-        x(:,t) = Ts*Gamma\Int_Phi_Mult_With_Convolved_Firing + lambda*x(:,t-1) + Ts*R*randn(N_field_basis_function,1)*SpaceStep^2;
+        
+        Disturbance = DisturbanceMean+DisturbanceCovariance*randn(N_field_basis_function,1);
+        
+        for Field_Basis_Index=1:N_field_basis_function
+            Disturbance_with_Phi(Field_Basis_Index) = sum(sum(Disturbance(Field_Basis_Index)*squeeze(phi(Field_Basis_Index,:,:)),1))*SpaceStep^2;
+        end
+        
+        x(:,t) = Ts*Gamma\Int_Phi_Mult_With_Convolved_Firing + lambda*x(:,t-1) + Ts^2*Disturbance_with_Phi';
         
         Field(t,:,:) = Create_Field_From_States(phi, x(:,t));
+        
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     else

@@ -135,69 +135,70 @@ where $L$ is a polynomial of order $n$ with constant coefficients that provides 
 \begin{equation}\label{FinalForm1}
 \frac{{dv\left( {r,t} \right)}}{{dt}} + \alpha{v\left( {r,t} \right)} = \int_\Omega  {w\left( {r,r'} \right)f\left( {v\left( {r',\bar t} \right)} \right)dr'}  +e\left( {r,t} \right).
 \end{equation}
-\subsection{Multi-Layer Model}
-\begin{equation}\label{ExcitatoryLayer}
-\frac{dv_e\left( {r,t} \right)}{{dt}} + \alpha_ev_e\left( {r,t} \right) = \int_\Omega  {w_{ee}\left( {r,r'} \right)f\left( v_e\left( r',\bar t \right) \right) + w_{ei}\left( {r,r'} \right)f\left( v_i\left( r',\bar t \right) \right)dr'}  +\varepsilon_e\left( {r,t} \right)
-\end{equation}
-\begin{equation}\label{InhibitoryLayer}
-\frac{dv_i\left( {r,t} \right)}{{dt}} + \alpha_iv_i\left( {r,t} \right) = \int_\Omega  {w_{ie}\left( {r,r'} \right)f\left( v_e\left( r',\bar t \right) \right) + w_{ii}\left( {r,r'} \right)f\left( v_i\left( r',\bar t \right) \right)dr'}  +\varepsilon_i\left( {r,t} \right)
-\end{equation}
-The subscript $ei$ denotes connectivity from an inhibitory neural element to an excitatory neural element. We can write the model in matrix form
-\begin{equation}\label{matrixEquation}
-\left[ {\begin{array}{*{20}{c}}
-   {\frac{{d{v_e}\left( t \right)}}
-{{dt}}}  \\
-   {\frac{{d{v_i}\left( t \right)}}
-{{dt}}}  \\
 
- \end{array} } \right] = \int_\Omega  {\left[ {\begin{array}{*{20}{c}}
-   {{w_{ee}}\left( {r,r'} \right)} & {{w_{ei}}\left( {r,r'} \right)}  \\
-   {{w_{ie}}\left( {r,r'} \right)} & {{w_{ii}}\left( {r,r'} \right)}  \\
+% \subsection{Multi-Layer Model}
+% \begin{equation}\label{ExcitatoryLayer}
+% \frac{dv_e\left( {r,t} \right)}{{dt}} + \alpha_ev_e\left( {r,t} \right) = \int_\Omega  {w_{ee}\left( {r,r'} \right)f\left( v_e\left( r',\bar t \right) \right) + w_{ei}\left( {r,r'} \right)f\left( v_i\left( r',\bar t \right) \right)dr'}  +\varepsilon_e\left( {r,t} \right)
+% \end{equation}
+% \begin{equation}\label{InhibitoryLayer}
+% \frac{dv_i\left( {r,t} \right)}{{dt}} + \alpha_iv_i\left( {r,t} \right) = \int_\Omega  {w_{ie}\left( {r,r'} \right)f\left( v_e\left( r',\bar t \right) \right) + w_{ii}\left( {r,r'} \right)f\left( v_i\left( r',\bar t \right) \right)dr'}  +\varepsilon_i\left( {r,t} \right)
+% \end{equation}
+% The subscript  denotes connectivity from an inhibitory neural element to an excitatory neural element. We can write the model in matrix form
+% \begin{equation}\label{matrixEquation}
+% \left[ {\begin{array}{*{20}{c}}
+%    {\frac{{d{v_e}\left( t \right)}}
+% {{dt}}}  \
+%    {\frac{{d{v_i}\left( t \right)}}
+% {{dt}}}  \
+% 
+%  \end{array} } \right] = \int_\Omega  {\left[ {\begin{array}{*{20}{c}}
+%    {{w_{ee}}\left( {r,r'} \right)} & {{w_{ei}}\left( {r,r'} \right)}  \
+%    {{w_{ie}}\left( {r,r'} \right)} & {{w_{ii}}\left( {r,r'} \right)}  \
+% 
+%  \end{array} } \right]} \left[ {\begin{array}{*{20}{c}}
+%    {f\left( {{v_e}\left( {r',\bar{t}} \right)} \right)}  \
+%    {f\left( {{v_i}\left( {r',\bar{t}} \right)} \right)}  \
+% 
+%  \end{array} } \right]dr' - \left[ {\begin{array}{*{20}{c}}
+%    {{\alpha _e}{v_e}\left( {r,t} \right)}  \
+%    {{\alpha _i}{v_i}\left( {r,t} \right)}  \
+% 
+%  \end{array} } \right] + \left[ {\begin{array}{*{20}{c}}
+%    {{\varepsilon _e}\left( t \right)}  \
+%    {{\varepsilon _i}\left( t \right)}  \
+% 
+%  \end{array} } \right]
+% \end{equation}
+% 
+% \begin{equation}\label{matrix_equation_in_vector_notation}
+%    \frac{d\mathbf{V}(r,t)}{dt} = \int_\Omega \mathbf{W}(r,r')f\left(\mathbf{V}(r,t)\right)dr' - \mathbf{A}\mathbf{V}(r,t) + \mathbf{E}(r,t)
+% \end{equation}
+% 
+% The iEEG observation equation is
+% \begin{equation}\label{iEEGObservationEquation}
+%     y(k,t) = \int_{\Omega} m(k,r)\left(v_e(r,t) + v_i(r,t)\right)dr' + w(k,t)
+% \end{equation}{} 
 
- \end{array} } \right]} \left[ {\begin{array}{*{20}{c}}
-   {f\left( {{v_e}\left( {r',\bar{t}} \right)} \right)}  \\
-   {f\left( {{v_i}\left( {r',\bar{t}} \right)} \right)}  \\
-
- \end{array} } \right]dr' - \left[ {\begin{array}{*{20}{c}}
-   {{\alpha _e}{v_e}\left( {r,t} \right)}  \\
-   {{\alpha _i}{v_i}\left( {r,t} \right)}  \\
-
- \end{array} } \right] + \left[ {\begin{array}{*{20}{c}}
-   {{\varepsilon _e}\left( t \right)}  \\
-   {{\varepsilon _i}\left( t \right)}  \\
-
- \end{array} } \right]
-\end{equation}
-
-\begin{equation}\label{matrix_equation_in_vector_notation}
-   \frac{d\mathbf{V}(r,t)}{dt} = \int_\Omega \mathbf{W}(r,r')f\left(\mathbf{V}(r,t)\right)dr' - \mathbf{A}\mathbf{V}(r,t) + \mathbf{E}(r,t)
-\end{equation}
-
-The iEEG observation equation is
-\begin{equation}\label{iEEGObservationEquation}
-    y(k,t) = \int_{\Omega} m(k,r)\left(v_e(r,t) + v_i(r,t)\right)dr' + w(k,t)
-\end{equation}
-
-\subsection{Alternate Model Description I}
-An alternate and equivalent way to remove the temporal integration using the Laplace transform . We start by considering a discrete neural mass $i$ with inputs with zero delay from another discrete mass $j$ and
-\begin{equation}\label{TwoDiscreteMasses}
-{v_i}\left( t \right) = \int_{ - \infty }^t {{h_j}(t - t'){w_{ij}}p\left( {{v_j}\left( t \right)} \right)dt'},
-\end{equation}
-where $w_{ij}$ can be considered the synaptic efficiency from $j$ to $i$. Now we take the Laplace transform $\mathcal{L}(v_i(t))=V(s)$ yielding
-\begin{eqnarray}
-% \nonumber to remove numbering (before each equation)
-  {V_i}\left( s \right) &=& {H_j}\left( s \right){w_{ij}}P\left( {{V_j}\left( s \right)} \right) \nonumber \\
-   &=& {\left( {s + \alpha} \right)^{ - 1}}{w_{ij}}P\left( {{V_j}\left( s \right)} \right)  \\
-  \Rightarrow s{V_i}\left( s \right) + \alpha{V_i}\left( s \right) &=& {w_{ij}}P\left( {{V_j}\left( s \right)} \right).
-\end{eqnarray}
-Now taking the inverse Laplace transform we get
-\begin{equation}\label{InverseLaplace}
-\frac{{d{v_i}\left( t \right)}}{{dt}} + \alpha{v_i}\left( t \right) = {w_{ij}}p\left( {{v_j}\left( t \right)} \right).
-\end{equation}
-Next we convert the model from discrete neural masses to a continuum by
-\begin{equation}\label{Discrete2Continuum}
-\frac{{dv\left( {r,t} \right)}}{{dt}} + \alpha{v\left( {r,t} \right)} = \int_\Omega  {w\left( {r,r'} \right)p\left( {v\left( {r',\bar t} \right)} \right)dr'}  + e\left( {s,t} \right).
-\end{equation}
+% \subsection{Alternate Model Description I}
+% An alternate and equivalent way to remove the temporal integration using the Laplace transform . We start by considering a discrete neural mass $i$ with inputs with zero delay from another discrete mass $j$ and
+% \begin{equation}\label{TwoDiscreteMasses}
+% {v_i}\left( t \right) = \int_{ - \infty }^t {{h_j}(t - t'){w_{ij}}p\left( {{v_j}\left( t \right)} \right)dt'},
+% \end{equation}
+% where $w_{ij}$ can be considered the synaptic efficiency from $j$ to $i$. Now we take the Laplace transform $\mathcal{L}(v_i(t))=V(s)$ yielding
+% \begin{eqnarray}
+% % \nonumber to remove numbering (before each equation)
+%   {V_i}\left( s \right) &=& {H_j}\left( s \right){w_{ij}}P\left( {{V_j}\left( s \right)} \right) \nonumber \\
+%    &=& {\left( {s + \alpha} \right)^{ - 1}}{w_{ij}}P\left( {{V_j}\left( s \right)} \right)  \\
+%   \Rightarrow s{V_i}\left( s \right) + \alpha{V_i}\left( s \right) &=& {w_{ij}}P\left( {{V_j}\left( s \right)} \right).
+% \end{eqnarray}
+% Now taking the inverse Laplace transform we get
+% \begin{equation}\label{InverseLaplace}
+% \frac{{d{v_i}\left( t \right)}}{{dt}} + \alpha{v_i}\left( t \right) = {w_{ij}}p\left( {{v_j}\left( t \right)} \right).
+% \end{equation}
+% Next we convert the model from discrete neural masses to a continuum by
+% \begin{equation}\label{Discrete2Continuum}
+% \frac{{dv\left( {r,t} \right)}}{{dt}} + \alpha{v\left( {r,t} \right)} = \int_\Omega  {w\left( {r,r'} \right)p\left( {v\left( {r',\bar t} \right)} \right)dr'}  + e\left( {s,t} \right).
+% \end{equation}
 
 %\subsection{Alternate Model Description II}
 %\begin{figure*}
@@ -402,16 +403,16 @@ Next we convert the model from discrete neural masses to a continuum by
 \section{State-Space Model}
 We begin the derivation of the state-space model with the discrete time, continuous space IDE neural field model. A one-step Euler method was used to transform the ODE to a discrete time form.
 \begin{equation}\label{SystemEq}
-\frac{v_{t + 1}\left( \mathbf{r} \right) - v_t(\mathbf{r})}{T_s} = \int_\Omega  {k\left( {{\bf{r}} , {\bf{r'}}} \right)f\left( {{v_t}\left( {{\bf{r'}}} \right)} \right)d{\bf{r'}}}  - \alpha {v_t}\left( {\bf{r}} \right) + e_t\left( {\mathbf{r}} \right),
+\frac{v_{t + 1}\left( \mathbf{r} \right) - v_t(\mathbf{r})}{T_s} = \int_\Omega  {k\left( {{\bf{r}} , {\bf{r'}}} \right)f\left( {{v_t}\left( \bf{r'} \right)} \right)d{\bf{r'}}}  - \alpha {v_t}\left( {\bf{r}} \right) + e_t\left( {\mathbf{r}} \right),
 \end{equation}
 \begin{equation}\label{SystemEq}
-v_{t + 1}\left( \mathbf{r} \right)  = T_s\int_\Omega  {k\left( {{\bf{r}} , {\bf{r'}}} \right)f\left( {{v_t}\left( {{\bf{r'}}} \right)} \right)d{\bf{r'}}} - T_s\alpha {v_t}\left( {\bf{r}} \right) + v_t(\mathbf{r}) + T_se_t\left( {\mathbf{r}} \right),
+v_{t + 1}\left( \mathbf{r} \right)  = T_s\int_\Omega  {k\left( {{\bf{r}} , {\bf{r'}}} \right)f\left( {{v_t}\left( \bf{r'} \right)} \right)d{\bf{r'}}} - T_s\alpha {v_t}\left( {\bf{r}} \right) + v_t(\mathbf{r}) + T_se_t\left( {\mathbf{r}} \right),
 \end{equation}
 \begin{equation}\label{SystemEq}
-v_{t + 1}\left( \mathbf{r} \right)  = T_s\int_\Omega  {k\left( {{\bf{r}} , {\bf{r'}}} \right)f\left( {{v_t}\left( {{\bf{r'}}} \right)} \right)d{\bf{r'}}} + (1 - T_s\alpha) v_t\left( {\bf{r}} \right) + T_se_t\left( {\mathbf{r}} \right),
+v_{t + 1}\left( \mathbf{r} \right)  = T_s\int_\Omega  {k\left( {{\bf{r}} , {\bf{r'}}} \right)f\left( {{v_t}\left( \mathbf{r'} \right)} \right)d{\bf{r'}}} + (1 - T_s\alpha) v_t\left( {\bf{r}} \right) + T_se_t\left( {\mathbf{r}} \right),
 \end{equation}
 \begin{equation}\label{SystemEq}
-v_{t + 1}\left( \mathbf{r} \right)  = T_s\int_\Omega  {k\left( {{\bf{r}} , {\bf{r'}}} \right)f\left( {{v_t}\left( {{\bf{r'}}} \right)} \right)d{\bf{r'}}} + \lambda v_t\left( {\bf{r}} \right) + T_se_t\left( {\mathbf{r}} \right).
+v_{t + 1}\left( \mathbf{r} \right)  = T_s\int_\Omega  {k\left( {{\bf{r}} , {\bf{r'}}} \right)f\left( {{v_t}\left( \bf{r'} \right)} \right)d{\bf{r'}}} + \lambda v_t\left( {\bf{r}} \right) + T_se_t\left( {\mathbf{r}} \right).
 \end{equation}
 where $e_t(r)\sim \mathcal{GP}(0,R)$, $\lambda = 1-T_s\alpha$ and $T_s$ is the time step or sampling step.
 
@@ -445,11 +446,11 @@ k( \mathbf{r} , \mathbf{r'} ) = \theta^T\psi(\mathbf{r} , \mathbf{r'} )
 \end{equation}
 Will will assume we know the parametric form of the basis functions, where the parameter $\theta$ is unknown. Each connectivity basis function can be considered a layer in the WC model, representing short range excitation, surround inhibition and long range excitation. Making substitutions we get
 \begin{equation}\label{DecompModel}
-{\phi ^T}\left( \mathbf{r} \right){x_{t+1}} = \theta^T\int_\Omega  {\psi \left( {{\bf{r}} , {\mathbf{r'}}} \right)f\left( {{\phi ^T}\left( {{\mathbf{r'}}} \right){x_t}} \right)d{\mathbf{r'}}}  - \alpha\phi^T(\mathbf{r})x_t + {\varepsilon _t}\left( {\mathbf{r}} \right).
+{\phi ^T}\left( \mathbf{r} \right){x_{t+1}} = T_s\theta^T\int_\Omega  {\psi \left( {{\bf{r}} , {\mathbf{r'}}} \right)f\left( {{\phi ^T}\left( {{\mathbf{r'}}} \right){x_t}} \right)d{\mathbf{r'}}}  - \lambda\phi^T(\mathbf{r})x_t + T_s{e_t}\left( {\mathbf{r}} \right).
 \end{equation}
 To isolate the state we cross multiply by $\phi(\mathbf{r})$ and integrate over $\mathbf{r}$
 \begin{equation}\label{Poo}
-\int_\Omega  {\phi \left( {\bf{r}} \right){\phi ^T}\left( {\bf{r}} \right)d{\bf{r}}{x_{t+1}}}  = \int_\Omega  {\phi ( \mathbf{r} )\theta^T\int_\Omega  {\psi \left( {{\bf{r}} , {\bf{r'}}} \right)f\left( {{\phi ^T}\left( {{\bf{r'}}} \right){x_t}} \right)d{\bf{r'}}} d{\bf{r}}}  - \alpha\int_\Omega \phi(\mathbf{r})\phi^T(\mathbf{r})d\mathbf{r} x_t  + \int_\Omega  {\phi \left( {\mathbf{r}} \right){\varepsilon _t}\left( {\mathbf{r}} \right)d{\mathbf{r}}}.
+\int_\Omega  {\phi \left( {\bf{r}} \right){\phi ^T}\left( {\bf{r}} \right)d{\bf{r}}{x_{t+1}}}  = T_s\int_\Omega  {\phi ( \mathbf{r} )\theta^T\int_\Omega  {\psi \left( {{\bf{r}} , {\bf{r'}}} \right)f\left( {{\phi ^T}\left( {{\bf{r'}}} \right){x_t}} \right)d{\bf{r'}}} d{\bf{r}}}  - \lambda\int_\Omega \phi(\mathbf{r})\phi^T(\mathbf{r})d\mathbf{r} x_t  + T_s\int_\Omega  {\phi \left( {\mathbf{r}} \right)e_t\left( {\mathbf{r}} \right)d{\mathbf{r}}}.
 \end{equation}
 Now we define
 \begin{equation}\label{DefGamma}
@@ -457,21 +458,31 @@ Now we define
 \end{equation}
 Substituting equation~\ref{DefGamma} into \ref{Poo} and rearranging gives
 \begin{equation}\label{SS Model}
-{x_{t+1}} = {\Gamma ^{ - 1}}\int_\Omega  {\phi \left( {\bf{r}} \right)\theta^T\int_\Omega  {\psi \left( {{\bf{r}} , {\bf{r'}}} \right)f\left( {{\phi ^T}\left( {{\bf{r'}}} \right){x_t}} \right)d{\bf{r'}}} d{\bf{r}}}-\alpha x_t + {\Gamma ^{ - 1}}\int_\Omega  {\phi \left( {\bf{r}} \right){\varepsilon _t}\left( {\bf{r}} \right)d{\bf{r}}}.
+{x_{t+1}} = T_s{\Gamma ^{ - 1}}\int_\Omega  {\phi \left( {\bf{r}} \right)\theta^T\int_\Omega  {\psi \left( {{\bf{r}} , {\bf{r'}}} \right)f\left( {{\phi ^T}\left( {{\bf{r'}}} \right){x_t}} \right)d{\bf{r'}}} d{\bf{r}}} - \lambda x_t + T_s{\Gamma ^{ - 1}}\int_\Omega  {\phi \left( {\bf{r}} \right)e_t\left( {\bf{r}} \right)d{\bf{r}}}.
 \end{equation}
 We can rearrange to get
 \begin{equation}\label{Homogeneous SS Model}
-{x_{t+1}} = {\Gamma ^{ - 1}}\int_\Omega  {\phi \left( {\bf{r}} \right)\int_\Omega  {f\left( {{\phi ^T}\left( {{\bf{r'}}} \right){x_t}} \right)\psi^T \left( {{\bf{r}} - {\bf{r'}}} \right)d{\bf{r'}}} d{\bf{r}}}\theta - \alpha x_t + {\Gamma ^{ - 1}}\int_\Omega  {\phi \left( {\bf{r}} \right){\varepsilon _t}\left( {\bf{r}} \right)d{\bf{r}}}.
+	x_{t+1} = T_s\Gamma ^{ - 1}\int_\Omega  {\phi \left( {\bf{r}} \right)\int_\Omega  {f\left( {{\phi ^T}\left( {{\bf{r'}}} \right){x_t}} \right)\psi^T \left( {{\bf{r}} - {\bf{r'}}} \right)d{\bf{r'}}} d{\bf{r}}}\theta - \lambda x_t + T_s{\Gamma ^{ - 1}}\int_\Omega  {\phi \left( {\bf{r}} \right)e_t\left( {\bf{r}} \right)d{\bf{r}}}.
 \end{equation}
-This provides the final state-space model
+The disturbance term can be rewritten as 
+\begin{equation}
+	\Gamma ^{ - 1}\int_\Omega  {\phi \left( \bf{r} \right)e_t\left( \bf{r} \right)d\bf{r}} = \int_\Omega  {\phi \left( \bf{r} \right)\tilde{e}_t\left( \bf{r} \right)d\bf{r}},
+\end{equation}
+where $\tilde{e}_t(r)~N(0,R'R)$ and $R'$ is the Cholesky decomposition of $\Gamma^{-1}$. This provides the final state-space model
 \begin{equation}\label{AbbrevSSModel}
-x_{t + 1} = \theta^T q(x) -\alpha x + \Gamma ^{ - 1}\int_\Omega  {\phi ( \mathbf{r} ){\varepsilon _t}( \mathbf{r} )d\mathbf{r}}
+x_{t + 1} = T_sq(x_t)\theta -\lambda x_t + T_s\int_\Omega  {\phi ( \mathbf{r} )\tilde{e}_t( \mathbf{r} )d\mathbf{r}}
 \end{equation}
 with observation equation
 \begin{equation}\label{ObservationEquation}
     y_t( k ) = \int_\Omega  m( k,\mathbf{r} )\phi^T( \mathbf{r} ) d\mathbf{r}x_t  + \varepsilon ( k ),
 \end{equation}
 
+\subsection{Discrete Space For Simulation}
+
+In this section we describe a discrete time, discrete space model that we are using for the simulations. Now we define the spatial aspect of the model on a regular square $i,j$ grid of neural masses, where the spatial step size $\Delta \mathbf{r}_i = \Delta \mathbf{r}_j = \Delta \mathbf{r}$ giving
+\begin{equation}\label{DiscreteSpaceModelij}
+	x_{t+1} = T_s\Gamma ^{ - 1}\sum_i \sum_j  {\phi \left( \mathbf{r} \right)\sum_i\sum_j  {f\left( \phi^T \left( \mathbf{r'} \right) x_t \right)\psi^T \left( \mathbf{r} - \bf{r'} \right)\Delta\mathbf{r'}^2} \Delta\mathbf{r}^2} \theta - \lambda x_t + T_s\sum_i\sum_j  {\phi \left( {\bf{r}} \right)\tilde{e}_t\left( \bf{r} \right)\Delta\mathbf{r}^2}.
+\end{equation}
 \section{Estimation of the Nonlinear Homogeneous IDE Neural Field Model}
 
 
