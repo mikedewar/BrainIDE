@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.axes3d
 import time,warnings
 import os
+
 class IDE():
 
 	"""class defining a non-linear, Integro-Difference, discrete-time state space model.
@@ -17,6 +18,9 @@ class IDE():
 		Sigmoidal activation function.
 	alpha : Integer
 		alpha = 1/tau, post-synaptic time constant, (Wendling, 2002, 100 for excitatory, 500 for inhibitory), Schiff = 3
+
+	beta : field covariance function
+
 	field_noise_variance: float
 		The process noise variance, which drives the dynamic system
 	obs_noise_covariance: matrix
@@ -33,32 +37,44 @@ class IDE():
 	----------
 	"""
 
-	def __init__(self,kernel,field,EEG,act_fun,alpha,field_noise_variance,obs_noise_covariance,Sensorwidth,obs_locns,spacestep,Ts):
+	def __init__(self,kernel,field,EEG,act_fun,alpha,beta,field_noise_variance,obs_noise_covariance,Sensorwidth,obs_locns,spacestep,init_field,initial_field_covariance,Ts):
+
 		self.kernel = kernel
 		self.field = field
 		self.EEG=EEG
 		self.act_fun = act_fun
 		self.alpha=alpha
+		self.beta=beta
 		self.field_noise_variance=field_noise_variance
 		self.obs_locns=obs_locns
 		self.obs_noise_covariance=obs_noise_covariance
 		self.spacestep=spacestep
 		self.Sensorwidth=Sensorwidth
+		self.init_field=init_field
+		self.initial_field_covariance=initial_field_covariance
 		self.Ts=Ts
 		
 
-	def gen_ssmodel(self):
+	def gen_ssmodel(self,sim=0):
 
 		"""
 		generates nonlinear IDE
-
+		Arguments
+		---------
+		if sim=1 it generates K (sum of kernels which is used in simulation), the reason is finding K is faster
+		    than finding each kernel individually and for the simulation we dont need to find each kernel individually
 		Returns
 		----------
 		K: ndarray
 			matrix of kernel values over the spatial domain of the kernel
 
-		H: ndarray
-			matrix of H (sensor) values over the spatial domain of the H (which is equal to spatial domain of the kernel)
+		K1: ndarray
+			matrix of kernel values over the spatial domain of the kernel, needed for parameter estimation
+		K2: ndarray
+			matrix of kernel values over the spatial domain of the kernel, needed for parameter estimation
+		K3: ndarray
+			matrix of kernel values over the spatial domain of the kernel, needed for parameter estimation		
+
 
 		fbases: list of matrix
 				each matrix is nx x 1 dimension [phi_1(s) phi_2(s) ... phi_nx(s)].T calculated at a spatial location
@@ -93,65 +109,131 @@ class IDE():
 		print "pre-calculating kernel matrices"
 
 
+		if sim==1:
+			K = pb.empty((len(self.kernel.space),len(self.kernel.space)),dtype=object)
 
-		K = pb.empty((len(self.kernel.space),len(self.kernel.space)),dtype=object)
+		if hasattr(self,'K2'):
+			pass
+		else:
+			K1=pb.empty((len(self.kernel.space),len(self.kernel.space)),dtype=object)
+			K2=pb.empty((len(self.kernel.space),len(self.kernel.space)),dtype=object)
+			K3=pb.empty((len(self.kernel.space),len(self.kernel.space)),dtype=object)
 
-		#beta = pb.empty((len(self.kernel.space),len(self.kernel.space)),dtype=object)
+
+			k1_width=self.kernel.widths[0]
+			k2_width=self.kernel.widths[1]
+			k3_width=self.kernel.widths[2]
+
+
+			k1_center=self.kernel.centers[0]
+			k2_center=self.kernel.centers[1]
+			k3_center=self.kernel.centers[2]
+
+
+		Beta = pb.empty((len(self.kernel.space),len(self.kernel.space)),dtype=object)
 		for i in range(len(self.kernel.space)):
 			for j in range(len(self.kernel.space)):
-				K[i,j]=self.kernel.__call__(pb.matrix([[self.kernel.space[i]],[self.kernel.space[j]]]))	
-				#beta[i,j]=gaussian(pb.matrix([[self.kernel.space[i]],[self.kernel.space[j]]]),pb.matrix([0,0]),pb.matrix([[5,0],[0,5]]),2)
+				if sim==1:
+					K[i,j]=self.kernel.__call__(pb.matrix([[self.kernel.space[i]],[self.kernel.space[j]]]))	
+				
+				if hasattr(self,'Beta'):
+					pass
+				else:
+
+					Beta[i,j]=self.beta.__call__(pb.matrix([[self.kernel.space[i]],[self.kernel.space[j]]]))
+	
+				
+				if hasattr(self,'K3'):
+					pass
+
+				else:
+					K1[i,j]=gaussian(pb.matrix([[self.kernel.space[i]],[self.kernel.space[j]]]),k1_center,k1_width,self.kernel.dimension)
+					K2[i,j]=gaussian(pb.matrix([[self.kernel.space[i]],[self.kernel.space[j]]]),k2_center,k2_width,self.kernel.dimension)
+					K3[i,j]=gaussian(pb.matrix([[self.kernel.space[i]],[self.kernel.space[j]]]),k3_center,k3_width,self.kernel.dimension)
+
+		if hasattr(self,'K3'):
+			pass
+		else:
+			self.K1=K1
+			self.K2=K2
+			self.K3=K3
+		if sim==1:
+			self.K=K
+
+		if hasattr(self,'Beta'):
+			pass
+		else:
+
+			self.Beta=Beta
+
+		if hasattr(self.field,'fbases'):
+			pass
+		else:
+
+			print "pre-calculating basis function vectors"
+			t0=time.time()
+			fbases=[]
+			for s1 in self.field.space:
+				for s2 in self.field.space:
+					fbases.append(self.field.field_bases(pb.matrix([[s1],[s2]])))
+			self.field.fbases=fbases
+			print "Elapsed time in seconds is", time.time()-t0
 
 
-		self.K=K
+		
+		if hasattr(self.EEG,'ob_kernels_values'):
+			pass
+		else:
 
-		#self.beta=beta
-
-		print "pre-calculating basis function vectors"
-		t0=time.time()
-		fbases=[]
-		for s1 in self.field.space:
-			for s2 in self.field.space:
-				fbases.append(self.field.field_bases(pb.matrix([[s1],[s2]])))
-		self.field.fbases=fbases
-		print "Elapsed time in seconds is", time.time()-t0
-
-
-		print "pre-calculating observation kernel vectors"
-		t0=time.time()
-		ob_kernels_values=[]
-		for s1 in self.EEG.space:
-			for s2 in self.EEG.space:
-				ob_kernels_values.append(self.EEG.observation_kernels(pb.matrix([[s1],[s2]])))
-		#we squeeze the result to have a matrix in a form of
-		#[m1(s1) m1(s2) ...m1(sl);m2(s1) m2(s2) ... m2(sl);...;mny(s1) mny(s2) ... mny(sl)]
-		#where sl is the number of spatial points after discritization
-		self.ob_kernels_values=ob_kernels_values
-		self.EEG.ob_kernels_values=pb.matrix(pb.squeeze(ob_kernels_values).T)
-		print "Elapsed time in seconds is", time.time()-t0
+			print "pre-calculating observation kernel vectors"
+			t0=time.time()
+			ob_kernels_values=[]
+			for s1 in self.EEG.space:
+				for s2 in self.EEG.space:
+					ob_kernels_values.append(self.EEG.observation_kernels(pb.matrix([[s1],[s2]])))
+			#we squeeze the result to have a matrix in a form of
+			#[m1(s1) m1(s2) ...m1(sl);m2(s1) m2(s2) ... m2(sl);...;mny(s1) mny(s2) ... mny(sl)]
+			#where sl is the number of spatial points after discritization
+			self.EEG.ob_kernels_values=pb.matrix(pb.squeeze(ob_kernels_values).T)
+			print "Elapsed time in seconds is", time.time()-t0
 
 
+		if hasattr(self,'Psi_x'):
+			pass
+		else:
 
-		print "calculating Psi_x"		
-		Psi_x=(self.spacestep**2)*sum([f*f.T for f in fbases])
-		self.Psi_x=Psi_x
-		print "calculating Psix_inv"
-		Psi_xinv=Psi_x.I
-		self.Psi_xinv=Psi_x.I		
-		print "calculating field noise covariances"		
-		#Sw=self.field_noise_variance*Psi_xinv* self.field.field_noise()*Psi_xinv.T
-		Sw=self.field_noise_variance*Psi_xinv
-		self.Sw=Sw
-		try:
-			self.Swc=pb.linalg.cholesky(Sw)
-		except pb.LinAlgError:
+			print "calculating Psi_x"		
+			Psi_x=(self.spacestep**2)*sum([f*f.T for f in self.field.fbases])
+			self.Psi_x=Psi_x
+			print "calculating Psix_inv"
+			Psi_xinv=Psi_x.I
+			self.Psi_xinv=Psi_x.I
+		
 
-			raise
-		Svc=pb.linalg.cholesky(self.obs_noise_covariance)
-		self.Svc=Svc
+		if hasattr(self,'Swc'):
+			pass
+		else:
 
 
-	def simulate(self,init_field,T):
+			print "calculating field noise covariances"
+			t0=time.time()
+			Pi=self.field_noise()	
+			Sw=self.field_noise_variance*Psi_xinv*Pi*Psi_xinv.T
+			print "Elapsed time in seconds is", time.time()-t0
+			#Sw=self.field_noise_variance*self.Psi_xinv white noise
+			self.Sw=Sw
+			try:
+				self.Swc=pb.linalg.cholesky(Sw)
+			except pb.LinAlgError:
+
+				raise
+			Svc=pb.linalg.cholesky(self.obs_noise_covariance)
+			self.Svc=Svc
+
+	
+
+
+	def simulate(self,T):
 
 		"""
 		generates nonlinear IDE
@@ -171,9 +253,12 @@ class IDE():
 		Y: list of matrix
 			each matrix is the observation vector corrupted with noise at a time instant
 		"""
+
+		self.gen_ssmodel(sim=1)
+
 		Y = []#at t=0 we don't have observation
 		X = []#I don't save the initial state and X starts at t=1	
-		x=init_field
+		x=self.init_field
 
 		K_center=(pb.floor(self.K.shape[0]/2.),pb.floor(self.K.shape[1]/2.))
 
@@ -204,12 +289,54 @@ class IDE():
 			field_update=np.array([self.act_fun(fr.T*x) for fr in self.field.fbases])
 			Y.append((self.spacestep**2)*(self.EEG.ob_kernels_values*pb.matrix(field_update.reshape(len(field_update),1)))+v)
 
-			
-			
-			
-
+							
 		return X,Y
 
+
+	def field_noise(self):
+
+
+		'''calculate the inner inner product of the field basis functions
+		    and the convolution between field basis functions and the field covariance finction
+		Output:
+		-------
+		Pi: matrix nx X nx
+			
+			
+		'''
+
+		t0=time.time()
+		Beta_center=(pb.floor(self.kernel.space.shape[0]/2.),pb.floor(self.kernel.space.shape[0]/2.))
+		#calculate the convolution between the first basis function and beta
+		#Transform the fbases to ndarray of the form of number of spatial points x number of basis functions
+		#fbases=[phi_1(s1) phi_2(s1)...phi_n(s1);phi_1(s2) phi_2(s2)...phi_n(s2);...;phi_1(sp) phi_2(sp)...phi_n(sp)]
+		fbases=pb.array(pb.squeeze(self.field.fbases))
+		#Calculate the convolution
+
+		Beta_fbases_convolution_at_s=[]
+		for l in range(self.field.nx):
+			Beta_fbases_l_convolution_at_s=[]
+			for i in range(len(self.field.space)):
+				Beta_shift_x=pb.roll(self.Beta,i*len(self.kernel.space)) #shift beta along x
+				for j in range(len(self.field.space)):
+					Beta_shift_y=pb.roll(Beta_shift_x,j) #shift beta along y
+					Beta_truncate=Beta_shift_y[Beta_center[0]:,Beta_center[1]:]
+					Beta_fbases_l_convolution_at_s.append(pb.sum(fbases[:,l]*pb.ravel(Beta_truncate)))
+			Beta_fbases_convolution_at_s.append(Beta_fbases_l_convolution_at_s)
+	
+
+		#calculating Pi
+		Pi=pb.matrix(pb.empty((self.field.nx,self.field.nx)))
+		for i in range(self.field.nx):
+			for j in range(self.field.nx):
+				Pi[i,j]=pb.sum(fbases[:,i]*Beta_fbases_convolution_at_s[j])
+		return Pi*((self.spacestep)**4)
+
+
+
+
+
+	
 
 	def f(self,x):
 
@@ -303,20 +430,8 @@ class Field():
 		"""
 		return pb.matrix([gaussian(s,cen,wid,self.dimension) for cen,wid, in zip(self.centers,self.widths)]).T
 
-	def field_noise(self):
-		print "calculating covariance matrix"
-		beta= np.zeros((len(self.space),len(self.space)),dtype=object)
-		for si,s in enumerate(self.space):
-			for ri,r in enumerate(self.space):
-				beta[si,ri]=gaussian(s-r,pb.matrix([0,0]),pb.matrix([[5,0],[0,5]]),2)
-		beta_at_si=[]
-		for si in range(len(self.space)):
-			beta_at_si.append(sum([beta[si,ri]*fr.T for ri,fr in enumerate(self.fbases)]))
 
-		sum_s=pb.hstack(self.fbases)*np.vstack(beta_at_si)
-		sum_s *= (self.spacestep**4)
-		return sum_s
-	
+
 
 	def plot(self,centers):
 		radius=2*pb.sqrt(pb.log(2))*(pb.sqrt(self.widths[0][0,0])) # It is calculated based on Full width at half maximum
@@ -385,6 +500,47 @@ class Kernel():
 		ax.plot_wireframe(s1,s2,y,color='k')
 		pb.title('kernel')
 		pb.show()
+
+class FieldCovarianceFunction():
+
+	"""
+		defines covariance function of the field
+
+		Arguments
+		----------
+			
+		center:  matrix
+			it should be a matrix in form of dimension x 1
+		width: matrix
+			*variance or *covariance matrix of the Gaussian function
+		dimension: int
+			dimension of the basis function
+		methos
+		----------
+		evaluate:
+			Returns the value of the covariance function at a given spatial location, it should be a matrix dimension x 1
+
+	"""
+
+	def __init__(self, center,width,dimension):
+		self.center=center
+		self.width = width
+		self.dimension=dimension
+		self.evaluate = lambda s: gaussian(s,center,width,dimension)
+	
+	def __call__(self,s):
+		"""
+		evaluates the covariance function at a given spatial location
+
+		Arguments
+		----------
+		s : matrix
+			spatail location, it must be in a form of dimension x 1
+
+		"""
+		return self.evaluate(s)
+	
+
 		
 class ActivationFunction():
 
@@ -423,7 +579,7 @@ class ActivationFunction():
 		pb.plot(u,z)
 		pb.show()
 
-class UKF():
+class ukf():
 
 	"""class defining the Unscented Kalman filter for nonlinear estimation.
 
@@ -509,13 +665,14 @@ class UKF():
 		Wc_i=pb.concatenate((Wc0,2*self.L*Wmc))
 		return Wm_i,Wc_i
 
-	def _filter(self,Y,x0,P0):
+	def _filter(self,Y):
 
 		## initialise
 		mean=[0]*self.L
-		xhat=x0
-		#xhat=pb.multivariate_normal(mean,P0).reshape(self.L,1)
-		P=P0
+		xhat=self.model.init_field
+		P=self.model.initial_field_covariance
+		#xhat=pb.multivariate_normal(mean,P).reshape(self.L,1)
+		  
 		# filter quantities
 		xhatStore =[]
 		PhatStore=[]
@@ -562,12 +719,13 @@ class UKF():
 			PhatStore.append(P)
 		return xhatStore,PhatStore
 
-	def rtssmooth(self,Y,x0,P0):
+	def rtssmooth(self,Y):
 		## initialise
 		mean=[0]*self.L
-		xhat=x0
-		#xhat=pb.multivariate_normal(mean,P0).reshape(self.L,1)
-		P=P0
+		P=self.model.initial_field_covariance 
+		xhat=self.model.init_field
+		#xhat=pb.multivariate_normal(mean,P).reshape(self.L,1)
+		 
 		# filter quantities
 
 
@@ -627,37 +785,147 @@ class UKF():
 		## smooth
 		for t in range(T-2,-1,-1):
 			#calculate the sigma points matrix from filterd states, each column is a sigma vector
-			Chi_smooth=self.sigma_vectors(xhatStore[t],PhatStore[t])
-			Chi_smooth_update=pb.matrix(pb.empty_like(Chi))
+			Chi_smooth=self.sigma_vectors(xhatStore[t],PhatStore[t]) #X_k
+			Chi_smooth_update=pb.matrix(pb.empty_like(Chi))	#X_k+1	
 			for i in range(Chi_smooth.shape[1]):
 				Chi_smooth_update[:,i]=self.model.f(Chi_smooth[:,i])
 			
 			#pointwise multiply by weights and sum along y-axis
-			xhat_smooth_=pb.sum(pb.multiply(Wm_i,Chi_smooth_update),1)
+			xhat_smooth_=pb.sum(pb.multiply(Wm_i,Chi_smooth_update),1) #m_k+1_
 			#purturbation
-			Chi_smooth_purturbation=Chi_smooth-xhatStore[t]
-			Chi_smooth_update_purturbation=Chi_smooth_update-xhat_smooth_
+			Chi_smooth_purturbation=Chi_smooth-xhatStore[t] #X_k-m_k
+			Chi_smooth_update_purturbation=Chi_smooth_update-xhat_smooth_ #X_k+1-m_k+1_
 			#weighting
-			weighted_Chi_smooth_purturbation=pb.multiply(Wc_i,Chi_smooth_purturbation)
-			weighted_Chi_smooth_update_purturbation=pb.multiply(Wc_i,Chi_smooth_update_purturbation)
+			weighted_Chi_smooth_purturbation=pb.multiply(Wc_i,Chi_smooth_purturbation) #W_ci*(X_k-m_k)
+			weighted_Chi_smooth_update_purturbation=pb.multiply(Wc_i,Chi_smooth_update_purturbation)#W_ci*(X_k+1-m_k+1_)
 
 			P_smooth_=Chi_smooth_update_purturbation*weighted_Chi_smooth_update_purturbation.T+(self.model.Ts**2)*self.model.Sw
-			#Chi_smooth_purturbation=Chi_smooth-xhatStore[t]
-			#Chi_smooth_update_purturbation=Chi_smooth_update-xhatPredStore[t]
-			#weighted_Chi_smooth_purturbation=pb.multiply(Wc_i,Chi_smooth_purturbation)
+			#(X_k+1-m_k+1_)*W_ci*(X_k+1-m_k+1_).T
 			C_smooth=weighted_Chi_smooth_purturbation*Chi_smooth_update_purturbation.T
-
+			#W_ci*(X_k-m_k)*(X_k+1-m_k+1_).T
 			D=C_smooth*P_smooth_.I
 			xb[t]=xhatStore[t]+D*(xb[t+1]-xhat_smooth_)
 			Pb[t]=PhatStore[t]+D*(Pb[t+1]-P_smooth_)*D.T
 
-			#D=C_smooth*PhatPredStore[t+1].I
-			#xb[t]=xhatStore[t]+D*(xb[t+1]-xhatPredStore[t+1])
-			#Pb[t]=PhatStore[t]+D*(Pb[t+1]-PhatPredStore[t+1])*D.T
-
+			
 		return xb,Pb,xhatStore,PhatStore
 
+class para_state_estimation():
 
+	def __init__(self,model):
+
+		self.model=model
+
+
+	def Q_calc(self,X):
+
+		"""
+			calculates Q (n_x by n_theta) matrix of the IDE model at a each time step
+	
+			Arguments
+			----------
+			X: list of matrix
+				state vectors
+
+			Returns
+			---------
+			Q : list of matrix (n_x by n_theta)
+		"""
+		
+		Q=[]		
+		K_center=(pb.floor(self.model.K1.shape[0]/2.),pb.floor(self.model.K2.shape[1]/2.))#all centers are equal
+
+
+		
+
+		T=len(X)
+		for t in range(T):
+
+			field_update=np.array([self.model.act_fun(fr.T*X[t]) for fr in self.model.field.fbases])
+			K1_convolution_at_s=[]
+			K2_convolution_at_s=[]
+			K3_convolution_at_s=[]
+
+			for i in range(len(self.model.field.space)):
+				K1_shift_x=pb.roll(self.model.K1,i*len(self.model.kernel.space)) #shift kernel along x
+				K2_shift_x=pb.roll(self.model.K2,i*len(self.model.kernel.space))
+				K3_shift_x=pb.roll(self.model.K3,i*len(self.model.kernel.space))
+				for j in range(len(self.model.field.space)):
+					K1_shift_y=pb.roll(K1_shift_x,j) #shift kernel along y
+					K2_shift_y=pb.roll(K2_shift_x,j)
+					K3_shift_y=pb.roll(K3_shift_x,j)
+
+					K1_truncate=K1_shift_y[K_center[0]:,K_center[1]:]
+					K2_truncate=K2_shift_y[K_center[0]:,K_center[1]:]
+					K3_truncate=K3_shift_y[K_center[0]:,K_center[1]:]
+
+					K1_convolution_at_s.append(pb.sum(field_update*pb.ravel(K1_truncate)))
+					K2_convolution_at_s.append(pb.sum(field_update*pb.ravel(K2_truncate)))
+					K3_convolution_at_s.append(pb.sum(field_update*pb.ravel(K3_truncate)))
+
+
+
+			K_convolution_at_s=pb.hstack((pb.matrix(K1_convolution_at_s).T,pb.matrix(K2_convolution_at_s).T,pb.matrix(K3_convolution_at_s).T))
+			sum_s=pb.hstack(self.model.field.fbases)*K_convolution_at_s
+			sum_s *= (self.model.spacestep**4)
+			q=self.model.Ts*self.model.Psi_xinv*sum_s
+			Q.append(q)
+			
+		return Q
+
+	def estimate_kernel(self,X):
+
+
+		"""
+			estimate the ide model's kernel weights using Least Square method
+	
+			Arguments
+			----------
+			X: list of matrix
+				state vectors
+
+			Returns
+			---------
+			Least Square estimation of the IDE parameters, see the corresponding pdf file
+		"""
+		Q=self.Q_calc(X)
+		X_t=pb.vstack(X[1:])
+		X_t_1=pb.vstack(X[:-1])
+		Q_t_1=pb.vstack(Q[:-1])
+		Phi=pb.hstack((Q_t_1,-X_t_1*self.model.Ts))
+		return (Phi.T*Phi).I*Phi.T*(X_t-X_t_1)
+
+
+
+	def itr_est(self,Y,max_it):
+
+		"""estimate the ide's kernel and field weights """
+		# form state soace model
+		self.model.gen_ssmodel()
+		# generate a random state sequence
+		Xb= [pb.matrix(np.random.rand(self.model.field.nx,1)) for t in Y]
+
+		# iterate
+		keep_going = 1
+		it_count = 0
+		print " Estimatiing IDE's kernel and field weights"
+		t0=time.time()
+		while keep_going:
+
+			self.model.kernel.weights=self.estimate_kernel(Xb)
+			#_filter=getattr(ukf(self.model),'_filter')
+			_filter=getattr(ukf(self.model),'rtssmooth')
+			Xb,Pb,Xhat,Phat=_filter(Y)
+			self.Xb=Xb
+			self.Pb=Pb
+			self.Xhat=Xhat
+			self.Phat=Phat
+			print it_count, " Kernel current estimate: ", self.model.kernel.weights.T
+			#print it_count,"current estimate of Frobenius Norm: ", self.FroNorm()
+			if it_count == max_it:
+				keep_going = 0
+			it_count += 1
+		print "Elapsed time in seconds is", time.time()-t0
 
 def gaussian(s,centre,width,dimension):
 		"""
@@ -775,7 +1043,16 @@ def field_centers(FieldWidth,Massdensity,field_basis_separation,field_basis_widt
 	return [pb.matrix(x) for x in f_centers]
 
 
-
+def field_cent(FieldWidth,sep):
+	x_center_outer =pb.arange(-FieldWidth/2.+1,FieldWidth/2.,sep);
+	y_center_outer = x_center_outer;
+	f_centers_outer=[np.array([[i,j]]).T for i in x_center_outer for j in y_center_outer]
+	x_center_inner =pb.arange(-FieldWidth/2.+sep/2.+1,FieldWidth/2.-sep/2.,sep);
+	y_center_inner = x_center_inner
+	f_centers_inner=[np.array([[i,j]]).T for i in x_center_inner for j in y_center_inner]
+	f_centers=np.concatenate([f_centers_outer,f_centers_inner])
+	
+	return [pb.matrix(x) for x in f_centers]
 
 def plot_field(X,fbases,f_space):
 	"""
@@ -837,13 +1114,11 @@ def anim_field(X,fbases,f_space):
 				m+=1
 		image=pb.imshow(z,animated=True,origin='lower',aspect=1, alpha=1,extent=[min(f_space),max(f_space),min(f_space),max(f_space)])
 
-		#image.set_data(z)
-		#image.changed()
-		#pb.draw()
-		#image.set_data(z)
-		#pb.colorbar(shrink=.55,orientation='horizontal') 
 	pb.ioff()	
-		
+
+
+
+
 def plot_states(Xreal,Xest):
 	T=len(Xest)
 	for i in range(len(Xest[0])):
@@ -903,86 +1178,4 @@ def rmse(Xreal,Xest,n):
 		Xestn.append(Xest[i][n])
 	return pb.sqrt((pb.mean(pb.array(Xrealn)-pb.array(Xestn)))**2)
 
-if __name__ == "__main__":
-
-	#-------------field--------------------
-	Massdensity=1#.5#2#1
-	field_basis_separation=2#.5#3#4#3
-	field_basis_width=2#1#2
-	field_width=20#2#10#20
-	dimension=2
-	f_centers=field_centers(field_width,Massdensity,field_basis_separation,field_basis_width)
-	#f_centers=[pb.matrix([[0],[0]]),pb.matrix([[0],[1]])]
-	nx=len(f_centers)
-	f_widths=[pb.matrix([[field_basis_width,0],[0,field_basis_width]])]*nx
-	f_weights=[1]*nx
-	spacestep=1./Massdensity
-
-
-	f_space=pb.arange(-field_width/2.,(field_width/2.)+spacestep,spacestep)# the step size should in a way that we have (0,0) in our kernel as the center
-	f=Field(f_weights,f_centers,f_widths,dimension,f_space,nx,spacestep)
-	f.plot(f_centers)
-
-	#_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _Connectivity Kernel properties_ _ _ _ _ __ _ _ _ _ __ _ _ _ _ __ _ _ _ _ __ _ _ _ _ 
-	# Centers of the connectivity basis functions are placed at origin (0,0)                                                |
-	# Weights should be tunned to get stable kernel                                                                         |
-	#Spatial domain of the kernel is twice wider than the field for the fast simulation and the kernel must have center and |
-	#it must be located at (0,0), therefore len(k_space) must be odd.                                                       |
-	#_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _|
-
-	k_centers=[pb.matrix([[0],[0]]),pb.matrix([[0],[0]]),pb.matrix([[0],[0]])]
-	k_weights =[1e-5,-.8e-5,0.05e-5]
-	#k_weights =[1,-.8,.05]
-	k_widths=[pb.matrix([[4**2,0],[0,4**2]]),pb.matrix([[6**2,0],[0,6**2]]),pb.matrix([[15**2,0],[0,15**2]])]
-	k_space=pb.arange(-field_width,(field_width)+spacestep,spacestep) 
-	k=Kernel(k_weights,k_centers,k_widths,k_space,dimension)
-	#k.plot(k_space)
-
-
-	#-------Brain----------------
-	alpha=100
-	field_noise_variance=4
-	act_func=ActivationFunction(threshold=6,nu=1,beta=0.56)
-	#----------observations--------------------------
-	Sensorwidth = .36    # equals to 1mm 
-	SensorSpacing = 4*spacestep     # mm factor of spacestep
-	BoundryEffectWidth = .5 #mm 
-
-	#Sensorwidth = [3]     # equals to 1mm 
-	#SensorSpacing = 10     # mm factor of spacestep
-	#BoundryEffectWidth =4 #mm 
-
-	observation_centers=gen_obs_locations(field_width,Sensorwidth,SensorSpacing,BoundryEffectWidth)
-	obs_locns =gen_obs_lattice(observation_centers)
-	#obs_locns=f_centers
-	[circle(cent,2*Sensorwidth) for cent in obs_locns]
-	#pb.title('Sensors locations')
-	pb.show()
-	ny=len(obs_locns)
-	widths=[pb.matrix([[Sensorwidth,0],[0,Sensorwidth]])]
-	EEG_signals=EEG(obs_locns,widths,dimension,f_space,ny,spacestep)
-
-
-	obs_noise_covariance =.1*pb.matrix(np.eye(len(obs_locns),len(obs_locns)))
-	
-	#----------Field initialasation----------------------------
-	mean=[0]*nx
-	Initial_field_covariance=10*pb.eye(len(mean))
-	init_field=pb.matrix(pb.multivariate_normal(mean,Initial_field_covariance,[1])).T
-
-	# -------Sampling properties-------------
-	Fs = 1e3   #sampling rate                                       
-	Ts = 1/Fs   #sampling period, second
-	t_end = .1  # seconds
-	NSamples = t_end*Fs;
-	T = pb.linspace(0,t_end,NSamples);
-	
-	#--------------model and simulation------------------
-	model=IDE(k,f,EEG_signals, act_func,alpha,field_noise_variance,obs_noise_covariance,Sensorwidth,obs_locns,spacestep,Ts)
-	model.gen_ssmodel() 
-	X,Y=model.simulate(init_field,T)
-	ukfilter=UKF(model)
-	#plot_field(X[2],model.field.fbases,f_space)
-	#bfilter=Bootstrap(model,20)
-	#Xest=bfilter._filter(Y) #Y must be generated from 2dnonlinear.py
 
