@@ -618,9 +618,39 @@ where $e'(r,t_k)$ is a zero mean Gaussian random variable with covariance $\delt
 
 % you can choose not to have a title for an appendix
 % if you want by leaving the argument blank
-\section{}
-Appendix two text goes here.
+\section{Parameter estimation using LS}
+\begin{equation}
+ \mathbf x_{t+1}=\mathbf x_{t}+T_s \mathbf Q(\mathbf x_t)\mathbf \theta-\alpha T_s\mathbf x_t+T_s\boldsymbol\Gamma^{-1}\int_\Omega\boldsymbol\phi^\top(\mathbf r)\varepsilon_t(\mathbf r)d\mathbf r
+\label{eq:statespacemodel}
+\end{equation}
+where the matrix $\mathbf Q_{n_x \times n_{\theta}}(\mathbf x_t)$ is defined as
+\begin{equation}
+ Q_{n_x \times n_{\theta}}=\boldsymbol\Gamma^{-1}\int_\Omega\boldsymbol\phi(\mathbf r)\int_\Omega f(\boldsymbol\phi^\top(\mathbf r')\mathbf x_t)\boldsymbol\psi^\top(\mathbf r-\mathbf r')d\mathbf r'd\mathbf r
+\end{equation}
+and $T_s$ is the sampling period. Least Square method can be used as (\ref{eq:statespacemodel}) is linear in parameters. At each time instant we have
 
+\begin{eqnarray}
+ \mathbf x_{1}&=&\mathbf x_{0}+T_s \mathbf Q(\mathbf x_0)\mathbf \theta-\alpha T_s\mathbf x_0+T_s\mathbf e_0 \nonumber \\
+ \mathbf x_{2}&=&\mathbf x_{1}+T_s \mathbf Q(\mathbf x_1)\mathbf \theta-\alpha T_s\mathbf x_1+T_s\mathbf e_1\nonumber\\
+&\vdots& \nonumber\\
+ \mathbf x_{n}&=&\mathbf x_{n-1}+T_s \mathbf Q(\mathbf x_{n-1})\mathbf \theta-\alpha T_s\mathbf x_{n-1}+T_s\mathbf e_{n-1}
+\end{eqnarray}
+in matrix form
+\begin{equation}
+ \begin{bmatrix} \mathbf x_{1}\\\mathbf x_{2}\\\vdots\\\mathbf x_{n}\end{bmatrix}-\begin{bmatrix} \mathbf x_{0}\\\mathbf x_{1}\\\vdots\\\mathbf x_{n-1}\end{bmatrix}=T_s\begin{bmatrix}\mathbf Q(\mathbf x_0)&-\mathbf x_{0}\\\mathbf Q(\mathbf x_1)&-\mathbf x_{1}\\\vdots\\ \mathbf Q(\mathbf x_{n-1})&-\mathbf x_{n-1}\end{bmatrix}\begin{bmatrix}\mathbf \theta \\ \alpha\end{bmatrix}+T_s\begin{bmatrix}\mathbf e_0\\\mathbf e_1\\\vdots\\\mathbf e_{n-1}\end{bmatrix}
+\end{equation}
+or in compact form we have
+\begin{equation}
+ \mathbf Z=\mathbf X \mathbf W+\boldsymbol \xi
+\end{equation}
+where
+\begin{equation}
+ \mathbf Z=\begin{bmatrix} \mathbf x_{1}-\mathbf x_{0}\\\mathbf x_{2}-\mathbf x_{1}\\\vdots\\\mathbf x_{n}-\mathbf x_{n-1}\end{bmatrix},\quad \mathbf X=T_s\begin{bmatrix}\mathbf Q(\mathbf x_0)&-\mathbf x_{0}\\\mathbf Q(\mathbf x_1)&-\mathbf x_{1}\\\vdots\\ \mathbf Q(\mathbf x_{n-1})&-\mathbf x_{n-1}\end{bmatrix},\quad \mathbf W=\begin{bmatrix}\mathbf \theta \\ \alpha\end{bmatrix} \text{and}\quad \boldsymbol \xi=T_s\begin{bmatrix}\mathbf e_0\\\mathbf e_1\\\vdots\\\mathbf e_{n-1}\end{bmatrix}
+\end{equation}
+using the method of Least Square $ \mathbf W$ can be estimated
+\begin{equation}
+ \mathbf W\approx(\mathbf X^\top\mathbf X)^{-1}\mathbf X^\top\mathbf Z
+\end{equation}
 % use section* for acknowledgement
 \section*{Acknowledgment}
 The authors would like to thank...
