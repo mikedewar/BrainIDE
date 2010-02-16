@@ -618,9 +618,35 @@ where $e'(r,t_k)$ is a zero mean Gaussian random variable with covariance $\delt
 
 % you can choose not to have a title for an appendix
 % if you want by leaving the argument blank
+\section{Colored noise}
+We have
+\begin{equation}
+v_{t + 1}\left( \mathbf{r} \right)  = T_s\int_\Omega  {k\left( {{\bf{r}} , {\bf{r'}}} \right)f\left( {{v_t}\left( \bf{r'} \right)} \right)d{\bf{r'}}} + \lambda v_t\left( {\bf{r}} \right) + T_se_t\left( {\mathbf{r}} \right).
+\end{equation}
+where the disturbance $e_t(\mathbf r)$ is a zero-mean normally distributed noise process, spatially coloured but temporally independent, with covariance 
+
+\begin{equation}
+cov(e_t(\mathbf{s}),e_{t+\tau}(\mathbf{r}))=
+\begin{cases}
+\beta\left(\mathbf{s}-\mathbf{r}\right), & \tau=0 \\
+0 & \mathrm{otherwise}
+\end{cases}
+\label{eq:FieldCovariance}
+\end{equation}
+The final state-space model is given by
+\begin{equation}
+x_{t + 1} = T_sq(x_t)\theta -\lambda x_t + T_s\Gamma^{-1}\int_\Omega  {\phi ( \mathbf{r} )e_t( \mathbf{r} )d\mathbf{r}}
+\end{equation}
+then the covariance of the noise term is given by
+\begin{eqnarray}
+\mathbf \Sigma_w&{}={}&T_s^2 \times \mathbf{\Gamma}^{-1}\mathbf E[\int_{\mathcal{S}}\boldsymbol\phi\left(\mathbf s\right)e_t\left(\mathbf s\right)d\mathbf s\int_{\mathcal{S}}\boldsymbol\phi\left(\mathbf r\right)^{\top}e_t\left(\mathbf r\right)d\mathbf r]\mathbf{\Gamma}_{x}^{- \top} \nonumber \\
+&=&T_s^2 \times\mathbf{\Gamma}^{-1}\iint\limits_{\mathcal{S}}\boldsymbol\phi\left(\mathbf s\right) \mathbf E[e_t\left(\mathbf s\right)e_t\left(\mathbf r\right)]\boldsymbol\phi\left(\mathbf r\right)^{\top}d\mathbf r d\mathbf s\mathbf{\Gamma}^{- \top} \nonumber\\
+&=&{}T_s^2 \times\mathbf{\Gamma}^{-1}\iint\limits_{\mathcal{S}}\boldsymbol\phi\left(\mathbf s\right) \beta\left(\mathbf s- \mathbf r \right)\boldsymbol\phi\left(\mathbf r\right)^{\top}d\mathbf r d\mathbf s\mathbf{\Gamma}^{- \top} 
+\end{eqnarray}
+
 \section{Parameter estimation using LS}
 \begin{equation}
- \mathbf x_{t+1}=\mathbf x_{t}+T_s \mathbf Q(\mathbf x_t)\mathbf \theta-\alpha T_s\mathbf x_t+T_s\boldsymbol\Gamma^{-1}\int_\Omega\boldsymbol\phi^\top(\mathbf r)\varepsilon_t(\mathbf r)d\mathbf r
+ \mathbf x_{t+1}=\mathbf x_{t}+T_s \mathbf Q(\mathbf x_t)\mathbf \theta-\alpha T_s\mathbf x_t+T_s\boldsymbol\Gamma^{-1}\int_\Omega\boldsymbol\phi(\mathbf r)\varepsilon_t(\mathbf r)d\mathbf r
 \label{eq:statespacemodel}
 \end{equation}
 where the matrix $\mathbf Q_{n_x \times n_{\theta}}(\mathbf x_t)$ is defined as
