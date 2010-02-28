@@ -1,0 +1,1259 @@
+
+%% bare_jrnl.tex
+%% V1.3
+%% 2007/01/11
+%% by Michael Shell
+%% see http://www.michaelshell.org/
+%% for current contact information.
+%%
+%% This is a skeleton file demonstrating the use of IEEEtran.cls
+%% (requires IEEEtran.cls version 1.7 or later) with an IEEE journal paper.
+%%
+%% Support sites:
+%% http://www.michaelshell.org/tex/ieeetran/
+%% http://www.ctan.org/tex-archive/macros/latex/contrib/IEEEtran/
+%% and
+%% http://www.ieee.org/
+
+
+
+% *** Authors should verify (and, if needed, correct) their LaTeX system  ***
+% *** with the testflow diagnostic prior to trusting their LaTeX platform ***
+% *** with production work. IEEE's font choices can trigger bugs that do  ***
+% *** not appear when using other class files.                            ***
+% The testflow support page is at:
+% http://www.michaelshell.org/tex/testflow/
+
+
+%%*************************************************************************
+%% Legal Notice:
+%% This code is offered as-is without any warranty either expressed or
+%% implied; without even the implied warranty of MERCHANTABILITY or
+%% FITNESS FOR A PARTICULAR PURPOSE! 
+%% User assumes all risk.
+%% In no event shall IEEE or any contributor to this code be liable for
+%% any damages or losses, including, but not limited to, incidental,
+%% consequential, or any other damages, resulting from the use or misuse
+%% of any information contained here.
+%%
+%% All comments are the opinions of their respective authors and are not
+%% necessarily endorsed by the IEEE.
+%%
+%% This work is distributed under the LaTeX Project Public License (LPPL)
+%% ( http://www.latex-project.org/ ) version 1.3, and may be freely used,
+%% distributed and modified. A copy of the LPPL, version 1.3, is included
+%% in the base LaTeX documentation of all distributions of LaTeX released
+%% 2003/12/01 or later.
+%% Retain all contribution notices and credits.
+%% ** Modified files should be clearly indicated as such, including  **
+%% ** renaming them and changing author support contact information. **
+%%
+%% File list of work: IEEEtran.cls, IEEEtran_HOWTO.pdf, bare_adv.tex,
+%%                    bare_conf.tex, bare_jrnl.tex, bare_jrnl_compsoc.tex
+%%*************************************************************************
+
+% Note that the a4paper option is mainly intended so that authors in
+% countries using A4 can easily print to A4 and see how their papers will
+% look in print - the typesetting of the document will not typically be
+% affected with changes in paper size (but the bottom and side margins will).
+% Use the testflow package mentioned above to verify correct handling of
+% both paper sizes by the user's LaTeX system.
+%
+% Also note that the "draftcls" or "draftclsnofoot", not "draft", option
+% should be used if it is desired that the figures are to be displayed in
+% draft mode.
+%
+%    \documentclass[journal,a4paper]{IEEEtran}
+%   \documentclass[10pt,twocolumn,twoside]{IEEEtran}
+   \documentclass[draftcls,onecolumn]{IEEEtran} 
+   \topmargin       -6.0mm
+    \oddsidemargin      0mm
+    \evensidemargin     0mm
+    \textheight     223.5mm
+   \textwidth      170.0mm
+
+
+
+
+% If IEEEtran.cls has not been installed into the LaTeX system files,
+% manually specify the path to it like:
+% \documentclass[journal]{../sty/IEEEtran}
+
+
+
+
+
+% Some very useful LaTeX packages include:
+% (uncomment the ones you want to load)
+
+
+% *** MISC UTILITY PACKAGES ***
+%
+%\usepackage{ifpdf}
+% Heiko Oberdiek's ifpdf.sty is very useful if you need conditional
+% compilation based on whether the output is pdf or dvi.
+% usage:
+% \ifpdf
+%   % pdf code
+% \else
+%   % dvi code
+% \fi
+% The latest version of ifpdf.sty can be obtained from:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/oberdiek/
+% Also, note that IEEEtran.cls V1.7 and later provides a builtin
+% \ifCLASSINFOpdf conditional that works the same way.
+% When switching from latex to pdflatex and vice-versa, the compiler may
+% have to be run twice to clear warning/error messages.
+
+
+
+
+
+
+% *** CITATION PACKAGES ***
+%
+\usepackage{cite}
+% cite.sty was written by Donald Arseneau
+% V1.6 and later of IEEEtran pre-defines the format of the cite.sty package
+% \cite{} output to follow that of IEEE. Loading the cite package will
+% result in citation numbers being automatically sorted and properly
+% "compressed/ranged". e.g., [1], [9], [2], [7], [5], [6] without using
+% cite.sty will become [1], [2], [5]--[7], [9] using cite.sty. cite.sty's
+% \cite will automatically add leading space, if needed. Use cite.sty's
+% noadjust option (cite.sty V3.8 and later) if you want to turn this off.
+% cite.sty is already installed on most LaTeX systems. Be sure and use
+% version 4.0 (2003-05-27) and later if using hyperref.sty. cite.sty does
+% not currently provide for hyperlinked citations.
+% The latest version can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/cite/
+% The documentation is contained in the cite.sty file itself.
+
+
+
+
+
+
+% *** GRAPHICS RELATED PACKAGES ***
+%
+\ifCLASSINFOpdf
+   \usepackage[pdftex]{graphicx}
+  % declare the path(s) where your graphic files are
+  % \graphicspath{{../pdf/}{../jpeg/}}
+  % and their extensions so you won't have to specify these with
+  % every instance of \includegraphics
+  % \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
+\else
+  % or other class option (dvipsone, dvipdf, if not using dvips). graphicx
+  % will default to the driver specified in the system graphics.cfg if no
+  % driver is specified.
+  % \usepackage[dvips]{graphicx}
+  % declare the path(s) where your graphic files are
+  % \graphicspath{{../eps/}}
+  % and their extensions so you won't have to specify these with
+  % every instance of \includegraphics
+  % \DeclareGraphicsExtensions{.eps}
+\fi
+% graphicx was written by David Carlisle and Sebastian Rahtz. It is
+% required if you want graphics, photos, etc. graphicx.sty is already
+% installed on most LaTeX systems. The latest version and documentation can
+% be obtained at: 
+% http://www.ctan.org/tex-archive/macros/latex/required/graphics/
+% Another good source of documentation is "Using Imported Graphics in
+% LaTeX2e" by Keith Reckdahl which can be found as epslatex.ps or
+% epslatex.pdf at: http://www.ctan.org/tex-archive/info/
+%
+% latex, and pdflatex in dvi mode, support graphics in encapsulated
+% postscript (.eps) format. pdflatex in pdf mode supports graphics
+% in .pdf, .jpeg, .png and .mps (metapost) formats. Users should ensure
+% that all non-photo figures use a vector format (.eps, .pdf, .mps) and
+% not a bitmapped formats (.jpeg, .png). IEEE frowns on bitmapped formats
+% which can result in "jaggedy"/blurry rendering of lines and letters as
+% well as large increases in file sizes.
+%
+% You can find documentation about the pdfTeX application at:
+% http://www.tug.org/applications/pdftex
+
+
+
+
+
+% *** MATH PACKAGES ***
+%
+\usepackage[cmex10]{amsmath}
+\interdisplaylinepenalty=2500
+% A popular package from the American Mathematical Society that provides
+% many useful and powerful commands for dealing with mathematics. If using
+% it, be sure to load this package with the cmex10 option to ensure that
+% only type 1 fonts will utilized at all point sizes. Without this option,
+% it is possible that some math symbols, particularly those within
+% footnotes, will be rendered in bitmap form which will result in a
+% document that can not be IEEE Xplore compliant!
+%
+% Also, note that the amsmath package sets \interdisplaylinepenalty to 10000
+% thus preventing page breaks from occurring within multiline equations. Use:
+%\interdisplaylinepenalty=2500
+% after loading amsmath to restore such page breaks as IEEEtran.cls normally
+% does. amsmath.sty is already installed on most LaTeX systems. The latest
+% version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/required/amslatex/math/
+\usepackage{amssymb}
+
+
+
+
+% *** SPECIALIZED LIST PACKAGES ***
+%
+%\usepackage{algorithmic}
+% algorithmic.sty was written by Peter Williams and Rogerio Brito.
+% This package provides an algorithmic environment fo describing algorithms.
+% You can use the algorithmic environment in-text or within a figure
+% environment to provide for a floating algorithm. Do NOT use the algorithm
+% floating environment provided by algorithm.sty (by the same authors) or
+% algorithm2e.sty (by Christophe Fiorio) as IEEE does not use dedicated
+% algorithm float types and packages that provide these will not provide
+% correct IEEE style captions. The latest version and documentation of
+% algorithmic.sty can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/algorithms/
+% There is also a support site at:
+% http://algorithms.berlios.de/index.html
+% Also of interest may be the (relatively newer and more customizable)
+% algorithmicx.sty package by Szasz Janos:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/algorithmicx/
+
+
+
+
+% *** ALIGNMENT PACKAGES ***
+%
+\usepackage{array}
+% Frank Mittelbach's and David Carlisle's array.sty patches and improves
+% the standard LaTeX2e array and tabular environments to provide better
+% appearance and additional user controls. As the default LaTeX2e 
+% generation code is lacking to the point of almost being broken with
+% respect to the quality of the end results, all users are strongly
+% advised to use an enhanced (at the very least that provided by array.sty)
+% set of table tools. array.sty is already installed on most systems. The
+% latest version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/required/tools/
+
+
+%\usepackage{mdwmath}
+%\usepackage{mdwtab}
+% Also highly recommended is Mark Wooding's extremely powerful MDW tools,
+% especially mdwmath.sty and mdwtab.sty which are used to format equations
+% and tables, respectively. The MDWtools set is already installed on most
+% LaTeX systems. The lastest version and documentation is available at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/mdwtools/
+
+
+% IEEEtran contains the IEEEeqnarray family of commands that can be used to
+% generate multiline equations as well as matrices, tables, etc., of high
+% quality.
+
+
+%\usepackage{eqparbox}
+% Also of notable interest is Scott Pakin's eqparbox package for creating
+% (automatically sized) equal width boxes - aka "natural width parboxes".
+% Available at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/eqparbox/
+
+
+
+
+
+% *** SUBFIGURE PACKAGES ***
+% \usepackage[tight,footnotesize]{subfigure}
+% subfigure.sty was written by Steven Douglas Cochran. This package makes it
+% easy to put subfigures in your figures. e.g., "Figure 1a and 1b". For IEEE
+% work, it is a good idea to load it with the tight package option to reduce
+% the amount of white space around the subfigures. subfigure.sty is already
+% installed on most LaTeX systems. The latest version and documentation can
+% be obtained at:
+% http://www.ctan.org/tex-archive/obsolete/macros/latex/contrib/subfigure/
+% subfigure.sty has been superceeded by subfig.sty.
+ \ifCLASSOPTIONcompsoc
+  \usepackage[tight,normalsize,sf,SF]{subfigure}
+\else
+  \usepackage[tight,footnotesize]{subfigure}
+\fi
+
+
+%\usepackage[caption=false]{caption}
+%\usepackage[font=footnotesize]{subfig}
+% subfig.sty, also written by Steven Douglas Cochran, is the modern
+% replacement for subfigure.sty. However, subfig.sty requires and
+% automatically loads Axel Sommerfeldt's caption.sty which will override
+% IEEEtran.cls handling of captions and this will result in nonIEEE style
+% figure/table captions. To prevent this problem, be sure and preload
+% caption.sty with its "caption=false" package option. This is will preserve
+% IEEEtran.cls handing of captions. Version 1.3 (2005/06/28) and later 
+% (recommended due to many improvements over 1.2) of subfig.sty supports
+% the caption=false option directly:
+%\usepackage[caption=false,font=footnotesize]{subfig}
+%
+% The latest version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/subfig/
+% The latest version and documentation of caption.sty can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/caption/
+
+
+
+
+% *** FLOAT PACKAGES ***
+%
+%\usepackage{fixltx2e}
+% fixltx2e, the successor to the earlier fix2col.sty, was written by
+% Frank Mittelbach and David Carlisle. This package corrects a few problems
+% in the LaTeX2e kernel, the most notable of which is that in current
+% LaTeX2e releases, the ordering of single and double column floats is not
+% guaranteed to be preserved. Thus, an unpatched LaTeX2e can allow a
+% single column figure to be placed prior to an earlier double column
+% figure. The latest version and documentation can be found at:
+% http://www.ctan.org/tex-archive/macros/latex/base/
+
+
+
+\usepackage{stfloats}
+% stfloats.sty was written by Sigitas Tolusis. This package gives LaTeX2e
+% the ability to do double column floats at the bottom of the page as well
+% as the top. (e.g., "\begin{figure*}[!b]" is not normally possible in
+% LaTeX2e). It also provides a command:
+%\fnbelowfloat
+% to enable the placement of footnotes below bottom floats (the standard
+% LaTeX2e kernel puts them above bottom floats). This is an invasive package
+% which rewrites many portions of the LaTeX2e float routines. It may not work
+% with other packages that modify the LaTeX2e float routines. The latest
+% version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/sttools/
+% Documentation is contained in the stfloats.sty comments as well as in the
+% presfull.pdf file. Do not use the stfloats baselinefloat ability as IEEE
+% does not allow \baselineskip to stretch. Authors submitting work to the
+% IEEE should note that IEEE rarely uses double column equations and
+% that authors should try to avoid such use. Do not be tempted to use the
+% cuted.sty or midfloat.sty packages (also by Sigitas Tolusis) as IEEE does
+% not format its papers in such ways.
+
+
+%\ifCLASSOPTIONcaptionsoff
+%  \usepackage[nomarkers]{endfloat}
+% \let\MYoriglatexcaption\caption
+% \renewcommand{\caption}[2][\relax]{\MYoriglatexcaption[#2]{#2}}
+%\fi
+% endfloat.sty was written by James Darrell McCauley and Jeff Goldberg.
+% This package may be useful when used in conjunction with IEEEtran.cls'
+% captionsoff option. Some IEEE journals/societies require that submissions
+% have lists of figures/tables at the end of the paper and that
+% figures/tables without any captions are placed on a page by themselves at
+% the end of the document. If needed, the draftcls IEEEtran class option or
+% \CLASSINPUTbaselinestretch interface can be used to increase the line
+% spacing as well. Be sure and use the nomarkers option of endfloat to
+% prevent endfloat from "marking" where the figures would have been placed
+% in the text. The two hack lines of code above are a slight modification of
+% that suggested by in the endfloat docs (section 8.3.1) to ensure that
+% the full captions always appear in the list of figures/tables - even if
+% the user used the short optional argument of \caption[]{}.
+% IEEE papers do not typically make use of \caption[]'s optional argument,
+% so this should not be an issue. A similar trick can be used to disable
+% captions of packages such as subfig.sty that lack options to turn off
+% the subcaptions:
+% For subfig.sty:
+% \let\MYorigsubfloat\subfloat
+% \renewcommand{\subfloat}[2][\relax]{\MYorigsubfloat[]{#2}}
+% For subfigure.sty:
+% \let\MYorigsubfigure\subfigure
+% \renewcommand{\subfigure}[2][\relax]{\MYorigsubfigure[]{#2}}
+% However, the above trick will not work if both optional arguments of
+% the \subfloat/subfig command are used. Furthermore, there needs to be a
+% description of each subfigure *somewhere* and endfloat does not add
+% subfigure captions to its list of figures. Thus, the best approach is to
+% avoid the use of subfigure captions (many IEEE journals avoid them anyway)
+% and instead reference/explain all the subfigures within the main caption.
+% The latest version of endfloat.sty and its documentation can obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/endfloat/
+%
+% The IEEEtran \ifCLASSOPTIONcaptionsoff conditional can also be used
+% later in the document, say, to conditionally put the References on a 
+% page by themselves.
+
+
+
+
+
+% *** PDF, URL AND HYPERLINK PACKAGES ***
+%
+%\usepackage{url}
+% url.sty was written by Donald Arseneau. It provides better support for
+% handling and breaking URLs. url.sty is already installed on most LaTeX
+% systems. The latest version can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/misc/
+% Read the url.sty source comments for usage information. Basically,
+% \url{my_url_here}.
+
+
+
+
+
+% *** Do not adjust lengths that control margins, column widths, etc. ***
+% *** Do not use packages that alter fonts (such as pslatex).         ***
+% There should be no need to do such things with IEEEtran.cls V1.6 and later.
+% (Unless specifically asked to do so by the journal or conference you plan
+% to submit to, of course. )
+
+
+% correct bad hyphenation here
+\hyphenation{op-tical net-works semi-conduc-tor}
+
+
+\begin{document}
+%
+% paper title
+% can use linebreaks \\ within to get better formatting as desired
+\title{Wavelet Multiresolution Spatio-Temporal Modelling Using the Integro-Difference Equation}
+%
+%
+% author names and IEEE memberships
+% note positions of commas and nonbreaking spaces ( ~ ) LaTeX will not break
+% a structure at a ~ so this keeps an author's name from being broken across
+% two lines.
+% use \thanks{} to gain access to the first footnote area
+% a separate \thanks must be used for each paragraph as LaTeX2e's \thanks
+% was not built to handle multiple paragraphs
+%
+
+\author{Parham Aram,
+        Michael Dewar and Visakan Kadirkamanathan~\IEEEmembership{Member,~IEEE}  % <-this % stops a space
+\thanks{P. Aram and V. Kadirkamanathan are with the Department of Automatic Control and Systems Engineering, University of Sheffield, Sheffield, S1 3JD, U.K. (e-mail:p.aram@sheffield.ac.uk; visakan@sheffield.ac.uk).}% <-this % stops a space
+\thanks{M. Dewar is with the School of Informatics, University of Edinburgh, Edinburgh, EH8 9AB, U.K. (e-mail:mike.dewar@inf.ed.ac.uk)}}% <-this % stops a space
+%\thanks{Manuscript received April 19, 2005; revised January 11, 2007.}}
+
+% note the % following the last \IEEEmembership and also \thanks - 
+% these prevent an unwanted space from occurring between the last author name
+% and the end of the author line. i.e., if you had this:
+% 
+% \author{....lastname \thanks{...} \thanks{...} }
+%                     ^------------^------------^----Do not want these spaces!
+%
+% a space would be appended to the last name and could cause every name on that
+% line to be shifted left slightly. This is one of those "LaTeX things". For
+% instance, "\textbf{A} \textbf{B}" will typeset as "A B" not "AB". To get
+% "AB" then you have to do: "\textbf{A}\textbf{B}"
+% \thanks is no different in this regard, so shield the last } of each \thanks
+% that ends a line with a % and do not let a space in before the next \thanks.
+% Spaces after \IEEEmembership other than the last one are OK (and needed) as
+% you are supposed to have spaces between the names. For what it is worth,
+% this is a minor point as most people would not even notice if the said evil
+% space somehow managed to creep in.
+
+
+
+% The paper headers
+\markboth{Journal of }%
+{Aram \MakeLowercase{\textit{et al.}}: Wavelet Multiresolution Spatio-Temporal Modelling Using the Integro-Difference Equation}
+% The only time the second header will appear is for the odd numbered pages
+% after the title page when using the twoside option.
+% 
+% *** Note that you probably will NOT want to include the author's ***
+% *** name in the headers of peer review papers.                   ***
+% You can use \ifCLASSOPTIONpeerreview for conditional compilation here if
+% you desire.
+
+
+
+
+% If you want to put a publisher's ID mark on the page you can do it like
+% this:
+%\IEEEpubid{0000--0000/00\$00.00~\copyright~2007 IEEE}
+% Remember, if you use this you must call \IEEEpubidadjcol in the second
+% column for its text to clear the IEEEpubid mark.
+
+
+
+% use for special paper notices
+%\IEEEspecialpapernotice{(Invited Paper)}
+
+
+
+
+% make the title area
+\maketitle
+
+
+\begin{abstract}
+%\boldmath
+The Integro Difference Equation (IDE) is an increasingly popular model of spatio-temporal processes. Here we develop a Multiresolution Approximation (MRA) framework for the IDE based on semi-orthogonal cardinal B-spline wavelets. State and parameter estimation is approached in a Maximum Likelihood (ML) framework using the Expectation Maximisation (EM) algorithm. Examples are given to demonstrate the features of the model.
+\end{abstract}
+% IEEEtran.cls defaults to using nonbold math in the Abstract.
+% This preserves the distinction between vectors and scalars. However,
+% if the journal you are submitting to favors bold math in the abstract,
+% then you can use LaTeX's standard command \boldmath at the very start
+% of the abstract to achieve this. Many IEEE journals frown on math
+% in the abstract anyway.
+
+% Note that keywords are not normally used for peerreview papers.
+\begin{IEEEkeywords}
+B-spline wavelets, dynamic spatio-temporal modelling, Expectation Maximisation (EM) algorithm, Integro-Difference Equation (IDE), Multiresolution Approximation (MRA).
+\end{IEEEkeywords}
+
+
+
+
+
+
+% For peer review papers, you can put extra information on the cover
+% page as needed:
+% \ifCLASSOPTIONpeerreview
+% \begin{center} \bfseries MEDICS Category: 3-BBND \end{center}
+% \fi
+%
+% For peerreview papers, this IEEEtran command inserts a page break and
+% creates the second title. It will be ignored for other modes.
+\IEEEpeerreviewmaketitle
+
+
+
+\section{Introduction}
+% The very first letter is a 2 line initial drop letter followed
+% by the rest of the first word in caps.
+% 
+% form to use if the first word consists of a single letter:
+% \IEEEPARstart{A}{demo} file is ....
+% 
+% form to use if you need the single drop letter followed by
+% normal text (unknown if ever used by IEEE):
+% \IEEEPARstart{A}{}demo file is ....
+% 
+% Some journals put the first two words in caps:
+% \IEEEPARstart{T}{his demo} file is ....
+% 
+% Here we have the typical use of a "T" for an initial drop letter
+% and "HIS" in caps to complete the first word.
+\IEEEPARstart{C}{omplex} spatio-temporal behaviour is found in many different systems such as aquatic ecosystems \cite{Schofield2002}, meteorological forecasting \cite{Xu2005}, air pollution \cite{Romanowicz2006}, soil temperature  \cite{Bond-Lamberty2005}, chemical processes \cite{Deng2005}, disease spread \cite{Kuo2009}  and house prices in the US \cite{Holly2006}. Spatio-temporal modelling aims to represent dynamic system behaviour across time and space. %WEINAND1972
+
+Techniques for modelling spatio-temporal systems are generating growing interest, both in the applied and theoretical literature. Of particular interest are the class of dynamic spatio-temporal models, including Cellular Automata (CA) \cite{Wolfram1994}, Coupled Map Lattices (CMLs) \cite{Billings2002}, Lattice Dynamical Wavelet Neural Network (LDWNN) \cite{Wei2009} and spatially correlated time series  \cite{Pfeifer1980,Glasbey2008,Dewar2007} which have all been used in a system identification context. The extent of the spatial interactions in these models is determined by a discrete neighbourhood structure.
+
+
+Another such model is the Integro-Difference Equation (IDE). These models have received much attention in population ecology as models for the spatio-temporal spread of organisms \cite{Kot1992,Kot1996}. IDE models combine discrete temporal dynamics with a continuous spatial representation. The dynamics of this model are given by a spatial mixing kernel, which defines the mapping between the current spatial field and the previous spatial field. The IDE model can be applied to data sampled both regularly and irregularly in space due to the continuous representation of each spatial field. Estimating the underlying spatial field in time is of particular interest, and is not straightforward especially when the field displays structure at different spatial scales. Estimation of the underlying spatial field can be achieved by estimating the associated spatial mixing kernel from measured data, and then using this in a filtering framework. 
+
+
+Wikle et al. \cite{Wikle2002} describe the IDE using a state-space formulation by decomposing the kernel and the field using a set of spectral basis functions. An alternative approach for the decomposition of the IDE was introduced in \cite{Dewar2009} where the resulting state and parameter space dimensions are independent of the number of observation locations. This is crucial not only for model parsimony but also has implications for studying systems observed at a high spatial resolution. In this method an Expectation-Maximisation (EM)  algorithm  was used to estimate both the field and the kernel from the observed data. A similar approach is adopted by \cite{Scerri2009} which developed a model selection procedure by considering various spatial scales at which to represent the system. %choose the appropriate model amongst models of varying Gaussian scale parameters incorporating spatio-temporal frequency domain properties of the data.
+%  when the system spatial bandwidth and the kernel support are unknown.
+
+Behaviour of the spatial field is often of interest at a variety of scales \cite{Wiens1989,Chelton1994,Schmidt2005,Schnell2007}. At each scale, an appropriate model should be adopted to adequately reflect the underlying phenomenon. The spatial field may have features at multiple scales either naturally or as a consequence of the measurement process \cite{Wilsky2002,BAKSHI1999} and hence modelling methods that represent the field at multiple scales are essential. Multiresolution Approximation (MRA) \cite{Meyer1993,Mallat1989a,Mallat1989b}  provides such a modelling framework in which information at different scales can be represented simultaneously.
+%  and can be used for the analysis and modelling of systems in which the spatio-temporal dispersal patterns are markedly different at the global and local scales \cite{Chelton1994,WIKLE2003,Schnell2007}. At each scale, an appropriate model should be adopted to adequately reflect the underlying dynamics. 
+
+% At the same time, a successful multiresolution representation opens up possibilities to further investigate the system in order to develop more efficient modelling schemes. For instance, in irregular observation scenario information at different scales can be integrated in a model with varying scales each suited for a specific region. %Often a proper scale is not known a priori and hence MRA can gives insight to appropriate levels is necessary to adequately capture the behaviour of the system.
+
+% three distinct
+% ways in which multiresolution features can enter into a signal or image analysis problem. 
+
+% The spatial field may have features at multiple scales by nature,  or regardless the underlying nature of the field ,  observations might be collected at several different resolutions. In such cases, modelling methods that represent the field at multiple scales are better suited than single scale models.
+
+% The spatial field may possess features at multiple scales by nature,  or regardless the underlying nature of the field ,  observations might be collected at several different resolutions. Therefore modelling methods that represent the field at multiple scales are better suited than single scale models. Multiresolution approximation (MRA) \cite{Meyer1993,Mallat1989a}  provides such modelling framework in which information at different scales can be obtained simultaneously. 
+
+% One example is multiresolution representation of the gravity field in which a global trend (coarse level) is computed from the satellite data and the regional and local information (fine level) is obtained from terrestrial and airbone data sets \cite{Schmidt2005}. 
+
+% In addition to representing a phenomenon at different scales, MRA approximation properties make them attractive for many identification problems. MRA has been implemented in both static and dynamic spatio-temporal  modelling contexts, for example in static modelling it has been used to provide a multiresolution covariance structure for non-stationary models which can adapt to heterogeneous spatial correlations \cite{D.Nychka2002}. In dynamic modelling MRA is used to identify CML models, which infer spatio-temporal patterns from measured data \cite{Billings2006}.
+
+
+%   Semi-orthogonal B-spline wavelets are compactly supported and optimally localised in time and frequency. 
+
+In practice, MRA can be implemented using different types of wavelet and scaling functions. Semi-orthogonal B-spline wavelets \cite{Chui1992,Unser1993} benefit from distinctive properties which are useful for system identification purposes. They are compactly supported and have a closed-form analytic expression which allows simple manipulations such as integration \cite{Unser1992,Chui1992a}. This class of wavelets has been successfully applied in approximation schemes such as wavelet networks\cite{G.P.Liu2000,Jun2005} and wavelet based CML models \cite{Billings2006}. 
+
+
+In this paper a multiresolution approximation of the IDE based on the model proposed in \cite{Dewar2009} is presented. B-spline scaling and wavelet functions are used to decompose both the kernel and the spatial field. Maximum likelihood estimates of the derived parametric state-space model are obtained using the EM-based algorithm of  \cite{Dewar2009}.  In this model, the kernel and the spatio-temporal dynamics of the field are viewed at different spatial scales. Whereas in \cite{Scerri2009} different spatial scales were examined and one chosen, the work presented herein represents the system at a number of different spatial scales concurrently.
+% - a property that the alternative models described above do not typically share.
+% Gaussian Radial Basis Functions have been used by  to identify the appropriate scale for the IDE to represent the underlying spatio-temporal dynamic however not in a MRA framework.
+
+
+  The rest of this paper is set out as follows: in Section 2, the IDE model is briefly reviewed and the MRA of the IDE is presented. Section 3 introduces the B-spline wavelet IDE model and provides necessary formulation  to construct such a model in state-space. Section 4 briefly reviews the EM-based approach for parameter and state estimation. In Section 5, synthetic examples are given to demonstrate the ability of the developed MRA model in estimation of the hidden spatio-temporal field and the spatial mixing kernel. Finally conclusions are drawn in Section 6.
+
+
+
+
+% You must have at least 2 lines in the paragraph with the drop letter
+% (should never be an issue)
+
+%\hfill mds
+ 
+%\hfill January 11, 2007
+
+%\subsection{Subsection Heading Here}
+%Subsection text here.
+
+% needed in second column of first page if using \IEEEpubid
+%\IEEEpubidadjcol
+
+%\subsubsection{Subsubsection Heading Here}
+%Subsubsection text here.
+
+
+% An example of a floating figure using the graphicx package.
+% Note that \label must occur AFTER (or within) \caption.
+% For figures, \caption should occur after the \includegraphics.
+% Note that IEEEtran v1.7 and later has special internal code that
+% is designed to preserve the operation of \label within \caption
+% even when the captionsoff option is in effect. However, because
+% of issues like this, it may be the safest practice to put all your
+% \label just after \caption rather than within \caption{}.
+%
+% Reminder: the "draftcls" or "draftclsnofoot", not "draft", class
+% option should be used if it is desired that the figures are to be
+% displayed while in draft mode.
+%
+%\begin{figure}[!t]
+%\centering
+%\includegraphics[width=2.5in]{myfigure}
+% where an .eps filename suffix will be assumed under latex, 
+% and a .pdf suffix will be assumed for pdflatex; or what has been declared
+% via \DeclareGraphicsExtensions.
+%\caption{Simulation Results}
+%\label{fig_sim}
+%\end{figure}
+
+% Note that IEEE typically puts floats only at the top, even when this
+% results in a large percentage of a column being occupied by floats.
+
+
+% An example of a double column floating figure using two subfigures.
+% (The subfig.sty package must be loaded for this to work.)
+% The subfigure \label commands are set within each subfloat command, the
+% \label for the overall figure must come after \caption.
+% \hfil must be used as a separator to get equal spacing.
+% The subfigure.sty package works much the same way, except \subfigure is
+% used instead of \subfloat.
+%
+%\begin{figure*}[!t]
+%\centerline{\subfloat[Case I]\includegraphics[width=2.5in]{subfigcase1}%
+%\label{fig_first_case}}
+%\hfil
+%\subfloat[Case II]{\includegraphics[width=2.5in]{subfigcase2}%
+%\label{fig_second_case}}}
+%\caption{Simulation results}
+%\label{fig_sim}
+%\end{figure*}
+%
+% Note that often IEEE papers with subfigures do not employ subfigure
+% captions (using the optional argument to \subfloat), but instead will
+% reference/describe all of them (a), (b), etc., within the main caption.
+
+
+% An example of a floating table. Note that, for IEEE style tables, the 
+% \caption command should come BEFORE the table. Table text will default to
+% \footnotesize as IEEE normally uses this smaller font for tables.
+% The \label must come after \caption as always.
+%
+%\begin{table}[!t]
+%% increase table row spacing, adjust to taste
+%\renewcommand{\arraystretch}{1.3}
+% if using array.sty, it might be a good idea to tweak the value of
+% \extrarowheight as needed to properly center the text within the cells
+%\caption{An Example of a Table}
+%\label{table_example}
+%\centering
+%% Some packages, such as MDW tools, offer better commands for making tables
+%% than the plain LaTeX2e tabular which is used here.
+%\begin{tabular}{|c||c|}
+%\hline
+%One & Two\\
+%\hline
+%Three & Four\\
+%\hline
+%\end{tabular}
+%\end{table}
+
+
+% Note that IEEE does not put floats in the very first column - or typically
+% anywhere on the first page for that matter. Also, in-text middle ("here")
+% positioning is not used. Most IEEE journals use top floats exclusively.
+% Note that, LaTeX2e, unlike IEEE journals, places footnotes above bottom
+% floats. This can be corrected via the \fnbelowfloat command of the
+% stfloats package.
+\section{MRA of the IDE in State-Space}
+The spatially homogeneous, linear IDE is given by
+\begin{equation}
+ z_{t+1}\left(\mathbf{s}\right)=\int_{\mathcal{S}}k\left(\mathbf{s}-\mathbf{r}\right)z_{t}\left(\mathbf{r}\right)d\mathbf{r}+e_{t}\left(\mathbf{s}\right)
+\label{eq:ConvolutionIntegral}
+\end{equation}
+where $t\in \mathbb{Z}_0 $ denotes discrete time, $\mathbf{s},\mathbf{r} \in \mathcal{S} \subset \mathbb{R}^{n_\mathcal{S}}$ are spatial locations in $n_{\mathcal S}$-dimensional physical space, where $n_{\mathcal S} \in \left\lbrace 1,2,3 \right\rbrace $. The continuous spatial field at time $t$ and at location $\mathbf s$ is denoted $z_t\left(\mathbf s\right)$. The model dynamics  are defined by the homogeneous time invariant spatial mixing kernel, $k\left(\mathbf{s}-\mathbf{r}\right):\mathbb{R}^{n_\mathcal{S}}\rightarrow \mathbb{R}$ which maps the current spatial field to the next spatial field via the integral (\ref{eq:ConvolutionIntegral}). The disturbance $e_{t}(\mathbf{s})$ is a zero-mean normally distributed noise process, spatially coloured but temporally independent, with covariance 
+\begin{equation}
+cov\left(e_{t}\left(\mathbf{s}\right),e_{t+\tau}\left(\mathbf{r}\right)\right)=
+\begin{cases}
+\eta\left(\mathbf{s}-\mathbf{r}\right), & \tau=0 \\
+0 & \mathrm{otherwise}
+\end{cases}
+\label{eq:FieldCovariance}
+\end{equation}
+for any $\tau \in \mathbb{Z}$, where $\eta\left(\mathbf s-\mathbf r \right)$ is a  spatially homogeneous covariance function. The spatial field is observed by
+\begin{equation}
+ \mathbf{y}_{t}=\mathbf{z}_{t}+\mathbf{v}_t
+\label{eq:observation equation}
+\end{equation}
+where the observation vector $\mathbf{y}_{t}=[y_t(\mathbf{s}_1) y_t(\mathbf{s}_2)\cdots y_t(\mathbf{s}_{n_y})]^\top$, compiled at $n_{y}$ spatial locations and at time $t$, is corrupted by an i.i.d normally distributed zero-mean white noise $\mathbf{v}_{t}\sim \mathcal{N}\left(\mathbf{0},\mathbf{\Sigma}_{v}\right)$ with $\mathbf{\Sigma}_{v}=\sigma_v^2\mathbf I_{n_y} $. It is assumed here that $\boldsymbol\Sigma_v$ and $\eta\left(\mathbf s-\mathbf r \right)$ are known. The superscript $\top$ denotes the transpose operator.
+
+
+Assuming $z_t(.)$ and $k(.)$ are square-integrable functions, MRA of the one-dimensional IDE can be obtained by expanding  both the field and the kernel in the integral (\ref{eq:ConvolutionIntegral}) in terms of the translations and dilations of a scaling function $\phi(s)$ and a mother wavelet $\psi(s)$. For the one-dimensional kernel this is given by,
+\begin{equation}
+ k\left(s-r\right)=\sum_{l \in \mathbb{Z}}\alpha_{j_0,l}\phi_{j_0,l}\left(s-r\right)+\sum_{j\geq j_0}^{\infty} \sum_{l \in \mathbb{Z}}\beta_{j,l}\psi_{j,l}\left(s-r\right) 
+\label{eq:KernelExpansion}
+\end{equation}
+In this expansion, $\alpha_{j_0,l}$ are the approximation coefficients  at lowest scale $j_0$ and $ \beta_{j,l}$ represent the detail coefficients at different scales $j$, with $\phi_{j,l}\left(s\right)=2^{\frac{j}{2}}\phi\left(2^js-l\right) $ and $\psi_{j,l}\left(s\right)=2^{\frac{j}{2}}\psi\left(2^js-l\right)$. Integers $j$ and $l$ are called scale and translation parameters accordingly. The one-dimensional field can similarly be decomposed as
+\begin{equation}
+ z_t\left(s\right)=\sum_{l \in \mathbb{Z}}x_{t,j_{0},l}\phi_{j_{0},l}\left(s\right)+\sum_{j\geq j_0}^{\infty} \sum_{l \in \mathbb{Z}} \check{x}_{t,j,l}\psi_{j,l}\left(s\right)
+\label{eq:FieldExpansion}
+\end{equation}
+where $ x_{t,j_{0},l}$ and $\check{x}_{t,j,l} $ are the coefficients of the expansion at time $t$.
+A  two-dimensional MRA can be implemented using 2-D scaling and wavelet functions built up  using the tensor-product approach \cite{Meyer1992,Mallat1998}. We write the 2-D scaling function as
+\begin{equation}
+ \phi_{j,\mathbf{l}}\left(s_1,s_2\right)=\phi_{j,l_1}\left(s_1\right)\phi_{j,l_2}\left(s_2\right)
+\label{eq:2Dscalingfunction}
+\end{equation}
+and three 2-D wavelet functions $ \psi^{(n)} \left(\mathbf{s}\right)$ where $n=1,2,3$ as
+\begin{equation}
+ \psi_{j,\mathbf{l}}^{(1)}\left(s_1,s_2\right)=\phi_{j,l_1}\left(s_1\right)\psi_{j,l_2}\left(s_2\right)
+\label{eq:2Dwavelet_1}
+\end{equation}
+\begin{equation}
+ \psi_{j,\mathbf{l}}^{(2)}\left(s_1,s_2\right)=\psi_{j,l_1}\left(s_1\right)\phi_{j,l_2}\left(s_2\right)
+\label{eq:2Dwavelet_2}
+\end{equation}
+\begin{equation}
+ \psi_{j,\mathbf{l}}^{(3)}\left(s_1,s_2\right)=\psi_{j,l_1}\left(s_1\right)\psi_{j,l_2}\left(s_2\right)
+\label{eq:2Dwavelet_3}
+\end{equation}
+for $j \in \mathbb{Z}$ and, $\mathbf{l} \in \mathbb{Z}^2$, where $\psi_{j,\mathbf{l}}^{(1)},  \psi_{j,\mathbf{l}}^{(2)}$ and $\psi_{j,\mathbf{l}}^{(3)} $ extract fine features of the 2-D field at vertical, horizontal and diagonal orientations respectively.
+This can be generalised to $d$-dimensional MRA by introducing the scaling function
+\setlength{\arraycolsep}{0.0em}
+\begin{eqnarray}
+  \phi_{j,\mathbf{l}}\left(s_1,s_2, \cdots s_d\right)&=&\phi_{j,l_1}\left(s_1\right)\phi_{j,l_2}\left(s_2\right) \cdots \phi_{j,l_d}\left(s_d\right) \label{eq:d-dimensionalscalingfunction}\\
+ &&j \in \mathbb{Z}, \quad \mathbf{l} \in \mathbb{Z}^d \nonumber
+\end{eqnarray}
+\setlength{\arraycolsep}{5pt}
+and $2^d-1$ wavelet functions $ \psi^{(n)} \left(\mathbf{s}\right), n=1, \cdots,2^d-1$ with a procedure similar to the 2-D case. Using these basis functions, multi-dimensional MRA of the kernel and the field can be obtained by
+\setlength{\arraycolsep}{0.0em}
+\begin{eqnarray}
+ k\left(\mathbf{s}-\mathbf{r}\right)&=&\sum_{\mathbf{l}\in \mathbb{Z}^d}\alpha_{j_0,\mathbf{l}}\phi_{j_0,\mathbf{l}}\left(\mathbf{s}-\mathbf{r}\right) \nonumber \\
+&+&\sum_{j\geq j_0}^{\infty} \sum_{\mathbf{l}\in \mathbb{Z}^d}\sum_{i=1}^{2^d-1}\beta_{j,\mathbf{l}}^{(i)} \psi_{j,\mathbf{l}}^{(i)}\left(\mathbf{s}-\mathbf{r}\right) 
+\label{eq:MultidimensionalKernelExpansion}
+\end{eqnarray}
+\setlength{\arraycolsep}{5pt}
+\begin{equation}
+z_t\left(\mathbf{s}\right)=\sum_{\mathbf{l}\in \mathbb{Z}^d}x_{t,j_{0},\mathbf{l}}\phi_{j_{0},\mathbf{l}}\left(\mathbf{s}\right)+\sum_{j\geq j_0}^{\infty} \sum_{\mathbf{l}\in \mathbb{Z}^d}\sum_{i=1}^{2^d-1} \check{x}_{t,j,\mathbf{l}}^{(i)}\psi_{j,\mathbf{l}}^{(i)}\left(\mathbf{s}\right)
+\label{eq:MultidimensionalFieldExpansion}
+\end{equation}
+Equations (\ref{eq:MultidimensionalKernelExpansion}) and (\ref{eq:MultidimensionalFieldExpansion}) are infinite series expansions. For practical implementation, (\ref{eq:MultidimensionalKernelExpansion}) and (\ref{eq:MultidimensionalFieldExpansion}) must be truncated at some level $j$, therefore we have
+ \begin{equation}
+ k\left(\mathbf{s}-\mathbf{r}\right)\approx \boldsymbol\theta^\top\boldsymbol\lambda\left(\mathbf{s}-\mathbf{r}\right)
+\label{eq:KernelFiniteExpansion}
+\end{equation}
+\begin{equation}
+ z_t\left(\mathbf{s}\right)\approx\boldsymbol\mu\left(\mathbf{s}\right)^\top\mathbf{x}_t
+\label{eq:FieldFiniteExpansion}
+\end{equation}
+where the unknown parameter vector $ \boldsymbol\theta \in \mathbb{R}^{n_{\theta}}$ and the unknown state vector $ \mathbf{x}_t \in \mathbb{R}^{n_x}$ are defined as 
+\begin{equation}
+ \boldsymbol\theta^\top=\left[ \boldsymbol\alpha_{j_0}^\top \quad \boldsymbol\beta_{j_0}^\top \quad \boldsymbol\beta_{j_0+1}^\top \cdots \boldsymbol\beta_{j}^\top\right] 
+\label{KernelWeights}
+\end{equation}
+\begin{equation}
+ \mathbf{x}_{t}^\top=\left[\mathbf{x}_{t,j_{0}}^\top \quad  \check{\mathbf{x}}_{t,j_{0}}^\top \quad  \check{\mathbf{x}}_{t,j_{0}+1}^\top \cdots \check{\mathbf{x}}_{t,j}^\top\right] 
+\label{FieldWeights}
+\end{equation}
+and where the kernel approximation coefficient vector $\boldsymbol \alpha_{j_0}$  and the field approximation coefficient vector $\mathbf{x}_{t,j_{0}}$ comprise all the coefficients $\left\lbrace\alpha_{j_0,\mathbf l}:\mathbf{l} \in \mathbb{Z}^d \right\rbrace $ and $\left\lbrace x_{t,j_0,\mathbf l}: \mathbf{l} \in \mathbb{Z}^d\right\rbrace$ respectively. The kernel detail coefficient vectors $\boldsymbol \beta_{j}$ and the field detail coefficient vectors $\check{\mathbf{x}}_{t,j}$ are defined by
+\begin{equation}
+ \boldsymbol\beta_{j}^\top=\left[\boldsymbol\beta_{j}^{(1)\top} \quad \boldsymbol\beta_{j}^{(2)\top} \cdots \boldsymbol\beta_{j}^{(2^d-1)\top}\right] 
+\end{equation}
+\begin{equation}
+\check{\mathbf{x}}_{t,j}^\top=\left[\check{\mathbf{x}}_{t,j}^{(1)\top} \quad \check{\mathbf{x}}_{t,j}^{(2)\top} \cdots \check{\mathbf{x}}_{t,j}^{(2^d-1)\top}\right] 
+\end{equation}
+where the vector $\boldsymbol\beta_{j}^{(i)}$ contains all the coefficient $\left\lbrace \beta_{j,\mathbf l}^{(i)} :\mathbf{l} \in \mathbb{Z}^d\right\rbrace$ and the vector $\check{\mathbf{x}}_{t,j}^{(i)}$ contains all the coefficient $\left\lbrace  \check x_{t,j,\mathbf l}^{(i)}:\mathbf{l} \in \mathbb{Z}^d\right\rbrace$. 
+%and  $\boldsymbol\lambda(\mathbf{s}-\mathbf{r})$ is the vector of the kernel scaling and wavelet functions and   $\boldsymbol\mu(\mathbf{s})$ is the vector of the field scaling and wavelet functions. 
+ The vector of the kernel scaling and wavelet functions $\boldsymbol\lambda: \mathbb{R}^{n_{\mathcal S}}\rightarrow \mathbb{R}^{n_{\theta}}$ and the vector of the field scaling and wavelet functions $\boldsymbol\mu: \mathbb{R}^{n_{\mathcal S}}\rightarrow \mathbb{R}^{n_x}$ are defined by
+\begin{eqnarray}
+ \boldsymbol\lambda^\top(\mathbf s-\mathbf r)&=&\left[ \boldsymbol\phi_{j_0}^\top(\mathbf s-\mathbf r) \quad \boldsymbol\psi_{j_0}^\top(\mathbf s-\mathbf r) \quad \boldsymbol\psi_{j_0+1}^\top(\mathbf s-\mathbf r) \right. \nonumber \\
+&&\left. \cdots \quad \boldsymbol\psi_{j}^\top(\mathbf s-\mathbf r)\right]
+\label{KernelBasisVector} 
+\end{eqnarray}
+\begin{equation}
+ \boldsymbol\mu^\top(\mathbf s)=\left[ \boldsymbol\phi_{j_0}^\top(\mathbf s) \quad \boldsymbol\psi_{j_0}^\top(\mathbf s) \quad \boldsymbol\psi_{j_0+1}^\top(\mathbf s) \cdots \boldsymbol\psi_{j}^\top(\mathbf s) \right] 
+\label{FieldBasisVector}
+\end{equation}
+Each vector of basis functions on the right hand-side of (\ref{KernelBasisVector}) and (\ref{FieldBasisVector}) are constructed in a way similar to their corresponding weight vectors in (\ref{KernelWeights}) and (\ref{FieldWeights}). Note that the identified IDE model will approximate the underlying spatio-temporal dynamics at different spatial scales. In this way both macroscopic and microscopic behaviour of the system can be represented simultaneously. 
+
+% however it can be tailored to capture underlying dynamics with desired accuracy for a sufficiently large value of $j$, a value between zero and three is usually sufficient in many applications \cite{Wei2006}. Note that number of translation parameters is always finite and depends on the range of measured data.
+
+The state-space representation of the spatio-temporal IDE proposed in \cite{Dewar2009} is derived for an arbitrary set of basis functions and hence this derivation can be applied using scaling and wavelet basis functions. Let
+\begin{equation}
+ \mathbf{\Lambda}_{x}=\int_{\mathcal{S}}\boldsymbol\mu\left(\mathbf{s}\right)\boldsymbol\mu\left(\mathbf{s}\right)^\top d\mathbf{s}
+\label{eq:ConstructionIntegral1}
+\end{equation}
+\begin{equation}
+ \mathbf{\Lambda}_{\theta}=\iint\limits_{\mathcal{S}}\boldsymbol\mu\left(\mathbf{s}\right)\boldsymbol\theta^\top \boldsymbol\lambda\left(\mathbf{s-r}\right)\boldsymbol\mu\left(\mathbf{r}\right)^\top d\mathbf{r}d\mathbf{s}
+\label{eq:ConstructionIntegral2}
+\end{equation}
+where $\boldsymbol\Lambda_{x}, \boldsymbol\Lambda_{\theta} \in \mathbb{R}^{n_x \times n_x}$. The spatial IDE model in (\ref{eq:ConvolutionIntegral}) and (\ref{eq:observation equation}) can be represented as linear state-space model of the form  
+\begin{equation}
+ \mathbf{x}_{t+1}=\mathbf{A}\left(\boldsymbol\theta\right)\mathbf{x}_t+\mathbf{w}_t
+\end{equation}
+\begin{equation}
+\mathbf{y}_t=\mathbf{C}\mathbf{x}_t+\mathbf{v}_t
+\end{equation}
+where 
+\begin{equation}
+ \mathbf{A}\left(\boldsymbol\theta\right)=\mathbf{\Lambda}_{x}^{-1}\mathbf{\Lambda_{\theta}}
+\label{eq:TransitionMatrix}
+\end{equation}
+and  \\ \\ 
+$\mathbf{C}=$
+$\begin{pmatrix}
+\boldsymbol\phi_{j_0}\left(\mathbf{s}_1\right) & \boldsymbol\phi_{j_0}\left(\mathbf{s}_2\right)  &\cdots &\boldsymbol\phi_{j_0}\left(\mathbf{s}_{n_y}\right) \\
+\boldsymbol\psi_{j_0}\left(\mathbf{s}_1\right) & \boldsymbol\psi_{j_0}\left(\mathbf{s}_2\right)  &\cdots &\boldsymbol\psi_{j_0}\left(\mathbf{s}_{n_y}\right) \\
+\boldsymbol\psi_{j_0+1}\left(\mathbf{s}_1\right) & \boldsymbol\psi_{j_0+1}\left(\mathbf{s}_2\right)  &\cdots &\boldsymbol\psi_{j_0+1}\left(\mathbf{s}_{n_y}\right) \\
+\vdots & \vdots & \ddots& \vdots \\
+\boldsymbol\psi_{j}\left(\mathbf{s}_1\right) & \boldsymbol\psi_{j}\left(\mathbf{s}_2\right)  &\cdots &\boldsymbol\psi_{j}\left(\mathbf{s}_{n_y}\right) \\
+\end{pmatrix}^{\top}$ \\ \\
+\\ \\ and where 
+\begin{equation}
+ \mathbf{w}_t=\mathbf{\Lambda}_{x}^{-1}\int_{\mathcal{S}}\boldsymbol\mu \left(\mathbf{s}\right)e_t\left(\mathbf{s}\right)d\mathbf{s}
+\label{CovofField}
+\end{equation}
+ is a vector valued, zero-mean normally distributed white noise process with covariance given by (Lemma \ref{lemma:FieldCovariance}, Appendix)
+\begin{equation}
+\boldsymbol\Sigma_w =\mathbf{\Lambda}_{x}^{-1}\boldsymbol\Pi\mathbf{\Lambda}_{x}^{-\top}
+\end{equation}
+and
+\begin{equation}
+ \boldsymbol\Pi=\iint\limits_{\mathcal{S}}\boldsymbol\mu\left(\mathbf{s}\right)\eta\left(\mathbf{s}-\mathbf{r}\right)\boldsymbol\mu\left(\mathbf{r}\right)^{\top}d\mathbf{r}d\mathbf{s}
+\label{eq:Pi}
+\end{equation}
+By substituting the  parameter vector $\boldsymbol\theta$, the  state vector $\mathbf{x_t}$, the vector of kernel basis functions $\boldsymbol\lambda$ and the vector of field basis functions $\boldsymbol\mu$ in (\ref{eq:ConstructionIntegral1}-\ref{eq:Pi}), the state-space representation of the multiresolution approximation of the IDE can be achieved. It should be noted that the complexity of the model is independent of the number of observation locations, providing more flexibility in handling high resolution data. %The model is also capable of being applicable to scenarios with irregular observation locations.
+
+% In practice, MRA can be implemented using different types of wavelet and scaling functions.  Semi-orthogonal B-spline wavelets are compactly supported and optimally localised in time and frequency. This class of wavelets has been applied in approximation schemes such as wavelet networks\cite{G.P.Liu2000,Jun2005} and wavelet based CML models \cite{Billings2006}.
+
+\section{B-spline wavelet IDE model}
+Multiresolution approximation can be implemented using different classes of scaling and wavelet functions. In order to determine the matrices $ \boldsymbol\Lambda_x$ and $\boldsymbol \Lambda_{\theta}$ convolution and inner product expressions of the basis functions need to be computable. B-spline wavelet and scaling functions are particularly convenient in the above decomposition as their convolution and inner product expressions can be found analytically.
+
+The  $m$th order cardinal B-spline scaling function is defined by the recurrence relation \cite{Chui1992} 
+\begin{eqnarray}
+N_{m}\left(s\right)&=&\left(N_{m-1}\ast N_{1}\right)\left(s\right)\nonumber \\
+&=&\int_0^{1} N_{m-1}\left( s-r\right)dr \quad m>1 
+\label{SplineConvolutionIntegral}
+\end{eqnarray}
+Here $\ast$ denotes the convolution operator and $N_1\left(s\right)$ is the characteristic function of the unit interval  $\left[ 0,1\right) $
+\begin{equation}
+N_{1}\left(s\right)=
+\begin{cases}
+1 & \text{if $ 0\le s<1$}, \\
+0 & \mathrm{elsewhere}
+\end{cases}
+\end{equation}
+In order to compute the  integrals (\ref{eq:ConstructionIntegral1}) and (\ref{eq:ConstructionIntegral2}) we need to be able to calculate the convolution and inner product of B-spline scaling functions. Equation (\ref{SplineConvolutionIntegral}) can be rewritten as $(m-1)$ times convolution of indicator function with itself 
+\begin{equation}
+ N_{m}\left(s\right)=\underbrace{\left(N_{1}\ast N_{1}\ast \cdots \ast N_{1}\right)}_{m-1\quad \text{convolutions}}\left(s\right)
+\end{equation}
+then by using the associativity property of the convolution operator, it is clear that
+\setlength{\arraycolsep}{0.0em}
+\begin{eqnarray}
+N_{m}\left(s\right) \ast N_{m'}\left(s\right)&=&\underbrace{\overbrace{\left(N_{1} \ast \cdots \ast N_{1}\right)}^{m-1 \quad \text{convolutions}}\left(s\right) \ast \overbrace{\left(N_{1} \ast \cdots \ast N_{1}\right)}^{m'-1\quad \text{convolutions}}}_{m+m'-1 \quad \text{convolutions}}\left(s\right)\nonumber\\
+&=&N_{m+m'}\left(s\right)
+\label{eq:BsplineConvolution}
+\end{eqnarray}
+\setlength{\arraycolsep}{5pt}
+This result can be used to show that (Lemma \ref{lemma:InProduct}, Appendix)
+\setlength{\arraycolsep}{0.0em}
+\begin{eqnarray}
+ \left\langle N_{m}\left(s-l_{1}\right), N_{m'}\left(s-l_{2}\right)\right\rangle&=&N_{m+m'}\left(m+l_{1}-l_{2}\right)\nonumber \\
+&=&N_{m+m'}\left(m'+l_{2}-l_{1}\right)
+\label{eq:BsplineInnerProduct}
+\end{eqnarray}
+\setlength{\arraycolsep}{5pt}
+where $\left\langle  .,.\right\rangle $ denotes the inner product.
+
+
+The $m$th order compactly supported B-spline wavelet function is defined as \cite{Chui1992} 
+\begin{equation}
+ \varphi_{m}\left(s\right)=\sum_{n=0}^{3m-2} q_n N_{m}\left(2s-n\right)
+\end{equation}
+with the coefficients given by:\\ 
+\begin{equation}
+ q_n= \frac{\left(-1\right)^n}{2^{m-1}} \sum_{l=0}^{m} \binom{m}{l} N_{2m}\left(n-l+1\right) \quad \text{ $0\le n\le 3m-2$}
+\end{equation}
+
+
+By exploiting properties (\ref{eq:BsplineConvolution}) and (\ref{eq:BsplineInnerProduct}) the  integrals (\ref{eq:ConstructionIntegral1}) and (\ref{eq:ConstructionIntegral2}) can be computed. In order to calculate elements of $\boldsymbol\Lambda_{x}$ and $\boldsymbol\Lambda_{\theta}$, scaling and wavelet basis functions should be expanded  in terms of $N_m$ at the appropriate scale. It is important to note that B-spline scaling and wavelet functions possess the following orthogonality properties \cite{Unser1993}: 
+\begin{equation}
+ \left\langle \psi_{m;j_1,l_1}(s),\psi_{m;j_2,l_2}(s)\right\rangle =0  \quad for \quad j_1\neq j_2
+\label{PsiPsiOrthogonality}
+\end{equation}
+\begin{equation}
+ \left\langle \phi_{m;j_1,l_1}(s),\psi_{m;j_2,l_2}(s)\right\rangle =0  \quad for \quad j_1\leq j_2
+\label{PhiPsiOrthogonality}
+\end{equation}
+Where the subscript $m$ is introduced to $\phi_{j,l}(s)$ and $\psi_{j,l}(s) $ to indicate the $m$th order B-spline scaling and wavelet functions. In the two dimensional case, the convolution integral can be factorised as follows, e.g. 
+\setlength{\arraycolsep}{0.14em}
+\begin{IEEEeqnarray}{!l l }
+ \phi_{m;j,\mathbf{l}}\left(s_{1},s_{2}\right)\ast \psi^{1}_{m;j,\mathbf{l'}}\left(s_{1},s_{2}\right)&=\left[\phi_{m;j,l_1}\left(s_{1}\right)\ast\phi_{m;j,l'_1}\left(s_{1}\right)\right] \nonumber \\
+&\times \left[ \phi_{m;j,l_2}\left(s_{2}\right) \ast \psi_{m;j,l'_2}\left(s_{2}\right)\right] \nonumber \\
+&
+\end{IEEEeqnarray}
+\setlength{\arraycolsep}{5pt}
+The preceding factorisation can be also applied to the 2D-inner product integral. Non-zero quantities can  be then expressed by
+\setlength{\arraycolsep}{0.14em}
+\begin{IEEEeqnarray}{!l l }
+\left\langle \phi_{m;j,\mathbf{l}}\left(s_{1},s_{2}\right),\phi_{m;j,\mathbf{l'}}\left(s_{1},s_{2}\right)\right\rangle &=\left\langle \phi_{m;j,l_1}\left(s_{1}\right),\phi_{m;j,l'_1}\left(s_{1}\right)\right\rangle \nonumber \\
+& \times\left\langle \phi_{m;j,l_2}\left(s_{2}\right) , \phi_{m;j,l'_2}\left(s_{2}\right)\right\rangle \nonumber \\
+&
+\end{IEEEeqnarray}
+\setlength{\arraycolsep}{5pt}
+likewise we can compute 
+$\left\langle  \psi^{1}_{m;j,\mathbf{l}}\left(s_{1},s_{2}\right),\psi^{1}_{m;j,\mathbf{l'}}\left(s_{1},s_{2}\right)\right\rangle$
+, \\
+$\left\langle  \psi^{2}_{m;j,\mathbf{l}}\left(s_{1},s_{2}\right),\psi^{2}_{m;j,\mathbf{l'}}\left(s_{1},s_{2}\right)\right\rangle$ and \\
+$
+\left\langle \psi^{3}_{m;j,\mathbf{l}}\left(s_{1},s_{2}\right), \psi^{3}_{m;j,\mathbf{l'}}\left(s_{1},s_{2}\right)\right\rangle $. \\ \\
+Using these expansions it becomes straightforward to calculate the integrals (\ref{eq:ConstructionIntegral1}) and (\ref{eq:ConstructionIntegral2}). In this work, 4th order cardinal B-spline scaling and wavelet functions are used therefore, to compute the integrals (\ref{eq:ConstructionIntegral1}) and (\ref{eq:ConstructionIntegral2})  the $8$th and $12$th order B-spline values at integer points are  required and can be found in \cite{Goswami1999}.
+\section{Estimation of the Multiresolution Spatio-temporal IDE Model}
+A state-space representation of the IDE model allows the use of the Expectation Maximisation (EM) algorithm to infer both the kernel and the spatial field from the noise corrupted spatio-temporal data. In this context, the EM algorithm is a two part iterative algorithm that yields the maximum likelihood estimate of the spatial mixing kernel parameters and the posterior distribution of the field weights. In the M-step a lower bound $\mathcal{Q}\left(\boldsymbol\theta,\boldsymbol\theta'\right)$ of the complete-data log-likelihood  $p\left(\mathbf{X},\mathbf{Y} \mid \boldsymbol\theta \right)$, is maximised under the assumption of the system parameters being $\boldsymbol\theta'$ \cite{Gibsona2005}. This can be achieved for the state-space representation of the IDE model via Theorem 2 of \cite{Dewar2009} under very mild conditions.
+
+
+In the E-step, given an estimate of $\boldsymbol\theta$, the Rauch Tung Striebel (RTS) smoother can be employed to determine the posterior state sequence. It can be shown that \cite{Dempster1977,Gibsona2005} every EM iteration increases the lower bound on the likelihood function and hence improving the state and parameter estimates. The stopping criterion is usually associated  with  either the change in the parameter estimates or the log-likelihood variation \cite{McLachlan1997}. The stopping rule adopted herein is
+\begin{equation}
+\left(\parallel \mathbf{A} \parallel_{F}^{(i)}-\parallel \mathbf{A} \parallel_{F}^{(i-1)}\right)<\varepsilon 
+\end{equation}
+where $\varepsilon$ is a threshold value and $\parallel \mathbf{A} \parallel_{F}^{(i)}$ and $ \parallel \mathbf{A} \parallel_{F}^{(i-1)}$ are the Frobenius norm  of the successive estimates of $\mathbf{A} $ matrices. It has been shown \cite{Dewar2009} that the state dimension is a critical factor in the complexity of the estimation procedure, however using the above decomposition, this is decoupled from the number of observation locations.
+% The complexity of this algorithm is $O\left(n_{x}^2n_{\theta}^2\right)+O \left(Tn_{x}^{3}\right)+O\left(Tn_{y}^3\right) $ showing that
+\section{Simulation}
+This section demonstrates the identification of the proposed IDE model. Primarily, the MRA of a synthetic model is demonstrated, which is able to represent the system at different spatial scales. In addition, the complexity of the field decomposition is shown to be independent to the number and spatial regularity of the observation locations. This allows the construction of parsimonious models using spatially dense observations, and demonstrates the utility of the approach to situations where the observations are not arranged on a regular lattice, i.e. sensor networks \cite{Sahu2008}.
+\subsection{One dimensional example}
+ Consider the following homogeneous multiscale spatial mixing kernel 
+\setlength{\arraycolsep}{0.0em}
+\begin{eqnarray}
+k\left(s-r\right)&=& -\phi_{4;0,-3}\left(s-r\right)+\phi_{4;0,-2}\left(s-r\right)\nonumber\\
+&&{-}\:0.5\psi_{4;1,-6}\left(s-r\right)+0.5\psi_{4;1,-3}\left(s-r\right)
+\label{eq:1DSimulationKernel}
+\end{eqnarray}
+\setlength{\arraycolsep}{5pt}
+The kernel and its decomposition are plotted in  \figurename{\ref{fig:SpatialMixingKernel}}. The dynamics associated with the IDE defined by (\ref{eq:1DSimulationKernel}) will be oscillatory and dissipative to initial conditions. The field is decomposed using scaling functions $\phi_{4;0,k} $ and the associated wavelet functions $\psi_{4;j,k} $ with $j=0,1$. Observations are then generated from (\ref{eq:ConstructionIntegral1}-\ref{eq:Pi}) for spatial domain defined as $\mathcal{S}=\left[0,10 \right] $ in response to an initial condition where $\boldsymbol\Sigma_v=0.2 \times \mathbf{I}_{n_y}$ and $ \eta(s-r)=2.5\times\phi_{4,3,-2}(s-r)$. The response was sampled at 50 irregularly spaced random locations, at $t=1, \cdots 400 $.
+\begin{figure}[!h] 
+\centering
+\includegraphics[width=0.5\textwidth]{./Graph_ireg/KernelWithKerneldecomposition.pdf}
+\caption{Multiresolution decomposition of a complex spatial mixing kernel (dark line) and the corresponding scaling and wavelet basis functions (light lines).}
+\label{fig:SpatialMixingKernel}
+\end{figure} 
+\begin{figure}[!h] 
+\centering
+\includegraphics[width=0.5\textwidth]{./Graph_ireg/irKernelEstimateCoaeseDetail.pdf}
+\caption{Spatial mixing kernel; estimated and true kernels are shown by solid and dashed line respectively; top panel is estimation with maximmum scale $j=0$ and bottom panel is estimation with maximum scale $j=1$. }
+\label{fig:SpatialMixingKernelEstimate}
+\end{figure}
+\begin{figure*}[!hb] 
+\renewcommand*{\thesubfigure}{}
+\subfigure[][]{\includegraphics[width=2.3in]{./Graph_ireg/irFieldat5.pdf}}
+\subfigure[][]{\includegraphics[width=2.3in]{./Graph_ireg/irFieldat10.pdf}}
+\subfigure[][]{\includegraphics[width=2.3in]{./Graph_ireg/irFieldat50.pdf}}\\ 
+\subfigure[][]{\includegraphics[width=2.3in]{./Graph_ireg/irFieldat100.pdf}}
+\subfigure[][]{\includegraphics[width=2.3in]{./Graph_ireg/irFieldat200.pdf}} 
+\subfigure[][]{\includegraphics[width=2.3in]{./Graph_ireg/irFieldat300.pdf}}
+\caption{Spatial field at a number of time instants; estimated and true fields are shown by solid and dashed line respectively; the top panel of each plot is the estimate with maximmum scale $j=0$ and the bottom panel is the estimate with maximum scale $j=1$.}
+\label{fig:1DFieldEstimation}
+\end{figure*}
+In order to estimate the spatial mixing kernel and the spatio-temporal field, the  kernel and the field are decomposed using
+\begin{equation}
+ k\left(s-r\right)=\sum_{l \in \mathbb{Z}}\alpha_{0,l}\phi_{4;0,l}\left(s-r\right)+\sum_{j=0}^{1} \sum_{l \in \mathbb{Z}}\beta_{j,l}\psi_{4;j,l}\left(s-r\right)
+\label{1DKernelDecompositionForSimulation}
+\end{equation}
+\begin{equation}
+ z_t\left(s\right)=\sum_{l \in \mathbb{Z}}x_{t,0,l}\phi_{4;0,l}\left(s\right)+\sum_{j=0}^{1} \sum_{l \in \mathbb{Z}} \check{x}_{t,j,l}\psi_{4;j,l}\left(s\right)
+\label{1DFieldDecompositionForSimulation}
+\end{equation}
+Note that the number of translation operations depends on the spatial range of the data. It follows that the total number of terms in (\ref{1DKernelDecompositionForSimulation}) and (\ref{1DFieldDecompositionForSimulation}) are 8 and 47 respectively. The estimated kernel in \figurename{\ref{fig:SpatialMixingKernelEstimate} } is obtained for the cubic B-spline, with initial scale 0 and maximum scale 1. The EM algorithm is allowed to run for 30 iterations to avoid any issues regarding early stopping, though typically the change in $\parallel \mathbf{A} \parallel_{F}$ falls below $10^{-4} $ after less than 15 iterations. A total number of 500 estimation experiments are performed, where $v_t$ and $w_t$ are re-generated each trial.
+
+
+ The performance measure employed here is the Mean Integrated Squared Error (MISE) defined as
+\begin{equation}
+ \mathbf{E}\left[\int_{\mathcal{S}}\left[e\left(s\right) \right]^2ds  \right]
+\label{MISE} 
+\end{equation}
+ where  $e\left(s\right)$ is the error between the unknown function, $f\left( s\right) $ and its estimate, $\hat{f}\left( s\right) $. In this example the original kernel and the field are known and hence the integral in  (\ref{MISE}) can be computed analytically. For spatial mixing kernel we have
+\begin{eqnarray}
+ \lefteqn{\int_{\mathcal{S}}\left[e\left(s\right)\right]^2ds}\nonumber \\  &=\left(\boldsymbol{\theta}-\hat{\boldsymbol{\theta}}\right)^\top\left[ \int_{\mathcal{S}}\boldsymbol\lambda\left(s-r\right)\boldsymbol\lambda\left(s-r\right)^\top ds\right] \left(\boldsymbol{\theta}-\hat{\boldsymbol{\theta}}\right)&
+\label{MISEKernel}
+\end{eqnarray}
+  Here, we are particularly interested in assessing the performance improvement as the scale of the details in MRA is increased. Performance based on (\ref{MISEKernel}) at different spatial scales and over 500 trials have been evaluated. The MISE of the model at $j=0$ is 0.024 and reduces to 0.005 when $\psi_{4;1,k}$ terms are also included in the model, in fact estimation performance is improved by a factor of 4.8. The coarsest approximation of the kernel along with its approximation at $j=1$ are illustrated in \figurename{\ref{fig:SpatialMixingKernelEstimate}. It can be seen that the model is able to estimate both slowly and rapidly varying segments of the  kernel with very high accuracy.  Field estimates  at a selection of time instants are shown in \figurename{\ref{fig:1DFieldEstimation}}. It is clearly observed that the coarse and fine features of the original field have been captured accurately over regions where observations are available. Observation locations are generated randomly, as shown in \figurename{\ref{fig:FieldVariance}. Assuming the observed field can be fully described by the  decomposed IDE model, the variance of the field can be computed to express the  uncertainty of the estimation, at each point in space and at time $t$ we have 
+\begin{equation}
+ \text{Var}(\hat z_t(s_i))=\boldsymbol\mu^{\top}(s_i) \mathbf P_{t|T}\boldsymbol\mu(s_i)
+\label{eq:FieldVariance}
+\end{equation}
+where $\mathbf P_{t|T} $ is the covariance matrix associated with the  state estimates obtained from the RTS smoother. Variance based on (\ref{eq:FieldVariance}) at each spatial location and at $t=50$ is shown in \figurename{\ref{fig:FieldVariance}}. The uncertainty of the estimation is higher at almost  every spatial location at $j=1$ compared to $j=0$. This is to be expected as there are more wavelet basis functions at higher resolution and hence more associated weights need to be estimated. Peaks in the variance of the field coincide with regions where no observations have been made. Increasing the number of observation locations, or using equally spaced observation locations would reduce the variance of the field estimation.
+\begin{figure}[!h] 
+\centering
+\includegraphics[width=0.5\textwidth]{./Graph_ireg/irFieldVariance.pdf}
+\caption{Variance of the field at each spatial location for $j=0$ (dotted line) and $j=1$ (solid line). The observation locations are described with a cross.}
+\label{fig:FieldVariance}
+\end{figure} 
+\subsection{Two dimensional example}
+In order to demonstrate the ability of the developed model in higher dimensions, a two dimensional IDE model with a single B-spline kernel $\phi_{4;0,\mathbf{l}}\left(s_1-r_1,s_2-r_2\right) $ and $\mathbf l=[-2,-2]^ \top$ is used with parameter $\theta=1$. In this example spatial region $\mathcal{S}=[0,4]^2 $ is simulated over $t=\left\lbrace1 \cdots 200  \right\rbrace $ using $7$ scaling and wavelet functions at $j=0$ together with $24$ wavelet functions at $j=1$. Univariate cubic B-spline scaling and wavelet functions are used to generate 2-D basis functions using (\ref{eq:2Dscalingfunction}-\ref{eq:2Dwavelet_3}). A set of $250$ random  observation locations is used; $\mathbf{\Sigma}_v$ is taken the same as that in example 1 and $ \eta\left(s_1-r_1,s_2-r_2\right) =2.5\times\phi_{4,3,\mathbf{l}}\left(s_1-r_1,s_2-r_2\right)$ where $\mathbf l=[-2,-2]^ \top$. The histogram of the parameter estimates  in \figurename{\ref{fig:2DHist} is generated using 500 runs of the EM algorithm. For comparison, snapshots for the original and the corresponding coarse and fine field estimates at time instants 5, 50 and 150 are illustrated in \figurename{\ref{fig:2DFieldEstimation1}-\ref{fig:2DFieldEstimation3}}. In addition, the MISE of the dynamic field at some time instants are presented in Table \ref{table:ValidationResultField}.  This shows that the multiresolution IDE model can estimate the spatio-temporal dynamics of the original system accurately. The accuracy of the estimation remains consistent over time. Performance is improved significantly at $j=1$ compared to the case where $j=0$.
+\begin{figure}[!t] 
+\centering
+\includegraphics[width=0.5\textwidth]{./Graph_ireg/ir2Dhistogram500itr.pdf}
+\caption{Distribution of the parameter estimate for 2-D Example over 500 runs of the EM algorithm. The dotted line indicates the true parameter.}
+\label{fig:2DHist}
+\end{figure}
+\begin{table}[!h]
+\renewcommand{\arraystretch}{1.3}
+\caption {MISE  at particular scale between measured and estimated 2D-field  at a particular time}
+\label{table:ValidationResultField}
+\centering
+\begin{tabular}{cccc}
+\hline \hline
+\multicolumn{2}{r}{Time}&\multicolumn{2}{c}{MISE} \\
+\cline{3-4}
+&&$j=0$&$j=1$ \\ 
+\hline 
+&$5$ &$5.424$&$0.609$ \\
+&$20$ &$5.422$&$0.596$ \\
+&$50$ &$5.519$&$0.626$ \\
+&$100$ &$5.488$&$0.611$ \\
+&$150$ &$5.494$&$0.587$ \\
+\hline \hline
+\end{tabular}
+\end {table}
+\begin{figure*}[!th] 
+\subfigure[][]{\includegraphics[width=2.3in]{./Graph_ireg/irGray2DTrueFieldat5.pdf}}
+\subfigure[][]{\includegraphics[width=2.3in]{./Graph_ireg/irGray2DCoaeseEstimatedFieldat5.pdf}}
+\subfigure[][]{\includegraphics[width=2.3in]{./Graph_ireg/irGray2DEstimatedFieldat5.pdf}}\\ 
+\caption{Spatial field at t=5; a: True field; b: Estimated field with maximmum scale $j=0$; c: Estimated field with maximmum scale $j=1$.}
+\label{fig:2DFieldEstimation1}
+\subfigure[][]{\includegraphics[width=2.3in]{./Graph_ireg/irGray2DTrueFieldat50.pdf}}
+\subfigure[][]{\includegraphics[width=2.3in]{./Graph_ireg/irGray2DCoaeseEstimatedFieldat50}} 
+\subfigure[][]{\includegraphics[width=2.3in]{./Graph_ireg/irGray2DEstimatedFieldat50.pdf}}\\
+\caption{Spatial field at t=50; a: True field; b: Estimated field with maximmum scale $j=0$; c: Estimated field with maximmum scale $j=1$.}
+\label{fig:2DFieldEstimation2}
+\subfigure[][]{\includegraphics[width=2.3in]{./Graph_ireg/irGray2DTrueFieldat150.pdf}}
+\subfigure[][]{\includegraphics[width=2.3in]{./Graph_ireg/irGray2DCoaeseEstimatedFieldat150.pdf}} 
+\subfigure[][]{\includegraphics[width=2.3in]{./Graph_ireg/irGray2DEstimatedFieldat150.pdf}}
+\caption{Spatial field at t=150; a: True field; b: Estimated field with maximmum scale $j=0$; c: Estimated field with maximmum scale $j=1$.}
+\label{fig:2DFieldEstimation3}
+\end{figure*}
+\section{Conclusion}
+A multi-resolution approach to modelling spatio-temporal systems has been presented. This model is able to represent continuous-space, discrete-time dynamics at a number of spatial scales simultaneously. This ability greatly extends the class of system which the Integro-Difference Equation can represent.
+
+
+By decomposing both the spatial field and the spatial mixing kernel using a wavelet decomposition, it becomes possible to represent small scale details in the field at the same time as large scale details. This is an essential component of any practical spatio-temporal model, without which the model must be artificially separated into global and local modes a-priori.
+
+
+The complexity of the model is not affected by the spatial resolution of the observation process, rather it reflects the underlying complexity of the system under study. Therefore, increasing the resolution at which the system is observed does not necessarily increase the complexity of the system identification problem. However the developed algorithm is sensitive to the state dimension, equivalent to the detail represented in the field, and hence intelligent approaches to reduce the number of basis functions is noted as future work. 
+
+By considering different levels of decomposition, the proposed approach could be used as a method of determining the appropriate scales of decomposition, within a model-selection framework. Combined with an approach to sparsely modelling spatial heterogeneity, such as boundary conditions, this would allow the application of this work to a real-world data set.
+% if have a single appendix:
+%\appendix[Proof of the Zonklar Equations]
+% or
+\appendix  % for no appendix heading
+% do not use \section anymore after \appendix, only \section*
+% is possibly needed
+% use appendices with more than one appendix
+% then use \section to start each appendix
+% you must declare a \section before using any
+% \subsection or using \label (\appendices by itself
+% starts a section numbered zero.)
+%
+\newtheorem{lemma}{Lemma}
+\begin{lemma}
+Consider the zero-mean process $e_t\left(s\right)$ with covariance as defined by (\ref{eq:FieldCovariance}) then
+\begin{equation}
+ \mathbf{w}_t=\mathbf{\Lambda}_{x}^{-1}\int_{\mathcal{S}}\boldsymbol\mu \left(\mathbf{s}\right)e_t\left(\mathbf{s}\right)d\mathbf{s}
+\label{eq:AppendixWt}
+\end{equation}
+is a vector valued, zero mean normally distributed white noise process with covariance
+\begin{equation}
+\boldsymbol\Sigma_w =\mathbf{\Lambda}_{x}^{-1}\boldsymbol\Pi\mathbf{\Lambda}_{x}^{- \top}
+\end{equation}
+and
+\begin{equation}
+ \boldsymbol\Pi=\iint\limits_{\mathcal{S}}\boldsymbol\mu\left(\mathbf s\right)\eta\left(\mathbf s-\mathbf r\right)\boldsymbol\mu\left(\mathbf r\right)^\top d\mathbf{r}d\mathbf{s}
+\end{equation}
+\label{lemma:FieldCovariance}
+\end{lemma}
+\begin{IEEEproof}
+ Equation (\ref{eq:AppendixWt}) is a linear function of $e_t(\mathbf s)$ and hence $\mathbf{w}_t$ is also normally distributed. The expected value of $\mathbf w_t$ is given by 
+\begin{eqnarray}
+ \mathbf E\left[ \mathbf w_t\right]&=& \mathbf{\Lambda}_{x}^{-1}\int_{\mathcal{S}}\boldsymbol\mu \left(\mathbf{s}\right)\mathbf E\left[e_t\left(\mathbf{s}\right)\right] d\mathbf{s} \nonumber \\
+&=&0
+\end{eqnarray}
+and 
+\begin{eqnarray}
+\mathbf \Sigma_w&{}={}&\mathbf E[ \mathbf w_t \mathbf w_{t}^{\top}]\nonumber\\
+&=& \mathbf{\Lambda}_{x}^{-1}\mathbf E[\int_{\mathcal{S}}\boldsymbol\mu\left(\mathbf s\right)e_t\left(\mathbf s\right)d\mathbf s\int_{\mathcal{S}}\boldsymbol\mu\left(\mathbf r\right)^{\top}e_t\left(\mathbf r\right)d\mathbf r]\mathbf{\Lambda}_{x}^{- \top} \nonumber \\
+&=&\mathbf{\Lambda}_{x}^{-1}\iint\limits_{\mathcal{S}}\boldsymbol\mu\left(\mathbf s\right) \mathbf E[e_t\left(\mathbf s\right)e_t\left(\mathbf r\right)]\boldsymbol\mu\left(\mathbf r\right)^{\top}d\mathbf r d\mathbf s\mathbf{\Lambda}_{x}^{- \top} \nonumber\\
+&=&{}\mathbf{\Lambda}_{x}^{-1}\iint\limits_{\mathcal{S}}\boldsymbol\mu\left(\mathbf s\right) \eta\left(\mathbf s- \mathbf r \right)\boldsymbol\mu\left(\mathbf r\right)^{\top}d\mathbf r d\mathbf s\mathbf{\Lambda}_{x}^{- \top} \nonumber\\
+&=&\mathbf{\Lambda}_{x}^{-1}\boldsymbol\Pi\mathbf{\Lambda}_{x}^{- \top}
+\end{eqnarray}
+\setlength{\arraycolsep}{5pt}
+\end{IEEEproof}
+\begin{lemma}
+Let $N_m\left(s-l_1\right)$ and $N_{m'}\left(s-l_2\right)$ be shifted cardinal B-spline functions of order $m$ and $m'$ respectively. Then the inner product of  $N_m\left(s-l_1\right)$  and $N_{m'}\left(s-l_2\right)$ can be calculated by 
+\setlength{\arraycolsep}{0.0em}
+\begin{eqnarray}
+\left\langle N_{m}\left(s-l_{1}\right), N_{m'}\left(s-l_{2}\right)\right\rangle&=&N_{m+m'}\left(m+l_{1}-l_{2}\right) \nonumber \\
+&=&N_{m+m'}\left(m'+l_{2}-l_{1}\right) 
+\end{eqnarray}
+\setlength{\arraycolsep}{5pt}
+\label{lemma:InProduct}
+\end{lemma}
+\begin{IEEEproof}
+The support of $N_m\left(s\right)$ is $\left[ 0,m\right]$ and  is symmetric with respect to $s=\frac{m}{2}$, i.e.
+\begin{equation}
+ N_{m}\left(\frac{m}{2}+s\right)=N_{m}\left(\frac{m}{2}-s\right)
+\label{SymmetrySplieEq}
+\end{equation}
+A direct consequence of (\ref{SymmetrySplieEq}) is 
+\begin{equation}
+ N_{m}\left(s\right)=N_{m}\left(m-s\right)
+\end{equation}
+Therefore
+\setlength{\arraycolsep}{0.0em}
+\begin{IEEEeqnarray}{l}
+\int_{-\infty}^{+\infty}N_{m}\left(s-l_{1}\right)N_{m'}\left(s-l_{2}\right)ds \nonumber \\
+\qquad=\int_{-\infty}^{+\infty}N_{m}\left(m-s+l_{1}\right)N_{m'}\left(s-l_{2}\right)ds \nonumber \\
+\qquad=\int_{-\infty}^{+\infty}N_{m}\left(m+l_{1}-l_{2}-u\right)N_{m'}\left(u\right)du \nonumber \\
+\qquad=\left(N_m \ast N_m'\right) \left(m+l_{1}-l_{2}\right) \nonumber \\
+\qquad=N_{m+m'}\left(m+l_{1}-l_{2}\right) \nonumber \\
+\qquad=N_{m+m'}\left(m'+l_{2}-l_{1}\right) \nonumber
+\end{IEEEeqnarray}
+\setlength{\arraycolsep}{5pt}
+\end{IEEEproof}
+
+
+
+%\appendices
+%\section{Proof of the First Zonklar Equation}
+%Appendix one text goes here.
+
+% you can choose not to have a title for an appendix
+% if you want by leaving the argument blank
+%\section{}
+%Appendix two text goes here.
+
+
+% use section* for acknowledgement
+%\section*{Acknowledgment}
+
+% Can use something like this to put references on a page
+% by themselves when using endfloat and the captionsoff option.
+\ifCLASSOPTIONcaptionsoff
+  \newpage
+\fi
+
+
+
+% trigger a \newpage just before the given reference
+% number - used to balance the columns on the last page
+% adjust value as needed - may need to be readjusted if
+% the document is modified later
+%\IEEEtriggeratref{8}
+% The "triggered" command can be changed if desired:
+%\IEEEtriggercmd{\enlargethispage{-5in}}
+
+% references section
+
+% can use a bibliography generated by BibTeX as a .bbl file
+% BibTeX documentation can be easily obtained at:
+% http://www.ctan.org/tex-archive/biblio/bibtex/contrib/doc/
+% The IEEEtran BibTeX style support page is at:
+% http://www.michaelshell.org/tex/ieeetran/bibtex/
+ \newpage
+\bibliographystyle{IEEEtran}
+% argument is your BibTeX string definitions and bibliography database(s)
+\bibliography{IEEEabrv,../../../Papers/SpatioTemporalSystems,../../Papers/Wavelet}
+
+% <OR> manually copy in the resultant .bbl file
+% set second argument of \begin to the number of references
+% (used to reserve space for the reference number labels box)
+
+% \begin{thebibliography}{1}
+% 
+% \bibitem{IEEEhowto:kopka}
+% H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
+%   0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
+% 
+% \end{thebibliography}
+
+% biography section
+% 
+% If you have an EPS/PDF photo (graphicx package needed) extra braces are
+% needed around the contents of the optional argument to biography to prevent
+% the LaTeX parser from getting confused when it sees the complicated
+% \includegraphics command within an optional argument. (You could create
+% your own custom macro containing the \includegraphics command to make things
+% simpler here.)
+%\begin{biography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{mshell}}]{Michael Shell}
+% or if you just want to reserve a space for a photo:
+% \begin{IEEEbiography}{Parham Aram}
+% 
+%  
+% \end{IEEEbiography}
+% 
+% \begin{IEEEbiography}{Visakan Kadirkamanathan}
+% % Biography text here.
+% (M’90) received the
+% B.A. and Ph.D. degrees in electrical and information
+% engineering from the University of Cambridge, U.K.
+% He held Research Associate positions at the University
+% of Surrey, U.K., and the University of Cambridge,
+% U.K., before joining the Department of Automatic
+% Control and Systems Engineering, The University
+% of Sheffield, U.K., as a Lecturer in 1993, where
+% he is currently a Professor of Signal and Information
+% Processing and is affiliated to the Centre for Signal
+% Processing and Complex Systems. His research interests
+% include nonlinear signal processing, system identification, intelligent control
+% and fault diagnosis with applications in systems biology, aerospace systems,
+% and wireless communication. He has coauthored a book on intelligent control
+% and has published more than 120 papers in refereed journals and proceedings of
+% international conferences.
+% Prof. Kadirkamanathan is the Co-Editor of the International Journal of Systems
+% Science and has served as an Associate Editor for the IEEE TRANSACTIONS
+% ON NEURAL NETWORKS and the IEEE TRANSACTIONS ON SYSTEMS, MAN, AND
+% CYBERNETICS, PART B.
+%  \end{IEEEbiography}
+% \begin{IEEEbiography}{Michael Dewar}
+%  received the M.Eng. degree in
+% control systems engineering and the Ph.D. degree
+% in systems engineering both from The University of
+% Sheffield, U.K., in 2002 and 2007, respectively.
+%  He is currently working as
+% a Research Associate in the Institute for Adaptive
+% and Neural Computation, School of Informatics,
+% The University of Edinburgh, U.K. 
+% \end{IEEEbiography}
+
+% if you will not have a photo at all:
+% \begin{IEEEbiographynophoto}{John Doe}
+% Biography text here.
+% \end{IEEEbiographynophoto}
+
+% insert where needed to balance the two columns on the last page with
+% biographies
+%\newpage
+
+% \begin{IEEEbiographynophoto}{Jane Doe}
+% Biography text here.
+% \end{IEEEbiographynophoto}
+
+% You can push biographies down or up by placing
+% a \vfill before or after them. The appropriate
+% use of \vfill depends on what kind of text is
+% on the last page and whether or not the columns
+% are being equalized.
+
+%\vfill
+
+% Can be used to pull up biographies so that the bottom of the last one
+% is flush with the other column.
+%\enlargethispage{-5in}
+
+
+
+% that's all folks
+\end{document}
+
+
