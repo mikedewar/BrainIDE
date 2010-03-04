@@ -44,7 +44,7 @@ sigma3 = 15;
 
 theta1 = 1.00;                                           % amplitudes of connectivity kernels 
 theta2 = -0.9;                                                                                        % Schiff, -1.38
-theta3 = 0.045;
+theta3 = 0.00;
 
 if UseBasisFunctions
     theta = 0.001*[theta1 ; theta2; theta3];               % scaled for basis functions
@@ -67,7 +67,7 @@ field_basis_separation = 2;                             % distance wrt masses, m
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~
 Fs = 1e3;                                               % sampling rate, s^-1
 Ts = 1/Fs;                                              % sampling period, seconds
-t_end = .1;                                              % seconds
+t_end = 1000;                                              % seconds
 NSamples = t_end*Fs;
 time = linspace(0,t_end,NSamples);
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -127,7 +127,7 @@ end
 % Disturbance properties
 % ~~~~~~~~~~~~~~~~~~~~~~
 DisturbanceMean = 0*ones(N_field_basis_function,1);
-SigmaDisturbance = 8000*eye(N_field_basis_function,N_field_basis_function);           % no basis decomposition
+SigmaDisturbance = 8000;           % no basis decomposition
 if UseBasisFunctions
     R = chol(Gamma^-1);               % use cholesky decomp
     DisturbanceCovariance = R*SigmaDisturbance*R';
