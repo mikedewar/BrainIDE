@@ -682,23 +682,23 @@ using the method of Least Square $ \mathbf W$ can be estimated
  \mathbf W\approx(\mathbf X^\top\mathbf X)^{-1}\mathbf X^\top\mathbf Z
 \end{equation}
 % use section* for acknowledgement
-\section{From (5) to (8)}
+\sectian{clarification for the derivation} 
 I ignore noise here. From equation (\ref{SpikesToPotential}) we can say $h$ is the foundamental solution to the equation
 \begin{equation}
- LV(r,t)=g(r,t)
+ Lv(r,t)=g(r,t)
 \label{eq:LV}
 \end{equation}
 where $L$ is a temporal differential operator, since $h(t)$ is the foundamental solution to (\ref{eq:LV}) it can be written as a Green's function
 \begin{equation}
  Lh(t)=\delta(t)
 \end{equation}
-where $L=\alpha+\frac{d}{dt}$ therefore equation (\ref{eq:LV}) becomes:
+where $L=1+\tau\frac{d}{dt}$ therefore equation (\ref{eq:LV}) becomes:
 \begin{equation}
-\frac{dv(r,t)}{dt}+\alpha v(r,t)=g(r,t)
+\tau\frac{dv(r,t)}{dt}+ v(r,t)=g(r,t)
 \end{equation}
 substituting (\ref{RateBasedInteractions}) for $g(r,t)$ gives
 \begin{equation}
-\frac{dv\left( {r,t} \right)}{dt} + \alpha v\left( r,t \right) = \int_\Omega  {w\left( r,r' \right)f\left( {v\left( r',\bar t \right)} \right)dr'} 
+\frac{dv\left( {r,t} \right)}{dt} + \frac{1}{\tau} v\left( r,t \right) = \frac{1}{\tau}\int_\Omega  {w\left( r,r' \right)f\left( {v\left( r',\bar t \right)} \right)dr'} 
 \end{equation}
 
 
