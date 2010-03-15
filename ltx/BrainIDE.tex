@@ -119,48 +119,44 @@ To arrive at the final form of the model we shall state the synaptic response ke
 \begin{equation}\label{GreensFuncDef}
 Lh\left( t \right) = \delta \left( t \right),
 \end{equation}
-where $L$ is a temporal differential operator and $\delta(t)$ is the Dirac-delta function. This provides the most general form
-\begin{equation}\label{GenForm}
-L\left( \frac{\partial }{dt} \right)v\left( {r,t} \right) = \int_\Omega  {w\left( {r,r'} \right)f\left( {v\left( {r',\bar t} \right)} \right)dr'}  + de\left( r,t \right),
-\end{equation}
-where $L$ is a polynomial of order $n$ with constant coefficients that provides an $n^{th}$ order model. Most studies considering this model use first or second order time derivatives. We shall use the first order model giving
+where $L=\frac{d}{dt} + \alpha$ is a temporal differential operator and $\delta(t)$ is the Dirac-delta function. This provides the most general form
 \begin{equation}\label{FinalForm1}
-dv\left( {r,t} \right) + \alpha v\left( r,t \right)dt = \alpha\int_\Omega  {w\left( r,r' \right)f\left( {v\left( r',\bar t \right)} \right)dr'dt}  +de\left( r,t \right).
+dv\left( {r,t} \right) + \alpha v\left( r,t \right)dt = \int_\Omega  {w\left( r,r' \right)f\left( {v\left( r',\bar t \right)} \right)dr'dt}  +de\left( r,t \right).
 \end{equation}
 
 \section{Discrete Time and Space Model}
 We begin the derivation of the state-space model with the continuous time, continuous space IDE neural field model. 
 Spatio-temporal interactions can be described by the continuous space continuous time stochastic differential equation
 \begin{equation}\label{differential eq}	
-dv\left( r,t \right) = \alpha \left( -v\left( r,t \right) + \int_\Omega  {w\left( r,r' \right)f\left( {v\left( r',t \right)} \right)dr'} \right) dt  + d e\left( r,t \right).
+dv\left( r,t \right) =  \left( -\alpha v\left( r,t \right) + \int_\Omega  {w\left( r,r' \right)f\left( {v\left( r',t \right)} \right)dr'} \right) dt  + d e\left( r,t \right).
 \end{equation}
 To simplify the notation, but without loss of generality, \ref{FinalForm1} can be rewritten as
 \begin{equation}\label{differential simplified}
-	dv\left( r,t \right) = \alpha q\left(v(r,t) \right) dt  + d e\left( r,t \right)
+	dv\left( r,t \right) = q\left(v(r,t) \right) dt  + d e\left( r,t \right)
 \end{equation}
 A one-step Euler method was used to approximate the nonlinear stochastic IDE to a discrete time form. 
 \begin{equation}\label{euler}
-	v\left(r,t\right) =  v(r,t_0) + \alpha \int_{t_0}^{t} q\left(v(r,\tau) \right) d\tau  + \int_{t_0}^{t} d e\left(r,\tau\right)
+	v\left(r,t\right) =  v(r,t_0) + \int_{t_0}^{t} q\left(v(r,\tau) \right) d\tau  + \int_{t_0}^{t} d e\left(r,\tau\right)
 \end{equation}
 Using an Euler approximation,~\ref{euler} can be approximated at each sampling time by
 \begin{equation}\label{euler approx 1}
-	v\left(r,t_{k+1} \right) =  v(r,t_k) + \alpha q\left(v(r,t_k)\right) (t_{k+1} - t_k) + (e(r,t_{k+1}) - e(r,t_k))
+	v\left(r,t_{k+1} \right) =  v(r,t_k) + q\left(v(r,t_k)\right) (t_{k+1} - t_k) + (e(r,t_{k+1}) - e(r,t_k))
 \end{equation}
 which can be rewritten as
 \begin{equation}\label{euler approx 2}
-	v\left(r,t_k + \delta \right) =  v(r,t_k) + \delta \alpha q\left(v(r,t_k)\right) + e'(r,t_k)
+	v\left(r,t_k + \delta \right) =  v(r,t_k) + \delta q\left(v(r,t_k)\right) + e'(r,t_k)
 \end{equation}
 where $e'(r,t_k)$ is a zero mean Gaussian random variable with covariance $\delta\Sigma_e$. (Note that, because of the way the noise is defined in \ref{differential eq} it is not $\delta^2$ but $\delta$). Expanding $q\left(v(r,t_k)\right)$ we have
 \begin{equation}\label{discrete time model}
-	v\left(r,t_k + \delta \right) =  v(r,t_k) + \delta \alpha \left( -v\left( r,t_k \right) + \int_\Omega  {w\left( r,r' \right)f\left( {v\left( r',t_k \right)} \right)dr'} \right) + e'(r,t_k)
+	v\left(r,t_k + \delta \right) =  v(r,t_k) + \delta  \left( -\alpha v\left( r,t_k \right) + \int_\Omega  {w\left( r,r' \right)f\left( {v\left( r',t_k \right)} \right)dr'} \right) + e'(r,t_k)
 \end{equation}
 which can be simplified to
 \begin{equation}\label{discrete time model2}
-	v\left(r,t_k + \delta \right) =  (1 - \delta \alpha) v(r,t_k) + \delta \alpha \int_\Omega  {w\left( r,r' \right)f\left( {v\left( r',t_k \right)} \right)dr'} + e'(r,t_k)
+	v\left(r,t_k + \delta \right) =  (1 - \delta \alpha) v(r,t_k) + \delta \int_\Omega  {w\left( r,r' \right)f\left( {v\left( r',t_k \right)} \right)dr'} + e'(r,t_k)
 \end{equation}
 Now we define the spatial aspect of the model on a regular square $i,j$ grid of neural masses, where the spatial step size $\Delta \mathbf{r}_i = \Delta \mathbf{r}_j = \Delta $ giving
 \begin{equation}\label{discrete space}
-	v\left(r_{ij},t_k + \delta \right) =  (1 - \delta \alpha)v(r_{ij},t_k) + \delta \alpha \Delta^2 \sum_{i=-I}^{i=I}{\sum_{j=-J}^{j=J}{\tilde{w}\left( r_{ij},r_{ij}' \right)f\left( v\left( r_{ij}',t_k \right) \right)} }+ e'(r_{i,j},t_k).
+	v\left(r_{ij},t_k + \delta \right) =  (1 - \delta \alpha)v(r_{ij},t_k) + \delta \Delta^2 \sum_{i=-I}^{i=I}{\sum_{j=-J}^{j=J}{\tilde{w}\left( r_{ij},r_{ij}' \right)f\left( v\left( r_{ij}',t_k \right) \right)} }+ e'(r_{i,j},t_k).
 \end{equation}
 where $\tilde{w}(r_{ij},r_{ij}')$ discretized connectivity kernel. In Eq~\ref{discrete space} we have used periodic boundary conditions to alleviate problems associated with edge effects. The connectivity kernel is in the form of a modified Mexican hat, and is described by the sum of three weighted Gaussian functions as
 \begin{equation}
@@ -214,15 +210,18 @@ $\sigma_3$ &  &\\
 
 \section{Reduced Model For Estimation}
 
-In order to implement standard estimation techniques we propose a decomposition of the field using a set of Gaussian basis functions. Decomposition allows a continuous field to be represented by a finite dimensional state vector. This allows for the application of standard nonlinear, non-Gaussian state estimation methods such as sequential Monte-Carlo techniques like particle filtering. The field decomposition is described by
+In order to implement standard estimation techniques we propose a decomposition of the field using a set of Gaussian basis functions. Decomposition allows a continuous field to be represented by a finite dimensional state vector. This allows for the application of standard nonlinear, non-Gaussian state estimation methods such as the unscented Kalman filter. The abbreviate the notation we use the subscript $t$ to index the current time step and $t+1$ for next time step. The field decomposition is described by
 \begin{equation}\label{DefFieldDecomp}
-{v_t}\left( {\bf{r}} \right) = {\phi ^T}\left( {\bf{r}} \right){x_t}.
+v_t\left( \mathbf{r} \right) = \phi ^T\left( \mathbf{r} \right) x_t.
 \end{equation}
-where $\phi(r)$ is the Gaussian basis functions that are scaled by the the state vector. The connectivity kernel can all be decomposed into a set of basis functions
+where $\phi(\mathbf{r})$ is a vector of Gaussian basis functions that are scaled by the state vector. The connectivity kernel can all be decomposed into a set of basis functions
 \begin{equation}\label{DefKernelDecomp}
-k( \mathbf{r} , \mathbf{r'} ) = \theta^T\psi(\mathbf{r} , \mathbf{r'} )
+\tilde{w}( \mathbf{r} , \mathbf{r'} ) = \theta^T\psi(\mathbf{r} , \mathbf{r'} )
 \end{equation}
-Will will assume we know the parametric form of the basis functions, where the parameter $\theta$ is unknown. Each connectivity basis function can be considered a layer in the WC model, representing short range excitation, surround inhibition and long range excitation. Making substitutions we get
+Will will assume we know the parametric form of the basis functions, where the parameter $\theta$ is unknown. Each connectivity basis function can be considered a layer in the WC model, representing short range excitation, surround inhibition and mid-range excitation. Making substitutions of~\ref{DefFieldDecomp} and~\ref{DefKernelDecomp} into~\ref{discrete space} we get
+
+....up to here....
+
 \begin{equation}\label{DecompModel}
 {\phi ^T}\left( \mathbf{r} \right){x_{t+1}} = T_s\theta^T\int_\Omega  {\psi \left( {{\bf{r}} , {\mathbf{r'}}} \right)f\left( {{\phi ^T}\left( {{\mathbf{r'}}} \right){x_t}} \right)d{\mathbf{r'}}}  - \lambda\phi^T(\mathbf{r})x_t + T_s{e_t}\left( {\mathbf{r}} \right).
 \end{equation}
