@@ -73,7 +73,7 @@ Integro-Difference Equation (IDE), Neural Field Model, Cortical Connectivity.
 
 To date, there has been a considerable volume of work in generating physiologically plausible neural field models to fill the void of understanding brain dynamics at the meso/macroscopic scale. Mathematical neural field  models provide insights into the underlying physics and dynamics of electroencephalography (EEG) and magnetoencephalography (MEG) (see~\cite{Deco2008}~\cite{David2003} for recent reviews). These models have demonstrated possible mechanisms for the genesis of neural rhythms (such as the alpha and gamma rhythms) \cite{Liley1999} \cite{RENNIE2000}, epileptic seizure generation \cite{DaSilva2003},~\cite{Suffczynski2004} and~\cite{Wendling2005} and insights into other pathologies~\cite{Moran2008} \cite{Schiff2009} that would be impossible to gain from experimental data alone. Unfortunately, to date the use of these models in the clinic has been limited, since the neural field model are constructed for a general brain dynamics and pathologies almost always have unique underlying patient specific causes. Data from EEG and functional magnetic resonance imaging (fMRI) offers the patient specific link to macro-scale cortical dynamics, making these tools readily applicable to the clinic. However the underlying system properties, or system states, are hidden from EEG and fMRI data, making predictions of the underlying physiology inherently difficult.
 
-For models to be clinically viable they must be patient specific. A possible approach to achieve this would be to use a general neural field model, like the Wilson and Cohen~\cite{Wilson1973} model or a neural mass model like the Jansen and Ritt model~\cite{Jansen1995}, and fit it to a patients EEG data. Fitting the neural models to individuals is a highly non-trivial task, and until very recently this has not been reported in the literature. An estimation frame work for neural field model known as dynamical causal modeling (DCM)~\cite{David2003} \cite{David2006} has recently been proposed for studying evoked potential dynamics. Via a Bayesian inference scheme, DCM estimates the long range connectivity structure between the specific isolated brain regions that best explains a given data set. The interconnected brain regions are modeled by the Jansen and Ritt equations. The approach has proven very useful in understanding specific hierarchical networks of neural information processing. Another recent publication describing a parameter estimation method with a neural field model used an unscented Kalman filter with the Wilson-Cowan neural field equations~\cite{schiff2008kalman}.  This work takes a more system theoretic approach to the neural estimation problem and marks a first step in what has the potential to revolutionize the treatment of many neurological diseases where therapeutic electrical stimulation is viable.
+For models to be clinically viable they must be patient specific. A possible approach to achieve this would be to use a general neural field model, like the Wilson and Cohen~\cite{Wilson1973} model or a neural mass model like the Jansen and Ritt model~\cite{Jansen1995}, and fit it to a patients EEG data. Fitting the neural models to individuals is a highly non-trivial task, and until very recently this has not been reported in the literature. An estimation frame work for neural field models known as dynamical causal modeling (DCM)~\cite{David2003} \cite{David2006} has recently been proposed for studying evoked potential dynamics. Via a Bayesian inference scheme, DCM estimates the long range connectivity structure between the specific isolated brain regions that best explains a given data set. The interconnected brain regions are modeled by the Jansen and Ritt equations. The approach has proven very useful in understanding specific hierarchical networks of neural information processing. Another recent publication describing a parameter estimation method with a neural field model used an unscented Kalman filter with the Wilson-Cowan neural field equations~\cite{schiff2008kalman}.  This work takes a more system theoretic approach to the neural estimation problem and marks a first step in what has the potential to revolutionize the treatment of many neurological diseases where therapeutic electrical stimulation is viable.
 
 Generating patient specific models allows the application of a range of techniques from control systems theory, where tailored electrical stimulation could be used therapeutically in a closed loop fashion.  Currently available epileptic seizure prediction and control devices (i.e., the vagal nerve stimulator) are implemented in an ``open loop".  That is, the therapeutic electrical stimulation waveforms are adjusted for each patient by trial and error, disregarding the patient's neurodynamics and information about their particular pathologies. Given access to an accurate model, the application of control theory in these circumstances would allow for robust therapeutic stimulations.
 The work from Schiff and Sauer~\cite{schiff2008kalman} successfully demonstrated  it is possible to estimate parameters from the WC equations. This motivates the question, what parameters are the most important? How patient specific do the assumed parameters have to be for the model to be useful? In this paper, we address both of these questions and provide a theoretical platform to perform patient-specific grey-box modeling of the human neocortex.
@@ -88,12 +88,12 @@ Until now, estimation of local intracortical connectivity structure has not been
 %Long range connectivity can be estimated using DTI~\cite{Knock2009}, however this short range connectivity can not..
 
 \section{Neural Field Model}
-In this section, we describe a variant of the  Wilson and Cowan neural field model~\cite{Wilson1973} that will be used to create our intracortical connectivity estimator. This model is descriptive of a range of neurodynamics of the cortex such as evoked potentials, visual hallucinations, and epileptic behavior. It is also capable of generating complex patterns of activity such as Turing patterns, spirals, and traveling oscillations. The neural field model is popular due to being parsimonious yet having a strong link with the underlying physiology.
-The model relates the average number of action potentials $g$ arriving at $r$ to the local post synaptic membrane voltage. The post-synaptic potentials generated at a neuronal population at location $r$ by action potentials arriving from all other connected populations at locations $r'$ can be described by
+In this section, we describe a variant of the  Wilson and Cowan neural field model~\cite{Wilson1973} that will be used to create our intracortical connectivity estimator. This model is descriptive of a range of neurodynamics of the cortex such as evoked potentials, visual hallucinations, and epileptic behaviour. It is also capable of generating complex patterns of activity such as Turing patterns, spirals, and traveling oscillations. The neural field model is popular due to being parsimonious yet having a strong link with the underlying physiology.
+The model relates the average number of action potentials $g(r,t)$ arriving at position $r$ to the local post synaptic membrane voltage $v(r,t)$. The post-synaptic potentials generated at a neuronal population at location $r$ by action potentials arriving from all other connected populations at locations $r'$ can be described by
 \begin{equation}\label{SpikesToPotential}
-v\left( {r,t} \right) = \int_{ - \infty }^t {h\left( {t - t'} \right)g\left( {r,t'} \right)dt'} + e\left( {r,t} \right).
+v\left( {r,t} \right) = \int_{ - \infty }^t {h\left( {t - t'} \right)g\left( {r,t'} \right)dt'}.
 \end{equation}
-The term $de(r,t)$ can be considered the potential generated by unmodeled inputs and spontaneous background activity and is a zero mean temporal Wiener process with incremental covariance $\Sigma_e(r)dt$. The post-synaptic response kernel $h(t)$ is described by
+The post-synaptic response kernel $h(t)$ is described by
 \begin{equation}\label{SynapticRespKernel}
 h(t) = \left\{ {\begin{array}{*{20}{c}}
    {\exp ( - \alpha t)} & {t \ge 0}  \\
@@ -102,18 +102,18 @@ h(t) = \left\{ {\begin{array}{*{20}{c}}
 \end{equation}
 where $\alpha=\tau^{-1}$ and $\tau$ is the synaptic time constant. The synaptic response kernel can be more elaborate, using rise and fall time constants, however, this simple form serves our purposes. Nonlocal interactions between cortical populations are described by	
 \begin{equation}\label{RateBasedInteractions}
-g\left( r,t \right) = \int_\Omega  {w\left( r,r' \right)f\left( v\left( r',\bar t \right) \right)dr'}
+g\left( r,t \right) = \int_\Omega  {w\left( r,r' \right)f\left( v\left( r',\bar t \right) \right)dr'} + e\left(r,t\right)
 \end{equation}
-where $\bar t = t - d\left| {r - r'} \right|$, $d$ is the propagation delay of action potentials, $f$ is spiking rate of populations $r'$, $w$ is the spatial connectivity kernel, and $\Omega$ is the spatial domain, representing a cortical sheet or surface.
+where $\bar t = t - d\left| {r - r'} \right|$, $d$ is the propagation delay of action potentials, $f$ is spiking rate of populations $r'$, $w$ is the spatial connectivity kernel, and $\Omega$ is the spatial domain, representing a cortical sheet or surface. The term $de(r,t)$ can be considered the action potentials generated by unmodeled inputs and spontaneous background activity and is a Wiener process with mean $\mu$ incremental covariance $\Sigma_e(r)dt$. 
 
 The average firing rate of the presynaptic neurons is related to the postsynaptic membrane potential by the sigmoidal activation function
 \begin{equation}\label{ActivationFunction}
 f\left( {{v_t}\left( {r'} \right)} \right) = \frac{{{\nu _0}}}{{1 + \exp \left( {\beta \left( {{v_0}\left( r \right) - {v}\left(r',\bar{t} \right)} \right)} \right)}}.
 \end{equation}
 
-Even though we will model  $v_0$ as being homogeneous across the cortical sheet we will express it as being spatially dependant allowing for generality when constructing the state-space representation in the next section. The parameters in equation~\ref{ActivationFunction} are detailed in Table 1. By combining equations~\ref{SpikesToPotential} and \ref{RateBasedInteractions} we get the spatiotemporal model
+Even though we will model  $v_0$ as being homogeneous across the cortical sheet we will express it as being spatially dependant allowing for generality when constructing the state-space representation in the next section. The parameters in equation~\ref{ActivationFunction} are detailed in Table 1. By combining Eqs.~\ref{SpikesToPotential} and \ref{RateBasedInteractions} we get the spatiotemporal model
 \begin{equation}\label{FullDoubleIntModel}
-v\left(r,t\right) = \int\limits_{-\infty}^t\int\limits_\Omega  h\left(t - t'\right)w\left(r,r'\right)f\left( v\left( r',\bar t \right)\right)dr' dt'+e\left(r,t\right)
+v\left(r,t\right) = \int\limits_{-\infty}^t h\left(t - t'\right) \left(\int\limits_\Omega  w\left(r,r'\right)f\left( v\left( r',\bar t \right)\right)dr' + e\left(r,t\right)\right) dt'
 \end{equation}
 To arrive at the final form of the model we shall state the synaptic response kernel as a Green's function
 \begin{equation}\label{GreensFuncDef}
@@ -164,7 +164,7 @@ Now we define the spatial aspect of the model on a regular square $i,j$ grid of 
 \end{equation}
 where $\tilde{w}(r_{ij},r_{ij}')$ discretized connectivity kernel. In Eq~\ref{discrete space} we have used periodic boundary conditions to alleviate problems associated with edge effects. The connectivity kernel is in the form of a modified Mexican hat, and is described by the sum of three weighted Gaussian functions as
 \begin{equation}
-	\tilde{w}(r_{ij},r_{ij}') = \mathbf{\theta}^T e^{\frac{\left(\left(r_i'-r_i\right)\Delta\right)^2}{(2\mathbf{\sigma})^2} + \frac{\left()\left(r_j'-r_j\right)\Delta\right)^2}{(2\mathbf{\sigma})^2}}
+	\tilde{w}(r_{ij},r_{ij}') = \mathbf{\theta}^T e^{\frac{\left(\left(r_i'-r_i\right)\Delta\right)^2}{(2\mathbf{\sigma})^2} + \frac{\left(\left(r_j'-r_j\right)\Delta\right)^2}{(2\mathbf{\sigma})^2}}
 \end{equation}
 where
 \begin{equation}
@@ -177,7 +177,6 @@ To generate data will approximate either local field potential recordings or int
     y(r_n,t_k') = \int_\Omega  m( r_n,r' ) v( r',t_k' ) dr'  + \varepsilon ( r_n,t_k ),
 \end{equation}
 where $\varepsilon( n )\sim\mathcal{N}(0,\Sigma)$, $n$ indexes the iEEG electrodes, and $m(r_n,r)$ is the observation kernel relating the neural field to measurements accounting for electrodes characteristics (spatial averaging). In Eq.~\ref{ObservationEquation} we have indexed time by $t_k'$, which is a decimated version of $t_k$. 
-
 
 All the model parameters are described in Table 1.
 
