@@ -115,13 +115,22 @@ Even though we will model  $v_0$ as being homogeneous across the cortical sheet 
 \begin{equation}\label{FullDoubleIntModel}
 v\left(r,t\right) = \int\limits_{-\infty}^t h\left(t - t'\right) \left(\int\limits_\Omega  w\left(r,r'\right)f\left( v\left( r',\bar t \right)\right)dr' + e\left(r,t\right)\right) dt'
 \end{equation}
-To arrive at the final form of the model we shall state the synaptic response kernel as a Green's function
-\begin{equation}\label{GreensFuncDef}
-Lh\left( t \right) = \delta \left( t \right),
+The rearrange the model into an intergro-differential we take the Laplace transform of~\ref{FullDoubleIntModel} giving
+\begin{equation}
+	V(s) = H(s)G(s).
 \end{equation}
-where $L=\frac{d}{dt} + \alpha$ is a temporal differential operator and $\delta(t)$ is the Dirac-delta function. This provides the most general form
+Since $H(s) = (s+\alpha)^{-1}$ we can write
+\begin{equation}
+	(s+\alpha)V(s) = G(s).
+\end{equation}
+% To arrive at the final form of the model we shall state the synaptic response kernel as a Green's function
+% \begin{equation}\label{GreensFuncDef}
+% Lh\left( t \right) = \delta \left( t \right),
+% \end{equation}
+% where $L=\frac{d}{dt} + \alpha$ is a temporal differential operator and $\delta(t)$ is the Dirac-delta function. 
+Now taking the inverse Laplace transform provides the final form
 \begin{equation}\label{FinalForm1}
-dv\left( {r,t} \right) + \alpha v\left( r,t \right)dt = \int_\Omega  {w\left( r,r' \right)f\left( {v\left( r',\bar t \right)} \right)dr'dt}  +de\left( r,t \right).
+dv\left( r,t \right) + \alpha v\left( r,t \right)dt = \int_\Omega  {w\left( r,r' \right)f\left( {v\left( r',\bar t \right)} \right)dr'dt}  +de\left( r,t \right).
 \end{equation}
 
 \section{Discrete Time and Space Model}
@@ -132,9 +141,9 @@ dv\left( r,t \right) =  \left( -\alpha v\left( r,t \right) + \int_\Omega  {w\lef
 \end{equation}
 To simplify the notation, but without loss of generality, \ref{FinalForm1} can be rewritten as
 \begin{equation}\label{differential simplified}
-	dv\left( r,t \right) = q\left(v(r,t) \right) dt  + d e\left( r,t \right)
+	dv\left( r,t \right) = q\left(v\left(r,t\right) \right) dt  + d e\left( r,t \right)
 \end{equation}
-A one-step Euler method was used to approximate the nonlinear stochastic IDE to a discrete time form. 
+where $q\left(v\left(r,t\right)\right)$ is the term insides the brackets in Eq.~\ref{differential eq}. A one-step Euler method was used to approximate the nonlinear stochastic IDE to a discrete time form. 
 \begin{equation}\label{euler}
 	v\left(r,t\right) =  v(r,t_0) + \int_{t_0}^{t} q\left(v(r,\tau) \right) d\tau  + \int_{t_0}^{t} d e\left(r,\tau\right)
 \end{equation}
