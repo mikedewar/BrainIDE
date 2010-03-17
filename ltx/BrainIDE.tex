@@ -99,15 +99,15 @@ The post-synaptic response kernel $h(t)$ is described by
 \end{equation}
 where $\alpha=\tau^{-1}$ and $\tau$ is the synaptic time constant and $u(t)$ is the Heaviside step function. The synaptic response kernel can be more elaborate, using rise and fall time constants, however, this simple form serves our purposes. Nonlocal interactions between cortical populations are described by	
 \begin{equation}\label{RateBasedInteractions}
-	g\left( r,t \right) = \int_\Omega  {w\left( r,r' \right)f\left( v\left( r',\bar t \right) \right)dr'}
+	g\left( r,t \right) = \int_\Omega  {w\left( r,r' \right)f\left( v\left( r',\bar t \right) \right)dr'} + I\left(r,t\right)
 \end{equation}
-where $\bar t = t - d\left| {r - r'} \right|$, $d$ is the propagation delay of action potentials, $f$ is spiking rate of populations $r'$, $w$ is the spatial connectivity kernel, and $\Omega$ is the spatial domain, representing a cortical sheet or surface. The connectivity kernel is a Mexican hat shape described by the sum of weighted Gaussian functions
-\begin{equation}
+where $\bar t = t - d\left| {r - r'} \right|$, $d$ is the propagation delay of action potentials, $f$ is spiking rate of populations $r'$, $w$ is the spatial connectivity kernel, and $\Omega$ is the spatial domain, representing a cortical sheet or surface. The term $I\left(r,t\right)$ accounts for spontaneous activity of the neural populations. The connectivity kernel is a Mexican hat shape described by the sum of weighted Gaussian functions
+\begin{equation}\label{Connectivity Kernel}
 	w\left(r,r'\right) = \theta^T \exp{\left(-\frac{\left(r_x - r_{x_n}\right)^2}{\left(2\sigma_w\right)^2}-\frac{\left(r_y - r_{y_n}\right)^2}{\left(2\sigma_w\right)^2}\right)}
 \end{equation}
 where
 \begin{equation}
-	\mathbf{\theta}=\begin{bmatrix} \mathbf{\theta}_{1}\\\mathbf{\theta}_{2}\\\mathbf \theta_{3}\end{bmatrix},\quad 		\mathbf{\sigma}=\begin{bmatrix}\mathbf{\sigma}_1\\\mathbf{\sigma}_2\\ \mathbf{\sigma}_3\end{bmatrix}.
+	\theta=\begin{bmatrix} \theta_{1}\\\theta_{2}\\\theta_{3}\end{bmatrix},\quad 		\sigma=\begin{bmatrix}\sigma_{m1}\\\sigma_{m2}\\ \sigma_{m3}\end{bmatrix}.
 \end{equation}
 The average firing rate of the presynaptic neurons is related to the postsynaptic membrane potential by the sigmoidal activation function
 \begin{equation}\label{ActivationFunction}
@@ -115,7 +115,7 @@ The average firing rate of the presynaptic neurons is related to the postsynapti
 \end{equation}
 Even though we will model $v_0$ and $\nu_0$ as being homogeneous across the cortical sheet we will express it as being spatially dependant allowing for generality at this point. By combining Eqs.~\ref{SpikesToPotential} and \ref{RateBasedInteractions} we get the spatiotemporal model
 \begin{equation}\label{FullDoubleIntModel}
-	v\left(r,t\right) = \int_{-\infty}^t \int_\Omega  h\left(t - t'\right) w\left(r,r'\right) f\left( v\left( r',\bar t \right)\right)dr'dt'
+	v\left(r,t\right) = \int_{-\infty}^t h\left(t - t'\right) \left(\int_\Omega   w\left(r,r'\right) f\left( v\left( r',\bar t \right)\right)dr' + I(r,t) \right)dt'
 \end{equation}
 % The rearrange the model into an integro-differential we take the Laplace transform of~\ref{FullDoubleIntModel} giving
 % \begin{equation}
@@ -131,81 +131,26 @@ To arrive at the final form of the model we shall state the synaptic response ke
 \end{equation}
 where $L=\frac{d}{dt} + \alpha$ is a temporal differential operator and $\delta(t)$ is the Dirac-delta function giving 
 \begin{equation}\label{FinalForm1}
-	\frac{dv\left( r,t \right)}{dt} + \alpha v\left( r,t \right) = \int_\Omega  {w\left( r,r' \right)f\left( {v\left( r',\bar t \right)} \right)dr'}.
+	\frac{dv\left( r,t \right)}{dt} + \alpha v\left( r,t \right) = \int_\Omega  {w\left( r,r' \right)f\left( {v\left( r',\bar t \right)} \right)dr'} + I\left(r,t\right).
 \end{equation}
 
 \section{Generating Data}
-To generate iEEG/LFP data we proceeded with the assumption of spatial homogeneity for the connectivity and activation function parameters, implying $w(r,r') = w\left(|r-r'|\right)$, $\nu_0(r) = \nu_0$ and $v_0(r) = v_0$. In addition we assume the synaptic transmission delay is negligible such that $\bar{t}=t$. The model was discretized in time  (see Appendix~\ref{Time Discretization}) and a stochastic term was added to drive the system giving
+To generate iEEG/LFP data we proceeded with the assumption of spatial homogeneity for the connectivity and activation function parameters, implying $w(r,r') = w\left(|r-r'|\right)$, $\nu_0(r) = \nu_0$ and $v_0(r) = v_0$. In addition we assume the synaptic transmission delay is negligible such that $\bar{t}=t$. The model was discretized in time  (see Appendix~\ref{Time Discretization}) and a stochastic term was added to drive the system and account for uncertainty in the model giving
 \begin{equation}\label{DiscreteTimeModel}
-	v_{t+1}\left(r\right) = \lambda v_t\left(r\right) + \delta \int_\Omega { w\left(|r-r'|\right) f\left(v_t\left(r'\right)\right) dr'} + e_t\left(r\right)
+	v_{t+1}\left(r\right) = \lambda v_t\left(r\right) + \delta \int_\Omega { w\left(|r-r'|\right) f\left(v_t\left(r'\right)\right) dr'} + \delta I_t\left(r\right) + e_t\left(r\right)
 \end{equation}
-where $\delta$ is the time step, $\lambda = 1-\alpha\delta$ and $e_t(r) \sim \mathcal{GP}(0,\Sigma)$. The IDE formulation in Eq.~\ref{DiscreteTimeModel} was solved using a numerical method described in Appendix~\ref{Space Discretization}. To generate iEEG/LFP like data we used the output function 
+where $\delta$ is the time step, $\lambda = 1-\alpha\delta$ and $e_t(r) \sim \mathcal{GP}(0,\Sigma)$. The IDE formulation in Eq.~\ref{DiscreteTimeModel} was solved using a numerical method described in Appendix~\ref{Space Discretization}. To generate iEEG/LFP data we used the output function 
 \begin{equation}
-	y_{k}\left(r_n\right) = \int_{\Omega}{m\left(|r_n-r'|\right)v_{k}\left(r\right)dr'}
+	y_t\left(r_n\right) = \int_{\Omega}{m\left(|r_n-r'|\right)v_t\left(r\right)dr'}
 \end{equation}
-where $r_n$ defines the location of the sensors in the field, $k$ is the time of sampling instances corresponding to an acquisition system and $m(|r-r'|)$ is the output kernel that governs the geometry of pick-up range of sensors where
+where $r_n$ defines the location of the sensors in the field where $n=1,...,N$ indexes the sensors. The output kernel $m(|r-r'|)$ governs the geometry of pick-up range of sensors where
 \begin{equation}
 	m\left(|r-r'|\right) = \exp{\left(-\frac{\left(r_x - r_{x_n}\right)^2}{\left(2\sigma_m\right)^2}-\frac{\left(r_y - r_{y_n}\right)^2}{\left(2\sigma_m\right)^2}\right)}.
 \end{equation}
 
-\section{Discretized Model for Simulation}
-We begin the derivation of the state-space model with the continuous time, continuous space IDE neural field model. 
-Spatio-temporal interactions can be described by the continuous space continuous time stochastic differential equation
-\begin{equation}\label{differential eq}	
-dv\left( r,t \right) =  \left( -\alpha v\left( r,t \right) + \int_\Omega  {w\left( r,r' \right)f\left( {v\left( r',t \right)} \right)dr'} \right) dt  + d e\left( r,t \right).
-\end{equation}
-To simplify the notation, but without loss of generality, \ref{FinalForm1} can be rewritten as
-\begin{equation}\label{differential simplified}
-	dv\left( r,t \right) = q\left(v\left(r,t\right) \right) dt  + d e\left( r,t \right)
-\end{equation}
-where $q\left(v\left(r,t\right)\right)$ is the term insides the brackets in Eq.~\ref{differential eq}. A one-step Euler method was used to approximate the nonlinear stochastic IDE to a discrete time form. 
-\begin{equation}\label{euler}
-	v\left(r,t\right) =  v(r,t_0) + \int_{t_0}^{t} q\left(v(r,\tau) \right) d\tau  + \int_{t_0}^{t} d e\left(r,\tau\right)
-\end{equation}
-Using an Euler approximation,~\ref{euler} can be approximated at each sampling time by
-\begin{equation}\label{euler approx 1}
-	v\left(r,t_{k+1} \right) =  v(r,t_k) + q\left(v(r,t_k)\right) (t_{k+1} - t_k) + (e(r,t_{k+1}) - e(r,t_k))
-\end{equation}
-which can be rewritten as
-\begin{equation}\label{euler approx 2}
-	v\left(r,t_k + \delta \right) =  v(r,t_k) + \delta q\left(v(r,t_k)\right) + e'(r,t_k)
-\end{equation}
-where $e'(r,t_k)$ is a zero mean Gaussian random variable with covariance $\delta\Sigma_e$. (Note that, because of the way the noise is defined in \ref{differential eq} it is not $\delta^2$ but $\delta$). Expanding $q\left(v(r,t_k)\right)$ we have
-\begin{equation}\label{discrete time model}
-	v\left(r,t_k + \delta \right) =  v(r,t_k) + \delta  \left( -\alpha v\left( r,t_k \right) + \int_\Omega  {w\left( r,r' \right)f\left( {v\left( r',t_k \right)} \right)dr'} \right) + e'(r,t_k)
-\end{equation}
-which can be simplified to
-\begin{equation}\label{discrete time model2}
-	v\left(r,t_k + \delta \right) =  (1 - \delta \alpha) v(r,t_k) + \delta \int_\Omega  {w\left( r,r' \right)f\left( {v\left( r',t_k \right)} \right)dr'} + e'(r,t_k)
-\end{equation}
-Now we define the spatial aspect of the model on a regular square $i,j$ grid of neural masses, where the spatial step size $\Delta \mathbf{r}_i = \Delta \mathbf{r}_j = \Delta $ giving
-\begin{equation}\label{discrete space}
-	v\left(r_{ij},t_k + \delta \right) =  \lambda v(r_{ij},t_k) + \delta \Delta^2 \sum_{i=-I}^{i=I}{\sum_{j=-J}^{j=J}{\tilde{w}\left( r_{ij},r_{ij}' \right)f\left( v\left( r_{ij}',t_k \right) \right)} }+ e'(r_{i,j},t_k).
-\end{equation}
-where $\tilde{w}(r_{ij},r_{ij}')$ discretized connectivity kernel and $\lambda = 1 - \delta \alpha$. In Eq.~\ref{discrete space} we have used periodic boundary conditions to alleviate problems associated with edge effects. The connectivity kernel is in the form of a modified Mexican hat, and is described by the sum of three weighted Gaussian functions as
-\begin{equation}
-	\tilde{w}(r_{ij},r_{ij}') = \mathbf{\theta}^T e^{\frac{\left(\left(r_i'-r_i\right)\Delta\right)^2}{(2\mathbf{\sigma})^2} + \frac{\left(\left(r_j'-r_j\right)\Delta\right)^2}{(2\mathbf{\sigma})^2}}
-\end{equation}
-where
-\begin{equation}
- \mathbf{\theta}=\begin{bmatrix} \mathbf{\theta}_{1}\\\mathbf{\theta}_{2}\\\mathbf \theta_{3}\end{bmatrix},\quad \mathbf{\sigma}=\begin{bmatrix}\mathbf{\sigma}_1\\\mathbf{\sigma}_2\\ \mathbf{\sigma}_3\end{bmatrix}.
-\end{equation}
-The first Gaussian function (parametrized by $\mathbf{\theta}_1, \mathbf{\sigma}_1$) describes local excitation, the second describes lateral inhibition and the third describes medium range excitation. 
- 
-To generate data will approximate either local field potential recordings or intracranial EEG we have used the observation equation
-\begin{equation}\label{ObservationEquation}
-    y(r_{i_n j_n},t_l) = \Delta^2\sum_{i=1}^{i=I}\sum_{j=1}^{j=J}  m( r_{i_n j_n},r_{ij}' ) v( r_{ij}',t_l )  + \varepsilon ( r_{i_n j_n},t_l ),
-\end{equation}
-where $\varepsilon( n )\sim\mathcal{N}(0,\Sigma)$, $n$ indexes the iEEG electrodes, and $m(r_n,r)$ is the observation kernel relating the neural field to measurements accounting for electrodes characteristics is described by
-\begin{equation}
-	m( r_{i_n j_n},r_{ij}' ) = e^{\frac{\left(\left(r_i'-r_{i_n}\right)\Delta\right)^2}{\left(2\sigma_4\right)^2} + \frac{\left(\left(r_j'-r_{j_n}\right)\Delta\right)^2}{\left(2\sigma_4\right)^2}}.
-\end{equation}
-In Eq.~\ref{ObservationEquation} we have indexed time by $t_l$ corresponding to the sampling rate of a data acquisition system, where the model is simulated on a much fine time-scale of $t_k$. The sensor positions correspond to positions $i_n,j_n$ and are space on a square grid spaced xx units apart, yy units from the edge of the field.
-
 All the model parameters are described in Table 1.
 
-
-\begin{tabular}{ccc}
+\begin{tabular}{|c|c|c|}
 \hline
 Parameter & Value & Reference\\
 \hline
@@ -227,170 +172,104 @@ $\theta_2$ &  &\\
 \hline
 $\theta_3$ &  &\\
 \hline
-$\sigma_1$ &  &\\
+$\sigma_{w1}$ &  &\\
 \hline
-$\sigma_2$ &  &\\
+$\sigma_{w2}$ &  &\\
 \hline
-$\sigma_3$ &  &\\
+$\sigma_{w3}$ &  &\\
 \hline
-$\sigma_4$ &  &\\
+$\sigma_m$ &  &\\
 \hline
 \end{tabular}
 
-
 \section{Reduced Model For Estimation}
-
-In order to implement standard estimation techniques we propose a decomposition of the field using a set of Gaussian basis functions. Decomposition allows a continuous field to be represented by a finite dimensional state vector. This allows for the application of standard nonlinear, non-Gaussian state estimation methods such as the unscented Kalman filter. The abbreviate the notation we use the subscript $t$ to index the current time step and $t+1$ for next time step. The field decomposition is described by
+In order to implement standard estimation techniques we use a decomposition of the field using a set of Gaussian basis functions. Decomposition allows a continuous field to be represented by a finite dimensional state vector. This allows for the application of standard nonlinear, non-Gaussian state estimation methods such as the unscented Kalman filter. The field decomposition is described by
 \begin{equation}\label{DefFieldDecomp}
-v_t\left( \mathbf{r} \right) \approx \phi ^T\left( \mathbf{r} \right) x_t.
+	v_t\left(r\right) \approx \phi ^T\left(r\right) x_t
 \end{equation}
-where $\phi(\mathbf{r})$ is a vector of Gaussian basis functions that are scaled by the state vector, $x_t$. The connectivity kernel can all be decomposed into a set of basis functions
+where $\phi(\mathbf{r})$ is a vector of Gaussian basis functions that are scaled by the state vector, $x_t$. As described in Eq.~\ref{Connectivity Kernel} the connectivity kernel can also be considered a decomposition into a set of basis functions in 
 \begin{equation}\label{DefKernelDecomp}
-\tilde{w}( r_{ij}, r_{ij}' ) = \theta^T\psi\left(r_{ij},r_{ij}'\right)
+	\tilde{w}( |r-r'| ) = \theta^T\psi\left(|r-r'|\right)
 \end{equation}
-Will will assume we know the parametric form of the basis functions, where the parameter $\theta$ is unknown. Each connectivity basis function can be considered a layer in the WC model, representing short range excitation, surround inhibition and mid-range excitation. Making substitutions of~\ref{DefFieldDecomp} and~\ref{DefKernelDecomp} into~\ref{discrete space} we get
-
-....up to here....
-
-\begin{equation}\label{reduced discrete model}
-	\phi ^T\left( r_{ij} \right)x_{t+1} =  \lambda \phi ^T\left( r_{ij} \right)x_{t+1} + \delta \Delta^2 \theta^T \sum_{i=-I}^{i=I}{\sum_{j=-J}^{j=J}{\psi\left(r_{ij},r_{ij}'\right)f\left( \phi ^T\left(r_{ij} \right)x_{t+1} \right)} }+ e'(r_{i,j},t_k).
-\end{equation}
-
+Will will assume we know the parametric form of the connectivity basis functions, where the parameter $\theta$ is unknown. Each connectivity basis function can be considered a layer in the WC model, representing short range excitation, surround inhibition and mid-range excitation. Making substitutions of~\ref{DefFieldDecomp} and~\ref{DefKernelDecomp} into~\ref{DiscreteTimeModel} we get
 \begin{equation}\label{reduced continuous model}
-\phi ^T\left( \mathbf{r} \right)x_{t+1} = T_s\theta^T\int_\Omega  {\psi \left( {{\bf{r}} , {\mathbf{r'}}} \right)f\left( {{\phi ^T}\left( {{\mathbf{r'}}} \right){x_t}} \right)d{\mathbf{r'}}}  - \lambda\phi^T(\mathbf{r})x_t + T_s{e_t}\left( {\mathbf{r}} \right).
+	\phi^T\left( r \right)x_{t+1} = \delta\theta^T\int_\Omega  {\psi \left(|r-r'|\right)f\left( \phi ^T\left(r'\right)x_t \right)dr'}  - \lambda\phi^T\left(r\right)x_t + \delta I_t\left(r\right) + e_t\left(r\right).
 \end{equation}
-To isolate the state we cross multiply by $\phi(\mathbf{r})$ and integrate over $\mathbf{r}$
-\begin{equation}\label{Poo}
-\int_\Omega  {\phi \left( {\bf{r}} \right){\phi ^T}\left( {\bf{r}} \right)d{\bf{r}}{x_{t+1}}}  = T_s\int_\Omega  {\phi ( \mathbf{r} )\theta^T\int_\Omega  {\psi \left( {{\bf{r}} , {\bf{r'}}} \right)f\left( {{\phi ^T}\left( {{\bf{r'}}} \right){x_t}} \right)d{\bf{r'}}} d{\bf{r}}}  - \lambda\int_\Omega \phi(\mathbf{r})\phi^T(\mathbf{r})d\mathbf{r} x_t  + T_s\int_\Omega  {\phi \left( {\mathbf{r}} \right)e_t\left( {\mathbf{r}} \right)d{\mathbf{r}}}.
-\end{equation}
-Now we define
+By defining the term
 \begin{equation}\label{DefGamma}
-\Gamma  = \int_\Omega  {\phi \left( {\bf{r}} \right){\phi ^T}\left( {\bf{r}} \right)d{\bf{r}}}.
+	\Gamma  = \int_\Omega  {\phi \left(r\right)\phi ^T\left(r\right)dr}
 \end{equation}
-Substituting equation~\ref{DefGamma} into \ref{Poo} and rearranging gives
-\begin{equation}\label{SS Model}
-{x_{t+1}} = T_s{\Gamma ^{ - 1}}\int_\Omega  {\phi \left( {\bf{r}} \right)\theta^T\int_\Omega  {\psi \left( {{\bf{r}} , {\bf{r'}}} \right)f\left( {{\phi ^T}\left( {{\bf{r'}}} \right){x_t}} \right)d{\bf{r'}}} d{\bf{r}}} - \lambda x_t + T_s{\Gamma ^{ - 1}}\int_\Omega  {\phi \left( {\bf{r}} \right)e_t\left( {\bf{r}} \right)d{\bf{r}}}.
-\end{equation}
-We can rearrange to get
-\begin{equation}\label{Homogeneous SS Model}
-	x_{t+1} = T_s\Gamma ^{ - 1}\int_\Omega  {\phi \left( {\bf{r}} \right)\int_\Omega  {f\left( {{\phi ^T}\left( {{\bf{r'}}} \right){x_t}} \right)\psi^T \left( {{\bf{r}} - {\bf{r'}}} \right)d{\bf{r'}}} d{\bf{r}}}\theta - \lambda x_t + T_s{\Gamma ^{ - 1}}\int_\Omega  {\phi \left( {\bf{r}} \right)e_t\left( {\bf{r}} \right)d{\bf{r}}}.
-\end{equation}
-The disturbance term can be rewritten as 
-\begin{equation}
-	\Gamma ^{ - 1}\int_\Omega  {\phi \left( \bf{r} \right)e_t\left( \bf{r} \right)d\bf{r}} = \int_\Omega  {\phi \left( \bf{r} \right)\tilde{e}_t\left( \bf{r} \right)d\bf{r}},
-\end{equation}
-where $\tilde{e}_t(r)~N(0,R'R)$ and $R'$ is the Cholesky decomposition of $\Gamma^{-1}$. This provides the final state-space model
-\begin{equation}\label{AbbrevSSModel}
-x_{t + 1} = T_sq(x_t)\theta -\lambda x_t + T_s\int_\Omega  {\phi ( \mathbf{r} )\tilde{e}_t( \mathbf{r} )d\mathbf{r}}
-\end{equation}
-with observation equation
-\begin{equation}\label{ObservationEquation}
-    y_t( k ) = \int_\Omega  m( k,\mathbf{r} )\phi^T( \mathbf{r} ) d\mathbf{r}x_t  + \varepsilon ( k ),
-\end{equation}
+and manipulating the model (see Appendix~\ref{Simplifying Decomposition}) we isolate the state vector to form a state-space model
+\begin{eqnarray}\label{Homogeneous SS Model}
+	x_{t+1} &=& \delta\Gamma^{ - 1}\int_\Omega {\phi\left(r\right) \int_\Omega {f\left(\phi^T\left(r'\right)x_t\right)\psi^T \left(|r-r'|\right)dr'} dr} \theta - \lambda x_t + \Gamma^{-1}\delta \int_\Omega{\phi \left(r\right) I_t\left(r\right)dr} + \int_\Omega{\phi\left(r\right)\tilde{e}_t\left(r\right)dr} \\
+	&=&\delta q(x_t) \theta -\lambda x_t + + \Gamma^{-1}\delta \int_\Omega{\phi \left(r\right) I_t\left(r\right)dr} + \int_\Omega{\phi(r)\tilde{e}_t(r)dr}
+\end{eqnarray}
+where $\tilde{e}_t\left(r\right) \sim \mathcal{N}\left(0,R' \Sigma R\right)$ and $R$ is the Cholesky decomposition of $\Gamma^{-1}$. The observation equation of the reduced model is
+\begin{eqnarray}\label{ObservationEquation}
+    y_t( r_n ) &=& \int_\Omega  m\left(|r_n-r|\right)\phi^T\left(r\right) dr x_t  + \varepsilon_t ( r_n ) \\
+	&=& C x_t + \varepsilon_t ( r_n ).
+\end{eqnarray}
 
-% \subsection{Discrete Space For Simulation}
-% 
-% In this section we describe a discrete time, discrete space model that we are using for the simulations. Now we define the spatial aspect of the model on a regular square $i,j$ grid of neural masses, where the spatial step size $\Delta \mathbf{r}_i = \Delta \mathbf{r}_j = \Delta \mathbf{r}$ giving
-% \begin{equation}\label{DiscreteSpaceModelij}
-% 	x_{t+1} = T_s\Gamma ^{ - 1}\sum_i \sum_j  {\phi \left( \mathbf{r} \right)\sum_i\sum_j  {f\left( \phi^T \left( \mathbf{r'} \right) x_t \right)\psi^T \left( \mathbf{r} - \bf{r'} \right)\Delta\mathbf{r'}^2} \Delta\mathbf{r}^2} \theta - \lambda x_t + T_s\sum_i\sum_j  {\phi \left( {\bf{r}} \right)\tilde{e}_t\left( \bf{r} \right)\Delta\mathbf{r}^2}.
-% \end{equation}
-\section{Estimation of the Nonlinear Homogeneous IDE Neural Field Model}
-
+\section{Estimation of the IDE Neural Field Model using Unscented Kalman Filter with RTS Smooter}
 
 \section{Comparison of Estimated Parameters and True Parameters}
 
 \section{Discussion}
 
-% An example of a floating figure using the graphicx package.
-% Note that \label must occur AFTER (or within) \caption.
-% For figures, \caption should occur after the \includegraphics.
-% Note that IEEEtran v1.7 and later has special internal code that
-% is designed to preserve the operation of \label within \caption
-% even when the captionsoff option is in effect. However, because
-% of issues like this, it may be the safest practice to put all your
-% \label just after \caption rather than within \caption{}.
-%
-% Reminder: the "draftcls" or "draftclsnofoot", not "draft", class
-% option should be used if it is desired that the figures are to be
-% displayed while in draft mode.
-%
-%\begin{figure}[!t]
-%\centering
-%\includegraphics[width=2.5in]{myfigure}
-% where an .eps filename suffix will be assumed under latex,
-% and a .pdf suffix will be assumed for pdflatex; or what has been declared
-% via \DeclareGraphicsExtensions.
-%\caption{Simulation Results}
-%\label{fig_sim}
-%\end{figure}
-
-% Note that IEEE typically puts floats only at the top, even when this
-% results in a large percentage of a column being occupied by floats.
-%
-% An example of a double column floating figure using two subfigures.
-% (The subfig.sty package must be loaded for this to work.)
-% The subfigure \label commands are set within each subfloat command, the
-% \label for the overall figure must come after \caption.
-% \hfil must be used as a separator to get equal spacing.
-% The subfigure.sty package works much the same way, except \subfigure is
-% used instead of \subfloat.
-%
-%\begin{figure*}[!t]
-%\centerline{\subfloat[Case I]\includegraphics[width=2.5in]{subfigcase1}%
-%\label{fig_first_case}}
-%\hfil
-%\subfloat[Case II]{\includegraphics[width=2.5in]{subfigcase2}%
-%\label{fig_second_case}}}
-%\caption{Simulation results}
-%\label{fig_sim}
-%\end{figure*}
-%
-% Note that often IEEE papers with subfigures do not employ subfigure
-% captions (using the optional argument to \subfloat), but instead will
-% reference/describe all of them (a), (b), etc., within the main caption.
-
-% An example of a floating table. Note that, for IEEE style tables, the
-% \caption command should come BEFORE the table. Table text will default to
-% \footnotesize as IEEE normally uses this smaller font for tables.
-% The \label must come after \caption as always.
-%
-%\begin{table}[!t]
-%% increase table row spacing, adjust to taste
-%\renewcommand{\arraystretch}{1.3}
-% if using array.sty, it might be a good idea to tweak the value of
-% \extrarowheight as needed to properly center the text within the cells
-%\caption{An Example of a Table}
-%\label{table_example}
-%\centering
-%% Some packages, such as MDW tools, offer better commands for making tables
-%% than the plain LaTeX2e tabular which is used here.
-%\begin{tabular}{|c||c|}
-%\hline
-%One & Two\\
-%\hline
-%Three & Four\\
-%\hline
-%\end{tabular}
-%\end{table}
-
-% Note that IEEE does not put floats in the very first column - or typically
-% anywhere on the first page for that matter. Also, in-text middle ("here")
-% positioning is not used. Most IEEE journals use top floats exclusively.
-% Note that, LaTeX2e, unlike IEEE journals, places footnotes above bottom
-% floats. This can be corrected via the \fnbelowfloat command of the
-% stfloats package.
-
 \section{Conclusion}
-The conclusion goes here.
 
 \appendices
 
-\section{Discrete Time Model}
+\section{Discrete Time Model}\label{Time Discretization}
+Using a one-step Euler method we perform the time discretization by
+To form the IDE neural field model a time discretization must be perform. We used a one-step Euler method where Eq.~\ref{FinalForm1} can be approximated by
+\begin{equation}\label{Euler Approximation}	
+\frac{v\left( r,t+\delta \right) - v\left( r,t\right)}{\delta} =   -\alpha v\left( r,t \right) + \int_\Omega  {w\left( |r-r'| \right)f\left( {v\left( r',t \right)} \right)dr'} + I\left(r,t\right).
+\end{equation}
+For clarity, we shall index time points in the discrete time form of the model using the subscript $t$ and the next time point as $t+1$. Rearranging Eq.~\ref{Euler Approximation} we get
+\begin{eqnarray}\label{Euler Approximation}	
+v_{t+1}\left( r\right) &=& v_t\left( r\right) -\delta \alpha v_t\left( r\right) + \delta \int_\Omega  {w\left( |r-r'| \right)f\left( {v_t\left( r'\right)} \right)dr'} + \delta I_t\left(r\right) \\
+&=& \lambda v_t(r) + \delta \int_\Omega  {w\left( |r-r'| \right)f\left( {v_t\left( r'\right)} \right)dr'} + \delta I_t\left(r\right)
+\end{eqnarray}
+The discrete time form of the model is
+\begin{equation}\label{Discrete Time Model1}
+	v_{t+1}\left(r\right) = \lambda v_t\left(r\right) + \delta \int_\Omega { w\left(|r-r'|\right) f\left(v_t\left(r'\right)\right) dr'} + \delta I\left(r,t\right).
+\end{equation}
+where $\lambda = 1 - \delta \alpha$.
 
-\section{Numerically Generating Data}
+\section{Numerical Solution to IDE Model}\label{Space Discretization}
+To solve the PDE we define the spatial aspect of the model on a regular square $i,j$ grid of neural masses, where the spatial step size $\Delta \mathbf{r}_i = \Delta \mathbf{r}_j = \Delta $ giving
+\begin{equation}\label{discrete space}
+	v_{t+1}\left(r_{ij}\right) =  \lambda v_t(r_{ij}) + \delta \Delta^2 \sum_{i=1}^{i=I}{\sum_{j=1}^{j=J}{\tilde{w}\left( |r_{ij}-r_{ij}'| \right)f\left( v_t\left( r_{ij}'\right) \right)} } + \delta I_t\left(r\right) + \tilde{e}_t(r_{i,j})
+\end{equation}
+where $\tilde{e}_t(r_{i,j}) \sim \mathcal{N}\left(0,\Sigma\right)$ and $\tilde{w}(|r_{ij}-r_{ij}'|)$ discretized connectivity kernel described by
+\begin{equation}\label{Discrete Connectivity Kernel}
+	\tilde{w}(r_{ij},r_{ij}') = \theta^T e^{\frac{\left(\left(r_i'-r_i\right)\Delta\right)^2}{(2\sigma)^2} + \frac{\left(\left(r_j'-r_j\right)\Delta\right)^2}{(2\sigma)^2}}.
+\end{equation}
+The observation equation and kernel were discretized in the same way by
+\begin{equation}\label{Discrete Observation Equation}
+    y_k\left(r_{i_n j_n}\right) = \Delta^2\sum_{i=1}^{i=I}\sum_{j=1}^{j=J} \tilde{m}( |r_{i_n j_n}-r_{ij}'| ) v_k\left(r_{ij}'\right)  + \varepsilon_k( r_{i_n j_n})
+\end{equation}
+where
+\begin{equation}\label{Discrete Observation Kernel}
+	\tilde{m}(|r_{ij}-r_{ij}'|) = e^{\frac{\left(\left(r_i'-r_i\right)\Delta\right)^2}{(2\sigma)^2} + \frac{\left(\left(r_j'-r_j\right)\Delta\right)^2}{(2\sigma)^2}}.
+\end{equation}
+We have used periodic boundary conditions to alleviate problems associated with edge effects.
 
-\section{Reduction to Finite State-Space Model For Estimation}
-
+\section{Reduction to Finite State-Space Model}\label{Simplifying Decomposition}
+Starting from Eq.~\ref{reduced continuous model} we crossing multiply and integrate over the field to get
+\begin{equation}\label{Poo}
+	\int_\Omega  {\phi \left(r\right)\phi^T\left(r\right) dr} x_{t+1} = \delta \int_\Omega  {\phi (r) \theta^T \int_\Omega  {\psi \left(|r-r'|\right)f\left(\phi^T\left(r'\right) x_t \right)dr'}dr}  - \lambda\int_\Omega {\phi(r)\phi^T(r)dr} x_t + \delta \int_\Omega{\phi \left(r\right) I_t\left(r\right)dr} + \int_\Omega{\phi \left(r\right) e_t\left(r\right)dr}.
+\end{equation}
+Substituting Eq.~\ref{DefGamma} into Eq.~\ref{Poo} and cross-multiplying by $\Gamma^{-1}$ gives the state-space model
+\begin{equation}\label{Homogeneous SS Model}
+	x_{t+1} = \delta\Gamma^{ - 1}\int_\Omega {\phi\left(r\right) \int_\Omega {f\left(\phi^T\left(r'\right)x_t\right)\psi^T \left(|r-r'|\right)dr'} dr} \theta - \lambda x_t + \Gamma^{-1}\delta \int_\Omega{\phi \left(r\right) I_t\left(r\right)dr} + \Gamma^{-1}\int_\Omega{\phi\left(r\right)e_t\left(r\right)dr}.
+\end{equation}
+The disturbance term can be rewritten as 
+\begin{equation}
+	\Gamma ^{ - 1}\int_\Omega  {\phi \left(r\right)e_t\left(r\right)dr} = \int_\Omega{\phi\left(r\right)\tilde{e}_t\left(r\right)dr},
+\end{equation}
+where $\tilde{e}_t\left(r\right) \sim \mathcal{N}\left(0,R' \Sigma R\right)$ and $R$ is the Cholesky decomposition of $\Gamma^{-1}$. This provides the final simplified state-space model.
 % \section{Ken's Discretization}
 % Spatio-temporal interactions can be described by the continuous space continuous time stochastic differential equation
 % \begin{equation}\label{differential eq}	
