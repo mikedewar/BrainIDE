@@ -112,17 +112,18 @@ where $\alpha=\tau^{-1}$ and $\tau$ is the synaptic time constant and $u(t)$ is 
 	g\left( r,t \right) = \int_\Omega  {w\left( r,r' \right)f\left( v\left( r',t \right) \right)dr'} + I\left(r,t\right)
 \end{equation}
 
-where $f$ is spiking rate of populations $r'$, $w$ is the spatial connectivity kernel, and $\Omega$ is the spatial domain, representing a cortical sheet or surface. The term $I\left(r,t\right)$ accounts for spontaneous activity of the neural populations. The connectivity kernel is a Mexican hat shape described by the sum of weighted Gaussian functions
+where $f$ is spiking rate of populations $r'$, $w$ is the spatial connectivity kernel, and $\Omega$ is the spatial domain, representing a cortical sheet or surface. The term $I\left(r,t\right)$ accounts for spontaneous activity of the neural populations. The connectivity kernel is a Mexican hat shape described by the sum of weighted Gaussian functions placed at the origin.
 \begin{eqnarray}\label{Connectivity Kernel}
-	w\left(r,r'\right) &=& \theta^T \psi\left(r,r'\right) \\
-	\psi\left(r,r'\right) &=&\exp{\left(-\frac{1}{2}(r'-r)^T\Sigma_w (r'-r)\right)}
+	w\left(r,r'\right) =&& \\
+&&\theta_1\exp{\left(-\frac{(r-r')^\top(r-r')}{\sigma_1^2}\right)}+\theta_2\exp{\left(-\frac{(r-r')^\top(r-r')}{\sigma_2^2}\right)}+\theta_3\exp{\left(-\frac{(r-r')^\top(r-r')}{\sigma_3^2}\right)}\nonumber
 \end{eqnarray}
-where
-\begin{equation}
-	\theta=\begin{bmatrix} \theta_{1}\\\theta_{2}\\\theta_{3}\end{bmatrix},\quad 		\Sigma_w=\begin{bmatrix}\Sigma_{w1}\\\Sigma_{w2}\\ \Sigma_{w3}\end{bmatrix}.
-\end{equation}
+where $\sigma_i$ is the scale parameter.
+% where
+% \begin{equation}
+% 	\theta=\begin{bmatrix} \theta_{1}\\\theta_{2}\\\theta_{3}\end{bmatrix},\quad 		\Sigma_w=\begin{bmatrix}\Sigma_{w1}\\\Sigma_{w2}\\ \Sigma_{w3}\end{bmatrix}.
+% \end{equation}
 \begin{todo}
-	{Parham ... how are you writing this? DF: I have tried to make it better, but Parham can you check.}
+	{Parham ... how are you writing this? DF: I have tried to make it better, but Parham can you check.Parham: I have changed it but I think it's better to include it in the simulation section}
 \end{todo}The average firing rate of the presynaptic neurons is related to the postsynaptic membrane potential by the sigmoidal activation function
 \begin{equation}\label{ActivationFunction}
 	f\left( v\left( r', \bar t \right) \right) = \frac{\nu _0\left(r\right)}{1 + \exp \left( \beta \left( v_0\left( r \right) - v\left(r',t\right) \right) \right)}.
@@ -155,11 +156,11 @@ To generate iEEG/LFP data we proceeded with the assumption of spatial homogeneit
 \end{equation}
 where $\delta$ is the time step, $\lambda = 1-\alpha\delta$ and $e_t(r) \sim \mathcal{GP}(0,\Sigma)$. The IDE formulation in Eq.~\ref{DiscreteTimeModel} was solved using a numerical method described in Appendix~\ref{Space Discretization}. To generate iEEG/LFP data we used the output function 
 \begin{equation}
-	y_t = \int_{\Omega}{m\left(|r_n-r'|\right)v_t\left(r'\right)dr'} + \varepsilon_t
+	y_t(r_n) = \int_{\Omega}{m\left(|r_n-r'|\right)v_t\left(r'\right)dr'} + \varepsilon_t
 \end{equation}
 where $r_n$ defines the location of the sensors in the field where $n=1,...,N$ indexes the sensors and $\varepsilon_t \sim \mathcal{N}\left(0,\Sigma_y\right)$. The output kernel $m(|r-r'|)$ governs the geometry of pick-up range of sensors where
 \begin{equation}
-	m\left(|r-r'|\right) = \exp{\left(-\frac{1}{2}(r'-r)^T\Sigma_m (r'-r)\right)}.
+	m\left(|r-r'|\right) = \exp{\left(-\frac{(r-r')^\top(r-r')}{\sigma_m^2}\right)}.
 \end{equation}
 
 All the model parameters are described in Table 1.
