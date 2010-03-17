@@ -182,7 +182,7 @@ $\sigma_m$ &  &\\
 \hline
 \end{tabular}
 
-\section{Reduced Model For Estimation}
+\section{Derivation of Finite Dimensional State-Space Model}
 In order to implement standard estimation techniques we use a decomposition of the field using a set of Gaussian basis functions. Decomposition allows a continuous field to be represented by a finite dimensional state vector. This allows for the application of standard nonlinear, non-Gaussian state estimation methods such as the unscented Kalman filter. The field decomposition is described by
 \begin{equation}\label{DefFieldDecomp}
 	v_t\left(r\right) \approx \phi ^T\left(r\right) x_t
@@ -210,7 +210,16 @@ where $\tilde{e}_t\left(r\right) \sim \mathcal{N}\left(0,R' \Sigma R\right)$ and
 	&=& C x_t + \varepsilon_t ( r_n ).
 \end{eqnarray}
 
-\section{Estimation of the IDE Neural Field Model using Unscented Kalman Filter with RTS Smooter}
+\section{Spectral Analysis and Decomposition}
+
+\section{State and Parameter Estimation}
+The unscented Kalman filter was used for the state estimation (reference the Julier and Uhlmann paper). This method is appropriate for state estimation of stochastic nonlinear dynamical systems. Alternatives to this approach are the extended Kalman filter (ref?) (EKF) and sequential Monte Carlo (SMC) filtering (ref?). The extended Kalman filter approximates the state transition equation by linearizing about the fixed points (by calculating the Jacobian) of the state transition equation at each time step. The linearization maintains the Gaussianality in the model. The unscented Kalman filter approximates the \emph{a posteriori} state density by a Gaussian distribution, whilst maintaining the nonlinearity in the system. This has been shown to give superior performance over the EKF in state estimation, as the EKF maintains a first order approximation where the UKF provides a second order approximation. In addition, the computational requirements of the UKF are smaller than the EKF, since the EKF computes the Jacobian at each time step, where the UKF does not. SMC filtering (particle filtering) can theoretically provide an exact \emph{a posteriori} state density for nonlinear systems. However, this method is not appropriate for our problem, since it is not feasible for high dimensional systems, due to computation demands.
+The approximation of the state density is made by propagating the so called sigma points through the state-space model. The sigma points describe the mean and covariance of the state estimate. The accuracy of the approximation is linked to the time step used in the temporal discretization of the system, where the state transition appears more linear with a finer resolution. To explain the operation of the UKF we begin by explain the traditional Kalman filter with the state-space model
+\begin{eqnarray}
+	x_t = q(x_t,\kappa) + \tilde{e}_t \\
+	y_t = z(x_t) + \varepsilon_t,
+\end{eqnarray}
+where $\kappa$ represents the systems parameters. 
 
 \section{Comparison of Estimated Parameters and True Parameters}
 
