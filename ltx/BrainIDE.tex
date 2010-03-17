@@ -101,7 +101,7 @@ The neural field model is popular due to being parsimonious yet having a strong 
 	v\left( {r,t} \right) = \int_{ - \infty }^t {h\left( {t - t'} \right)g\left( {r,t'} \right)dt'}.
 \end{equation}
 \begin{todo}
-	{Is this equation correct? Is it a convolution in time?}
+	{Is this equation correct? Is it a convolution in time? Dean: yes}
 \end{todo}
 The post-synaptic response kernel $h(t)$ is described by
 \begin{equation}\label{SynapticRespKernel}
@@ -112,18 +112,19 @@ where $\alpha=\tau^{-1}$ and $\tau$ is the synaptic time constant and $u(t)$ is 
 	g\left( r,t \right) = \int_\Omega  {w\left( r,r' \right)f\left( v\left( r',\bar t \right) \right)dr'} + I\left(r,t\right)
 \end{equation}
 \begin{todo}
-	{Do we really need this representation with $\bar t$. It makes convolution look wrong.}
+	{Do we really need this representation with $\bar t$. It makes convolution look wrong. DF: Don't need since we dont include delays. The motivation was to be general at the beginning, and for everyone to understand how the model is used elsewhere.}
 \end{todo}
 where $\bar t = t - d\left| {r - r'} \right|$, $d$ is the propagation delay of action potentials, $f$ is spiking rate of populations $r'$, $w$ is the spatial connectivity kernel, and $\Omega$ is the spatial domain, representing a cortical sheet or surface. The term $I\left(r,t\right)$ accounts for spontaneous activity of the neural populations. The connectivity kernel is a Mexican hat shape described by the sum of weighted Gaussian functions
-\begin{equation}\label{Connectivity Kernel}
-	w\left(r,r'\right) = \theta^T \exp{\left(-\frac{\left(r_x - r_{x_n}\right)^2}{\left(2\sigma_w\right)^2}-\frac{\left(r_y - r_{y_n}\right)^2}{\left(2\sigma_w\right)^2}\right)}
-\end{equation}
+\begin{eqnarray}\label{Connectivity Kernel}
+	w\left(r,r'\right) &=& \theta^T \psi\left(r,r'\right) \\
+	\psi\left(r,r'\right) &=&\exp{\left(-\frac{1}{2}(r'-r)^T\Sigma_w (r'-r)\right)}
+\end{eqnarray}
 where
 \begin{equation}
-	\theta=\begin{bmatrix} \theta_{1}\\\theta_{2}\\\theta_{3}\end{bmatrix},\quad 		\sigma=\begin{bmatrix}\sigma_{m1}\\\sigma_{m2}\\ \sigma_{m3}\end{bmatrix}.
+	\theta=\begin{bmatrix} \theta_{1}\\\theta_{2}\\\theta_{3}\end{bmatrix},\quad 		\Sigma_w=\begin{bmatrix}\Sigma_{w1}\\\Sigma_{w2}\\ \Sigma_{w3}\end{bmatrix}.
 \end{equation}
 \begin{todo}
-	{Parham ... how are you writing this?}
+	{Parham ... how are you writing this? DF: I have tried to make it better, but Parham can you check.}
 \end{todo}The average firing rate of the presynaptic neurons is related to the postsynaptic membrane potential by the sigmoidal activation function
 \begin{equation}\label{ActivationFunction}
 	f\left( v\left( r', \bar t \right) \right) = \frac{\nu _0\left(r\right)}{1 + \exp \left( \beta \left( v_0\left( r \right) - v\left(r',\bar{t} \right) \right) \right)}.
@@ -160,7 +161,7 @@ where $\delta$ is the time step, $\lambda = 1-\alpha\delta$ and $e_t(r) \sim \ma
 \end{equation}
 where $r_n$ defines the location of the sensors in the field where $n=1,...,N$ indexes the sensors. The output kernel $m(|r-r'|)$ governs the geometry of pick-up range of sensors where
 \begin{equation}
-	m\left(|r-r'|\right) = \exp{\left(-\frac{\left(r_x - r_{x_n}\right)^2}{\left(2\sigma_m\right)^2}-\frac{\left(r_y - r_{y_n}\right)^2}{\left(2\sigma_m\right)^2}\right)}.
+	m\left(|r-r'|\right) = \exp{\left(-\frac{1}{2}(r'-r)^T\Sigma_m (r'-r)\right)}.
 \end{equation}
 
 All the model parameters are described in Table 1.
@@ -264,7 +265,7 @@ The discrete time form of the model is
 where $\lambda = 1 - \delta \alpha$.
 
 \section{Numerical Solution to IDE Model}\label{Space Discretization}
-To solve the convolution integral in \ref{Discrete Time Model1} we define the spatial aspect of the model on a regular square $i,j$ grid of neural masses, where the spatial step size $\Delta \mathbf{r}_i = \Delta \mathbf{r}_j = \Delta $ giving
+To solve the intregro-difference equation in Eq.~\ref{Discrete Time Model1} we define the spatial aspect of the model on a regular square $i,j$ grid of neural masses, where the spatial step size $\Delta \mathbf{r}_i = \Delta \mathbf{r}_j = \Delta $ giving
 \begin{equation}\label{discrete space}
 	v_{t+1}\left(r_{ij}\right) =  \lambda v_t(r_{ij}) + \delta \Delta^2 \sum_{i=1}^{i=I}{\sum_{j=1}^{j=J}{\tilde{w}\left( |r_{ij}-r_{ij}'| \right)f\left( v_t\left( r_{ij}'\right) \right)} } + \delta I_t\left(r\right) + \tilde{e}_t(r_{i,j})
 \end{equation}
