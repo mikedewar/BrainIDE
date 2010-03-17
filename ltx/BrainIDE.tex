@@ -88,11 +88,21 @@ Until now, estimation of local intracortical connectivity structure has not been
 %Long range connectivity can be estimated using DTI~\cite{Knock2009}, however this short range connectivity can not..
 
 \section{Neural Field Model}
-In this section, we describe a variant of the  Wilson and Cowan neural field model~\cite{Wilson1973} that will be used to create our intracortical connectivity estimator. This model is descriptive of a range of neurodynamics of the cortex such as evoked potentials, visual hallucinations, and epileptic behaviour. It is also capable of generating complex patterns of activity such as Turing patterns, spirals, and traveling oscillations. The neural field model is popular due to being parsimonious yet having a strong link with the underlying physiology.
-The model relates the average number of action potentials $g(r,t)$ arriving at position $r$ to the local post synaptic membrane voltage $v(r,t)$. The post-synaptic potentials generated at a neuronal population at location $r$ by action potentials arriving from all other connected populations at locations $r'$ can be described by
+In this section, we describe a variant of the  Wilson and Cowan neural field model~\cite{Wilson1973} that will be used to create our intracortical connectivity estimator. This model is descriptive of a range of neurodynamics of the cortex such as evoked potentials, visual hallucinations, and epileptic behaviour. 
+\begin{todo}
+	{Really need to add some citations here.}
+\end{todo}
+It is also capable of generating complex patterns of activity such as Turing patterns, spirals, and traveling oscillations. 
+\begin{todo}
+	{Same here.}
+\end{todo}
+The neural field model is popular due to being parsimonious yet having a strong link with the underlying physiology. The model relates the average number of action potentials $g(r,t)$ arriving at position $r$ to the local post synaptic membrane voltage $v(r,t)$. The post-synaptic potentials generated at a neuronal population at location $r$ by action potentials arriving from all other connected populations at locations $r'$ can be described by
 \begin{equation}\label{SpikesToPotential}
 	v\left( {r,t} \right) = \int_{ - \infty }^t {h\left( {t - t'} \right)g\left( {r,t'} \right)dt'}.
 \end{equation}
+\begin{todo}
+	{Is this equation correct? Is it a convolution in time?}
+\end{todo}
 The post-synaptic response kernel $h(t)$ is described by
 \begin{equation}\label{SynapticRespKernel}
 	h(t) = u(t)\exp{\left(-\alpha t\right)}.
@@ -101,6 +111,9 @@ where $\alpha=\tau^{-1}$ and $\tau$ is the synaptic time constant and $u(t)$ is 
 \begin{equation}\label{RateBasedInteractions}
 	g\left( r,t \right) = \int_\Omega  {w\left( r,r' \right)f\left( v\left( r',\bar t \right) \right)dr'} + I\left(r,t\right)
 \end{equation}
+\begin{todo}
+	{Do we really need this representation with $\bar t$. It makes convolution look wrong.}
+\end{todo}
 where $\bar t = t - d\left| {r - r'} \right|$, $d$ is the propagation delay of action potentials, $f$ is spiking rate of populations $r'$, $w$ is the spatial connectivity kernel, and $\Omega$ is the spatial domain, representing a cortical sheet or surface. The term $I\left(r,t\right)$ accounts for spontaneous activity of the neural populations. The connectivity kernel is a Mexican hat shape described by the sum of weighted Gaussian functions
 \begin{equation}\label{Connectivity Kernel}
 	w\left(r,r'\right) = \theta^T \exp{\left(-\frac{\left(r_x - r_{x_n}\right)^2}{\left(2\sigma_w\right)^2}-\frac{\left(r_y - r_{y_n}\right)^2}{\left(2\sigma_w\right)^2}\right)}
@@ -109,9 +122,11 @@ where
 \begin{equation}
 	\theta=\begin{bmatrix} \theta_{1}\\\theta_{2}\\\theta_{3}\end{bmatrix},\quad 		\sigma=\begin{bmatrix}\sigma_{m1}\\\sigma_{m2}\\ \sigma_{m3}\end{bmatrix}.
 \end{equation}
-The average firing rate of the presynaptic neurons is related to the postsynaptic membrane potential by the sigmoidal activation function
+\begin{todo}
+	{Parham ... how are you writing this?}
+\end{todo}The average firing rate of the presynaptic neurons is related to the postsynaptic membrane potential by the sigmoidal activation function
 \begin{equation}\label{ActivationFunction}
-	f\left( v_t\left( r' \right) \right) = \frac{\nu _0\left(r\right)}{1 + \exp \left( \beta \left( v_0\left( r \right) - v\left(r',\bar{t} \right) \right) \right)}.
+	f\left( v\left( r', \bar t \right) \right) = \frac{\nu _0\left(r\right)}{1 + \exp \left( \beta \left( v_0\left( r \right) - v\left(r',\bar{t} \right) \right) \right)}.
 \end{equation}
 Even though we will model $v_0$ and $\nu_0$ as being homogeneous across the cortical sheet we will express it as being spatially dependant allowing for generality at this point. By combining Eqs.~\ref{SpikesToPotential} and \ref{RateBasedInteractions} we get the spatiotemporal model
 \begin{equation}\label{FullDoubleIntModel}
@@ -141,7 +156,7 @@ To generate iEEG/LFP data we proceeded with the assumption of spatial homogeneit
 \end{equation}
 where $\delta$ is the time step, $\lambda = 1-\alpha\delta$ and $e_t(r) \sim \mathcal{GP}(0,\Sigma)$. The IDE formulation in Eq.~\ref{DiscreteTimeModel} was solved using a numerical method described in Appendix~\ref{Space Discretization}. To generate iEEG/LFP data we used the output function 
 \begin{equation}
-	y_t\left(r_n\right) = \int_{\Omega}{m\left(|r_n-r'|\right)v_t\left(r\right)dr'}
+	y_t\left(r_n\right) = \int_{\Omega}{m\left(|r_n-r'|\right)v_t\left(r'\right)dr'}
 \end{equation}
 where $r_n$ defines the location of the sensors in the field where $n=1,...,N$ indexes the sensors. The output kernel $m(|r-r'|)$ governs the geometry of pick-up range of sensors where
 \begin{equation}
@@ -191,7 +206,7 @@ where $\phi(\mathbf{r})$ is a vector of Gaussian basis functions that are scaled
 \begin{equation}\label{DefKernelDecomp}
 	\tilde{w}( |r-r'| ) = \theta^T\psi\left(|r-r'|\right)
 \end{equation}
-Will will assume we know the parametric form of the connectivity basis functions, where the parameter $\theta$ is unknown. Each connectivity basis function can be considered a layer in the WC model, representing short range excitation, surround inhibition and mid-range excitation. Making substitutions of~\ref{DefFieldDecomp} and~\ref{DefKernelDecomp} into~\ref{DiscreteTimeModel} we get
+We will assume we know the parametric form of the connectivity basis functions, where the parameter $\theta$ is unknown. Each connectivity basis function can be considered a layer in the Wilson and Cowan model, representing short range excitation, surround inhibition and mid-range excitation. Making substitutions of~\ref{DefFieldDecomp} and~\ref{DefKernelDecomp} into~\ref{DiscreteTimeModel} we get
 \begin{equation}\label{reduced continuous model}
 	\phi^T\left( r \right)x_{t+1} = \delta\theta^T\int_\Omega  {\psi \left(|r-r'|\right)f\left( \phi ^T\left(r'\right)x_t \right)dr'}  - \lambda\phi^T\left(r\right)x_t + \delta I_t\left(r\right) + e_t\left(r\right).
 \end{equation}
@@ -204,11 +219,13 @@ and manipulating the model (see Appendix~\ref{Simplifying Decomposition}) we iso
 	x_{t+1} &=& \delta\Gamma^{ - 1}\int_\Omega {\phi\left(r\right) \int_\Omega {f\left(\phi^T\left(r'\right)x_t\right)\psi^T \left(|r-r'|\right)dr'} dr} \theta - \lambda x_t + \Gamma^{-1}\delta \int_\Omega{\phi \left(r\right) I_t\left(r\right)dr} + \int_\Omega{\phi\left(r\right)\tilde{e}_t\left(r\right)dr} \\
 	&=&\delta q(x_t) \theta -\lambda x_t + + \Gamma^{-1}\delta \int_\Omega{\phi \left(r\right) I_t\left(r\right)dr} + \int_\Omega{\phi(r)\tilde{e}_t(r)dr}
 \end{eqnarray}
+\begin{todo}{Define q}\end{todo}
 where $\tilde{e}_t\left(r\right) \sim \mathcal{N}\left(0,R' \Sigma R\right)$ and $R$ is the Cholesky decomposition of $\Gamma^{-1}$. The observation equation of the reduced model is
 \begin{eqnarray}\label{ObservationEquation}
     y_t( r_n ) &=& \int_\Omega  m\left(|r_n-r|\right)\phi^T\left(r\right) dr x_t  + \varepsilon_t ( r_n ) \\
 	&=& C x_t + \varepsilon_t ( r_n ).
 \end{eqnarray}
+\begin{todo}{Define C}\end{todo}
 
 \section{Spectral Analysis and Decomposition}
 This section provides
@@ -232,24 +249,22 @@ where $\kappa$ represents the systems parameters.
 \appendices
 
 \section{Discrete Time Model}\label{Time Discretization}
-Using a one-step Euler method we perform the time discretization by
 To form the IDE neural field model a time discretization must be perform. We used a one-step Euler method where Eq.~\ref{FinalForm1} can be approximated by
 \begin{equation}\label{Euler Approximation}	
 \frac{v\left( r,t+\delta \right) - v\left( r,t\right)}{\delta} =   -\alpha v\left( r,t \right) + \int_\Omega  {w\left( |r-r'| \right)f\left( {v\left( r',t \right)} \right)dr'} + I\left(r,t\right).
 \end{equation}
 For clarity, we shall index time points in the discrete time form of the model using the subscript $t$ and the next time point as $t+1$. Rearranging Eq.~\ref{Euler Approximation} we get
 \begin{eqnarray}\label{Euler Approximation}	
-v_{t+1}\left( r\right) &=& v_t\left( r\right) -\delta \alpha v_t\left( r\right) + \delta \int_\Omega  {w\left( |r-r'| \right)f\left( {v_t\left( r'\right)} \right)dr'} + \delta I_t\left(r\right) \\
-&=& \lambda v_t(r) + \delta \int_\Omega  {w\left( |r-r'| \right)f\left( {v_t\left( r'\right)} \right)dr'} + \delta I_t\left(r\right)
+v_{t+1}\left( r\right) &=& v_t\left( r\right) -\delta \alpha v_t\left( r\right) + \delta \int_\Omega  {w\left( |r-r'| \right)f\left( {v_t\left( r'\right)} \right)dr'} + \delta I_t\left(r\right)
 \end{eqnarray}
 The discrete time form of the model is
 \begin{equation}\label{Discrete Time Model1}
-	v_{t+1}\left(r\right) = \lambda v_t\left(r\right) + \delta \int_\Omega { w\left(|r-r'|\right) f\left(v_t\left(r'\right)\right) dr'} + \delta I\left(r,t\right).
+	v_{t+1}\left(r\right) = \lambda v_t\left(r\right) + \delta \int_\Omega { w\left(|r-r'|\right) f\left(v_t\left(r'\right)\right) dr'} + \delta I_t\left(r\right).
 \end{equation}
 where $\lambda = 1 - \delta \alpha$.
 
 \section{Numerical Solution to IDE Model}\label{Space Discretization}
-To solve the PDE we define the spatial aspect of the model on a regular square $i,j$ grid of neural masses, where the spatial step size $\Delta \mathbf{r}_i = \Delta \mathbf{r}_j = \Delta $ giving
+To solve the convolution integral in \ref{Discrete Time Model1} we define the spatial aspect of the model on a regular square $i,j$ grid of neural masses, where the spatial step size $\Delta \mathbf{r}_i = \Delta \mathbf{r}_j = \Delta $ giving
 \begin{equation}\label{discrete space}
 	v_{t+1}\left(r_{ij}\right) =  \lambda v_t(r_{ij}) + \delta \Delta^2 \sum_{i=1}^{i=I}{\sum_{j=1}^{j=J}{\tilde{w}\left( |r_{ij}-r_{ij}'| \right)f\left( v_t\left( r_{ij}'\right) \right)} } + \delta I_t\left(r\right) + \tilde{e}_t(r_{i,j})
 \end{equation}
@@ -268,11 +283,11 @@ where
 We have used periodic boundary conditions to alleviate problems associated with edge effects.
 
 \section{Reduction to Finite State-Space Model}\label{Simplifying Decomposition}
-Starting from Eq.~\ref{reduced continuous model} we crossing multiply and integrate over the field to get
+Starting from Eq.~\ref{reduced continuous model} we multiply throughout by $\phi(r)$ and integrate over the spatial domain $\Omega$ to get
 \begin{equation}\label{Poo}
 	\int_\Omega  {\phi \left(r\right)\phi^T\left(r\right) dr} x_{t+1} = \delta \int_\Omega  {\phi (r) \theta^T \int_\Omega  {\psi \left(|r-r'|\right)f\left(\phi^T\left(r'\right) x_t \right)dr'}dr}  - \lambda\int_\Omega {\phi(r)\phi^T(r)dr} x_t + \delta \int_\Omega{\phi \left(r\right) I_t\left(r\right)dr} + \int_\Omega{\phi \left(r\right) e_t\left(r\right)dr}.
 \end{equation}
-Substituting Eq.~\ref{DefGamma} into Eq.~\ref{Poo} and cross-multiplying by $\Gamma^{-1}$ gives the state-space model
+Substituting Eq.~\ref{DefGamma} into Eq.~\ref{Poo} and cross-multiplying by $\Gamma^{-1}$ gives 
 \begin{equation}\label{Homogeneous SS Model}
 	x_{t+1} = \delta\Gamma^{ - 1}\int_\Omega {\phi\left(r\right) \int_\Omega {f\left(\phi^T\left(r'\right)x_t\right)\psi^T \left(|r-r'|\right)dr'} dr} \theta - \lambda x_t + \Gamma^{-1}\delta \int_\Omega{\phi \left(r\right) I_t\left(r\right)dr} + \Gamma^{-1}\int_\Omega{\phi\left(r\right)e_t\left(r\right)dr}.
 \end{equation}
@@ -331,7 +346,7 @@ We have
 \begin{equation}
 v_{t + 1}\left( \mathbf{r} \right)  = T_s\int_\Omega  {k\left( {{\bf{r}} , {\bf{r'}}} \right)f\left( {{v_t}\left( \bf{r'} \right)} \right)d{\bf{r'}}} + \lambda v_t\left( {\bf{r}} \right) + T_se_t\left( {\mathbf{r}} \right).
 \end{equation}
-where the disturbance $e_t(\mathbf r)$ is a zero-mean normally distributed noise process, spatially coloured but temporally independent, with covariance 
+where the disturbance $e_t(\mathbf r)$ is a zero-mean normally distributed noise process, spatially coloured but temporally white, with covariance 
 
 \begin{equation}
 cov(e_t(\mathbf{s}),e_{t+\tau}(\mathbf{r}))=
