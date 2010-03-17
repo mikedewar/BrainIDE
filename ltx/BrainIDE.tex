@@ -109,12 +109,10 @@ The post-synaptic response kernel $h(t)$ is described by
 \end{equation}
 where $\alpha=\tau^{-1}$ and $\tau$ is the synaptic time constant and $u(t)$ is the Heaviside step function. The synaptic response kernel can be more elaborate, using rise and fall time constants, however, this simple form serves our purposes. Nonlocal interactions between cortical populations are described by	
 \begin{equation}\label{RateBasedInteractions}
-	g\left( r,t \right) = \int_\Omega  {w\left( r,r' \right)f\left( v\left( r',\bar t \right) \right)dr'} + I\left(r,t\right)
+	g\left( r,t \right) = \int_\Omega  {w\left( r,r' \right)f\left( v\left( r',t \right) \right)dr'} + I\left(r,t\right)
 \end{equation}
-\begin{todo}
-	{Do we really need this representation with $\bar t$. It makes convolution look wrong. DF: Don't need since we dont include delays. The motivation was to be general at the beginning, and for everyone to understand how the model is used elsewhere.}
-\end{todo}
-where $\bar t = t - d\left| {r - r'} \right|$, $d$ is the propagation delay of action potentials, $f$ is spiking rate of populations $r'$, $w$ is the spatial connectivity kernel, and $\Omega$ is the spatial domain, representing a cortical sheet or surface. The term $I\left(r,t\right)$ accounts for spontaneous activity of the neural populations. The connectivity kernel is a Mexican hat shape described by the sum of weighted Gaussian functions
+
+where $f$ is spiking rate of populations $r'$, $w$ is the spatial connectivity kernel, and $\Omega$ is the spatial domain, representing a cortical sheet or surface. The term $I\left(r,t\right)$ accounts for spontaneous activity of the neural populations. The connectivity kernel is a Mexican hat shape described by the sum of weighted Gaussian functions
 \begin{eqnarray}\label{Connectivity Kernel}
 	w\left(r,r'\right) &=& \theta^T \psi\left(r,r'\right) \\
 	\psi\left(r,r'\right) &=&\exp{\left(-\frac{1}{2}(r'-r)^T\Sigma_w (r'-r)\right)}
@@ -127,11 +125,11 @@ where
 	{Parham ... how are you writing this? DF: I have tried to make it better, but Parham can you check.}
 \end{todo}The average firing rate of the presynaptic neurons is related to the postsynaptic membrane potential by the sigmoidal activation function
 \begin{equation}\label{ActivationFunction}
-	f\left( v\left( r', \bar t \right) \right) = \frac{\nu _0\left(r\right)}{1 + \exp \left( \beta \left( v_0\left( r \right) - v\left(r',\bar{t} \right) \right) \right)}.
+	f\left( v\left( r', \bar t \right) \right) = \frac{\nu _0\left(r\right)}{1 + \exp \left( \beta \left( v_0\left( r \right) - v\left(r',t\right) \right) \right)}.
 \end{equation}
 Even though we will model $v_0$ and $\nu_0$ as being homogeneous across the cortical sheet we will express it as being spatially dependant allowing for generality at this point. By combining Eqs.~\ref{SpikesToPotential} and \ref{RateBasedInteractions} we get the spatiotemporal model
 \begin{equation}\label{FullDoubleIntModel}
-	v\left(r,t\right) = \int_{-\infty}^t h\left(t - t'\right) \left(\int_\Omega   w\left(r,r'\right) f\left( v\left( r',\bar t \right)\right)dr' + I(r,t) \right)dt'
+	v\left(r,t\right) = \int_{-\infty}^t h\left(t - t'\right) \left(\int_\Omega   w\left(r,r'\right) f\left( v\left( r',t \right)\right)dr' + I(r,t) \right)dt'
 \end{equation}
 % The rearrange the model into an integro-differential we take the Laplace transform of~\ref{FullDoubleIntModel} giving
 % \begin{equation}
@@ -147,19 +145,19 @@ To arrive at the final form of the model we shall state the synaptic response ke
 \end{equation}
 where $L=\frac{d}{dt} + \alpha$ is a temporal differential operator and $\delta(t)$ is the Dirac-delta function giving 
 \begin{equation}\label{FinalForm1}
-	\frac{dv\left( r,t \right)}{dt} + \alpha v\left( r,t \right) = \int_\Omega  {w\left( r,r' \right)f\left( {v\left( r',\bar t \right)} \right)dr'} + I\left(r,t\right).
+	\frac{dv\left( r,t \right)}{dt} + \alpha v\left( r,t \right) = \int_\Omega  {w\left( r,r' \right)f\left( {v\left( r',t \right)} \right)dr'} + I\left(r,t\right).
 \end{equation}
 
 \section{Generating Data}
-To generate iEEG/LFP data we proceeded with the assumption of spatial homogeneity for the connectivity and activation function parameters, implying $w(r,r') = w\left(|r-r'|\right)$, $\nu_0(r) = \nu_0$ and $v_0(r) = v_0$. In addition we assume the synaptic transmission delay is negligible such that $\bar{t}=t$. The model was discretized in time  (see Appendix~\ref{Time Discretization}) and a stochastic term was added to drive the system and account for uncertainty in the model giving
+To generate iEEG/LFP data we proceeded with the assumption of spatial homogeneity for the connectivity and activation function parameters, implying $w(r,r') = w\left(|r-r'|\right)$, $\nu_0(r) = \nu_0$ and $v_0(r) = v_0$. In addition we assume the synaptic transmission delay is negligible. The model was discretized in time  (see Appendix~\ref{Time Discretization}) and a stochastic term was added to drive the system and account for uncertainty in the model giving
 \begin{equation}\label{DiscreteTimeModel}
 	v_{t+1}\left(r\right) = \lambda v_t\left(r\right) + \delta \int_\Omega { w\left(|r-r'|\right) f\left(v_t\left(r'\right)\right) dr'} + \delta I_t\left(r\right) + e_t\left(r\right)
 \end{equation}
 where $\delta$ is the time step, $\lambda = 1-\alpha\delta$ and $e_t(r) \sim \mathcal{GP}(0,\Sigma)$. The IDE formulation in Eq.~\ref{DiscreteTimeModel} was solved using a numerical method described in Appendix~\ref{Space Discretization}. To generate iEEG/LFP data we used the output function 
 \begin{equation}
-	y_t\left(r_n\right) = \int_{\Omega}{m\left(|r_n-r'|\right)v_t\left(r'\right)dr'}
+	y_t = \int_{\Omega}{m\left(|r_n-r'|\right)v_t\left(r'\right)dr'} + \varepsilon_t
 \end{equation}
-where $r_n$ defines the location of the sensors in the field where $n=1,...,N$ indexes the sensors. The output kernel $m(|r-r'|)$ governs the geometry of pick-up range of sensors where
+where $r_n$ defines the location of the sensors in the field where $n=1,...,N$ indexes the sensors and $\varepsilon_t \sim \mathcal{N}\left(0,\Sigma_y\right)$. The output kernel $m(|r-r'|)$ governs the geometry of pick-up range of sensors where
 \begin{equation}
 	m\left(|r-r'|\right) = \exp{\left(-\frac{1}{2}(r'-r)^T\Sigma_m (r'-r)\right)}.
 \end{equation}
@@ -217,29 +215,30 @@ By defining the term
 \end{equation}
 and manipulating the model (see Appendix~\ref{Simplifying Decomposition}) we isolate the state vector to form a state-space model
 \begin{eqnarray}\label{Homogeneous SS Model}
-	x_{t+1} &=& \delta\Gamma^{ - 1}\int_\Omega {\phi\left(r\right) \int_\Omega {f\left(\phi^T\left(r'\right)x_t\right)\psi^T \left(|r-r'|\right)dr'} dr} \theta - \lambda x_t + \Gamma^{-1}\delta \int_\Omega{\phi \left(r\right) I_t\left(r\right)dr} + \int_\Omega{\phi\left(r\right)\tilde{e}_t\left(r\right)dr} \\
-	&=&\delta q(x_t) \theta -\lambda x_t + + \Gamma^{-1}\delta \int_\Omega{\phi \left(r\right) I_t\left(r\right)dr} + \int_\Omega{\phi(r)\tilde{e}_t(r)dr}
+	x_t &=& q(x_t,\theta,\lambda) + k(I_t) + \tilde{e}_t \\
+	q(x_t,\theta,\lambda) &=& \delta\Gamma^{ - 1}\int_\Omega {\phi\left(r\right) \int_\Omega {f\left(\phi^T\left(r'\right)x_t\right)\psi^T \left(|r-r'|\right)dr'} dr} \theta - \lambda x_t \\
+	k(I_t) &=& \Gamma^{-1}\delta \int_\Omega{\phi \left(r\right) I_t\left(r\right)dr} \\
+	\tilde{e}_t &=& \Gamma^{-1}\int_\Omega{\phi\left(r\right)e_t\left(r\right)dr} \\
 \end{eqnarray}
-\begin{todo}{Define q}\end{todo}
-where $\tilde{e}_t\left(r\right) \sim \mathcal{N}\left(0,R' \Sigma R\right)$ and $R$ is the Cholesky decomposition of $\Gamma^{-1}$. The observation equation of the reduced model is
+where $\tilde{e}_t \sim \mathcal{N}\left(0,R' \Sigma R\right)$ and $R$ is the Cholesky decomposition of $\Gamma^{-1}$. The observation equation of the reduced model is
 \begin{eqnarray}\label{ObservationEquation}
-    y_t( r_n ) &=& \int_\Omega  m\left(|r_n-r|\right)\phi^T\left(r\right) dr x_t  + \varepsilon_t ( r_n ) \\
-	&=& C x_t + \varepsilon_t ( r_n ).
+    y_t &=& z\left(x_t\right) + \varepsilon_t \\
+	z\left(x_t\right) &=& \int_\Omega m\left(|r_n-r|\right)\phi^T\left(r\right) dr x_t.
 \end{eqnarray}
-\begin{todo}{Define C}\end{todo}
 
 \section{Spectral Analysis and Decomposition}
 This section provides
 
 
 \section{State and Parameter Estimation}
-The unscented Kalman filter was used for the state estimation (reference the Julier and Uhlmann paper). This method is appropriate for state estimation of stochastic nonlinear dynamical systems. Alternatives to this approach are the extended Kalman filter (ref?) (EKF) and sequential Monte Carlo (SMC) filtering (ref?). The extended Kalman filter approximates the state transition equation by linearizing about the fixed points (by calculating the Jacobian) of the state transition equation at each time step. The linearization maintains the Gaussianality in the model. The unscented Kalman filter approximates the \emph{a posteriori} state density by a Gaussian distribution, whilst maintaining the nonlinearity in the system. This has been shown to give superior performance over the EKF in state estimation, as the EKF maintains a first order approximation where the UKF provides a second order approximation. In addition, the computational requirements of the UKF are smaller than the EKF, since the EKF computes the Jacobian at each time step, where the UKF does not. SMC filtering (particle filtering) can theoretically provide an exact \emph{a posteriori} state density for nonlinear systems. However, this method is not appropriate for our problem, since it is not feasible for high dimensional systems, due to computation demands.
-The approximation of the state density is made by propagating the so called sigma points through the state-space model. The sigma points describe the mean and covariance of the state estimate. The accuracy of the approximation is linked to the time step used in the temporal discretization of the system, where the state transition appears more linear with a finer resolution. To explain the operation of the UKF we begin by explain the traditional Kalman filter with the state-space model
+The unscented Kalman filter was used for the state estimation (reference the Julier and Uhlmann paper). This method is appropriate for state estimation of stochastic nonlinear dynamical systems. Alternatives to this approach are the extended Kalman filter (ref?) (EKF) and sequential Monte Carlo (SMC) filtering (ref?). The extended Kalman filter approximates the state transition equation by linearizing about the fixed points (by calculating the Jacobian) at each time step. The linearization maintains the Gaussianality in the model. The unscented Kalman filter approximates the \emph{a posteriori} state density by a Gaussian distribution, whilst maintaining the nonlinearity in the system. This has been shown to give superior performance over the EKF in state estimation, as the EKF maintains a first order approximation where the UKF provides a second order approximation. In addition, the computational requirements of the UKF are smaller than the EKF, since the EKF computes the Jacobian at each time step, where the UKF does not. SMC filtering (particle filtering) can theoretically provide an exact \emph{a posteriori} state density for nonlinear systems. However, this method is not appropriate for our problem, since it is not feasible for high dimensional systems, due to computation demands.
+
+The approximation of the state density is made by propagating the so called sigma points through the state-space model. The sigma points describe the mean and covariance of the state estimate. The accuracy of the approximation is linked to the time step used in the temporal discretization of the system, where the state transition appears more linear with a finer resolution. To explain the operation of the UKF we begin by deriving the traditional Kalman filter with the state-space model
 \begin{eqnarray}
-	x_t = q(x_t,\kappa) + \tilde{e}_t \\
+	x_t = q(x_t,\theta,\lambda) + k(I_t) + \tilde{e}_t \\
 	y_t = z(x_t) + \varepsilon_t,
 \end{eqnarray}
-where $\kappa$ represents the systems parameters. 
+where $\theta$ and $\lambda$ are the systems parameters. 
 
 \section{Comparison of Estimated Parameters and True Parameters}
 
