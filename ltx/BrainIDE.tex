@@ -211,6 +211,8 @@ where $\tilde{e}_t\left(r\right) \sim \mathcal{N}\left(0,R' \Sigma R\right)$ and
 \end{eqnarray}
 
 \section{Spectral Analysis and Decomposition}
+This section provides
+
 
 \section{State and Parameter Estimation}
 The unscented Kalman filter was used for the state estimation (reference the Julier and Uhlmann paper). This method is appropriate for state estimation of stochastic nonlinear dynamical systems. Alternatives to this approach are the extended Kalman filter (ref?) (EKF) and sequential Monte Carlo (SMC) filtering (ref?). The extended Kalman filter approximates the state transition equation by linearizing about the fixed points (by calculating the Jacobian) of the state transition equation at each time step. The linearization maintains the Gaussianality in the model. The unscented Kalman filter approximates the \emph{a posteriori} state density by a Gaussian distribution, whilst maintaining the nonlinearity in the system. This has been shown to give superior performance over the EKF in state estimation, as the EKF maintains a first order approximation where the UKF provides a second order approximation. In addition, the computational requirements of the UKF are smaller than the EKF, since the EKF computes the Jacobian at each time step, where the UKF does not. SMC filtering (particle filtering) can theoretically provide an exact \emph{a posteriori} state density for nonlinear systems. However, this method is not appropriate for our problem, since it is not feasible for high dimensional systems, due to computation demands.
