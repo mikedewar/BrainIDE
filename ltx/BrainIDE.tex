@@ -154,7 +154,17 @@ To generate iEEG/LFP data we proceeded with the assumption of spatial homogeneit
 \begin{equation}\label{DiscreteTimeModel}
 	v_{t+1}\left(r\right) = \lambda v_t\left(r\right) + \delta \int_\Omega { w\left(|r-r'|\right) f\left(v_t\left(r'\right)\right) dr'} + \delta I_t\left(r\right) + e_t\left(r\right)
 \end{equation}
-where $\delta$ is the time step, $\lambda = 1-\alpha\delta$ and $e_t(r) \sim \mathcal{GP}(0,\Sigma)$. The IDE formulation in Eq.~\ref{DiscreteTimeModel} was solved using a numerical method described in Appendix~\ref{Space Discretization}. To generate iEEG/LFP data we used the output function 
+where $\delta$ is the time step, $\lambda = 1-\alpha\delta$ and $e_t(r) \sim \mathcal{GP}(0,\Sigma)$\begin{todo}{
+is a spatially colored but temporally white with covariance
+\begin{equation}
+ cov(e_t(\mathbf{r}),e_{t+\tau}(\mathbf{r'}))=
+\begin{cases}
+\beta\left(\mathbf{r}-\mathbf{r'}\right), & \tau=0 \\
+0 & \mathrm{otherwise}
+\end{cases}
+\label{eq:FieldCovariance}
+\end{equation}}
+\end{todo}. The IDE formulation in Eq.~\ref{DiscreteTimeModel} was solved using a numerical method described in Appendix~\ref{Space Discretization}. To generate iEEG/LFP data we used the output function 
 \begin{equation}
 	y_t(r_n) = \int_{\Omega}{m\left(|r_n-r'|\right)v_t\left(r'\right)dr'} + \varepsilon_t
 \end{equation}
@@ -221,6 +231,13 @@ and manipulating the model (see Appendix~\ref{Simplifying Decomposition}) we iso
 	k(I_t) &=& \Gamma^{-1}\delta \int_\Omega{\phi \left(r\right) I_t\left(r\right)dr} \\
 	\tilde{e}_t &=& \Gamma^{-1}\int_\Omega{\phi\left(r\right)e_t\left(r\right)dr} \\
 \end{eqnarray}
+\begin{todo}{where $\tilde{e}_t$ is a zero-mean normal white noise term with the covariance (see Appendix D)
+\begin{equation} 
+\mathbf \Sigma_w={}\mathbf{\Gamma}^{-1}\iint\limits_{\Omega}\boldsymbol\phi\left(\mathbf r\right) \beta\left(\mathbf r- \mathbf r' \right)\boldsymbol\phi\left(\mathbf r'\right)^{\top}d\mathbf r' d\mathbf r\mathbf{\Gamma}^{- \top} 
+\end{equation}}
+ 
+\end{todo}
+
 where $\tilde{e}_t \sim \mathcal{N}\left(0,R' \Sigma R\right)$ and $R$ is the Cholesky decomposition of $\Gamma^{-1}$. The observation equation of the reduced model is
 \begin{eqnarray}\label{ObservationEquation}
     y_t &=& z\left(x_t\right) + \varepsilon_t \\
@@ -345,27 +362,27 @@ where $\tilde{e}_t\left(r\right) \sim \mathcal{N}\left(0,R' \Sigma R\right)$ and
 \section{Colored noise}
 We have
 \begin{equation}
-v_{t + 1}\left( \mathbf{r} \right)  = T_s\int_\Omega  {k\left( {{\bf{r}} , {\bf{r'}}} \right)f\left( {{v_t}\left( \bf{r'} \right)} \right)d{\bf{r'}}} + \lambda v_t\left( {\bf{r}} \right) + T_se_t\left( {\mathbf{r}} \right).
+v_{t + 1}\left( \mathbf{r} \right)  = \delta\int_\Omega  {k\left( {{\bf{r}} , {\bf{r'}}} \right)f\left( {{v_t}\left( \bf{r'} \right)} \right)d{\bf{r'}}} + \lambda v_t\left( {\bf{r}} \right) +e_t\left( {\mathbf{r}} \right).
 \end{equation}
 where the disturbance $e_t(\mathbf r)$ is a zero-mean normally distributed noise process, spatially coloured but temporally white, with covariance 
 
 \begin{equation}
-cov(e_t(\mathbf{s}),e_{t+\tau}(\mathbf{r}))=
+cov(e_t(\mathbf{r}),e_{t+\tau}(\mathbf{r'}))=
 \begin{cases}
-\beta\left(\mathbf{s}-\mathbf{r}\right), & \tau=0 \\
+\beta\left(\mathbf{r}-\mathbf{r'}\right), & \tau=0 \\
 0 & \mathrm{otherwise}
 \end{cases}
 \label{eq:FieldCovariance}
 \end{equation}
 The final state-space model is given by
 \begin{equation}
-x_{t + 1} = T_sq(x_t)\theta -\lambda x_t + T_s\Gamma^{-1}\int_\Omega  {\phi ( \mathbf{r} )e_t( \mathbf{r} )d\mathbf{r}}
+x_{t + 1} = \delta q(x_t)\theta -\lambda x_t + \Gamma^{-1}\int_\Omega  {\phi ( \mathbf{r} )e_t( \mathbf{r} )d\mathbf{r}}
 \end{equation}
 then the covariance of the noise term is given by
 \begin{eqnarray}
-\mathbf \Sigma_w&{}={}&T_s^2 \times \mathbf{\Gamma}^{-1}\mathbf E[\int_{\mathcal{S}}\boldsymbol\phi\left(\mathbf s\right)e_t\left(\mathbf s\right)d\mathbf s\int_{\mathcal{S}}\boldsymbol\phi\left(\mathbf r\right)^{\top}e_t\left(\mathbf r\right)d\mathbf r]\mathbf{\Gamma}_{x}^{- \top} \nonumber \\
-&=&T_s^2 \times\mathbf{\Gamma}^{-1}\iint\limits_{\mathcal{S}}\boldsymbol\phi\left(\mathbf s\right) \mathbf E[e_t\left(\mathbf s\right)e_t\left(\mathbf r\right)]\boldsymbol\phi\left(\mathbf r\right)^{\top}d\mathbf r d\mathbf s\mathbf{\Gamma}^{- \top} \nonumber\\
-&=&{}T_s^2 \times\mathbf{\Gamma}^{-1}\iint\limits_{\mathcal{S}}\boldsymbol\phi\left(\mathbf s\right) \beta\left(\mathbf s- \mathbf r \right)\boldsymbol\phi\left(\mathbf r\right)^{\top}d\mathbf r d\mathbf s\mathbf{\Gamma}^{- \top} 
+\mathbf \Sigma_w&{}={}&\mathbf{\Gamma}^{-1}\mathbf E[\int_{\Omega}\boldsymbol\phi\left(\mathbf r\right)e_t\left(\mathbf r\right)d\mathbf r\int_{\Omega}\boldsymbol\phi\left(\mathbf r'\right)^{\top}e_t\left(\mathbf r'\right)d\mathbf r']\mathbf{\Gamma}^{- \top} \nonumber \\
+&=&\mathbf{\Gamma}^{-1}\iint\limits_{\Omega}\boldsymbol\phi\left(\mathbf r\right) \mathbf E[e_t\left(\mathbf r\right)e_t\left(\mathbf r'\right)]\boldsymbol\phi\left(\mathbf r'\right)^{\top}d\mathbf r' d\mathbf r\mathbf{\Gamma}^{- \top} \nonumber\\
+&=&{}\mathbf{\Gamma}^{-1}\iint\limits_{\Omega}\boldsymbol\phi\left(\mathbf r\right) \beta\left(\mathbf r- \mathbf r' \right)\boldsymbol\phi\left(\mathbf r'\right)^{\top}d\mathbf r' d\mathbf r\mathbf{\Gamma}^{- \top} 
 \end{eqnarray}
 
 \section{Parameter estimation using LS}
