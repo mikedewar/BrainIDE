@@ -106,9 +106,8 @@ The post-synaptic response kernel $h(t)$ is described by
 \end{equation}
 where $\alpha=\tau^{-1}$ and $\tau$ is the synaptic time constant and $\eta(t)$ is the Heaviside step function. The synaptic response kernel can be more elaborate, using rise and fall time constants, however, this simple form serves our purposes. Nonlocal interactions between cortical populations are described by	
 \begin{equation}\label{RateBasedInteractions}
-	g\left( \mathbf{r},t \right) = \int_\Omega  {w\left( \mathbf{r},\mathbf{r}' \right)f\left( v\left( \mathbf{r}',t \right) \right)d\mathbf{r}'} + u\left(\mathbf{r},t\right)
+	g\left( \mathbf{r},t \right) = \int_\Omega  {w\left( \mathbf{r},\mathbf{r}' \right)f\left( v\left( \mathbf{r}',t \right) \right)d\mathbf{r}'} + u\left(\mathbf{r},t\right),
 \end{equation}
-
 where $f$ is spiking rate of populations $\mathbf{r}'$, $w$ is the spatial connectivity kernel, and $\Omega$ is the spatial domain, representing a cortical sheet or surface. The term $u\left(\mathbf{r},t\right)$ represents a known external input. The connectivity kernel is typically a Mexican hat shape described by the sum of weighted Gaussian functions. The shape of the kernel is not a critical parameter for our methodology so we shall not define it until later to keep the derivation as general as possible.
 % \begin{eqnarray}\label{Connectivity Kernel}
 % 	w\left(r,r'\right) =&& \\
@@ -128,7 +127,7 @@ The average firing rate of the presynaptic neurons is related to the postsynapti
 \end{equation}
 Even though we will model $v_0$ and $\nu_0$ as being homogeneous across the cortical sheet we will express it as being spatially dependant allowing for generality at this point. By combining Eqs.~\ref{SpikesToPotential} and \ref{RateBasedInteractions} we get the spatiotemporal model
 \begin{equation}\label{FullDoubleIntModel}
-	v\left(\mathbf{r},t\right) = \int_{-\infty}^t h\left(t - t'\right) \left(\int_\Omega   w\left(\mathbf{r},\mathbf{r}'\right) f\left( v\left( \mathbf{r}',t \right)\right)d\mathbf{r}' + u(\mathbf{r},t) \right)dt'
+	v\left(\mathbf{r},t\right) = \int_{-\infty}^t h\left(t - t'\right) \left(\int_\Omega   w\left(\mathbf{r},\mathbf{r}'\right) f\left( v\left( \mathbf{r}',t \right)\right)d\mathbf{r}' + u(\mathbf{r},t) \right)dt'.
 \end{equation}
 % The rearrange the model into an integro-differential we take the Laplace transform of~\ref{FullDoubleIntModel} giving
 % \begin{equation}
@@ -153,7 +152,7 @@ To arrive at the integro-difference equation (IDE) form of the model we discreti
 where $T$ is the time step, $\lambda = 1-\alpha T$ and $e_t(\mathbf{r}) \sim \mathcal{GP}\left(0,\Sigma\left(\mathbf{r}-\mathbf{r}'\right)\right)$ 
 is an iid spatially colored, temporally white disturbance term. This term was added to drive the system and account for uncertainty in the model. To generate iEEG/LFP data we used the output function 
 \begin{equation}
-	\mathbf{y}_t = \int_{\Omega}{m\left(\mathbf{r}_n-\mathbf{r}'\right)v_t\left(\mathbf{r}'\right)d\mathbf{r}'} + \boldsymbol{\varepsilon}_t
+	\mathbf{y}_t = \int_{\Omega}{m\left(\mathbf{r}_n-\mathbf{r}'\right)v_t\left(\mathbf{r}'\right)d\mathbf{r}'} + \boldsymbol{\varepsilon}_t,
 \end{equation}
 where $\mathbf{r}_n$ defines the location of the sensors in the field where $n=1,...,N$ indexes the sensors and $\varepsilon_t \sim \mathcal{N}\left(0,\Sigma_y\right)$. The output kernel $m(\mathbf{r}-\mathbf{r}')$ governs the geometry of pick-up range of sensors where
 \begin{equation}
@@ -201,15 +200,15 @@ where $\mathbf{r}_n$ defines the location of the sensors in the field where $n=1
 \section{Derivation of Finite Dimensional State-Space Model}
 In order to implement standard estimation techniques we use a decomposition of the field using a set of Gaussian basis functions. Decomposition allows a continuous field to be represented by a finite dimensional state vector. This allows for the application of standard nonlinear, non-Gaussian state estimation methods such as the unscented Kalman filter. The field decomposition is described by
 \begin{equation}\label{DefFieldDecomp}
-	v_t\left(\mathbf{r}\right) \approx \boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) \mathbf{x}_t
+	v_t\left(\mathbf{r}\right) \approx \boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) \mathbf{x}_t,
 \end{equation}
 where $\mathbf{\boldsymbol{\phi}}(\mathbf{r})$ is a vector of Gaussian basis functions that are scaled by the state vector, $\mathbf{x}_t$. The connectivity kernel can also be considered a decomposition into a set of basis functions in 
 \begin{equation}\label{DefKernelDecomp}
-	w\left(\mathbf{r}-\mathbf{r}'\right) = \boldsymbol{\theta}^{\top} \mathbf{\psi}\left(\mathbf{r}-\mathbf{r}'\right)
+	w\left(\mathbf{r}-\mathbf{r}'\right) = \boldsymbol{\theta}^{\top} \boldsymbol{\psi}\left(\mathbf{r}-\mathbf{r}'\right).
 \end{equation}
 We will assume we know the parametric form of the connectivity basis functions, where the parameter $\boldsymbol{\theta}$ is unknown. Each connectivity basis function can be considered a layer in the Wilson and Cowan model, representing short range excitation, surround inhibition and mid-range excitation. Making substitutions of~\ref{DefFieldDecomp} and~\ref{DefKernelDecomp} into~\ref{DiscreteTimeModel} we get
 \begin{equation}\label{reduced continuous model}
-	\boldsymbol{\phi}^{\top}\left( \mathbf{r} \right) \mathbf{x}_{t+1} = T\boldsymbol{\theta}^{\top}\int_\Omega  {\psi \left(\mathbf{r}-\mathbf{r}'\right) f\left( \boldsymbol{\phi} ^{\top}\left(\mathbf{r}'\right)\mathbf{x}_t \right)d\mathbf{r}'}  - \lambda\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right)x_t + T u_t\left(\mathbf{r}\right) + e_t\left(\mathbf{r}\right).
+	\boldsymbol{\phi}^{\top}\left( \mathbf{r} \right) \mathbf{x}_{t+1} = T\boldsymbol{\theta}^{\top}\int_\Omega  {\boldsymbol{\psi} \left(\mathbf{r}-\mathbf{r}'\right) f\left( \boldsymbol{\phi} ^{\top}\left(\mathbf{r}'\right)\mathbf{x}_t \right)d\mathbf{r}'}  - \lambda\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right)x_t + T u_t\left(\mathbf{r}\right) + e_t\left(\mathbf{r}\right).
 \end{equation}
 By defining the term
 \begin{equation}\label{DefGamma}
@@ -218,24 +217,22 @@ By defining the term
 and manipulating the model (see Appendix~\ref{Simplifying Decomposition}) we isolate the state vector to form a state-space model
 \begin{eqnarray}\label{Homogeneous SS Model}
 	\mathbf{x}_t &=& q(\mathbf{x}_t,\boldsymbol{\theta},\alpha) + k\left(u_t\left(\mathbf{r}\right)\right) + \mathbf{e}_t \\
-	q(\mathbf{x}_t,\boldsymbol{\theta},\alpha) &=& T\boldsymbol{\Gamma}^{ - 1}\int_\Omega {\boldsymbol{\phi}\left(\mathbf{r}\right) \int_\Omega {f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right)\mathbf{x}_t\right)\psi^{\top} \left(\mathbf{r}-\mathbf{r}'\right)d\mathbf{r}'} d\mathbf{r}} \boldsymbol{\theta} - \lambda \mathbf{x}_t \\
+	q(\mathbf{x}_t,\boldsymbol{\theta},\alpha) &=& T\boldsymbol{\Gamma}^{ - 1}\int_\Omega {\boldsymbol{\phi}\left(\mathbf{r}\right) \int_\Omega {f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right)\mathbf{x}_t\right)\boldsymbol{\psi}^{\top} \left(\mathbf{r}-\mathbf{r}'\right)d\mathbf{r}'} d\mathbf{r}} \boldsymbol{\theta} - \lambda \mathbf{x}_t \\
 	k(u_t(\mathbf{r})) &=& \boldsymbol{\Gamma}^{-1}T \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) u_t\left(\mathbf{r}\right)d\mathbf{r}} \\
-	\mathbf{e}_t &=& \boldsymbol{\Gamma}^{-1}\int_\Omega{\boldsymbol{\phi}\left(\mathbf{r}\right)e_t\left(\mathbf{r}\right)d\mathbf{r}} \\
+	\mathbf{e}_t &=& \boldsymbol{\Gamma}^{-1}\int_\Omega{\boldsymbol{\phi}\left(\mathbf{r}\right)e_t\left(\mathbf{r}\right)d\mathbf{r}},
 \end{eqnarray}
 where $\mathbf{e}_t$ is a zero-mean normal white noise term with the covariance (see Appendix D)
 \begin{equation} 
 \boldsymbol{\Sigma}_w=\boldsymbol{\Gamma}^{-1}\iint\limits_{\Omega}\boldsymbol{\phi}\left(\mathbf r\right) \rho\left(\mathbf{r}- \mathbf{r}' \right)\boldsymbol{\phi}\left(\mathbf{r}'\right)^{\top}d\mathbf{r}' d\mathbf{r}\boldsymbol{\Gamma}^{- \top} 
 \end{equation}
-
 \begin{equation}
  cov(\mathbf{e}_t,\mathbf{e}_{t+\tau})=
 \begin{cases}
 \rho\left(\mathbf{r}-\mathbf{r'}\right), & \tau=0 \\
-0 & \mathrm{otherwise}
+0 & \mathrm{otherwise}.
 \end{cases}
 \label{eq:FieldCovariance}
 \end{equation}
-
 The observation equation of the reduced model is
 \begin{eqnarray}\label{ObservationEquation}
     \mathbf{y}_t &=& z\left(\mathbf{x}_t\right) + \boldsymbol{\varepsilon}_t \\
@@ -259,6 +256,18 @@ where $\boldsymbol{\theta}$ and $\alpha$ are the systems parameters.
 \section{Comparison of Estimated Parameters and True Parameters}
 
 \section{Discussion}
+\begin{itemize}
+
+	\item Discuss the novelty of using the reduced model (BrainIDE) for creating patient specific models. 
+
+	\item Spatial frequency of field and the relationship to the required density of electrodes/sensors required for estimation or to capture the required information without aliasing.
+	
+	\item The flexibility of the approach
+	
+	\item Combining this method with other to incorporate longer range hetrogeneous connectivity.
+	
+	\item The need for activity to perform estimation.
+\end{itemize}
 
 \section{Conclusion}
 
@@ -271,18 +280,18 @@ To form the IDE neural field model a time discretization must be perform. We use
 \end{equation}
 For clarity, we shall index time points in the discrete time form of the model using the subscript $t$ and the next time point as $t+1$. Rearranging Eq.~\ref{Euler Approximation} we get
 \begin{eqnarray}\label{Euler Approximation}	
-v_{t+1}\left( \mathbf{r}\right) &=& v_t\left( \mathbf{r}\right) -T \alpha v_t\left( \mathbf{r}\right) + T \int_\Omega  {w\left( \mathbf{r}-\mathbf{r}' \right)f\left( {v_t\left( \mathbf{r}'\right)} \right)d\mathbf{r}'} + T u_t\left(\mathbf{r}\right)
+v_{t+1}\left( \mathbf{r}\right) &=& v_t\left( \mathbf{r}\right) -T \alpha v_t\left( \mathbf{r}\right) + T \int_\Omega  {w\left( \mathbf{r}-\mathbf{r}' \right)f\left( {v_t\left( \mathbf{r}'\right)} \right)d\mathbf{r}'} + T u_t\left(\mathbf{r}\right).
 \end{eqnarray}
 The discrete time form of the model is
 \begin{equation}\label{Discrete Time Model1}
-	v_{t+1}\left(\mathbf{r}\right) = \lambda v_t\left(\mathbf{r}\right) + T \int_\Omega { w\left(\mathbf{r}-\mathbf{r}'\right) f\left(v_t\left(\mathbf{r}'\right)\right) d\mathbf{r}'} + T u_t\left(\mathbf{r}\right).
+	v_{t+1}\left(\mathbf{r}\right) = \lambda v_t\left(\mathbf{r}\right) + T \int_\Omega { w\left(\mathbf{r}-\mathbf{r}'\right) f\left(v_t\left(\mathbf{r}'\right)\right) d\mathbf{r}'} + T u_t\left(\mathbf{r}\right),
 \end{equation}
 where $\lambda = 1 - T \alpha$.
 
-\section{Numerical Solution to IDE Model}\label{Space Discretization}
+\section{Numerical Simulation of IDE Model}\label{Space Discretization}
 To solve the intregro-difference equation in Eq.~\ref{Discrete Time Model1} we define the spatial aspect of the model on a regular square $i,j$ grid of neural masses, where the spatial step size $\Delta \mathbf{r}_i = \Delta \mathbf{r}_j = \Delta $ giving
 \begin{equation}\label{discrete space}
-	v_{t+1}\left(\mathbf{r}_{ij}\right) = \lambda v_t\left(\mathbf{r}_{ij}\right) + T \Delta^2 \sum_{i=1}^{i=I}{ \sum_{j=1}^{j=J}{ w\left( \mathbf{r}-\mathbf{r}_{ij}' \right)f\left( v_t\left( \mathbf{r}_{ij}'\right) \right)} } + T u_t\left(\mathbf{r}\right) + e_t(\mathbf{r}_{i,j})
+	v_{t+1}\left(\mathbf{r}_{ij}\right) = \lambda v_t\left(\mathbf{r}_{ij}\right) + T \Delta^2 \sum_{i=1}^{i=I}{ \sum_{j=1}^{j=J}{ w\left( \mathbf{r}-\mathbf{r}_{ij}' \right)f\left( v_t\left( \mathbf{r}_{ij}'\right) \right)} } + T u_t\left(\mathbf{r}\right) + e_t(\mathbf{r}_{i,j}),
 \end{equation}
 where $e_t(\mathbf{r}_{i,j}) \sim \mathcal{N}\left(0,\Sigma\right)$.
 %  and $\tilde{w}(r_{ij}-r_{ij}'|)$ discretized connectivity kernel described by
@@ -302,66 +311,21 @@ We have used periodic boundary conditions to alleviate problems associated with 
 \section{Reduction to Finite State-Space Model}\label{Simplifying Decomposition}
 Starting from Eq.~\ref{reduced continuous model} we multiply throughout by $\boldsymbol{\phi}(r)$ and integrate over the spatial domain $\Omega$ to get
 \begin{eqnarray}\label{Poo}
-	\int_\Omega  {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) d\mathbf{r}} \mathbf{x}_{t+1} = T \int_\Omega  {\boldsymbol{\phi} (\mathbf{r}) \boldsymbol{\theta}^{\top} \int_\Omega  {\psi \left(\mathbf{r}-\mathbf{r}'\right)f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right) \mathbf{x}_t \right)d\mathbf{r}'}d\mathbf{r}} - \lambda\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\phi}^{\top}(\mathbf{r})d\mathbf{r}} \mathbf{x}_t \\
+	\int_\Omega  {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) d\mathbf{r}} \mathbf{x}_{t+1} = T \int_\Omega  {\boldsymbol{\phi} (\mathbf{r}) \boldsymbol{\theta}^{\top} \int_\Omega  {\boldsymbol{\psi}  \left(\mathbf{r}-\mathbf{r}'\right) f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right) \mathbf{x}_t \right)d\mathbf{r}'}d\mathbf{r}} - \lambda\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\phi}^{\top}(\mathbf{r})d\mathbf{r}} \mathbf{x}_t \\
 	+ T \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) u_t\left(\mathbf{r}\right)d\mathbf{r}} + \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) e_t\left(\mathbf{r}\right)d\mathbf{r}}.
 \end{eqnarray}
 Substituting Eq.~\ref{DefGamma} into Eq.~\ref{Poo} and cross-multiplying by $\boldsymbol{\Gamma}^{-1}$ gives 
 \begin{eqnarray}\label{Homogeneous SS Model}
-	\mathbf{x}_{t+1} = T\boldsymbol{\Gamma}^{ - 1}\int_\Omega {\boldsymbol{\phi}\left(\mathbf{r}\right) \int_\Omega {f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right)\mathbf{x}_t\right)\psi^{\top} \left(\mathbf{r}-\mathbf{r}'\right)d\mathbf{r}'} d\mathbf{r}} \boldsymbol{\theta} - \lambda \mathbf{x}_t \\
+	\mathbf{x}_{t+1} = T\boldsymbol{\Gamma}^{ - 1}\int_\Omega {\boldsymbol{\phi}\left(\mathbf{r}\right) \int_\Omega {f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right)\mathbf{x}_t\right) \boldsymbol{\psi}^{\top} \left(\mathbf{r}-\mathbf{r}'\right)d\mathbf{r}'} d\mathbf{r}} \boldsymbol{\theta} - \lambda \mathbf{x}_t \\
 	+ \boldsymbol{\Gamma}^{-1}T \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) u_t\left(\mathbf{r}\right)d\mathbf{r}} + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}\left(\mathbf{r}\right)e_t\left(\mathbf{r}\right)d\mathbf{r}}.
 \end{eqnarray}
 
-% \section{Ken's Discretization}
-% Spatio-temporal interactions can be described by the continuous space continuous time stochastic differential equation
-% \begin{equation}\label{differential eq}	
-% \tau dv\left( r,t \right) = \left( -v\left( r,t \right) + \int_\Omega  {w\left( r,r' \right)f\left( {v\left( r',t \right)} \right)dr'} \right) dt  + d e\left( r,t \right).
-% \end{equation}
-% where $e\left( r,t \right)$ is a zero mean temporal Wiener process with incremental covariance $\Sigma_e(r)dt$. (not too sure about this noise since it needs to be white temporally but coloured spatially - which in continuous space-time I have never seen written ... has anyone?)
-% To simplify the notation, but without loss of generality, \ref{differential eq} can be rewritten as
-% \begin{equation}\label{differential simplified}
-% 	dv\left( r,t \right) = q\left(v(r,t) \right) dt  + d e\left( r,t \right)
-% \end{equation}
-% Had $q\left(v(r,t) \right)$ been a linear function in $v$, then \ref{differential simplified} could be rewritten as
-% \begin{equation}\label{differential linear}
-% 	dv\left( r,t \right) = Av(r,t)dt  + d e\left( r,t \right)
-% \end{equation}
-% Considering temporal sampling instances $\delta$ apart given by $\{t_k = 0,~1,~2, \ldots$ \}, then a solution to \ref{differential linear} at each sampling time is given by
-% \begin{equation}\label{linear solution}
-% 	v(r,t_k+\delta) = \exp\{A(\delta)\}x(t) + \int_{t_k}^{t_k+\delta}\exp\{A(t_k+\delta-\tau)\}de(r,\tau)
-% \end{equation}
-% Let the discrete time random variable $e'(r,t_k)$ be
-% \begin{equation}\label{discrete noise}
-% 	e'(r,t_k) = \int_{t_k}^{t_k+\delta}\exp\{A(t_k+\delta-\tau)\}de(r,\tau)
-% \end{equation}
-% then, $e'(r,t_k)$ is a zero mean, temporally white noise term with covariance
-% \begin{equation}\label{covariance of noise}
-% 	E\left[e'(r,t_k),e'^\top(r,t_k) \right] = \int_t^{t+\delta}\exp\{A(t_k+\delta-\tau)\} \Sigma_e(r) \exp\{A(t+\delta-\tau)\} d\tau
-% \end{equation}
-% 
-% But we are not so luck as to be able to go from \ref{differential simplified} to \ref{differential linear} and thus I doubt if we can obtain an exact solution to \ref{differential simplified} without an approximation. Agreed?
-% 
-% A possible approximate solution is the one you have already used. Thus, interpreting the difference equation \ref{differential simplified} as an integral equation gives
-% \begin{equation}\label{euler}
-% 	v\left(r,t\right) =  v(r,t_0) + \int_{t_0}^{t} q\left(v(r,\tau) \right) d\tau  + \int_{t_0}^{t} d e\left(r,\tau\right)
-% \end{equation}
-% Using an Euler approximation, \ref{euler} can be approximated at each sampling time by
-% \begin{equation}\label{euler approx 1}
-% 	v\left(r,t_{k+1} \right) =  v(r,t_k) + q\left(v(r,t_k)\right) (t_{k+1} - t_k) + (e(r,t_{k+1}) - e(r,t_k))
-% \end{equation}
-% which can be rewritten as
-% \begin{equation}\label{euler approx 2}
-% 	v\left(r,t_k + \delta \right) =  v(r,t_k) + \delta q\left(v(r,t_k)\right) + e'(r,t_k)
-% \end{equation}
-% where $e'(r,t_k)$ is a zero mean Gaussian random variable with covariance $\delta\Sigma_e$. (Note that, because of the way the noise is defined in \ref{differential eq} it is not $\delta^2$ but $\delta$)
-
-% you can choose not to have a title for an appendix
-% if you want by leaving the argument blank
 \section{Colored noise}
 We have
 \begin{equation}
-v_{t + 1}\left( \mathbf{r} \right)  = T\int_\Omega  {k\left( {{\bf{r}} , {\bf{r'}}} \right)f\left( {{v_t}\left( \bf{r'} \right)} \right)d{\bf{r'}}} + \lambda v_t\left( {\bf{r}} \right) +e_t\left( {\mathbf{r}} \right).
+v_{t + 1}\left( \mathbf{r} \right)  = T\int_\Omega  {k\left( {\mathbf{r}} , {\mathbf{r}'} \right)f\left( {{v_t}\left( \mathbf{r'} \right)} \right)d{\mathbf{r'}}} + \lambda v_t\left( {\mathbf{r}} \right) +e_t\left( {\mathbf{r}} \right).
 \end{equation}
-where the disturbance $e_t(\mathbf r)$ is a zero-mean normally distributed noise process, spatially coloured but temporally white, with covariance 
+where the disturbance $e_t(\mathbf{r})$ is a zero-mean normally distributed noise process, spatially coloured but temporally white, with covariance 
 
 \begin{equation}
 cov(e_t(\mathbf{r}),e_{t+\tau}(\mathbf{r'}))=
@@ -416,6 +380,7 @@ using the method of Least Square $ \mathbf W$ can be estimated
  \mathbf W\approx(\mathbf X^\top\mathbf X)^{-1}\mathbf X^\top\mathbf Z
 \end{equation}
 % use section* for acknowledgement
+
 \section{clarification for the derivation} 
 I ignore noise here. From equation (\ref{SpikesToPotential}) we can say $h$ is the foundamental solution to the equation
 \begin{equation}
@@ -435,7 +400,48 @@ substituting (\ref{RateBasedInteractions}) for $g(r,t)$ gives
 \frac{dv\left( {r,t} \right)}{dt} + \frac{1}{\tau} v\left( r,t \right) = \frac{1}{\tau}\int_\Omega  {w\left( r,r' \right)f\left( {v\left( r',\bar t \right)} \right)dr'} 
 \end{equation}
 
-
+% \section{Ken's Discretization}
+% Spatio-temporal interactions can be described by the continuous space continuous time stochastic differential equation
+% \begin{equation}\label{differential eq}	
+% \tau dv\left( r,t \right) = \left( -v\left( r,t \right) + \int_\Omega  {w\left( r,r' \right)f\left( {v\left( r',t \right)} \right)dr'} \right) dt  + d e\left( r,t \right).
+% \end{equation}
+% where $e\left( r,t \right)$ is a zero mean temporal Wiener process with incremental covariance $\Sigma_e(r)dt$. (not too sure about this noise since it needs to be white temporally but coloured spatially - which in continuous space-time I have never seen written ... has anyone?)
+% To simplify the notation, but without loss of generality, \ref{differential eq} can be rewritten as
+% \begin{equation}\label{differential simplified}
+% 	dv\left( r,t \right) = q\left(v(r,t) \right) dt  + d e\left( r,t \right)
+% \end{equation}
+% Had $q\left(v(r,t) \right)$ been a linear function in $v$, then \ref{differential simplified} could be rewritten as
+% \begin{equation}\label{differential linear}
+% 	dv\left( r,t \right) = Av(r,t)dt  + d e\left( r,t \right)
+% \end{equation}
+% Considering temporal sampling instances $\delta$ apart given by $\{t_k = 0,~1,~2, \ldots$ \}, then a solution to \ref{differential linear} at each sampling time is given by
+% \begin{equation}\label{linear solution}
+% 	v(r,t_k+\delta) = \exp\{A(\delta)\}x(t) + \int_{t_k}^{t_k+\delta}\exp\{A(t_k+\delta-\tau)\}de(r,\tau)
+% \end{equation}
+% Let the discrete time random variable $e'(r,t_k)$ be
+% \begin{equation}\label{discrete noise}
+% 	e'(r,t_k) = \int_{t_k}^{t_k+\delta}\exp\{A(t_k+\delta-\tau)\}de(r,\tau)
+% \end{equation}
+% then, $e'(r,t_k)$ is a zero mean, temporally white noise term with covariance
+% \begin{equation}\label{covariance of noise}
+% 	E\left[e'(r,t_k),e'^\top(r,t_k) \right] = \int_t^{t+\delta}\exp\{A(t_k+\delta-\tau)\} \Sigma_e(r) \exp\{A(t+\delta-\tau)\} d\tau
+% \end{equation}
+% 
+% But we are not so luck as to be able to go from \ref{differential simplified} to \ref{differential linear} and thus I doubt if we can obtain an exact solution to \ref{differential simplified} without an approximation. Agreed?
+% 
+% A possible approximate solution is the one you have already used. Thus, interpreting the difference equation \ref{differential simplified} as an integral equation gives
+% \begin{equation}\label{euler}
+% 	v\left(r,t\right) =  v(r,t_0) + \int_{t_0}^{t} q\left(v(r,\tau) \right) d\tau  + \int_{t_0}^{t} d e\left(r,\tau\right)
+% \end{equation}
+% Using an Euler approximation, \ref{euler} can be approximated at each sampling time by
+% \begin{equation}\label{euler approx 1}
+% 	v\left(r,t_{k+1} \right) =  v(r,t_k) + q\left(v(r,t_k)\right) (t_{k+1} - t_k) + (e(r,t_{k+1}) - e(r,t_k))
+% \end{equation}
+% which can be rewritten as
+% \begin{equation}\label{euler approx 2}
+% 	v\left(r,t_k + \delta \right) =  v(r,t_k) + \delta q\left(v(r,t_k)\right) + e'(r,t_k)
+% \end{equation}
+% where $e'(r,t_k)$ is a zero mean Gaussian random variable with covariance $\delta\Sigma_e$. (Note that, because of the way the noise is defined in \ref{differential eq} it is not $\delta^2$ but $\delta$)
 
 \section*{Acknowledgment}
 The authors would like to thank...
