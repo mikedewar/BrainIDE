@@ -3,6 +3,8 @@ import numpy as np
 import matplotlib.axes3d
 import time,warnings
 import os
+from scipy import signal
+import scipy as sp
 
 class IDE():
 
@@ -154,15 +156,65 @@ class IDE():
 		if hasattr(self,'K3'):
 			pass
 		else:
+
+			#Padding the kernel with zeros
+
+			field_width=2* pb.absolute(self.field.space[-1])
+			#column
+			K1[:,0:field_width/2.]=0 
+			K1[:,K_center[0]+1+(field_width/2.):]=0
+
+			K2[:,0:field_width/2.]=0 
+			K2[:,K_center[0]+1+(field_width/2.):]=0
+
+			K3[:,0:field_width/2.]=0 
+			K3[:,K_center[0]+1+(field_width/2.):]=0
+			#rows
+ 			K1[0:field_width/2]=0
+ 			K1[K_center[0]+1+(field_width/2.):]=0
+
+ 			K2[0:field_width/2]=0
+ 			K2[K_center[0]+1+(field_width/2.):]=0
+
+ 			K3[0:field_width/2]=0
+ 			K3[K_center[0]+1+(field_width/2.):]=0
+
 			self.K1=K1
 			self.K2=K2
 			self.K3=K3
+
 		if sim==1:
+
+
+			#Padding the kernel with zeros
+			field_width=2* pb.absolute(self.field.space[-1])
+
+			#column
+			K[:,0:field_width/2.]=0 
+			K[:,K_center[0]+1+(field_width/2.):]=0
+
+			#rows
+ 			K[0:field_width/2]=0
+ 			K[K_center[0]+1+(field_width/2.):]=0
+
 			self.K=K
 
 		if hasattr(self,'Beta'):
 			pass
 		else:
+
+
+			#Padding the kernel with zeros
+			field_width=2* pb.absolute(self.field.space[-1])
+
+			#column
+			Beta[:,0:field_width/2.]=0 
+			Beta[:,K_center[0]+1+(field_width/2.):]=0
+
+			#rows
+ 			Beta[0:field_width/2]=0
+ 			Beta[K_center[0]+1+(field_width/2.):]=0
+
 
 			self.Beta=Beta
 
@@ -181,21 +233,30 @@ class IDE():
 
 
 		
-		if hasattr(self.EEG,'ob_kernels_values'):
+		if hasattr(self,'observation_matrix'):
 			pass
 		else:
 
-			print "pre-calculating observation kernel vectors"
+			print "calculating observation matrix"
 			t0=time.time()
 			ob_kernels_values=[]
-			for s1 in self.EEG.space:
+			for s1 in self.EEG.space: #EEG.space equals to field_space
 				for s2 in self.EEG.space:
 					ob_kernels_values.append(self.EEG.observation_kernels(pb.matrix([[s1],[s2]])))
-			#we squeeze the result to have a matrix in a form of
-			#[m1(s1) m1(s2) ...m1(sl);m2(s1) m2(s2) ... m2(sl);...;mny(s1) mny(s2) ... mny(sl)]
+			#we squeeze the result and transpose it to have a matrix in a form of
+			#[m1(s1) m1(s2) ...m1(sl);m2(s1) m2(s2) ... m2(sl);...;mny(s1) mny(s2) ... mny(sl)] 
 			#where sl is the number of spatial points after discritization
-			self.EEG.ob_kernels_values=pb.matrix(pb.squeeze(ob_kernels_values).T)
+			EEG.ob_kernels_values=pb.matrix(pb.squeeze(ob_kernels_values).T)
 			print "Elapsed time in seconds is", time.time()-t0
+			#we squeeze the result to have a matrix in a form of
+			#[phi_1(s1) phi_2(s1) ...phi_n(s1);phi_1(s2) phi_2(s2) ...phi_n(s2);...;phi_1(sl) phi_2(sl) ...phi_n(sl)] 
+			#where sl is the number of spatial points after discritization
+			field_bases_squeezed=pb.squeeze(self.field.fbases)
+			#finding observation matrix using Broadcasting, making the field_bases_squeezed last dimension to 1
+			#self.observation_matrix=EEG.ob_kernels_values*field_bases_squeezed[:,:,pb.newaxis]
+			self.observation_matrix=pb.hstack([EEG.ob_kernels_values*pb.matrix(field_bases_squeezed[:,i]).T for i in range(field_bases_squeezed.shape[1])])
+	
+			
 
 
 		if hasattr(self,'Psi_x'):
@@ -223,12 +284,12 @@ class IDE():
 			#Sw=self.field_noise_variance*self.Psi_xinv white noise
 			self.Sw=Sw
 			try:
-				self.Swc=pb.linalg.cholesky(Sw)
+				self.Swc=sp.linalg.cholesky(self.Sw).T
 			except pb.LinAlgError:
 
 				raise
-			Svc=pb.linalg.cholesky(self.obs_noise_covariance)
-			self.Svc=Svc
+			Svc=sp.linalg.cholesky(self.obs_noise_covariance)
+			self.Svc=Svc.T
 
 	
 
@@ -263,7 +324,7 @@ class IDE():
 		K_center=(pb.floor(self.K.shape[0]/2.),pb.floor(self.K.shape[1]/2.))
 
 
-		field_update=np.array([self.act_fun(fr.T*x) for fr in self.field.fbases])
+		firing_rate=np.array([self.act_fun(fr.T*x) for fr in self.field.fbases])
 		print "iterating"
 		for t in T[1:]:
 
@@ -271,7 +332,7 @@ class IDE():
 			v = self.Svc*pb.matrix(np.random.randn(len(self.obs_locns),1))
 
 
-			print "simulation at time",t
+			#print "simulation at time",t
 
 			Kernel_convolution_at_s=[]
 			for i in range(len(self.field.space)):
@@ -279,17 +340,16 @@ class IDE():
 				for j in range(len(self.field.space)):
 					K_shift_y=pb.roll(K_shift_x,j) #shift kernel along y
 					K_truncate=K_shift_y[K_center[0]:,K_center[1]:]
-					Kernel_convolution_at_s.append(pb.sum(field_update*pb.ravel(K_truncate)))	
+					Kernel_convolution_at_s.append(pb.sum(firing_rate*pb.ravel(K_truncate)))	
 			sum_s=pb.hstack(self.field.fbases)*pb.matrix(Kernel_convolution_at_s).T
 			
 
 			sum_s *= (self.spacestep**4)
-			x=self.Ts*self.Psi_xinv*sum_s+(1-self.Ts*self.alpha)*x+self.Ts*w
+			x=self.Ts*self.Psi_xinv*sum_s+(1-self.Ts*self.alpha)*x+w
 			X.append(x)
-			field_update=np.array([self.act_fun(fr.T*x) for fr in self.field.fbases])
-			Y.append((self.spacestep**2)*(self.EEG.ob_kernels_values*pb.matrix(field_update.reshape(len(field_update),1)))+v)
+			Y.append((self.spacestep**2)*self.observation_matrix*x+v)
+			firing_rate=np.array([self.act_fun(fr.T*x) for fr in self.field.fbases])
 
-							
 		return X,Y
 
 
@@ -343,7 +403,7 @@ class IDE():
 		'''state sequence'''
 	
 		K_center=(pb.floor(self.K.shape[0]/2.),pb.floor(self.K.shape[1]/2.))
-		field_update=np.array([self.act_fun(fr.T*x) for fr in self.field.fbases])
+		firing_rate=np.array([self.act_fun(fr.T*x) for fr in self.field.fbases])
 
 		Kernel_convolution_at_s=[]
 		for i in range(len(self.field.space)):
@@ -351,7 +411,7 @@ class IDE():
 			for j in range(len(self.field.space)):
 				K_shift_y=pb.roll(K_shift_x,j) #shift kernel along y
 				K_truncate=K_shift_y[K_center[0]:,K_center[1]:]
-				Kernel_convolution_at_s.append(pb.sum(field_update*pb.ravel(K_truncate)))	
+				Kernel_convolution_at_s.append(pb.sum(firing_rate*pb.ravel(K_truncate)))	
 		sum_s=pb.hstack(self.field.fbases)*pb.matrix(Kernel_convolution_at_s).T
 		sum_s *= (self.spacestep**4)
 		x=self.Ts*self.Psi_xinv*sum_s+(1-self.Ts*self.alpha)*x
@@ -363,8 +423,7 @@ class IDE():
 	def h(self,x):
 
 		'''measurement equation'''
-		field_update=np.array([self.act_fun(fr.T*x) for fr in self.field.fbases])
-		y=(self.spacestep**2)*(self.EEG.ob_kernels_values*pb.matrix(field_update.reshape(len(field_update),1)))
+		y=(self.spacestep**2)*self.observation_matrix*x
 		return y
 
 class EEG():
@@ -433,12 +492,11 @@ class Field():
 
 
 
-	def plot(self,centers):
-		radius=2*pb.sqrt(pb.log(2))*(pb.sqrt(self.widths[0][0,0])) # It is calculated based on Full width at half maximum
+	def plot(self,centers,color):
+		radius=(2*pb.sqrt(pb.log(2))*(pb.sqrt(self.widths[0][0,0])))/2 # It is calculated based on Full width at half maximum,divided by 2 to give the radus
 		for center in centers:
-			circle(center,radius)
-		pb.title('field decomposition')	
-		pb.show()
+			circle(center,radius,color)
+
 
 
 class Kernel():
@@ -497,8 +555,14 @@ class Kernel():
 		fig = pb.figure()
 		ax = matplotlib.axes3d.Axes3D(fig)
 		s1,s2=pb.meshgrid(space,space)
+		params = {'axes.labelsize': 20,'text.fontsize': 20,'legend.fontsize': 10,'xtick.labelsize': 20,'ytick.labelsize': 20}
+		pb.rcParams.update(params) 
 		ax.plot_wireframe(s1,s2,y,color='k')
-		pb.title('kernel')
+		ax.set_xlabel(r'$ s_1-r_1$',fontsize=18)
+		ax.set_ylabel(r' $s_2-r_2$',fontsize=18)
+		ax.set_zlabel(r' $k(s-r)$',fontsize=18)
+
+
 		pb.show()
 
 class FieldCovarianceFunction():
@@ -676,6 +740,8 @@ class ukf():
 		# filter quantities
 		xhatStore =[]
 		PhatStore=[]
+
+
 		# initialise the filter
 
 		#calculate the weights
@@ -686,7 +752,7 @@ class ukf():
 		for y in Y:
 			#calculate the sigma points matrix, each column is a sigma vector
 			Chi=self.sigma_vectors(xhat,P)
-			# update sima points
+			# update sigma points
 			Chi_update=pb.matrix(pb.empty_like(Chi))
 			for i in range(Chi.shape[1]):
 				Chi_update[:,i]=self.model.f(Chi[:,i])	
@@ -695,28 +761,19 @@ class ukf():
 			Chi_purturbation=Chi_update-xhat_
 
 			weighted_Chi_purturbation=pb.multiply(Wc_i,Chi_purturbation)
-			P_=Chi_purturbation*weighted_Chi_purturbation.T+(self.model.Ts**2)*self.model.Sw
-			#redraw a new set of sigma points
-			Chi_redraw=self.sigma_vectors(xhat_,P_)
-			#calculate observations
-			Chi_redraw_observation_equation_update=pb.matrix(pb.empty((self.model.EEG.ny,Chi_redraw.shape[1])))
-			for i in range(Chi_redraw.shape[1]):
-				Chi_redraw_observation_equation_update[:,i]=self.model.h(Chi_redraw[:,i])	
-			yhat_=pb.sum(pb.multiply(Wm_i,Chi_redraw_observation_equation_update),1)
+			P_=Chi_purturbation*weighted_Chi_purturbation.T+self.model.Sw
+
 			
 			#measurement update equation
-			measurement_purturbation=Chi_redraw_observation_equation_update-yhat_
-			weighted_measurement_purturbation=pb.multiply(Wc_i,measurement_purturbation)
-			Pyy=measurement_purturbation*weighted_measurement_purturbation.T+self.model.obs_noise_covariance
-			Chi_redraw_purturbation=Chi_redraw-xhat_
-			Pxy=Chi_redraw_purturbation*weighted_measurement_purturbation.T
-			#K=Pxy*Pyy.I
-			#xhat=xhat_+K*(y-yhat_)
-			xhat=xhat_+(Pxy*Pyy.I)*(y-yhat_)
-			P=P_-Pxy*(Pyy.I).T*Pxy.T
-			#P=P_-K*Pyy*K.T
+			Pyy=self.model.observation_matrix*P_*self.model.observation_matrix.T+self.model.obs_noise_covariance
+			Pxy=P_*self.model.observation_matrix.T
+			K=Pxy*(Pyy.I)
+			yhat_=self.model.observation_matrix*xhat_
+			xhat=xhat_+K*(y-yhat_)
+			P=(pb.eye(self.model.field.nx)-K*self.model.observation_matrix)*P_
 			xhatStore.append(xhat)
 			PhatStore.append(P)
+
 		return xhatStore,PhatStore
 
 	def rtssmooth(self,Y):
@@ -731,9 +788,6 @@ class ukf():
 
 		xhatStore =[]
 		PhatStore=[]
-		xhatPredStore=[]
-		PhatPredStore=[]
-		PxyStore=[]
 		# initialise the filter
 
 		#calculate the weights
@@ -750,31 +804,23 @@ class ukf():
 				Chi_update[:,i]=self.model.f(Chi[:,i])	
 			#pointwise multiply by weights and sum along y-axis
 			xhat_=pb.sum(pb.multiply(Wm_i,Chi_update),1)
-			xhatPredStore.append(xhat_)
+			#xhatPredStore.append(xhat_)
 			Chi_purturbation=Chi_update-xhat_
 
 			weighted_Chi_purturbation=pb.multiply(Wc_i,Chi_purturbation)
-			P_=Chi_purturbation*weighted_Chi_purturbation.T+(self.model.Ts**2)*self.model.Sw
-			PhatPredStore.append(P_)
-			#redraw a new set of sigma points
-			Chi_redraw=self.sigma_vectors(xhat_,P_)
-			#calculate observations
-			Chi_redraw_observation_equation_update=pb.matrix(pb.empty((self.model.EEG.ny,Chi_redraw.shape[1])))
-			for i in range(Chi_redraw.shape[1]):
-				Chi_redraw_observation_equation_update[:,i]=self.model.h(Chi_redraw[:,i])	
-			yhat_=pb.sum(pb.multiply(Wm_i,Chi_redraw_observation_equation_update),1)
-			
+			P_=Chi_purturbation*weighted_Chi_purturbation.T+self.model.Sw
+
+						
 			#measurement update equation
-			measurement_purturbation=Chi_redraw_observation_equation_update-yhat_
-			weighted_measurement_purturbation=pb.multiply(Wc_i,measurement_purturbation)
-			Pyy=measurement_purturbation*weighted_measurement_purturbation.T+self.model.obs_noise_covariance
-			Chi_redraw_purturbation=Chi_redraw-xhat_
-			Pxy=Chi_redraw_purturbation*weighted_measurement_purturbation.T
-			PxyStore.append(Pxy)
-			xhat=xhat_+(Pxy*Pyy.I)*(y-yhat_)
-			P=P_-Pxy*(Pyy.I).T*Pxy.T
+			Pyy=self.model.observation_matrix*P_*self.model.observation_matrix.T+self.model.obs_noise_covariance
+			Pxy=P_*self.model.observation_matrix.T
+			K=Pxy*(Pyy.I)
+			yhat_=self.model.observation_matrix*xhat_
+			xhat=xhat_+K*(y-yhat_)
+			P=(pb.eye(self.model.field.nx)-K*self.model.observation_matrix)*P_
 			xhatStore.append(xhat)
 			PhatStore.append(P)
+
 		# initialise the smoother
 		T=len(Y)
 		xb = [None]*T
@@ -799,7 +845,7 @@ class ukf():
 			weighted_Chi_smooth_purturbation=pb.multiply(Wc_i,Chi_smooth_purturbation) #W_ci*(X_k-m_k)
 			weighted_Chi_smooth_update_purturbation=pb.multiply(Wc_i,Chi_smooth_update_purturbation)#W_ci*(X_k+1-m_k+1_)
 
-			P_smooth_=Chi_smooth_update_purturbation*weighted_Chi_smooth_update_purturbation.T+(self.model.Ts**2)*self.model.Sw
+			P_smooth_=Chi_smooth_update_purturbation*weighted_Chi_smooth_update_purturbation.T+self.model.Sw
 			#(X_k+1-m_k+1_)*W_ci*(X_k+1-m_k+1_).T
 			C_smooth=weighted_Chi_smooth_purturbation*Chi_smooth_update_purturbation.T
 			#W_ci*(X_k-m_k)*(X_k+1-m_k+1_).T
@@ -841,7 +887,7 @@ class para_state_estimation():
 		T=len(X)
 		for t in range(T):
 
-			field_update=np.array([self.model.act_fun(fr.T*X[t]) for fr in self.model.field.fbases])
+			firing_rate=np.array([self.model.act_fun(fr.T*X[t]) for fr in self.model.field.fbases])
 			K1_convolution_at_s=[]
 			K2_convolution_at_s=[]
 			K3_convolution_at_s=[]
@@ -859,15 +905,15 @@ class para_state_estimation():
 					K2_truncate=K2_shift_y[K_center[0]:,K_center[1]:]
 					K3_truncate=K3_shift_y[K_center[0]:,K_center[1]:]
 
-					K1_convolution_at_s.append(pb.sum(field_update*pb.ravel(K1_truncate)))
-					K2_convolution_at_s.append(pb.sum(field_update*pb.ravel(K2_truncate)))
-					K3_convolution_at_s.append(pb.sum(field_update*pb.ravel(K3_truncate)))
+					K1_convolution_at_s.append(pb.sum(firing_rate*pb.ravel(K1_truncate)))
+					K2_convolution_at_s.append(pb.sum(firing_rate*pb.ravel(K2_truncate)))
+					K3_convolution_at_s.append(pb.sum(firing_rate*pb.ravel(K3_truncate)))
 
 
 
 			K_convolution_at_s=pb.hstack((pb.matrix(K1_convolution_at_s).T,pb.matrix(K2_convolution_at_s).T,pb.matrix(K3_convolution_at_s).T))
 			sum_s=pb.hstack(self.model.field.fbases)*K_convolution_at_s
-			sum_s *= (self.model.spacestep**4)
+			sum_s *= (self.model.spacestep**4) #2 for convolution and two for multiplying by phi and integrating
 			q=self.model.Ts*self.model.Psi_xinv*sum_s
 			Q.append(q)
 			
@@ -903,25 +949,26 @@ class para_state_estimation():
 		# form state soace model
 		self.model.gen_ssmodel()
 		# generate a random state sequence
-		Xb= [pb.matrix(np.random.rand(self.model.field.nx,1)) for t in Y]
-
+		#Xb= [pb.matrix(np.random.rand(self.model.field.nx,1)) for t in Y]
+		Xhat= [pb.matrix(np.random.rand(self.model.field.nx,1)) for t in Y]
 		# iterate
 		keep_going = 1
 		it_count = 0
 		print " Estimatiing IDE's kernel and field weights"
 		t0=time.time()
 		while keep_going:
-
-			self.model.kernel.weights=self.estimate_kernel(Xb)
-			#_filter=getattr(ukf(self.model),'_filter')
-			_filter=getattr(ukf(self.model),'rtssmooth')
-			Xb,Pb,Xhat,Phat=_filter(Y)
-			self.Xb=Xb
-			self.Pb=Pb
+			#temp=self.estimate_kernel(Xb)
+			temp=self.estimate_kernel(Xhat)
+			self.model.kernel.weights,self.model.alpha=temp[0:-1],float(temp[-1])
+			_filter=getattr(ukf(self.model),'_filter')
+			#_filter=getattr(ukf(self.model),'rtssmooth')
+			#Xb,Pb,Xhat,Phat=_filter(Y)
+			Xhat,Phat=_filter(Y)
+			#self.Xb=Xb
+			#self.Pb=Pb
 			self.Xhat=Xhat
 			self.Phat=Phat
-			print it_count, " Kernel current estimate: ", self.model.kernel.weights.T
-			#print it_count,"current estimate of Frobenius Norm: ", self.FroNorm()
+			print it_count, " Kernel current estimate: ", self.model.kernel.weights.T, "alpha", self.model.alpha
 			if it_count == max_it:
 				keep_going = 0
 			it_count += 1
@@ -948,7 +995,7 @@ def gaussian(s,centre,width,dimension):
 		width = pb.matrix(width)
 		return float(pb.exp(-(s-centre).T*width.I*(s-centre)))
 
-def circle(center,radius):
+def circle(center,radius,color):
 	"""
 		plot a circle with given center and radius
 
@@ -965,28 +1012,9 @@ def circle(center,radius):
 	for i,j in enumerate(u):
 		x0[i]=radius*pb.sin(j)+center[0,0]
 		y0[i]=radius*pb.cos(j)+center[1,0]
-	pb.plot(x0,y0)
+	pb.plot(x0,y0,color)
 	
 
-
-def gen_obs_lattice(observation_centers_along_xy):
-	"""
-		generates spatial lattice
-
-		Arguments
-		----------
-		observation_centers: array
-			x,y of the centers of the Sensors
-		Returns
-		---------
-		centers of the sensors: list of matrix
-		the first element of the list is the bottom left corner of the spatial lattice
-		then it goes to the top left corner (moving along the y-axis), then increment x and
-		again goes along the y-axix till it reaches the top right corner of the spatial lattice
-
-	"""
-
-	return [np.matrix([[i,j]]).T for i in observation_centers_along_xy for j in observation_centers_along_xy]
 
 
 	
@@ -996,72 +1024,49 @@ def gen_obs_locations(FieldWidth,SensorWidth,SensorSpacing,BoundryEffectWidth):
 	SensorSpacing  in mm
 	BoundryEffectWidth 
 	'''
-	ObservationCentre = pb.arange(-FieldWidth/2. + BoundryEffectWidth,FieldWidth/2. - BoundryEffectWidth+1,SensorSpacing)
-	NSensors = len(ObservationCentre**2)
-	RightDistance = np.abs((FieldWidth/2. - BoundryEffectWidth) - ObservationCentre[-1]);              
-	ObservationCentre = ObservationCentre + RightDistance/2.;   
-	return ObservationCentre
+	ObservationCentre = pb.linspace(-FieldWidth/2. + BoundryEffectWidth,FieldWidth/2. - BoundryEffectWidth,FieldWidth/SensorSpacing)
+	#ObservationCentre = pb.arange(-FieldWidth/2. + BoundryEffectWidth,FieldWidth/2. - BoundryEffectWidth+1,SensorSpacing)
+	return [np.matrix([[i,j]]).T for i in ObservationCentre for j in ObservationCentre]
 
 
 
-def field_centers(FieldWidth,Massdensity,field_basis_separation,field_basis_width):
 
-	"""
-		initialise space properties: finding the centers of the basis functions
 
-		Arguments
-		----------
-		FieldWidth : int
-			mm in each axis, should be even
-		Massdensity:  int
-			masses per mm
+def gen_spatial_lattice(S):
+	"""generates a list of vectors, where each vector is a co-ordinate in a lattice"""
+	number_of_points = len(S)**2
 
-		field_basis_separation: int
-			distance between each basis finction in mm
+	space = [0 for i in range(number_of_points)]
+	count = 0
+	for i in S:
+		for j in S:
+			space[count] = pb.matrix([[i],[j]])
+			count += 1
+	return space
 
-		field_basis_width:
-			the width of the basis functions in mm
 
-		Returns
-		----------
-		list of matrices
-			centers of basis functions
-	"""
 
-	N_masses_in_width=Massdensity*FieldWidth+1
-	
-	x_center_outer =pb.linspace(-FieldWidth/2.,FieldWidth/2.,N_masses_in_width/(2.*field_basis_separation/pb.sqrt(2)));
-	y_center_outer = x_center_outer;
 
+def field_centers(FieldWidth,sep):
+	x_center_outer =pb.linspace(-FieldWidth/2.,FieldWidth/2.,FieldWidth/sep);
+	y_center_outer = x_center_outer
 	distance_between_centers = abs(x_center_outer[1]-x_center_outer[0]);
-	x_center_inner = pb.linspace(-FieldWidth/2.+distance_between_centers/2.,FieldWidth/2.-distance_between_centers/2.,N_masses_in_width/		(2.*field_basis_separation/pb.sqrt(2))-1)
-	y_center_inner = x_center_inner
-
-	f_centers_inner=[np.array([[i,j]]).T for i in x_center_inner for j in y_center_inner]
 	f_centers_outer=[np.array([[i,j]]).T for i in x_center_outer for j in y_center_outer]
-	f_centers=np.concatenate([f_centers_outer,f_centers_inner])
-	return [pb.matrix(x) for x in f_centers]
-
-
-def field_cent(FieldWidth,sep):
-	x_center_outer =pb.arange(-FieldWidth/2.+1,FieldWidth/2.,sep);
-	y_center_outer = x_center_outer;
-	f_centers_outer=[np.array([[i,j]]).T for i in x_center_outer for j in y_center_outer]
-	x_center_inner =pb.arange(-FieldWidth/2.+sep/2.+1,FieldWidth/2.-sep/2.,sep);
+	x_center_inner =pb.linspace(-FieldWidth/2.+distance_between_centers/2.,FieldWidth/2.-distance_between_centers/2.,FieldWidth/sep-1);
 	y_center_inner = x_center_inner
 	f_centers_inner=[np.array([[i,j]]).T for i in x_center_inner for j in y_center_inner]
 	f_centers=np.concatenate([f_centers_outer,f_centers_inner])
 	
 	return [pb.matrix(x) for x in f_centers]
 
-def plot_field(X,fbases,f_space):
+def subplot_field(X,Xhat,fbases,f_space):
 	"""
 		plots spatial field
 
 		Arguments
 		----------
 		X: matrix
-			State vector at each time instant
+			State vector at a given time instant
 		fbases: list of matrix
 		each entery is the vector of basis functions: matrix
 			matrix of nx x 1 dimension [phi_1(s) phi_2(s) ... phi_nx(s)].T
@@ -1070,22 +1075,30 @@ def plot_field(X,fbases,f_space):
 			x,y of the spatial locations	
 		Returns
 		---------
-		plot the spatial field at a given time instant
+		gives the subplot of the spatial field and its estimate at a given time instant
 
 	"""
+	fig=pb.figure()
 	z=pb.zeros((len(f_space),len(f_space)))
+	zhat=pb.zeros((len(f_space),len(f_space)))
 	m=0
 	for i in range(len(f_space)):
 		for j in range(len(f_space)):
 			z[i,j]=float(X.T*fbases[m]) 
+			zhat[i,j]=float(Xhat.T*fbases[m])
 			m+=1
-	pb.imshow(z,origin='lower',aspect=1, alpha=1,extent=[min(f_space),max(f_space),min(f_space),max(f_space)])	
+	ax=fig.add_subplot(121)
+	pb.imshow(z,origin='lower',aspect=1, alpha=1,vmin=z.min(),vmax=z.max(),extent=[min(f_space),max(f_space),min(f_space),max(f_space)])	
 	pb.colorbar(shrink=.55) 
+	ax=fig.add_subplot(122)
+	pb.imshow(zhat,origin='lower',aspect=1, alpha=1,vmin=z.min(),vmax=z.max(),extent=[min(f_space),max(f_space),min(f_space),max(f_space)])	
+	pb.colorbar(shrink=.55)
 	pb.show()
 
-def anim_field(X,fbases,f_space):
+
+def avi_sub(X,Xhat,fbases,f_space,filename,play=0):
 	"""
-		animates neural field
+		creat avi for the neural field
 
 		Arguments
 		----------
@@ -1096,15 +1109,152 @@ def anim_field(X,fbases,f_space):
 			matrix of nx x 1 dimension [phi_1(s) phi_2(s) ... phi_nx(s)].T
 
 		f_space: array
+			x,y of the spatial locations
+
+		filename: 	
+		Returns
+		---------
+		avi of the neural field
+
+	"""
+
+	files=[]
+	filename=" "+filename
+
+	for t in range(len(X)):
+		z=pb.zeros((len(f_space),len(f_space)))
+		zhat=pb.zeros((len(f_space),len(f_space)))
+		m=0
+		for i in range(len(f_space)):
+			for j in range(len(f_space)):
+				z[i,j]=float(X[t].T*fbases[m])
+				zhat[i,j]=float(Xhat[t].T*fbases[m])
+				m+=1
+		fig=pb.figure()		
+		ax=fig.add_subplot(121)
+		pb.imshow(z,origin='lower',aspect=1, alpha=1,vmin=z.min(),vmax=z.max(),extent=[min(f_space),max(f_space),min(f_space),max(f_space)])
+		pb.colorbar(shrink=.55)
+		ax=fig.add_subplot(122)
+		pb.imshow(zhat,origin='lower',aspect=1, alpha=1,vmin=z.min(),vmax=z.max(),extent=[min(f_space),max(f_space),min(f_space),max(f_space)])	
+		pb.colorbar(shrink=.55)
+		
+		fname = '_tmp%05d.jpg'%t
+		pb.savefig(fname,format='jpg')
+		pb.close()
+		files.append(fname)
+	
+	os.system("ffmpeg -r 5 -i _tmp%05d.jpg -y -an"+filename+".avi")
+	# cleanup
+	for fname in files: os.remove(fname)
+	if play: os.system("vlc"+filename+".avi")
+
+
+
+def plot_field_error_V(V_matrix,Xhat,fbases,f_space,save=0,dpi=300,filename='filename'):
+	"""
+		plots spatial field
+
+		Arguments
+		----------
+		X: matrix
+			State vector at a given time instant
+		fbases: list of matrix
+		each entery is the vector of basis functions: matrix
+			matrix of nx x 1 dimension [phi_1(s) phi_2(s) ... phi_nx(s)].T
+
+		f_space: array
 			x,y of the spatial locations	
 		Returns
 		---------
-		animates neural field
+		gives the subplot of the spatial field and its estimate at a given time instant
 
 	"""
-	pb.ion()
+	zhat=pb.zeros((len(f_space),len(f_space)))
+	m=0
+	for i in range(len(f_space)):
+		for j in range(len(f_space)):
+			zhat[i,j]=float(Xhat.T*fbases[m])
+			m+=1
+	error=V_matrix-zhat
+	params = {'axes.labelsize': 20,'text.fontsize': 20,'legend.fontsize': 10,'xtick.labelsize': 20,'ytick.labelsize': 20}
+	pb.rcParams.update(params) 
+	pb.imshow(error,origin='lower',aspect=1, alpha=1,extent=[min(f_space),max(f_space),min(f_space),max(f_space)])	
+	pb.colorbar(shrink=.55) 
+	pb.xlabel(r'$ s_1$',fontsize=25)
+	pb.ylabel(r' $s_2$',fontsize=25)
+
+	if save:
+		pb.savefig(filename+'.pdf',dpi=dpi)
+	pb.show()	
+
+
+def plot_field(X,fbases,f_space,save=0,dpi=300,filename='filename'):
+	"""
+		plots spatial field
+
+		Arguments
+		----------
+		X: matrix
+			State vector at a given time instant
+		fbases: list of matrix
+		each entery is the vector of basis functions: matrix
+			matrix of nx x 1 dimension [phi_1(s) phi_2(s) ... phi_nx(s)].T
+
+		f_space: array
+			x,y of the spatial locations	
+		Returns
+		---------
+		gives the plot of the spatial field  at a given time instant
+
+	"""
+
+	z=pb.zeros((len(f_space),len(f_space)))
+
+	m=0
+	for i in range(len(f_space)):
+		for j in range(len(f_space)):
+			z[i,j]=float(X.T*fbases[m]) 
+
+			m+=1
+	params = {'axes.labelsize': 20,'text.fontsize': 20,'legend.fontsize': 10,'xtick.labelsize': 20,'ytick.labelsize': 20}
+	pb.rcParams.update(params) 
+	pb.imshow(z,origin='lower',aspect=1, alpha=1,extent=[min(f_space),max(f_space),min(f_space),max(f_space)])	
+	pb.colorbar(shrink=.55) 
+
+	pb.xlabel(r'$ s_1$',fontsize=25)
+	pb.ylabel(r' $s_2$',fontsize=25)
+	if save:
+		pb.savefig(filename+'.pdf',dpi=dpi)
+	pb.show()	
+
+
+
+
+def avi(X,fbases,f_space,filename,play=0):
+	"""
+		creat avi for the neural field
+
+		Arguments
+		----------
+		X: list of matrix
+			State vectors
+		fbases: list of matrix
+		each entery is the vector of basis functions: matrix
+			matrix of nx x 1 dimension [phi_1(s) phi_2(s) ... phi_nx(s)].T
+
+		f_space: array
+			x,y of the spatial locations
+
+		filename: 	
+		Returns
+		---------
+		avi of the neural field
+
+	"""
 	fig_hndl =pb.figure()
 	files=[]
+	filename=" "+filename
+
 	for t in range(len(X)):
 		z=pb.zeros((len(f_space),len(f_space)))
 		m=0
@@ -1112,23 +1262,61 @@ def anim_field(X,fbases,f_space):
 			for j in range(len(f_space)):
 				z[i,j]=float(X[t].T*fbases[m]) 
 				m+=1
-		image=pb.imshow(z,animated=True,origin='lower',aspect=1, alpha=1,extent=[min(f_space),max(f_space),min(f_space),max(f_space)])
+		pb.figure()		
+		pb.imshow(z,animated=True,origin='lower',aspect=1, alpha=1,extent=[min(f_space),max(f_space),min(f_space),max(f_space)])
+		pb.colorbar()
 
-	pb.ioff()	
+		fname = '_tmp%05d.jpg'%t
+		pb.savefig(fname,format='jpg')
+		pb.close()
+		files.append(fname)
+	
+	os.system("ffmpeg -r 5 -i _tmp%05d.jpg -y -an"+filename+".avi")
+	# cleanup
+	for fname in files: os.remove(fname)
+	if play: os.system("vlc"+filename+".avi")
 
+def plot_field_estimate_std(fbases,Pb,f_space,save=0,dpi=300,filename='filename'):
+	'''Calculate the covariance of the field estimate at a given time
 
+	Arguments:
+	----------
+	fbases: List of matrix
+			each matrix is the vector of field basis functions at a spatial location
+			L[0]=[phi_1(s_1) phi_2(s_1) ... phi_n(s_p)]; n:no of basis functions p:no of spatial locations
+	Pb: matrix
+		the covariance matrix of the state estimates from snoother at a given time
+	Returns
+	-------
+	the covariance of the field estimate at a given time: matrix
+			
+	'''
 
+	z=pb.zeros((len(f_space),len(f_space)))
+	m=0
+	for i in range(len(f_space)):
+		for j in range(len(f_space)):
+			z[i,j]=fbases[m].T*Pb*fbases[m]
+			m+=1
+	params = {'axes.labelsize': 20,'text.fontsize': 20,'legend.fontsize': 10,'xtick.labelsize': 20,'ytick.labelsize': 20}
+	pb.rcParams.update(params) 
+	pb.imshow(pb.sqrt(z),origin='lower',aspect=1, alpha=1,extent=[min(f_space),max(f_space),min(f_space),max(f_space)])	
+	pb.colorbar(shrink=.55)
+	pb.xlabel(r'$ s_1$',fontsize=25)
+	pb.ylabel(r' $s_2$',fontsize=25)
+	if save:
+		pb.savefig(filename+'.pdf',dpi=dpi)
+	pb.show()
 
-def plot_states(Xreal,Xest):
+def plot_states(Xreal,Xest,n):
 	T=len(Xest)
-	for i in range(len(Xest[0])):
-		x1=pb.zeros(T)
-		x2=pb.zeros(T)
-		for tau in range(T):
-			x1[tau]=(float(Xreal[tau][i]))
-			x2[tau]=(float(Xest[tau][i]))
-		pb.plot(range(T),x1,'k',range(T),x2,':k')
-		pb.show()
+	x1=[]
+	x2=[]
+	for i in range(len(Xreal)):
+		x1.append(float(Xreal[i][n]))
+		x2.append(float(Xest[i][n]))
+	pb.plot(range(T),x1,'k',range(T),x2,':k')
+	pb.show()
 
 def plot_smooth_states(Xreal,Xb,Xest):
 	T=len(Xest)
@@ -1177,5 +1365,116 @@ def rmse(Xreal,Xest,n):
 		Xrealn.append(Xreal[i][n])
 		Xestn.append(Xest[i][n])
 	return pb.sqrt((pb.mean(pb.array(Xrealn)-pb.array(Xestn)))**2)
+
+def field_frequency_response(X,f_space,fbases,stepsize):
+	"""
+		calculate and plot average frequency response of the field
+
+		Arguments
+		----------
+		X: list of matrix
+			State vectors
+		fbases: list of matrix
+		each entery is the vector of basis functions: matrix
+			matrix of nx x 1 dimension [phi_1(s) phi_2(s) ... phi_nx(s)].T
+
+		f_space: array
+			x,y of the spatial locations
+
+		stepsize: float
+			distance between field basis functions
+
+		 	
+		Returns
+		---------
+		average frequency response: array
+		frequency range: array
+		plot average frequency response
+	"""
+	Z=[]
+	for t in range(len(X)):
+		z=pb.zeros((len(f_space),len(f_space)))
+		m=0
+		for i in range(len(f_space)):
+			for j in range(len(f_space)):
+				z[i,j]=float(X[t].T*fbases[m]) 
+				m+=1
+		Z.append(z)
+	fresponse=0
+	for i in range(len(Z)):
+		fresponse=fresponse+pb.absolute(pb.fft2(Z[i]))
+
+	fresponse=fresponse/len(Z)
+	freq=pb.fftfreq(fresponse.shape[0],float(stepsize)) #generates the frequency array [0,pos,neg] over which fft2 is taken
+	Nyquist_freq=freq.max() #find the Nyquist frequency it is not exact (depending y.shape[0] is odd or even) but close to Nyquist frequency
+	freq_range=2*Nyquist_freq #the frequency range over which fft2 is taken
+	pb.imshow(fresponse,origin='lower',extent=[0,freq_range,0,freq_range],interpolation='nearest',cmap=pb.cm.gray,vmin=fresponse.min(),vmax=fresponse.max())
+	pb.colorbar(shrink=.55)
+	pb.show()
+	return pb.flipud(fresponse.T),freq
+
+
+def subplot_field_V(V_matrix,Xhat,fbases,f_space):
+	"""
+		plots spatial field (before discritization and after discritization)
+
+		Arguments
+		----------
+		V_matrix:
+			field matrix before discritization
+		
+		X: matrix
+			State vector at a given time instant
+		fbases: list of matrix
+		each entery is the vector of basis functions: matrix
+			matrix of nx x 1 dimension [phi_1(s) phi_2(s) ... phi_nx(s)].T
+
+		f_space: array
+			x,y of the spatial locations	
+		Returns
+		---------
+		gives the subplot of the spatial field and its estimate at a given time instant
+
+	"""
+	fig=pb.figure()
+	zhat=pb.zeros((len(f_space),len(f_space)))
+	m=0
+	for i in range(len(f_space)):
+		for j in range(len(f_space)):
+			zhat[i,j]=float(Xhat.T*fbases[m])
+			m+=1
+	ax=fig.add_subplot(121)
+	pb.imshow(zhat,origin='lower',aspect=1, alpha=1,vmin=V_matrix.min(),vmax=V_matrix.max(),extent=[min(f_space),max(f_space),min(f_space),max(f_space)])	
+	pb.colorbar(shrink=.55) 
+	ax=fig.add_subplot(122)
+	pb.imshow(V_matrix,aspect=1,origin='lower', alpha=1,vmin=V_matrix.min(),vmax=V_matrix.max(),extent=[min(f_space),max(f_space),min(f_space),max(f_space)])	
+	pb.colorbar(shrink=.55)
+	pb.show()
+
+def plot_field_V(V,f_space,save=0,dpi=300,filename='filename'):
+
+	"""
+		plots spatial field
+
+		Arguments
+		----------
+		V: matrix
+			Spatial field at each time instant
+
+		f_space: array
+			x,y of the spatial locations	
+		Returns
+		---------
+		plot the spatial field at a given time instant
+
+	"""
+	params = {'axes.labelsize': 25,'text.fontsize': 25,'legend.fontsize': 25,'xtick.labelsize': 25,'ytick.labelsize': 25}
+	pb.imshow(V,aspect=1,origin='lower', alpha=1,extent=[min(f_space),max(f_space),min(f_space),max(f_space)])#interpolation='nearest',	
+	pb.colorbar(shrink=.55) 
+	pb.xlabel(r'$ s_1$',fontsize=25)
+	pb.ylabel(r' $s_2$',fontsize=25)
+	if save:
+		pb.savefig(filename+'.pdf',dpi=dpi)
+	pb.show()	
 
 
