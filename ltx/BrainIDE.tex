@@ -32,7 +32,7 @@
 
 \author{Dean~R.~Freestone,~\IEEEmembership{Graduate Student Member,~IEEE,}
         Parham~Aram,~\IEEEmembership{Graduate Student Member,~IEEE,}
-        Michael~Dewar,~\IEEEmembership{Member,~IEEE,}
+        Michael~Dewar}
         Kenneth~Scerri,~\IEEEmembership{Member,~IEEE,}
         Visakan~Kadirkamanathan,~\IEEEmembership{Member,~IEEE,}
         David~B.~Grayden,~\IEEEmembership{Member,~IEEE,}
@@ -47,7 +47,7 @@ Vic, 3010 Australia {\tt\small dfreestone@bionicear.org}.}% <-this % stops a spa
 \thanks{K. Scerri is with Malta...}
 \thanks{V. Kadirkamanathan is with Sheffield...}
 
-\thanks{Manuscript received Month Day, Year; revised Month Day, Year.}}
+\thanks{Manuscript received Month Day, Year; revised Month Day, Year.}
 
 
 % The paper headers
@@ -104,11 +104,11 @@ The post-synaptic response kernel $h(t)$ is described by
 \begin{equation}\label{SynapticRespKernel}
 	h(t) = \eta(t)\exp{\left(-\alpha t\right)}.
 \end{equation}
-where $\alpha=\tau^{-1}$ and $\tau$ is the synaptic time constant and $\eta(t)$ is the Heaviside step function. The synaptic response kernel can be more elaborate, using rise and fall time constants, however, this simple form serves our purposes. Nonlocal interactions between cortical populations are described by	
+where $\alpha=\tau^{-1}$ and $\tau$ is the synaptic time constant and $\eta(t)$ is the Heaviside step function. Nonlocal interactions between cortical populations are described by	
 \begin{equation}\label{RateBasedInteractions}
 	g\left( \mathbf{r},t \right) = \int_\Omega  {w\left( \mathbf{r},\mathbf{r}' \right)f\left( v\left( \mathbf{r}',t \right) \right)d\mathbf{r}'} + u\left(\mathbf{r},t\right),
 \end{equation}
-where $f$ is spiking rate of populations $\mathbf{r}'$, $w$ is the spatial connectivity kernel, and $\Omega$ is the spatial domain, representing a cortical sheet or surface. The term $u\left(\mathbf{r},t\right)$ represents a known external input. The connectivity kernel is typically a Mexican hat shape described by the sum of weighted Gaussian functions. The shape of the kernel is not a critical parameter for our methodology so we shall not define it until later to keep the derivation as general as possible.
+where $f(\cdot)$ is the firing rate function, $w(\cdot)$ is the spatial connectivity kernel, and $\Omega$ is the spatial domain, representing a cortical sheet or surface. The term $u\left(\mathbf{r},t\right)$ represents a known external input. The connectivity kernel is typically a ``Mexican hat'' function \todo{which describes strong local activation, weak mid-range repression and weak long-range activation \cite{}}. The exact shape of this kernel is assumed to vary across patients, and hence needs to be inferred from data. 
 % \begin{eqnarray}\label{Connectivity Kernel}
 % 	w\left(r,r'\right) =&& \\
 % &&\boldsymbol{\theta}_1\exp{\left(-\frac{(r-r')^\top(r-r')}{\sigma_1^2}\right)}+\boldsymbol{\theta}_2\exp{\left(-\frac{(r-r')^\top(r-r')}{\sigma_2^2}\right)}+\boldsymbol{\theta}_3\exp{\left(-\frac{(r-r')^\top(r-r')}{\sigma_3^2}\right)}\nonumber
@@ -121,11 +121,12 @@ where $f$ is spiking rate of populations $\mathbf{r}'$, $w$ is the spatial conne
 % \begin{todo}
 % 	{Parham ... how are you writing this? DF: I have tried to make it better, but Parham can you check.Parham: I have changed it but I think it's better to include it in the simulation section}
 % \end{todo}
-The average firing rate of the presynaptic neurons is related to the postsynaptic membrane potential by the sigmoidal activation function
+The firing rate of the presynaptic neurons is related to the postsynaptic membrane potential by the sigmoidal activation function
 \begin{equation}\label{ActivationFunction}
 	f\left( v\left( \mathbf{r}', t \right) \right) = \frac{\nu _0\left(\mathbf{r}\right)}{1 + \exp \left( \beta \left( v_0\left( \mathbf{r} \right) - v\left(\mathbf{r}',t\right) \right) \right)}.
 \end{equation}
-Even though we will model $v_0$ and $\nu_0$ as being homogeneous across the cortical sheet we will express it as being spatially dependant allowing for generality at this point. By combining Eqs.~\ref{SpikesToPotential} and \ref{RateBasedInteractions} we get the spatiotemporal model
+%Even though we will model $v_0$ and $\nu_0$ as being homogeneous across the cortical sheet we will express it as being spatially dependant allowing for generality at this point. 
+By substituting \ref{RateBasedInteractions} into \ref{SpikesToPotential}  we get the spatiotemporal model
 \begin{equation}\label{FullDoubleIntModel}
 	v\left(\mathbf{r},t\right) = \int_{-\infty}^t h\left(t - t'\right) \left(\int_\Omega   w\left(\mathbf{r},\mathbf{r}'\right) f\left( v\left( \mathbf{r}',t \right)\right)d\mathbf{r}' + u(\mathbf{r},t) \right)dt'.
 \end{equation}
@@ -141,6 +142,7 @@ To arrive at the final form of the model we shall state the synaptic response ke
 \begin{equation}\label{GreensFuncDef}
 	Lh\left( t \right) = \delta \left( t \right),
 \end{equation}
+\todo{Is the above right? I can't think of any way to make $\frac{d}{dt} h(t) + \alpha h(t)$ equal to $\delta(t)$}
 where $L=\frac{d}{dt} + \alpha$ is a temporal differential operator and $\delta(t)$ is the Dirac-delta function giving 
 \begin{equation}\label{FinalFormContinuous}
 	\frac{dv\left( \mathbf{r},t \right)}{dt} + \alpha v\left( \mathbf{r},t \right) = \int_\Omega  {w\left( \mathbf{r},\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)dr'} + u\left(\mathbf{r},t\right).
