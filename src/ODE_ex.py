@@ -1,7 +1,7 @@
 import pylab as pb
 import numpy as np
 from ODE import *
-import quickio
+# import quickio
 #-------------field--------------------
 field_width=40
 dimension=2
@@ -47,7 +47,7 @@ pb.show()
 # -------Sampling properties-------------
 Fs = 1e3   #sampling rate                                       
 Ts = 1/Fs   #sampling period, second
-t_end = .2 # seconds
+t_end = .002 # seconds
 NSamples = t_end*Fs;
 T = pb.linspace(0,t_end,NSamples);
 #--------------model and simulation------------------

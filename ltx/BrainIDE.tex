@@ -204,7 +204,7 @@ In order to implement standard estimation techniques we use a decomposition of t
 \begin{equation}\label{DefFieldDecomp}
 	v_t\left(\mathbf{r}\right) \approx \boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) \mathbf{x}_t,
 \end{equation}
-where $\mathbf{\boldsymbol{\phi}}(\mathbf{r})$ is a vector of Gaussian basis functions that are scaled by the state vector, $\mathbf{x}_t$. The connectivity kernel can also be considered a decomposition into a set of basis functions in 
+where $\mathbf{\boldsymbol{\phi}}(\mathbf{r})$ is a vector of Gaussian basis functions that are scaled by the state vector, $\mathbf{x}_t$. The width and positioning of the basis function can be determined by spectral analysis explain in detail in Section~\ref{SpectralAnalysisSection}. The connectivity kernel can also be considered a decomposition into a set of basis functions in 
 \begin{equation}\label{DefKernelDecomp}
 	w\left(\mathbf{r}-\mathbf{r}'\right) = \boldsymbol{\theta}^{\top} \boldsymbol{\psi}\left(\mathbf{r}-\mathbf{r}'\right).
 \end{equation}
@@ -236,12 +236,30 @@ where $\mathbf{e}_t$ is a zero-mean normal white noise term with the covariance 
 \label{eq:FieldCovariance}
 \end{equation}
 The observation equation of the reduced model is
-\begin{eqnarray}\label{ObservationEquation}
-    \mathbf{y}_t &=& z\left(\mathbf{x}_t\right) + \boldsymbol{\varepsilon}_t \\
-	z\left(\mathbf{x}_t\right) &=& \int_\Omega m\left(\mathbf{r}_n-\mathbf{r}'\right)\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) d\mathbf{r}' \mathbf{x}_t.
-\end{eqnarray}
+\begin{equation}\label{ObservationEquation}
+    \mathbf{y}_t = \mathbf{C}\mathbf{x}_t + \boldsymbol{\varepsilon}_t \\
+\end{equation}
+where the observation matrix is
+\begin{equation}
+\mathbf C=\begin{bmatrix}\int_{\Omega}m(\mathbf r_1 - \mathbf
+r')\boldsymbol \phi_1(\mathbf r')d\mathbf r'&\int_{\Omega}m(\mathbf r_1
+- \mathbf r')\boldsymbol \phi_2(\mathbf r')d\mathbf r'& \hdots
+&\int_{\Omega}m(\mathbf r_1 - \mathbf r')\boldsymbol \phi_n(\mathbf
+r')d\mathbf r' \\
+\int_{\Omega}m(\mathbf r_2 - \mathbf r')\boldsymbol \phi_1(\mathbf
+r')d\mathbf r'&\int_{\Omega}m(\mathbf r_2 - \mathbf r')\boldsymbol
+\phi_2(\mathbf r')d\mathbf r'& \hdots &\int_{\Omega}m(\mathbf r_2 -
+\mathbf r')\boldsymbol \phi_n(\mathbf r')d\mathbf r'\\
+\vdots&\vdots&\ddots&\vdots\\
+\int_{\Omega}m(\mathbf r_{n_y} - \mathbf r')\boldsymbol \phi_1(\mathbf
+r')d\mathbf r'&\int_{\Omega}m(\mathbf r_{n_y} - \mathbf r')\boldsymbol
+\phi_2(\mathbf r')d\mathbf r'& \hdots &\int_{\Omega}m(\mathbf r_{n_y} -
+\mathbf r')\boldsymbol \phi_n(\mathbf r')d\mathbf r'
+\end{bmatrix},
+\end{equation}
+and $m(\mathbf r_n - \mathbf{r}')$ is the observation kernel.
 
-\section{Spectral Analysis and Decomposition}
+\section{Spectral Analysis and Decomposition}\label{SpectralAnalysisSection}
 
 Spectral analysis has been utilized to identify the number of sensors and basis functions required to accurately represent dynamic spatial fields from sampled observations \cite{Sanner1992,Scerri2009}. Based on the higher dimension extensions of Shannon's sampling theorem \cite{Peterson1962}, the spatial bandwidth of the observed field provides a lower bound on both the number of sensors and the number of basis functions required.  
 
@@ -257,7 +275,7 @@ The unscented Kalman filter was used for the state estimation (reference the Jul
 The approximation of the state density is made by propagating the so called sigma points through the state-space model. The sigma points describe the mean and covariance of the state estimate. The accuracy of the approximation is linked to the time step used in the temporal discretization of the system, where the state transition appears more linear with a finer resolution. To explain the operation of the UKF we begin by deriving the traditional Kalman filter with the state-space model
 \begin{eqnarray}
 	\mathbf{x}_t = q(\mathbf{x}_t,\boldsymbol{\theta},\alpha) + k\left(u_t\left(\mathbf{r}\right)\right) + \mathbf{e}_t \\
-	\mathbf{y}_t = z(\mathbf{x}_t) + \boldsymbol{\varepsilon}_t,
+	\mathbf{y}_t = \mathbf{C}\mathbf{x}_t + \boldsymbol{\varepsilon}_t,
 \end{eqnarray}
 where $\boldsymbol{\theta}$ and $\alpha$ are the systems parameters. 
 
@@ -267,7 +285,7 @@ where $\boldsymbol{\theta}$ and $\alpha$ are the systems parameters.
 \begin{itemize}
 
 	\item Discuss the novelty of using the reduced model (BrainIDE) for creating patient specific models. 
-
+	\item The size of the dentritic arbour is consistent in the cortex.
 	\item Spatial frequency of field and the relationship to the required density of electrodes/sensors required for estimation or to capture the required information without aliasing.
 	
 	\item The flexibility of the approach
