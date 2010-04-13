@@ -149,12 +149,19 @@ To arrive at the integro-difference equation (IDE) form of the model we discreti
 \begin{equation}\label{DiscreteTimeModel}
 	v_{t+1}\left(\mathbf{r}\right) = \lambda v_t\left(\mathbf{r}\right) + T \int_\Omega { w\left(\mathbf{r}-\mathbf{r}'\right) f\left(v_t\left(\mathbf{r}'\right)\right) d\mathbf{r}'} + T u_t\left(\mathbf{r}\right) + e_t\left(\mathbf{r}\right),
 \end{equation} 
-where $T$ is the time step, $\lambda = 1-\alpha T$ and $e_t(\mathbf{r}) \sim \mathcal{GP}\left(0,\Sigma\left(\mathbf{r}-\mathbf{r}'\right)\right)$ 
-is an iid spatially colored, temporally white disturbance term. This term was added to drive the system and account for uncertainty in the model. To generate iEEG/LFP data we used the output function 
+where $T$ is the time step, $\lambda = 1-\alpha T$ and is an iid spatially colored, temporally white disturbance term with the covariance 
+\begin{equation}\label{eq:FieldCovariance}
+ cov(\mathbf{e}_t,\mathbf{e}_{t+\tau})=
+\begin{cases}
+\gamma\left(\mathbf{r}-\mathbf{r'}\right), & \tau=0 \\
+0 & \mathrm{otherwise}.
+\end{cases}
+\end{equation}
+ This term was added to drive the system and account for uncertainty in the model. To generate iEEG/LFP data we used the output function 
 \begin{equation}
 	\mathbf{y}_t = \int_{\Omega}{m\left(\mathbf{r}_n-\mathbf{r}'\right)v_t\left(\mathbf{r}'\right)d\mathbf{r}'} + \boldsymbol{\varepsilon}_t,
 \end{equation}
-where $\mathbf{r}_n$ defines the location of the sensors in the field where $n=1,...,N$ indexes the sensors and $\varepsilon_t \sim \mathcal{N}\left(0,\Sigma_y\right)$. The output kernel $m(\mathbf{r}-\mathbf{r}')$ governs the geometry of pick-up range of sensors where
+where $\mathbf{r}_n$ defines the location of the sensors in the field where $n=1,...,N$ indexes the sensors and $\varepsilon_t \sim \mathcal{N}\left(0,\Sigma{\varepsilon}\right)$. The output kernel $m(\mathbf{r}-\mathbf{r}')$ governs the geometry of pick-up range of sensors where
 \begin{equation}
 	m\left(\mathbf{r}-\mathbf{r}'\right) = \exp{\left(-\frac{(\mathbf{r}-\mathbf{r}')^\top(\mathbf{r}-\mathbf{r}')}{\sigma_m^2}\right)}.
 \end{equation}
@@ -221,17 +228,9 @@ and manipulating the model (see Appendix~\ref{Simplifying Decomposition}) we iso
 	k(u_t(\mathbf{r})) &=& \boldsymbol{\Gamma}^{-1}T \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) u_t\left(\mathbf{r}\right)d\mathbf{r}} \\
 	\mathbf{e}_t &=& \boldsymbol{\Gamma}^{-1}\int_\Omega{\boldsymbol{\phi}\left(\mathbf{r}\right)e_t\left(\mathbf{r}\right)d\mathbf{r}},
 \end{eqnarray}
-where $\mathbf{e}_t$ is a zero-mean normal white noise term with the covariance (see Appendix D)
+where $\mathbf{e}_t$ is a zero-mean normal white noise term with the covariance (see Appendix \ref{ColoredNoise})
 \begin{equation} 
-\boldsymbol{\Sigma}_w=\boldsymbol{\Gamma}^{-1}\iint\limits_{\Omega}\boldsymbol{\phi}\left(\mathbf r\right) \rho\left(\mathbf{r}- \mathbf{r}' \right)\boldsymbol{\phi}\left(\mathbf{r}'\right)^{\top}d\mathbf{r}' d\mathbf{r}\boldsymbol{\Gamma}^{- \top} 
-\end{equation}
-\begin{equation}
- cov(\mathbf{e}_t,\mathbf{e}_{t+\tau})=
-\begin{cases}
-\rho\left(\mathbf{r}-\mathbf{r'}\right), & \tau=0 \\
-0 & \mathrm{otherwise}.
-\end{cases}
-\label{eq:FieldCovariance}
+\boldsymbol{\Sigma}_e=\boldsymbol{\Gamma}^{-1}\iint\limits_{\Omega}\boldsymbol{\phi}\left(\mathbf r\right) \rho\left(\mathbf{r}- \mathbf{r}' \right)\boldsymbol{\phi}\left(\mathbf{r}'\right)^{\top}d\mathbf{r}' d\mathbf{r}\boldsymbol{\Gamma}^{- \top} 
 \end{equation}
 The observation equation of the reduced model is
 \begin{equation}\label{ObservationEquation}
@@ -285,15 +284,27 @@ The approximation of the state density is made by propagating the so called sigm
 	\mathbf{y}_t = \mathbf{C}\mathbf{x}_t + \boldsymbol{\varepsilon}_t,
 \end{eqnarray}
 where $\boldsymbol{\theta}$ and $\lambda$ are the systems parameters. In forwards iteration since the observation equation is linear in parameters we only need to use Unsented transformation in prediction step. The update step equations remains the same as the standard Kalman filtering formulations. In backward smoothing path, estimation from the forward filtering is used to form the new set of sigma points in a similar way to the filterin step, however the predicted cross-covariance of the states need to be calculated. A summary of the algorithm is given in Algorithm 
-
-\section{Comparison of Estimated Parameters and True Parameters}
-
 \begin{algorithm}
 \caption{The Unscented Kalman Filter}\label{CPTEMDAlgorithm}
 \begin{algorithmic}[1]
-\State $k=1$
-\State use CPT from Algorithm~\ref{CPTAlgorithm} to estimate $\phi_k(n)$ from $y(n)$
-\State find local extrema of $cos\left(\phi_k(n)\right)$
+\State Initialise
+\begin{equation*}
+\hat{\mathbf x}_0=\mathbb E[\mathbf x_0]
+\end{equation*}
+\begin{equation*}
+\mathbf P_0=\mathbb E[(\mathbf x_0-\hat{\mathbf x}_0)(\mathbf x_0-\hat{\mathbf x}_0)^\top]
+\end{equation*}
+\State Form the sigma vectors 
+\begin{equation*}
+\mathcal X_k=[\hat{\mathbf x}_k \quad \hat{\mathbf x}_k+\gamma\sqrt{\mathbf P_k} \quad \hat{\mathbf x}_k-\gamma\sqrt{\mathbf P_k}]
+\end{equation*}
+\State Update the sigma vectors by propogating them through state transition equation and compute the predicted state and the predicted state covariance
+\begin{equation*}
+ \hat{\mathbf x}_{k +1|k}=\sum_{i=0}^{2L} W_i^{(m)}\mathcal X_{i,k+1|k}
+\end{equation*}
+\begin{equation*}
+ \mathbf P_{k +1|k}=\sum_{i=0}^{2L} W_i^{(c)}(\mathcal X_{i,k+1|k}-\hat{\mathbf x}_{k +1|k})(\mathcal X_{i,k+1|k}-\hat{\mathbf x}_{k +1|k})^\top+\boldsymbol \Sigma_w
+\end{equation*}
 \State use extrema to form the splines $s_{min,k}(n)$ and $s_{max,k}(n)$
 \State calculate $x_{0,k}(n) = 0.5\left(s_{min,k}(n) + s_{max,k}(n)\right)$
 \State find local maxima of $h_k(n)$
@@ -306,6 +317,9 @@ where $\boldsymbol{\theta}$ and $\lambda$ are the systems parameters. In forward
 
 \end{algorithmic}
 \end{algorithm}
+\section{Comparison of Estimated Parameters and True Parameters}
+
+
 
 
 \section{Discussion}
@@ -326,7 +340,8 @@ where $\boldsymbol{\theta}$ and $\lambda$ are the systems parameters. In forward
 
 \appendices
 
-\section{Discrete Time Model}\label{Time Discretization}
+% \section{Discrete Time Model}\label{Time Discretization}
+ \section{Discrete Time Model}\label{Time Discretization}
 To form the IDE neural field model a time discretization must be perform. We used a one-step Euler method where Eq.~\ref{FinalForm1} can be approximated by
 \begin{equation}\label{Euler Approximation}	
 \frac{v\left( \mathbf{r},t+T \right) - v\left( \mathbf{r},t\right)}{T} =   -\alpha v\left( \mathbf{r},t \right) + \int_\Omega  {w\left( \mathbf{r}-\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)d\mathbf{r}'} + u\left(\mathbf{r},t\right).
@@ -341,7 +356,7 @@ The discrete time form of the model is
 \end{equation}
 where $\lambda = 1 - T \alpha$.
 
-\section{Numerical Simulation of IDE Model}\label{Space Discretization}
+ \section{Numerical Simulation of IDE Model}\label{Space Discretization}
 To solve the intregro-difference equation in Eq.~\ref{Discrete Time Model1} we define the spatial aspect of the model on a regular square $i,j$ grid of neural masses, where the spatial step size $\Delta \mathbf{r}_i = \Delta \mathbf{r}_j = \Delta $ giving
 \begin{equation}\label{discrete space}
 	v_{t+1}\left(\mathbf{r}_{ij}\right) = \lambda v_t\left(\mathbf{r}_{ij}\right) + T \Delta^2 \sum_{i=1}^{i=I}{ \sum_{j=1}^{j=J}{ w\left( \mathbf{r}-\mathbf{r}_{ij}' \right)f\left( v_t\left( \mathbf{r}_{ij}'\right) \right)} } + T u_t\left(\mathbf{r}\right) + e_t(\mathbf{r}_{i,j}),
@@ -372,33 +387,33 @@ Substituting Eq.~\ref{DefGamma} into Eq.~\ref{Poo} and cross-multiplying by $\bo
 	\mathbf{x}_{t+1} = T\boldsymbol{\Gamma}^{ - 1}\int_\Omega {\boldsymbol{\phi}\left(\mathbf{r}\right) \int_\Omega {f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right)\mathbf{x}_t\right) \boldsymbol{\psi}^{\top} \left(\mathbf{r}-\mathbf{r}'\right)d\mathbf{r}'} d\mathbf{r}} \boldsymbol{\theta} - \lambda \mathbf{x}_t \\
 	+ \boldsymbol{\Gamma}^{-1}T \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) u_t\left(\mathbf{r}\right)d\mathbf{r}} + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}\left(\mathbf{r}\right)e_t\left(\mathbf{r}\right)d\mathbf{r}}.
 \end{eqnarray}
-
-\section{Colored noise}
-We have
+\section{}\label{ColoredNoise}
+\newtheorem{lemma}{Lemma}
+\begin{lemma}
+Consider the zero-mean process $e_t\left(\mathbf r\right)$ with covariance as defined by (\ref{eq:FieldCovariance}) then
 \begin{equation}
-v_{t + 1}\left( \mathbf{r} \right)  = T\int_\Omega  {k\left( {\mathbf{r}} , {\mathbf{r}'} \right)f\left( {{v_t}\left( \mathbf{r'} \right)} \right)d{\mathbf{r'}}} + \lambda v_t\left( {\mathbf{r}} \right) +e_t\left( {\mathbf{r}} \right).
+ \mathbf e_t=\boldsymbol{\Gamma}^{-1}\int_\Omega  {\boldsymbol{\phi} ( \mathbf{r} )e_t( \mathbf{r} )d\mathbf{r}}
+\label{eq:AppendixWt}
 \end{equation}
-where the disturbance $e_t(\mathbf{r})$ is a zero-mean normally distributed noise process, spatially coloured but temporally white, with covariance 
-
+is a vector valued, zero mean normally distributed white noise process with covariance
 \begin{equation}
-cov(e_t(\mathbf{r}),e_{t+\tau}(\mathbf{r'}))=
-\begin{cases}
-\beta\left(\mathbf{r}-\mathbf{r'}\right), & \tau=0 \\
-0 & \mathrm{otherwise}
-\end{cases}
-\label{eq:FieldCovariance}
+\boldsymbol\Sigma_e =\mathbf{\Gamma}^{-1}\iint\limits_{\Omega}\boldsymbol{\phi}\left(\mathbf r\right) \beta\left(\mathbf r- \mathbf r' \right)\boldsymbol{\phi}\left(\mathbf r'\right)^{\top}d\mathbf r' d\mathbf r\mathbf{\Gamma}^{- \top} 
 \end{equation}
-The final state-space model is given by
-\begin{equation}
-\mathbf{x}_{t + 1} = T q(\mathbf{x}_t)\boldsymbol{\theta} -\lambda \mathbf{x}_t + \boldsymbol{\Gamma}^{-1}\int_\Omega  {\boldsymbol{\phi} ( \mathbf{r} )e_t( \mathbf{r} )d\mathbf{r}}
-\end{equation}
-then the covariance of the noise term is given by
+\label{lemma:FieldCovariance}
+\end{lemma}
+\begin{IEEEproof}
+ Equation (\ref{eq:AppendixWt}) is a linear function of $e_t(\mathbf r)$ and hence $\mathbf{e}_t$ is also normally distributed. The expected value of $\mathbf e_t$ is given by 
 \begin{eqnarray}
-\mathbf{\Sigma}_w&=&\mathbf{\Gamma}^{-1}\mathbf E[\int_{\Omega}\boldsymbol{\phi}\left(\mathbf{r}\right)e_t\left(\mathbf{r}\right)d\mathbf{r} \int_{\Omega}\boldsymbol{\phi}\left(\mathbf{r}'\right)^{\top} e_t\left(\mathbf{r}'\right)d\mathbf{r}']\mathbf{\Gamma}^{- \top} \nonumber \\
-&=&\mathbf{\Gamma}^{-1}\iint\limits_{\Omega} \boldsymbol{\phi}\left(\mathbf{r}\right) \mathbf E[e_t\left(\mathbf{r}\right)e_t\left(\mathbf{r}'\right)]\boldsymbol{\phi}\left(\mathbf{r}'\right)^{\top}d\mathbf{r}' d\mathbf r\mathbf{\Gamma}^{- \top} \nonumber\\
-&=&\mathbf{\Gamma}^{-1}\iint\limits_{\Omega}\boldsymbol{\phi}\left(\mathbf r\right) \beta\left(\mathbf r- \mathbf r' \right)\boldsymbol{\phi}\left(\mathbf r'\right)^{\top}d\mathbf r' d\mathbf r\mathbf{\Gamma}^{- \top} 
+ \mathbf E\left[ \mathbf e_t\right]&=& \mathbf{\Gamma}^{-1}\int_{\Omega}\boldsymbol\phi\left(\mathbf{r}\right)\mathbf E\left[e_t\left(\mathbf{r}\right)\right] d\mathbf{r} \nonumber \\
+&=&\mathbf 0
 \end{eqnarray}
-
+The covariance of $\mathbf{e}_t$ is
+\begin{eqnarray}
+\mathbf{\Sigma}_e&=&\mathbf{\Gamma}^{-1}\mathbf E[\int_{\Omega}\boldsymbol{\phi}\left(\mathbf{r}\right)e_t\left(\mathbf{r}\right)d\mathbf{r} \int_{\Omega}\boldsymbol{\phi}\left(\mathbf{r}'\right)^{\top} e_t\left(\mathbf{r}'\right)d\mathbf{r}']\mathbf{\Gamma}^{- \top} \nonumber \\
+&=&\mathbf{\Gamma}^{-1}\iint\limits_{\Omega} \boldsymbol{\phi}\left(\mathbf{r}\right) \mathbf E[e_t\left(\mathbf{r}\right)e_t\left(\mathbf{r}'\right)]\boldsymbol{\phi}\left(\mathbf{r}'\right)^{\top}d\mathbf{r}' d\mathbf r\mathbf{\Gamma}^{- \top} \nonumber\\
+&=&\mathbf{\Gamma}^{-1}\iint\limits_{\Omega}\boldsymbol{\phi}\left(\mathbf r\right) \gamma\left(\mathbf r- \mathbf r' \right)\boldsymbol{\phi}\left(\mathbf r'\right)^{\top}d\mathbf r' d\mathbf r\mathbf{\Gamma}^{- \top} 
+\end{eqnarray}
+\end{IEEEproof}
 \section{Parameter estimation using LS}
 \begin{equation}
  \mathbf x_{t+1}=\mathbf{x}_{t}+T_s \mathbf{Q}(\mathbf{x}_t)\boldsymbol{\theta}-\alpha T_s\mathbf{x}_t+T_s\Gamma^{-1}\int_\Omega\boldsymbol{\phi}(\mathbf r)\varepsilon_t(\mathbf r)d\mathbf r
