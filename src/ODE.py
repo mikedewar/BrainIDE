@@ -1,6 +1,6 @@
 import pylab as pb
 import numpy as np
-# import matplotlib.axes3d
+import matplotlib.axes3d
 import time,warnings
 import os
 import copy
@@ -150,7 +150,7 @@ class IDE():
 			w = self.Swc*pb.matrix(np.random.randn(spatial_location_num,1))
 			print "simulation at time",t
 
-			Kernel_convolution_at_s=signal.convolve2d(pb.vstack(pb.split(spiking_rate,len(self.field_space))),self.K,mode='same',boundary='fill')
+			Kernel_convolution_at_s=signal.convolve2d(self.K,pb.vstack(pb.split(spiking_rate,len(self.field_space))),mode='same',boundary='fill')
 
 
 			Kernel_convolution_at_s= (self.spacestep**2)*pb.matrix(pb.ravel(Kernel_convolution_at_s)).T
@@ -175,7 +175,7 @@ class IDE():
 			#V_matrix_temp.append(pb.hstack(pb.split(w,len(self.field_space))).T)
 			#--------------------------------------------------------------------------------------------------
 			#Finding the convolution of the Sensor with the field
-			v_filtered=(self.spacestep**2)*signal.convolve2d(v_membrane_matrix,self.S,mode='same',boundary='fill')
+			v_filtered=(self.spacestep**2)*signal.convolve2d(self.S,v_membrane_matrix,mode='same',boundary='fill')
 			#-------------------------------------------------------------------------------------------------------
 			#Observation
 			Y.append((self.spacestep**2)*(self.Sensor.Values*v_membrane)+v)
@@ -458,6 +458,8 @@ def plot_field(V,f_space):
 	
 	pb.imshow(V,aspect=1,origin='lower', alpha=1,extent=[min(f_space),max(f_space),min(f_space),max(f_space)])#interpolation='nearest',	
 	pb.colorbar(shrink=.55) 
+	pb.xlabel(r'$ s_1$',fontsize=25)
+	pb.ylabel(r' $s_2$',fontsize=25)
 	pb.show()
 
 	
@@ -503,7 +505,7 @@ def gen_spatial_lattice(S):
 			count += 1
 	return space
 
-def obs_frequency_response(Y,spacestep,db=0,vmin=None,vmax=None,save=0,filename='filename'):
+def obs_frequency_response(Y,scale,spacestep,db=0,vmin=None,vmax=None,save=0,filename='filename'):
 
 	'''Generates average FFT of all observed surface
 	Argument:
@@ -530,21 +532,24 @@ def obs_frequency_response(Y,spacestep,db=0,vmin=None,vmax=None,save=0,filename=
 	for i in range(len(Y)):
     		Y_matrix.append(pb.hstack(pb.split(Y[i],pb.sqrt(len(Y[0])))).T)
 	y=0
+
 	if db:
 		for i in range(len(Y_matrix)):
-			y=y+10*pb.log10(pb.absolute(signal.fft2(Y_matrix[i])))
+			y=y+10*pb.log10((spacestep**2)*pb.absolute(signal.fft2(Y_matrix[i])))
 	else:
 		for i in range(len(Y_matrix)):
-			y=y+pb.absolute(signal.fft2(Y_matrix[i]))
+			y=y+(spacestep**2)*pb.absolute(signal.fft2(Y_matrix[i]))
 	y=y/len(Y_matrix)
 	freq=pb.fftfreq(y.shape[0],float(spacestep)) #generates the frequency array [0,pos,neg] over which fft2 is taken
 	#Nyquist_freq=freq.max() #find the Nyquist frequency it is not exact (depending y.shape[0] is odd or even) but close to Nyquist frequency
+	#freq=pb.fftshift(freq)
 	Sampling_frequency=1./spacestep
 	Nyquist_freq=Sampling_frequency/2 #find the Nyquist frequency which is half a smapling frequency
 	freq_range=2*Nyquist_freq #the frequency range over which fft2 is taken
 	params = {'axes.labelsize': 15,'text.fontsize': 15,'legend.fontsize': 15,'xtick.labelsize': 15,'ytick.labelsize': 15}
 	pb.rcParams.update(params) 
-	pb.imshow(y,origin='lower',extent=[0,freq_range,0,freq_range],interpolation='nearest',cmap=pb.cm.gray,vmin=vmin,vmax=vmax)
+	#pb.imshow((y*scale),origin='lower',extent=[freq[0],freq[-1],freq[0],freq[-1]],interpolation='nearest',vmin=vmin,vmax=vmax)#,cmap=pb.cm.gray,interpolation='nearest',cmap=pb.cm.gray,
+	pb.imshow(y,origin='lower',extent=[0,freq_range,0,freq_range],interpolation='nearest',vmin=vmin,vmax=vmax)
 	pb.colorbar(shrink=.55)
 	pb.xlabel('Hz',fontsize=25)
 	pb.ylabel('Hz',fontsize=25)
@@ -552,50 +557,11 @@ def obs_frequency_response(Y,spacestep,db=0,vmin=None,vmax=None,save=0,filename=
 		pb.savefig(filename+'.pdf',dpi=300)
 
 	pb.show()	
-	return pb.flipud(y.T),freq
+	return pb.flipud(y),freq
 
-def kernel_frequency_response(K,spacestep,db=0,save=0,filename='filename'):
 
-	'''Generates  FFT of the spatial kernel
-	Argument:
-	---------
-		K: matrix
-			spatial kernel
-		spacestep: float
-			distance beetween adjacent spatial point
 
-		db: zero or one
-			if one result is given in db
-		save: zero or one
-			if one it saves the image in the working directory
-	Return:
-	-------
-		 magnitude of the fft of the spatial kernel: ndarray
-
-		freq: ndarray
-			the frequency range over which fft2 is taken
-	'''
-
-	if db:	k_f=10*pb.log10(pb.absolute(signal.fft2(K)))
-	else:	k_f=pb.absolute(signal.fft2(K))
-	freq=pb.fftfreq(k_f.shape[0],float(spacestep)) #generates the frequency array [0,pos,neg] over which fft2 is taken
-	Sampling_frequency=1./spacestep
-	Nyquist_freq=Sampling_frequency/2 #find the Nyquist frequency which is half a smapling frequency
-	#Nyquist_freq=freq.max() #find the Nyquist frequency it is not exact (depending y.shape[0] is odd or even) but close to Nyquist frequency
-	freq_range=2*Nyquist_freq #the frequency range over which fft2 is taken
-	params = {'axes.labelsize': 20,'text.fontsize': 20,'legend.fontsize': 10,'xtick.labelsize': 20,'ytick.labelsize': 20}
-	pb.rcParams.update(params) 
-	pb.imshow(k_f,origin='lower',extent=[0,freq_range,0,freq_range],cmap=pb.cm.gray,interpolation='nearest',vmin=k_f.min(),vmax=k_f.max())
-	pb.xlabel('Hz',fontsize=25)
-	pb.ylabel('Hz',fontsize=25)
-	pb.colorbar(shrink=.55)
-	if save:
-		pb.savefig(filename+'.pdf',dpi=300)
-
-	pb.show()
-	return pb.flipud(k_f),freq
-
-def field_frequency_response(V_matrix,spacestep,db=0,vmin=None,vmax=None,save=0,filename='filename'):
+def field_frequency_response(V_matrix,scale,spacestep,db=0,vmin=None,vmax=None,save=0,filename='filename'):
 
 	'''Generates  FFT of the spatial kernel
 	Argument:
@@ -620,21 +586,23 @@ def field_frequency_response(V_matrix,spacestep,db=0,vmin=None,vmax=None,save=0,
 	V_f=0
 	if db:
 		for i in range(len(V_matrix)):
-			V_f=V_f+10*pb.log10(pb.absolute(signal.fft2(V_matrix[i])))
+			V_f=V_f+10*pb.log10((spacestep**2)*pb.absolute(signal.fft2(V_matrix[i])))
 
 	else:
 		for i in range(len(V_matrix)):
-			V_f=V_f+pb.absolute(signal.fft2(V_matrix[i]))
+			V_f=V_f+(spacestep**2)*pb.absolute(signal.fft2(V_matrix[i]))
 
 	V_f=V_f/len(V_matrix)
 	freq=pb.fftfreq(V_f.shape[0],float(spacestep)) #generates the frequency array [0,pos,neg] over which fft2 is taken
+	freq=pb.fftshift(freq)
 	#Nyquist_freq=freq.max() #find the Nyquist frequency it is not exact (depending y.shape[0] is odd or even) but close to Nyquist frequency
 	Sampling_frequency=1./spacestep
 	Nyquist_freq=Sampling_frequency/2 #find the Nyquist frequency which is half a smapling frequency
 	freq_range=2*Nyquist_freq #the frequency range over which fft2 is taken
 	params = {'axes.labelsize': 15,'text.fontsize': 15,'legend.fontsize': 15,'xtick.labelsize': 15,'ytick.labelsize': 15}
 	pb.rcParams.update(params) 
-	pb.imshow(V_f,origin='lower',extent=[0,freq_range,0,freq_range],interpolation='nearest',cmap=pb.cm.gray,vmin=vmin,vmax=vmax)
+	#pb.imshow(V_f,origin='lower',extent=[0,freq_range,0,freq_range],vmin=vmin,vmax=vmax)#,cmap=pb.cm.gray,interpolation='nearest'
+	pb.imshow(pb.fftshift(scale*V_f),origin='lower',extent=[freq[0],freq[-1],freq[0],freq[-1]],cmap=pb.cm.gray,interpolation='nearest',vmin=vmin,vmax=vmax)
 	pb.colorbar(shrink=.55)
 	pb.xlabel('Hz',fontsize=25)
 	pb.ylabel('Hz',fontsize=25)
@@ -642,6 +610,47 @@ def field_frequency_response(V_matrix,spacestep,db=0,vmin=None,vmax=None,save=0,
 		pb.savefig(filename+'.pdf',dpi=300)
 
 	pb.show()	
-	return pb.flipud(V_f.T),freq
+	return pb.flipud(pb.fftshift(V_f)),freq
 
 
+
+def kernel_frequency_response(K,spacestep,db=0,save=0,filename='filename'):
+
+	'''Generates  FFT of the spatial kernel
+	Argument:
+	---------
+		K: matrix
+			spatial kernel
+		spacestep: float
+			distance beetween adjacent spatial point
+
+		db: zero or one
+			if one result is given in db
+		save: zero or one
+			if one it saves the image in the working directory
+	Return:
+	-------
+		 magnitude of the fft of the spatial kernel: ndarray
+
+		freq: ndarray
+			the frequency range over which fft2 is taken
+	'''
+
+	if db:	k_f=10*pb.log10((spacestep**2)*pb.absolute(signal.fft2(K)))
+	else:	k_f=pb.absolute((spacestep**2)*signal.fft2(K))
+	freq=pb.fftfreq(k_f.shape[0],float(spacestep)) #generates the frequency array [0,pos,neg] over which fft2 is taken
+	Sampling_frequency=1./spacestep
+	Nyquist_freq=Sampling_frequency/2 #find the Nyquist frequency which is half a smapling frequency
+	#Nyquist_freq=freq.max() #find the Nyquist frequency it is not exact (depending y.shape[0] is odd or even) but close to Nyquist frequency
+	freq_range=2*Nyquist_freq #the frequency range over which fft2 is taken
+	params = {'axes.labelsize': 20,'text.fontsize': 20,'legend.fontsize': 10,'xtick.labelsize': 20,'ytick.labelsize': 20}
+	pb.rcParams.update(params) 
+	pb.imshow(k_f,origin='lower',extent=[0,freq_range,0,freq_range],vmin=k_f.min(),vmax=k_f.max())#,cmap=pb.cm.grayinterpolation='nearest',
+	pb.xlabel('Hz',fontsize=25)
+	pb.ylabel('Hz',fontsize=25)
+	pb.colorbar(shrink=.55)
+	if save:
+		pb.savefig(filename+'.pdf',dpi=300)
+
+	pb.show()
+	return pb.flipud(k_f),freq
