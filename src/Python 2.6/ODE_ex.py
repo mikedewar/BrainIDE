@@ -72,7 +72,13 @@ def ex_1():
 	#init_field=pb.matrix(pb.multivariate_normal(mean,initial_field_covariance)).T
 
 if __name__ == "__main__":
-	import profile
-	profile.run('ex_1()')
+	import cProfile
+	import pstats
+	
+	cProfile.run('ex_1()','ex1prof')
+	p = pstats.Stats('ex1prof')
+	p.strip_dirs()
+	p.sort_stats('cumulative').print_stats(10)
+	p.sort_stats('time').print_stats(10)
 	
 	
