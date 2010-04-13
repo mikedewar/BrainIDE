@@ -4,7 +4,7 @@ from UKF import *
 
 #-------------field--------------------
 Massdensity=1
-field_basis_width=12#3.6
+field_basis_width=3.6
 field_width=20
 dimension=2
 spacestep=1
@@ -71,6 +71,12 @@ T = pb.linspace(0,t_end,NSamples);
 #--------------model and simulation------------------
 model=IDE(k,f,EEG_signals, act_func,alpha,field_cov_function,field_noise_variance,obs_noise_covariance,Sensorwidth,obs_locns,spacestep,init_field,initial_field_covariance,Ts)
 model.gen_ssmodel(sim=1)
+Y=quickio.read('Y')
+Y=Y['var0']
+t0=time.time()
+ps_estimate=para_state_estimation(model)
+ps_estimate.itr_est(Y,50)
+print 'elapsed time is', time.time()-t0
 #X,Y=model.simulate(T)
 #ukfilter=ukf(model)
 #plot_field(X[2],model.field.fbases,f_space)
