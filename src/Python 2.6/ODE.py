@@ -78,7 +78,10 @@ class IDE():
 
 		spatial_location_num=(len(self.field_space))**2
 
-		K_center=(pb.floor(self.kernel.space.shape[0]/2.),pb.floor(self.kernel.space.shape[0]/2.))
+		K_center=(
+			pb.floor(self.kernel.space.shape[0]/2.),
+			pb.floor(self.kernel.space.shape[0]/2.)
+		)
 
 
 		# This is to check if the spatial domain of the  is odd, it must be odd in order 
@@ -86,13 +89,12 @@ class IDE():
 		if ((pb.mod(self.kernel.space.shape[0],2.)) or (pb.mod(self.kernel.space.shape[1],2.)))==0:
 			warnings.warn('Kernel doesnt have center')
 
-		# Here we find the center of the kernel and the sensor they must be lcated at (0,0)
-		print 'center of kernel spatial domain is',(self.kernel.space[K_center[0]],self.kernel.space[K_center[1]])
+		# Here we find the center of the kernel and the sensor they must be 
+		# lcated at (0,0)
+		print 'center of kernel spatial domain is',\
+			(self.kernel.space[K_center[0]],self.kernel.space[K_center[1]])
 
 		K = pb.empty((len(self.kernel.space),len(self.kernel.space)))
-		S= pb.empty((len(self.kernel.space),len(self.kernel.space)))
-		
-
 
 		print "pre-calculating observation kernel vectors"
 		t0=time.time()
@@ -103,16 +105,37 @@ class IDE():
 			#we squeeze the result to have a matrix in a form of
 			#[m1(s1) m1(s2) ...m1(sl);m2(s1) m2(s2) ... m2(sl);...;mny(s1) mny(s2) ... mny(sl)]
 			#where sl is the number of spatial points after discritization
+		
 		self.Sensor.Values=pb.matrix(pb.squeeze(Values).T)
-		print "Elapsed time in seconds is", time.time()-t0
-
+		#print "Elapsed time in seconds is", time.time()-t0		
+		
 		for i in range(len(self.kernel.space)):
 			for j in range(len(self.kernel.space)):
 				K[i,j]=self.kernel.__call__(pb.matrix([[self.kernel.space[i]],[self.kernel.space[j]]]))
-				S[i,j]=gaussian(pb.matrix([[self.kernel.space[i]],[self.kernel.space[j]]]),pb.matrix([[0],[0]]),self.Sensor.widths[0],self.Sensor.dimension)
 		self.K=K
-		self.S=S
-
+		"""
+		t0=time.time()
+		S = pb.empty((len(self.kernel.space),len(self.kernel.space)))
+		for i in range(len(self.kernel.space)):
+			for j in range(len(self.kernel.space)):
+				S[i,j]=gaussian(
+					s = pb.matrix([[self.kernel.space[i]],[self.kernel.space[j]]]),
+					centre = pb.matrix([[0],[0]]),
+					width = self.Sensor.widths[0],
+					dimension = self.Sensor.dimension
+				)
+		print "time for big for loop:", time.time()-t0"""
+		
+		space = [pb.matrix([i,j]).T 
+			for i in self.kernel.space 
+			for j in self.kernel.space
+		]
+		self.S = gaussian_b(
+			s = space, 
+			centre = pb.matrix([[0],[0]]), 
+			width = self.Sensor.widths[0]
+		)
+		
 		#Calculating Sw
 		print "calculating Covariance matrix"
 		t0=time.time()
@@ -227,7 +250,6 @@ class Sensor():
 			matrix of ny x 1 dimension [m_1(s) m_2(s) ... m_ny(s)].T
 		"""
 		return pb.matrix([gaussian(s,cen,wid,self.dimension) for cen,wid, in zip(self.centers,self.widths)]).T
-
 		
 
 class Kernel():
@@ -318,6 +340,12 @@ class ActivationFunction():
 		pb.show()
 
 
+def gaussian_b(s,centre,width):
+	assert type(width) is pb.matrix
+	num_s = pb.sqrt(len(s))
+	d = pb.array(s-centre)
+	return pb.exp(- pb.sum(pb.inner(d,width.I) * d,-1)).reshape(num_s,num_s)
+
 def gaussian(s,centre,width,dimension):
 
 		"""
@@ -338,7 +366,7 @@ def gaussian(s,centre,width,dimension):
 		centre = pb.matrix(centre)
 		centre.shape = (dimension,1)
 		width = pb.matrix(width)
-		return float(pb.exp(-(s-centre).T*width.I*(s-centre)))
+		return float(pb.exp(-(s-centre).T * width.I * (s-centre)))
 
 def anim_ode_field(V_matrix,f_space):	
 
@@ -654,3 +682,7 @@ def kernel_frequency_response(K,spacestep,db=0,save=0,filename='filename'):
 
 	pb.show()
 	return pb.flipud(k_f),freq
+
+if __name__ == "__main__":
+	import ODE_ex
+	ODE_ex.ex_1()
