@@ -16,8 +16,8 @@
 
 
 \documentclass[onecolumn,draftcls]{IEEEtran}
-
-\usepackage{graphicx}
+\usepackage{graphicx, algorithm, algorithmicx, algpseudocode}
+% \usepackage{graphicx}
 \usepackage{color}                    % For creating coloured text and background
 \usepackage{amsmath,amssymb,amsfonts} % Typical maths resource packages
 % correct bad hyphenation here
@@ -300,6 +300,25 @@ The approximation of the state density is made by propagating the so called sigm
 where $\boldsymbol{\theta}$ and $\lambda$ are the systems parameters. 
 
 \section{Comparison of Estimated Parameters and True Parameters}
+
+\begin{algorithm}
+\caption{The CPT for EMD}\label{CPTEMDAlgorithm}
+\begin{algorithmic}[1]
+\State $k=1$
+\State use CPT from Algorithm~\ref{CPTAlgorithm} to estimate $\phi_k(n)$ from $y(n)$
+\State find local extrema of $cos\left(\phi_k(n)\right)$
+\State use extrema to form the splines $s_{min,k}(n)$ and $s_{max,k}(n)$
+\State calculate $x_{0,k}(n) = 0.5\left(s_{min,k}(n) + s_{max,k}(n)\right)$
+\State find local maxima of $h_k(n)$
+\State use maxima to form the spline $r_k(n) = s_{max,k}(n)$
+\While { $x_{0,k}(n)$ is not monotonic }
+    \State $k=k+1$
+    \State perform CPT on $x_{0,k-1}(n)$ to estimate $\phi_{k}(n)$
+    \State repeats steps 3 to 7 to approximate parameters
+\EndWhile
+
+\end{algorithmic}
+\end{algorithm}
 
 \section{Discussion}
 \begin{itemize}
