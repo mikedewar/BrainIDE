@@ -3,12 +3,11 @@ import numpy as np
 from ODE import *
 import quickio
 
-def ODE_ex():
-
+def ex_1():
 	#-------------field--------------------
-	field_width=20
+	field_width=40
 	dimension=2
-	spacestep=2
+	spacestep=4
 	f_space=pb.arange(-(field_width)/2.,(field_width)/2+spacestep,spacestep)# the step size should in a way that we have (0,0) in our kernel as the center
 	spatial_location_num=(len(f_space))**2
 
@@ -37,16 +36,19 @@ def ODE_ex():
 	#----------observations--------------------------
 	Sensorwidth =1.2**2 #equals to 3mm
 	S_obs= pb.linspace(-10,10,10)
-	#S_obs= pb.arange(-10,10+1.25,1.25)
 	obs_locns=gen_spatial_lattice(S_obs)
 	ny=len(obs_locns)
 	widths=[pb.matrix([[Sensorwidth,0],[0,Sensorwidth]])]
 	EEG_signals=Sensor(obs_locns,widths,dimension,f_space,ny,spacestep)
 	obs_noise_covariance =.1*pb.matrix(np.eye(len(obs_locns),len(obs_locns)))
-	[circle(cent,2*pb.sqrt(pb.log(2),)*pb.sqrt(Sensorwidth)/2,'b') for cent in obs_locns]
-	pb.show()
-
-
+	# plotting
+	plot_sensor = lambda c: circle(
+		center = c, 
+		radius = 2*pb.sqrt(pb.log(2),)*pb.sqrt(Sensorwidth)/2,
+		color = 'b'
+	)
+	#[plot_sensor(cent) for cent in obs_locns]
+	#pb.show()
 	# -------Sampling properties-------------
 	Fs = 1e3   #sampling rate                                       
 	Ts = 1/Fs   #sampling period, second
@@ -61,7 +63,6 @@ def ODE_ex():
 	quickio.writed('Y','w',Y)
 	quickio.writed('V_filtered','w',V_filtered)
 
-	#----------Field initialasation----------------------------
-	#mean=[0]*spatial_location_num
-	#initial_field_covariance=10*pb.eye(len(mean))
-	#init_field=pb.matrix(pb.multivariate_normal(mean,initial_field_covariance)).T
+if __name__ == "__main__":
+	import profile
+	profile.run('ex_1()')
