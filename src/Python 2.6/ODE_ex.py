@@ -3,7 +3,6 @@ import numpy as np
 from ODE import *
 import quickio
 
-
 def ex_1():
 	#-------------field--------------------
 	field_width=40
@@ -50,8 +49,6 @@ def ex_1():
 	)
 	#[plot_sensor(cent) for cent in obs_locns]
 	#pb.show()
-
-
 	# -------Sampling properties-------------
 	Fs = 1e3   #sampling rate                                       
 	Ts = 1/Fs   #sampling period, second
@@ -66,11 +63,6 @@ def ex_1():
 	quickio.writed('Y','w',Y)
 	quickio.writed('V_filtered','w',V_filtered)
 
-	#----------Field initialasation----------------------------
-	#mean=[0]*spatial_location_num
-	#initial_field_covariance=10*pb.eye(len(mean))
-	#init_field=pb.matrix(pb.multivariate_normal(mean,initial_field_covariance)).T
-
 if __name__ == "__main__":
 	import cProfile
 	import pstats
@@ -80,5 +72,3 @@ if __name__ == "__main__":
 	p.strip_dirs()
 	p.sort_stats('cumulative').print_stats(10)
 	p.sort_stats('time').print_stats(10)
-	
-	
