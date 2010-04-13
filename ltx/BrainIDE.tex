@@ -218,8 +218,8 @@ By defining the term
 \end{equation}
 and manipulating the model (see Appendix~\ref{Simplifying Decomposition}) we isolate the state vector to form a state-space model
 \begin{eqnarray}\label{Homogeneous SS Model}
-	\mathbf{x}_t &=& q(\mathbf{x}_t,\boldsymbol{\theta},\alpha) + k\left(u_t\left(\mathbf{r}\right)\right) + \mathbf{e}_t \\
-	q(\mathbf{x}_t,\boldsymbol{\theta},\alpha) &=& T\boldsymbol{\Gamma}^{ - 1}\int_\Omega {\boldsymbol{\phi}\left(\mathbf{r}\right) \int_\Omega {f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right)\mathbf{x}_t\right)\boldsymbol{\psi}^{\top} \left(\mathbf{r}-\mathbf{r}'\right)d\mathbf{r}'} d\mathbf{r}} \boldsymbol{\theta} - \lambda \mathbf{x}_t \\
+	\mathbf{x}_t &=& q(\mathbf{x}_t)\boldsymbol{\theta} - \lambda\mathbf{x}_t + k\left(u_t\left(\mathbf{r}\right)\right) + \mathbf{e}_t \\
+	q\left(\mathbf{x}_t\right) &=& T\boldsymbol{\Gamma}^{ - 1}\int_\Omega {\boldsymbol{\phi}\left(\mathbf{r}\right) \int_\Omega {f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right)\mathbf{x}_t\right)\boldsymbol{\psi}^{\top} \left(\mathbf{r}-\mathbf{r}'\right)d\mathbf{r}'} d\mathbf{r}} \\
 	k(u_t(\mathbf{r})) &=& \boldsymbol{\Gamma}^{-1}T \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) u_t\left(\mathbf{r}\right)d\mathbf{r}} \\
 	\mathbf{e}_t &=& \boldsymbol{\Gamma}^{-1}\int_\Omega{\boldsymbol{\phi}\left(\mathbf{r}\right)e_t\left(\mathbf{r}\right)d\mathbf{r}},
 \end{eqnarray}
@@ -261,9 +261,11 @@ and $m(\mathbf r_n - \mathbf{r}')$ is the observation kernel.
 
 \section{Spectral Analysis and Decomposition}\label{SpectralAnalysisSection}
 
-Spectral analysis has been utilized to identify the number of sensors and basis functions required to accurately represent dynamic spatial fields from sampled observations \cite{Sanner1992,Scerri2009}. Based on the higher dimension extensions of Shannon's sampling theorem \cite{Peterson1962}, the spatial bandwidth of the observed field provides a lower bound on both the number of sensors and the number of basis functions required.  
+Spectral analysis has been utilized to identify the number of sensors and basis functions required to accurately represent dynamic spatial fields from sampled observations~\cite{Sanner1992,Scerri2009}. Based on the higher dimension extensions of Shannon's sampling theorem~\cite{Peterson1962}, the spatial bandwidth of the observed field provides a lower bound on both the number of sensors and the number of basis functions required.  
 
-Considering the spectral representation of the dynamic field at time $t$ denoted by $W_t(\boldsymbol{\nu})$, multi-dimensional sampling and reconstruction theory dictates that for and accurate representation, $W_t(\boldsymbol{\nu})$ need to be spatially bandlimited. Such a condition is usually satisfied due to the bandlimiting effect of most practical kernels and the spatially colored covariance functions frequently used \cite{some eeg literature here}. Thus the spectral response $W_t(\boldsymbol{\nu})$ is usually bandlimited with $W_t(\boldsymbol{\nu}) \approx 0 ~ \forall \boldsymbol{\nu} > \boldsymbol{\nu}_c$, where $\boldsymbol{\nu}_c$ is a cutoff frequency. Note that for the 3-dimensional, homogeneous and isotopic fields being considered $\boldsymbol{\nu}_c = [\nu_c ~ \nu_c ~ \nu_c]^\top$. Given such a bandlimited field and based on Shannon's sampling theorem, the distance between adjacent sensors needs to within $\frac{1}{2\nu_c}$. Satisfying this condition ensures that the hidden dynamic field $w_t(\mathbf{r})$ can be inferred from the sampled observation $\mathbf{y}(t)$.
+Considering the spectral representation of the dynamic field at time $t$ denoted by $W_t(\boldsymbol{\nu})$, multi-dimensional sampling and reconstruction theory dictates that for and accurate representation, $W_t(\boldsymbol{\nu})$ need to be spatially bandlimited. Such a condition is usually satisfied due to the bandlimiting effect of most practical kernels and the spatially colored covariance functions frequently used \cite{some eeg literature here}. In addition, the Gaussian pick-up of the sensors provides a low-pass filtering effect, further limiting the bandwidth of the field. Thus the spectral response $W_t(\boldsymbol{\nu})$ is usually bandlimited with $W_t(\boldsymbol{\nu}) \approx 0 ~ \forall \boldsymbol{\nu} > \boldsymbol{\nu}_c$, where $\boldsymbol{\nu}_c$ is a cutoff frequency. Note that for the 3-dimensional, homogeneous and isotopic fields being considered $\boldsymbol{\nu}_c = [\nu_c ~ \nu_c ~ \nu_c]^\top$. Given such a bandlimited field and based on Shannon's sampling theorem, the distance between adjacent sensors needs to within $\frac{1}{2\nu_c}$. Satisfying this condition ensures that the hidden dynamic field $w_t(\mathbf{r})$ can be inferred from the sampled observation $\mathbf{y}(t)$.
+
+Sensors act as a low-pass filter 
 
 Similar considerations need to be made regarding the representation of the dynamic field $w_t(\mathbf{r})$ by its basis functions decompositions. The minimum distance between adjacent basis needs to again satisfy Shannon's sampling theorem. Thus the minimum distance between basis must again satisfy $\frac{1}{2\nu_c}$. Note that, since the dynamic field is frequently spatially oversampled by using a larger number of sensor then imposed by frequency considerations, the distance between basis functions is usually larger then the distance between sensors. Note also that since a limited spatial region and since basis functions placed on a regular square grid are being considered, knowledge of the distance between basis functions directly implies the total number of basis functions required. 
 
@@ -274,10 +276,10 @@ The unscented Kalman filter was used for the state estimation (reference the Jul
 
 The approximation of the state density is made by propagating the so called sigma points through the state-space model. The sigma points describe the mean and covariance of the state estimate. The accuracy of the approximation is linked to the time step used in the temporal discretization of the system, where the state transition appears more linear with a finer resolution. To explain the operation of the UKF we begin by deriving the traditional Kalman filter with the state-space model
 \begin{eqnarray}
-	\mathbf{x}_t = q(\mathbf{x}_t,\boldsymbol{\theta},\alpha) + k\left(u_t\left(\mathbf{r}\right)\right) + \mathbf{e}_t \\
+	\mathbf{x}_t = q(\mathbf{x}_t)\boldsymbol{\theta} - \lambda\mathbf{x}_t + k\left(u_t\left(\mathbf{r}\right)\right) + \mathbf{e}_t \\
 	\mathbf{y}_t = \mathbf{C}\mathbf{x}_t + \boldsymbol{\varepsilon}_t,
 \end{eqnarray}
-where $\boldsymbol{\theta}$ and $\alpha$ are the systems parameters. 
+where $\boldsymbol{\theta}$ and $\lambda$ are the systems parameters. 
 
 \section{Comparison of Estimated Parameters and True Parameters}
 
