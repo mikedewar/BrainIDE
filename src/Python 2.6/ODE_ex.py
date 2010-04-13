@@ -2,7 +2,6 @@ import pylab as pb
 import numpy as np
 from ODE import *
 import quickio
-
 #-------------field--------------------
 field_width=40
 dimension=2
