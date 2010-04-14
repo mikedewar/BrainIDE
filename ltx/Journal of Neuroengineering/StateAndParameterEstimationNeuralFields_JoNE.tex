@@ -240,8 +240,32 @@ The estimation process is a two part iterative algorithm that yields the estimat
 The (URTSS) uses the Unscented Kalman Filter (UKF) in the forward iteration \cite{Julier1997} along with a separate backward smoothing path to compute the smooth estimations. The method is appropriate for state estimation of stochastic nonlinear dynamical systems. Alternatives to the UKF are the Extended Kalman Filter (EKF) \cite{Haykin2001}  and Sequential Monte Carlo (SMC) filtering \cite{doucet2001}. The extended Kalman filter approximates the state transition equation by linearizing about the fixed points (by calculating the Jacobian) at each time step. The linearization maintains the Gaussianality in the model. The unscented Kalman filter approximates the \emph{a posteriori} state density by a Gaussian distribution using a minimal set of carefully chosen sigma points, whilst maintaining the nonlinearity in the system. This has been shown to give superior performance over the EKF in state estimation, as the EKF maintains a first order approximation where the UKF provides an approximation accurate at least to the second order. In addition, the computation of the Jacobian used in the
 EKF can be problematic. SMC filtering can theoretically provide an exact \emph{a posteriori} state density for nonlinear systems. However, currently this method is not appropriate for our problem, due to computation demands.
 
-The approximation of the state density is made by propagating the so called sigma points through the state-space model. The sigma points describe the mean and covariance of the state estimate. The number of sigma points needed is $2n_x+1$ where $n_x$ is the dimension of the stae space. The set of sigma points and their corresponding weights used in the UKF can be calculated as
+The approximation of the state density is made by propagating the so called sigma points through the state-space model. The sigma points describe the mean and covariance of the state estimate. The number of sigma points needed is $2\mathbf L+1$ where $\mathbf L$ is the dimension of the stae space. The  columns of the sigma point matrix and their corresponding weights used in the UKF can be calculated as
+\begin{equation}
+ \mathcal X_{0}=\bar x
+\end{equation}
+\begin{equation}
+ \mathcal X_{i}=\bar x+(\sqrt{(\mathbf L + \lambda)\mathbf P_x})_i \quad i=1, \dots, \mathbf L
+\end{equation}
+\begin{equation}
+ \mathcal X_{i}=\bar x-(\sqrt{(\mathbf L + \lambda)\mathbf P_x})_{i-\mathbf L} \quad i=\mathbf L+1, \dots, 2\mathbf L
+\end{equation}
+\begin{equation}
+ \mathbf W_0^{(m)}=\frac{\lambda}{\mathbf L+\lambda}
+\end{equation}
+\begin{equation}
+ \mathbf W_0^{(c)}=\frac{\lambda}{\mathbf L+\lambda}+(1-\alpha^2+\beta)
+\end{equation}
+\begin{equation}
+ \mathbf W_i^{(m)}=\mathbf W_i^{(c)}=\frac{1}{2(\mathbf L+\lambda)} \quad i=1, \dots, \mathbf 2L
+\end{equation}
+where the sacling parameter $\lambda$ is defined as
+\begin{equation}
+\lambda=\alpha^2(\mathbf L+\kappa)-\mathbf L 
+\end{equation}
+parameters $\alpha$, $\beta$ and $\kappa$ can be used to tune the filtering process \cite{Haykin2001}
 
+% For explanation of $\lambda, \quad \alpha\quad\text{and}\quad\beta$ see \cite{wan2000unscented,Haykin2001}. $ (\sqrt{(\mathbf L + \lambda)\mathbf P_x})_i$ is the ith column of the matrix square root (e.g., lower-triangular Cholesky factorization). These sigma points propogated through the nonlinear function
 
  The accuracy of the approximation is linked to the time step used in the temporal discretization of the system, where the state transition appears more linear with a finer resolution. To explain the operation of the UKF we begin by deriving the traditional Kalman filter with the state-space model
 \begin{eqnarray}
