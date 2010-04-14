@@ -41,7 +41,7 @@
 %
 % \documentclass[twocolumn,11pt,a4paper]{article}		%<-use this for checking equation length
 \documentclass[12pt]{iopart}		%<-comment out this for checking equations (author list too)
-\usepackage{graphicx, algorithm, algorithmicx, algpseudocode}
+\usepackage{graphicx, algorithm, algorithmicx, algpseudocode,epsfig}
 \usepackage{color}  
 \usepackage{iopams,setstack}                  %<-comment out this for checking equations
 % \usepackage{anysize}							%<-use this for checking equation length
@@ -302,7 +302,7 @@ Propogate the sigma points through the state equation
 \mathcal X_{i,t+1}^{f-}=Q(\mathcal X_t^f,u_t)
 \end{equation}
 \begin{equation*}
- \hat{\mathbf x}_{t+1}^{f-}=\sum_{i=0}^{2L} W_i^{(m)}\mathcal X_{i,t+1}^{f-}
+ \hat{\mathbf x}_{t+1}^{f-}=\sum_{i=0}^{2L} W_i^{(m)}\mathcal X_{i,t+1|t}^{f-}
 \end{equation*}
 \begin{equation*}
  \mathbf P_{t +1}^{f-}=\sum_{i=0}^{2L} W_i^{(c)}(\mathcal X_{i,t+1}^{f-}-\hat{\mathbf x}_{t +1}^{f-})(\mathcal X_{i,t+1}^{f-}-\hat{\mathbf x}_{t +1}^{f-})^\top+\boldsymbol \Sigma_e
@@ -328,9 +328,9 @@ For $t \in \left\lbrace T-1, \cdots, 0 \right\rbrace $
 \begin{equation*}
 \mathcal X_t^b=[\hat{\mathbf x}_t^f \quad \hat{\mathbf x}_t^f+\gamma\sqrt{\mathbf P_t^f} \quad \hat{\mathbf x}_t^f-\gamma\sqrt{\mathbf P_t^f}]
 \end{equation*}
-\State Calculate a new set of  sigma points, $\mathcal X_{i,t+1}^{b-}$ similar to the forward step and compute
+\State Calculate a new set of  sigma points, $\mathcal X_{i,t+1|t}^{b-}$ similar to the forward step and compute
 \begin{equation*}
- \hat{\mathbf x}_{t+1}^{b-}=\sum_{i=0}^{2L} W_i^{(m)}\mathcal X_{i,t+1}^{b-}
+ \hat{\mathbf x}_{t+1}^{b-}=\sum_{i=0}^{2L} W_i^{(m)}\mathcal X_{i,t+1|t}^{b-}
 \end{equation*}
 \begin{equation*}
  \mathbf P_{t +1}^{b-}=\sum_{i=0}^{2L} W_i^{(c)}(\mathcal X_{i,t+1}^{b-}-\hat{\mathbf x}_{t +1}^{f})(\mathcal X_{i,t+1}^{b-}-\hat{\mathbf x}_{t +1}^{f})^\top+\boldsymbol \Sigma_e
@@ -338,25 +338,18 @@ For $t \in \left\lbrace T-1, \cdots, 0 \right\rbrace $
 \begin{equation*}
  \mathbf M_{t +1}=\sum_{i=0}^{2L} W_i^{(c)}(\mathcal X_{i,t}^{b-}-\hat{\mathbf x}_{t}^{f})(\mathcal X_{i,t+1}^{b-}-\hat{\mathbf x}_{t+1}^{f})^\top
 \end{equation*}
-\State compute the smoother gain $\mathbf S_t$, the smoothed state $\hat{\mathbf x}_t^b $ and the covariance $\mathbf P_{t}^{b} $
-\begin{equation*}
-\mathbf S_t=\mathbf M_{t +1}\left[ \mathbf P_{t +1}^{b-}\right] ^{-1}
-\end{equation*}
-\begin{equation*}
- \hat{\mathbf x}_t^b=\hat{\mathbf x}_t^f+\mathbf S_t\left[\hat{\mathbf x}_{t+1}^{b}-\hat{\mathbf x}_{t+1}^{b-}\right] 
-\end{equation*}
-\begin{equation*}
- \mathbf P_{t}^{b}=\mathbf P_{t}^{f}+\mathbf S_t\left[\mathbf P_{t+1}^{b}-\mathbf P_{t+1}^{b-} \right]\mathbf S_t^\top 
-\end{equation*}
-
-
-
 \end{algorithmic}
 \end{algorithm}
 \section{Results}
 We simulated a neural field to the generate data used in the state and parameter estimation. All parameters for the model are given in Table~\ref{}. An example of the simulated field can be seen in Figure~\ref{} A. The Figure demonstrates the experimental design where the sensors were placed in the centre of the field. This design allowed for uncertainty around the edges of the sensor array, which would be typical from physical data, and alleviated problems associated with boundary conditions. Figure~\ref{} B. shows example data from the sensors of the model, and Figure~\ref{} C. shows the power spectral density of on of the simulated time-series. The PSD shows the typical $1/f$ characteristics of intracranial EEG.
+% \begin{figure}[]
+% 	\centering
+% 		\includegraphics[scale=1]{file.eps}
+% 	\caption{Example of experimental design and model output. \textbf{A}. example of the neural field with sensors. The centres of the }
+% 	\label{fig:ExampleFieldAndSensorsDataAndPSD}
+% \end{figure}
 
-\subsection{Frequency Analysis}
+\subsection{Spatial Frequency Analysis}
 
 \subsection{State and Parameter Estimates}
 
