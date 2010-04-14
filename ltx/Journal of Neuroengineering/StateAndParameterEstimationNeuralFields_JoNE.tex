@@ -114,9 +114,9 @@ The neural field model is popular due to being parsimonious yet having a strong 
 \end{equation}
 The post-synaptic response kernel $h(t)$ is described by
 \begin{equation}\label{SynapticRespKernel}
-	h(t) = \eta(t)\exp{\left(-\zeta t\right)}.
+	h(t) = \eta(t)\exp{\left(-\alpha t\right)}.
 \end{equation}
-where $\zeta=\tau^{-1}$ and $\tau$ is the synaptic time constant and $\eta(t)$ is the Heaviside step function. Nonlocal interactions between cortical populations are described by	
+where $\alpha=\tau^{-1}$ and $\tau$ is the synaptic time constant and $\eta(t)$ is the Heaviside step function. Nonlocal interactions between cortical populations are described by	
 \begin{equation}\label{RateBasedInteractions}
 	g\left( \mathbf{r},t \right) = \int_\Omega  {w\left( \mathbf{r},\mathbf{r}' \right)f\left( v\left( \mathbf{r}',t \right) \right)d\mathbf{r}'} + u\left(\mathbf{r},t\right),
 \end{equation}
@@ -124,7 +124,7 @@ where $f(\cdot)$ is the firing rate function, $w(\cdot)$ is the spatial connecti
 
 The firing rate of the presynaptic neurons is related to the postsynaptic membrane potential by the sigmoidal activation function
 \begin{equation}\label{ActivationFunction}
-	f\left( v\left( \mathbf{r}', t \right) \right) = \frac{f_{max}\left(\mathbf{r}\right)}{1 + \exp \left( \varsigma \left( v_0\left( \mathbf{r} \right) - v\left(\mathbf{r}',t\right) \right) \right)}.
+	f\left( v\left( \mathbf{r}', t \right) \right) = \frac{f_{max}\left(\mathbf{r}\right)}{1 + \exp \left( \beta \left( v_0\left( \mathbf{r} \right) - v\left(\mathbf{r}',t\right) \right) \right)}.
 \end{equation}
 %Even though we will model $v_0$ and $\nu_0$ as being homogeneous across the cortical sheet we will express it as being spatially dependant allowing for generality at this point. 
 By substituting \ref{RateBasedInteractions} into \ref{SpikesToPotential}  we get the spatiotemporal model
@@ -135,15 +135,16 @@ To arrive at the final form of the model we shall state the synaptic response ke
 \begin{equation}\label{GreensFuncDef}
 	Lh\left( t \right) = \delta \left( t \right),
 \end{equation}
-where $L=\frac{d}{dt} + \zeta$ is a temporal differential operator and $\delta(t)$ is the Dirac-delta function giving 
+\todo{Is the above right? I can't think of any way to make $\frac{d}{dt} h(t) + \alpha h(t)$ equal to $\delta(t)$}
+where $L=\frac{d}{dt} + \alpha$ is a temporal differential operator and $\delta(t)$ is the Dirac-delta function giving 
 \begin{equation}\label{FinalFormContinuous}
-	\frac{dv\left( \mathbf{r},t \right)}{dt} + \zeta v\left( \mathbf{r},t \right) = \int_\Omega  {w\left( \mathbf{r},\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)dr'} + u\left(\mathbf{r},t\right).
+	\frac{dv\left( \mathbf{r},t \right)}{dt} + \alpha v\left( \mathbf{r},t \right) = \int_\Omega  {w\left( \mathbf{r},\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)dr'} + u\left(\mathbf{r},t\right).
 \end{equation}
 To arrive at the integro-difference equation (IDE) form of the model we discretize time using a first-order Euler method (see Appendix~\ref{Time Discretization}) giving
 \begin{equation}\label{DiscreteTimeModel}
-	v_{t+1}\left(\mathbf{r}\right) = \xi v_t\left(\mathbf{r}\right) + T \int_\Omega { w\left(\mathbf{r}-\mathbf{r}'\right) f\left(v_t\left(\mathbf{r}'\right)\right) d\mathbf{r}'} + T u_t\left(\mathbf{r}\right) + e_t\left(\mathbf{r}\right),
+	v_{t+1}\left(\mathbf{r}\right) = \lambda v_t\left(\mathbf{r}\right) + T \int_\Omega { w\left(\mathbf{r}-\mathbf{r}'\right) f\left(v_t\left(\mathbf{r}'\right)\right) d\mathbf{r}'} + T u_t\left(\mathbf{r}\right) + e_t\left(\mathbf{r}\right),
 \end{equation} 
-where $T$ is the time step, $\xi = 1-\zeta T$ and is an iid spatially colored, temporally white disturbance term with the covariance 
+where $T$ is the time step, $\lambda = 1-\alpha T$ and is an iid spatially colored, temporally white disturbance term with the covariance 
 \begin{equation}
     cov(\mathbf{e}_t,\mathbf{e}_{t+\tau}) = \left\{ \begin{array}{*{20}{c}}
     \gamma\left(\mathbf{r}-\mathbf{r'}\right), & \tau=0 \\
@@ -170,7 +171,7 @@ where $\mathbf{\boldsymbol{\phi}}(\mathbf{r})$ is a vector of Gaussian basis fun
 \end{equation}
 We will assume we know the parametric form of the connectivity basis functions, where the parameter $\boldsymbol{\theta}$ is unknown. Each connectivity basis function can be considered a layer in the Wilson and Cowan model, representing short range excitation, surround inhibition and mid-range excitation. Making substitutions of~\ref{DefFieldDecomp} and~\ref{DefKernelDecomp} into~\ref{DiscreteTimeModel} we get
 \begin{equation}\label{reduced continuous model}
-	\boldsymbol{\phi}^{\top}\left( \mathbf{r} \right) \mathbf{x}_{t+1} = T\boldsymbol{\theta}^{\top}\int_\Omega  {\boldsymbol{\psi} \left(\mathbf{r}-\mathbf{r}'\right) f\left( \boldsymbol{\phi} ^{\top}\left(\mathbf{r}'\right)\mathbf{x}_t \right)d\mathbf{r}'}  - \xi\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right)x_t + T u_t\left(\mathbf{r}\right) + e_t\left(\mathbf{r}\right).
+	\boldsymbol{\phi}^{\top}\left( \mathbf{r} \right) \mathbf{x}_{t+1} = T\boldsymbol{\theta}^{\top}\int_\Omega  {\boldsymbol{\psi} \left(\mathbf{r}-\mathbf{r}'\right) f\left( \boldsymbol{\phi} ^{\top}\left(\mathbf{r}'\right)\mathbf{x}_t \right)d\mathbf{r}'}  - \lambda\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right)x_t + T u_t\left(\mathbf{r}\right) + e_t\left(\mathbf{r}\right).
 \end{equation}
 By defining the term
 \begin{equation}\label{DefGamma}
@@ -178,14 +179,14 @@ By defining the term
 \end{equation}
 and manipulating the model (see Appendix~\ref{Simplifying Decomposition}) we isolate the state vector to form a state-space model
 \begin{eqnarray}\label{Homogeneous SS Model}
-	\mathbf{x}_t &=& q(\mathbf{x}_t)\boldsymbol{\theta} - \xi\mathbf{x}_t + k\left(u_t\left(\mathbf{r}\right)\right) + \mathbf{e}_t \\
+	\mathbf{x}_t &=& q(\mathbf{x}_t)\boldsymbol{\theta} - \lambda\mathbf{x}_t + k\left(u_t\left(\mathbf{r}\right)\right) + \mathbf{e}_t \\
 	q\left(\mathbf{x}_t\right) &=& T\boldsymbol{\Gamma}^{ - 1}\int_\Omega {\boldsymbol{\phi}\left(\mathbf{r}\right) \int_\Omega {f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right)\mathbf{x}_t\right)\boldsymbol{\psi}^{\top} \left(\mathbf{r}-\mathbf{r}'\right)d\mathbf{r}'} d\mathbf{r}} \\
 	k(u_t(\mathbf{r})) &=& \boldsymbol{\Gamma}^{-1}T \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) u_t\left(\mathbf{r}\right)d\mathbf{r}} \\
 	\mathbf{e}_t &=& \boldsymbol{\Gamma}^{-1}\int_\Omega{\boldsymbol{\phi}\left(\mathbf{r}\right)e_t\left(\mathbf{r}\right)d\mathbf{r}},
 \end{eqnarray}
 where $\mathbf{e}_t$ is a zero-mean normal white noise term with the covariance (see Appendix \ref{ColoredNoise})
 \begin{equation} 
-\boldsymbol{\Sigma}_e=\boldsymbol{\Gamma}^{-1}\int\limits_{\Omega}\int\limits_{\Omega}\boldsymbol{\phi}\left(\mathbf r\right) \gamma\left(\mathbf{r}- \mathbf{r}' \right)\boldsymbol{\phi}\left(\mathbf{r}'\right)^{\top}d\mathbf{r}' d\mathbf{r}\boldsymbol{\Gamma}^{- \top} 
+\boldsymbol{\Sigma}_e=\boldsymbol{\Gamma}^{-1}\int\limits_{\Omega}\int\limits_{\Omega}\boldsymbol{\phi}\left(\mathbf r\right) \rho\left(\mathbf{r}- \mathbf{r}' \right)\boldsymbol{\phi}\left(\mathbf{r}'\right)^{\top}d\mathbf{r}' d\mathbf{r}\boldsymbol{\Gamma}^{- \top} 
 \end{equation}
 The observation equation of the reduced model is
 \begin{equation}\label{ObservationEquation}
@@ -236,43 +237,43 @@ The dynamic field must be spatially oversampled by using a larger number of sens
 
 Due to the high dimensionality of the brain and the current electrode systems, we can not expect to have more sensors than basis functions.
 \section{State and Parameter Estimation}
-The estimation process is a two part iterative algorithm that yields the estimate of the connectivity kernel parameters and the posterior distribution of the field weights. In the parameter estimation step, Least Squares (LS) method is used which minimizes the sum of the squares of the errors on each state equation (see Appendix). In the state estimation step, given an estimate of $\boldsymbol \theta$ and $\xi$ the Unscented Rauch Tung Striebel Smoother (URTSS) \cite{Sarkka2010} was used to determine the posterior state sequence.
-The (URTSS) uses the Unscented Kalman Filter (UKF) in the forward iteration \cite{Julier1997} along with a separate backward smoothing path to compute the smooth estimations. The method is appropriate for state estimation of stochastic nonlinear dynamical systems. Alternatives to the UKF are the Extended Kalman Filter (EKF) \cite{Haykin2001}  and Sequential Monte Carlo (SMC) filtering \cite{doucet2001}. The extended Kalman filter approximates the state transition equation by linearizing about the fixed points (by calculating the Jacobian) at each time step. The linearization maintains the Gaussianality in the model. The unscented Kalman filter approximates the \emph{a posteriori} state density by a Gaussian distribution using a minimal set of carefully chosen sigma points, whilst maintaining the nonlinearity in the system. This has been shown to give superior performance over the EKF in state estimation, as the EKF maintains a first order approximation where the UKF provides an approximation accurate at least to the second order. In addition, the computation of the Jacobian used in the
+The estimation process is a two part iterative algorithm that yields the estimate of the connectivity kernel parameters and the posterior distribution of the field weights. In the parameter estimation step, Least Squares (LS) method is used which minimizes the sum of the squares of the errors on each state equation (see Appendix). In the state estimation step, given an estimate of $\boldsymbol \theta$ and $\lambda$ the Unscented Rauch Tung Striebel Smoother (URTSS) \cite{Sarkka2010} was used to determine the posterior state sequence .
+The (URTSS) uses the Unscented Kalman Filter (UKF) in the forward iteration \cite{Julier1997} to calculate a forward posterior estimate $\hat{\mathbf x}_t^{f} $ along with a separate backward smoothing path to compute the smooth estimations $\hat{\mathbf x}_t^{b} $. The method is appropriate for state estimation of stochastic nonlinear dynamical systems. Alternatives to the UKF are the Extended Kalman Filter (EKF) \cite{Haykin2001}  and Sequential Monte Carlo (SMC) filtering \cite{doucet2001}. The extended Kalman filter approximates the state transition equation by linearizing about the fixed points (by calculating the Jacobian) at each time step. The linearization maintains the Gaussianality in the model. The unscented Kalman filter approximates the \emph{a posteriori} state density by a Gaussian distribution using a minimal set of carefully chosen sigma points, whilst maintaining the nonlinearity in the system. This has been shown to give superior performance over the EKF in state estimation, as the EKF maintains a first order approximation where the UKF provides an approximation accurate at least to the second order. In addition, the computation of the Jacobian used in the
 EKF can be problematic. SMC filtering can theoretically provide an exact \emph{a posteriori} state density for nonlinear systems. However, currently this method is not appropriate for our problem, due to computation demands.
 
-The approximation of the state density is made by propagating the so called sigma points through the state-space model. The sigma points describe the mean and covariance of the state estimate. The number of sigma points needed is $2\mathbf L+1$ where $\mathbf L$ is the dimension of the stae space. The  columns of the sigma point matrix and their corresponding weights used in the UKF can be calculated as
+The approximation of the state density is made by propagating the so called sigma points through the state-space model. The sigma points describe the mean and covariance of the state estimate. The number of sigma points needed is $2L+1$ where $ L$ is the dimension of the stae space. The  columns of the sigma point matrix and their corresponding weights used in the UKF can be calculated as
 \begin{equation}
  \mathcal X_{0}=\bar x
 \end{equation}
 \begin{equation}
- \mathcal X_{i}=\bar x+(\sqrt{(\mathbf L + \lambda)\mathbf P_x})_i \quad i=1, \dots, \mathbf L
+ \mathcal X_{i}=\bar x+(\sqrt{( L + \lambda)\mathbf P_x})_i \quad i=1, \dots,  L
 \end{equation}
 \begin{equation}
- \mathcal X_{i}=\bar x-(\sqrt{(\mathbf L + \lambda)\mathbf P_x})_{i-\mathbf L} \quad i=\mathbf L+1, \dots, 2\mathbf L
+ \mathcal X_{i}=\bar x-(\sqrt{( L + \lambda)\mathbf P_x})_{i- L} \quad i= L+1, \dots, 2 L
 \end{equation}
 \begin{equation}
- \mathbf W_0^{(m)}=\frac{\lambda}{\mathbf L+\lambda}
+ \mathbf W_0^{(m)}=\frac{\lambda}{ L+\lambda}
 \end{equation}
 \begin{equation}
- \mathbf W_0^{(c)}=\frac{\lambda}{\mathbf L+\lambda}+(1-\alpha^2+\beta)
+ \mathbf W_0^{(c)}=\frac{\lambda}{ L+\lambda}+(1-\alpha^2+\beta)
 \end{equation}
 \begin{equation}
- \mathbf W_i^{(m)}=\mathbf W_i^{(c)}=\frac{1}{2(\mathbf L+\lambda)} \quad i=1, \dots, \mathbf 2L
+ \mathbf W_i^{(m)}=\mathbf W_i^{(c)}=\frac{1}{2( L+\lambda)} \quad i=1, \dots, 2L
 \end{equation}
 where the sacling parameter $\lambda$ is defined as
 \begin{equation}
-\lambda=\alpha^2(\mathbf L+\kappa)-\mathbf L 
+\lambda=\alpha^2( L+\kappa)- L 
 \end{equation}
-parameters $\alpha$, $\beta$ and $\kappa$ can be used to tune the filtering process \cite{Haykin2001}
+and parameters $\alpha$, $\beta$ and $\kappa$ are used to tune the filtering process \cite{Haykin2001}. It should be noted that $\bar x$ is $ \hat{\mathbf x}_t^{f} $ and $ \hat{\mathbf x}_t^{b} $ with their corresponding covariance matrices in filtering and smoothing iterations respectively.
 
 % For explanation of $\lambda, \quad \alpha\quad\text{and}\quad\beta$ see \cite{wan2000unscented,Haykin2001}. $ (\sqrt{(\mathbf L + \lambda)\mathbf P_x})_i$ is the ith column of the matrix square root (e.g., lower-triangular Cholesky factorization). These sigma points propogated through the nonlinear function
 
  The accuracy of the approximation is linked to the time step used in the temporal discretization of the system, where the state transition appears more linear with a finer resolution. To explain the operation of the UKF we begin by deriving the traditional Kalman filter with the state-space model
 \begin{eqnarray}
-	\mathbf{x}_t = q(\mathbf{x}_t)\boldsymbol{\theta} - \xi\mathbf{x}_t + k\left(u_t\left(\mathbf{r}\right)\right) + \mathbf{e}_t \\
+	\mathbf{x}_t = q(\mathbf{x}_t)\boldsymbol{\theta} - \lambda\mathbf{x}_t + k\left(u_t\left(\mathbf{r}\right)\right) + \mathbf{e}_t \\
 	\mathbf{y}_t = \mathbf{C}\mathbf{x}_t + \boldsymbol{\varepsilon}_t,
 \end{eqnarray}
-where $\boldsymbol{\theta}$ and $\xi$ are the systems parameters. In forwards iteration since the observation equation is linear in parameters we only need to use Unsented transformation in prediction step. The update step equations remains the same as the standard Kalman filtering formulations. In backward smoothing path, estimation from the forward filtering is used to form the new set of sigma points in a similar way to the filterin step, however the predicted cross-covariance of the states need to be calculated. A summary of the algorithm is given in Algorithm 
+where $\boldsymbol{\theta}$ and $\lambda$ are the systems parameters. In forwards iteration since the observation equation is linear in parameters we only need to use Unsented transformation in prediction step. The update step equations remains the same as the standard Kalman filtering formulations. In backward smoothing path, estimation from the forward filtering is used to form the new set of sigma points in a similar way to the filterin step, however the predicted cross-covariance of the states need to be calculated. A summary of the algorithm is given in Algorithm 
 \begin{algorithm}
 \caption{The Unscented Kalman Filter}\label{CPTEMDAlgorithm}
 \begin{algorithmic}[1]
@@ -285,7 +286,7 @@ For $t \in \left\lbrace 0,\cdots, N\right\rbrace $,
 \begin{equation*}
 \mathcal X_t^f=[\hat{\mathbf x}_t^f \quad \hat{\mathbf x}_t^f+\gamma\sqrt{\mathbf P_t^f} \quad \hat{\mathbf x}_t^{f}-\gamma\sqrt{\mathbf P_t^f}]
 \end{equation*}
-Propogate the sigma points through the dynamic model
+Propogate the sigma points through the state equation
 \begin{equation}
 \mathcal X_{i,t+1|t}^{f*}=Q(\mathcal X_t^f,u_t)
 \end{equation}
@@ -312,10 +313,12 @@ Propogate the sigma points through the dynamic model
 \begin{equation}
 \hat{\mathbf x}^s_T= \hat{\mathbf x}^f_T
 \end{equation}
-For $t \in \left\lbrace N-1, \cdots, 0 \right\rbrace $
+For $t \in \left\lbrace T-1, \cdots, 0 \right\rbrace $
 \begin{equation*}
 \mathcal X_t^s=[\hat{\mathbf x}_t^f \quad \hat{\mathbf x}_t^f+\gamma\sqrt{\mathbf P_t^f} \quad \hat{\mathbf x}_t^f-\gamma\sqrt{\mathbf P_t^f}]
 \end{equation*}
+\State Propogate the sigma points through the state equation similar to the forward step and compute
+
 \end{algorithmic}
 \end{algorithm}
 \section{Results}
@@ -345,44 +348,44 @@ For $t \in \left\lbrace N-1, \cdots, 0 \right\rbrace $
 \section{Discrete Time Model}\label{Time Discretization}
 To form the IDE neural field model a time discretization must be perform. We used a one-step Euler method where Eq.~\ref{FinalForm1} can be approximated by
 \begin{equation}\label{Euler Approximation}	
-\frac{v\left( \mathbf{r},t+T \right) - v\left( \mathbf{r},t\right)}{T} =   -\zeta v\left( \mathbf{r},t \right) + \int_\Omega  {w\left( \mathbf{r}-\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)d\mathbf{r}'} + u\left(\mathbf{r},t\right).
+\frac{v\left( \mathbf{r},t+T \right) - v\left( \mathbf{r},t\right)}{T} =   -\alpha v\left( \mathbf{r},t \right) + \int_\Omega  {w\left( \mathbf{r}-\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)d\mathbf{r}'} + u\left(\mathbf{r},t\right).
 \end{equation}
 For clarity, we shall index time points in the discrete time form of the model using the subscript $t$ and the next time point as $t+1$. Rearranging Eq.~\ref{Euler Approximation} we get
 \begin{eqnarray}\label{Euler Approximation}	
-v_{t+1}\left( \mathbf{r}\right) &=& v_t\left( \mathbf{r}\right) -T \zeta v_t\left( \mathbf{r}\right) + T \int_\Omega  {w\left( \mathbf{r}-\mathbf{r}' \right)f\left( {v_t\left( \mathbf{r}'\right)} \right)d\mathbf{r}'} + T u_t\left(\mathbf{r}\right).
+v_{t+1}\left( \mathbf{r}\right) &=& v_t\left( \mathbf{r}\right) -T \alpha v_t\left( \mathbf{r}\right) + T \int_\Omega  {w\left( \mathbf{r}-\mathbf{r}' \right)f\left( {v_t\left( \mathbf{r}'\right)} \right)d\mathbf{r}'} + T u_t\left(\mathbf{r}\right).
 \end{eqnarray}
 The discrete time form of the model is
 \begin{equation}\label{Discrete Time Model1}
-	v_{t+1}\left(\mathbf{r}\right) = \xi v_t\left(\mathbf{r}\right) + T \int_\Omega { w\left(\mathbf{r}-\mathbf{r}'\right) f\left(v_t\left(\mathbf{r}'\right)\right) d\mathbf{r}'} + T u_t\left(\mathbf{r}\right),
+	v_{t+1}\left(\mathbf{r}\right) = \lambda v_t\left(\mathbf{r}\right) + T \int_\Omega { w\left(\mathbf{r}-\mathbf{r}'\right) f\left(v_t\left(\mathbf{r}'\right)\right) d\mathbf{r}'} + T u_t\left(\mathbf{r}\right),
 \end{equation}
-where $\xi = 1 - T \zeta$.
+where $\lambda = 1 - T \alpha$.
  \section{Numerical Simulation of IDE Model}\label{Space Discretization}
 To solve the intregro-difference equation in Eq.~\ref{Discrete Time Model1} we define the spatial aspect of the model on a regular square $i,j$ grid of neural masses, where the spatial step size $\Delta \mathbf{r}_i = \Delta \mathbf{r}_j = \Delta $ giving
 \begin{equation}\label{discrete space}
-	v_{t+1}\left(\mathbf{r}_{ij}\right) = \xi v_t\left(\mathbf{r}_{ij}\right) + T \Delta^2 \sum_{i=1}^{i=I}{ \sum_{j=1}^{j=J}{ w\left( \mathbf{r}-\mathbf{r}_{ij}' \right)f\left( v_t\left( \mathbf{r}_{ij}'\right) \right)} } + T u_t\left(\mathbf{r}\right) + e_t(\mathbf{r}_{i,j}),
+	v_{t+1}\left(\mathbf{r}_{ij}\right) = \lambda v_t\left(\mathbf{r}_{ij}\right) + T \Delta^2 \sum_{i=1}^{i=I}{ \sum_{j=1}^{j=J}{ w\left( \mathbf{r}-\mathbf{r}_{ij}' \right)f\left( v_t\left( \mathbf{r}_{ij}'\right) \right)} } + T u_t\left(\mathbf{r}\right) + e_t(\mathbf{r}_{i,j}),
 \end{equation}
 where $e_t(\mathbf{r}_{i,j}) \sim \mathcal{N}\left(0,\Sigma\right)$.
 We have used free boundary conditions and extended the spatial domain to alleviate problems associated with edge effects.
 \section{Reduction to Finite State-Space Model}\label{Simplifying Decomposition}
 Starting from Eq.~\ref{reduced continuous model} we multiply throughout by $\boldsymbol{\phi}(r)$ and integrate over the spatial domain $\Omega$ to get
 \begin{eqnarray}\label{Poo}
-	\int_\Omega  {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) d\mathbf{r}} \mathbf{x}_{t+1} = T \int_\Omega  {\boldsymbol{\phi} (\mathbf{r}) \boldsymbol{\theta}^{\top} \int_\Omega  {\boldsymbol{\psi}  \left(\mathbf{r}-\mathbf{r}'\right) f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right) \mathbf{x}_t \right)d\mathbf{r}'}d\mathbf{r}} - \xi\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\phi}^{\top}(\mathbf{r})d\mathbf{r}} \mathbf{x}_t \\
+	\int_\Omega  {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) d\mathbf{r}} \mathbf{x}_{t+1} = T \int_\Omega  {\boldsymbol{\phi} (\mathbf{r}) \boldsymbol{\theta}^{\top} \int_\Omega  {\boldsymbol{\psi}  \left(\mathbf{r}-\mathbf{r}'\right) f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right) \mathbf{x}_t \right)d\mathbf{r}'}d\mathbf{r}} - \lambda\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\phi}^{\top}(\mathbf{r})d\mathbf{r}} \mathbf{x}_t \\
 	+ T \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) u_t\left(\mathbf{r}\right)d\mathbf{r}} + \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) e_t\left(\mathbf{r}\right)d\mathbf{r}}.
 \end{eqnarray}
 Substituting Eq.~\ref{DefGamma} into Eq.~\ref{Poo} and cross-multiplying by $\boldsymbol{\Gamma}^{-1}$ gives 
 \begin{eqnarray}\label{Homogeneous SS Model}
-	\mathbf{x}_{t+1} = T\boldsymbol{\Gamma}^{ - 1}\int_\Omega {\boldsymbol{\phi}\left(\mathbf{r}\right) \int_\Omega {f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right)\mathbf{x}_t\right) \boldsymbol{\psi}^{\top} \left(\mathbf{r}-\mathbf{r}'\right)d\mathbf{r}'} d\mathbf{r}} \boldsymbol{\theta} - \xi \mathbf{x}_t \\
+	\mathbf{x}_{t+1} = T\boldsymbol{\Gamma}^{ - 1}\int_\Omega {\boldsymbol{\phi}\left(\mathbf{r}\right) \int_\Omega {f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right)\mathbf{x}_t\right) \boldsymbol{\psi}^{\top} \left(\mathbf{r}-\mathbf{r}'\right)d\mathbf{r}'} d\mathbf{r}} \boldsymbol{\theta} - \lambda \mathbf{x}_t \\
 	+ \boldsymbol{\Gamma}^{-1}T \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) u_t\left(\mathbf{r}\right)d\mathbf{r}} + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}\left(\mathbf{r}\right)e_t\left(\mathbf{r}\right)d\mathbf{r}}.
 \end{eqnarray}
 \section{Reduction to Finite State-Space Model}\label{Simplifying Decomposition}
 Starting from Eq.~\ref{reduced continuous model} we multiply throughout by $\boldsymbol{\phi}(r)$ and integrate over the spatial domain $\Omega$ to get
 \begin{eqnarray}\label{Poo}
-	\int_\Omega  {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) d\mathbf{r}} \mathbf{x}_{t+1} = T \int_\Omega  {\boldsymbol{\phi} (\mathbf{r}) \boldsymbol{\theta}^{\top} \int_\Omega  {\boldsymbol{\psi}  \left(\mathbf{r}-\mathbf{r}'\right) f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right) \mathbf{x}_t \right)d\mathbf{r}'}d\mathbf{r}} - \xi\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\phi}^{\top}(\mathbf{r})d\mathbf{r}} \mathbf{x}_t \\
+	\int_\Omega  {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) d\mathbf{r}} \mathbf{x}_{t+1} = T \int_\Omega  {\boldsymbol{\phi} (\mathbf{r}) \boldsymbol{\theta}^{\top} \int_\Omega  {\boldsymbol{\psi}  \left(\mathbf{r}-\mathbf{r}'\right) f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right) \mathbf{x}_t \right)d\mathbf{r}'}d\mathbf{r}} - \lambda\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\phi}^{\top}(\mathbf{r})d\mathbf{r}} \mathbf{x}_t \\
 	+ T \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) u_t\left(\mathbf{r}\right)d\mathbf{r}} + \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) e_t\left(\mathbf{r}\right)d\mathbf{r}}.
 \end{eqnarray}
 Substituting Eq.~\ref{DefGamma} into Eq.~\ref{Poo} and cross-multiplying by $\boldsymbol{\Gamma}^{-1}$ gives 
 \begin{eqnarray}\label{Homogeneous SS Model}
-	\mathbf{x}_{t+1} = T\boldsymbol{\Gamma}^{ - 1}\int_\Omega {\boldsymbol{\phi}\left(\mathbf{r}\right) \int_\Omega {f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right)\mathbf{x}_t\right) \boldsymbol{\psi}^{\top} \left(\mathbf{r}-\mathbf{r}'\right)d\mathbf{r}'} d\mathbf{r}} \boldsymbol{\theta} - \xi \mathbf{x}_t \\
+	\mathbf{x}_{t+1} = T\boldsymbol{\Gamma}^{ - 1}\int_\Omega {\boldsymbol{\phi}\left(\mathbf{r}\right) \int_\Omega {f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right)\mathbf{x}_t\right) \boldsymbol{\psi}^{\top} \left(\mathbf{r}-\mathbf{r}'\right)d\mathbf{r}'} d\mathbf{r}} \boldsymbol{\theta} - \lambda \mathbf{x}_t \\
 	+ \boldsymbol{\Gamma}^{-1}T \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) u_t\left(\mathbf{r}\right)d\mathbf{r}} + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}\left(\mathbf{r}\right)e_t\left(\mathbf{r}\right)d\mathbf{r}}.
 \end{eqnarray}
 \section{}\label{ColoredNoise}
@@ -395,11 +398,11 @@ Consider the zero-mean process $e_t\left(\mathbf r\right)$ with covariance as de
 \end{equation}
 is a vector valued, zero mean normally distributed white noise process with covariance
 \begin{equation}
-\boldsymbol\Sigma_e =\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega}\boldsymbol{\phi}\left(\mathbf r\right) \gamma\left(\mathbf r- \mathbf r' \right)\boldsymbol{\phi}\left(\mathbf r'\right)^{\top}d\mathbf r' d\mathbf r\mathbf{\Gamma}^{- \top} 
+\boldsymbol\Sigma_e =\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega}\boldsymbol{\phi}\left(\mathbf r\right) \beta\left(\mathbf r- \mathbf r' \right)\boldsymbol{\phi}\left(\mathbf r'\right)^{\top}d\mathbf r' d\mathbf r\mathbf{\Gamma}^{- \top} 
 \end{equation}
 \label{lemma:FieldCovariance}
 \end{lemma}
-\subsection*{Proof}
+\subsection{proof}
  Equation (\ref{eq:AppendixWt}) is a linear function of $e_t(\mathbf r)$ and hence $\mathbf{e}_t$ is also normally distributed. The expected value of $\mathbf e_t$ is given by 
 \begin{eqnarray}
  \mathbf E\left[ \mathbf e_t\right]&=& \mathbf{\Gamma}^{-1}\int_{\Omega}\boldsymbol\phi\left(\mathbf{r}\right)\mathbf E\left[e_t\left(\mathbf{r}\right)\right] d\mathbf{r} \nonumber \\
@@ -414,7 +417,7 @@ The covariance of $\mathbf{e}_t$ is
 % \end{proof}
 \section{Parameter estimation using LS}
 \begin{equation}
- \mathbf x_{t+1}=\mathbf{x}_{t}+T_s \mathbf{Q}(\mathbf{x}_t)\boldsymbol{\theta}-\zeta T_s\mathbf{x}_t+T_s\Gamma^{-1}\int_\Omega\boldsymbol{\phi}(\mathbf r)\varepsilon_t(\mathbf r)d\mathbf r
+ \mathbf x_{t+1}=\mathbf{x}_{t}+T_s \mathbf{Q}(\mathbf{x}_t)\boldsymbol{\theta}-\alpha T_s\mathbf{x}_t+T_s\Gamma^{-1}\int_\Omega\boldsymbol{\phi}(\mathbf r)\varepsilon_t(\mathbf r)d\mathbf r
 \label{eq:statespacemodel}
 \end{equation}
 where the matrix $\mathbf Q_{n_x \times n_{\boldsymbol{\theta}}}(\mathbf x_t)$ is defined as
@@ -423,17 +426,17 @@ where the matrix $\mathbf Q_{n_x \times n_{\boldsymbol{\theta}}}(\mathbf x_t)$ i
 \end{equation}
 and $T_s$ is the sampling period. Least Square method can be used as (\ref{eq:statespacemodel}) is linear in parameters. At each time instant we have
 \begin{eqnarray}
- \mathbf x_{1}&=&\mathbf x_{0}+T_s \mathbf Q(\mathbf x_0) \boldsymbol{\theta}-\zeta T_s\mathbf x_0+T_s\mathbf e_0 \nonumber \\
- \mathbf x_{2}&=&\mathbf x_{1}+T_s \mathbf Q(\mathbf x_1) \boldsymbol{\theta}-\zeta T_s\mathbf x_1+T_s\mathbf e_1\nonumber\\
+ \mathbf x_{1}&=&\mathbf x_{0}+T_s \mathbf Q(\mathbf x_0) \boldsymbol{\theta}-\alpha T_s\mathbf x_0+T_s\mathbf e_0 \nonumber \\
+ \mathbf x_{2}&=&\mathbf x_{1}+T_s \mathbf Q(\mathbf x_1) \boldsymbol{\theta}-\alpha T_s\mathbf x_1+T_s\mathbf e_1\nonumber\\
 &\vdots& \nonumber\\
- \mathbf x_{n}&=&\mathbf x_{n-1}+T_s \mathbf Q(\mathbf x_{n-1}) \boldsymbol{\theta}-\zeta T_s\mathbf x_{n-1}+T_s\mathbf e_{n-1}
+ \mathbf x_{n}&=&\mathbf x_{n-1}+T_s \mathbf Q(\mathbf x_{n-1}) \boldsymbol{\theta}-\alpha T_s\mathbf x_{n-1}+T_s\mathbf e_{n-1}
 \end{eqnarray}
 in matrix form
 \begin{equation}
  \left[\begin{array}{{cccc}} \mathbf x_{1}\\\mathbf x_{2}\\\vdots\\\mathbf x_{n}\end{array}\right]
 	-\left[\begin{array}{cccc} \mathbf x_{0}\\\mathbf x_{1}\\\vdots\\\mathbf x_{n-1}\end{array}\right]
 	=T_s\left[\begin{array}{cc}\mathbf Q(\mathbf x_0)&-\mathbf x_{0}\\\mathbf Q(\mathbf x_1)&-\mathbf x_{1}\\\vdots\\ \mathbf Q(\mathbf x_{n-1})&-\mathbf x_{n-1}\end{array}\right]
-	\left[\begin{array}{cc} \boldsymbol{\theta} \\ \zeta\end{array}\right]+T_s
+	\left[\begin{array}{cc} \boldsymbol{\theta} \\ \alpha\end{array}\right]+T_s
 		\left[\begin{array}{cccc}\mathbf e_0\\\mathbf e_1\\\vdots\\\mathbf e_{n-1}\end{array}\right]
 \end{equation}
 or in compact form we have
@@ -446,7 +449,7 @@ where
 \mathbf x_{2}-\mathbf x_{1}\\\vdots\\
 \mathbf x_{n}-\mathbf x_{n-1}\end{array}\right],\quad \mathbf X=T_s\left[\begin{array}{cccc}\mathbf Q(\mathbf x_0)&-\mathbf x_{0}\\
 \mathbf Q(\mathbf x_1)&-\mathbf x_{1}\\\vdots\\ \mathbf Q(\mathbf x_{n-1})&-\mathbf x_{n-1}\end{array}\right]
-,\quad \mathbf W=\left[\begin{array}{cc} \boldsymbol{\theta} \\ \zeta\end{array}\right],\quad \boldsymbol \xi=T_s\left[\begin{array}{cccc}\mathbf e_0\\\mathbf e_1\\\vdots\\\mathbf e_{n-1}\end{array}\right]
+,\quad \mathbf W=\left[\begin{array}{cc} \boldsymbol{\theta} \\ \alpha\end{array}\right],\quad \boldsymbol \xi=T_s\left[\begin{array}{cccc}\mathbf e_0\\\mathbf e_1\\\vdots\\\mathbf e_{n-1}\end{array}\right]
 \end{equation}
 using the method of Least Square $ \mathbf W$ can be estimated
 \begin{equation}
@@ -463,30 +466,30 @@ using the method of Least Square $ \mathbf W$ can be estimated
 	$t$ & time (s) \\
 	$h(t)$ & post-synaptic response kernel \\
 	$\eta(t)$ & Heaviside function \\
-	$\zeta$ & inverse synaptic time constant \\
+	$\alpha$ & inverse synaptic time constant \\
 	$w(\mathbf{r},\mathbf{r}')$ & spatial connectivity kernel \\
 	$f(\mathbf{r},t)$ & firing function rate \\
 	$u(\mathbf{r},t)$ & external input \\
 	$\Omega$ & spatial domain \\
 	$f_{max}$ & maximal firing rate \\
-	$\varsigma$ & slope of sigmoidal activation function \\
+	$\beta$ & slope of sigmoidal activation function \\
 	$v_0$ & firing threshold \\
 	$\delta(t)$ & Dirac-delta function \\
 	$L$ & temporal differential operator \\
 	$e(\mathbf{r},t)$ & field disturbance, covariance $\gamma$\\
 	$m(\mathbf{r},\mathbf{r}')$ & sensor kernel, variance $\sigma_m^2$ \\
-	$\varepsilon(\mathbf{r}_n,t)$ & observation noise, covariance $\Sigma_\epsilon$ \\
+	$\epsilon(\mathbf{r}_n,t)$ & observation noise, covariance $\Sigma_\epsilon$ \\
 	$y(\mathbf{r}_n,t)$ & obseration \\
-	$n$ & sensor index $n=1,...,N$ \\
+	$n$ & sensor index $n=1,..,N$ \\
 	$T$ & time step \\
-	$\xi$ & time constant parameter \\
-	$\boldsymbol{\phi(r)}$ & vector of Gaussian basis functions \\
+	$\lambda$ & time constant parameter \\
+	$\mathbf{\phi(r)}$ & vector of Gaussian basis functions \\
 	$\mathbf{x}_t$ & state vector at time $t$ \\
-	$\boldsymbol{\psi}$ & vector of connectivity kernel basis functions \\
-	$\boldsymbol{\theta}$ & vector of connectivity kernel parameters \\
-	$\boldsymbol{\Gamma}$ & inner product of field basis functions \\
-	$q(.)$ & state transition function \\
-	$k(.)$ & maps into to discrete state of input function $u(\mathbf{r},t)$ \\
+	$\mathbf{\psi}$ & vector of connectivity kernel basis functions \\
+	$\theta$ & vector of connectivity kernel parameters \\
+	$\Gamma$ & inner product of field basis functions \\
+	$q()$ & state function \\
+	$k()$ & maps into to discrete state of input function \\
 	$\mathbf{e}_t$ & state disturbance, covariance $\Sigma_e$ \\
 	$\mathbf{C}$ & observation matrix \\
 	$V(\nu)$ & Spectrum of the dynamic field \\ 
@@ -503,13 +506,13 @@ using the method of Least Square $ \mathbf W$ can be estimated
 	$\sigma_{nu}^2$ & Variance of FT of Gaussian basis function \\
 	$\sigma^2$ & Spatial variance of Gaussian in spatial domain \\
 	$\hat{\mathbf{x}}$ & State estimate \\
-	$\boldsymbol{\chi}$ & Matrix of sigma vectors \\
+	$\chi$ & Matrix of sigma vectors \\
 	$\hat{\mathbf{x}}_t^{f-}$ & Forward \emph{a priori} estimate \\
 	$\hat{\mathbf{x}}_t^f$ & Forward \emph{a posteriori} estimate \\
 	$\hat{\mathbf{x}}_t^{b-}$ & Backward \emph{a priori} estimate \\
 	$\hat{\mathbf{x}}_t^{b}$ & Backward \emph{a posteriori} estimate \\
-	$\mathbf{P}^f_t$ & Forward \emph{a posteriori} covariance matrix \\
-	$\mathbf{P}^{f-}_t$ & Forward \emph{a priori} covariance matrix \\	
+	$P^f_t$ & Forward \emph{a posteriori} covariance matrix \\
+	$P^{f-}_t$ & Forward \emph{a priori} covariance matrix \\	
 \end{tabular}
 \section*{References}
 \bibliographystyle{unsrt}
