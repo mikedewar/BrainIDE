@@ -299,10 +299,10 @@ For $t \in \left\lbrace 0,\cdots, N\right\rbrace $,
 \end{equation*}
 Propogate the sigma points through the state equation
 \begin{equation}
-\mathcal X_{i,t+1|t}^{f*}=Q(\mathcal X_t^f,u_t)
+\mathcal X_{i,t+1}^{f-}=Q(\mathcal X_t^f,u_t)
 \end{equation}
 \begin{equation*}
- \hat{\mathbf x}_{t+1}^{f-}=\sum_{i=0}^{2L} W_i^{(m)}\mathcal X_{i,t+1|t}^{f*}
+ \hat{\mathbf x}_{t+1}^{f-}=\sum_{i=0}^{2L} W_i^{(m)}\mathcal X_{i,t+1|t}^{f-}
 \end{equation*}
 \begin{equation*}
  \mathbf P_{t +1}^{f-}=\sum_{i=0}^{2L} W_i^{(c)}(\mathcal X_{i,t+1}^{f-}-\hat{\mathbf x}_{t +1}^{f-})(\mathcal X_{i,t+1}^{f-}-\hat{\mathbf x}_{t +1}^{f-})^\top+\boldsymbol \Sigma_e
@@ -319,17 +319,25 @@ Propogate the sigma points through the state equation
 \State Backward iteration
 \State initialisation
 \begin{equation}
- \mathbf P_T^s= \mathbf P_T^f
+ \mathbf P_T^b= \mathbf P_T^f
 \end{equation}
 \begin{equation}
-\hat{\mathbf x}^s_T= \hat{\mathbf x}^f_T
+\hat{\mathbf x}^b_T= \hat{\mathbf x}^f_T
 \end{equation}
 For $t \in \left\lbrace T-1, \cdots, 0 \right\rbrace $
 \begin{equation*}
-\mathcal X_t^s=[\hat{\mathbf x}_t^f \quad \hat{\mathbf x}_t^f+\gamma\sqrt{\mathbf P_t^f} \quad \hat{\mathbf x}_t^f-\gamma\sqrt{\mathbf P_t^f}]
+\mathcal X_t^b=[\hat{\mathbf x}_t^f \quad \hat{\mathbf x}_t^f+\gamma\sqrt{\mathbf P_t^f} \quad \hat{\mathbf x}_t^f-\gamma\sqrt{\mathbf P_t^f}]
 \end{equation*}
-\State Calculate a new set of  sigma points, $\mathcal X_{i,t+1|t}^{b*}$ similar to the forward step and compute
-
+\State Calculate a new set of  sigma points, $\mathcal X_{i,t+1|t}^{b-}$ similar to the forward step and compute
+\begin{equation*}
+ \hat{\mathbf x}_{t+1}^{b-}=\sum_{i=0}^{2L} W_i^{(m)}\mathcal X_{i,t+1|t}^{b-}
+\end{equation*}
+\begin{equation*}
+ \mathbf P_{t +1}^{b-}=\sum_{i=0}^{2L} W_i^{(c)}(\mathcal X_{i,t+1}^{b-}-\hat{\mathbf x}_{t +1}^{f})(\mathcal X_{i,t+1}^{b-}-\hat{\mathbf x}_{t +1}^{f})^\top+\boldsymbol \Sigma_e
+\end{equation*}
+\begin{equation*}
+ \mathbf M_{t +1}=\sum_{i=0}^{2L} W_i^{(c)}(\mathcal X_{i,t}^{b-}-\hat{\mathbf x}_{t}^{f})(\mathcal X_{i,t+1}^{b-}-\hat{\mathbf x}_{t+1}^{f})^\top
+\end{equation*}
 \end{algorithmic}
 \end{algorithm}
 \section{Results}
