@@ -50,12 +50,7 @@
 % \usepackage{amsmath,amssymb,amsfonts} 			%<-use this for checking equation length
 % \newcommand{\gguide}{{\it Preparing graphics for IOP journals}}
 \newcommand{\todo}[1]{\textsf{\emph{\textbf{\textcolor{blue}{#1}}}}}
-<<<<<<< HEAD
 \newcommand{\wtf}[1]{\textsf{\emph{\textbf{\textcolor{red}{#1}}}}}
-
-%Uncomment next line if AMS fonts required
-=======
->>>>>>> 44785cbe31e7e939c2ccab754638989b922def08
   
 \begin{document}
 
@@ -152,12 +147,9 @@ To arrive at the final form of the model we shall state the synaptic response ke
 \begin{equation}\label{GreensFuncDef}
 	Dh\left( t \right) = \delta \left( t \right),
 \end{equation}
-<<<<<<< HEAD
-where $L=\frac{d}{dt} + \alpha$ is a temporal differential operator and $\delta(t)$ is the Dirac-delta function giving 
-=======
+
 where $D=\frac{d}{dt} + \zeta$ is a temporal differential operator and $\delta(t)$ is the Dirac-delta function giving 
-where $L=\frac{d}{dt} + \zeta$ is a temporal differential operator and $\delta(t)$ is the Dirac-delta function giving 
->>>>>>> 44785cbe31e7e939c2ccab754638989b922def08
+
 \begin{equation}\label{FinalFormContinuous}
 	\frac{dv\left( \mathbf{r},t \right)}{dt} + \zeta v\left( \mathbf{r},t \right) = \int_\Omega  {w\left( \mathbf{r},\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)dr'} + u\left(\mathbf{r},t\right).
 \end{equation}
@@ -253,15 +245,9 @@ Considering the spectral representation of the dynamic field at time $t$ denoted
 \end{equation}
 where $\rho \in \mathbb{R} \ge 1$ is an oversampling parameter. Satisfying this condition is required for the hidden dynamic field $v_t(\mathbf{r})$ to be precisely inferred from the sampled observations, $\mathbf{y}(t)$. If the condition is not satisfied, spatial aliasing will occur.
 
-<<<<<<< HEAD
-There are two options available to alleviate problems with aliasing. The first is to increase the spatial sampling frequency (using a higher resolution of sensors), and the second is to use wider sensors, which act like an anti-aliasing filters. The first option is more desirable, since more information is retained. However, if sensors are modelled as having a Gaussian pickup range than the effective filter will not have a sharp cut-off and high frequency components will still remain and mild aliasing will still occur. In practice, the bandwidth of the cortex can not be estimated by traditional electrophysiological measurements due to spatial limitations. It may be estimated using other modalities with higher spatial resolution such as, fMRI, NIRS or other optical imaging techniques. Errors associated with mild aliasing result in distortions in the high frequency components of the field dynamics. However, after applying the basis function decomposition, high frequency component contribute negligibly to the inverse problem and are therefore not a major problem for the state and parameter estimation \cite{Sanner1992}. This is further illustrated our results.
-$\mathcal{W}$
-Similar considerations need to be made regarding the representation of the dynamic field $w_t(\mathbf{r})$ by its basis functions decompositions. The minimum distance between adjacent basis functions also needs to satisfy Shannon's sampling theorem. Thus, the minimum distance between basis must satisfy
-=======
 There are two options available to alleviate problems with aliasing. The first is to increase the spatial sampling frequency (using a higher resolution of sensors), and the second is to use wider sensors, which act like an anti-aliasing filters. The first option is more desirable, since more information is retained. However, if sensors are modelled as having a Gaussian pickup range than the effective filter will not have a sharp cut-off and high frequency components will still remain and mild aliasing will still occur. In practice, the bandwidth of the cortex can not be estimated by traditional electrophysiological measurements due to spatial limitations. It may be estimated using other modalities with higher spatial resolution such as, fMRI, NIRS or other optical imaging techniques. Errors associated with mild aliasing result in distortions in the high frequency components of the field dynamics. However, after applying the basis function decomposition, high frequency component contribute negligibly to the inverse problem and are therefore not a major problem for the state and parameter estimation~\cite{Sanner1992}. This is further illustrated our results.
 
 Similar considerations need to be made regarding the representation of the dynamic field $v_t(\mathbf{r})$ using the basis function decomposition. The minimum distance between adjacent basis functions also needs to satisfy Shannon's sampling theorem. Thus, the minimum distance between basis must satisfy
->>>>>>> 44785cbe31e7e939c2ccab754638989b922def08
 \begin{equation}
 \Delta_b < \frac{1}{2\nu_c}.
 \end{equation}
