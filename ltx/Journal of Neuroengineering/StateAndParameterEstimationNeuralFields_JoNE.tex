@@ -40,7 +40,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % \documentclass[twocolumn,11pt,a4paper]{article}		%<-use this for checking equation length
-\documentclass[12pt]{iopart}		%<-comment out this for checking equations
+\documentclass[12pt]{iopart}		%<-comment out this for checking equations (author list too)
 \usepackage{graphicx, algorithm, algorithmicx, algpseudocode}
 \usepackage{color}  
 \usepackage{iopams,setstack}                  %<-comment out this for checking equations
@@ -54,18 +54,18 @@
 \begin{document}
 
 \title[State and Parameter Estimation for a Spatio-Temporal Neural Fields]{State and Parameter Estimation for a Spatio-Temporal Neural Fields}
-% 
-% \author{Dean R. Freestone$^1$, Parham Aram$^2$, Michael Dewar$^3$, Kenneth Scerri$^4$, David B. Grayden$^1$, and Visakan Kadirkamanathan$^2$}
-% 
-% \address{$^1$ Department
-% of Electrical and Electronic Engineering, University of Melbourne, Melbourne,
-% Vic, 3010 Australia}
-% \address{$^2$ Department
-% of Automatic Control and Systems Engineering, University of Sheffield, Mappin Street, Sheffield,
-% S1 3JD, UK}
-% \address{$^3$ Mike's}
-% \address{$^4$ Ken's}
-% \ead{dfreestone@bionicear.org}
+
+\author{Dean R. Freestone$^1$, Parham Aram$^2$, Michael Dewar$^3$, Kenneth Scerri$^4$, David B. Grayden$^1$, and Visakan Kadirkamanathan$^2$}
+
+\address{$^1$ Department
+of Electrical and Electronic Engineering, University of Melbourne, Melbourne,
+Vic, 3010 Australia}
+\address{$^2$ Department
+of Automatic Control and Systems Engineering, University of Sheffield, Mappin Street, Sheffield,
+S1 3JD, UK}
+\address{$^3$ Mike's}
+\address{$^4$ Ken's}
+\ead{dfreestone@bionicear.org}
 \begin{abstract}
 Will do the abstract towards the end.
 \end{abstract}
@@ -124,7 +124,7 @@ where $f(\cdot)$ is the firing rate function, $w(\cdot)$ is the spatial connecti
 
 The firing rate of the presynaptic neurons is related to the postsynaptic membrane potential by the sigmoidal activation function
 \begin{equation}\label{ActivationFunction}
-	f\left( v\left( \mathbf{r}', t \right) \right) = \frac{\nu _0\left(\mathbf{r}\right)}{1 + \exp \left( \beta \left( v_0\left( \mathbf{r} \right) - v\left(\mathbf{r}',t\right) \right) \right)}.
+	f\left( v\left( \mathbf{r}', t \right) \right) = \frac{f_{max}\left(\mathbf{r}\right)}{1 + \exp \left( \beta \left( v_0\left( \mathbf{r} \right) - v\left(\mathbf{r}',t\right) \right) \right)}.
 \end{equation}
 %Even though we will model $v_0$ and $\nu_0$ as being homogeneous across the cortical sheet we will express it as being spatially dependant allowing for generality at this point. 
 By substituting \ref{RateBasedInteractions} into \ref{SpikesToPotential}  we get the spatiotemporal model
@@ -291,12 +291,15 @@ For $t \in \left\lbrace N-1, \cdots, 0 \right\rbrace $
 \end{equation*}
 \end{algorithmic}
 \end{algorithm}
-\section{Comparison of Estimated Parameters and True Parameters}
+\section{Results}
 
+\subsection{Frequency Analysis}
 
+\subsection{State and Parameter Estimates}
 
 
 \section{Discussion}
+
 \begin{itemize}
 
 	\item Discuss the novelty of using the reduced model (BrainIDE) for creating patient specific models. 
@@ -422,6 +425,65 @@ using the method of Least Square $ \mathbf W$ can be estimated
 \begin{equation}
  \mathbf W\approx(\mathbf X^\top\mathbf X)^{-1}\mathbf X^\top\mathbf Z
 \end{equation}
+\section{Parameters}
+
+\begin{tabular} {c|c} 
+	\hline\hline
+	Symbol & Description \\ \hline
+	$v(\mathbf{r},t)$ & mean membrane potential \\
+	$g(\mathbf{r},t)$ & average action potential rate \\
+	$\mathbf{r}$ & spatial location \\
+	$t$ & time (s) \\
+	$h(t)$ & post-synaptic response kernel \\
+	$\eta(t)$ & Heaviside function \\
+	$\alpha$ & inverse synaptic time constant \\
+	$w(\mathbf{r},\mathbf{r}')$ & spatial connectivity kernel \\
+	$f(\mathbf{r},t)$ & firing function rate \\
+	$u(\mathbf{r},t)$ & external input \\
+	$\Omega$ & spatial domain \\
+	$f_{max}$ & maximal firing rate \\
+	$\beta$ & slope of sigmoidal activation function \\
+	$v_0$ & firing threshold \\
+	$\delta(t)$ & Dirac-delta function \\
+	$L$ & temporal differential operator \\
+	$e(\mathbf{r},t)$ & field disturbance, covariance $\gamma$\\
+	$m(\mathbf{r},\mathbf{r}')$ & sensor kernel, variance $\sigma_m^2$ \\
+	$\epsilon(\mathbf{r}_n,t)$ & observation noise, covariance $\Sigma_\epsilon$ \\
+	$y(\mathbf{r}_n,t)$ & obseration \\
+	$n$ & sensor index $n=1,..,N$ \\
+	$T$ & time step \\
+	$\lambda$ & time constant parameter \\
+	$\mathbf{\phi(r)}$ & vector of Gaussian basis functions \\
+	$\mathbf{x}_t$ & state vector at time $t$ \\
+	$\mathbf{\psi}$ & vector of connectivity kernel basis functions \\
+	$\theta$ & vector of connectivity kernel parameters \\
+	$\Gamma$ & inner product of field basis functions \\
+	$q()$ & state function \\
+	$k()$ & maps into to discrete state of input function \\
+	$\mathbf{e}_t$ & state disturbance, covariance $\Sigma_e$ \\
+	$\mathbf{C}$ & observation matrix \\
+	$V(\nu)$ & Spectrum of the dynamic field \\ 
+	$\nu$ & Spatial frequency \\
+	$\nu_c$ & Spatial cut-off frequency \\
+\end{tabular}
+
+\begin{tabular}{c|c}
+	\hline\hline
+	Symbol & Description \\ \hline
+	$\Delta_s$ & Distance between adjacent sensors \\
+	$\rho$ & Over-sampling parameter \\	
+	$\Delta_b$ & Distance between field basis functions \\	
+	$\sigma_{nu}^2$ & Variance of FT of Gaussian basis function \\
+	$\sigma^2$ & Spatial variance of Gaussian in spatial domain \\
+	$\hat{\mathbf{x}}$ & State estimate \\
+	$\chi$ & Matrix of sigma vectors \\
+	$\hat{\mathbf{x}}_t^{f-}$ & Forward \emph{a priori} estimate \\
+	$\hat{\mathbf{x}}_t^f$ & Forward \emph{a posteriori} estimate \\
+	$\hat{\mathbf{x}}_t^{b-}$ & Backward \emph{a priori} estimate \\
+	$\hat{\mathbf{x}}_t^{b}$ & Backward \emph{a posteriori} estimate \\
+	$P^f_t$ & Forward \emph{a posteriori} covariance matrix \\
+	$P^{f-}_t$ & Forward \emph{a priori} covariance matrix \\	
+\end{tabular}
 \section*{References}
 \bibliographystyle{unsrt}
 \bibliography{BrainIDE}
