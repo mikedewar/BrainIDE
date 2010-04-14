@@ -99,7 +99,7 @@ Recent studies using neural field models have demonstrated the theoretical impli
 Until now, estimation of local intracortical connectivity structure has not been attempted. Recently, it has been shown that it is possible to estimate local coupling of systems governed by integro-difference equations by formulating a state-space model~\cite{Dewar2009}. The key development in this work was to define a state-space model with an order independent of the number of observations (or ECoG recording electrodes in this case). In addition, the appropriate model selection tools have been developed~\cite{Scerri2009} allowing for the application of this technique to neural fields. Modelling the neural dynamics within this framework has a distinct advantage over AR models, such that the number of parameters to define the connectivity basis functions (three in the paper) is considerably smaller than the number of AR coefficients typically required to achieve the relevant information criteria (AIC or BIC). In this paper, we demonstrate for the first time how intracortical connectivity can be inferred from ECoG data, based on a variant of the  Wilson and Cowan neural field model~\cite{Wilson1973}. This work provides a fundamental link between the theoretical advances in neural field modelling and patient specific data.
 %Long range connectivity can be estimated using DTI~\cite{Knock2009}, however this short range connectivity can not..
 
-\section{Neural Field Model}
+\section{Neural Field Model}\label{NeuralModelSection}
 In this section, we describe a variant of the  Wilson and Cowan neural field model~\cite{Wilson1973} that will be used to create our intracortical connectivity estimator. This model is descriptive of a range of neurodynamics of the cortex such as evoked potentials, visual hallucinations, and epileptic behaviour. 
 \begin{todo}
 	{Really need to add some citations here.}
@@ -238,11 +238,15 @@ Similar considerations need to be made regarding the representation of the dynam
 \begin{equation}
 \Delta_b < \frac{1}{2\nu_c}.
 \end{equation}
-For the Gaussian basis functions $\phi(\mathbf{r})$ being considered, the basis width parameter $\sigma^2$ can also be inferred from spectral considerations \cite{Sanner1992,Scerri2009}. The Fourier transform of a Gaussian is another Gaussian with width $\sigma^2_{\nu}$ given by
+For the Gaussian basis functions $\phi(\mathbf{r})$ being considered, the basis width parameter $\sigma_{\phi}^2$ can also be inferred from spectral considerations \cite{Sanner1992,Scerri2009}. The Fourier transform of a Gaussian is another Gaussian with width $\sigma^2_{\nu}$ given by
 \begin{equation}
-\sigma^2_{\nu} = \frac{1}{\pi^2\sigma^2}.
+\sigma^2_{\nu} = \frac{1}{\pi^2\sigma_{\phi}^2}.
 \end{equation}
-Thus to ensure that the basis functions can represent fields with frequency content up to $\boldsymbol{\nu}_c$, $\sigma_{\nu}$ should be set with the 3~dB frequency for the basis functions equal to $\boldsymbol{\nu}_c$, thus obtained $\sigma^2_{\nu}$ and therefore $\sigma^2$.
+The relationship between the Fourier transform and the basis function width is
+\begin{equation}
+	1234
+\end{equation}
+Thus to ensure that the basis functions can represent fields with frequency content up to $\boldsymbol{\nu}_c$, $\sigma_{\nu}$ should be set with at least the 3~dB frequency for the basis functions equal to $\boldsymbol{\nu}_c$, thus obtained $\sigma^2_{\nu}$ and therefore $\sigma_{\phi}^2$.
 
 The dynamic field must be spatially oversampled by using a larger number of sensor then imposed by frequency considerations, to use frequency analysis to determine the minimum distance and width of the basis functions. Following this, the distance between basis functions is usually larger then the distance between sensors, although this is not a requirement for using this estimation framework. For a spatially homogeneous isotropic field the basis functions can be placed on a regular square grid. Following this, the knowledge of the distance between basis functions directly implies the total number of basis functions required.
 
@@ -354,7 +358,7 @@ For $t \in \left\lbrace T-1, \cdots, 0 \right\rbrace $
 \end{algorithmic}
 \end{algorithm}
 \section{Results}
-The neural field model was used to the generate data for state and parameter estimation. All parameters for the model are given in table~\ref{}. An example of the simulated field can be seen in figure~\ref{}~A. The Figure demonstrates the experimental design where the sensors were placed in the centre of the field. This design allowed for uncertainty around the edges of the sensor array, which would be typical from physical data, and alleviated problems associated with boundary conditions. Figure~\ref{}~B. shows example data from the sensors of the model, and figure~\ref{}~C. shows the power spectral density of on of the simulated time-series. The PSD shows the typical $1/f$ characteristics of intracranial EEG.
+The neural field model derived in section~\ref{NeuralModelSection} was used to the generate data for state and parameter estimation. All parameters for the model are given in table~\ref{}. An example of the simulated field can be seen in figure~\ref{}~A. The Figure demonstrates the experimental design where the sensors were placed in the centre of the field (full width at half maximum). This design allowed for uncertainty around the edges of the sensor array, which would be typical from physical data, and alleviated problems associated with boundary conditions. Figure~\ref{}~B. shows example data from the sensors of the model, and figure~\ref{}~C. shows the power spectral density of on of the simulated time-series. The PSD shows the typical $1/f$ characteristics of intracranial EEG.
 % \begin{figure}
 % 	\centering
 % 		\includegraphics[scale=1]{file.eps}
@@ -363,23 +367,21 @@ The neural field model was used to the generate data for state and parameter est
 % \end{figure}
 
 \subsection{Spatial Frequency Analysis}
-The spatial frequency of the observations is shown in figure~\ref{}. The cut-off frequency was taken to correspond to half the peak amplitude in dB and the oversampling parameter $\rho=3$. From equation~\ref{}, this gives a minimum distance between basis functions of \todo{??} and width of \todo{??} to satisfy Shannon's sampling criterion. Following this, the distance between basis function, $\Delta_b$, was set to \todo{??} and the basis function width, $\sigma$ was set to \todo{??}.
-    
+The spatial frequency of the observations is shown in figure~\ref{}. The peak power of the fft of the observation was approximately $30$ dB. The cut-off frequency was taken to correspond to half the peak amplitude which was approximately $15$~dB. This provided a conservative The oversampling parameter $\rho=2$. From equation~\ref{}, this gives a minimum distance between basis functions of $2.7$ to satisfy Shannon's sampling criterion. \todo{maybe from Parham's derivation... From equation~\ref{} the width was calculated to be... or...}. The width of the basis functions was chosen such that they had sufficient overlap to represent the dynamic field.
+Following this, the distance between basis function, $\Delta_b$, was set to $2.5$ and the basis function width, $\sigma_{\phi}^2$, was set to 3.6.
 \subsection{State and Parameter Estimates}
-
+To demonstrate the performance of the parameter and state estimation, $200$ realisations of the data were generated. Each realisation consisted of 300 ms of data and the estimation was applied to the final 200 ms, allowing the model to stabalise. The initial state and parameters were unknown to the estimator. The state estimates were evaluated by comparing the field reconstruction to the true field using the mean RMSE and standard deviation of the RMSE. The distribution of the state estimates are shown in figure~\ref{}. 
 
 \section{Discussion}
 
 \begin{itemize}
-
+	\item 
+	\item the number of basis functions could be set higher to get a better representation of the field, however this is limited by computation complexity.
 	\item Discuss the novelty of using the reduced model (BrainIDE) for creating patient specific models. 
 	\item The size of the dentritic arbour is consistent in the cortex.
 	\item Spatial frequency of field and the relationship to the required density of electrodes/sensors required for estimation or to capture the required information without aliasing.
-	
 	\item The flexibility of the approach
-	
-	\item Combining this method with other to incorporate longer range hetrogeneous connectivity.
-	
+	\item Combining this method with other to incorporate longer range hetrogeneous connectivity.	
 	\item The need for activity to perform estimation.
 \end{itemize}
 
