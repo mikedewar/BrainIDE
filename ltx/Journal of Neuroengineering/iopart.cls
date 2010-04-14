@@ -775,8 +775,8 @@
 \hskip\mathindent}
 \def\endequation{$\hfil \displaywidth\linewidth\@eqnnum\egroup \endtrivlist}
 %
-\@namedef{equation*}{\[}
-\@namedef{endequation*}{\]}
+% \@namedef{equation*}{\[}
+% \@namedef{endequation*}{\]}
 %
 \def\eqnarray{\stepcounter{equation}\let\@currentlabel=\theequation
 \global\@eqnswtrue

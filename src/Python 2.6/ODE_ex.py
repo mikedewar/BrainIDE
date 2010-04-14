@@ -7,7 +7,7 @@ def ex_1():
 	#-------------field--------------------
 	field_width=40
 	dimension=2
-	spacestep=4
+	spacestep=0.5
 	f_space=pb.arange(-(field_width)/2.,(field_width)/2+spacestep,spacestep)# the step size should in a way that we have (0,0) in our kernel as the center
 	spatial_location_num=(len(f_space))**2
 
