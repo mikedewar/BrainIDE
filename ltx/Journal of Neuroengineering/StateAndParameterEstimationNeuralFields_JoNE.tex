@@ -362,11 +362,11 @@ Consider the zero-mean process $e_t\left(\mathbf r\right)$ with covariance as de
 \end{equation}
 is a vector valued, zero mean normally distributed white noise process with covariance
 \begin{equation}
-\boldsymbol\Sigma_e =\mathbf{\Gamma}^{-1}\int_{Omega}\int\limits_{\Omega}\boldsymbol{\phi}\left(\mathbf r\right) \beta\left(\mathbf r- \mathbf r' \right)\boldsymbol{\phi}\left(\mathbf r'\right)^{\top}d\mathbf r' d\mathbf r\mathbf{\Gamma}^{- \top} 
+\boldsymbol\Sigma_e =\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega}\boldsymbol{\phi}\left(\mathbf r\right) \beta\left(\mathbf r- \mathbf r' \right)\boldsymbol{\phi}\left(\mathbf r'\right)^{\top}d\mathbf r' d\mathbf r\mathbf{\Gamma}^{- \top} 
 \end{equation}
 \label{lemma:FieldCovariance}
 \end{lemma}
-\begin{proof}
+\subsection{proof}
  Equation (\ref{eq:AppendixWt}) is a linear function of $e_t(\mathbf r)$ and hence $\mathbf{e}_t$ is also normally distributed. The expected value of $\mathbf e_t$ is given by 
 \begin{eqnarray}
  \mathbf E\left[ \mathbf e_t\right]&=& \mathbf{\Gamma}^{-1}\int_{\Omega}\boldsymbol\phi\left(\mathbf{r}\right)\mathbf E\left[e_t\left(\mathbf{r}\right)\right] d\mathbf{r} \nonumber \\
@@ -375,10 +375,50 @@ is a vector valued, zero mean normally distributed white noise process with cova
 The covariance of $\mathbf{e}_t$ is
 \begin{eqnarray}
 \mathbf{\Sigma}_e&=&\mathbf{\Gamma}^{-1}\mathbf E[\int_{\Omega}\boldsymbol{\phi}\left(\mathbf{r}\right)e_t\left(\mathbf{r}\right)d\mathbf{r} \int_{\Omega}\boldsymbol{\phi}\left(\mathbf{r}'\right)^{\top} e_t\left(\mathbf{r}'\right)d\mathbf{r}']\mathbf{\Gamma}^{- \top} \nonumber \\
-&=&\mathbf{\Gamma}^{-1}\iint\limits_{\Omega} \boldsymbol{\phi}\left(\mathbf{r}\right) \mathbf E[e_t\left(\mathbf{r}\right)e_t\left(\mathbf{r}'\right)]\boldsymbol{\phi}\left(\mathbf{r}'\right)^{\top}d\mathbf{r}' d\mathbf r\mathbf{\Gamma}^{- \top} \nonumber\\
-&=&\mathbf{\Gamma}^{-1}\iint\limits_{\Omega}\boldsymbol{\phi}\left(\mathbf r\right) \gamma\left(\mathbf r- \mathbf r' \right)\boldsymbol{\phi}\left(\mathbf r'\right)^{\top}d\mathbf r' d\mathbf r\mathbf{\Gamma}^{- \top} 
+&=&\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega} \boldsymbol{\phi}\left(\mathbf{r}\right) \mathbf E[e_t\left(\mathbf{r}\right)e_t\left(\mathbf{r}'\right)]\boldsymbol{\phi}\left(\mathbf{r}'\right)^{\top}d\mathbf{r}' d\mathbf r\mathbf{\Gamma}^{- \top} \nonumber\\
+&=&\mathbf{\Gamma}^{-1}\int\int\limits_{\Omega}\boldsymbol{\phi}\left(\mathbf r\right) \gamma\left(\mathbf r- \mathbf r' \right)\boldsymbol{\phi}\left(\mathbf r'\right)^{\top}d\mathbf r' d\mathbf r\mathbf{\Gamma}^{- \top} 
 \end{eqnarray}
-\end{proof}
+% \end{proof}
+\section{Parameter estimation using LS}
+\begin{equation}
+ \mathbf x_{t+1}=\mathbf{x}_{t}+T_s \mathbf{Q}(\mathbf{x}_t)\boldsymbol{\theta}-\alpha T_s\mathbf{x}_t+T_s\Gamma^{-1}\int_\Omega\boldsymbol{\phi}(\mathbf r)\varepsilon_t(\mathbf r)d\mathbf r
+\label{eq:statespacemodel}
+\end{equation}
+where the matrix $\mathbf Q_{n_x \times n_{\boldsymbol{\theta}}}(\mathbf x_t)$ is defined as
+\begin{equation}
+ Q_{n_x \times n_{\boldsymbol{\theta}}}=\Gamma^{-1}\int_\Omega\boldsymbol{\phi}(\mathbf r)\int_\Omega f(\boldsymbol{\phi}^\top(\mathbf r')\mathbf x_t)\mathbf{\psi}^\top(\mathbf r-\mathbf r')d\mathbf r'd\mathbf r
+\end{equation}
+and $T_s$ is the sampling period. Least Square method can be used as (\ref{eq:statespacemodel}) is linear in parameters. At each time instant we have
+\begin{eqnarray}
+ \mathbf x_{1}&=&\mathbf x_{0}+T_s \mathbf Q(\mathbf x_0) \boldsymbol{\theta}-\alpha T_s\mathbf x_0+T_s\mathbf e_0 \nonumber \\
+ \mathbf x_{2}&=&\mathbf x_{1}+T_s \mathbf Q(\mathbf x_1) \boldsymbol{\theta}-\alpha T_s\mathbf x_1+T_s\mathbf e_1\nonumber\\
+&\vdots& \nonumber\\
+ \mathbf x_{n}&=&\mathbf x_{n-1}+T_s \mathbf Q(\mathbf x_{n-1}) \boldsymbol{\theta}-\alpha T_s\mathbf x_{n-1}+T_s\mathbf e_{n-1}
+\end{eqnarray}
+in matrix form
+\begin{equation}
+ \left[\begin{array}{{cccc}} \mathbf x_{1}\\\mathbf x_{2}\\\vdots\\\mathbf x_{n}\end{array}\right]
+	-\left[\begin{array}{cccc} \mathbf x_{0}\\\mathbf x_{1}\\\vdots\\\mathbf x_{n-1}\end{array}\right]
+	=T_s\left[\begin{array}{cc}\mathbf Q(\mathbf x_0)&-\mathbf x_{0}\\\mathbf Q(\mathbf x_1)&-\mathbf x_{1}\\\vdots\\ \mathbf Q(\mathbf x_{n-1})&-\mathbf x_{n-1}\end{array}\right]
+	\left[\begin{array}{cc} \boldsymbol{\theta} \\ \alpha\end{array}\right]+T_s
+		\left[\begin{array}{cccc}\mathbf e_0\\\mathbf e_1\\\vdots\\\mathbf e_{n-1}\end{array}\right]
+\end{equation}
+or in compact form we have
+\begin{equation}
+ \mathbf Z=\mathbf X \mathbf W+\boldsymbol \xi
+\end{equation}
+where
+\begin{equation}
+ \mathbf Z=\left[\begin{array}{cccc} \mathbf x_{1}-\mathbf x_{0}\\
+\mathbf x_{2}-\mathbf x_{1}\\\vdots\\
+\mathbf x_{n}-\mathbf x_{n-1}\end{array}\right],\quad \mathbf X=T_s\left[\begin{array}{cccc}\mathbf Q(\mathbf x_0)&-\mathbf x_{0}\\
+\mathbf Q(\mathbf x_1)&-\mathbf x_{1}\\\vdots\\ \mathbf Q(\mathbf x_{n-1})&-\mathbf x_{n-1}\end{array}\right]
+,\quad \mathbf W=\left[\begin{array}{cc} \boldsymbol{\theta} \\ \alpha\end{array}\right],\quad \boldsymbol \xi=T_s\left[\begin{array}{cccc}\mathbf e_0\\\mathbf e_1\\\vdots\\\mathbf e_{n-1}\end{array}\right]
+\end{equation}
+using the method of Least Square $ \mathbf W$ can be estimated
+\begin{equation}
+ \mathbf W\approx(\mathbf X^\top\mathbf X)^{-1}\mathbf X^\top\mathbf Z
+\end{equation}
 \section*{References}
 \begin{thebibliography}{10}
 \bibitem{book1} Goosens M, Rahtz S and Mittelbach F 1997 {\it The \LaTeX\ Graphics Companion\/} 
