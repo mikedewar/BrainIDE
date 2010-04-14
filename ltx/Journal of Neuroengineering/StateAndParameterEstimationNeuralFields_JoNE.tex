@@ -302,10 +302,10 @@ Propogate the sigma points through the state equation
 \mathcal X_{i,t+1|t}^{f*}=Q(\mathcal X_t^f,u_t)
 \end{equation}
 \begin{equation*}
- \hat{\mathbf x}_{k +t}^{f-}=\sum_{i=0}^{2L} W_i^{(m)}\mathcal X_{i,t+1|t}^{f*}
+ \hat{\mathbf x}_{t+1}^{f-}=\sum_{i=0}^{2L} W_i^{(m)}\mathcal X_{i,t+1|t}^{f*}
 \end{equation*}
 \begin{equation*}
- \mathbf P_{t +1}^-=\sum_{i=0}^{2L} W_i^{(c)}(\mathcal X_{i,t+1}^{f-}-\hat{\mathbf x}_{t +1}^{f-})(\mathcal X_{i,t+1}^{f-}-\hat{\mathbf x}_{t +1}^{f-})^\top+\boldsymbol \Sigma_e
+ \mathbf P_{t +1}^{f-}=\sum_{i=0}^{2L} W_i^{(c)}(\mathcal X_{i,t+1}^{f-}-\hat{\mathbf x}_{t +1}^{f-})(\mathcal X_{i,t+1}^{f-}-\hat{\mathbf x}_{t +1}^{f-})^\top+\boldsymbol \Sigma_e
 \end{equation*}
 \begin{equation*}
 \mathcal K_{t+1}=\mathbf P_{t +1}^{f-}\mathbf C ^\top(\mathbf C \mathbf P_{t +1}^{f-}\mathbf C ^\top+\boldsymbol \Sigma_v)^{-1}
@@ -328,7 +328,7 @@ For $t \in \left\lbrace T-1, \cdots, 0 \right\rbrace $
 \begin{equation*}
 \mathcal X_t^s=[\hat{\mathbf x}_t^f \quad \hat{\mathbf x}_t^f+\gamma\sqrt{\mathbf P_t^f} \quad \hat{\mathbf x}_t^f-\gamma\sqrt{\mathbf P_t^f}]
 \end{equation*}
-\State Propogate the sigma points through the state equation similar to the forward step and compute
+\State Calculate a new set of  sigma points, $\mathcal X_{i,t+1|t}^{b*}$ similar to the forward step and compute
 
 \end{algorithmic}
 \end{algorithm}
