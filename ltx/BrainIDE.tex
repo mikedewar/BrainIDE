@@ -270,7 +270,6 @@ where $\rho \in \mathbb{R} \ge 1$ is an oversampling parameter. Satisfying this 
 
 There are two options available to alleviate problems with aliasing. The first is to increase the spatial sampling frequency (using a higher resolution of sensors), and the second is to use wider sensors, which act like an anti-aliasing filters. The first option is more desirable, since more information is retained. However, if sensors are modelled as having a Gaussian pickup range than the effective filter will not have a sharp cut-off and high frequency components will still remain and mild aliasing will still occur. In practice, the bandwidth of the cortex can not be estimated by traditional electrophysiological measurements due to spatial limitations. It may be estimated using other modalities with higher spatial resolution such as, fMRI, NIRS or other optical imaging techniques. Errors associated with mild aliasing result in distortions in the high frequency components of the field dynamics. However, after applying the basis function decomposition, high frequency component contribute negligibly to the inverse problem and are therefore not a major problem for the state and parameter estimation~\cite{Sanner1992}. This is further illustrated our results.
 $\mathcal{W}$
-
 Similar considerations need to be made regarding the representation of the dynamic field $w_t(\mathbf{r})$ by its basis functions decompositions. The minimum distance between adjacent basis functions also needs to satisfy Shannon's sampling theorem. Thus, the minimum distance between basis must satisfy
 \begin{equation}
 \Delta_b < \frac{1}{2\nu_c}.
@@ -286,23 +285,64 @@ The dynamic field must be spatially oversampled by using a larger number of sens
 Due to the high dimensionality of the brain and the current electrode systems, we can not expect to have more sensors than basis functions.
 
 \section{State and Parameter Estimation}
-The Unscented Rauch Tung Striebel Smoother (URTSS) was used for the state estimation \cite{Sarkka2010}, where the Unscented Kalman filter is used for the forward iteration \cite{Julier1997}. This method is appropriate for state estimation of stochastic nonlinear dynamical systems. Alternatives to this approach are the Extended Kalman Filter (EKF) \cite{Haykin2001}  and sequential Monte Carlo (SMC) filtering \cite{doucet2001}. The extended Kalman filter approximates the state transition equation by linearizing about the fixed points (by calculating the Jacobian) at each time step. The linearization maintains the Gaussianality in the model. The unscented Kalman filter approximates the \emph{a posteriori} state density by a Gaussian distribution using a minimal set of carefully chosen sigma points, whilst maintaining the nonlinearity in the system. This has been shown to give superior performance over the EKF in state estimation, as the EKF maintains a first order approximation where the UKF provides an approximation with at least second order accuracy. In addition, the computation of the Jacobian used in the EKF can be problematic. SMC filtering can theoretically provide an exact \emph{a posteriori} state density for nonlinear systems. However, currently this method is not appropriate for our problem, due to computation demands.
+The Unscented Rauch Tung Striebel Smoother (URTSS) was used for the state estimation \cite{Sarkka2010}, where the Unscented Kalman filter is used for the forward iteration \cite{Julier1997}. This method is appropriate for state estimation of stochastic nonlinear dynamical systems. Alternatives to this approach are the Extended Kalman Filter (EKF) \cite{Haykin2001}  and sequential Monte Carlo (SMC) filtering \cite{doucet2001}. The extended Kalman filter approximates the state transition equation by linearizing about the fixed points (by calculating the Jacobian) at each time step. The linearization maintains the Gaussianality in the model. The unscented Kalman filter approximates the \emph{a posteriori} state density by a Gaussian distribution using a minimal set of carefully chosen sigma points, whilst maintaining the nonlinearity in the system. This has been shown to give superior performance over the EKF in state estimation, as the EKF maintains a first order approximation where the UKF provides an approximation accurate at least to the second order. In addition, the computation of the Jacobian used in the
+EKF can be problematic. SMC filtering can theoretically provide an exact \emph{a posteriori} state density for nonlinear systems. However, currently this method is not appropriate for our problem, due to computation demands.
 
 The approximation of the state density is made by propagating the so called sigma points through the state-space model. The sigma points describe the mean and covariance of the state estimate. The accuracy of the approximation is linked to the time step used in the temporal discretization of the system, where the state transition appears more linear with a finer resolution. To explain the operation of the UKF we begin by deriving the traditional Kalman filter with the state-space model
 \begin{eqnarray}
 	\mathbf{x}_t = q(\mathbf{x}_t)\boldsymbol{\theta} - \lambda\mathbf{x}_t + k\left(u_t\left(\mathbf{r}\right)\right) + \mathbf{e}_t \\
 	\mathbf{y}_t = \mathbf{C}\mathbf{x}_t + \boldsymbol{\varepsilon}_t,
 \end{eqnarray}
-where $\boldsymbol{\theta}$ and $\lambda$ are the systems parameters. In forwards iteration since the observation equation is linear in parameters we only need to use Unscented transformation in prediction step. The update step equations remains the same as the standard Kalman filtering formulations. In backward smoothing path, estimation from the forward filtering is used to form the new set of sigma points in a similar way to the filtering step, however the predicted cross-covariance of the states need to be calculated. A summary of the algorithm is given in Algorithm 
+where $\boldsymbol{\theta}$ and $\lambda$ are the systems parameters. In forwards iteration since the observation equation is linear in parameters we only need to use Unsented transformation in prediction step. The update step equations remains the same as the standard Kalman filtering formulations. In backward smoothing path, estimation from the forward filtering is used to form the new set of sigma points in a similar way to the filterin step, however the predicted cross-covariance of the states need to be calculated. A summary of the algorithm is given in Algorithm 
+\begin{algorithm}
+\caption{The Unscented Kalman Filter}\label{CPTEMDAlgorithm}
+\begin{algorithmic}[1]
+\State Initialise
+\begin{equation*}
+\hat{\mathbf x}_0, \mathbf P_0
+\end{equation*}
+\State Forward iteration
+For $t \in \left\lbrace 0,\cdots, N\right\rbrace $,
+\begin{equation*}
+\mathcal X_t^f=[\hat{\mathbf x}_t^f \quad \hat{\mathbf x}_t^f+\gamma\sqrt{\mathbf P_t^f} \quad \hat{\mathbf x}_t^{f}-\gamma\sqrt{\mathbf P_t^f}]
+\end{equation*}
+Propogate the sigma points through the dynamic model
+\begin{equation}
+\mathcal X_{i,t+1|t}^{f*}=Q(\mathcal X_t^f,u_t)
+\end{equation}
+\begin{equation*}
+ \hat{\mathbf x}_{k +t}^{f-}=\sum_{i=0}^{2L} W_i^{(m)}\mathcal X_{i,t+1|t}^{f*}
+\end{equation*}
+\begin{equation*}
+ \mathbf P_{t +1}^-=\sum_{i=0}^{2L} W_i^{(c)}(\mathcal X_{i,t+1}^{f-}-\hat{\mathbf x}_{t +1}^{f-})(\mathcal X_{i,t+1}^{f-}-\hat{\mathbf x}_{t +1}^{f-})^\top+\boldsymbol \Sigma_e
+\end{equation*}
+\begin{equation*}
+\mathcal K_{t+1}=\mathbf P_{t +1}^{f-}\mathbf C ^\top(\mathbf C \mathbf P_{t +1}^{f-}\mathbf C ^\top+\boldsymbol \Sigma_v)^{-1}
+\end{equation*}
+\begin{equation*}
+\hat{\mathbf x}_{t+1}^{f}=\hat{\mathbf x}_{t+1}^{f-}+\mathcal K_{t+1}(\mathbf y_{t+1}-\mathbf C\hat{\mathbf x}_{t +1}^{f-})
+\end{equation*}
+\begin{equation*}
+ \mathbf P_{t+1}^f=(\mathbf I - \mathcal K_{t+1}\mathbf C)\mathbf P_{t +1}^{f-}
+\end{equation*}
+\State Backward iteration
+\State initialisation
+\begin{equation}
+ \mathbf P_T^s= \mathbf P_T^f
+\end{equation}
+\begin{equation}
+\hat{\mathbf x}^s_T= \hat{\mathbf x}^f_T
+\end{equation}
+For $t \in \left\lbrace N-1, \cdots, 0 \right\rbrace $
+\begin{equation*}
+\mathcal X_t^s=[\hat{\mathbf x}_t^f \quad \hat{\mathbf x}_t^f+\gamma\sqrt{\mathbf P_t^f} \quad \hat{\mathbf x}_t^f-\gamma\sqrt{\mathbf P_t^f}]
+\end{equation*}
+\end{algorithmic}
+\end{algorithm}
+\section{Comparison of Estimated Parameters and True Parameters}
 
-\section{Results}
-\subsection{Simulation}
-Figure~\ref{} illustrates the simulation used to generate the data. Part A. of the Figure shows the simulated field with the sensors positioned location
 
-\subsection{Frequency Analysis}
-Figure~\ref{SprectralAnalysis} shows the spectra of the connectivity kernel, the disturbance covariance, the field filtered by the sensor kernel and the observations.
 
-\subsection{State and Parameter Estimation}
 
 \section{Discussion}
 \begin{itemize}
@@ -310,8 +350,11 @@ Figure~\ref{SprectralAnalysis} shows the spectra of the connectivity kernel, the
 	\item Discuss the novelty of using the reduced model (BrainIDE) for creating patient specific models. 
 	\item The size of the dentritic arbour is consistent in the cortex.
 	\item Spatial frequency of field and the relationship to the required density of electrodes/sensors required for estimation or to capture the required information without aliasing.
+	
 	\item The flexibility of the approach
+	
 	\item Combining this method with other to incorporate longer range hetrogeneous connectivity.
+	
 	\item The need for activity to perform estimation.
 \end{itemize}
 
