@@ -148,17 +148,15 @@ To arrive at the final form of the model we shall state the synaptic response ke
 \begin{equation}\label{GreensFuncDef}
 	Dh\left( t \right) = \delta \left( t \right),
 \end{equation}
-
 where $D=\frac{d}{dt} + \zeta$ is a temporal differential operator and $\delta(t)$ is the Dirac-delta function giving 
-
 \begin{equation}\label{FinalFormContinuous}
 	\frac{dv\left( \mathbf{r},t \right)}{dt} + \zeta v\left( \mathbf{r},t \right) = \int_\Omega  {w\left( \mathbf{r},\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)dr'} + u\left(\mathbf{r},t\right).
 \end{equation}
-To arrive at the integro-difference equation (IDE) form of the model we discretize time using a first-order Euler method (see Appendix~\ref{Time Discretization}) giving
+To arrive at the integro-difference equation (IDE) form of the model we discretize time using a first-order Euler method (see~\ref{Time Discretization}) giving
 \begin{equation}\label{DiscreteTimeModel}
-	v_{t+1}\left(\mathbf{r}\right) = \xi v_t\left(\mathbf{r}\right) + T \int_\Omega { w\left(\mathbf{r}-\mathbf{r}'\right) f\left(v_t\left(\mathbf{r}'\right)\right) d\mathbf{r}'} + T u_t\left(\mathbf{r}\right) + e_t\left(\mathbf{r}\right),
+	v_{t+1}\left(\mathbf{r}\right) = \xi v_t\left(\mathbf{r}\right) + T_s \int_\Omega { w\left(\mathbf{r}-\mathbf{r}'\right) f\left(v_t\left(\mathbf{r}'\right)\right) d\mathbf{r}'} + T_s u_t\left(\mathbf{r}\right) + e_t\left(\mathbf{r}\right),
 \end{equation} 
-where $T$ is the time step, $\xi = 1-\zeta T$ and $e_t\left(\mathbf{r}\right)$ is an iid spatially coloured, temporally white disturbance term with the covariance 
+where $T_s$ is the time step, $\xi = 1-\zeta T_s$ and $e_t\left(\mathbf{r}\right)$ is an iid spatially coloured, temporally white disturbance term with the covariance 
 \begin{equation}
     cov(\mathbf{e}_t,\mathbf{e}_{t+\tau}) = \left\{ \begin{array}{*{20}{c}}
     \gamma\left(\mathbf{r}-\mathbf{r'}\right), & \tau=0 \\
@@ -185,21 +183,21 @@ where $\mathbf{\boldsymbol{\phi}}(\mathbf{r})$ is a vector of Gaussian basis fun
 \end{equation}
 We will assume we know the parametric form of the connectivity basis functions, where the parameter $\boldsymbol{\theta}$ is unknown. Each connectivity basis function can be considered a layer in the Wilson and Cowan model, representing short range excitation, surround inhibition and mid-range excitation. Making substitutions of~\ref{DefFieldDecomp} and~\ref{DefKernelDecomp} into~\ref{DiscreteTimeModel} we get
 \begin{equation}\label{reduced continuous model}
-	\boldsymbol{\phi}^{\top}\left( \mathbf{r} \right) \mathbf{x}_{t+1} = T\boldsymbol{\theta}^{\top}\int_\Omega  {\boldsymbol{\psi} \left(\mathbf{r}-\mathbf{r}'\right) f\left( \boldsymbol{\phi} ^{\top}\left(\mathbf{r}'\right)\mathbf{x}_t \right)d\mathbf{r}'}  - \xi\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right)x_t + T u_t\left(\mathbf{r}\right) + e_t\left(\mathbf{r}\right).
+	\boldsymbol{\phi}^{\top}\left( \mathbf{r} \right) \mathbf{x}_{t+1} = T_s\boldsymbol{\theta}^{\top}\int_\Omega  {\boldsymbol{\psi} \left(\mathbf{r}-\mathbf{r}'\right) f\left( \boldsymbol{\phi} ^{\top}\left(\mathbf{r}'\right)\mathbf{x}_t \right)d\mathbf{r}'}  - \xi\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right)x_t + T_s u_t\left(\mathbf{r}\right) + e_t\left(\mathbf{r}\right).
 \end{equation}
 By defining the term
 \begin{equation}\label{DefGamma}
 	\boldsymbol{\Gamma}  = \int_\Omega  {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi} ^{\top}\left(\mathbf{r}\right)d\mathbf{r}}
 \end{equation}
-and manipulating the model (see Appendix~\ref{Simplifying Decomposition}) we isolate the state vector to form a state-space model
+and manipulating the model (see~\ref{Simplifying Decomposition}) we isolate the state vector to form a state-space model
 \begin{eqnarray}\label{Homogeneous SS Model}
 	\mathbf{x}_t &=& q(\mathbf{x}_t)\boldsymbol{\theta} - \xi\mathbf{x}_t + k\left(u_t\left(\mathbf{r}\right)\right) + \mathbf{e}_t \\
 	&=& Q\left(\mathbf{x}_t,u_t(\mathbf{r})\right) + \mathbf{e}_t \\
-	q\left(\mathbf{x}_t\right) &=& T\boldsymbol{\Gamma}^{ - 1}\int_\Omega {\boldsymbol{\phi}\left(\mathbf{r}\right) \int_\Omega {f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right)\mathbf{x}_t\right)\boldsymbol{\psi}^{\top} \left(\mathbf{r}-\mathbf{r}'\right)d\mathbf{r}'} d\mathbf{r}} \\
-	k(u_t(\mathbf{r})) &=& \boldsymbol{\Gamma}^{-1}T \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) u_t\left(\mathbf{r}\right)d\mathbf{r}} \\
+	q\left(\mathbf{x}_t\right) &=& T_s\boldsymbol{\Gamma}^{ - 1}\int_\Omega {\boldsymbol{\phi}\left(\mathbf{r}\right) \int_\Omega {f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right)\mathbf{x}_t\right)\boldsymbol{\psi}^{\top} \left(\mathbf{r}-\mathbf{r}'\right)d\mathbf{r}'} d\mathbf{r}} \\
+	k(u_t(\mathbf{r})) &=& \boldsymbol{\Gamma}^{-1}T_s \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) u_t\left(\mathbf{r}\right)d\mathbf{r}} \\
 	\mathbf{e}_t &=& \boldsymbol{\Gamma}^{-1}\int_\Omega{\boldsymbol{\phi}\left(\mathbf{r}\right)e_t\left(\mathbf{r}\right)d\mathbf{r}},
 \end{eqnarray}
-where $\mathbf{e}_t$ is a zero-mean normal white noise term with the covariance (see Appendix \ref{ColoredNoise})
+where $\mathbf{e}_t$ is a zero-mean normal white noise term with the covariance (see~\ref{ColoredNoise})
 \begin{equation} 
 \boldsymbol{\Sigma}_e=\boldsymbol{\Gamma}^{-1}\int_{\Omega}\int_{\Omega}\boldsymbol{\phi}\left(\mathbf r\right) \gamma\left(\mathbf{r}- \mathbf{r}' \right)\boldsymbol{\phi}\left(\mathbf{r}'\right)^{\top}d\mathbf{r}' d\mathbf{r}\boldsymbol{\Gamma}^{- \top} 
 \end{equation}
@@ -278,7 +276,7 @@ The state estimation technique utilises the Unscented Rauch Tung Striebel Smooth
 \begin{equation}
  \mathcal X_{i}=\bar x-(\sqrt{( L + \lambda)\mathbf P_x})_{i- L} \quad i= L+1, \dots, 2 L
 \end{equation}
-where $L$ is the dimension of the state space, the number of sigma points required is $2L+1$. The scaling parameter $\lambda$ is defined as a scaling parameter
+where $L$ is the dimension of the state space and the number of sigma points is $2L+1$. The scaling parameter $\lambda$ is defined as
 \begin{equation}
 \lambda=\alpha^2( L+\kappa)- L 
 \end{equation}
@@ -298,7 +296,7 @@ The update step equations are the same as the standard Kalman filtering formulat
 \begin{algorithm}
 \caption{The Unscented Kalman Filter}\label{UKFAlgorithm}
 \begin{algorithmic}[1]
-\State Initialise
+\State Forward initialisation
 \begin{equation*}
 \hat{\mathbf x}_0, \mathbf P_0
 \end{equation*}
@@ -326,19 +324,19 @@ Propagate the sigma points through the state equation
 \begin{equation*}
  \mathbf P_{t+1}^f=(\mathbf I - \mathcal K_{t+1}\mathbf C)\mathbf P_{t +1}^{f-}
 \end{equation*}
-\State Backward iteration
-\State initialisation
+\State Backward initialisation
 \begin{equation}
  \mathbf P_T^b= \mathbf P_T^f
 \end{equation}
 \begin{equation}
 \hat{\mathbf x}^b_T= \hat{\mathbf x}^f_T
 \end{equation}
+\State Backward iteration
 For $t \in \left\lbrace T-1, \cdots, 0 \right\rbrace $
 \begin{equation*}
 \mathcal X_t^b=[\hat{\mathbf x}_t^f \quad \hat{\mathbf x}_t^f+\gamma\sqrt{\mathbf P_t^f} \quad \hat{\mathbf x}_t^f-\gamma\sqrt{\mathbf P_t^f}]
 \end{equation*}
-\State Calculate a new set of  sigma points, $\mathcal X_{i,t+1}^{b-}$ similar to the forward step and compute
+\State Calculate sigma points for the smoother $\mathcal X_{i,t+1}^{b-}$ and compute
 \begin{equation*}
  \hat{\mathbf x}_{t+1}^{b-}=\sum_{i=0}^{2L} W_i^{(m)}\mathcal X_{i,t+1}^{b-}
 \end{equation*}
@@ -348,7 +346,7 @@ For $t \in \left\lbrace T-1, \cdots, 0 \right\rbrace $
 \begin{equation*}
  \mathbf M_{t +1}=\sum_{i=0}^{2L} W_i^{(c)}(\mathcal X_{i,t}^{b-}-\hat{\mathbf x}_{t}^{f})(\mathcal X_{i,t+1}^{b-}-\hat{\mathbf x}_{t+1}^{f})^\top
 \end{equation*}
-\State compute the smoother gain $\mathbf S_t$, the smoothed state $\hat{\mathbf x}_t^b $ and the covariance $\mathbf P_{t}^{b} $
+\State Compute the smoother gain $\mathbf S_t$, the smoothed state $\hat{\mathbf x}_t^b $ and the covariance $\mathbf P_{t}^{b} $
 \begin{equation*}
 \mathbf S_t=\mathbf M_{t +1}\left[ \mathbf P_{t +1}^{b-}\right] ^{-1}
 \end{equation*}
@@ -407,45 +405,45 @@ To demonstrate the performance of the parameter and state estimation, $200$ real
 \section{Discrete Time Model}\label{Time Discretization}
 To form the IDE neural field model a time discretization must be perform. We used a one-step Euler method where Eq.~\ref{FinalForm1} can be approximated by
 \begin{equation}\label{Euler Approximation}	
-\frac{v\left( \mathbf{r},t+T \right) - v\left( \mathbf{r},t\right)}{T} =   -\zeta v\left( \mathbf{r},t \right) + \int_\Omega  {w\left( \mathbf{r}-\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)d\mathbf{r}'} + u\left(\mathbf{r},t\right).
+\frac{v\left( \mathbf{r},t+T \right) - v\left( \mathbf{r},t\right)}{T_s} =   -\zeta v\left( \mathbf{r},t \right) + \int_\Omega  {w\left( \mathbf{r}-\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)d\mathbf{r}'} + u\left(\mathbf{r},t\right).
 \end{equation}
 For clarity, we shall index time points in the discrete time form of the model using the subscript $t$ and the next time point as $t+1$. Rearranging Eq.~\ref{Euler Approximation} we get
 \begin{eqnarray}\label{Euler Approximation}	
-v_{t+1}\left( \mathbf{r}\right) &=& v_t\left( \mathbf{r}\right) -T \zeta v_t\left( \mathbf{r}\right) + T \int_\Omega  {w\left( \mathbf{r}-\mathbf{r}' \right)f\left( {v_t\left( \mathbf{r}'\right)} \right)d\mathbf{r}'} + T u_t\left(\mathbf{r}\right).
+v_{t+1}\left( \mathbf{r}\right) &=& v_t\left( \mathbf{r}\right) -T_s \zeta v_t\left( \mathbf{r}\right) + T_s \int_\Omega  {w\left( \mathbf{r}-\mathbf{r}' \right)f\left( {v_t\left( \mathbf{r}'\right)} \right)d\mathbf{r}'} + T_s u_t\left(\mathbf{r}\right).
 \end{eqnarray}
 The discrete time form of the model is
 \begin{equation}\label{Discrete Time Model1}
-	v_{t+1}\left(\mathbf{r}\right) = \xi v_t\left(\mathbf{r}\right) + T \int_\Omega { w\left(\mathbf{r}-\mathbf{r}'\right) f\left(v_t\left(\mathbf{r}'\right)\right) d\mathbf{r}'} + T u_t\left(\mathbf{r}\right),
+	v_{t+1}\left(\mathbf{r}\right) = \xi v_t\left(\mathbf{r}\right) + T_s \int_\Omega { w\left(\mathbf{r}-\mathbf{r}'\right) f\left(v_t\left(\mathbf{r}'\right)\right) d\mathbf{r}'} + T_s u_t\left(\mathbf{r}\right),
 \end{equation}
 where $\xi = 1 - T \zeta$.
  \section{Numerical Simulation of IDE Model}\label{Space Discretization}
 To solve the intregro-difference equation in Eq.~\ref{Discrete Time Model1} we define the spatial aspect of the model on a regular square $i,j$ grid of neural masses, where the spatial step size $\Delta \mathbf{r}_i = \Delta \mathbf{r}_j = \Delta $ giving
 \begin{equation}\label{discrete space}
-	v_{t+1}\left(\mathbf{r}_{ij}\right) = \xi v_t\left(\mathbf{r}_{ij}\right) + T \Delta^2 \sum_{i=1}^{i=I}{ \sum_{j=1}^{j=J}{ w\left( \mathbf{r}-\mathbf{r}_{ij}' \right)f\left( v_t\left( \mathbf{r}_{ij}'\right) \right)} } + T u_t\left(\mathbf{r}\right) + e_t(\mathbf{r}_{i,j}),
+	v_{t+1}\left(\mathbf{r}_{ij}\right) = \xi v_t\left(\mathbf{r}_{ij}\right) + T_s \Delta^2 \sum_{i=1}^{i=I}{ \sum_{j=1}^{j=J}{ w\left( \mathbf{r}-\mathbf{r}_{ij}' \right)f\left( v_t\left( \mathbf{r}_{ij}'\right) \right)} } + T_s u_t\left(\mathbf{r}\right) + e_t(\mathbf{r}_{i,j}),
 \end{equation}
 where $e_t(\mathbf{r}_{i,j}) \sim \mathcal{N}\left(0,\Sigma\right)$.
 We have used free boundary conditions and extended the spatial domain to alleviate problems associated with edge effects.
 \section{Reduction to Finite State-Space Model}\label{Simplifying Decomposition}
 Starting from Eq.~\ref{reduced continuous model} we multiply throughout by $\boldsymbol{\phi}(r)$ and integrate over the spatial domain $\Omega$ to get
 \begin{eqnarray}\label{ReducingState}
-	\int_\Omega  {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) d\mathbf{r}} \mathbf{x}_{t+1} = T \int_\Omega  {\boldsymbol{\phi} (\mathbf{r}) \boldsymbol{\theta}^{\top} \int_\Omega  {\boldsymbol{\psi}  \left(\mathbf{r}-\mathbf{r}'\right) f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right) \mathbf{x}_t \right)d\mathbf{r}'}d\mathbf{r}} - \xi\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\phi}^{\top}(\mathbf{r})d\mathbf{r}} \mathbf{x}_t \\
-	+ T \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) u_t\left(\mathbf{r}\right)d\mathbf{r}} + \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) e_t\left(\mathbf{r}\right)d\mathbf{r}}.
+	\int_\Omega  {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) d\mathbf{r}} \mathbf{x}_{t+1} = T_s \int_\Omega  {\boldsymbol{\phi} (\mathbf{r}) \boldsymbol{\theta}^{\top} \int_\Omega  {\boldsymbol{\psi}  \left(\mathbf{r}-\mathbf{r}'\right) f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right) \mathbf{x}_t \right)d\mathbf{r}'}d\mathbf{r}} - \xi\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\phi}^{\top}(\mathbf{r})d\mathbf{r}} \mathbf{x}_t \\
+	+ T_s \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) u_t\left(\mathbf{r}\right)d\mathbf{r}} + \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) e_t\left(\mathbf{r}\right)d\mathbf{r}}.
 \end{eqnarray}
 Substituting Eq.~\ref{DefGamma} into Eq.~\ref{Poo} and cross-multiplying by $\boldsymbol{\Gamma}^{-1}$ gives 
 \begin{eqnarray}\label{Homogeneous SS Model}
-	\mathbf{x}_{t+1} = T\boldsymbol{\Gamma}^{ - 1}\int_\Omega {\boldsymbol{\phi}\left(\mathbf{r}\right) \int_\Omega {f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right)\mathbf{x}_t\right) \boldsymbol{\psi}^{\top} \left(\mathbf{r}-\mathbf{r}'\right)d\mathbf{r}'} d\mathbf{r}} \boldsymbol{\theta} - \xi \mathbf{x}_t \\
-	+ \boldsymbol{\Gamma}^{-1}T \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) u_t\left(\mathbf{r}\right)d\mathbf{r}} + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}\left(\mathbf{r}\right)e_t\left(\mathbf{r}\right)d\mathbf{r}}.
+	\mathbf{x}_{t+1} = T_s\boldsymbol{\Gamma}^{ - 1}\int_\Omega {\boldsymbol{\phi}\left(\mathbf{r}\right) \int_\Omega {f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right)\mathbf{x}_t\right) \boldsymbol{\psi}^{\top} \left(\mathbf{r}-\mathbf{r}'\right)d\mathbf{r}'} d\mathbf{r}} \boldsymbol{\theta} - \xi \mathbf{x}_t \\
+	+ \boldsymbol{\Gamma}^{-1}T_s \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) u_t\left(\mathbf{r}\right)d\mathbf{r}} + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}\left(\mathbf{r}\right)e_t\left(\mathbf{r}\right)d\mathbf{r}}.
 \end{eqnarray}
 \section{Reduction to Finite State-Space Model}\label{Simplifying Decomposition}
 Starting from Eq.~\ref{reduced continuous model} we multiply throughout by $\boldsymbol{\phi}(r)$ and integrate over the spatial domain $\Omega$ to get
 \begin{eqnarray}\label{StartofReduction}
-	\int_\Omega  {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) d\mathbf{r}} \mathbf{x}_{t+1} = T \int_\Omega  {\boldsymbol{\phi} (\mathbf{r}) \boldsymbol{\theta}^{\top} \int_\Omega  {\boldsymbol{\psi}  \left(\mathbf{r}-\mathbf{r}'\right) f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right) \mathbf{x}_t \right)d\mathbf{r}'}d\mathbf{r}} - \xi\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\phi}^{\top}(\mathbf{r})d\mathbf{r}} \mathbf{x}_t \\
-	+ T \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) u_t\left(\mathbf{r}\right)d\mathbf{r}} + \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) e_t\left(\mathbf{r}\right)d\mathbf{r}}.
+	\int_\Omega  {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) d\mathbf{r}} \mathbf{x}_{t+1} = T_s \int_\Omega  {\boldsymbol{\phi} (\mathbf{r}) \boldsymbol{\theta}^{\top} \int_\Omega  {\boldsymbol{\psi}  \left(\mathbf{r}-\mathbf{r}'\right) f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right) \mathbf{x}_t \right)d\mathbf{r}'}d\mathbf{r}} - \xi\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\phi}^{\top}(\mathbf{r})d\mathbf{r}} \mathbf{x}_t \\
+	+ T_s \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) u_t\left(\mathbf{r}\right)d\mathbf{r}} + \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) e_t\left(\mathbf{r}\right)d\mathbf{r}}.
 \end{eqnarray}
 Substituting Eq.~\ref{DefGamma} into Eq.~\ref{StartofReduction} and cross-multiplying by $\boldsymbol{\Gamma}^{-1}$ gives 
 \begin{eqnarray}\label{Homogeneous SS Model}
-	\mathbf{x}_{t+1} = T\boldsymbol{\Gamma}^{ - 1}\int_\Omega {\boldsymbol{\phi}\left(\mathbf{r}\right) \int_\Omega {f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right)\mathbf{x}_t\right) \boldsymbol{\psi}^{\top} \left(\mathbf{r}-\mathbf{r}'\right)d\mathbf{r}'} d\mathbf{r}} \boldsymbol{\theta} - \xi \mathbf{x}_t \\
-	+ \boldsymbol{\Gamma}^{-1}T \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) u_t\left(\mathbf{r}\right)d\mathbf{r}} + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}\left(\mathbf{r}\right)e_t\left(\mathbf{r}\right)d\mathbf{r}}.
+	\mathbf{x}_{t+1} = T_s\boldsymbol{\Gamma}^{ - 1}\int_\Omega {\boldsymbol{\phi}\left(\mathbf{r}\right) \int_\Omega {f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right)\mathbf{x}_t\right) \boldsymbol{\psi}^{\top} \left(\mathbf{r}-\mathbf{r}'\right)d\mathbf{r}'} d\mathbf{r}} \boldsymbol{\theta} - \xi \mathbf{x}_t \\
+	+ \boldsymbol{\Gamma}^{-1}T_s \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) u_t\left(\mathbf{r}\right)d\mathbf{r}} + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}\left(\mathbf{r}\right)e_t\left(\mathbf{r}\right)d\mathbf{r}}.
 \end{eqnarray}
 \section{}\label{ColoredNoise}
 \newtheorem{lemma}{Lemma}
