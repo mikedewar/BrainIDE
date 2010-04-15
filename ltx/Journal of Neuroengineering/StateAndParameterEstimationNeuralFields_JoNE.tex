@@ -42,6 +42,7 @@
 % \documentclass[twocolumn,11pt,a4paper]{article}		%<-use this for checking equation length
 \documentclass[12pt]{iopart}		%<-comment out this for checking equations (author list too)
 \usepackage{iopams,setstack}                  %<-comment out this for checking equations
+
 \usepackage{graphicx, algorithm, algorithmicx, algpseudocode,epsfig}
 \usepackage{color} 
  \usepackage[tight,scriptsize]{subfigure}
@@ -265,12 +266,9 @@ The dynamic field must be spatially oversampled by using a larger number of sens
 
 Due to the high dimensionality of the brain and the current electrode systems, we can not expect to have more sensors than basis functions.
 \section{State and Parameter Estimation}\label{StateAndParameterEstimationSection}
-In this section we describe the procedure for estimating the states that scale the field basis functions, $\mathbf{x}_t$, the connectivity kernel parameters, $\boldsymbol \theta$, and the synaptic time constant, $\xi$. The estimation process consists of a two part iterative algorithm, consisting of the state estimation step followed by the parameter estimation step at each time instance. Although the system is nonlinear, the parameters of the system are linear with respect to the state. This is exploited by our procedure where the parameter estimation utilises a least squares (LS) method that minimises the sum of the squared errors (of a predicted state update) with each new state estimate (see Appendix~\ref{LeastSquaresAppendix}). 
+In this section we describe the procedure for estimating the states that scale the field basis functions, $\mathbf{x}_t$, the connectivity kernel parameters, $\boldsymbol \theta$, and the synaptic time constant, $\xi$. The estimation process consists of a two part iterative algorithm, consisting of the state estimation step followed by the parameter estimation step at each time instance.  
 
-The state estimation technique utilises the Unscented Rauch Tung Striebel Smoother (URTSS)~\cite{Sarkka2010}. The (URTSS) uses the Unscented Kalman Filter (UKF) in the forward iteration~\cite{Julier1997} to calculate a forward posterior state estimate, $\hat{\mathbf x}_t^{f}$, followed by a backward path to compute the smoothed state estimations, $\hat{\mathbf x}_t^{b}$. Alternatives to the UKF are the Extended Kalman Filter (EKF)~\cite{Haykin2001} and the Sequential Monte Carlo (SMC) filter~\cite{doucet2001}. The EKF approximates the state transition equation by linearizing about the current state estimates (by calculating the Jacobian) at each time instance. The linearisation maintains the Gaussianality of the model. The unscented Kalman filter approximates the \emph{a posteriori} state density by a Gaussian distribution using a minimal set of carefully chosen sigma points, whilst maintaining the nonlinearity in the system. This has been shown to give superior performance over the EKF in state estimation, as the EKF maintains a first order approximation where the UKF provides an approximation accurate at least to the second order. In addition, the computation of the Jacobian used in the
-EKF can be problematic. SMC filtering can theoretically provide an exact \emph{a posteriori} state density for nonlinear systems. However, currently this method is not appropriate for our problem, due to computation demands.The method is appropriate for state estimation of stochastic nonlinear dynamical systems. 
-
-The approximation of the state density is made by propagating the so called sigma points through the state-space model. The sigma points describe the mean and covariance of the state estimate. The number of sigma points needed is $2L+1$ where $L$ is the dimension of the state space. The columns of the sigma point matrix and their corresponding weights used in the UKF can be calculated as
+The state estimation technique utilises the Unscented Rauch Tung Striebel Smoother (URTSS)~\cite{Sarkka2010}. The URTSS uses the Unscented Kalman Filter (UKF)~\cite{Julier1997} in the forward iteration to estimate posterior states, $\hat{\mathbf x}_t^{f}$, followed by a backward path to compute the smoothed state estimates, $\hat{\mathbf x}_t^{b}$. An approximation of the state density is made by propagating the so-called sigma points through the state-space model. The sigma points describe the mean and covariance of the state estimate and are calculated using the unscented transform. The sigma vectors $\mathcal X_i$ are calculated by
 \begin{equation}
  \mathcal X_{0}=\bar x
 \end{equation}
@@ -280,6 +278,12 @@ The approximation of the state density is made by propagating the so called sigm
 \begin{equation}
  \mathcal X_{i}=\bar x-(\sqrt{( L + \lambda)\mathbf P_x})_{i- L} \quad i= L+1, \dots, 2 L
 \end{equation}
+where $L$ is the dimension of the state space, the number of sigma points required is $2L+1$. The scaling parameter $\lambda$ is defined as a scaling parameter
+\begin{equation}
+\lambda=\alpha^2( L+\kappa)- L 
+\end{equation}
+where $\alpha$, $\beta$ and $\kappa$ are constants (see ~\cite{Haykin2001} for more details). It should be noted that $\bar x$ represents either $\hat{\mathbf x}_t^{f}$ or $\hat{\mathbf x}_t^{b}$ and $\mathbf{P}_x$ represents the corresponding covariance matrix from the filtering or smoothing respectively. The sigma vectors are propagated through the nonlinear function The weights of the columns of the sigma point matrix and their corresponding weights used in the UKF are calculated by
+
 \begin{equation}
  \mathbf W_0^{(m)}=\frac{\lambda}{ L+\lambda}
 \end{equation}
@@ -289,20 +293,16 @@ The approximation of the state density is made by propagating the so called sigm
 \begin{equation}
  \mathbf W_i^{(m)}=\mathbf W_i^{(c)}=\frac{1}{2( L+\lambda)} \quad i=1, \dots, 2L
 \end{equation}
-where the scaling parameter $\lambda$ is defined as
-\begin{equation}
-\lambda=\alpha^2( L+\kappa)- L 
-\end{equation}
-and parameters $\alpha$, $\beta$ and $\kappa$ are used to tune the filtering process \cite{Haykin2001}. It should be noted that $\bar x$ is $ \hat{\mathbf x}_t^{f} $ and $ \hat{\mathbf x}_t^{b} $ with their corresponding covariance matrices in filtering and smoothing iterations respectively.
-
 % For explanation of $\lambda, \quad \alpha\quad\text{and}\quad\beta$ see \cite{wan2000unscented,Haykin2001}. $ (\sqrt{(\mathbf L + \lambda)\mathbf P_x})_i$ is the ith column of the matrix square root (e.g., lower-triangular Cholesky factorization). These sigma points propogated through the nonlinear function
 
- The accuracy of the approximation is linked to the time step used in the temporal discretization of the system, where the state transition appears more linear with a finer resolution. To explain the operation of the UKF we begin by deriving the traditional Kalman filter with the state-space model
+ The accuracy of the approximation is linked to the time step used in the temporal discretization of the system, where the state transition appears more linear with a finer resolution. 
+
+To explain the operation of the UKF we begin by deriving the traditional Kalman filter with the state-space model
 \begin{eqnarray}
 	\mathbf{x}_t = q(\mathbf{x}_t)\boldsymbol{\theta} - \xi\mathbf{x}_t + k\left(u_t\left(\mathbf{r}\right)\right) + \mathbf{e}_t \\
 	\mathbf{y}_t = \mathbf{C}\mathbf{x}_t + \boldsymbol{\varepsilon}_t,
 \end{eqnarray}
-where $\boldsymbol{\theta}$ and $\xi$ are the systems parameters. In forwards iteration since the observation equation is linear in parameters we only need to use Unsented transformation in prediction step. The update step equations remains the same as the standard Kalman filtering formulations. In backward smoothing path, estimation from the forward filtering is used to form the new set of sigma points in a similar way to the filterin step, however the predicted cross-covariance of the states need to be calculated. A summary of the algorithm is given in Algorithm 
+where $\boldsymbol{\theta}$ and $\xi$ are the systems parameters. In forwards iteration since the observation equation is linear in parameters we only need to use Unsented transformation in prediction step. The update step equations remains the same as the standard Kalman filtering formulations. In backward smoothing path, estimation from the forward filtering is used to form the new set of sigma points in a similar way to the filtering step, however the predicted cross-covariance of the states need to be calculated. A summary of the algorithm is given in Algorithm 
 \begin{algorithm}
 \caption{The Unscented Kalman Filter}\label{CPTEMDAlgorithm}
 \begin{algorithmic}[1]
@@ -368,6 +368,12 @@ For $t \in \left\lbrace T-1, \cdots, 0 \right\rbrace $
 \end{equation*}
 \end{algorithmic}
 \end{algorithm}
+
+Although the system is nonlinear, the parameters of the system are linear with respect to the state. This is exploited by our procedure where the parameter estimation utilises a least squares (LS) method that minimises the sum of the squared errors (of a predicted state update) with each new state estimate (see Appendix~\ref{LeastSquaresAppendix}).
+
+Alternatives to the UKF are the Extended Kalman Filter (EKF)~\cite{Haykin2001} and the Sequential Monte Carlo (SMC) filter~\cite{doucet2001}. The EKF approximates the state transition equation by linearizing about the current state estimates (by calculating the Jacobian) at each time instance. The linearisation maintains the Gaussianality of the model. The unscented Kalman filter approximates the \emph{a posteriori} state density by a Gaussian distribution using a minimal set of carefully chosen sigma points, whilst maintaining the nonlinearity in the system. This has been shown to give superior performance over the EKF in state estimation, as the EKF maintains a first order approximation where the UKF provides an approximation accurate at least to the second order. In addition, the computation of the Jacobian used in the
+EKF can be problematic. SMC filtering can theoretically provide an exact \emph{a posteriori} state density for nonlinear systems. However, currently this method is not appropriate for our problem, due to computation demands. The method is appropriate for state estimation of stochastic nonlinear dynamical systems. 
+
 \section{Results}
 The neural field model derived in section~\ref{NeuralModelSection} was used to the generate data for state and parameter estimation. All parameters for the model are given in table~\ref{}. An example of the simulated field can be seen in figure~\ref{}~A. The Figure demonstrates the experimental design where the sensors were placed in the centre of the field (full width at half maximum). This design allowed for uncertainty around the edges of the sensor array, which would be typical from physical data, and alleviated problems associated with boundary conditions. Figure~\ref{}~B. shows example data from the sensors of the model, and figure~\ref{}~C. shows the power spectral density of on of the simulated time-series. The PSD shows the typical $1/f$ characteristics of intracranial EEG.
 
