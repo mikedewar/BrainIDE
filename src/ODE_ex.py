@@ -4,10 +4,12 @@ import scipy
 from ODE import *
 import quickio
 from scipy import io
+
 #-------------field--------------------
-field_width=40
+field_width=40		# twice the estimated field
 dimension=2
 spacestep=0.25
+
 f_space=pb.arange(-(field_width)/2.,(field_width)/2+spacestep,spacestep)# the step size should in a way that we have (0,0) in our kernel as the center
 spatial_location_num=(len(f_space))**2
 
@@ -21,10 +23,6 @@ k_centers=[pb.matrix([[0],[0]]),pb.matrix([[0],[0]]),pb.matrix([[0],[0]])]
 k_weights =[1e1,-.8e1,0.05e1]
 k_widths=[pb.matrix([[1.8**2,0],[0,1.8**2]]),pb.matrix([[2.4**2,0],[0,2.4**2]]),pb.matrix([[6**2,0],[0,6**2]])]
 
-#k_centers=[pb.matrix([[0],[0]])]
-#k_weights =[1]
-#k_widths=[pb.matrix([[8**2,0],[0,8**2]])]
-
 k_space=pb.arange(-(field_width/2.),((field_width/2.))+spacestep,spacestep)
 k=Kernel(k_weights,k_centers,k_widths,k_space,dimension)
 #------Field noise----------
@@ -34,9 +32,9 @@ beta_variance=1.3**2
 alpha=100
 act_func=ActivationFunction(threshold=2,nu=20,beta=.8)
 #----------observations--------------------------
-Sensorwidth =1.2**2 #equals to 3mm
-S_obs= pb.linspace(-10,10,10)
-#S_obs= pb.arange(-10,10+1.25,1.25)
+Sensorwidth =0.9**2 #1.2**2 #equals to 3mm
+S_obs= pb.arange(-(field_width)/4,(field_width)/4+spacestep,spacestep)
+
 obs_locns=gen_spatial_lattice(S_obs)
 ny=len(obs_locns)
 widths=[pb.matrix([[Sensorwidth,0],[0,Sensorwidth]])]
@@ -56,6 +54,7 @@ T = pb.linspace(0,t_end,NSamples);
 model=IDE(k,f_space,EEG_signals,act_func,alpha,field_noise_variance,beta_variance,obs_noise_covariance,spacestep,Ts)
 model.gen_ssmodel()
 V_matrix,V_filtered,Y=model.simulate(T)
+
 quickio.writed('V_matrix','w',V_matrix)
 quickio.writed('Y','w',Y)
 quickio.writed('V_filtered','w',V_filtered)
@@ -69,17 +68,3 @@ Y_dic['Y']=Y
 scipy.io.savemat('V_matrix',V_matrix_dic)
 scipy.io.savemat('V_filtered',V_filtered_dic)
 scipy.io.savemat('Y',Y_dic)
-
-#----------Field initialasation----------------------------
-#mean=[0]*spatial_location_num
-#initial_field_covariance=10*pb.eye(len(mean))
-#init_field=pb.matrix(pb.multivariate_normal(mean,initial_field_covariance)).T
-
-
-
-
-
-
-
-
-

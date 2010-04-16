@@ -186,11 +186,11 @@ class IDE():
 
 			field_width=pb.absolute(self.field_space[-1])
 			#column
-			v_membrane_matrix=v_membrane_matrix[:,field_width/2.:field_width+field_width/2.+1]
-			v_filtered=v_filtered[:,field_width/2.:field_width+field_width/2.+1]
+			v_membrane_matrix=v_membrane_matrix[:,field_width/(self.spacestep*2.):field_width/float(self.spacestep)+field_width/(self.spacestep*2.)+1]
+			v_filtered=v_filtered[:,field_width/(self.spacestep*2.):field_width/float(self.spacestep)+field_width/(self.spacestep*2.)+1]
 			#row
-			v_membrane_matrix=v_membrane_matrix[field_width/2.:field_width+field_width/2.+1,:]
-			v_filtered=v_filtered[field_width/2.:field_width+field_width/2.+1,:]
+			v_membrane_matrix=v_membrane_matrix[field_width/(self.spacestep*2.):field_width/float(self.spacestep)+field_width/(self.spacestep*2.)+1,:]
+			v_filtered=v_filtered[field_width/(self.spacestep*2.):field_width/float(self.spacestep)+field_width/(self.spacestep*2.)+1,:]
 			#--------------------------------------------------------------------------------------------------------
 			V_matrix.append(v_membrane_matrix)
 			V_filtered.append(v_filtered)
@@ -549,7 +549,7 @@ def obs_frequency_response(Y,scale,spacestep,db=0,vmin=None,vmax=None,save=0,fil
 	params = {'axes.labelsize': 15,'text.fontsize': 15,'legend.fontsize': 15,'xtick.labelsize': 15,'ytick.labelsize': 15}
 	pb.rcParams.update(params) 
 	#pb.imshow((y*scale),origin='lower',extent=[freq[0],freq[-1],freq[0],freq[-1]],interpolation='nearest',vmin=vmin,vmax=vmax)#,cmap=pb.cm.gray,interpolation='nearest',cmap=pb.cm.gray,
-	pb.imshow(y,origin='lower',extent=[0,freq_range,0,freq_range],interpolation='nearest',vmin=vmin,vmax=vmax)
+	pb.imshow(y,origin='lower',extent=[0,freq_range,0,freq_range],interpolation='nearest',vmin=vmin,vmax=vmax,cmap=pb.cm.gray)
 	pb.colorbar(shrink=.55)
 	pb.xlabel('Hz',fontsize=25)
 	pb.ylabel('Hz',fontsize=25)
@@ -594,7 +594,7 @@ def field_frequency_response(V_matrix,scale,spacestep,db=0,vmin=None,vmax=None,s
 
 	V_f=V_f/len(V_matrix)
 	freq=pb.fftfreq(V_f.shape[0],float(spacestep)) #generates the frequency array [0,pos,neg] over which fft2 is taken
-	freq=pb.fftshift(freq)
+	#freq=pb.fftshift(freq)
 	#Nyquist_freq=freq.max() #find the Nyquist frequency it is not exact (depending y.shape[0] is odd or even) but close to Nyquist frequency
 	Sampling_frequency=1./spacestep
 	Nyquist_freq=Sampling_frequency/2 #find the Nyquist frequency which is half a smapling frequency
@@ -602,7 +602,7 @@ def field_frequency_response(V_matrix,scale,spacestep,db=0,vmin=None,vmax=None,s
 	params = {'axes.labelsize': 15,'text.fontsize': 15,'legend.fontsize': 15,'xtick.labelsize': 15,'ytick.labelsize': 15}
 	pb.rcParams.update(params) 
 	#pb.imshow(V_f,origin='lower',extent=[0,freq_range,0,freq_range],vmin=vmin,vmax=vmax)#,cmap=pb.cm.gray,interpolation='nearest'
-	pb.imshow(pb.fftshift(scale*V_f),origin='lower',extent=[freq[0],freq[-1],freq[0],freq[-1]],cmap=pb.cm.gray,interpolation='nearest',vmin=vmin,vmax=vmax)
+	pb.imshow(scale*V_f,origin='lower',extent=[0,freq_range,0,freq_range],cmap=pb.cm.gray,interpolation='nearest',vmin=vmin,vmax=vmax)
 	pb.colorbar(shrink=.55)
 	pb.xlabel('Hz',fontsize=25)
 	pb.ylabel('Hz',fontsize=25)
@@ -610,7 +610,7 @@ def field_frequency_response(V_matrix,scale,spacestep,db=0,vmin=None,vmax=None,s
 		pb.savefig(filename+'.pdf',dpi=300)
 
 	pb.show()	
-	return pb.flipud(pb.fftshift(V_f)),freq
+	return pb.flipud(V_f),freq
 
 
 
