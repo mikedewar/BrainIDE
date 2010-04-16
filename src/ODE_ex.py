@@ -1,12 +1,13 @@
 import pylab as pb
 import numpy as np
+import scipy
 from ODE import *
 import quickio
-
+from scipy import io
 #-------------field--------------------
 field_width=40
 dimension=2
-spacestep=.5
+spacestep=0.25
 f_space=pb.arange(-(field_width)/2.,(field_width)/2+spacestep,spacestep)# the step size should in a way that we have (0,0) in our kernel as the center
 spatial_location_num=(len(f_space))**2
 
@@ -58,6 +59,16 @@ V_matrix,V_filtered,Y=model.simulate(T)
 quickio.writed('V_matrix','w',V_matrix)
 quickio.writed('Y','w',Y)
 quickio.writed('V_filtered','w',V_filtered)
+
+V_matrix_dic={}
+V_filtered_dic={}
+Y_dic={}
+V_matrix_dic['V_matrix']=V_matrix
+V_filtered_dic['V_filtered']=V_filtered
+Y_dic['Y']=Y
+scipy.io.savemat('V_matrix',V_matrix_dic)
+scipy.io.savemat('V_filtered',V_filtered_dic)
+scipy.io.savemat('Y',Y_dic)
 
 #----------Field initialasation----------------------------
 #mean=[0]*spatial_location_num

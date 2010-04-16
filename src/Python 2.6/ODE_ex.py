@@ -2,12 +2,12 @@ import pylab as pb
 import numpy as np
 from ODE import *
 import quickio
-
+import scipy.io
 def ex_1():
 	#-------------field--------------------
-	field_width=40
+	field_width=20
 	dimension=2
-	spacestep=0.5
+	spacestep=2
 	f_space=pb.arange(-(field_width)/2.,(field_width)/2+spacestep,spacestep)# the step size should in a way that we have (0,0) in our kernel as the center
 	spatial_location_num=(len(f_space))**2
 
@@ -34,8 +34,8 @@ def ex_1():
 	alpha=100
 	act_func=ActivationFunction(threshold=2,nu=20,beta=.8)
 	#----------observations--------------------------
-	Sensorwidth =1.2**2 #equals to 3mm
-	S_obs= pb.linspace(-10,10,10)
+	Sensorwidth = 0.9**2 #equals to 2mm
+	S_obs= pb.arange(-5,5+spacestep,spacestep)
 	obs_locns=gen_spatial_lattice(S_obs)
 	ny=len(obs_locns)
 	widths=[pb.matrix([[Sensorwidth,0],[0,Sensorwidth]])]
@@ -62,7 +62,16 @@ def ex_1():
 	quickio.writed('V_matrix','w',V_matrix)
 	quickio.writed('Y','w',Y)
 	quickio.writed('V_filtered','w',V_filtered)
-
+	V_matrix_dic={}
+	V_filtered_dic={}
+	Y_dic={}
+	V_matrix_dic['V_matrix']=V_matrix
+	V_filtered_dic['V_filtered']=V_filtered
+	Y_dic['Y']=Y
+	scipy.io.savemat('V_matrix',V_matrix_dic)
+	scipy.io.savemat('V_filtered',V_filtered_dic)
+	scipy.io.savemat('Y',Y_dic)
+	
 if __name__ == "__main__":
 	import cProfile
 	import pstats
