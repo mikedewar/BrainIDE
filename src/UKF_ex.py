@@ -1,6 +1,5 @@
 import pylab as pb
 import numpy as np
-import quickio
 from UKF import *
 
 #-------------field--------------------

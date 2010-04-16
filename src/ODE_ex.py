@@ -2,11 +2,10 @@ import pylab as pb
 import numpy as np
 from ODE import *
 import quickio
-
 #-------------field--------------------
-field_width=40
+field_width=20
 dimension=2
-spacestep=.5
+spacestep=1
 f_space=pb.arange(-(field_width)/2.,(field_width)/2+spacestep,spacestep)# the step size should in a way that we have (0,0) in our kernel as the center
 spatial_location_num=(len(f_space))**2
 
@@ -23,7 +22,6 @@ k_widths=[pb.matrix([[1.8**2,0],[0,1.8**2]]),pb.matrix([[2.4**2,0],[0,2.4**2]]),
 #k_centers=[pb.matrix([[0],[0]])]
 #k_weights =[1]
 #k_widths=[pb.matrix([[8**2,0],[0,8**2]])]
-
 k_space=pb.arange(-(field_width/2.),((field_width/2.))+spacestep,spacestep)
 k=Kernel(k_weights,k_centers,k_widths,k_space,dimension)
 #------Field noise----------
@@ -33,7 +31,7 @@ beta_variance=1.3**2
 alpha=100
 act_func=ActivationFunction(threshold=2,nu=20,beta=.8)
 #----------observations--------------------------
-Sensorwidth =1.2**2 #equals to 3mm
+Sensorwidth =1.2**2#1.2**2 #equals to 3mm
 S_obs= pb.linspace(-10,10,10)
 #S_obs= pb.arange(-10,10+1.25,1.25)
 obs_locns=gen_spatial_lattice(S_obs)
@@ -55,9 +53,9 @@ T = pb.linspace(0,t_end,NSamples);
 model=IDE(k,f_space,EEG_signals,act_func,alpha,field_noise_variance,beta_variance,obs_noise_covariance,spacestep,Ts)
 model.gen_ssmodel()
 V_matrix,V_filtered,Y=model.simulate(T)
-quickio.writed('V_matrix','w',V_matrix)
-quickio.writed('Y','w',Y)
-quickio.writed('V_filtered','w',V_filtered)
+#quickio.writed('V_matrix','w',V_matrix)
+#quickio.writed('Y','w',Y)
+#quickio.writed('V_filtered','w',V_filtered)
 
 #----------Field initialasation----------------------------
 #mean=[0]*spatial_location_num
