@@ -6,11 +6,19 @@ import quickio
 from scipy import io
 
 #-------------field--------------------
-field_width=40		# twice the estimated field
-dimension=2
-spacestep=0.25
+field_width=40;                        # -20 to 20 mm, twice the estimated field, # must be EVEN!!!
+observedfieldwidth = field_width/2;    # mm, -field_width/4 to field_width/4 
+dimension=2;
+spacestep=0.5;
+steps_in_field = field_width/spacestep + 1;
 
-f_space=pb.arange(-(field_width)/2.,(field_width)/2+spacestep,spacestep)# the step size should in a way that we have (0,0) in our kernel as the center
+Delta = 1./spacestep;
+Nspacestep_in_observed_field = Delta*observedfieldwidth+1	
+
+observation_offest = field_width/4;     # mm
+observation_offset_units = observation_offest / spacestep -1;
+
+f_space=pb.arange(-(field_width)/2.,(field_width)/2.+spacestep,spacestep)# the step size should in a way that we have (0,0) in our kernel as the center
 spatial_location_num=(len(f_space))**2
 
 #_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _Connectivity Kernel properties_ _ _ _ _ __ _ _ _ _ __ _ _ _ _ __ _ _ _ _ __ _ _ _ _ 
@@ -32,11 +40,21 @@ beta_variance=1.3**2
 alpha=100
 act_func=ActivationFunction(threshold=2,nu=20,beta=.8)
 #----------observations--------------------------
-Sensorwidth =0.9**2 #1.2**2 #equals to 3mm
-S_obs= pb.arange(-(field_width)/4,(field_width)/4+spacestep,spacestep)
+Delta_s = 1.5	# mm
+Delta_s_units = Delta_s/spacestep	
+nonsymmetric_obs_location_units = pb.arange(1,Nspacestep_in_observed_field,Delta_s_units)
+offset = ((Nspacestep_in_observed_field - nonsymmetric_obs_location_units[-1])/2.)
+symmetricobslocation_units = nonsymmetric_obs_location_units + offset + observation_offset_units
+
+observation_locs_mm = symmetricobslocation_units*spacestep - field_width/2.
+print observation_locs_mm
+ny= len(observation_locs_mm);
+
+Sensorwidth =0.9**2 #1.2**2 #equals to 1.5mm
+S_obs= observation_locs_mm
 
 obs_locns=gen_spatial_lattice(S_obs)
-ny=len(obs_locns)
+# ny=len(obs_locns)
 widths=[pb.matrix([[Sensorwidth,0],[0,Sensorwidth]])]
 EEG_signals=Sensor(obs_locns,widths,dimension,f_space,ny,spacestep)
 obs_noise_covariance =.1*pb.matrix(np.eye(len(obs_locns),len(obs_locns)))
