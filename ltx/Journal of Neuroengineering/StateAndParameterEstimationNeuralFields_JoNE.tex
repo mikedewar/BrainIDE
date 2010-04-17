@@ -170,7 +170,12 @@ where $\mathbf{r}_n$ defines the location of the sensors in the field where $n=1
 	m\left(\mathbf{r}-\mathbf{r}'\right) = \exp{\left(-\frac{(\mathbf{r}-\mathbf{r}')^\top(\mathbf{r}-\mathbf{r}')}{\sigma_m^2}\right)}. 
 \end{equation}
 
-\section{Derivation of Finite Dimensional State-Space Model} In order to implement standard estimation techniques we use a decomposition of the field using a set of Gaussian basis functions. Decomposition allows a continuous field to be represented by a finite dimensional state vector. This allows for the application of standard nonlinear, non-Gaussian state estimation methods such as the unscented Kalman filter. The field decomposition is described by 
+\section{Derivation of Finite Dimensional State-Space Model} In order to implement standard estimation techniques we use a decomposition of the field using a set of Gaussian basis functions defined by
+\begin{equation}\label{eq:FieldBasisFunction}
+	\phi\left(\mathbf{r}-\mathbf{r}'\right) =
+\exp{\left(-\frac{(\mathbf{r}-\mathbf{r}')^\top(\mathbf{r}-\mathbf{r}')}{\sigma_{\phi}^2}\right)}. 
+\end{equation}
+ Decomposition allows a continuous field to be represented by a finite dimensional state vector. This allows for the application of standard nonlinear, non-Gaussian state estimation methods such as the unscented Kalman filter. The field decomposition is described by 
 \begin{equation}
 	\label{DefFieldDecomp} v_t\left(\mathbf{r}\right) \approx \boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) \mathbf{x}_t, 
 \end{equation}
@@ -262,7 +267,7 @@ width $\sigma^2_{\nu}$ should be chosen to give at least 3 dB attenuation at $\b
 \begin{equation}\label{eq:WidthFrequencyRelationship}
  \sigma^2_{\nu}=\frac{2\boldsymbol\nu_c^\top \boldsymbol\nu_c}{\ln 2}.
 \end{equation}
-This ensures that the basis functions can represent field with frequency content up to $\boldsymbol\nu_c $. Proof of \ref{eq:GaussianFT} and \ref{eq:WidthFrequencyRelationship} is given in Appendix
+This ensures that the basis functions can represent field with frequency content up to $\boldsymbol\nu_c $. Proof of \ref{eq:GaussianFT} and \ref{eq:WidthFrequencyRelationship} is given in \ref{ap:FrequencyAnalysis}.
 % Thus to ensure that the basis functions can represent fields with frequency content up to $\boldsymbol{\nu}_c$, $\sigma_{\nu}$ should be set with at least the 3~dB frequency for the basis functions equal to $\boldsymbol{\nu}_c$, thus obtained $\sigma^2_{\nu}$ and therefore $\sigma_{\phi}^2$.
 
 The dynamic field must be spatially oversampled by using a larger number of sensor then imposed by frequency considerations, to use frequency analysis to determine the minimum distance and width of the basis functions. Following this, the distance between basis functions is usually larger then the distance between sensors, although this is not a requirement for using this estimation framework. For a spatially homogeneous isotropic field the basis functions can be placed on a regular square grid. Following this, the knowledge of the distance between basis functions directly implies the total number of basis functions required.
@@ -473,8 +478,35 @@ The covariance of $\mathbf{e}_t$ is
 	&=&\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega} \boldsymbol{\phi}\left(\mathbf{r}\right) \mathbf E[e_t\left(\mathbf{r}\right)e_t\left(\mathbf{r}'\right)]\boldsymbol{\phi}\left(\mathbf{r}'\right)^{\top}d\mathbf{r}' d\mathbf r\mathbf{\Gamma}^{- \top} \nonumber\\
 	&=&\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega}\boldsymbol{\phi}\left(\mathbf r\right) \gamma\left(\mathbf r- \mathbf r' \right)\boldsymbol{\phi}\left(\mathbf r'\right)^{\top}d\mathbf r' d\mathbf r\mathbf{\Gamma}^{- \top} 
 \end{eqnarray}
+\section{Proof of \ref{eq:GaussianFT} and \ref{eq:WidthFrequencyRelationship} }\label{ap:FrequencyAnalysis}
+Applying the \textit{n}-dimensional Fourier transform \cite{Arsac1966} to an \textit{n}-dimensional Gaussian centered at the origin yields
+\begin{eqnarray}
+ G(\boldsymbol \nu)&=&\int_{\mathcal R^n}\mathrm{exp}\left({-\frac{1}{\sigma_{\phi}^2} \mathbf r^\top\mathbf r}\right)\mathrm{exp}\left(-2\pi i\boldsymbol\nu^\top\mathbf r\right)d\mathbf r \nonumber \\
+&=&\int_{\mathcal R^n}\mathrm{exp}\left(-\frac{1}{\sigma_{\phi}^2}\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]^\top\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]\right)d\mathbf r \nonumber \\
+&\times& \mathrm{exp}\left(-\sigma_{\phi}^2\pi^2\boldsymbol\nu^\top \boldsymbol\nu\right)
+\end{eqnarray}
+and 
+\begin{equation}\label{eq:IntegralOfGaussian}
+\int_{\mathcal R^n}\mathrm{exp}\left(-\frac{1}{\sigma_{\phi}^2}\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]^\top\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]\right)d\mathbf r=(\pi\sigma_{\phi}^2)^{\frac{n}{2}}
+\end{equation}
+which gives another scaled  Gaussian 
+\begin{equation}
+   \boldsymbol\Phi(\boldsymbol\nu)=(\pi\sigma_{\phi}^2)^{\frac{n}{2}}\mathrm{exp}\left(-\sigma_{\phi}^2\pi^2\boldsymbol\nu^\top \boldsymbol\nu\right)
+\end{equation}
+substituting $\sigma_{\nu}^2=\frac{1}{\pi^2\sigma_{\phi}^2}$ gives 
+\begin{equation}
+\boldsymbol\Phi(\boldsymbol \nu)=\left(\frac{1}{\pi\sigma_{\nu}^2}\right)^{\frac{n}{2}}\mathrm{exp}\left(-\frac{1}{\sigma_{\nu}^2}\boldsymbol\nu^\top \boldsymbol\nu\right).
+\end{equation}
+and hence completing the proof. For 3 dB attenuation at $\boldsymbol\nu_c$ we need to set
+\begin{eqnarray}
+ |\boldsymbol\Phi(\boldsymbol\nu_c)|^2&=&\left(\frac{1}{\pi\sigma_{\nu}^2}\right)^{n}\mathrm{exp}\left(-\frac{2}{\sigma_{\nu}^2}\boldsymbol\nu_c^\top \boldsymbol\nu_c\right)\\
+&=&\frac{1}{2}|\boldsymbol\Phi(\mathbf 0)|^2
+\end{eqnarray}
+solving for $\sigma_{\nu}^2$ we get
+\begin{equation}
+ \sigma_{\nu}^2=\frac{2\boldsymbol\nu_c^\top \boldsymbol\nu_c}{\ln 2 }.
+\end{equation}
 
-% \end{proof}
 \section{Parameter Estimation Using Least Squares}\label{LeastSquaresAppendix} 
 \begin{equation}
 	\mathbf x_{t+1}=\mathbf{x}_{t}+T_s \mathbf{Q}(\mathbf{x}_t)\boldsymbol{\theta}-\zeta T_s\mathbf{x}_t+T_s\Gamma^{-1}\int_\Omega\boldsymbol{\phi}(\mathbf r)\varepsilon_t(\mathbf r)d\mathbf r \label{eq:statespacemodel} 
