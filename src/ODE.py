@@ -150,7 +150,7 @@ class IDE():
 			w = self.Swc*pb.matrix(np.random.randn(spatial_location_num,1))
 			print "simulation at time",t
 
-			Kernel_convolution_at_s=signal.convolve2d(self.K,pb.vstack(pb.split(spiking_rate,len(self.field_space))),mode='same',boundary='fill')
+			Kernel_convolution_at_s=signal.convolve2d(pb.vstack(pb.split(spiking_rate,len(self.field_space))),self.K,mode='same',boundary='fill')
 
 
 			Kernel_convolution_at_s= (self.spacestep**2)*pb.matrix(pb.ravel(Kernel_convolution_at_s)).T
@@ -175,7 +175,7 @@ class IDE():
 			#V_matrix_temp.append(pb.hstack(pb.split(w,len(self.field_space))).T)
 			#--------------------------------------------------------------------------------------------------
 			#Finding the convolution of the Sensor with the field
-			v_filtered=(self.spacestep**2)*signal.convolve2d(self.S,v_membrane_matrix,mode='same',boundary='fill')
+			v_filtered=(self.spacestep**2)*signal.convolve2d(v_membrane_matrix,self.S,mode='same',boundary='fill')
 			#-------------------------------------------------------------------------------------------------------
 			#Observation
 			Y.append((self.spacestep**2)*(self.Sensor.Values*v_membrane)+v)

@@ -48,6 +48,7 @@ symmetricobslocation_units = nonsymmetric_obs_location_units + offset + observat
 
 observation_locs_mm = symmetricobslocation_units*spacestep - field_width/2.
 print observation_locs_mm
+
 ny= (len(observation_locs_mm))**2;
 
 Sensorwidth =0.9**2 #1.2**2 #equals to 1.5mm
@@ -68,6 +69,7 @@ Ts = 1/Fs   #sampling period, second
 t_end = .2 # seconds
 NSamples = t_end*Fs;
 T = pb.linspace(0,t_end,NSamples);
+
 #--------------model and simulation------------------
 model=IDE(k,f_space,EEG_signals,act_func,alpha,field_noise_variance,beta_variance,obs_noise_covariance,spacestep,Ts)
 model.gen_ssmodel()
