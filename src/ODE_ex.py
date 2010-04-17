@@ -48,7 +48,8 @@ symmetricobslocation_units = nonsymmetric_obs_location_units + offset + observat
 
 observation_locs_mm = symmetricobslocation_units*spacestep - field_width/2.
 print observation_locs_mm
-ny = len(observation_locs_mm)**2;
+
+ny= (len(observation_locs_mm))**2;
 
 Sensorwidth =0.9**2 #1.2**2 #equals to 1.5mm
 S_obs= observation_locs_mm
