@@ -255,15 +255,20 @@ Similar considerations need to be made regarding the representation of the dynam
 \begin{equation}
 	\Delta_b < \frac{1}{2\nu_c}. 
 \end{equation}
-For the Gaussian basis functions $\phi(\mathbf{r})$ being considered, the basis width parameter $\sigma_{\phi}^2$ can also be inferred from spectral considerations \cite{Sanner1992,Scerri2009}. The Fourier transform of a Gaussian is another Gaussian with width $\sigma^2_{\nu}$ given by 
-\begin{equation}
+For the Gaussian basis functions $\phi(\mathbf{r})$ being considered, the basis width parameter $\sigma_{\phi}^2$ can also be inferred from spectral considerations \cite{Sanner1992,Scerri2009}. The Fourier transform of an \textit{n}-dimensional Gaussian is another Gaussian given by
+\begin{equation}\label{eq:GaussianFT}
+\boldsymbol\Phi(\boldsymbol \nu)=\left(\frac{1}{\pi\sigma_{\nu}^2}\right)^{\frac{n}{2}}\mathrm{exp}\left(-\frac{1}{\sigma_{\nu}^2}\boldsymbol\nu^\top \boldsymbol\nu\right).
+\end{equation}
+where 
+\begin{equation}\label{eq:GaussianFTWidth}
 	\sigma^2_{\nu} = \frac{1}{\pi^2\sigma_{\phi}^2}. 
 \end{equation}
-The relationship between the Fourier transform and the basis function width is 
-\begin{equation}
-	1234 
+width $\sigma^2_{\nu}$ should be chosen to give at least 3 dB attenuation at $\boldsymbol\nu_c$ giving
+\begin{equation}\label{eq:WidthFrequencyRelationship}
+ \sigma^2_{\nu}=\frac{2\boldsymbol\nu_c^\top \boldsymbol\nu_c}{\ln 2}.
 \end{equation}
-Thus to ensure that the basis functions can represent fields with frequency content up to $\boldsymbol{\nu}_c$, $\sigma_{\nu}$ should be set with at least the 3~dB frequency for the basis functions equal to $\boldsymbol{\nu}_c$, thus obtained $\sigma^2_{\nu}$ and therefore $\sigma_{\phi}^2$.
+This ensures that the basis functions can represent field with frequency content up to $\boldsymbol\nu_c $. Proof of \ref{eq:GaussianFT} and \ref{eq:WidthFrequencyRelationship} is given in Appendix
+% Thus to ensure that the basis functions can represent fields with frequency content up to $\boldsymbol{\nu}_c$, $\sigma_{\nu}$ should be set with at least the 3~dB frequency for the basis functions equal to $\boldsymbol{\nu}_c$, thus obtained $\sigma^2_{\nu}$ and therefore $\sigma_{\phi}^2$.
 
 The dynamic field must be spatially oversampled by using a larger number of sensor then imposed by frequency considerations, to use frequency analysis to determine the minimum distance and width of the basis functions. Following this, the distance between basis functions is usually larger then the distance between sensors, although this is not a requirement for using this estimation framework. For a spatially homogeneous isotropic field the basis functions can be placed on a regular square grid. Following this, the knowledge of the distance between basis functions directly implies the total number of basis functions required.
 
