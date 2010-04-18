@@ -38,7 +38,10 @@ field_noise_variance=0.01
 beta_variance=1.3**2
 #-------Brain----------------
 alpha=100
-act_func=ActivationFunction(threshold=2,nu=20,beta=.8)
+threshold=2
+nu=20
+beta=.8
+act_func=ActivationFunction(threshold,nu,beta)
 #----------observations--------------------------
 Delta_s = 1.5	# mm
 Delta_s_units = Delta_s/spacestep	
@@ -78,7 +81,29 @@ V_matrix,V_filtered,Y=model.simulate(T)
 quickio.writed('V_matrix','w',V_matrix)
 quickio.writed('Y','w',Y)
 quickio.writed('V_filtered','w',V_filtered)
-
+#-------------save parameters---------------------------
+parameters={}
+parameters['field_width']=field_width
+parameters['dimension']=dimension
+parameters['spacestep']=spacestep
+parameters['f_space']=f_space
+parameters['k_centers']=k_centers
+parameters['k_weights']=k_weights
+parameters['k_widths']=k_widths
+parameters['alpha']=alpha
+parameters['field_noise_variance']=field_noise_variance
+parameters['beta_variance']=beta_variance
+parameters['threshold']=threshold
+parameters['nu']=nu
+parameters['beta']=beta
+parameters['Sensorwidth']=Sensorwidth 
+parameters['obs_locns']=obs_locns
+parameters['Sensorwidth']=Sensorwidth
+parameters['obs_noise_covariance']=obs_noise_covariance
+parameters['Fs']=Fs
+parameters['t_end']=t_end
+quickio.writed('parameters','w',parameters)
+#---------------save results in mat format---------------
 V_matrix_dic={}
 V_filtered_dic={}
 Y_dic={}
