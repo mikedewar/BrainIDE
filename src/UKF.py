@@ -946,6 +946,8 @@ class para_state_estimation():
 	def itr_est(self,Y,max_it):
 
 		"""estimate the ide's kernel and field weights """
+		alpha_est=[]
+		kernel_weights_est=[]
 		# form state soace model
 		self.model.gen_ssmodel()
 		# generate a random state sequence
@@ -959,6 +961,8 @@ class para_state_estimation():
 		while keep_going:
 			#temp=self.estimate_kernel(Xb)
 			temp=self.estimate_kernel(Xhat)
+			alpha_est.append(float(temp[-1]))
+			kernel_weights_est.append(temp[0:-1])
 			self.model.kernel.weights,self.model.alpha=temp[0:-1],float(temp[-1])
 			_filter=getattr(ukf(self.model),'_filter')
 			#_filter=getattr(ukf(self.model),'rtssmooth')
@@ -968,6 +972,8 @@ class para_state_estimation():
 			#self.Pb=Pb
 			self.Xhat=Xhat
 			self.Phat=Phat
+			self.alpha_est=alpha_est
+			self.kernel_weights_est=kernel_weights_est
 			print it_count, " Kernel current estimate: ", self.model.kernel.weights.T, "alpha", self.model.alpha
 			if it_count == max_it:
 				keep_going = 0
