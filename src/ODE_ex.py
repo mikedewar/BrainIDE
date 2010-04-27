@@ -9,7 +9,7 @@ from scipy import io
 field_width=40;                        # -20 to 20 mm, twice the estimated field, # must be EVEN!!!
 observedfieldwidth = field_width/2;    # mm, -field_width/4 to field_width/4 
 dimension=2;
-spacestep=0.5;
+spacestep=1;
 steps_in_field = field_width/spacestep + 1;
 
 Delta = 1./spacestep;
@@ -69,7 +69,7 @@ pb.show()
 # -------Sampling properties-------------
 Fs = 1e3   #sampling rate                                       
 Ts = 1/Fs   #sampling period, second
-t_end = .2 # seconds
+t_end = .5 # seconds
 NSamples = t_end*Fs;
 T = pb.linspace(0,t_end,NSamples);
 

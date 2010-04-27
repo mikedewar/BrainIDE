@@ -46,13 +46,12 @@
 
 %<-comment out this for checking equations (author list too)
 \usepackage{iopams,setstack} 
-
 %<-comment out this for checking equations
 \usepackage{graphicx,epsfig}
 \usepackage{algorithm, algorithmicx, algpseudocode} 
 \usepackage{color} 
 \usepackage[tight,scriptsize]{subfigure}
-
+\usepackage{pstool}
 %\renewcommand{\subcapsize}{\small}
 % \usepackage{anysize}							%<-use this for checking equation length
 % \marginsize{1.7cm}{1.5cm}{0.3cm}{0.8cm}			%<-use this for checking equation length
@@ -81,7 +80,9 @@
 % Comment out if separate title page not required
 \maketitle
 
-\section{Introduction} This paper presents a framework for creating patient specific macroscopic neural field continuum mathematical models. \todo{I think it's probably good to start like this, but there either needs to be more here or this needs to be folded into the following paragraph. Otherwise this first sentence looks a little out of place.}
+\section{Introduction} This paper presents a theoretical framework for estimating patient specific macroscopic neural field continuum mathematical models from data. The ability to estimate such models has the potential to have significant impact on several areas of neuroscientific research and clinical neurology. Specifically, the development of a patient-specific state-space model will allow for the application of systems theoretical techniques from engineering to be applied to neuro-dynamics. For example, state tracking could be used in brain-computer interface or epileptic seizure prediction applications, where specific regions of the state-space may indicate intent of movement or imminent seizures. In addition, a patient specific state-space model will allow application of control engineering techniques to robustly prevent the neuro-dynamics entering pathological regions of state-space using electrical stimulation. 
+
+In addition, parameter estimation may have significant impact on the treatment of disease. For example, recent theoretical work has demonstrated that seemingly similar electrographic seizures in absence epilepsy may arise from abnormal excitatory or inhibitory mechanisms \omg{(ref, Frank Marten)}. These very different mechanisms would require very different medications for successful treatment. However, the underlying mechanisms would be hidden from the clinician in the normal clinical setting. Successful parameter estimation has the potential to reveal these hidden mechanisms allowing for improved treatment strategies. \omg{I extended this bit I am not sure how to connect it with the rest.} \todo{I think it's probably good to start like this, but there either needs to be more here or this needs to be folded into the following paragraph. Otherwise this first sentence looks a little out of place.}
 
 The human brain is composed of approximately 100 billion neurons and 60 trillion synapses operating in concert and, despite decades of research, our understanding of neural dynamics remains modest. Hence research has focused on different scales of dynamics: from individual proteins, synapses, and neurons; to neuronal networks and ensembles of neuronal networks. While our understanding of the function of neurons is well developed, the overall behaviour of the brain's meso and macro-scale dynamics remains largely a mystery. Understanding the brain at this level is extremely important since this is the scale where pathologies such as epilepsy, Parkinson's disease and schizophrenia are manifested.
 
@@ -182,7 +183,7 @@ where $\mathbf{r}_n$ defines the location of the sensors in the field where $n=1
 \end{equation}
 where $\mathbf{\boldsymbol{\phi}}(\mathbf{r})$ is a vector of Gaussian basis functions that are scaled by the state vector, $\mathbf{x}_t$. The width and positioning of the basis function can be determined by spectral analysis explain in detail in Section~\ref{SpectralAnalysisSection}. The connectivity kernel can also be considered a decomposition into a set of basis functions in 
 \begin{equation}
-	\label{DefKernelDecomp} w\left(\mathbf{r}-\mathbf{r}'\right) = \boldsymbol{\theta}^{\top} \boldsymbol{\psi}\left(\mathbf{r}-\mathbf{r}'\right). 
+	\label{DefKernelDecomp} w\left(\mathbf{r}-\mathbf{r}'\right) = \boldsymbol{\psi}\left(\mathbf{r}-\mathbf{r}'\right)^{\top} \boldsymbol{\theta}
 \end{equation}
 We will assume we know the parametric form of the connectivity basis functions, where the parameter $\boldsymbol{\theta}$ is unknown. Each connectivity basis function can, individually, be considered a layer in the Wilson and Cowan model, representing short range excitation, surround inhibition and mid-range excitation. Making substitutions of~\ref{DefFieldDecomp} and~\ref{DefKernelDecomp} into~\ref{DiscreteTimeModel} we get 
 \begin{equation}
@@ -387,12 +388,16 @@ The sensors were modelled such that they were spaced in a regular square grid, w
 \subsection{Spatial Frequency Analysis} In accordance with Section~\ref{SpectralAnalysisSection}, the spatial frequency of the field was used to confirm the spacing and width of the sensors was adequate to capture the significant dynamics of the field. Figure~\ref{} shows the spatial frequency of the field. The cut-off frequency, $\nu_c$, was taken to be \omg{??}, which corresponds to the \omg{??-3~dB} from the peak power. From equation~\ref{eq:MinimumSensorDistance}, this yielded a minimum sensor separation of \omg{??}. This confirms our separation was enough to prevent problems associated with aliasing.
 
 The spatial frequency of the observations is shown in figure~\ref{}. The peak power of the spatial frequency of the observations was approximately $30$~dB. The cut-off frequency was taken to correspond to \omg{??} of the peak pwoer which was approximately $15$~dB. This provided a conservative The oversampling parameter $\rho=2$. From equation~\ref{}, this gives a minimum distance between basis functions of $2.7$ to satisfy Shannon's sampling criterion. \todo{maybe from Parham's derivation... From equation~\ref{} the width was calculated to be... or...}. The width of the basis functions was chosen such that they had sufficient overlap to represent the dynamic field.
-\begin{figure*}
-	\begin{center}
-		\includegraphics[scale=0.5,angle=-90]{./Graph/FreqAnalysis.eps}
-	\end{center}
-	\caption{..... \textbf{A}. Field. \textbf{B} Field filtered using sensor kernel. \textbf{C}. Observations.} \label{fig:FreqAnalysis} 
-\end{figure*}
+
+\psfragfig{./Graph/FreqAnalysis}
+
+% \begin{figure*}
+% 	\begin{center}
+% 		\include{FreqAnalysis.tex}
+% 		\includegraphics[scale=0.5,angle=-90]{./Graph/FreqAnalysis.eps}
+% 	\end{center}
+% 	\caption{..... \textbf{A}. Field. \textbf{B} Field filtered using sensor kernel. \textbf{C}. Observations.} \label{fig:FreqAnalysis} 
+% \end{figure*}
 Following this, the distance between basis function, $\Delta_b$, was set to $2.5$ and the basis function width, $\sigma_{\phi}^2$, was set to 3.6, 3.16 mm full width at half maximum. Analysis said 3.9 from Parham's derivation, but 3.6 still overlaps and allows more high frequency details to be represented.
 
 \subsection{State and Parameter Estimates} To demonstrate the performance of the parameter and state estimation, $200$ realisations of the data were generated. Each realisation consisted of 300 ms of data and the estimation was applied to the final 200 ms, allowing the model to stabilise. The initial state and parameters were unknown to the estimator. The state estimates were evaluated by comparing the field reconstruction to the true field using the mean over time of the RMSE and standard deviation of the RMSE. The distribution of the state estimates are shown in figure~\ref{}. 
