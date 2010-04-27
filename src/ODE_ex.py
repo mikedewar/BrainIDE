@@ -110,6 +110,7 @@ Y_dic={}
 V_matrix_dic['V_matrix']=V_matrix
 V_filtered_dic['V_filtered']=V_filtered
 Y_dic['Y']=Y
-scipy.io.savemat('V_matrix',V_matrix_dic)
-scipy.io.savemat('V_filtered',V_filtered_dic)
-scipy.io.savemat('Y',Y_dic)
+io.savemat('V_filtered',V_filtered_dic)
+io.savemat('Y',Y_dic)
+io.savemat('V_matrix',V_matrix_dic)
+
