@@ -186,7 +186,7 @@ where $\mathbf{\boldsymbol{\phi}}(\mathbf{r})$ is a vector of Gaussian basis fun
 \end{equation}
 We will assume we know the parametric form of the connectivity basis functions, where the parameter $\boldsymbol{\theta}$ is unknown. Each connectivity basis function can, individually, be considered a layer in the Wilson and Cowan model, representing short range excitation, surround inhibition and mid-range excitation. Making substitutions of~\ref{DefFieldDecomp} and~\ref{DefKernelDecomp} into~\ref{DiscreteTimeModel} we get 
 \begin{equation}
-	\label{reduced continuous model} \boldsymbol{\phi}^{\top}\left( \mathbf{r} \right) \mathbf{x}_{t+1} = T_s\boldsymbol{\theta}^{\top}\int_\Omega {\boldsymbol{\psi} \left(\mathbf{r}-\mathbf{r}'\right) f\left( \boldsymbol{\phi} ^{\top}\left(\mathbf{r}'\right)\mathbf{x}_t \right)d\mathbf{r}'} - T_s\xi\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right)x_t + T_s u_t\left(\mathbf{r}\right) + e_t\left(\mathbf{r}\right). 
+	\label{reduced continuous model} \boldsymbol{\phi}^{\top}\left( \mathbf{r} \right) \mathbf{x}_{t+1} = T_s\boldsymbol{\theta}^{\top}\int_\Omega {\boldsymbol{\psi} \left(\mathbf{r}-\mathbf{r}'\right) f\left( \boldsymbol{\phi} ^{\top}\left(\mathbf{r}'\right)\mathbf{x}_t \right)d\mathbf{r}'} - \xi\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right)x_t + T_s u_t\left(\mathbf{r}\right) + e_t\left(\mathbf{r}\right). 
 \end{equation}
 By defining the term 
 \begin{equation}
@@ -194,7 +194,7 @@ By defining the term
 \end{equation}
 and manipulating the model (see~\ref{Simplifying Decomposition}) we isolate the state vector to form a state-space model 
 \begin{eqnarray}
-	\label{Homogeneous SS Model} \mathbf{x}_{t+1} &=& q(\mathbf{x}_t)\boldsymbol{\theta} - T_s\xi\mathbf{x}_t + k\left(u_t\left(\mathbf{r}\right)\right) + \mathbf{e}_t \\
+	\label{Homogeneous SS Model} \mathbf{x}_{t+1} &=& q(\mathbf{x}_t)\boldsymbol{\theta} - \xi\mathbf{x}_t + k\left(u_t\left(\mathbf{r}\right)\right) + \mathbf{e}_t \\
 	&=& Q\left(\mathbf{x}_t,u_t(\mathbf{r})\right) + \mathbf{e}_t \\
 	\mathbf{Q}\left(\mathbf{x}_t\right) &=& T_s\boldsymbol{\Gamma}^{ - 1}\int_\Omega {\boldsymbol{\phi}\left(\mathbf{r}\right) \int_\Omega {f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right)\mathbf{x}_t\right)\boldsymbol{\psi}^{\top} \left(\mathbf{r}-\mathbf{r}'\right)d\mathbf{r}'} d\mathbf{r}} \\
 	k(u_t(\mathbf{r})) &=& \boldsymbol{\Gamma}^{-1}T_s \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) u_t\left(\mathbf{r}\right)d\mathbf{r}} \\
