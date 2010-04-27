@@ -52,7 +52,7 @@ def ex_1():
 	# -------Sampling properties-------------
 	Fs = 1e3   #sampling rate                                       
 	Ts = 1/Fs   #sampling period, second
-	t_end = .2 # seconds
+	t_end = .5 # seconds
 	NSamples = t_end*Fs;
 	T = pb.linspace(0,t_end,NSamples);
 	#--------------model and simulation------------------
