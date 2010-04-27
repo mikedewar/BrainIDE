@@ -154,7 +154,7 @@ To arrive at the integro-difference equation (IDE) form of the model we discreti
 	\label{DiscreteTimeModel} v_{t+1}\left(\mathbf{r}\right) = \xi v_t\left(\mathbf{r}\right) + T_s \int_\Omega { w\left(\mathbf{r}-\mathbf{r}'\right) f\left(v_t\left(\mathbf{r}'\right)\right) d\mathbf{r}'} + T_s u_t\left(\mathbf{r}\right) + e_t\left(\mathbf{r}\right), 
 \end{equation}
 where $T_s$ is the time step, $\xi = 1-\zeta T_s$ and $e_t\left(\mathbf{r}\right)$ is an iid spatially coloured, temporally white disturbance term with the covariance 
-\begin{equation}
+\begin{equation}\label{eq:FieldCovarianceFunction}
 	cov(\mathbf{e}_t,\mathbf{e}_{t+\tau}) = \left\{ 
 	\begin{array}{*{20}
 		{c}} \gamma\left(\mathbf{r}-\mathbf{r'}\right), & \tau=0 \\
@@ -181,12 +181,12 @@ where $\mathbf{r}_n$ defines the location of the sensors in the field where $n=1
 	\label{DefFieldDecomp} v_t\left(\mathbf{r}\right) \approx \boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) \mathbf{x}_t, 
 \end{equation}
 where $\mathbf{\boldsymbol{\phi}}(\mathbf{r})$ is a vector of Gaussian basis functions that are scaled by the state vector, $\mathbf{x}_t$. The width and positioning of the basis function can be determined by spectral analysis explain in detail in Section~\ref{SpectralAnalysisSection}. The connectivity kernel can also be considered a decomposition into a set of basis functions in 
-\begin{equation}
-	\label{DefKernelDecomp} w\left(\mathbf{r}-\mathbf{r}'\right) = \boldsymbol{\theta}^{\top} \boldsymbol{\psi}\left(\mathbf{r}-\mathbf{r}'\right). 
+\begin{equation}\label{DefKernelDecomp}
+	 w\left(\mathbf{r}-\mathbf{r}'\right) =\boldsymbol{\psi}\left(\mathbf{r}-\mathbf{r}'\right)^\top \boldsymbol{\theta}.
 \end{equation}
 We will assume we know the parametric form of the connectivity basis functions, where the parameter $\boldsymbol{\theta}$ is unknown. Each connectivity basis function can, individually, be considered a layer in the Wilson and Cowan model, representing short range excitation, surround inhibition and mid-range excitation. Making substitutions of~\ref{DefFieldDecomp} and~\ref{DefKernelDecomp} into~\ref{DiscreteTimeModel} we get 
 \begin{equation}
-	\label{reduced continuous model} \boldsymbol{\phi}^{\top}\left( \mathbf{r} \right) \mathbf{x}_{t+1} = T_s\boldsymbol{\theta}^{\top}\int_\Omega {\boldsymbol{\psi} \left(\mathbf{r}-\mathbf{r}'\right) f\left( \boldsymbol{\phi} ^{\top}\left(\mathbf{r}'\right)\mathbf{x}_t \right)d\mathbf{r}'} - \xi\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right)x_t + T_s u_t\left(\mathbf{r}\right) + e_t\left(\mathbf{r}\right). 
+	\label{reduced continuous model} \boldsymbol{\phi}^{\top}\left( \mathbf{r} \right) \mathbf{x}_{t+1} = T_s\int_\Omega { f\left( \boldsymbol{\phi} ^{\top}\left(\mathbf{r}'\right)\mathbf{x}_t \right)\boldsymbol{\psi} \left(\mathbf{r}-\mathbf{r}'\right)^\top d\mathbf{r}'}\boldsymbol{\theta} - \xi\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right)x_t + T_s u_t\left(\mathbf{r}\right) + e_t\left(\mathbf{r}\right). 
 \end{equation}
 By defining the term 
 \begin{equation}
@@ -195,8 +195,10 @@ By defining the term
 and manipulating the model (see~\ref{Simplifying Decomposition}) we isolate the state vector to form a state-space model 
 \begin{eqnarray}
 	\label{Homogeneous SS Model} \mathbf{x}_{t+1} &=& q(\mathbf{x}_t)\boldsymbol{\theta} - \xi\mathbf{x}_t + k\left(u_t\left(\mathbf{r}\right)\right) + \mathbf{e}_t \\
-	&=& Q\left(\mathbf{x}_t,u_t(\mathbf{r})\right) + \mathbf{e}_t \\
-	\mathbf{Q}\left(\mathbf{x}_t\right) &=& T_s\boldsymbol{\Gamma}^{ - 1}\int_\Omega {\boldsymbol{\phi}\left(\mathbf{r}\right) \int_\Omega {f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right)\mathbf{x}_t\right)\boldsymbol{\psi}^{\top} \left(\mathbf{r}-\mathbf{r}'\right)d\mathbf{r}'} d\mathbf{r}} \\
+	&=& Q\left(\mathbf{x}_t,u_t(\mathbf{r})\right) + \mathbf{e}_t 
+\end{eqnarray}
+\begin{eqnarray}\label{eq:QMatrix}
+	\mathbf{Q}\left(\mathbf{x}_t\right) &=& \boldsymbol{\Gamma}^{ - 1}\int_\Omega {\boldsymbol{\phi}\left(\mathbf{r}\right) \int_\Omega {f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right)\mathbf{x}_t\right)\boldsymbol{\psi}^{\top} \left(\mathbf{r}-\mathbf{r}'\right)d\mathbf{r}'} d\mathbf{r}} \\
 	k(u_t(\mathbf{r})) &=& \boldsymbol{\Gamma}^{-1}T_s \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) u_t\left(\mathbf{r}\right)d\mathbf{r}} \\
 	\mathbf{e}_t &=& \boldsymbol{\Gamma}^{-1}\int_\Omega{\boldsymbol{\phi}\left(\mathbf{r}\right)e_t\left(\mathbf{r}\right)d\mathbf{r}}, 
 \end{eqnarray}
@@ -433,28 +435,18 @@ where $\xi = 1 - T \zeta$.
 where $e_t(\mathbf{r}_{i,j}) \sim \mathcal{N}\left(0,\Sigma\right)$. We have used free boundary conditions and extended the spatial domain to alleviate problems associated with edge effects. 
 \section{Reduction to Finite State-Space Model}\label{Simplifying Decomposition} Starting from Eq.~\ref{reduced continuous model} we multiply throughout by $\boldsymbol{\phi}(r)$ and integrate over the spatial domain $\Omega$ to get 
 \begin{eqnarray}
-	\label{ReducingState} \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) d\mathbf{r}} \mathbf{x}_{t+1} = T_s \int_\Omega {\boldsymbol{\phi} (\mathbf{r}) \boldsymbol{\theta}^{\top} \int_\Omega {\boldsymbol{\psi} \left(\mathbf{r}-\mathbf{r}'\right) f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right) \mathbf{x}_t \right)d\mathbf{r}'}d\mathbf{r}} - \xi\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\phi}^{\top}(\mathbf{r})d\mathbf{r}} \mathbf{x}_t \\
-	+ T_s \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) u_t\left(\mathbf{r}\right)d\mathbf{r}} + \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) e_t\left(\mathbf{r}\right)d\mathbf{r}}. 
-\end{eqnarray}
-Substituting Eq.~\ref{DefGamma} into Eq.~\ref{ } and cross-multiplying by $\boldsymbol{\Gamma}^{-1}$ gives 
-\begin{eqnarray}
-	\label{Homogeneous SS Model} \mathbf{x}_{t+1} = T_s\boldsymbol{\Gamma}^{ - 1}\int_\Omega {\boldsymbol{\phi}\left(\mathbf{r}\right) \int_\Omega {f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right)\mathbf{x}_t\right) \boldsymbol{\psi}^{\top} \left(\mathbf{r}-\mathbf{r}'\right)d\mathbf{r}'} d\mathbf{r}} \boldsymbol{\theta} - \xi \mathbf{x}_t \\
-	+ \boldsymbol{\Gamma}^{-1}T_s \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) u_t\left(\mathbf{r}\right)d\mathbf{r}} + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}\left(\mathbf{r}\right)e_t\left(\mathbf{r}\right)d\mathbf{r}}. 
-\end{eqnarray}
-\section{Reduction to Finite State-Space Model}\label{Simplifying Decomposition} Starting from Eq.~\ref{reduced continuous model} we multiply throughout by $\boldsymbol{\phi}(r)$ and integrate over the spatial domain $\Omega$ to get 
-\begin{eqnarray}
 	\label{StartofReduction} \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) d\mathbf{r}} \mathbf{x}_{t+1} = T_s \int_\Omega {\boldsymbol{\phi} (\mathbf{r}) \boldsymbol{\theta}^{\top} \int_\Omega {\boldsymbol{\psi} \left(\mathbf{r}-\mathbf{r}'\right) f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right) \mathbf{x}_t \right)d\mathbf{r}'}d\mathbf{r}} - \xi\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\phi}^{\top}(\mathbf{r})d\mathbf{r}} \mathbf{x}_t \\
 	+ T_s \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) u_t\left(\mathbf{r}\right)d\mathbf{r}} + \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) e_t\left(\mathbf{r}\right)d\mathbf{r}}. 
 \end{eqnarray}
 Substituting Eq.~\ref{DefGamma} into Eq.~\ref{StartofReduction} and cross-multiplying by $\boldsymbol{\Gamma}^{-1}$ gives 
 \begin{eqnarray}
-	\label{Homogeneous SS Model} \mathbf{x}_{t+1} = T_s\boldsymbol{\Gamma}^{ - 1}\int_\Omega {\boldsymbol{\phi}\left(\mathbf{r}\right) \int_\Omega {f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right)\mathbf{x}_t\right) \boldsymbol{\psi}^{\top} \left(\mathbf{r}-\mathbf{r}'\right)d\mathbf{r}'} d\mathbf{r}} \boldsymbol{\theta} - \xi \mathbf{x}_t \\
+	 \mathbf{x}_{t+1} = T_s\boldsymbol{\Gamma}^{ - 1}\int_\Omega {\boldsymbol{\phi}\left(\mathbf{r}\right) \int_\Omega {f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right)\mathbf{x}_t\right) \boldsymbol{\psi}^{\top} \left(\mathbf{r}-\mathbf{r}'\right)d\mathbf{r}'} d\mathbf{r}} \boldsymbol{\theta} - \xi \mathbf{x}_t \\
 	+ \boldsymbol{\Gamma}^{-1}T_s \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) u_t\left(\mathbf{r}\right)d\mathbf{r}} + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}\left(\mathbf{r}\right)e_t\left(\mathbf{r}\right)d\mathbf{r}}. 
 \end{eqnarray}
 \section{}\label{ColoredNoise} 
 \newtheorem{lemma}{Lemma} 
 \begin{lemma}
-	Consider the zero-mean process $e_t\left(\mathbf r\right)$ with covariance as defined by (\ref{eq:FieldCovariance}) then 
+	Consider the zero-mean process $e_t\left(\mathbf r\right)$ with covariance as defined by \ref{eq:FieldCovarianceFunction} then 
 	\begin{equation}
 		\mathbf e_t=\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi} ( \mathbf{r} )e_t( \mathbf{r} )d\mathbf{r}} \label{eq:AppendixWt} 
 	\end{equation}
@@ -505,19 +497,12 @@ solving for $\sigma_{\nu}^2$ we get
 \end{equation}
 
 \section{Parameter Estimation Using Least Squares}\label{LeastSquaresAppendix} 
-\begin{equation}
-	\mathbf x_{t+1}=\mathbf{x}_{t}+T_s \mathbf{Q}(\mathbf{x}_t)\boldsymbol{\theta}-\zeta T_s\mathbf{x}_t+T_s\Gamma^{-1}\int_\Omega\boldsymbol{\phi}(\mathbf r)\varepsilon_t(\mathbf r)d\mathbf r \label{eq:statespacemodel} 
-\end{equation}
-where the matrix $\mathbf Q_{n_x \times n_{\boldsymbol{\theta}}}(\mathbf x_t)$ is defined as 
-\begin{equation}
-	Q_{n_x \times n_{\boldsymbol{\theta}}}=\Gamma^{-1}\int_\Omega\boldsymbol{\phi}(\mathbf r)\int_\Omega f(\boldsymbol{\phi}^\top(\mathbf r')\mathbf x_t)\mathbf{\psi}^\top(\mathbf r-\mathbf r')d\mathbf r'd\mathbf r 
-\end{equation}
-and $T_s$ is the sampling period. Least Square method can be used as (\ref{eq:statespacemodel}) is linear in parameters. At each time instant we have 
+The state equation given in \ref{Homogeneous SS Model} is linear in parameters and therefore Least Square (LS) method can be applied to estimate the unknown parameters. Using  \ref{Homogeneous SS Model} and \ref{eq:QMatrix} by substituting  $\xi = 1-\zeta T_s$ at each time instant we can write
 \begin{eqnarray}
-	\mathbf x_{1}&=&\mathbf x_{0}+T_s \mathbf Q(\mathbf x_0) \boldsymbol{\theta}-\zeta T_s\mathbf x_0+T_s\mathbf e_0 \nonumber \\
-	\mathbf x_{2}&=&\mathbf x_{1}+T_s \mathbf Q(\mathbf x_1) \boldsymbol{\theta}-\zeta T_s\mathbf x_1+T_s\mathbf e_1\nonumber\\
+	\mathbf x_{1}&=&\mathbf x_{0}+T_s \mathbf Q(\mathbf x_0) \boldsymbol{\theta}-\zeta T_s\mathbf x_0+\mathbf e_0 \nonumber \\
+	\mathbf x_{2}&=&\mathbf x_{1}+T_s \mathbf Q(\mathbf x_1) \boldsymbol{\theta}-\zeta T_s\mathbf x_1+\mathbf e_1\nonumber\\
 	&\vdots& \nonumber\\
-	\mathbf x_{n}&=&\mathbf x_{n-1}+T_s \mathbf Q(\mathbf x_{n-1}) \boldsymbol{\theta}-\zeta T_s\mathbf x_{n-1}+T_s\mathbf e_{n-1} 
+	\mathbf x_{n}&=&\mathbf x_{n-1}+T_s \mathbf Q(\mathbf x_{n-1}) \boldsymbol{\theta}-\zeta T_s\mathbf x_{n-1}+\mathbf e_{n-1} 
 \end{eqnarray}
 in matrix form 
 \begin{equation}
@@ -539,7 +524,7 @@ in matrix form
 		\boldsymbol{\theta} \\
 		\zeta
 	\end{array}
-	\right]+T_s \left[
+	\right]+\left[
 	\begin{array}{cccc}
 		\mathbf e_0\\\mathbf e_1\\\vdots\\\mathbf e_{n-1}
 	\end{array}
@@ -563,18 +548,22 @@ where
 		\mathbf Q(\mathbf x_1)&-\mathbf x_{1}\\\vdots\\
 		\mathbf Q(\mathbf x_{n-1})&-\mathbf x_{n-1}
 	\end{array}
-	\right] ,\quad \mathbf W=\left[
+	\right] 
+\end{equation}
+and
+\begin{equation}
+\quad \mathbf W=\left[
 	\begin{array}{cc}
 		\boldsymbol{\theta} \\
 		\zeta
 	\end{array}
-	\right],\quad \boldsymbol \xi=T_s\left[
+	\right],\quad \boldsymbol \xi=\left[
 	\begin{array}{cccc}
 		\mathbf e_0\\\mathbf e_1\\\vdots\\\mathbf e_{n-1}
 	\end{array}
 	\right] 
 \end{equation}
-using the method of Least Square $ \mathbf W$ can be estimated 
+using the LS method $ \mathbf W$ can be estimated 
 \begin{equation}
 	\mathbf W\approx(\mathbf X^\top\mathbf X)^{-1}\mathbf X^\top\mathbf Z 
 \end{equation}
