@@ -193,7 +193,7 @@ class IDE():
 			v_filtered=v_filtered[field_width/(self.spacestep*2.):field_width/float(self.spacestep)+field_width/(self.spacestep*2.)+1,:]
 			#--------------------------------------------------------------------------------------------------------
 			V_matrix.append(v_membrane_matrix)
-			V_filtered.append(v_filtered)
+			V_filtered.append(pb.matrix(v_filtered))
 
 		return V_matrix,V_filtered,Y
 
