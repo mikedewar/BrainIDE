@@ -51,12 +51,12 @@
 \usepackage{algorithm, algorithmicx, algpseudocode} 
 \usepackage{color} 
 \usepackage[tight,scriptsize]{subfigure}
-\usepackage{pstool}
-%\renewcommand{\subcapsize}{\small}
+% \usepackage{pstool}
+\renewcommand{\subcapsize}{\small}
 % \usepackage{anysize}							%<-use this for checking equation length
 % \marginsize{1.7cm}{1.5cm}{0.3cm}{0.8cm}			%<-use this for checking equation length
 % \setlength{\columnsep}{0.5cm}					%<-use this for checking equation length
-% \usepackage{amsmath,amssymb,amsfonts} 			%<-use this for checking equation length
+\usepackage{amssymb,amsfonts} 			%<-use this for checking equation length
 \newcommand{\todo}[1]{\textsf{\emph{\textbf{\textcolor{blue}{#1}}}}} 
 \newcommand{\wtf}[1]{\textsf{\emph{\textbf{\textcolor{red}{#1}}}}} 
 \newcommand{\omg}[1]{\textsf{\emph{\textbf{\textcolor{green}{#1}}}}} \begin{document}
@@ -96,7 +96,7 @@ An estimation framework for neural field models known as dynamical causal modell
 
 Generating patient specific models allows the application of a range of techniques from control systems theory, where tailored electrical stimulation could be used therapeutically in a closed loop fashion. Currently available epileptic seizure  control devices (i.e., the vagal nerve stimulator) are implemented in an ``open loop". That is, the therapeutic electrical stimulation waveforms are adjusted for each patient by trial and error, disregarding the patient's neurodynamics and information about their particular pathologies. Given access to an accurate model, the application of optimal control theory in these circumstances would allow for robust therapeutic stimulations.
 
-The work from Schiff and Sauer \cite{schiff2008kalman} successfully demonstrated it is possible to estimate parameters \wtf{what kind of parameters?} from the WC equations. This motivates the question, what parameters are the most important? How patient specific do the assumed parameters have to be for the model to be useful? In this paper, we address both of these questions and provide a theoretical platform to perform patient-specific grey-box modelling of the human neocortex. \wtf{not sure about rhetorical questions as a narrative mechanism in general, also not sure how this paper addresses these particular questions.} \omg{Maybe the next section addresses that the connectivity is important. Needs sharpening.}
+The work from Schiff and Sauer \cite{schiff2008kalman} successfully demonstrated it is possible to perform state estimation of modified WC equations. This motivates the question, what parameters are the most important? How patient specific do the assumed parameters have to be for the model to be useful? In this paper, we address both of these questions and provide a theoretical platform to perform patient-specific grey-box modelling of the human neocortex. \wtf{not sure about rhetorical questions as a narrative mechanism in general, also not sure how this paper addresses these particular questions.} \omg{Maybe the next section addresses that the connectivity is important. Needs sharpening.}
 
 \section{The Importance of Cortical Structure} Neural field models relate mean firing rates of pre-synaptic neural populations to post-synaptic mean membrane potentials. Each neural population represents a functional cortical processing unit, referred to as a column. The columnar organization of the cortex is continuous, where pyramidal cells are members of many columns. In general, cortical structure can be modeled in a physiologically plausible manner as being locally homogeneous (in short range intracortical connectivity) and heterogeneous (in long range cortico-cortical and corticothalamic connectivity) \cite{Jirsa2009} \cite{Qubbaj2007}. Locally, each column is thought be connected via symmetric short range local excitation, with surround inhibition \cite{Braitenberg1998}. For example, this structural organisation is most studied in the visual system, where the surrounding inhibition effectively tunes a cortical column to a particular receptive visual field \cite{Sullivan2006}.
 
@@ -136,24 +136,26 @@ The firing rate of the presynaptic neurons is related to the postsynaptic membra
 \begin{equation}
 	\label{ActivationFunction} f\left( v\left( \mathbf{r}', t \right) \right) = \frac{f_{max}\left(\mathbf{r}\right)}{1 + \exp \left( \varsigma \left( v_0\left( \mathbf{r} \right) - v\left(\mathbf{r}',t\right) \right) \right)}. 
 \end{equation}
-
 %Even though we will model $v_0$ and $\nu_0$ as being homogeneous across the cortical sheet we will express it as being spatially dependant allowing for generality at this point. 
 By substituting \ref{RateBasedInteractions} into \ref{SpikesToPotential} we get the spatiotemporal model 
-\begin{equation}
-	\label{FullDoubleIntModel} v\left(\mathbf{r},t\right) = \int_{-\infty}^t h\left(t - t'\right) \left(\int_\Omega w\left(\mathbf{r},\mathbf{r}'\right) f\left( v\left( \mathbf{r}',t \right)\right)d\mathbf{r}' + u(\mathbf{r},t) \right)dt'. 
-\end{equation}
+\begin{eqnarray}
+	\label{FullDoubleIntModel} v\left(\mathbf{r},t\right) =  \int_{-\infty}^t h\left(t - t'\right) \\
+	\times\left(\int_\Omega w\left(\mathbf{r},\mathbf{r}'\right) f\left( v\left( \mathbf{r}',t \right)\right)d\mathbf{r}' + u(\mathbf{r},t) \right)dt'. 
+\end{eqnarray}
 To arrive at the final form of the model we shall state the synaptic response kernel as a Green's function 
 \begin{equation}
 	\label{GreensFuncDef} Dh\left( t \right) = \delta \left( t \right), 
 \end{equation}
 where $D=\frac{d}{dt} + \zeta$ is a temporal differential operator and $\delta(t)$ is the Dirac-delta function giving 
-\begin{equation}
-	\label{FinalFormContinuous} \frac{dv\left( \mathbf{r},t \right)}{dt} + \zeta v\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)dr'} + u\left(\mathbf{r},t\right). 
-\end{equation}
+\begin{eqnarray}
+	\label{FinalFormContinuous} \frac{dv\left( \mathbf{r},t \right)}{dt} + \zeta v\left( \mathbf{r},t \right) = \\
+	\int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)dr'} + u\left(\mathbf{r},t\right). 
+\end{eqnarray}
 To arrive at the integro-difference equation (IDE) form of the model we discretize time using a first-order Euler method (see~\ref{Time Discretization}) giving 
-\begin{equation}
-	\label{DiscreteTimeModel} v_{t+1}\left(\mathbf{r}\right) = \xi v_t\left(\mathbf{r}\right) + T_s \int_\Omega { w\left(\mathbf{r}-\mathbf{r}'\right) f\left(v_t\left(\mathbf{r}'\right)\right) d\mathbf{r}'} + T_s u_t\left(\mathbf{r}\right) + e_t\left(\mathbf{r}\right), 
-\end{equation}
+\begin{eqnarray}
+	\label{DiscreteTimeModel} v_{t+1}\left(\mathbf{r}\right) = \xi v_t\left(\mathbf{r}\right) + T_s \int_\Omega { w\left(\mathbf{r}-\mathbf{r}'\right) f\left(v_t\left(\mathbf{r}'\right)\right) d\mathbf{r}'} \\
+	+ T_s u_t\left(\mathbf{r}\right) + e_t\left(\mathbf{r}\right), 
+\end{eqnarray}
 where $T_s$ is the time step, $\xi = 1-\zeta T_s$ and $e_t\left(\mathbf{r}\right)$ is an iid spatially coloured, temporally white disturbance term with the covariance 
 \begin{equation}
 	cov(\mathbf{e}_t,\mathbf{e}_{t+\tau}) = \left\{ 
@@ -186,17 +188,18 @@ where $\mathbf{\boldsymbol{\phi}}(\mathbf{r})$ is a vector of Gaussian basis fun
 	\label{DefKernelDecomp} w\left(\mathbf{r}-\mathbf{r}'\right) = \boldsymbol{\psi}\left(\mathbf{r}-\mathbf{r}'\right)^{\top} \boldsymbol{\theta}
 \end{equation}
 We will assume we know the parametric form of the connectivity basis functions, where the parameter $\boldsymbol{\theta}$ is unknown. Each connectivity basis function can, individually, be considered a layer in the Wilson and Cowan model, representing short range excitation, surround inhibition and mid-range excitation. Making substitutions of~\ref{DefFieldDecomp} and~\ref{DefKernelDecomp} into~\ref{DiscreteTimeModel} we get 
-\begin{equation}
-	\label{reduced continuous model} \boldsymbol{\phi}^{\top}\left( \mathbf{r} \right) \mathbf{x}_{t+1} = T_s\boldsymbol{\theta}^{\top}\int_\Omega {\boldsymbol{\psi} \left(\mathbf{r}-\mathbf{r}'\right) f\left( \boldsymbol{\phi} ^{\top}\left(\mathbf{r}'\right)\mathbf{x}_t \right)d\mathbf{r}'} - \xi\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right)x_t + T_s u_t\left(\mathbf{r}\right) + e_t\left(\mathbf{r}\right). 
-\end{equation}
+\begin{eqnarray}
+	\label{reduced continuous model} \boldsymbol{\phi}^{\top}\left( \mathbf{r} \right) \mathbf{x}_{t+1} = T_s\int_\Omega { f\left( \boldsymbol{\phi} ^{\top}\left(\mathbf{r}'\right)\mathbf{x}_t \right)\boldsymbol{\psi} \left(\mathbf{r}-\mathbf{r}'\right)^{\top}d\mathbf{r}'}\boldsymbol{\theta} \\
+	- \xi\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right)x_t + T_s u_t\left(\mathbf{r}\right) + e_t\left(\mathbf{r}\right). 
+\end{eqnarray}
 By defining the term 
 \begin{equation}
 	\label{DefGamma} \boldsymbol{\Gamma} = \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi} ^{\top}\left(\mathbf{r}\right)d\mathbf{r}} 
 \end{equation}
 and manipulating the model (see~\ref{Simplifying Decomposition}) we isolate the state vector to form a state-space model 
 \begin{eqnarray}
-	\label{Homogeneous SS Model} \mathbf{x}_{t+1} &=& q(\mathbf{x}_t)\boldsymbol{\theta} - \xi\mathbf{x}_t + k\left(u_t\left(\mathbf{r}\right)\right) + \mathbf{e}_t \\
-	&=& Q\left(\mathbf{x}_t,u_t(\mathbf{r})\right) + \mathbf{e}_t \\
+	\label{Homogeneous SS Model} \mathbf{x}_{t+1} &=& T_sq(\mathbf{x}_t)\boldsymbol{\theta} - \xi\mathbf{x}_t + k\left(u_t\left(\mathbf{r}\right)\right) + \mathbf{e}_t \\
+	&=& T_sQ\left(\mathbf{x}_t,u_t(\mathbf{r})\right) + \mathbf{e}_t \\
 	\mathbf{Q}\left(\mathbf{x}_t\right) &=& T_s\boldsymbol{\Gamma}^{ - 1}\int_\Omega {\boldsymbol{\phi}\left(\mathbf{r}\right) \int_\Omega {f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right)\mathbf{x}_t\right)\boldsymbol{\psi}^{\top} \left(\mathbf{r}-\mathbf{r}'\right)d\mathbf{r}'} d\mathbf{r}} \\
 	k(u_t(\mathbf{r})) &=& \boldsymbol{\Gamma}^{-1}T_s \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) u_t\left(\mathbf{r}\right)d\mathbf{r}} \\
 	\mathbf{e}_t &=& \boldsymbol{\Gamma}^{-1}\int_\Omega{\boldsymbol{\phi}\left(\mathbf{r}\right)e_t\left(\mathbf{r}\right)d\mathbf{r}}, 
@@ -389,7 +392,7 @@ The sensors were modelled such that they were spaced in a regular square grid, w
 
 The spatial frequency of the observations is shown in figure~\ref{}. The peak power of the spatial frequency of the observations was approximately $30$~dB. The cut-off frequency was taken to correspond to \omg{??} of the peak pwoer which was approximately $15$~dB. This provided a conservative The oversampling parameter $\rho=2$. From equation~\ref{}, this gives a minimum distance between basis functions of $2.7$ to satisfy Shannon's sampling criterion. \todo{maybe from Parham's derivation... From equation~\ref{} the width was calculated to be... or...}. The width of the basis functions was chosen such that they had sufficient overlap to represent the dynamic field.
 
-\psfragfig{./Graph/FreqAnalysis}
+% \psfragfig{./Graph/FreqAnalysis}
 
 % \begin{figure*}
 % 	\begin{center}
