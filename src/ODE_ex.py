@@ -9,7 +9,7 @@ from scipy import io
 field_width=40;                        # -20 to 20 mm, twice the estimated field, # must be EVEN!!!
 observedfieldwidth = field_width/2;    # mm, -field_width/4 to field_width/4 
 dimension=2;
-spacestep=1;
+spacestep=0.5;
 steps_in_field = field_width/spacestep + 1;
 
 Delta = 1./spacestep;
@@ -54,7 +54,7 @@ print observation_locs_mm
 
 ny= (len(observation_locs_mm))**2;
 
-Sensorwidth =0.9**2 #1.2**2 #equals to 1.5mm
+Sensorwidth =0.8**2 #1.2**2 #equals to 1.5mm
 S_obs= observation_locs_mm
 
 obs_locns=gen_spatial_lattice(S_obs)
