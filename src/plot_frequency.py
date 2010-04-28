@@ -4,7 +4,7 @@ import numpy as np
 from scipy import signal
 import scipy as sp
 
-def obs_frequency_response(Y,spacestep,vmin=None,vmax=None,save=0,filename='filename'):
+def obs_frequency_response(Y,spacestep,ignore_at_zero=False,vmin=None,vmax=None,save=0,filename='filename'):
 
 	'''Generates average FFT of all observed surface
 	Argument:
@@ -33,7 +33,7 @@ def obs_frequency_response(Y,spacestep,vmin=None,vmax=None,save=0,filename='file
 	for i in range(len(Y_matrix)):
 		Y_temp=pb.detrend_mean(Y_matrix[i])
 		#y=y+20*pb.log10((spacestep**2)*pb.absolute(signal.fft2(Y_matrix[i])))
-		y=y+20*pb.log10(pb.absolute(signal.fft2(Y_matrix[i])))
+		y=y+20*pb.log10(pb.absolute(signal.fft2(Y_temp)))
 	y=y/len(Y_matrix)
 	freq=pb.fftfreq(y.shape[0],float(spacestep)) #generates the frequency array [0,pos,neg] over which fft2 is taken
 	#Nyquist_freq=freq.max() #find the Nyquist frequency it is not exact (depending y.shape[0] is odd or even) but close to Nyquist frequency
@@ -44,8 +44,7 @@ def obs_frequency_response(Y,spacestep,vmin=None,vmax=None,save=0,filename='file
 	params = {'axes.labelsize': 15,'text.fontsize': 15,'legend.fontsize': 15,'xtick.labelsize': 15,'ytick.labelsize': 15}
 	pb.rcParams.update(params) 
 	#pb.imshow((y*scale),origin='lower',extent=[freq[0],freq[-1],freq[0],freq[-1]],interpolation='nearest',vmin=vmin,vmax=vmax)#,cmap=pb.cm.gray,interpolation='nearest',cmap=pb.cm.gray,
-	y=y[1:,:]
-	y=y[:,1:]
+	if ignore_at_zero: y=y[1:,1:]
 	pb.imshow(y,origin='lower',extent=[0,freq_range,0,freq_range],vmin=vmin,vmax=vmax,cmap=pb.cm.hot)
 	pb.colorbar(shrink=.7,orientation='vertical')
 	pb.xlabel('Hz',fontsize=25)
@@ -58,7 +57,7 @@ def obs_frequency_response(Y,spacestep,vmin=None,vmax=None,save=0,filename='file
 
 
 
-def field_frequency_response(V_matrix,spacestep,vmin=None,vmax=None,save=0,filename='filename'):
+def field_frequency_response(V_matrix,spacestep,ignore_at_zero=False,vmin=None,vmax=None,save=0,filename='filename'):
 
 	'''Generates  FFT of the spatial kernel
 	Argument:
@@ -91,7 +90,7 @@ def field_frequency_response(V_matrix,spacestep,vmin=None,vmax=None,save=0,filen
 	freq_range=2*Nyquist_freq #the frequency range over which fft2 is taken
 	params = {'axes.labelsize': 15,'text.fontsize': 15,'legend.fontsize': 15,'xtick.labelsize': 15,'ytick.labelsize': 15}
 	pb.rcParams.update(params) 
-	V_f=V_f[1:,1:]
+	if ignore_at_zero: V_f=V_f[1:,1:]
 	fig = pb.figure(figsize=(6,6))
 	pb.imshow(V_f,origin='lower',extent=[0,freq_range,0,freq_range],cmap=pb.cm.hot,vmin=vmin,vmax=vmax)
 	pb.colorbar(shrink=.7,orientation='vertical')
