@@ -9,7 +9,7 @@ from scipy import io
 field_width=40;                        # -20 to 20 mm, twice the estimated field, # must be EVEN!!!
 observedfieldwidth = field_width/2;    # mm, -field_width/4 to field_width/4 
 dimension=2;
-spacestep=0.5;
+spacestep=1;
 steps_in_field = field_width/spacestep + 1;
 
 Delta = 1./spacestep;
@@ -54,7 +54,7 @@ print observation_locs_mm
 
 ny= (len(observation_locs_mm))**2;
 
-Sensorwidth =0.9**2 #1.2**2 #equals to 1.5mm
+Sensorwidth =0.8**2 #1.2**2 #equals to 1.5mm
 S_obs= observation_locs_mm
 
 obs_locns=gen_spatial_lattice(S_obs)
@@ -69,7 +69,7 @@ pb.show()
 # -------Sampling properties-------------
 Fs = 1e3   #sampling rate                                       
 Ts = 1/Fs   #sampling period, second
-t_end = .2 # seconds
+t_end = .5 # seconds
 NSamples = t_end*Fs;
 T = pb.linspace(0,t_end,NSamples);
 
@@ -110,6 +110,7 @@ Y_dic={}
 V_matrix_dic['V_matrix']=V_matrix
 V_filtered_dic['V_filtered']=V_filtered
 Y_dic['Y']=Y
-scipy.io.savemat('V_matrix',V_matrix_dic)
-scipy.io.savemat('V_filtered',V_filtered_dic)
-scipy.io.savemat('Y',Y_dic)
+io.savemat('V_filtered',V_filtered_dic)
+io.savemat('Y',Y_dic)
+io.savemat('V_matrix',V_matrix_dic)
+

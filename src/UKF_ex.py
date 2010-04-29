@@ -1,5 +1,6 @@
 import pylab as pb
 import numpy as np
+from scipy import io
 from UKF import *
 import quickio
 #-------------reading parameters--------------------
@@ -23,9 +24,9 @@ obs_noise_covariance=parameters['obs_noise_covariance']
 Fs=parameters['Fs']
 t_end=parameters['t_end']
 #-------------field--------------------
-field_basis_width=3.6
+field_basis_width=2.5#3.6
 spacestep=1
-S=pb.linspace(-10,10,9)
+S=pb.linspace(-10,10,11)
 f_centers=gen_spatial_lattice(S)
 nx=len(f_centers)
 f_widths=[pb.matrix([[field_basis_width,0],[0,field_basis_width]])]*nx
@@ -73,21 +74,24 @@ Y=quickio.read('Y')
 Y=Y['var0']
 t0=time.time()
 ps_estimate=para_state_estimation(model)
-ps_estimate.itr_est(Y,5)
+ps_estimate.itr_est(Y[4:],5)
 print 'elapsed time is', time.time()-t0
-#X,Y=model.simulate(T)
-#ukfilter=ukf(model)
-#plot_field(X[2],model.field.fbases,f_space)
-#t0=time.time()
-#xhat,phat=ukfilter._filter(Y)
-#xhat,phat=ukfilter._filter(Y)
-#xb,pb,xhat,phat=ukfilter.rtssmooth(Y)
-#t0=time.time()
-#xb,pb,xhat,phat=ukfilter.rtssmooth(Y)
-#print 'elapsed time is', time.time()-t0
-#ps_estimate=para_state_estimation(model)
-#ps_estimate.itr_est(Y,1)
-#print "Elapsed time in seconds is", time.time()-t0
+#Saving Kernel and 1/synaptic time constant in mat format
+alpha_mat={}
+kernel_mat={}
+alpha_mat['alpha']=ps_estimate.alpha_est 
+kernel_mat['kernel']= pb.squeeze(ps_estimate.kernel_weights_est)
+io.savemat('alpha',alpha_mat)
+io.savemat('kernel',kernel_mat)
+#Saving filtered states in mat format
+X_f={}
+X_f['X_f']= pb.squeeze(ps_estimate.Xhat).T  #each column is a state vector
+io.savemat('X_f',X_f)
+#Uncomment if you use smoother otherwise it gives error
+#saving smooth state in mat format
+#X_b={}
+#X_b['var0']=pb.squeeze(ps_estimate.Xb).T
+#io.savemat('X_b',X_b)
 
 
 
