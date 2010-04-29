@@ -338,7 +338,7 @@ Since the observation equation \ref{ObservationEquation} is linear the update st
 			\mathcal X_{i,t+1}^{f-}=Q(\mathcal X_{i,t}^f,u_t) 
 		\end{equation}
 
-		calculate the predicted mean and the predicted covariance matrix
+		calculate the predicted state and the predicted covariance matrix
 		\begin{equation*}
 			\hat{\mathbf x}_{t+1}^{f-}=\sum_{i=0}^{2L} W_i^{(m)}\mathcal X_{i,t+1}^{f-} 
 		\end{equation*}
@@ -346,7 +346,7 @@ Since the observation equation \ref{ObservationEquation} is linear the update st
 			\mathbf P_{t +1}^{f-}=\sum_{i=0}^{2L} W_i^{(c)}(\mathcal X_{i,t+1}^{f-}-\hat{\mathbf x}_{t +1}^{f-})(\mathcal X_{i,t+1}^{f-}-\hat{\mathbf x}_{t +1}^{f-})^\top+\boldsymbol \Sigma_e 
 		\end{equation*}
 
-		compute the filter gain, the update mean and the update covariance matrix using the standard kalman filter formulations
+		compute the filter gain, the filtered state and the filtered covariance matrix using the standard kalman filter formulations
 		\begin{equation*}
 			\mathcal K_{t+1}=\mathbf P_{t +1}^{f-}\mathbf C ^\top(\mathbf C \mathbf P_{t +1}^{f-}\mathbf C ^\top+\boldsymbol \Sigma_v)^{-1} 
 		\end{equation*}
@@ -372,7 +372,7 @@ calculate the sigma points $\mathcal X_{i,t}^b$ using \ref{eq:sigmapoints1}-\ref
 % 		\begin{equation*}
 % 			\mathcal X_t^b=[\hat{\mathbf x}_t^f \quad \hat{\mathbf x}_t^f+\gamma\sqrt{\mathbf P_t^f} \quad \hat{\mathbf x}_t^f-\gamma\sqrt{\mathbf P_t^f}] 
 % 		\end{equation*}
-		\State compute the predicted mean, the predicted covariance matrix and the cross-covariance matrix
+		\State compute the predicted state, the predicted covariance matrix and the cross-covariance matrix
 		\begin{equation*}
 			\hat{\mathbf x}_{t+1}^{b-}=\sum_{i=0}^{2L} W_i^{(m)}\mathcal X_{i,t+1}^{b-} 
 		\end{equation*}
