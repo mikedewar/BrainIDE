@@ -97,7 +97,9 @@ Generating patient specific models allows the application of a range of techniqu
 
 The work from Schiff and Sauer \cite{schiff2008kalman} successfully demonstrated it is possible to estimate parameters \wtf{what kind of parameters?} from the WC equations. This motivates the question, what parameters are the most important? How patient specific do the assumed parameters have to be for the model to be useful? In this paper, we address both of these questions and provide a theoretical platform to perform patient-specific grey-box modelling of the human neocortex. \wtf{not sure about rhetorical questions as a narrative mechanism in general, also not sure how this paper addresses these particular questions.} \omg{Maybe the next section addresses that the connectivity is important. Needs sharpening.}
 
-\section{The Importance of Cortical Structure} Neural field models relate mean firing rates of pre-synaptic neural populations to post-synaptic mean membrane potentials. Each neural population represents a functional cortical processing unit, referred to as a column. The columnar organization of the cortex is continuous, where pyramidal cells are members of many columns. In general, cortical structure can be modeled in a physiologically plausible manner as being locally homogeneous (in short range intracortical connectivity) and heterogeneous (in long range cortico-cortical and corticothalamic connectivity) \cite{Jirsa2009} \cite{Qubbaj2007}. Locally, each column is thought be connected via symmetric short range local excitation, with surround inhibition \cite{Braitenberg1998}. For example, this structural organisation is most studied in the visual system, where the surrounding inhibition effectively tunes a cortical column to a particular receptive visual field \cite{Sullivan2006}.
+\subsection{The Importance of Cortical Structure} 
+
+Neural field models relate mean firing rates of pre-synaptic neural populations to post-synaptic mean membrane potentials. Each neural population represents a functional cortical processing unit, referred to as a column. The columnar organization of the cortex is continuous, where pyramidal cells are members of many columns. In general, cortical structure can be modeled in a physiologically plausible manner as being locally homogeneous (in short range intracortical connectivity) and heterogeneous (in long range cortico-cortical and corticothalamic connectivity) \cite{Jirsa2009} \cite{Qubbaj2007}. Locally, each column is thought be connected via symmetric short range local excitation, with surround inhibition \cite{Braitenberg1998}. For example, this structural organisation is most studied in the visual system, where the surrounding inhibition effectively tunes a cortical column to a particular receptive visual field \cite{Sullivan2006}.
 
 Recent studies using neural field models have demonstrated the theoretical implications of specific connectivity structure of the cortical columns in neural field models, where the connectivity kernel governs the bifurcation points of the system \cite{Hutt2005} and types of oscillations that can be generated \cite{Schmidt2009}. This implies that if we could estimate the connectivity structure for an individual, then we could capture patient specific neurodynamics that lead to various oscillatory states. 
 
@@ -107,7 +109,10 @@ Estimating functional cortical connectivity via EEG promises to shed light on th
 Until now, estimation of local intracortical connectivity structure has not been attempted. Recently, it has been shown that it is possible to estimate local coupling of spatiotemporal systems using techniques from control systems theory and machine learning \cite{Dewar2009}. The key development in this work was to represent the spatiotemporal system as a standard state-space model with an order independent of the number of sensors (ECoG recording electrodes in this case). In addition, the appropriate model selection tools have been developed \cite{Scerri2009} allowing for the application of this technique to neural fields. Modelling the neural dynamics within this framework has the distinct advantage over multivariate AR models, that the number of parameters to define the spatial connectivity is considerably smaller than the number of AR coefficients typically required to achieve the required model complexity. In this paper, we demonstrate for the first time how intracortical connectivity can be inferred from ECoG data, based on a variant of the Wilson and Cowan neural field model \cite{Wilson1973}. This work provides a fundamental link between the theoretical advances in neural field modelling and patient specific data.
 
 %Long range connectivity can be estimated using DTI \cite{Knock2009}, however this short range connectivity can not..
-\section{Neural Field Model}\label{NeuralModelSection} In this section, we describe a variant of the WC neural field model \cite{Wilson1973} that was used to create our intracortical connectivity estimator. This model is descriptive of a range of neurodynamics of the cortex such as evoked potentials, visual hallucinations, and epileptic behaviour. 
+\section{Neural Field Model}
+\label{NeuralModelSection} 
+
+In this section, we describe a variant of the WC neural field model \cite{Wilson1973} that was used to create our intracortical connectivity estimator. This model is descriptive of a range of neurodynamics of the cortex such as evoked potentials, visual hallucinations, and epileptic behaviour. 
 \begin{todo}
 	{Really need to add some citations here.} 
 \end{todo}
@@ -116,6 +121,8 @@ It is also capable of generating complex patterns of activity such as Turing pat
 	{Same here.} 
 \end{todo}
 The neural field model is popular due to being parsimonious yet having a strong link with the underlying physiology. 
+
+\subsection{Derivation of the Integro-difference Equation Representation}
 
 The model relates the average number of action potentials $g(\mathbf{r},t)$ arriving at position $r$ to the local post synaptic membrane voltage $v(\mathbf{r},t)$. The post-synaptic potentials generated at a neuronal population at location $\mathbf{r}$ by action potentials arriving from all other connected populations at locations $\mathbf{r}'$ can be described by 
 \begin{equation}
@@ -171,7 +178,9 @@ where $\mathbf{r}_n$ defines the location of the sensors in the field where $n=1
 	m\left(\mathbf{r}-\mathbf{r}'\right) = \exp{\left(-\frac{(\mathbf{r}-\mathbf{r}')^\top(\mathbf{r}-\mathbf{r}')}{\sigma_m^2}\right)}. 
 \end{equation}
 
-\section{Derivation of Finite Dimensional State-Space Model} In order to implement standard estimation techniques we use a decomposition of the field using a set of Gaussian basis functions defined by
+\subsection{Derivation of Finite Dimensional State-Space Model} 
+
+In order to implement standard estimation techniques we use a decomposition of the field using a set of Gaussian basis functions defined by
 \begin{equation}\label{eq:FieldBasisFunction}
 	\phi\left(\mathbf{r}-\mathbf{r}'\right) =
 \exp{\left(-\frac{(\mathbf{r}-\mathbf{r}')^\top(\mathbf{r}-\mathbf{r}')}{\sigma_{\phi}^2}\right)}. 
