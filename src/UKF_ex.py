@@ -24,7 +24,7 @@ obs_noise_covariance=parameters['obs_noise_covariance']
 Fs=parameters['Fs']
 t_end=parameters['t_end']
 #-------------field--------------------
-field_basis_width=2.5#3.6
+field_basis_width=2.0#3.6
 spacestep=1
 S=pb.linspace(-10,10,11)
 f_centers=gen_spatial_lattice(S)
