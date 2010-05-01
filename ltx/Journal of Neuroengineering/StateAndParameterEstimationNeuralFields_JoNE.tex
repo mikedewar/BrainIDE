@@ -41,11 +41,11 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-% \documentclass[twocolumn,11pt,a4paper]{article}		%<-use this for checking equation length
-\documentclass[12pt]{iopart} 
+\documentclass[twocolumn,11pt,a4paper]{article}		%<-use this for checking equation length
+% \documentclass[12pt]{iopart} 
 
 %<-comment out this for checking equations (author list too)
-\usepackage{iopams,setstack} 
+% \usepackage{iopams,setstack} 
 %<-comment out this for checking equations
 \usepackage{graphicx}
 \usepackage{algorithm, algorithmicx, algpseudocode} 
@@ -56,6 +56,7 @@
 % \usepackage{anysize}							%<-use this for checking equation length
 % \marginsize{1.7cm}{1.5cm}{0.3cm}{0.8cm}			%<-use this for checking equation length
 % \setlength{\columnsep}{0.5cm}					%<-use this for checking equation length
+\usepackage{amsmath}
 \usepackage{amssymb,amsfonts} 			%<-use this for checking equation length
 \newcommand{\todo}[1]{\textsf{\emph{\textbf{\textcolor{blue}{#1}}}}} 
 \newcommand{\wtf}[1]{\textsf{\emph{\textbf{\textcolor{red}{#1}}}}} 
@@ -65,9 +66,9 @@
 
 \title[State and Parameter Estimation for Spatio-Temporal Neural Fields]{State and Parameter Estimation for Spatio-Temporal Neural Fields}
 
-\author{Dean R. Freestone$^1$, Parham Aram$^2$, Michael Dewar$^3$, Kenneth Scerri$^4$, David B. Grayden$^1$, and Visakan Kadirkamanathan$^2$}
-
-\address{$^1$ Department of Electrical and Electronic Engineering, University of Melbourne, Melbourne, Vic, 3010 Australia} \address{$^2$ Department of Automatic Control and Systems Engineering, University of Sheffield, Mappin Street, Sheffield, S1 3JD, UK} \address{$^3$ Department of Applied Physics and Applied Mathematics, Columbia University, US} \address{$^4$ Ken's} \ead{dfreestone@bionicear.org} 
+% \author{Dean R. Freestone$^1$, Parham Aram$^2$, Michael Dewar$^3$, Kenneth Scerri$^4$, David B. Grayden$^1$, and Visakan Kadirkamanathan$^2$}
+% 
+% \address{$^1$ Department of Electrical and Electronic Engineering, University of Melbourne, Melbourne, Vic, 3010 Australia} \address{$^2$ Department of Automatic Control and Systems Engineering, University of Sheffield, Mappin Street, Sheffield, S1 3JD, UK} \address{$^3$ Department of Applied Physics and Applied Mathematics, Columbia University, US} \address{$^4$ Ken's} \ead{dfreestone@bionicear.org} 
 \begin{abstract}
 	Will do the abstract towards the end. 
 \end{abstract}
@@ -437,8 +438,6 @@ The sensors were spaced in a regular square grid, where the number of sensors wa
 \subsection{Spatial Frequency Analysis} In accordance with Section~\ref{SpectralAnalysisSection}, the spatial frequency of the field was used to confirm the spacing and width of the sensors was adequate to capture the significant dynamics of the field. Figure~\ref{} shows the spatial frequency of the field. The cut-off frequency, $\nu_c$, was taken to be \omg{??}, which corresponds to the \omg{??-3~dB} from the peak power. From equation~\ref{eq:MinimumSensorDistance}, this yielded a minimum sensor separation of \omg{??}. This confirms our separation was enough to prevent problems associated with aliasing.
 
 The spatial frequency of the observations is shown in figure~\ref{}. The peak power of the spatial frequency of the observations was approximately $30$~dB. The cut-off frequency was taken to correspond to \omg{??} of the peak pwoer which was approximately $15$~dB. This provided a conservative The oversampling parameter $\rho=2$. From equation~\ref{}, this gives a minimum distance between basis functions of $2.7$ to satisfy Shannon's sampling criterion. \todo{maybe from Parham's derivation... From equation~\ref{} the width was calculated to be... or...}. The width of the basis functions was chosen such that they had sufficient overlap to represent the dynamic field.
-
-% \psfragfig{./Graph/FreqAnalysis}
 
 \begin{figure*}
 	\begin{center}
