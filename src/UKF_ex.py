@@ -51,7 +51,7 @@ act_func=ActivationFunction(threshold,nu,beta)
 #----------observations--------------------------
 l1=[circle(cent,2*pb.sqrt(pb.log(2),)*pb.sqrt(Sensorwidth)/2,'b') for cent in obs_locns]
 l2=[circle(cent,2*pb.sqrt(pb.log(2),)*pb.sqrt(f_widths[0][0,0])/2,'r') for cent in f_centers]
-pb.legend((l1, l2), ('r:field basis functions', 'b:Sensors'), loc='best')
+# pb.legend((l1, l2), ('r:field basis functions', 'b:Sensors'), loc='best')
 pb.axis([-field_width/2.,field_width/2.,-field_width/2,field_width/2])
 pb.show()
 ny=len(obs_locns)
@@ -74,7 +74,9 @@ Y=quickio.read('Y')
 Y=Y['var0']
 t0=time.time()
 ps_estimate=para_state_estimation(model)
-ps_estimate.itr_est(Y[4:],5)
+UKF_iterations = 10;
+start_sample = 4;
+ps_estimate.itr_est(Y[start_sample:],UKF_iterations)
 print 'elapsed time is', time.time()-t0
 #Saving Kernel and 1/synaptic time constant in mat format
 alpha_mat={}
