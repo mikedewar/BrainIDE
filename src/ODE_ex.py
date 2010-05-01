@@ -54,7 +54,7 @@ print observation_locs_mm
 
 ny= (len(observation_locs_mm))**2;
 
-Sensorwidth =0.8**2 #1.2**2 #equals to 1.5mm
+Sensorwidth =0.9**2 #1.2**2 #equals to 1.5mm
 S_obs= observation_locs_mm
 
 obs_locns=gen_spatial_lattice(S_obs)

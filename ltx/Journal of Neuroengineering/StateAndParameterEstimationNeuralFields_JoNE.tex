@@ -100,9 +100,22 @@ Currently available epileptic seizure  control devices (i.e., the vagal nerve st
 
 This paper extends the work of Schiff and Sauer~\cite{schiff2008kalman} by establishing a framework for estimating the state of the WC equations for higher dimensional systems utilising a systematic model reduction procedure. In addition, a method is presented for estimating the the connectivity structure and the synaptic time constant. Until now, estimation of local intracortical connectivity structure has not been attempted. Recently, it has been shown that it is possible to estimate local coupling of spatiotemporal systems using techniques from control systems theory and machine learning \cite{Dewar2009}. The key development in that work was to represent the spatiotemporal system as a standard state-space model with an order independent of the number of observations (recording electrodes in this case). In addition, the appropriate model selection tools have been developed \cite{Scerri2009} allowing for the application of the technique to neural fields. Modelling the neural dynamics within this framework has the distinct advantage over multivariate auto-regressive (AR) models, that the number of parameters to define the spatial connectivity is considerably smaller than the number of AR coefficients typically required to achieve the required model complexity. In this paper, we demonstrate for the first time how intracortical connectivity can be inferred from data, based on a variant of the Wilson and Cowan neural field model \cite{Wilson1973}. This work provides a fundamental link between the theoretical advances in neural field modelling and patient specific data.
 
-The paper proceeds by first deriving the continuum neural field equations in Section~\ref{NeuralModelSection}. Next, a reduced finite dimensional neural field model is derived in Section~\ref{ReducedModelSection}. The model is reduced by approximating the neural field using a set of continuous basis functions, weighted by a finite dimensional state vector. Section~\ref{SpectralAnalysisSection} then establishes conditions using spatial frequency analysis for both sensor and basis function spacing and geometry, such that the dominate dynamics of the neural field can be represented by the reduced model. Following this, the state and parameter estimation procedure is described in Section~\ref{StateAndParameterEstimationSection}. The results for the spatial frequency analysis and parameter estimation are then presented in Section~\ref{ResultsSection}. The implications and limitations of this framework are discussed in Section~\ref{DiscussionSection} along with planned future developments. Finally, we provide concluding remarks in Section~\ref{ConclusionSection}.
+\subsection{The Importance of Cortical Structure} 
 
-\section{Neural Field Model}\label{NeuralModelSection} In this section, we describe a variant of the WC neural field model \cite{Wilson1973} that was used to create our intracortical connectivity estimator. Neural field models relate mean firing rates of pre-synaptic neural populations to mean post-synaptic membrane potentials. They are popular due to being parsimonious yet having a strong link with the underlying physiology. Each neural population represents a functional cortical processing unit, such as a column. The columnar organisation of the cortex is continuous, where pyramidal cells are members of many columns. In general, cortical structure can be modelled in a physiologically plausible manner as being locally homogeneous (in short range intracortical connectivity) and heterogeneous (in long range cortico-cortical and corticothalamic connectivity)~\cite{Jirsa2009}~\cite{Qubbaj2007}. Locally, each column is thought be connected via symmetric short range local excitation, with surround inhibition \cite{Braitenberg1998}. For example, this structural organisation is most studied in the visual system, where the surrounding inhibition effectively tunes a cortical column to a particular receptive visual field~\cite{Sullivan2006}. Neural field models are descriptive of a range of neurodynamics of the cortex such as evoked potentials, visual hallucinations, and epileptic behaviour. 
+Neural field models relate mean firing rates of pre-synaptic neural populations to post-synaptic mean membrane potentials. Each neural population represents a functional cortical processing unit, referred to as a column. The columnar organization of the cortex is continuous, where pyramidal cells are members of many columns. In general, cortical structure can be modeled in a physiologically plausible manner as being locally homogeneous (in short range intracortical connectivity) and heterogeneous (in long range cortico-cortical and corticothalamic connectivity) \cite{Jirsa2009} \cite{Qubbaj2007}. Locally, each column is thought be connected via symmetric short range local excitation, with surround inhibition \cite{Braitenberg1998}. For example, this structural organisation is most studied in the visual system, where the surrounding inhibition effectively tunes a cortical column to a particular receptive visual field \cite{Sullivan2006}.
+
+Recent studies using neural field models have demonstrated the theoretical implications of specific connectivity structure of the cortical columns in neural field models, where the connectivity kernel governs the bifurcation points of the system \cite{Hutt2005} and types of oscillations that can be generated \cite{Schmidt2009}. This implies that if we could estimate the connectivity structure for an individual, then we could capture patient specific neurodynamics that lead to various oscillatory states. 
+
+Estimating functional cortical connectivity via EEG promises to shed light on the hierarchy of brain regions that are involved in specific tasks, motivating the use of techniques like DCM. Other comparable methods are based on auto-regressive (AR) modelling of the EEG, MEG, or fMRI times series \todo{[refs!]}. Studies have concentrated on finding functional connectivity patterns using information contained in the AR coefficients using techniques like Granger causality \cite{Hesse2003}, the direct transfer function \cite{Kaminski1991}, and partial directed coherence \cite{Sameshima1999}. Again, like the DCM approach, these methods estimate long range connectivity patterns that does not provide a clear relationship between the continuum field models and data.
+
+%Analysis of the connectivity estimates provided from these approaches has involved graph theoretical techniques (small worldedness).
+Until now, estimation of local intracortical connectivity structure has not been attempted. Recently, it has been shown that it is possible to estimate local coupling of spatiotemporal systems using techniques from control systems theory and machine learning \cite{Dewar2009}. The key development in this work was to represent the spatiotemporal system as a standard state-space model with an order independent of the number of sensors (ECoG recording electrodes in this case). In addition, the appropriate model selection tools have been developed \cite{Scerri2009} allowing for the application of this technique to neural fields. Modelling the neural dynamics within this framework has the distinct advantage over multivariate AR models, that the number of parameters to define the spatial connectivity is considerably smaller than the number of AR coefficients typically required to achieve the required model complexity. In this paper, we demonstrate for the first time how intracortical connectivity can be inferred from ECoG data, based on a variant of the Wilson and Cowan neural field model \cite{Wilson1973}. This work provides a fundamental link between the theoretical advances in neural field modelling and patient specific data.
+
+%Long range connectivity can be estimated using DTI \cite{Knock2009}, however this short range connectivity can not..
+\section{Neural Field Model}
+\label{NeuralModelSection} 
+
+In this section, we describe a variant of the WC neural field model \cite{Wilson1973} that was used to create our intracortical connectivity estimator. This model is descriptive of a range of neurodynamics of the cortex such as evoked potentials, visual hallucinations, and epileptic behaviour. 
 \begin{todo}
 	{Really need to add some citations here.} 
 \end{todo}
@@ -111,7 +124,9 @@ It is also capable of generating complex patterns of activity such as Turing pat
 	{Same here.} 
 \end{todo}
 
-The model relates the average number of action potentials $g(\mathbf{r},t)$ arriving at position $r$ to the local post-synaptic membrane voltage $v(\mathbf{r},t)$. The post-synaptic potentials generated at a neuronal population at location $\mathbf{r}$ by action potentials arriving from all other connected populations at locations $\mathbf{r}'$ can be described by 
+\subsection{Derivation of the Integro-difference Equation Representation}
+
+The model relates the average number of action potentials $g(\mathbf{r},t)$ arriving at position $r$ to the local post synaptic membrane voltage $v(\mathbf{r},t)$. The post-synaptic potentials generated at a neuronal population at location $\mathbf{r}$ by action potentials arriving from all other connected populations at locations $\mathbf{r}'$ can be described by 
 \begin{equation}
 	\label{SpikesToPotential} v\left( {\mathbf{r},t} \right) = \int_{ - \infty }^t {h\left( {t - t'} \right)g\left( {\mathbf{r},t'} \right)dt'}. 
 \end{equation}
@@ -166,7 +181,9 @@ where $\mathbf{r}_n$ defines the location of the sensors in the field where $n=1
 	m\left(\mathbf{r}-\mathbf{r}'\right) = \exp{\left(-\frac{(\mathbf{r}-\mathbf{r}')^\top(\mathbf{r}-\mathbf{r}')}{\sigma_m^2}\right)}. 
 \end{equation}
 
-\section{Derivation of Finite Dimensional State-Space Model}\label{ReducedModelSection} In order to implement standard estimation techniques we use a decomposition of the field using a set of Gaussian basis functions defined by
+\subsection{Derivation of Finite Dimensional State-Space Model} 
+
+In order to implement standard estimation techniques we use a decomposition of the field using a set of Gaussian basis functions defined by
 \begin{equation}\label{eq:FieldBasisFunction}
 	\phi\left(\mathbf{r}-\mathbf{r}'\right) =
 \exp{\left(-\frac{(\mathbf{r}-\mathbf{r}')^\top(\mathbf{r}-\mathbf{r}')}{\sigma_{\phi}^2}\right)}. 
@@ -275,18 +292,18 @@ The dynamic field must be spatially oversampled by using a larger number of sens
 % Due to the high dimensionality of the brain and the current electrode systems, we can not expect to have more sensors than basis functions.
 \section{State and Parameter Estimation}\label{StateAndParameterEstimationSection} In this section we describe the procedure for estimating the states that scale the field basis functions, $\mathbf{x}_t$, the connectivity kernel parameters, $\boldsymbol \theta$, and the synaptic time constant, $\xi$. The estimation process consists of a two part iterative algorithm, consisting of the state estimation step followed by the parameter estimation step at each time instance. 
 
-The state estimation technique utilises the Unscented Rauch Tung Striebel Smoother (URTSS)~\cite{Sarkka2010}. The URTSS uses the Unscented Kalman Filter (UKF)~\cite{Julier1997} in the forward iteration to estimate posterior states, $\hat{\mathbf x}_t^{f}$, followed by a backward path to compute the smoothed state estimates, $\hat{\mathbf x}_t^{b}$. An approximation of the state density is made by propagating the so-called sigma points through the state-space model. The sigma points describe the mean and covariance of the state estimate and are calculated using the unscented transform. The sigma vectors $\mathcal X_i$ are calculated by 
-\begin{equation}
+The state estimation technique utilises the Unscented Rauch Tung Striebel Smoother (URTSS)~\cite{Sarkka2010}. The URTSS uses the Unscented Kalman Filter (UKF)~\cite{Julier1997,Merwe2003} in the forward iteration to estimate posterior states, $\hat{\mathbf x}_t^{f}$, followed by a backward path to compute the smoothed state estimates, $\hat{\mathbf x}_t^{b}$. An approximation of the state density is made by propagating the so-called sigma points through the state-space model. The sigma points describe the mean and covariance of the state estimate and are calculated using the unscented transform. The sigma vectors $\mathcal X_i$ are calculated by 
+\begin{equation}\label{eq:sigmapoints1}
 	\mathcal X_{0}=\bar x 
 \end{equation}
 \begin{equation}
 	\mathcal X_{i}=\bar x+(\sqrt{( L + \lambda)\mathbf P_x})_i \quad i=1, \dots, L 
 \end{equation}
-\begin{equation}
+\begin{equation}\label{eq:sigmapoints2}
 	\mathcal X_{i}=\bar x-(\sqrt{( L + \lambda)\mathbf P_x})_{i- L} \quad i= L+1, \dots, 2 L 
 \end{equation}
-where $L$ is the dimension of the state space and the number of sigma points is $2L+1$. The scaling parameter $\lambda$ is defined as 
-\begin{equation}
+where $(\sqrt{( L + \lambda)\mathbf P_x})_i$ is the ith column of the weighted matrix squre root of  $\mathbf P_x$ and  $L$ is the dimension of the state space. The total number of sigma points is $2L+1$. The scaling parameter $\lambda$ is defined as 
+\begin{equation}\label{eq:sigmapoints3}
 	\lambda=\alpha^2( L+\kappa)- L 
 \end{equation}
 where $\alpha$, $\beta$ and $\kappa$ are constants (see ~\cite{Haykin2001} for more details). It should be noted that $\bar x$ represents either $\hat{\mathbf x}_t^{f}$ or $\hat{\mathbf x}_t^{b}$ and $\mathbf{P}_x$ represents the corresponding covariance matrix from the filtering or smoothing respectively. The sigma vectors are propagated through the system equations and weighted to form the posterior mean and covariance. The weights are calculated by 
@@ -301,7 +318,7 @@ where $\alpha$, $\beta$ and $\kappa$ are constants (see ~\cite{Haykin2001} for m
 \end{equation}
 
 % For explanation of $\lambda, \quad \alpha\quad\text{and}\quad\beta$ see \cite{wan2000unscented,Haykin2001}. $ (\sqrt{(\mathbf L + \lambda)\mathbf P_x})_i$ is the ith column of the matrix square root (e.g., lower-triangular Cholesky factorization). These sigma points propogated through the nonlinear function
-The update step equations are the same as the standard Kalman filtering formulations. The state estimates from the forward filtering are used to form a new set of sigma points for the smoother, as described above. However, the predicted cross-covariance of the states needs to be calculated. A summary of the URTSS procedure is given in algorithm~\ref{UKFAlgorithm}. 
+Since the observation equation \ref{ObservationEquation} is linear the update step equations are simplified to the standard Kalman filtering formulations. The state estimates from the forward filtering are used to form a new set of sigma points for the smoother, as described above. However, the predicted cross-covariance of the states needs to be calculated. A summary of the URTSS procedure is given in algorithm~\ref{UKFAlgorithm}. It should be noted that as the disturbance, $e_t\left(\mathbf{r}\right)$ and the measurement noise $ \boldsymbol{\varepsilon}_t$ are additive the additive form of the URTS can be used. This reduces the dimension and the number of sigma points used in the algorithm.
 \begin{algorithm}
 	\caption{The Unscented Kalman Filter}\label{UKFAlgorithm} 
 	\begin{algorithmic}[1] 
@@ -309,20 +326,27 @@ The update step equations are the same as the standard Kalman filtering formulat
 		\begin{equation*}
 			\hat{\mathbf x}_0, \mathbf P_0 
 		\end{equation*}
-		\State Forward iteration For $t \in \left\lbrace 0,\cdots, T\right\rbrace $, 
-		\begin{equation*}
-			\mathcal X_t^f=[\hat{\mathbf x}_t^f \quad \hat{\mathbf x}_t^f+\gamma\sqrt{\mathbf P_t^f} \quad \hat{\mathbf x}_t^{f}-\gamma\sqrt{\mathbf P_t^f}] 
-		\end{equation*}
-		Propagate the sigma points through the state equation 
+		\State Forward iteration For $t \in \left\lbrace 0,\cdots, T\right\rbrace $,
+
+		calculate the sigma points $\mathcal X_{i,t}^f$ using \ref{eq:sigmapoints1}-\ref{eq:sigmapoints3} and propogate them through the state equation
+% 		\begin{equation*}
+% 			\mathcal X_t^f=[\hat{\mathbf x}_t^f \quad \hat{\mathbf x}_t^f+\gamma\sqrt{\mathbf P_t^f} \quad \hat{\mathbf x}_t^{f}-\gamma\sqrt{\mathbf P_t^f}] 
+% 		\end{equation*}
+
+% 		propagate the sigma points through the state equation 
 		\begin{equation}
-			\mathcal X_{i,t+1}^{f-}=Q(\mathcal X_t^f,u_t) 
+			\mathcal X_{i,t+1}^{f-}=Q(\mathcal X_{i,t}^f,u_t) 
 		\end{equation}
+
+		calculate the predicted state and the predicted covariance matrix
 		\begin{equation*}
 			\hat{\mathbf x}_{t+1}^{f-}=\sum_{i=0}^{2L} W_i^{(m)}\mathcal X_{i,t+1}^{f-} 
 		\end{equation*}
 		\begin{equation*}
 			\mathbf P_{t +1}^{f-}=\sum_{i=0}^{2L} W_i^{(c)}(\mathcal X_{i,t+1}^{f-}-\hat{\mathbf x}_{t +1}^{f-})(\mathcal X_{i,t+1}^{f-}-\hat{\mathbf x}_{t +1}^{f-})^\top+\boldsymbol \Sigma_e 
 		\end{equation*}
+
+		compute the filter gain, the filtered state and the filtered covariance matrix using the standard kalman filter formulations
 		\begin{equation*}
 			\mathcal K_{t+1}=\mathbf P_{t +1}^{f-}\mathbf C ^\top(\mathbf C \mathbf P_{t +1}^{f-}\mathbf C ^\top+\boldsymbol \Sigma_v)^{-1} 
 		\end{equation*}
@@ -340,10 +364,15 @@ The update step equations are the same as the standard Kalman filtering formulat
 			\hat{\mathbf x}^b_T= \hat{\mathbf x}^f_T 
 		\end{equation}
 		\State Backward iteration For $t \in \left\lbrace T-1, \cdots, 0 \right\rbrace $ 
-		\begin{equation*}
-			\mathcal X_t^b=[\hat{\mathbf x}_t^f \quad \hat{\mathbf x}_t^f+\gamma\sqrt{\mathbf P_t^f} \quad \hat{\mathbf x}_t^f-\gamma\sqrt{\mathbf P_t^f}] 
-		\end{equation*}
-		\State Calculate sigma points for the smoother $\mathcal X_{i,t+1}^{b-}$ and compute 
+
+calculate the sigma points $\mathcal X_{i,t}^b$ using \ref{eq:sigmapoints1}-\ref{eq:sigmapoints3} and propogate them through the state equation
+		\begin{equation}
+			\mathcal X_{i,t+1}^{b-}=Q(\mathcal X_{i,t}^b,u_t) 
+		\end{equation}
+% 		\begin{equation*}
+% 			\mathcal X_t^b=[\hat{\mathbf x}_t^f \quad \hat{\mathbf x}_t^f+\gamma\sqrt{\mathbf P_t^f} \quad \hat{\mathbf x}_t^f-\gamma\sqrt{\mathbf P_t^f}] 
+% 		\end{equation*}
+		\State compute the predicted state, the predicted covariance matrix and the cross-covariance matrix
 		\begin{equation*}
 			\hat{\mathbf x}_{t+1}^{b-}=\sum_{i=0}^{2L} W_i^{(m)}\mathcal X_{i,t+1}^{b-} 
 		\end{equation*}
@@ -387,11 +416,21 @@ Alternatives to the UKF are the Extended Kalman Filter (EKF)~\cite{Haykin2001} a
 \end{center}
 
 The sensors were spaced in a regular square grid, where the number of sensors was 100, sensor width $\sigma^2_m$ was 1.44 which equals $2$~mm full width at half maximum, with spacing $\Delta_y$ equal to $2.22$~mm. This arrangement modelled the recording as having some cross talk, which is typical from neurophysiological recordings. Note, sensor design to guarantee representation of the field can be achieved using the frequency analysis from section~\ref{SpectralAnalysisSection} given access to the true field. \omg{From frequency analysis the separation is $2.77$, with $\rho = 2$ (note same as basis function).} 
-\begin{figure}\label{fig:experimental design}
-	\begin{center}
-		\includegraphics[scale=0.6]{./Graph/ExperimentFigure.pdf} 
-	\end{center}
-	\caption{Example of experimental design and model output. \textbf{A}. Example of the neural field with sensors. The centres of the sensors are shown by crossed and the sensor widths ($1/2$ height of Gaussian) are shown by the circles. \textbf{B} Example of data generated by the model through the observations. \textbf{C}. Power spectral density of the data generated by an observation showing the typical $1/f$ characteristic of iEEG.} \label{fig:FrequencyAnalysis} 
+% \begin{figure}\label{fig:experimental design}
+% 	\begin{center}
+% 		\includegraphics[scale=0.6]{./Graph/ExperimentFigure.pdf} 
+% 	\end{center}
+% 	\caption{Example of experimental design and model output. \textbf{A}. Example of the neural field with sensors. The centres of the sensors are shown by crossed and the sensor widths ($1/2$ height of Gaussian) are shown by the circles. \textbf{B} Example of data generated by the model through the observations. \textbf{C}. Power spectral density of the data generated by an observation showing the typical $1/f$ characteristic of iEEG.} \label{fig:FrequencyAnalysis} 
+% \end{figure}
+\begin{figure}[!hb] 
+% \renewcommand*{\thesubfigure}{}
+\centering
+\subfigure[][]{\includegraphics[width=3in]{./Graph/ExperimentFigurePy.pdf}}\\
+% \hspace{2.5mm}
+\subfigure[][]{\includegraphics[width=3in]{./Graph/ExperimentFigureEEGPy.pdf}}\\
+% \hspace{2.5mm}
+\subfigure[][]{\includegraphics[width=3in]{./Graph/ExperimentFigurePSDPy.pdf}}
+\caption{Example of experimental design and model output. \textbf{A}. Example of the neural field with sensors. The centres of the sensors are shown by crossed and the sensor widths ($1/2$ height of Gaussian) are shown by the circles. \textbf{B} Example of data generated by the model through the observations. \textbf{C}. Power spectral density of the data generated by an observation showing the typical $1/f$ characteristic of iEEG.} \label{fig:FrequencyAnalysis} 
 \end{figure}
 
 \subsection{Spatial Frequency Analysis} In accordance with Section~\ref{SpectralAnalysisSection}, the spatial frequency of the field was used to confirm the spacing and width of the sensors was adequate to capture the significant dynamics of the field. Figure~\ref{} shows the spatial frequency of the field. The cut-off frequency, $\nu_c$, was taken to be \omg{??}, which corresponds to the \omg{??-3~dB} from the peak power. From equation~\ref{eq:MinimumSensorDistance}, this yielded a minimum sensor separation of \omg{??}. This confirms our separation was enough to prevent problems associated with aliasing.
