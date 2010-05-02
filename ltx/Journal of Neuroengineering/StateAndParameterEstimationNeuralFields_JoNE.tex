@@ -211,13 +211,11 @@ and manipulating the model (see~\ref{Simplifying Decomposition}) we isolate the 
 	\label{Homogeneous SS Model} \mathbf{x}_{t+1} &=& q(\mathbf{x}_t)\boldsymbol{\theta} - \xi\mathbf{x}_t + k\left(u_t\left(\mathbf{r}\right)\right) + \mathbf{e}_t \\
 	&=& Q\left(\mathbf{x}_t,u_t(\mathbf{r})\right) + \mathbf{e}_t 
 \end{eqnarray}
-\begin{eqnarray}\label{eq:QMatrix}
-	\lefteqn {\mathbf{Q}(\mathbf{x}_t)=} \\
-&&\boldsymbol{\Gamma}^{ - 1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r}) \int_\Omega {f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t)\boldsymbol{\psi}^{\top} \left(\mathbf{r}-\mathbf{r}'\right)d\mathbf{r}'} d\mathbf{r}}\nonumber
-\end{eqnarray}
+where
 \begin{eqnarray}
+Q\left(\mathbf{x}_t,u_t(\mathbf{r})\right)&=& q(\mathbf{x}_t)\boldsymbol{\theta} - \xi\mathbf{x}_t + k\left(u_t\left(\mathbf{r}\right)\right)\label{eq:QmatrixForSigmapoints}\\
 	k(u_t(\mathbf{r})) &=& \boldsymbol{\Gamma}^{-1}T_s \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) u_t\left(\mathbf{r}\right)d\mathbf{r}} \\
-	\mathbf{e}_t &=& \boldsymbol{\Gamma}^{-1}\int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})d\mathbf{r}}, 
+	\mathbf{e}_t &=& \label{eq:Reducednoiseterm} \boldsymbol{\Gamma}^{-1}\int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})d\mathbf{r}}, 
 \end{eqnarray}
 where $\mathbf{e}_t$ is a zero-mean normal white noise term with the covariance (see~\ref{ColoredNoise}) 
 \begin{equation}
@@ -321,14 +319,20 @@ where $\alpha$, $\beta$ and $\kappa$ are constants (see ~\cite{Haykin2001} for m
 % For explanation of $\lambda, \quad \alpha\quad\text{and}\quad\beta$ see \cite{wan2000unscented,Haykin2001}. $ (\sqrt{(\mathbf L + \lambda)\mathbf P_x})_i$ is the ith column of the matrix square root (e.g., lower-triangular Cholesky factorization). These sigma points propogated through the nonlinear function
 Since the observation equation \ref{ObservationEquation} is linear the update step equations are simplified to the standard Kalman filtering formulations. The state estimates from the forward filtering are used to form a new set of sigma points for the smoother, as described above. However, the predicted cross-covariance of the states needs to be calculated. A summary of the URTSS procedure is given in algorithm~\ref{UKFAlgorithm}. It should be noted that as the disturbance, $e_t\left(\mathbf{r}\right)$ and the measurement noise $ \boldsymbol{\varepsilon}_t$ are additive the additive form of the URTS can be used. This reduces the dimension and the number of sigma points used in the algorithm.
 \begin{algorithm}
+	\begin{small}
 	\caption{The Unscented RTS Smoother}\label{UKFAlgorithm} 
 	\begin{algorithmic}[1] 
-		\State Forward initialisation \quad $\hat{\mathbf x}_0, \mathbf P_0 $
+		\State Forward initialisation 
+		\begin{equation*}
+		 \hat{\mathbf x}_0, \mathbf P_0 
+		\end{equation*}
 		\State Forward iteration: for $t \in \left\lbrace 0,\cdots, T\right\rbrace $,
-		calculate the sigma points $\mathcal X_{i,t}^f$ using \ref{eq:sigmapoints1}-\ref{eq:sigmapoints3} and propogate them through the state equation
+		calculate the sigma points $\mathcal X_{i,t}^f$ using \ref{eq:sigmapoints1}-\ref{eq:sigmapoints3} and propogate them through equation \ref{eq:QmatrixForSigmapoints}
+% 		\begin{small}
 		\begin{equation*}
 			\mathcal X_{i,t+1}^{f-}=Q(\mathcal X_{i,t}^f,u_t) 
 		\end{equation*}
+% 		\end{small}
 		calculate the predicted state and the predicted covariance matrix
 		\begin{equation*}
 			\hat{\mathbf x}_{t+1}^{f-}=\sum_{i=0}^{2L} W_i^{(m)}\mathcal X_{i,t+1}^{f-} 
@@ -350,11 +354,11 @@ Since the observation equation \ref{ObservationEquation} is linear the update st
 		\begin{equation*}
 			\mathbf P_T^b= \mathbf P_T^f, \quad \hat{\mathbf x}^b_T= \hat{\mathbf x}^f_T 
 		\end{equation*}
-		\State Backward iteration: for $t \in \left\lbrace T-1, \cdots, 0 \right\rbrace $ calculate the sigma points $\mathcal X_{i,t}^b$ using \ref{eq:sigmapoints1}-\ref{eq:sigmapoints3} and propogate them through the state equation
+		\State Backward iteration: for $t \in \left\lbrace T-1, \cdots, 0 \right\rbrace $ calculate the sigma points $\mathcal X_{i,t}^b$ and propogate them through equation \ref{eq:QmatrixForSigmapoints}
 		\begin{equation*}
 			\mathcal X_{i,t+1}^{b-}=Q(\mathcal X_{i,t}^b,u_t) 
 		\end{equation*}
-		\State compute the predicted state, the predicted covariance matrix and the cross-covariance matrix
+		 compute the predicted state, the predicted covariance matrix and the cross-covariance matrix
 		\begin{equation*}
 			\hat{\mathbf x}_{t+1}^{b-}=\sum_{i=0}^{2L} W_i^{(m)}\mathcal X_{i,t+1}^{b-} 
 		\end{equation*}
@@ -364,7 +368,7 @@ Since the observation equation \ref{ObservationEquation} is linear the update st
 		\begin{equation*}
 			\mathbf M_{t +1}=\sum_{i=0}^{2L} W_i^{(c)}(\mathcal X_{i,t}^{b-}-\hat{\mathbf x}_{t}^{f})(\mathcal X_{i,t+1}^{b-}-\hat{\mathbf x}_{t+1}^{f})^\top 
 		\end{equation*}
-		\State Compute the smoother gain, the smoothed state and the smoothed covariance matrix
+		 Compute the smoother gain, the smoothed state and the smoothed covariance matrix
 		\begin{equation*}
 			\mathbf S_t=\mathbf M_{t +1}\left[ \mathbf P_{t +1}^{b-}\right] ^{-1} 
 		\end{equation*}
@@ -375,6 +379,7 @@ Since the observation equation \ref{ObservationEquation} is linear the update st
 			\mathbf P_{t}^{b}=\mathbf P_{t}^{f}+\mathbf S_t\left[\mathbf P_{t+1}^{b}-\mathbf P_{t+1}^{b-} \right]\mathbf S_t^\top 
 		\end{equation*}
 	\end{algorithmic}
+\end{small}
 \end{algorithm}
 
 Although the system is nonlinear, the parameters of the system are linear with respect to the state. This is exploited by our procedure where the parameter estimation utilises a least squares (LS) method that minimises the sum of the squared errors (of a predicted state update) with each new state estimate (see~\ref{LeastSquaresAppendix}).
@@ -408,11 +413,11 @@ The sensors were spaced in a regular square grid, where the number of sensors wa
 \begin{figure}[!hb] 
 % \renewcommand*{\thesubfigure}{}
 \centering
-\subfigure{\includegraphics[width=3in]{./Graph/ExperimentFigurePy.pdf}}\\
+\subfigure{\includegraphics[width=2in]{./Graph/ExperimentFigurePy.pdf}}\\
 % \hspace{2.5mm}
-\subfigure{\includegraphics[width=3in]{./Graph/ExperimentFigureEEGPy.pdf}}\\
+\subfigure{\includegraphics[width=2in]{./Graph/ExperimentFigureEEGPy.pdf}}\\
 % \hspace{2.5mm}
-\subfigure{\includegraphics[width=3in]{./Graph/ExperimentFigurePSDPy.pdf}}
+\subfigure{\includegraphics[width=2in]{./Graph/ExperimentFigurePSDPy.pdf}}
 \caption{Example of experimental design and model output. \textbf{A}. Example of the neural field with sensors. The centres of the sensors are shown by crossed and the sensor widths ($1/2$ height of Gaussian) are shown by the circles. \textbf{B} Example of data generated by the model through the observations. \textbf{C}. Power spectral density of the data generated by an observation showing the typical $1/f$ characteristic of iEEG.} \label{fig:FrequencyAnalysis} 
 \end{figure}
 
@@ -479,7 +484,7 @@ where $e_t(\mathbf{r}_{i,j}) \sim \mathcal{N}\left(0,\Sigma\right)$. We have use
 &+&\int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) e_t\left(\mathbf{r}\right)d\mathbf{r}}. 
 \end{eqnarray}
 Substituting Eq.~\ref{DefGamma} into Eq.~\ref{StartofReduction} and cross-multiplying by $\boldsymbol{\Gamma}^{-1}$ gives 
-\begin{eqnarray}
+\begin{eqnarray}\label{eq:ReducedForm}
 	 \lefteqn{\mathbf{x}_{t+1} \nonumber= T_s\boldsymbol{\Gamma}^{ - 1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r}) \int_\Omega {f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}')d\mathbf{r}'} d\mathbf{r}} \boldsymbol{\theta}} \nonumber\\
 &-&\xi\mathbf{x}_t+\boldsymbol{\Gamma}^{-1}T_s\int_\Omega{\boldsymbol{\phi}(\mathbf{r}) u_t(\mathbf{r})d\mathbf{r}}\nonumber+\boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})d\mathbf{r}}.\\ 
 \end{eqnarray}
@@ -503,46 +508,53 @@ Substituting Eq.~\ref{DefGamma} into Eq.~\ref{StartofReduction} and cross-multip
 \end{eqnarray}
 The covariance of $\mathbf{e}_t$ is 
 \begin{eqnarray}
-	\mathbf{\Sigma}_e&=&\mathbf{\Gamma}^{-1}\mathbf E[\int_{\Omega}\boldsymbol{\phi}\left(\mathbf{r}\right)e_t\left(\mathbf{r}\right)d\mathbf{r} \int_{\Omega}\boldsymbol{\phi}\left(\mathbf{r}'\right)^{\top} e_t\left(\mathbf{r}'\right)d\mathbf{r}']\mathbf{\Gamma}^{- \top} \nonumber \\
-	&=&\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega} \boldsymbol{\phi}\left(\mathbf{r}\right) \mathbf E[e_t\left(\mathbf{r}\right)e_t\left(\mathbf{r}'\right)]\boldsymbol{\phi}\left(\mathbf{r}'\right)^{\top}d\mathbf{r}' d\mathbf r\mathbf{\Gamma}^{- \top} \nonumber\\
-	&=&\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega}\boldsymbol{\phi}\left(\mathbf r\right) \gamma\left(\mathbf r- \mathbf r' \right)\boldsymbol{\phi}\left(\mathbf r'\right)^{\top}d\mathbf r' d\mathbf r\mathbf{\Gamma}^{- \top} 
+	\lefteqn{\mathbf{\Sigma}_e} \nonumber \\ 
+&=&\mathbf{\Gamma}^{-1}\mathbf E[\int_{\Omega}\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})d\mathbf{r} \int_{\Omega}\boldsymbol{\phi}^{\top}(\mathbf{r}') e_t(\mathbf{r}')d\mathbf{r}']\mathbf{\Gamma}^{- \top} \nonumber \\
+	&=&\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega} \boldsymbol{\phi}(\mathbf{r}) \mathbf E[e_t(\mathbf{r})e_t(\mathbf{r}')]\boldsymbol{\phi}^{\top}(\mathbf{r}')d\mathbf{r}' d\mathbf r\mathbf{\Gamma}^{- \top} \nonumber\\
+	&=&\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega}\boldsymbol{\phi}(\mathbf r) \gamma(\mathbf r- \mathbf r' )\boldsymbol{\phi}^{\top}(\mathbf r')d\mathbf r' d\mathbf r\mathbf{\Gamma}^{-\top} 
 \end{eqnarray}
 \section{Proof of \ref{eq:GaussianFT} and \ref{eq:WidthFrequencyRelationship} }\label{ap:FrequencyAnalysis}
 Applying the \textit{n}-dimensional Fourier transform \cite{Arsac1966} to an \textit{n}-dimensional Gaussian centered at the origin yields
-\begin{eqnarray}
- G(\boldsymbol \nu)&=&\int_{\mathcal R^n}\mathrm{exp}\left({-\frac{1}{\sigma_{\phi}^2} \mathbf r^\top\mathbf r}\right)\mathrm{exp}\left(-2\pi i\boldsymbol\nu^\top\mathbf r\right)d\mathbf r \nonumber \\
-&=&\int_{\mathcal R^n}\mathrm{exp}\left(-\frac{1}{\sigma_{\phi}^2}\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]^\top\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]\right)d\mathbf r \nonumber \\
-&\times& \mathrm{exp}\left(-\sigma_{\phi}^2\pi^2\boldsymbol\nu^\top \boldsymbol\nu\right)
+\begin{eqnarray}\label{eq:GaussianFT}
+ \lefteqn{\boldsymbol\Phi(\boldsymbol \nu)=\int_{\mathcal R^n}\mathrm{exp}({-\frac{1}{\sigma_{\phi}^2}\mathbf r^\top\mathbf r})\mathrm{exp}(-2\pi i\boldsymbol\nu^\top\mathbf r)d\mathbf r} \nonumber \\
+&=&\int_{\mathcal R^n}\mathrm{exp}(-\frac{1}{\sigma_{\phi}^2}\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]^\top\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right])d\mathbf r \nonumber \\
+&\times& \mathrm{exp}(-\sigma_{\phi}^2\pi^2\boldsymbol\nu^\top \boldsymbol\nu)
 \end{eqnarray}
-and 
-\begin{equation}\label{eq:IntegralOfGaussian}
-\int_{\mathcal R^n}\mathrm{exp}\left(-\frac{1}{\sigma_{\phi}^2}\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]^\top\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]\right)d\mathbf r=(\pi\sigma_{\phi}^2)^{\frac{n}{2}}
-\end{equation}
-which gives another scaled  Gaussian 
+where 
+\begin{align}\label{eq:IntegralOfGaussian}
+\int_{\mathcal R^n}\mathrm{exp}(-\frac{1}{\sigma_{\phi}^2}\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]^\top\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right])d\mathbf r&& \nonumber \\
+=(\pi\sigma_{\phi}^2)^{\frac{n}{2}}&&
+\end{align}
+substituting \ref{eq:IntegralOfGaussian} in \ref{eq:GaussianFT} gives another scaled  Gaussian 
 \begin{equation}
-   \boldsymbol\Phi(\boldsymbol\nu)=(\pi\sigma_{\phi}^2)^{\frac{n}{2}}\mathrm{exp}\left(-\sigma_{\phi}^2\pi^2\boldsymbol\nu^\top \boldsymbol\nu\right)
+   \boldsymbol\Phi(\boldsymbol\nu)=(\pi\sigma_{\phi}^2)^{\frac{n}{2}}\mathrm{exp}(-\sigma_{\phi}^2\pi^2\boldsymbol\nu^\top \boldsymbol\nu)
 \end{equation}
 substituting $\sigma_{\nu}^2=\frac{1}{\pi^2\sigma_{\phi}^2}$ gives 
 \begin{equation}
-\boldsymbol\Phi(\boldsymbol \nu)=\left(\frac{1}{\pi\sigma_{\nu}^2}\right)^{\frac{n}{2}}\mathrm{exp}\left(-\frac{1}{\sigma_{\nu}^2}\boldsymbol\nu^\top \boldsymbol\nu\right).
+\boldsymbol\Phi(\boldsymbol \nu)=(\frac{1}{\pi\sigma_{\nu}^2})^{\frac{n}{2}}\mathrm{exp}(-\frac{1}{\sigma_{\nu}^2}\boldsymbol\nu^\top \boldsymbol\nu).
 \end{equation}
 and hence completing the proof. For 3 dB attenuation at $\boldsymbol\nu_c$ we need to set
 \begin{eqnarray}
- |\boldsymbol\Phi(\boldsymbol\nu_c)|^2&=&\left(\frac{1}{\pi\sigma_{\nu}^2}\right)^{n}\mathrm{exp}\left(-\frac{2}{\sigma_{\nu}^2}\boldsymbol\nu_c^\top \boldsymbol\nu_c\right)\\
-&=&\frac{1}{2}|\boldsymbol\Phi(\mathbf 0)|^2
+ |\boldsymbol\Phi(\boldsymbol\nu_c)|^2=\frac{1}{2}|\boldsymbol\Phi(\mathbf 0)|^2
 \end{eqnarray}
+%\left(\frac{1}{\pi\sigma_{\nu}^2}\right)^{n}\mathrm{exp}\left(-\frac{2}{\sigma_{\nu}^2}\boldsymbol\nu_c^\top \boldsymbol\nu_c\right)\\
 solving for $\sigma_{\nu}^2$ we get
 \begin{equation}
  \sigma_{\nu}^2=\frac{2\boldsymbol\nu_c^\top \boldsymbol\nu_c}{\ln 2 }.
 \end{equation}
 
 \section{Parameter Estimation Using Least Squares}\label{LeastSquaresAppendix} 
-The state equation given in \ref{Homogeneous SS Model} is linear in parameters and therefore Least Square (LS) method can be applied to estimate the unknown parameters. Using  \ref{Homogeneous SS Model} and \ref{eq:QMatrix} by substituting  $\xi = 1-\zeta T_s$ at each time instant we can write
+The finite state space model  given in \ref{eq:ReducedForm} is linear in parameters and therefore Least Square (LS) method can be applied to estimate the unknown parameters. We define $n_x \times n_{\theta}$ matrix
+\begin{eqnarray}\label{eq:QMatrix}
+	\lefteqn {\mathbf{Q}(\mathbf{x}_t)=} \\
+&&\boldsymbol{\Gamma}^{ - 1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r}) \int_\Omega {f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t)\boldsymbol{\psi}^{\top} \left(\mathbf{r}-\mathbf{r}'\right)d\mathbf{r}'} d\mathbf{r}}\nonumber
+\end{eqnarray}
+by substituting \ref{eq:Reducednoiseterm} and \ref{eq:QMatrix} in \ref{eq:ReducedForm} with zero input and using $\xi = 1-\zeta T_s$ at each time instant we can write
 \begin{eqnarray}
 	\mathbf x_{1}&=&\mathbf x_{0}+T_s \mathbf Q(\mathbf x_0) \boldsymbol{\theta}-\zeta T_s\mathbf x_0+\mathbf e_0 \nonumber \\
 	\mathbf x_{2}&=&\mathbf x_{1}+T_s \mathbf Q(\mathbf x_1) \boldsymbol{\theta}-\zeta T_s\mathbf x_1+\mathbf e_1\nonumber\\
-	&\vdots& \nonumber\\
-	\mathbf x_{n}&=&\mathbf x_{n-1}+T_s \mathbf Q(\mathbf x_{n-1}) \boldsymbol{\theta}-\zeta T_s\mathbf x_{n-1}+\mathbf e_{n-1} 
+	&\vdots& \\
+	\mathbf x_{n}&=&\mathbf x_{n-1}+T_s \mathbf Q(\mathbf x_{n-1}) \boldsymbol{\theta}-\zeta T_s\mathbf x_{n-1}+\mathbf e_{n-1} \nonumber
 \end{eqnarray}
 % in matrix form 
 % \begin{equation}
@@ -575,6 +587,7 @@ The state equation given in \ref{Homogeneous SS Model} is linear in parameters a
 	\mathbf Z=\mathbf X \mathbf W+\boldsymbol \xi 
 \end{equation}
 where 
+\begin{small}
 \begin{equation*}
 	\mathbf Z=\left[
 	\begin{array}{cccc}
@@ -590,7 +603,9 @@ where
 	\end{array}
 	\right] 
 \end{equation*}
+\end{small}
 and
+\begin{small}
 \begin{equation*}
 \quad \mathbf W=\left[
 	\begin{array}{cc}
@@ -603,6 +618,7 @@ and
 	\end{array}
 	\right] 
 \end{equation*}
+\end{small}
 using the LS method $ \mathbf W$ can be estimated 
 \begin{equation}
 	\mathbf W\approx(\mathbf X^\top\mathbf X)^{-1}\mathbf X^\top\mathbf Z 
