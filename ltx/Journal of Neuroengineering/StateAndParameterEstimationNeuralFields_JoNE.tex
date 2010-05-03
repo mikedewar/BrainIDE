@@ -101,9 +101,22 @@ Currently available epileptic seizure  control devices (i.e., the vagal nerve st
 
 This paper extends the work of Schiff and Sauer~\cite{schiff2008kalman} by establishing a framework for estimating the state of the WC equations for higher dimensional systems utilising a systematic model reduction procedure. In addition, a method is presented for estimating the the connectivity structure and the synaptic time constant. Until now, estimation of local intracortical connectivity structure has not been attempted. Recently, it has been shown that it is possible to estimate local coupling of spatiotemporal systems using techniques from control systems theory and machine learning \cite{Dewar2009}. The key development in that work was to represent the spatiotemporal system as a standard state-space model with an order independent of the number of observations (recording electrodes in this case). In addition, the appropriate model selection tools have been developed \cite{Scerri2009} allowing for the application of the technique to neural fields. Modelling the neural dynamics within this framework has the distinct advantage over multivariate auto-regressive (AR) models, that the number of parameters to define the spatial connectivity is considerably smaller than the number of AR coefficients typically required to achieve the required model complexity. In this paper, we demonstrate for the first time how intracortical connectivity can be inferred from data, based on a variant of the Wilson and Cowan neural field model \cite{Wilson1973}. This work provides a fundamental link between the theoretical advances in neural field modelling and patient specific data.
 
-The paper proceeds by first deriving the continuum neural field equations in Section~\ref{NeuralModelSection}. Next, a reduced finite dimensional neural field model is derived in Section~\ref{ReducedModelSection}. The model is reduced by approximating the neural field using a set of continuous basis functions, weighted by a finite dimensional state vector. Section~\ref{SpectralAnalysisSection} then establishes conditions using spatial frequency analysis for both sensor and basis function spacing and geometry, such that the dominate dynamics of the neural field can be represented by the reduced model. Following this, the state and parameter estimation procedure is described in Section~\ref{StateAndParameterEstimationSection}. The results for the spatial frequency analysis and parameter estimation are then presented in Section~\ref{ResultsSection}. The implications and limitations of this framework are discussed in Section~\ref{DiscussionSection} along with planned future developments. Finally, we provide concluding remarks in Section~\ref{ConclusionSection}.
+\subsection{The Importance of Cortical Structure} 
 
-\section{Neural Field Model}\label{NeuralModelSection} In this section, we describe a variant of the WC neural field model \cite{Wilson1973} that was used to create our intracortical connectivity estimator. Neural field models relate mean firing rates of pre-synaptic neural populations to mean post-synaptic membrane potentials. They are popular due to being parsimonious yet having a strong link with the underlying physiology. Each neural population represents a functional cortical processing unit, such as a column. The columnar organisation of the cortex is continuous, where pyramidal cells are members of many columns. In general, cortical structure can be modelled in a physiologically plausible manner as being locally homogeneous (in short range intracortical connectivity) and heterogeneous (in long range cortico-cortical and corticothalamic connectivity)~\cite{Jirsa2009}~\cite{Qubbaj2007}. Locally, each column is thought be connected via symmetric short range local excitation, with surround inhibition \cite{Braitenberg1998}. For example, this structural organisation is most studied in the visual system, where the surrounding inhibition effectively tunes a cortical column to a particular receptive visual field~\cite{Sullivan2006}. Neural field models are descriptive of a range of neurodynamics of the cortex such as evoked potentials, visual hallucinations, and epileptic behaviour. 
+Neural field models relate mean firing rates of pre-synaptic neural populations to post-synaptic mean membrane potentials. Each neural population represents a functional cortical processing unit, referred to as a column. The columnar organization of the cortex is continuous, where pyramidal cells are members of many columns. In general, cortical structure can be modeled in a physiologically plausible manner as being locally homogeneous (in short range intracortical connectivity) and heterogeneous (in long range cortico-cortical and corticothalamic connectivity) \cite{Jirsa2009} \cite{Qubbaj2007}. Locally, each column is thought be connected via symmetric short range local excitation, with surround inhibition \cite{Braitenberg1998}. For example, this structural organisation is most studied in the visual system, where the surrounding inhibition effectively tunes a cortical column to a particular receptive visual field \cite{Sullivan2006}.
+
+Recent studies using neural field models have demonstrated the theoretical implications of specific connectivity structure of the cortical columns in neural field models, where the connectivity kernel governs the bifurcation points of the system \cite{Hutt2005} and types of oscillations that can be generated \cite{Schmidt2009}. This implies that if we could estimate the connectivity structure for an individual, then we could capture patient specific neurodynamics that lead to various oscillatory states. 
+
+Estimating functional cortical connectivity via EEG promises to shed light on the hierarchy of brain regions that are involved in specific tasks, motivating the use of techniques like DCM. Other comparable methods are based on auto-regressive (AR) modelling of the EEG, MEG, or fMRI times series \todo{[refs!]}. Studies have concentrated on finding functional connectivity patterns using information contained in the AR coefficients using techniques like Granger causality \cite{Hesse2003}, the direct transfer function \cite{Kaminski1991}, and partial directed coherence \cite{Sameshima1999}. Again, like the DCM approach, these methods estimate long range connectivity patterns that does not provide a clear relationship between the continuum field models and data.
+
+%Analysis of the connectivity estimates provided from these approaches has involved graph theoretical techniques (small worldedness).
+Until now, estimation of local intracortical connectivity structure has not been attempted. Recently, it has been shown that it is possible to estimate local coupling of spatiotemporal systems using techniques from control systems theory and machine learning \cite{Dewar2009}. The key development in this work was to represent the spatiotemporal system as a standard state-space model with an order independent of the number of sensors (ECoG recording electrodes in this case). In addition, the appropriate model selection tools have been developed \cite{Scerri2009} allowing for the application of this technique to neural fields. Modelling the neural dynamics within this framework has the distinct advantage over multivariate AR models, that the number of parameters to define the spatial connectivity is considerably smaller than the number of AR coefficients typically required to achieve the required model complexity. In this paper, we demonstrate for the first time how intracortical connectivity can be inferred from ECoG data, based on a variant of the Wilson and Cowan neural field model \cite{Wilson1973}. This work provides a fundamental link between the theoretical advances in neural field modelling and patient specific data.
+
+%Long range connectivity can be estimated using DTI \cite{Knock2009}, however this short range connectivity can not..
+\section{Neural Field Model}
+\label{NeuralModelSection} 
+
+In this section, we describe a variant of the WC neural field model \cite{Wilson1973} that was used to create our intracortical connectivity estimator. This model is descriptive of a range of neurodynamics of the cortex such as evoked potentials, visual hallucinations, and epileptic behaviour. 
 \begin{todo}
 	{Really need to add some citations here.} 
 \end{todo}
@@ -282,15 +295,12 @@ The dynamic field must be spatially oversampled by using a larger number of sens
 \section{State and Parameter Estimation}\label{StateAndParameterEstimationSection} In this section we describe the procedure for estimating the states that scale the field basis functions, $\mathbf{x}_t$, the connectivity kernel parameters, $\boldsymbol \theta$, and the synaptic time constant, $\xi$. The estimation process consists of a two part iterative algorithm, consisting of the state estimation step followed by the parameter estimation step at each time instance. 
 
 The state estimation technique utilises the Unscented Rauch Tung Striebel Smoother (URTSS)~\cite{Sarkka2010}. The URTSS uses the Unscented Kalman Filter (UKF)~\cite{Julier1997,Merwe2003} in the forward iteration to estimate posterior states, $\hat{\mathbf x}_t^{f}$, followed by a backward path to compute the smoothed state estimates, $\hat{\mathbf x}_t^{b}$. An approximation of the state density is made by propagating the so-called sigma points through the state-space model. The sigma points describe the mean and covariance of the state estimate and are calculated using the unscented transform. The sigma vectors $\mathcal X_i$ are calculated by 
-\begin{equation}\label{eq:sigmapoints1}
-	\mathcal X_{0}=\bar x 
-\end{equation}
-\begin{equation}
-	\mathcal X_{i}=\bar x+(\sqrt{( L + \lambda)\mathbf P_x})_i \quad i=1, \dots, L 
-\end{equation}
-\begin{equation}\label{eq:sigmapoints2}
-	\mathcal X_{i}=\bar x-(\sqrt{( L + \lambda)\mathbf P_x})_{i- L} \quad i= L+1, \dots, 2 L 
-\end{equation}
+\begin{eqnarray}\label{eq:sigmapoints1}
+	\mathcal X_{0}&=&\bar x \\
+	\mathcal X_{i}&=&\bar x+(\sqrt{( L + \lambda)\mathbf P_x})_i \quad i=1, \dots, L \\
+\label{eq:sigmapoints2}
+	\mathcal X_{i}&=&\bar x-(\sqrt{( L + \lambda)\mathbf P_x})_{i- L} \quad i= L+1, \dots, 2 L \nonumber \\
+\end{eqnarray}
 where $(\sqrt{( L + \lambda)\mathbf P_x})_i$ is the ith column of the weighted matrix squre root of  $\mathbf P_x$ and  $L$ is the dimension of the state space. The total number of sigma points is $2L+1$. The scaling parameter $\lambda$ is defined as 
 \begin{equation}\label{eq:sigmapoints3}
 	\lambda=\alpha^2( L+\kappa)- L 
@@ -378,7 +388,7 @@ Although the system is nonlinear, the parameters of the system are linear with r
 Alternatives to the UKF are the Extended Kalman Filter (EKF)~\cite{Haykin2001} and the Sequential Monte Carlo (SMC) filter~\cite{doucet2001}. The EKF approximates the state transition equation by linearizing about the current state estimates (by calculating the Jacobian) at each time instance. The linearisation maintains the Gaussianality of the model. The unscented Kalman filter approximates the \emph{a posteriori} state density by a Gaussian distribution using a minimal set of carefully chosen sigma points, whilst maintaining the nonlinearity in the system. This has been shown to give superior performance over the EKF in state estimation, as the EKF maintains a first order approximation where the UKF provides an approximation accurate at least to the second order. In addition, the computation of the Jacobian used in the EKF can be problematic. SMC filtering can theoretically provide an exact \emph{a posteriori} state density for nonlinear systems. However, currently this method is not appropriate for our problem, due to computation demands. 
 
 %The method is appropriate for state estimation of stochastic nonlinear dynamical systems. 
-\section{Results}\label{ResultsSection} The neural field model derived in section~\ref{NeuralModelSection} was used to the generate data for state and parameter estimation. All parameters for the model are given in Table~\ref{tab:Model Parameters}. An example of the simulated field can be seen in figure~\ref{fig:experimental design}~A. The Figure demonstrates the experimental design where the sensors were placed in the centre of the field (full width at half maximum). This design allowed for uncertainty around the edges of the sensor array, which would be typical from physical data, and alleviated problems associated with boundary conditions. Figure~\ref{fig:experimental design}~B. shows example data from the sensors of the model, and figure~\ref{fig:experimental design}~C. shows the power spectral density of on of the simulated time-series. The PSD shows the typical $1/f$ characteristics of intracranial EEG.
+\section{Results}\label{ResultsSection} The neural field model derived in section~\ref{NeuralModelSection} was used to generate the data for state and parameter estimation. All parameters for the model are given in Table~\ref{tab:Model Parameters}. An example of the simulated field can be seen in figure~\ref{fig:experimental design}~A. The Figure demonstrates the experimental design where the sensors were placed in the centre of the field (full width at half maximum). This design allowed for uncertainty around the edges of the sensor array, which would be typical from physical data, and alleviated problems associated with boundary conditions. Figure~\ref{fig:experimental design}~B. shows example data from the sensors of the model, and figure~\ref{fig:experimental design}~C. shows the power spectral density of the simulated time-series. The PSD shows the typical $1/f$ characteristics of intracranial EEG.
 
 \begin{center}
 \begin{tabular}{c|c|c}	
@@ -400,15 +410,14 @@ The sensors were spaced in a regular square grid, where the number of sensors wa
 % 	\caption{Example of experimental design and model output. \textbf{A}. Example of the neural field with sensors. The centres of the sensors are shown by crossed and the sensor widths ($1/2$ height of Gaussian) are shown by the circles. \textbf{B} Example of data generated by the model through the observations. \textbf{C}. Power spectral density of the data generated by an observation showing the typical $1/f$ characteristic of iEEG.} \label{fig:FrequencyAnalysis} 
 % \end{figure}
 
-\begin{figure}[!hb] 
-% \renewcommand*{\thesubfigure}{}
+\begin{figure}[!hb]
 \centering
-\subfigure{\includegraphics[width=2in]{./Graph/ExperimentFigurePy.pdf}}\\
+\subfigure[]{\includegraphics[width=0.3\textwidth]{./Graph/ExperimentFigurePy.pdf}}\\
 % \hspace{2.5mm}
-\subfigure{\includegraphics[width=2in]{./Graph/ExperimentFigureEEGPy.pdf}}\\
+\subfigure[]{\includegraphics[width=0.3\textwidth]{./Graph/ExperimentFigureEEGPy.pdf}}\\
 % \hspace{2.5mm}
-\subfigure{\includegraphics[width=2in]{./Graph/ExperimentFigurePSDPy.pdf}}
-\caption{Example of experimental design and model output. \textbf{A}. Example of the neural field with sensors. The centres of the sensors are shown by crossed and the sensor widths ($1/2$ height of Gaussian) are shown by the circles. \textbf{B} Example of data generated by the model through the observations. \textbf{C}. Power spectral density of the data generated by an observation showing the typical $1/f$ characteristic of iEEG.} \label{fig:FrequencyAnalysis} 
+\subfigure[]{\includegraphics[width=0.3\textwidth]{./Graph/ExperimentFigurePSDPy.pdf}}
+\caption{Example of experimental design and model output. \textbf{A}. Example of the neural field with sensors. The centres of the sensors are shown by crossed and the sensor widths ($1/2$ height of Gaussian) are shown by the circles. \textbf{B} Example of data generated by the model through the observations. \textbf{C}. Power spectral density of the data generated by an observation showing the typical $1/f$ characteristic of iEEG.} \label{fig:experimental design} 
 \end{figure}
 \begin{figure}[th]
 \subfigure[][]{\includegraphics[width=0.24\textwidth]{./Graph/zeta.pdf}}
@@ -431,7 +440,13 @@ The spatial frequency of the observations is shown in figure~\ref{}. The peak po
 \end{figure*}
 Following this, the distance between basis function, $\Delta_b$, was set to $2.5$ and the basis function width, $\sigma_{\phi}^2$, was set to 3.6, 3.16 mm full width at half maximum. Analysis said 3.9 from Parham's derivation, but 3.6 still overlaps and allows more high frequency details to be represented.
 
-\subsection{State and Parameter Estimates} To demonstrate the performance of the parameter and state estimation, $200$ realisations of the data were generated. Each realisation consisted of 300 ms of data and the estimation was applied to the final 200 ms, allowing the model to stabilise. The initial state and parameters were unknown to the estimator. The state estimates were evaluated by comparing the field reconstruction to the true field using the mean over time of the RMSE and standard deviation of the RMSE. The distribution of the state estimates are shown in figure~\ref{}. 
+\subsection{State and Parameter Estimates} To demonstrate the performance of the parameter and state estimation, $200$ realisations of the data were generated. Each realisation consisted of 200 ms of data and the estimation was applied to the final 200 ms, allowing the model to stabilise. The initial state and parameters were unknown to the estimator. The state estimates were evaluated by comparing the field reconstruction to the true field using the mean over time of the RMSE and standard deviation of the RMSE. The distribution of the parameters and the resulting kernel are shown in figure~\ref{fig:Parameters} and figure~\ref{fig:KernelEstimates} respectively.
+\begin{figure}
+\includegraphics[width=0.5\textwidth]{./Graph/KernelEstimate.pdf}
+\caption{Mean kernel estimates over 272 runs ;  true and estimated kernels are shown by solid
+and dashed line respectively, the red area shows 95\% confedence interval.}
+\label{fig:KernelEstimates}
+\end{figure}
 
 \section{Discussion}\label{DiscussionSection}
 \begin{itemize}
