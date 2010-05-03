@@ -41,11 +41,11 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-\documentclass[twocolumn,10pt,a4paper]{article}		%<-use this for checking equation length
-% \documentclass[12pt]{iopart} 
+% \documentclass[twocolumn,11pt,a4paper]{article}		%<-use this for checking equation length
+\documentclass[12pt]{iopart} 
 
 %<-comment out this for checking equations (author list too)
-% \usepackage{iopams,setstack} 
+\usepackage{iopams,setstack} 
 %<-comment out this for checking equations
 \usepackage{graphicx}
 \usepackage{algorithm, algorithmicx, algpseudocode} 
@@ -54,9 +54,9 @@
 % \usepackage{pstool}
 \renewcommand{\subcapsize}{\small}
  \usepackage{anysize}							%<-use this for checking equation length
- \marginsize{1.7cm}{1.5cm}{0.3cm}{0.8cm}			%<-use this for checking equation length
+ % \marginsize{1.7cm}{1.5cm}{0.3cm}{0.8cm}			%<-use this for checking equation length
  \setlength{\columnsep}{0.5cm}					%<-use this for checking equation length
-\usepackage{amsmath}
+% \usepackage{amsmath}
 \usepackage{amssymb,amsfonts} 			%<-use this for checking equation length
 \newcommand{\todo}[1]{\textsf{\emph{\textbf{\textcolor{blue}{#1}}}}} 
 \newcommand{\wtf}[1]{\textsf{\emph{\textbf{\textcolor{red}{#1}}}}} 
@@ -66,9 +66,9 @@
 
 \title[State and Parameter Estimation for Spatio-Temporal Neural Fields]{State and Parameter Estimation for Spatio-Temporal Neural Fields}
 
-% \author{Dean R. Freestone$^1$, Parham Aram$^2$, Michael Dewar$^3$, Kenneth Scerri$^4$, David B. Grayden$^1$, and Visakan Kadirkamanathan$^2$}
-% 
-% \address{$^1$ Department of Electrical and Electronic Engineering, University of Melbourne, Melbourne, Vic, 3010 Australia} \address{$^2$ Department of Automatic Control and Systems Engineering, University of Sheffield, Mappin Street, Sheffield, S1 3JD, UK} \address{$^3$ Department of Applied Physics and Applied Mathematics, Columbia University, US} \address{$^4$ Ken's} \ead{dfreestone@bionicear.org} 
+\author{Dean R. Freestone$^1$, Parham Aram$^2$, Michael Dewar$^3$, Kenneth Scerri$^4$, David B. Grayden$^1$, and Visakan Kadirkamanathan$^2$}
+
+\address{$^1$ Department of Electrical and Electronic Engineering, University of Melbourne, Melbourne, Vic, 3010 Australia} \address{$^2$ Department of Automatic Control and Systems Engineering, University of Sheffield, Mappin Street, Sheffield, S1 3JD, UK} \address{$^3$ Department of Applied Physics and Applied Mathematics, Columbia University, US} \address{$^4$ Ken's} \ead{dfreestone@bionicear.org} 
 \begin{abstract}
 	Will do the abstract towards the end. 
 \end{abstract}
@@ -382,7 +382,7 @@ Although the system is nonlinear, the parameters of the system are linear with r
 Alternatives to the UKF are the Extended Kalman Filter (EKF)~\cite{Haykin2001} and the Sequential Monte Carlo (SMC) filter~\cite{doucet2001}. The EKF approximates the state transition equation by linearizing about the current state estimates (by calculating the Jacobian) at each time instance. The linearisation maintains the Gaussianity of the model. The unscented Kalman filter approximates the posterior state density by a Gaussian distribution using a minimal set of carefully chosen sigma points, whilst maintaining the nonlinearity in the system. This has been shown to give superior performance over the EKF in state estimation, as the EKF maintains a first order approximation where the UKF provides an approximation accurate at least to the second order. In addition, the computation of the Jacobian used in the EKF can be problematic. SMC filtering can theoretically provide an exact posterior state density for nonlinear systems. However, currently this method is not appropriate for our problem, due to computation demands. 
 
 %The method is appropriate for state estimation of stochastic nonlinear dynamical systems. 
-\section{Results}\label{ResultsSection} The neural field model derived in section~\ref{NeuralModelSection} was used to the generate data for state and parameter estimation. All parameters for the model are given in Table~\ref{tab:Model Parameters}. An example of the simulated field can be seen in figure~\ref{fig:experimental design}~A. The Figure demonstrates the experimental design where the sensors were placed in the centre of the field (full width at half maximum). This design allowed for uncertainty around the edges of the sensor array, which would be typical from physical data, and alleviated problems associated with boundary conditions. Figure~\ref{fig:experimental design}~B. shows example data from the sensors of the model, and figure~\ref{fig:experimental design}~C. shows the power spectral density of on of the simulated time-series. The PSD shows the typical $1/f$ characteristics of intracranial EEG.
+\section{Results}\label{ResultsSection} The neural field model derived in section~\ref{NeuralModelSection} was used to generate the data for state and parameter estimation. All parameters for the model are given in Table~\ref{tab:Model Parameters}. An example of the simulated field can be seen in figure~\ref{fig:experimental design}~A. The Figure demonstrates the experimental design where the sensors were placed in the centre of the field (full width at half maximum). This design allowed for uncertainty around the edges of the sensor array, which would be typical from physical data, and alleviated problems associated with boundary conditions. Figure~\ref{fig:experimental design}~B. shows example data from the sensors of the model, and figure~\ref{fig:experimental design}~C. shows the power spectral density of the simulated time-series. The PSD shows the typical $1/f$ characteristics of intracranial EEG.
 
 \begin{center}
 \begin{tabular}{c|c|c}	
@@ -404,15 +404,14 @@ The sensors were spaced in a regular square grid, where the number of sensors wa
 % 	\caption{Example of experimental design and model output. \textbf{A}. Example of the neural field with sensors. The centres of the sensors are shown by crossed and the sensor widths ($1/2$ height of Gaussian) are shown by the circles. \textbf{B} Example of data generated by the model through the observations. \textbf{C}. Power spectral density of the data generated by an observation showing the typical $1/f$ characteristic of iEEG.} \label{fig:FrequencyAnalysis} 
 % \end{figure}
 
-\begin{figure}[!hb] 
-% \renewcommand*{\thesubfigure}{}
+\begin{figure}[!hb]
 \centering
-\subfigure{\includegraphics[width=2in]{./Graph/ExperimentFigurePy.pdf}}\\
+\subfigure[]{\includegraphics[width=0.3\textwidth]{./Graph/ExperimentFigurePy.pdf}}\\
 % \hspace{2.5mm}
-\subfigure{\includegraphics[width=2in]{./Graph/ExperimentFigureEEGPy.pdf}}\\
+\subfigure[]{\includegraphics[width=0.3\textwidth]{./Graph/ExperimentFigureEEGPy.pdf}}\\
 % \hspace{2.5mm}
-\subfigure{\includegraphics[width=2in]{./Graph/ExperimentFigurePSDPy.pdf}}
-\caption{Example of experimental design and model output. \textbf{A}. Example of the neural field with sensors. The centres of the sensors are shown by crossed and the sensor widths ($1/2$ height of Gaussian) are shown by the circles. \textbf{B} Example of data generated by the model through the observations. \textbf{C}. Power spectral density of the data generated by an observation showing the typical $1/f$ characteristic of iEEG.} \label{fig:FrequencyAnalysis} 
+\subfigure[]{\includegraphics[width=0.3\textwidth]{./Graph/ExperimentFigurePSDPy.pdf}}
+\caption{Example of experimental design and model output. \textbf{A}. Example of the neural field with sensors. The centres of the sensors are shown by crossed and the sensor widths ($1/2$ height of Gaussian) are shown by the circles. \textbf{B} Example of data generated by the model through the observations. \textbf{C}. Power spectral density of the data generated by an observation showing the typical $1/f$ characteristic of iEEG.} \label{fig:experimental design} 
 \end{figure}
 \begin{figure}[th]
 \subfigure[][]{\includegraphics[width=0.24\textwidth]{./Graph/zeta.pdf}}
@@ -435,7 +434,13 @@ The spatial frequency of the observations is shown in figure~\ref{}. The peak po
 \end{figure*}
 Following this, the distance between basis function, $\Delta_b$, was set to $2.5$ and the basis function width, $\sigma_{\phi}^2$, was set to 3.6, 3.16 mm full width at half maximum. Analysis said 3.9 from Parham's derivation, but 3.6 still overlaps and allows more high frequency details to be represented.
 
-\subsection{State and Parameter Estimates} To demonstrate the performance of the parameter and state estimation, $200$ realisations of the data were generated. Each realisation consisted of 300 ms of data and the estimation was applied to the final 200 ms, allowing the model to stabilise. The initial state and parameters were unknown to the estimator. The state estimates were evaluated by comparing the field reconstruction to the true field using the mean over time of the RMSE and standard deviation of the RMSE. The distribution of the state estimates are shown in figure~\ref{}. 
+\subsection{State and Parameter Estimates} To demonstrate the performance of the parameter and state estimation, $200$ realisations of the data were generated. Each realisation consisted of 200 ms of data and the estimation was applied to the final 200 ms, allowing the model to stabilise. The initial state and parameters were unknown to the estimator. The state estimates were evaluated by comparing the field reconstruction to the true field using the mean over time of the RMSE and standard deviation of the RMSE. The distribution of the parameters and the resulting kernel are shown in figure~\ref{fig:Parameters} and figure~\ref{fig:KernelEstimates} respectively.
+\begin{figure}
+\includegraphics[width=0.5\textwidth]{./Graph/KernelEstimate.pdf}
+\caption{Mean kernel estimates over 272 runs ;  true and estimated kernels are shown by solid
+and dashed line respectively, the red area shows 95\% confedence interval.}
+\label{fig:KernelEstimates}
+\end{figure}
 
 \section{Discussion}\label{DiscussionSection}
 \begin{itemize}
@@ -523,10 +528,10 @@ Applying the \textit{n}-dimensional Fourier transform \cite{Arsac1966} to an \te
 &\times& \mathrm{exp}(-\sigma_{\phi}^2\pi^2\boldsymbol\nu^\top \boldsymbol\nu)
 \end{eqnarray}
 where 
-\begin{align}\label{eq:IntegralOfGaussian}
+\begin{eqnarray}\label{eq:IntegralOfGaussian}
 \int_{\mathcal R^n}\mathrm{exp}(-\frac{1}{\sigma_{\phi}^2}\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]^\top\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right])d\mathbf r&& \nonumber \\
 =(\pi\sigma_{\phi}^2)^{\frac{n}{2}}&&
-\end{align}
+\end{eqnarray}
 substituting \ref{eq:IntegralOfGaussian} in \ref{eq:GaussianFT} gives another scaled  Gaussian 
 \begin{equation}
    \boldsymbol\Phi(\boldsymbol\nu)=(\pi\sigma_{\phi}^2)^{\frac{n}{2}}\mathrm{exp}(-\sigma_{\phi}^2\pi^2\boldsymbol\nu^\top \boldsymbol\nu)
