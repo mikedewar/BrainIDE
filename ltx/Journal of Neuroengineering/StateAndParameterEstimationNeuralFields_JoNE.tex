@@ -440,14 +440,19 @@ The spatial frequency of the observations is shown in figure~\ref{}. The peak po
 \end{figure*}
 Following this, the distance between basis function, $\Delta_b$, was set to $2.5$ and the basis function width, $\sigma_{\phi}^2$, was set to 3.6, 3.16 mm full width at half maximum. Analysis said 3.9 from Parham's derivation, but 3.6 still overlaps and allows more high frequency details to be represented.
 
-\subsection{State and Parameter Estimates} To demonstrate the performance of the parameter and state estimation, $200$ realisations of the data were generated. Each realisation consisted of 200 ms of data and the estimation was applied to the final 200 ms, allowing the model to stabilise. The initial state and parameters were unknown to the estimator. The state estimates were evaluated by comparing the field reconstruction to the true field using the mean over time of the RMSE and standard deviation of the RMSE. The distribution of the parameters and the resulting kernel are shown in figure~\ref{fig:Parameters} and figure~\ref{fig:KernelEstimates} respectively.
+\subsection{State and Parameter Estimates} To demonstrate the performance of the parameter and state estimation, $200$ realisations of the data were generated. Each realisation consisted of 200 ms of data and the estimation was applied to the final 200 ms, allowing the model to stabilise. The initial state and parameters were unknown to the estimator. The state estimates were evaluated by comparing the field reconstruction to the true field using the mean over time of the RMSE and standard deviation of the RMSE. The distribution of the parameters and the resulting kernel are shown in figure~\ref{fig:Parameters} and figure~\ref{fig:KernelEstimates} respectively. Although a wide distribution can be seen over the parameters the ratio between them remains almost constant as shown in figure~\ref{}.
 \begin{figure}
 \includegraphics[width=0.5\textwidth]{./Graph/KernelEstimate.pdf}
 \caption{Mean kernel estimates over 272 runs ;  true and estimated kernels are shown by solid
 and dashed line respectively, the red area shows 95\% confedence interval.}
 \label{fig:KernelEstimates}
 \end{figure}
-
+\begin{figure}[th]
+\subfigure[][]{\includegraphics[width=0.24\textwidth]{./Graph/theta0_theta1_ratio.pdf}}
+\subfigure[][]{\includegraphics[width=0.24\textwidth]{./Graph/theta0_theta2_ratio.pdf}}\\
+\caption{Distribution of the parameters ratios over 272 runs.}
+\label{fig:ParametersRatio}
+\end{figure}
 \section{Discussion}\label{DiscussionSection}
 \begin{itemize}
 	\item if we don't know the frequency analysis or the system is marginally sampled or under-sampled, the best we can do is have the basis functions the same as the sensor kernel. \wtf{why wouldn't it be better to have, say, twice as many basis functions as we have sensors, at half the width?} 
