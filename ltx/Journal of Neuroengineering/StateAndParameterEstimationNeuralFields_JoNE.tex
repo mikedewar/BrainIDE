@@ -41,11 +41,11 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-% \documentclass[twocolumn,11pt,a4paper]{article}		%<-use this for checking equation length
-\documentclass[12pt]{iopart} 
+ \documentclass[twocolumn,11pt,a4paper]{article}		%<-use this for checking equation length
+% \documentclass[12pt]{iopart} 
 
 %<-comment out this for checking equations (author list too)
-\usepackage{iopams,setstack} 
+% \usepackage{iopams,setstack} 
 %<-comment out this for checking equations
 \usepackage{graphicx}
 \usepackage{algorithm, algorithmicx, algpseudocode} 
@@ -55,8 +55,8 @@
 \renewcommand{\subcapsize}{\small}
  \usepackage{anysize}							%<-use this for checking equation length
  % \marginsize{1.7cm}{1.5cm}{0.3cm}{0.8cm}			%<-use this for checking equation length
- \setlength{\columnsep}{0.5cm}					%<-use this for checking equation length
-% \usepackage{amsmath}
+%  \setlength{\columnsep}{0.5cm}					%<-use this for checking equation length
+ \usepackage{amsmath}
 \usepackage{amssymb,amsfonts} 			%<-use this for checking equation length
 \newcommand{\todo}[1]{\textsf{\emph{\textbf{\textcolor{blue}{#1}}}}} 
 \newcommand{\wtf}[1]{\textsf{\emph{\textbf{\textcolor{red}{#1}}}}} 
@@ -68,7 +68,7 @@
 
 \author{Dean R. Freestone$^1$, Parham Aram$^2$, Michael Dewar$^3$, Kenneth Scerri$^4$, David B. Grayden$^1$, and Visakan Kadirkamanathan$^2$}
 
-\address{$^1$ Department of Electrical and Electronic Engineering, University of Melbourne, Melbourne, Vic, 3010 Australia} \address{$^2$ Department of Automatic Control and Systems Engineering, University of Sheffield, Mappin Street, Sheffield, S1 3JD, UK} \address{$^3$ Department of Applied Physics and Applied Mathematics, Columbia University, US} \address{$^4$ Ken's} \ead{dfreestone@bionicear.org} 
+% \address{$^1$ Department of Electrical and Electronic Engineering, University of Melbourne, Melbourne, Vic, 3010 Australia} \address{$^2$ Department of Automatic Control and Systems Engineering, University of Sheffield, Mappin Street, Sheffield, S1 3JD, UK} \address{$^3$ Department of Applied Physics and Applied Mathematics, Columbia University, US} \address{$^4$ Ken's} \ead{dfreestone@bionicear.org} 
 \begin{abstract}
 	Will do the abstract towards the end. 
 \end{abstract}
@@ -436,9 +436,9 @@ Following this, the distance between basis function, $\Delta_b$, was set to $2.5
 
 \subsection{State and Parameter Estimates} To demonstrate the performance of the parameter and state estimation, $200$ realisations of the data were generated. Each realisation consisted of 200 ms of data and the estimation was applied to the final 200 ms, allowing the model to stabilise. The initial state and parameters were unknown to the estimator. The state estimates were evaluated by comparing the field reconstruction to the true field using the mean over time of the RMSE and standard deviation of the RMSE. The distribution of the parameters and the resulting kernel are shown in figure~\ref{fig:Parameters} and figure~\ref{fig:KernelEstimates} respectively. Although a wide distribution can be seen over the parameters the ratio between them remains almost constant as shown in figure~\ref{}.
 \begin{figure}
-\includegraphics[width=0.5\textwidth]{./Graph/KernelEstimate.pdf}
+\includegraphics[width=0.5\textwidth]{./Graph/KernelEstimate_KernelFreqResponse.pdf}
 \caption{Mean kernel estimates over 272 runs ;  true and estimated kernels are shown by solid
-and dashed line respectively, the red area shows 95\% confedence interval.}
+and dashed line respectively, the red area shows 95\% confedence interval; top: spatial domain; bottom: frequency domain}
 \label{fig:KernelEstimates}
 \end{figure}
 \begin{figure}[th]
@@ -527,7 +527,7 @@ The covariance of $\mathbf{e}_t$ is
 \end{eqnarray}
 \section{Proof of \ref{eq:GaussianFT} and \ref{eq:WidthFrequencyRelationship} }\label{ap:FrequencyAnalysis}
 Applying the \textit{n}-dimensional Fourier transform \cite{Arsac1966} to an \textit{n}-dimensional Gaussian centered at the origin yields
-\begin{eqnarray}\label{eq:GaussianFT}
+\begin{eqnarray}\label{eq:AppendixGaussianFT}
  \lefteqn{\boldsymbol\Phi(\boldsymbol \nu)=\int_{\mathcal R^n}\mathrm{exp}({-\frac{1}{\sigma_{\phi}^2}\mathbf r^\top\mathbf r})\mathrm{exp}(-2\pi i\boldsymbol\nu^\top\mathbf r)d\mathbf r} \nonumber \\
 &=&\int_{\mathcal R^n}\mathrm{exp}(-\frac{1}{\sigma_{\phi}^2}\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]^\top\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right])d\mathbf r \nonumber \\
 &\times& \mathrm{exp}(-\sigma_{\phi}^2\pi^2\boldsymbol\nu^\top \boldsymbol\nu)
@@ -537,7 +537,7 @@ where
 \int_{\mathcal R^n}\mathrm{exp}(-\frac{1}{\sigma_{\phi}^2}\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]^\top\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right])d\mathbf r&& \nonumber \\
 =(\pi\sigma_{\phi}^2)^{\frac{n}{2}}&&
 \end{eqnarray}
-substituting \ref{eq:IntegralOfGaussian} in \ref{eq:GaussianFT} gives another scaled  Gaussian 
+substituting \ref{eq:IntegralOfGaussian} in \ref{eq:AppendixGaussianFT} gives another scaled  Gaussian 
 \begin{equation}
    \boldsymbol\Phi(\boldsymbol\nu)=(\pi\sigma_{\phi}^2)^{\frac{n}{2}}\mathrm{exp}(-\sigma_{\phi}^2\pi^2\boldsymbol\nu^\top \boldsymbol\nu)
 \end{equation}
