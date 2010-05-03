@@ -24,7 +24,7 @@ obs_noise_covariance=parameters['obs_noise_covariance']
 Fs=parameters['Fs']
 t_end=parameters['t_end']
 #-------------field--------------------
-field_basis_width=2.0#3.6
+field_basis_width=2.2#3.6
 spacestep=1
 S=pb.linspace(-10,10,11)
 f_centers=gen_spatial_lattice(S)
@@ -74,7 +74,7 @@ Y=quickio.read('Y')
 Y=Y['var0']
 t0=time.time()
 ps_estimate=para_state_estimation(model)
-UKF_iterations = 10;
+UKF_iterations = 15;
 start_sample = 4;
 ps_estimate.itr_est(Y[start_sample:],UKF_iterations)
 print 'elapsed time is', time.time()-t0
