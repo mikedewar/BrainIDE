@@ -163,16 +163,7 @@ To arrive at the integro-difference equation (IDE) form of the model we discreti
 	\label{DiscreteTimeModel} v_{t+1}\left(\mathbf{r}\right) &=& \xi v_t\left(\mathbf{r}\right) + T_s \int_\Omega { w\left(\mathbf{r}-\mathbf{r}'\right) f\left(v_t\left(\mathbf{r}'\right)\right) d\mathbf{r}'} \nonumber\\ 
 	&+& T_s u_t\left(\mathbf{r}\right) + e_t\left(\mathbf{r}\right), 
 \end{eqnarray}
-where $T_s$ is the time step, $\xi = 1-\zeta T_s$ and $e_t\left(\mathbf{r}\right)$ is an i.i.d. spatially coloured, temporally white disturbance term with the covariance 
-\begin{equation}\label{eq:FieldCovarianceFunction}
-	\mathrm{cov}(\mathbf{e}_t,\mathbf{e}_{t+\tau}) = \left\{ 
-	\begin{array}{*{20}
-		{c}} \gamma\left(\mathbf{r}-\mathbf{r'}\right), & \tau=0 \\
-		0 & \mathrm{otherwise}. \\
-	\end{array}
-	\right. 
-\end{equation}
-This term was added to account for uncertainty in the model. To generate iEEG/LFP data we used the output function 
+where $T_s$ is the time step, $\xi = 1-\zeta T_s$ and $e_t$ is i.i.d. such that $e_t\sim\mathcal{GP}(\mathbf 0,\gamma(\mathbf{s}-\mathbf{r}))$. This term was added to account for uncertainty in the model. To generate iEEG/LFP data we used the output function 
 \begin{equation}
 	\mathbf{y}_t = \int_{\Omega}{m\left(\mathbf{r}_n-\mathbf{r}'\right)v_t\left(\mathbf{r}'\right)d\mathbf{r}'} + \boldsymbol{\varepsilon}_t, 
 \end{equation}
@@ -291,7 +282,7 @@ The dynamic field must be spatially oversampled by using a larger number of sens
 
 % 
 % Due to the high dimensionality of the brain and the current electrode systems, we can not expect to have more sensors than basis functions.
-\section{State and Parameter Estimation}\label{StateAndParameterEstimationSection} In this section we describe the procedure for estimating the states that scale the field basis functions, $\mathbf{x}_t$, the connectivity kernel parameters, $\boldsymbol \theta$, and the synaptic time constant, $\xi$. The estimation process consists of a two part iterative algorithm, consisting of the state estimation step followed by the parameter estimation step. At each iteration, the state estimate sequence is used to calculate the parameter set and the resulting parameters is used to generate a new state sequence for the next iteration. The procedure stops when the algorithm converges. The algorithm is initialized using a bounded random state sequence which guarantees the initial parameter set forms a stable kernel.
+\section{State and Parameter Estimation}\label{StateAndParameterEstimationSection} In this section we describe  estimating the states that scale the field basis functions, $\mathbf{x}_t$, the connectivity kernel parameters, $\boldsymbol \theta$, and the synaptic time constant, $\xi$. The estimation process consists of a two part iterative algorithm, consisting of the state estimation step followed by the parameter estimation step. At each iteration, a sequence of estimated states is used to calculate the parameter set and the resulting parameters is used to generate a new sequence of states for the next iteration. The procedure stops when the algorithm converges. The algorithm is initialized using a bounded random state sequence which guarantees the initial parameter set forms a stable kernel.
 
 The state estimation technique uses the Unscented Rauch Tung Striebel Smoother (URTSS)~\cite{Sarkka2010}. The URTSS uses the Unscented Kalman Filter (UKF)~\cite{Julier1997,Merwe2003} in the forward iteration to estimate posterior states, $\hat{\mathbf x}_t^{f}$, followed by a backward iteration to compute the smoothed state estimates, $\hat{\mathbf x}_t^{b}$. The first and the second order moments of the predicted state is captured by propagating the so-called sigma points through the state equation. The sigma points $\mathcal X_i$ are calculated using the unscented transform as follows
 \begin{equation}\label{eq:sigmapoints1}
@@ -307,7 +298,7 @@ where $(\sqrt{( L + \lambda)\mathbf P_x})_i$ is the ith column of the weighted m
 \begin{equation}\label{eq:sigmapoints3}
 	\lambda=\alpha^2( L+\kappa)- L 
 \end{equation}
-where $\alpha$, $\beta$ and $\kappa$ are constants (see ~\cite{Haykin2001} for more details). It should be noted that $\bar x$ represents either $\hat{\mathbf x}_t^{f}$ or $\hat{\mathbf x}_t^{b}$ and $\mathbf{P}_x$ represents the corresponding covariance matrix from the filtering or smoothing respectively. The sigma vectors are propagated through the system equations and weighted to form the predicted mean and covariance. The weights are calculated by 
+where $\alpha$, $\beta$ and $\kappa$ are constants (see ~\cite{Haykin2001} for more details). It should be noted that $\bar x$ represents either $\hat{\mathbf x}_t^{f}$ or $\hat{\mathbf x}_t^{b}$ and $\mathbf{P}_x$ represents the corresponding covariance matrix from the filtering or smoothing. The sigma vectors are propagated through the system equations and weighted to form the predicted mean and covariance. The weights are calculated by 
 \begin{equation}
 	\mathbf W_0^{(m)}=\frac{\lambda}{ L+\lambda} 
 \end{equation}
@@ -317,7 +308,7 @@ where $\alpha$, $\beta$ and $\kappa$ are constants (see ~\cite{Haykin2001} for m
 \begin{equation}
 	\mathbf W_i^{(m)}=\mathbf W_i^{(c)}=\frac{1}{2( L+\lambda)} \quad i=1, \dots, 2L. 
 \end{equation}
-Since the observation equation \ref{ObservationEquation} is linear the standard Kalman filter can be used to update the predicted states. The state estimates from the forward filtering are used to form a new set of sigma points for the smoother, as described above. In order to compute the smoother gain the predicted cross-covariance matrix of the states needs to be calculated. A summary of the URTSS procedure is given in algorithm~\ref{UKFAlgorithm}. It should be noted that as the disturbance, $e_t\left(\mathbf{r}\right)$ and the measurement noise $ \boldsymbol{\varepsilon}_t$ are additive the additive form of the URTS can be used , otherwise the state vector should be augmented with the noise terms. Using the additive form reduces the dimension and the number of sigma points used in the algorithm.
+Since the observation equation \ref{ObservationEquation} is linear the standard Kalman Filter update equations can be used to update the predicted states. The state estimates from the forward filtering are used to form a new set of sigma points for the smoother, as described above. In order to compute the smoother gain the predicted cross-covariance matrix of the states needs to be calculated. A summary of the URTSS procedure is given in algorithm~\ref{UKFAlgorithm}. It should be noted that as the disturbance, $e_t\left(\mathbf{r}\right)$ and the measurement noise $ \boldsymbol{\varepsilon}_t$ are additive the additive form of the URTS can be used , otherwise the state vector should be augmented with the noise terms. Using the additive form reduces the dimension and the number of sigma points used in the algorithm.
 \begin{algorithm}
 	\begin{small}
 	\caption{The Unscented RTS Smoother}\label{UKFAlgorithm} 
@@ -340,7 +331,7 @@ Since the observation equation \ref{ObservationEquation} is linear the standard 
 		\begin{equation*}
 			\mathbf P_{t +1}^{f-}=\sum_{i=0}^{2L} W_i^{(c)}(\mathcal X_{i,t+1}^{f-}-\hat{\mathbf x}_{t +1}^{f-})(\mathcal X_{i,t+1}^{f-}-\hat{\mathbf x}_{t +1}^{f-})^\top+\boldsymbol \Sigma_e 
 		\end{equation*}
-		compute the filter gain, the filtered state and the filtered covariance matrix using the standard Kalman filter 
+		compute the filter gain, the filtered state and the filtered covariance matrix using the standard Kalman Filter update equations
 		\begin{equation*}
 			\mathcal K_{t+1}=\mathbf P_{t +1}^{f-}\mathbf C ^\top(\mathbf C \mathbf P_{t +1}^{f-}\mathbf C ^\top+\boldsymbol \Sigma_v)^{-1} 
 		\end{equation*}
@@ -484,7 +475,7 @@ The discrete time form of the model is
 \begin{equation}
 	\label{Discrete Time Model1} v_{t+1}\left(\mathbf{r}\right) = \xi v_t\left(\mathbf{r}\right) + T_s \int_\Omega { w\left(\mathbf{r}-\mathbf{r}'\right) f\left(v_t\left(\mathbf{r}'\right)\right) d\mathbf{r}'} + T_s u_t\left(\mathbf{r}\right), 
 \end{equation}
-where $\xi = 1 - T \zeta$. 
+where $\xi = 1 - T_s \zeta$. 
 \section{Numerical Simulation of IDE Model}\label{Space Discretization} To solve the intregro-difference equation in Eq.~\ref{Discrete Time Model1} we define the spatial aspect of the model on a regular square $i,j$ grid of neural masses, where the spatial step size $\Delta \mathbf{r}_i = \Delta \mathbf{r}_j = \Delta $ giving 
 \begin{eqnarray}
 	\label{discrete space} \lefteqn{v_{t+1}\left(\mathbf{r}_{ij}\right)=}\nonumber\\
