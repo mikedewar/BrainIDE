@@ -291,9 +291,12 @@ The dynamic field must be spatially oversampled by using a larger number of sens
 
 % 
 % Due to the high dimensionality of the brain and the current electrode systems, we can not expect to have more sensors than basis functions.
-\section{State and Parameter Estimation}\label{StateAndParameterEstimationSection} In this section we describe the procedure for estimating the states that scale the field basis functions, $\mathbf{x}_t$, the connectivity kernel parameters, $\boldsymbol \theta$, and the synaptic time constant, $\xi$. The estimation process consists of a two part iterative algorithm, consisting of the state estimation step followed by the parameter estimation step. At each iteration, the state estimate sequence is used to calculate the parameter set and the resulting parameters is used to generate a new state sequence for the next iteration. The procedure stops when the algorithm converges. The algorithm is initialized using a bounded random state sequence which guarantees the initial parameter set forms a stable kernel.
+\section{State and Parameter Estimation}
+\label{StateAndParameterEstimationSection} 
 
-The state estimation technique uses the Unscented Rauch Tung Striebel Smoother (URTSS)~\cite{Sarkka2010}. The URTSS uses the Unscented Kalman Filter (UKF)~\cite{Julier1997,Merwe2003} in the forward iteration to estimate posterior states, $\hat{\mathbf x}_t^{f}$, followed by a backward iteration to compute the smoothed state estimates, $\hat{\mathbf x}_t^{b}$. The first and the second order moments of the predicted state is captured by propagating the so-called sigma points through the state equation. The sigma points $\mathcal X_i$ are calculated using the unscented transform as follows
+In this section we describe the procedure for estimating the states that scale the field basis functions, $\mathbf{x}_t$, the connectivity kernel parameters, $\boldsymbol \theta$, and the synaptic time constant, $\xi$. The estimation process consists of a two part iterative algorithm, consisting of the state estimation step followed by the parameter estimation step. At each iteration, the state estimate sequence is used to calculate the parameter set and the resulting parameters are used to generate a new state sequence for the next iteration. The procedure stops when the algorithm converges. The algorithm is initialized using a bounded random state sequence which guarantees the initial parameter set forms a stable kernel.
+
+The state estimation technique uses the Unscented Rauch Tung Striebel Smoother (URTSS)~\cite{Sarkka2010}. The URTSS uses the Unscented Kalman Filter (UKF)~\cite{Julier1997, Merwe2003} in the forward iteration to estimate posterior states, $\hat{\mathbf x}_t^{f}$, followed by a backward iteration to compute the smoothed state estimates, $\hat{\mathbf x}_t^{b}$. The first and the second order moments of the predicted state is captured by propagating the so-called sigma points through the state equation. The sigma points $\mathcal X_i$ are calculated using the unscented transform as follows
 \begin{equation}\label{eq:sigmapoints1}
 	\mathcal X_{0}=\bar x 
 \end{equation}
@@ -303,7 +306,7 @@ The state estimation technique uses the Unscented Rauch Tung Striebel Smoother (
 \begin{equation}\label{eq:sigmapoints2}
 	\mathcal X_{i}=\bar x-(\sqrt{( L + \lambda)\mathbf P_x})_{i- L} \quad i= L+1, \dots, 2 L 
 \end{equation}
-where $(\sqrt{( L + \lambda)\mathbf P_x})_i$ is the ith column of the weighted matrix squre root of  $\mathbf P_x$ and  $L$ is the dimension of the state space. The total number of sigma points is $2L+1$. The scaling parameter $\lambda$ is defined as 
+where $(\sqrt{( L + \lambda)\mathbf P_x})_i$ is the $i$th column of the weighted matrix square root of  $\mathbf P_x$ and  $L$ is the dimension of the state space. The total number of sigma points is $2L+1$. The scaling parameter $\lambda$ is defined as 
 \begin{equation}\label{eq:sigmapoints3}
 	\lambda=\alpha^2( L+\kappa)- L 
 \end{equation}
@@ -317,7 +320,7 @@ where $\alpha$, $\beta$ and $\kappa$ are constants (see ~\cite{Haykin2001} for m
 \begin{equation}
 	\mathbf W_i^{(m)}=\mathbf W_i^{(c)}=\frac{1}{2( L+\lambda)} \quad i=1, \dots, 2L. 
 \end{equation}
-Since the observation equation \ref{ObservationEquation} is linear the standard Kalman filter can be used to update the predicted states. The state estimates from the forward filtering are used to form a new set of sigma points for the smoother, as described above. In order to compute the smoother gain the predicted cross-covariance matrix of the states needs to be calculated. A summary of the URTSS procedure is given in algorithm~\ref{UKFAlgorithm}. It should be noted that as the disturbance, $e_t\left(\mathbf{r}\right)$ and the measurement noise $ \boldsymbol{\varepsilon}_t$ are additive the additive form of the URTS can be used , otherwise the state vector should be augmented with the noise terms. Using the additive form reduces the dimension and the number of sigma points used in the algorithm.
+Since the observation equation \ref{ObservationEquation} is linear the standard Kalman filter can be used to update the predicted states. The state estimates from the forward filtering are used to form a new set of sigma points for the smoother, as described above. In order to compute the smoother gain the predicted cross-covariance matrix of the states needs to be calculated. A summary of the URTSS procedure is given in algorithm~\ref{UKFAlgorithm}. It should be noted that as the disturbance $e_t\left(\mathbf{r}\right)$ and the measurement noise $\boldsymbol{\varepsilon}_t$ are additive the additive form of the URTS can be used , otherwise the state vector should be augmented with the noise terms. Using the additive form reduces the dimension and the number of sigma points used in the algorithm.
 \begin{algorithm}
 	\begin{small}
 	\caption{The Unscented RTS Smoother}\label{UKFAlgorithm} 
