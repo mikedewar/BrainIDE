@@ -397,7 +397,7 @@ Alternatives to the UKF are the Extended Kalman Filter (EKF)~\cite{Haykin2001} a
 \end{center}
 
 The sensors were spaced in a regular square grid, where the number of sensors was 100, sensor width $\sigma^2_m$ was 1.44 which equals $2$~mm full width at half maximum, with spacing $\Delta_y$ equal to $2.22$~mm. This arrangement modelled the recording as having some cross talk, which is typical from neurophysiological recordings. Note, sensor design to guarantee representation of the field can be achieved using the frequency analysis from section~\ref{SpectralAnalysisSection} given access to the true field. \omg{From frequency analysis the separation is $2.77$, with $\rho = 2$ (note same as basis function).} 
-   \begin{figure}\label{fig:experimental design}
+   \begin{figure}[th]\label{fig:experimental design}
    	\begin{center}
    		\includegraphics[width=0.3\textwidth]{./Graph/ExperimentFigurePy_1.pdf} 
    	\end{center}
@@ -432,7 +432,7 @@ The spatial frequency of the observations is shown in figure~\ref{}. The peak po
 \end{figure*}
 Following this, the distance between basis function, $\Delta_b$, was set to $2.5$ and the basis function width, $\sigma_{\phi}^2$, was set to 3.6, 3.16 mm full width at half maximum. Analysis said 3.9 from Parham's derivation, but 3.6 still overlaps and allows more high frequency details to be represented.
 
-\subsection{State and Parameter Estimates} To demonstrate the performance of the parameter and state estimation, $200$ realisations of the data were generated. Each realisation consisted of 200 ms of data and the estimation was applied to the final 200 ms, allowing the model to stabilise. The initial state and parameters were unknown to the estimator. The state estimates were evaluated by comparing the field reconstruction to the true field using the mean over time of the RMSE and standard deviation of the RMSE. The distribution of the parameters and the resulting kernel are shown in figure~\ref{fig:Parameters} and figure~\ref{fig:KernelEstimates} respectively. Although a wide distribution can be seen over the parameters the ratio between them remains almost constant as shown in figure~\ref{}.
+\subsection{State and Parameter Estimates} To demonstrate the performance of the parameter and state estimation, $200$ realisations of the data were generated. Each realisation consisted of 200 ms of data and the estimation was applied to the final 200 ms, allowing the model to stabilise. The initial state and parameters were unknown to the estimator. The state estimates were evaluated by comparing the field reconstruction to the true field using the mean over time of the RMSE and standard deviation of the RMSE. The distribution of the parameters and the resulting kernel are shown in figure~\ref{fig:Parameters} and figure~\ref{fig:KernelEstimates} respectively. Although a wide distribution can be seen over the parameter estimates the ratio between them remans in a narrow range as shown in figure~\ref{fig:ParametersRatio}. One snapshot for the original and the field estimate and the corresponding error are illustrated in figure~\ref{fig:FieldEstimate}.
 \begin{figure}
 \includegraphics[width=0.5\textwidth]{./Graph/KernelEstimate_KernelFreqResponse.pdf}
 \caption{Mean kernel estimates over 272 runs ;  true and estimated kernels are shown by solid
@@ -445,6 +445,13 @@ and dashed line respectively, the red area shows 95\% confedence interval; top: 
 \caption{Distribution of the parameters ratios over 272 runs.}
 \label{fig:ParametersRatio}
 \end{figure}
+\begin{figure*}[!th] 
+\subfigure[][]{\includegraphics[width=2in]{./Graph/TrueField90.pdf}}
+\subfigure[][]{\includegraphics[width=2in]{./Graph/EstimatedField90.pdf}}
+\subfigure[][]{\includegraphics[width=2in]{./Graph/EstimationError90.pdf}}\\
+\caption{One snapshot of the spatial field; a: True field; b: Estimated field; c: The absolute error.}
+\label{fig:FieldEstimate}
+\end{figure*}
 \section{Discussion}\label{DiscussionSection}
 \begin{itemize}
 	\item if we don't know the frequency analysis or the system is marginally sampled or under-sampled, the best we can do is have the basis functions the same as the sensor kernel. \wtf{why wouldn't it be better to have, say, twice as many basis functions as we have sensors, at half the width?} 
