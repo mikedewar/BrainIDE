@@ -432,7 +432,7 @@ The spatial frequency of the observations is shown in figure~\ref{}. The peak po
 \end{figure*}
 Following this, the distance between basis function, $\Delta_b$, was set to $2.5$ and the basis function width, $\sigma_{\phi}^2$, was set to 3.6, 3.16 mm full width at half maximum. Analysis said 3.9 from Parham's derivation, but 3.6 still overlaps and allows more high frequency details to be represented.
 
-\subsection{State and Parameter Estimates} To demonstrate the performance of the parameter and state estimation, $200$ realisations of the data were generated. Each realisation consisted of 200 ms of data and the estimation was applied to the final 200 ms, allowing the model to stabilise. The initial state and parameters were unknown to the estimator. The distribution of the parameters and the resulting kernel are shown in figure~\ref{fig:Parameters} and figure~\ref{fig:KernelEstimates} respectively. Although a wide distribution can be seen over the parameter estimates the ratio between them remans in a narrow range as shown in figure~\ref{fig:ParametersRatio}. The state estimates for one realization were evaluated by comparing the field reconstruction to the true field using the mean over time of the Root Mean Square Error (RMSE) and standard deviation of the RMSE giving $0.19\pm 0.01$. The mean of RMSE over time is also shown in figure~\ref{fig:MRMSE} One snapshot for the original and the field estimate and their corresponding error are illustrated in figure~\ref{fig:FieldEstimate}.
+\subsection{State and Parameter Estimates} To demonstrate the performance of the parameter and state estimation, $200$ realisations of the data were generated. Each realisation consisted of 200 ms of data and the estimation was applied to the final 200 ms, allowing the model to stabilise. The initial state and parameters were unknown to the estimator. The distribution of the parameters and the resulting kernel are shown in figure~\ref{fig:Parameters} and figure~\ref{fig:KernelEstimates} respectively. Although a wide distribution can be seen over the parameter estimates the ratio between them remans in a narrow range as shown in figure~\ref{fig:ParametersRatio}. The state estimates for one realization were evaluated by comparing the field reconstruction to the true field using the mean over time of the Root Mean Square Error (RMSE) and standard deviation of the RMSE giving $0.19\pm 0.01$. The RMSE of the field estimate over time is also shown in figure~\ref{fig:RMSE} One snapshot for the original and the field estimate and their corresponding error are illustrated in figure~\ref{fig:FieldEstimate}.
 \begin{figure}
 \includegraphics[width=0.5\textwidth]{./Graph/KernelEstimate_KernelFreqResponse.pdf}
 \caption{Mean kernel estimates over 200 runs ;  true and estimated kernels are shown by solid
@@ -445,11 +445,11 @@ and dashed line respectively, the red area shows 95\% confedence interval; top: 
 \caption{Distribution of the parameters ratios over 272 runs.}
 \label{fig:ParametersRatio}
 \end{figure}
-  \begin{figure}\label{fig:MRMSE}
+  \begin{figure}\label{fig:RMSE}
    	\begin{center}
    		\includegraphics[width=0.5\textwidth]{./Graph/MRMSE.pdf} 
    	\end{center}
-   	\caption{The mean of RMSE over time.} 
+   	\caption{The RMSE of the estimated field over time.} 
    \end{figure}
 
 
