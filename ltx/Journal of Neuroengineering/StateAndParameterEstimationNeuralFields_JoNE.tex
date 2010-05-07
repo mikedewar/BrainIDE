@@ -426,9 +426,12 @@ The spatial frequency of the observations is shown in figure~\ref{}. The peak po
 
 \begin{figure*}
 	\begin{center}
-		\includegraphics[scale=0.5, angle=-90]{./Graph/FreqAnalysis.pdf}
+\subfigure[][]{\includegraphics[width=0.3\textwidth]{./Graph/BasisChar.pdf}}
+\subfigure[][]{\includegraphics[width=0.3\textwidth]{./Graph/SensorChar.pdf}}
+\subfigure[][]{\includegraphics[width=0.3\textwidth]{./Graph/ObservationFrequencyResponse.pdf}}
 	\end{center}
-	\caption{..... \textbf{A}. Field. \textbf{B} Field filtered using sensor kernel. \textbf{C}. Observations.} \label{fig:FreqAnalysis} 
+	\caption{a:Field basis function frequency response; b:Sensor frequency response ; c: The average FFT of the observed field.} 
+\label{fig:FreqAnalysis} 
 \end{figure*}
 Following this, the distance between basis function, $\Delta_b$, was set to $2.5$ and the basis function width, $\sigma_{\phi}^2$, was set to 3.6, 3.16 mm full width at half maximum. Analysis said 3.9 from Parham's derivation, but 3.6 still overlaps and allows more high frequency details to be represented.
 
