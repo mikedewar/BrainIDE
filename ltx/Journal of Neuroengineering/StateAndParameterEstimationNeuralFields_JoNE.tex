@@ -110,32 +110,32 @@ In this paper, we demonstrate for the first time how intracortical connectivity 
 The paper proceeds by first deriving the continuum neural field equations in Section~\ref{NeuralModelSection}. Next, a reduced finite dimensional neural field model is derived. The model is reduced by approximating the neural field using a set of continuous basis functions, weighted by a finite dimensional state vector. Section~\ref{SpectralAnalysisSection} establishes conditions using spatial frequency analysis for both sensor and basis function spacing and geometry, such that the dominant dynamics of the neural field can be represented by the reduced model. Following this, the state and parameter estimation procedure is described in Section~\ref{StateAndParameterEstimationSection}. The results for the spatial frequency analysis and parameter estimation are then presented in Section~\ref{ResultsSection}. The implications and limitations of this framework are discussed in Section~\ref{DiscussionSection} along with planned future developments. Finally, we provide concluding remarks in Section~\ref{ConclusionSection}.
 
 \section{Neural Field Model}\label{NeuralModelSection} In this section, we describe a variant of the WC or Amari style neural field model \cite{Wilson1973,Amari1977} that was used to create our intracortical connectivity estimator. Neural field models relate mean firing rates of pre-synaptic neural populations to mean post-synaptic membrane potentials. They are popular due to being parsimonious yet having a strong link with the underlying physiology. Each neural population represents a functional cortical processing unit, such as a column. The columnar organisation of the cortex is continuous, where pyramidal cells are members of many columns. In general, cortical structure can be modelled in a physiologically plausible manner as being locally homogeneous (in short range intracortical connectivity) and heterogeneous (in long range cortico-cortical and corticothalamic connectivity)~\cite{Jirsa2009,Qubbaj2007}. Locally, each column is thought be connected via symmetric short range local excitation, with surround inhibition \cite{Braitenberg1998}. For example, this structural organisation is most studied in the visual system, where the surrounding inhibition effectively tunes a cortical column to a particular receptive visual field~\cite{Sullivan2006}. Neural field models are descriptive of a range of neurodynamics of the cortex such as evoked potentials, visual hallucinations, and epileptic behaviour~\cite{David2003,Bressloff2001,Breakspear2006}. 
-Field models are also capable of generating complex patterns of activity such as Turing patterns, spirals, and traveling oscillations~\cite{Amari1977,Coombes2005,Coombes2007}
+Field models are also capable of generating complex patterns of activity such as Turing patterns, spirals, and traveling oscillations~\cite{Amari1977,Coombes2005,Coombes2007}.
 
 \subsection{Derivation of the Integro-difference Equation Representation}
 
-The model relates the average number of action potentials $g(\mathbf{r},t)$ arriving at position $r$ to the local post synaptic membrane voltage $v(\mathbf{r},t)$. The post-synaptic potentials generated at a neuronal population at location $\mathbf{r}$ by action potentials arriving from all other connected populations at locations $\mathbf{r}'$ can be described by 
+The model relates the average number of action potentials $g(\mathbf{r},t)$ arriving at position $\mathbf{r}$ to the local post synaptic membrane voltage $v(\mathbf{r},t)$. The post-synaptic potentials generated at a neuronal population at location $\mathbf{r}$ by action potentials arriving from all other connected populations at locations $\mathbf{r}'$ can be described by 
 \begin{equation}
 	\label{SpikesToPotential} v\left( {\mathbf{r},t} \right) = \int_{ - \infty }^t {h\left( {t - t'} \right)g\left( {\mathbf{r},t'} \right)dt'}. 
 \end{equation}
-The post-synaptic response kernel $h(t)$ is described by \todo{citation needed} \omg{this is about the most vanilla bit} 
+The post-synaptic response kernel $h(t)$ is described by 
 \begin{equation}
 	\label{SynapticRespKernel} h(t) = \eta(t)\exp{\left(-\zeta t\right)}. 
 \end{equation}
 where $\zeta=\tau^{-1}$ and $\tau$ is the synaptic time constant and $\eta(t)$ is the Heaviside step function. Nonlocal interactions between cortical populations are described by 
 \begin{equation}
-	\label{RateBasedInteractions} g\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( v\left( \mathbf{r}',t \right) \right)d\mathbf{r}'} + u\left(\mathbf{r},t\right), 
+	\label{RateBasedInteractions} g\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( v\left( \mathbf{r}',t \right) \right)d\mathbf{r}'}, 
 \end{equation}
-where $f(\cdot)$ is the firing rate function, $w(\cdot)$ is the spatial connectivity kernel, and $\Omega$ is the spatial domain, representing a cortical sheet or surface. The term $u\left(\mathbf{r},t\right)$ represents a known external input \wtf{Do we actually use the input in this paper, or is it just dragged around the derivation to be discarded in the conclusion?}. The connectivity kernel is typically a ``Mexican hat'' function \todo{which describes strong local activation, weak mid-range repression and weak long-range activation \cite{}}. The exact shape of this kernel is assumed to vary across patients, and hence needs to be inferred from data. 
+where $f(\cdot)$ is the firing rate function, $w(\cdot)$ is the spatial connectivity kernel, and $\Omega$ is the spatial domain, representing a cortical sheet or surface. The connectivity kernel is typically a ``Mexican hat'' function which describes strong local activation, weak mid-range repression and weak long-range activation. The exact shape of this kernel is assumed to vary across patients, and hence needs to be inferred from data. 
 
 The firing rate of the presynaptic neurons is related to the postsynaptic membrane potential by the sigmoidal activation function 
 \begin{equation}
 	\label{ActivationFunction} f\left( v\left( \mathbf{r}', t \right) \right) = \frac{f_{max}\left(\mathbf{r}\right)}{1 + \exp \left( \varsigma \left( v_0\left( \mathbf{r} \right) - v\left(\mathbf{r}',t\right) \right) \right)}. 
 \end{equation}
-The parameters $f_{max}$ and $v_0$ describe the maximum firing rate and firing threshold of the neural populations. The parameter $\varsigma$ governs the slope of the sigmoid. By substituting \ref{RateBasedInteractions} into \ref{SpikesToPotential} we get the spatiotemporal model 
+The parameters $f_{max}$ and $v_0$ describe the maximum firing rate and firing threshold of the neural populations. The parameter $\varsigma$ governs the slope of the sigmoid. By substituting equation~\ref{RateBasedInteractions} into \ref{SpikesToPotential} we get the spatiotemporal model 
 \begin{eqnarray}
 	\label{FullDoubleIntModel} v\left(\mathbf{r},t\right) &=&  \int_{-\infty}^t h\left(t - t'\right) \\
-	&\times&\left(\int_\Omega w\left(\mathbf{r},\mathbf{r}'\right) f\left( v\left( \mathbf{r}',t \right)\right)d\mathbf{r}' + u(\mathbf{r},t) \right)dt'. \nonumber
+	&\times&\int_\Omega w\left(\mathbf{r},\mathbf{r}'\right) f\left( v\left( \mathbf{r}',t \right)\right)d\mathbf{r}'dt'. \nonumber
 \end{eqnarray}
 To arrive at the final form of the model we shall state the synaptic response kernel as a Green's function 
 \begin{equation}
@@ -144,14 +144,14 @@ To arrive at the final form of the model we shall state the synaptic response ke
 where $D=\frac{d}{dt} + \zeta$ is a temporal differential operator and $\delta(t)$ is the Dirac-delta function giving 
 \begin{eqnarray}
 	\label{FinalFormContinuous} \frac{dv\left( \mathbf{r},t \right)}{dt} &+& \zeta v\left( \mathbf{r},t \right) = \\
-	&&\int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)dr'} + u\left(\mathbf{r},t\right). \nonumber
+	&&\int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)dr'}. \nonumber
 \end{eqnarray}
-To arrive at the integro-difference equation (IDE) form of the model we discretise time using a first-order Euler method (see~\ref{Time Discretization}) giving 
+To arrive at the integro-difference equation (IDE) form of the model we discretise time using a first-order Euler method (see Appendix~\ref{Time Discretization}) giving 
 \begin{eqnarray}
 	\label{DiscreteTimeModel} v_{t+1}\left(\mathbf{r}\right) &=& \xi v_t\left(\mathbf{r}\right) + T_s \int_\Omega { w\left(\mathbf{r}-\mathbf{r}'\right) f\left(v_t\left(\mathbf{r}'\right)\right) d\mathbf{r}'} \nonumber\\ 
-	&+& T_s u_t\left(\mathbf{r}\right) + e_t\left(\mathbf{r}\right), 
+	&+& e_t\left(\mathbf{r}\right), 
 \end{eqnarray}
-where $T_s$ is the time step, $\xi = 1-\zeta T_s$ and $e_t$ is i.i.d. such that $e_t\sim\mathcal{GP}(\mathbf 0,\gamma(\mathbf{s}-\mathbf{r}))$. This term was added to account for uncertainty in the model. To generate iEEG/LFP data we used the output function 
+where $T_s$ is the time step, $\xi = 1-\zeta T_s$ and $e_t(\mathbf{r})$ is i.i.d. such that $e_t\sim\mathcal{GP}(\mathbf 0,\gamma(\mathbf{s}-\mathbf{r}))$. This term was added to account for uncertainty in the model. To generate iEEG/LFP data we used the output function 
 \begin{equation}
 	\mathbf{y}_t = \int_{\Omega}{m\left(\mathbf{r}_n-\mathbf{r}'\right)v_t\left(\mathbf{r}'\right)d\mathbf{r}'} + \boldsymbol{\varepsilon}_t, 
 \end{equation}
@@ -161,13 +161,12 @@ where $\mathbf{r}_n$ defines the location of the sensors in the field where $n=1
 \end{equation}
 
 \subsection{Derivation of Finite Dimensional State-Space Model} 
-
 In order to implement standard estimation techniques we use a decomposition of the field using a set of Gaussian basis functions defined by
 \begin{equation}\label{eq:FieldBasisFunction}
 	\phi\left(\mathbf{r}-\mathbf{r}'\right) =
 \exp{\left(-\frac{(\mathbf{r}-\mathbf{r}')^\top(\mathbf{r}-\mathbf{r}')}{\sigma_{\phi}^2}\right)}. 
 \end{equation}
- Decomposition allows a continuous field to be represented by a finite dimensional state vector. This allows for the application of standard nonlinear, non-Gaussian state estimation methods such as the unscented Kalman filter. The field decomposition is described by 
+ Decomposition allows a continuous field to be represented by a finite dimensional state vector. This facilitates application of standard nonlinear state estimation methods such as the unscented Kalman filter. The field decomposition is described by 
 \begin{equation}
 	\label{DefFieldDecomp} v_t\left(\mathbf{r}\right) \approx \boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) \mathbf{x}_t, 
 \end{equation}
@@ -175,10 +174,10 @@ where $\mathbf{\boldsymbol{\phi}}(\mathbf{r})$ is a vector of Gaussian basis fun
 \begin{equation}\label{DefKernelDecomp}
 	 w\left(\mathbf{r}-\mathbf{r}'\right) =\boldsymbol{\psi}^\top\left(\mathbf{r}-\mathbf{r}'\right) \boldsymbol{\theta}.
 \end{equation}
-We will assume we know the parametric form of the connectivity basis functions, where the parameter $\boldsymbol{\theta}$ is unknown. Each connectivity basis function can, individually, be considered a layer in the Wilson and Cowan model, representing short range excitation, surround inhibition and mid-range excitation. Making substitutions of~\ref{DefFieldDecomp} and~\ref{DefKernelDecomp} into~\ref{DiscreteTimeModel} we get 
+We will assume we know the parametric form of the connectivity basis functions, where the parameter $\boldsymbol{\theta}$ is unknown. Each connectivity basis function can, individually, be considered a layer in the Wilson and Cowan model, representing short range excitation, surround inhibition and mid-range excitation. Making substitutions of equations~\ref{DefFieldDecomp} and~\ref{DefKernelDecomp} into~\ref{DiscreteTimeModel} we get 
 \begin{eqnarray}
 	\label{reduced continuous model}\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_{t+1}&=& T_s\int_\Omega{f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t )\boldsymbol{\psi}^{\top}(\mathbf{r}-\mathbf{r}')d\mathbf{r}'}\boldsymbol{\theta}\nonumber \\ 
-	&-& \xi\boldsymbol{\phi}^{\top}(\mathbf{r})x_t + T_s u_t(\mathbf{r})+ e_t(\mathbf{r}). 
+	&-& \xi\boldsymbol{\phi}^{\top}(\mathbf{r})x_t + e_t(\mathbf{r}). 
 \end{eqnarray}
 By defining the term 
 \begin{equation}
@@ -186,13 +185,12 @@ By defining the term
 \end{equation}
 and manipulating the model (see Appendix~\ref{Simplifying Decomposition}) we isolate the state vector to form a state-space model 
 \begin{eqnarray}
-	\label{Homogeneous SS Model} \mathbf{x}_{t+1} &=& q(\mathbf{x}_t)\boldsymbol{\theta} - \xi\mathbf{x}_t + k\left(u_t\left(\mathbf{r}\right)\right) + \mathbf{e}_t \\
-	&=& Q\left(\mathbf{x}_t,u_t(\mathbf{r})\right) + \mathbf{e}_t 
+	\label{Homogeneous SS Model} \mathbf{x}_{t+1} &=& q(\mathbf{x}_t)\boldsymbol{\theta} - \xi\mathbf{x}_t + \mathbf{e}_t \\
+	&=& Q\left(\mathbf{x}_t\right) + \mathbf{e}_t 
 \end{eqnarray}
 where
 \begin{eqnarray}
-Q\left(\mathbf{x}_t,u_t(\mathbf{r})\right)&=& q(\mathbf{x}_t)\boldsymbol{\theta} - \xi\mathbf{x}_t + k\left(u_t\left(\mathbf{r}\right)\right)\label{eq:QmatrixForSigmapoints}\\
-	k(u_t(\mathbf{r})) &=& \boldsymbol{\Gamma}^{-1}T_s \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) u_t\left(\mathbf{r}\right)d\mathbf{r}} \\
+Q\left( \mathbf{x}_t \right) &=& q(\mathbf{x}_t)\boldsymbol{\theta} - \xi\mathbf{x}_t \label{eq:QmatrixForSigmapoints}\\
 	\mathbf{e}_t &=& \label{eq:Reducednoiseterm} \boldsymbol{\Gamma}^{-1}\int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})d\mathbf{r}}, 
 \end{eqnarray}
 where $\mathbf{e}_t$ is a zero-mean normal white noise term with the covariance (see~\ref{ColoredNoise}) 
