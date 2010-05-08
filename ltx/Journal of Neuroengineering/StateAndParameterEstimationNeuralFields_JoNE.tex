@@ -454,16 +454,23 @@ and dashed line respectively, the red area shows 95\% confedence interval; top: 
 \caption{One snapshot of the spatial field; a: True field; b: Estimated field; c: The absolute error.}
 \label{fig:FieldEstimate}
 \end{figure*}
-\section{Discussion}\label{DiscussionSection}
 
+\section{Discussion}\label{DiscussionSection}
 Generating patient specific neural field models has the potential to have significant impact on several areas of neuroscientific research and clinical neurology. Specifically, the development of a patient-specific state-space model will allow for the application of systems theoretical techniques from engineering to be applied to neuro-dynamics. For example, state tracking could be used in brain-computer interface or epileptic seizure prediction applications, where specific regions of the state-space may indicate intent of movement or imminent seizures. In addition, a patient specific state-space model will allow application of control engineering techniques to robustly prevent the neuro-dynamics entering pathological regions of state-space using electrical stimulation. 
 
 Parameter estimation may have significant impact on the treatment of disease. For example, recent theoretical work has demonstrated that seemingly similar electrographic seizures in absence epilepsy may arise from abnormal excitatory or inhibitory mechanisms~\cite{Marten2009}. These very different mechanisms would require very different medications for successful treatment. However, the underlying mechanisms would be hidden from the clinician in the normal clinical setting. Successful parameter estimation has the potential to reveal these hidden mechanisms allowing for improved treatment strategies.
 
+Testing if this estimation framework can 
+We have presented a novel framework for model reduction to make estimation of neural field practical. This systematic model reduction allows for the choice a complexity. The level of detail of the field is related to the number and width of the field basis functions, thereby providing a flexible approach where detail and computational complexity can be tradeoff.. For certain application it might be sufficient to capture only low (spatial) frequency dynamics. 
+
+Here we assumed knowledge of the width of the kernel basis functions. If a future work we plan to extend this work to unknown widths. 
+
+In future work, we aim to show how heterogeneous can be modelled within this formulation. We will still assume a isotropic connectivity kernel however heterogenaities can be modelled by placing basis function c
+
 \begin{itemize}
 	\item if we don't know the frequency analysis or the system is marginally sampled or under-sampled, the best we can do is have the basis functions the same as the sensor kernel. \wtf{why wouldn't it be better to have, say, twice as many basis functions as we have sensors, at half the width?} 
 	\item alternatives to frequency analysis are model selection... \wtf{This frequency analysis \emph{is} model selection. Maybe what's meant here is that other model selection approaches could be applied? Some sort of IC optimisation?} 
-	\item the width of the connectivity basis functions \wtf{do you mean width of the kernel? I'm not sure about this - as the parameters increase the kernel width increases right? So maybe you mean the basis functions, but don't we estimate these widths from the frequency analysis?} here is known exactly. In practice we don't 
+
 	\item the number of basis functions could be set higher to get a better representation of the field, however this is limited by computation complexity. \wtf{Unless you are going to specify the computational complexity, in terms of the number of basis functions, it might be better to say something like ``there is a relationship between the number of basis functions that represent the field and the computational complexity of the estimation algorithm - the more basis functions the longer it takes to estimate''} 
 	\item Discuss the novelty of using the reduced model (BrainIDE) for creating patient specific models. \omg{hell yes. This should be front and centre!} 
 	\item The size of the dentritic arbour is consistent in the cortex. \omg{?} 
