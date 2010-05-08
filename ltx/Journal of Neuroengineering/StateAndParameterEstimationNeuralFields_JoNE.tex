@@ -374,6 +374,13 @@ Alternatives to the UKF are the Extended Kalman Filter (EKF)~\cite{Haykin2001} a
 	$f_{max}$ & 20 & spikes/s \\
 	$\varsigma$ & 0.8 & spike/mV\\
 	$v_0$ & 2 & mV\\
+	$\boldsymbol{\theta}$ & $\left[\begin{array}{ccc}
+	10 &-8 &0.5
+	\end{array}
+	\right]^{\top}$ & synaptic strength\\
+	$\sigma_{\psi,1}$ & 1.8 & inner connectivity kernel width\\
+	$\sigma_{\psi,2}$ & 2.4 & middle connectivity kernel width\\
+	$\sigma_{\psi,3}$ & 6 & outer connectivity kernel width\\
 	\hline\hline
 \end{tabular}\label{tab:Model Parameters}
 \end{center}
@@ -456,7 +463,7 @@ and dashed line respectively, the red area shows 95\% confedence interval; top: 
 \section{Discussion}\label{DiscussionSection}
 This paper presents a novel framework for model reduction to facilitate practical state and parameter estimation of neural fields. The level of detail of the estimated field is related to the basis functions decomposition, thereby providing a flexible approach where a trade-off can be made between physiological detail and computational complexity. The choice of Gaussian basis functions can be justified by the existence of the so called bump solutions for this class of model~\cite{Coombes2005}. 
 
-The frequency analysis and model selection tools presented in this paper specify the sensor and field basis function arrangement required to form a state-space model that is capable of capturing the dominant cortical dynamics. These tools can be also used to better design electrophysiological recording techniques to advance model-based neural parameter estimation in order to avoid spatial aliasing. The effect of the basis function decomposition will restrict the frequency content of the estimated field. This is evident in when comparing Figures~\ref{fig:FieldFFT} and~\ref{fig:EstimatedFieldFFT}. Since the frequency content of the field is governed by disturbance covariance and the shape of the connectivity kernel some information will be lost due the decomposition. The implication of this loss of information is the high spatial frequency content of the connectivity kernel. This is demonstrated in Figure~\ref{fig:KernelEstimates} of the results where the frequency content of the estimated connectivity kernel is less than the true kernel.
+The frequency analysis and model selection tools presented in this paper specify the sensor and field basis function arrangement required to form a state-space model that is capable of capturing the dominant cortical dynamics. These tools can be also used to better design electrophysiological recording techniques to advance model-based neural parameter estimation in order to avoid spatial aliasing. The effect of the basis function decomposition will restrict the frequency content of the estimated field. This is evident in when comparing Figures~\ref{fig:FieldFFT} and~\ref{fig:EstimatedFieldFFT} where the estimated field field is spatially band-limited. The frequency content of the field is governed by disturbance covariance and the shape of the connectivity kernel, therefore some information will be lost due to the field decomposition. The implication of this loss of information is the high spatial frequency content of the connectivity kernel. This is demonstrated in Figure~\ref{fig:KernelEstimates} of the results where the frequency content of the estimated connectivity kernel is less than the true kernel.
 
 Even though the high frequency content of the connectivity kernel is lost though the basis function decomposition, the dominant dynamics are still captured with the estimated reduced model. This is illustrated in~\ref{fig:FieldEstimate}. In addition, the ratio of the kernel parameters falls into a tight distribution as seen in Figure~\ref{fig:ParametersRatio}. This indicates that the ratio of excitation to inhibition can be tracked with this approach. 
 
