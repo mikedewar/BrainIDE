@@ -144,7 +144,7 @@ To arrive at the final form of the model we shall state the synaptic response ke
 where $D=\frac{d}{dt} + \zeta$ is a temporal differential operator and $\delta(t)$ is the Dirac-delta function giving 
 \begin{eqnarray}
 	\label{FinalFormContinuous} \frac{dv\left( \mathbf{r},t \right)}{dt} &+& \zeta v\left( \mathbf{r},t \right) = \\
-	&&\int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)dr'}. \nonumber
+	&&\int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)d\mathbf{r}'}. \nonumber
 \end{eqnarray}
 To arrive at the integro-difference equation (IDE) form of the model we discretise time using a first-order Euler method (see Appendix~\ref{Time Discretization}) giving 
 \begin{eqnarray}
@@ -456,31 +456,33 @@ and dashed line respectively, the red area shows 95\% confedence interval; top: 
 \end{figure*}
 
 \section{Discussion}\label{DiscussionSection}
+This paper presents a novel framework for model reduction to make estimation of neural field practical. This systematic model reduction allows for the choice a complexity. The level of detail of the field is related to the number and width of the field basis functions, thereby providing a flexible approach where detail and computational complexity can be tradeoff. For certain application it might be sufficient to capture only low (spatial) frequency dynamics. 
+
+The frequency analysis and model selection tools presented in this paper specifies the sensor and field basis function arrangement required to form a state-space model to capture and model dominant cortical dynamics. These tools can be used to better design experiments and recording techniques to advance model based neural parameter estimation and avoid spatial aliasing. In addition, the assumption homogeneity can be relaxed where heterogeneity can be model by careful placement of field basis functions. For example, if cortical regions have a greater density of neural populations, then more basis functions can be used in these areas. In this scenario, model selection and basis function positioning can be achieved using instantaneous frequency analysis of the the neural field or alternative model selection tools based on information criteria.
+
+To the authors best knowledge, this is the first paper to propose an estimation framework for intracortical connectivity from electrophysiological data. This is important as the connectivity structure at this scale can not be estimated using diffusion tensor imaging due to the fine spatial scale and the high degree of crossing of fibres\omg{ref}. In addition, other non-model based techniques for estimating functional connectivity such as Granger causality \cite{Hesse2003}, the direct transfer function \cite{Kaminski1991}, and partial directed coherence \cite{Sameshima1999} are restricted to the spatial scales of the recording electrodes. The model based technique proposed in this paper estimates the connectivity structure independently of the recording electrode geometry. An advantage of these auto-regressive (AR) based methods is that they allow for anisotropic connectivity, which is present in cortico-cortical fibres. The AR methods are complementary to the proposed model based framework and by combining these methods a more realistic model can be estimated. A recent theoretical study~\cite{Jirsa2009} has demonstrated the importance of this multi-scale structure in generating the characteristic rhythms of the brain.
+
+Long range connectivity can be estimated using DTI \cite{Knock2009}, however this short range connectivity can not estimated using DTI
+
 Generating patient specific neural field models has the potential to have significant impact on several areas of neuroscientific research and clinical neurology. Specifically, the development of a patient-specific state-space model will allow for the application of systems theoretical techniques from engineering to be applied to neuro-dynamics. For example, state tracking could be used in brain-computer interface or epileptic seizure prediction applications, where specific regions of the state-space may indicate intent of movement or imminent seizures. In addition, a patient specific state-space model will allow application of control engineering techniques to robustly prevent the neuro-dynamics entering pathological regions of state-space using electrical stimulation. 
 
 Parameter estimation may have significant impact on the treatment of disease. For example, recent theoretical work has demonstrated that seemingly similar electrographic seizures in absence epilepsy may arise from abnormal excitatory or inhibitory mechanisms~\cite{Marten2009}. These very different mechanisms would require very different medications for successful treatment. However, the underlying mechanisms would be hidden from the clinician in the normal clinical setting. Successful parameter estimation has the potential to reveal these hidden mechanisms allowing for improved treatment strategies.
 
-Testing if this estimation framework can 
-We have presented a novel framework for model reduction to make estimation of neural field practical. This systematic model reduction allows for the choice a complexity. The level of detail of the field is related to the number and width of the field basis functions, thereby providing a flexible approach where detail and computational complexity can be tradeoff.. For certain application it might be sufficient to capture only low (spatial) frequency dynamics. 
+This estimation framework also has theoretical implications. This estimation framework has the potential to allow testing hypotheses that have been generated in theoretical studies and to validate neural field models. For example, it has been hypothesised that so called bump solutions are a possible mechanism for short term memory formation~\cite{Coombes2005}. Using this framework, we can reconstruct a neural field from data, and estimate parameters and check if they correspond the the theoretically derived parameters where these bump solutions can exist. Therefore, this framework has the potential to validate models and test theoretically derived hypotheses. Associating regions of state-space and parameter sets to cognitive can potentially validate theoretical findings. For example, sleep, wake, memory, 
 
 Here we assumed knowledge of the width of the kernel basis functions. If a future work we plan to extend this work to unknown widths. 
 
-In future work, we aim to show how heterogeneous can be modelled within this formulation. We will still assume a isotropic connectivity kernel however heterogenaities can be modelled by placing basis function c
+In future work, we aim to show how heterogeneous can be modelled within this formulation. We will still assume a isotropic connectivity kernel however heterogeneities can be modelled by placing basis function c
 
 \begin{itemize}
 	\item if we don't know the frequency analysis or the system is marginally sampled or under-sampled, the best we can do is have the basis functions the same as the sensor kernel. \wtf{why wouldn't it be better to have, say, twice as many basis functions as we have sensors, at half the width?} 
 	\item alternatives to frequency analysis are model selection... \wtf{This frequency analysis \emph{is} model selection. Maybe what's meant here is that other model selection approaches could be applied? Some sort of IC optimisation?} 
 
-	\item the number of basis functions could be set higher to get a better representation of the field, however this is limited by computation complexity. \wtf{Unless you are going to specify the computational complexity, in terms of the number of basis functions, it might be better to say something like ``there is a relationship between the number of basis functions that represent the field and the computational complexity of the estimation algorithm - the more basis functions the longer it takes to estimate''} 
-	\item Discuss the novelty of using the reduced model (BrainIDE) for creating patient specific models. \omg{hell yes. This should be front and centre!} 
+
 	\item The size of the dentritic arbour is consistent in the cortex. \omg{?} 
-	\item Spatial frequency of field and the relationship to the required density of electrodes/sensors required for estimation or to capture the required information without aliasing. 
-	\item The flexibility of the approach 
-	\item Combining this method with other to incorporate longer range hetrogeneous connectivity. \omg{awesome} 
+
 	\item The need for activity to perform estimation. \omg{To Learn You Must Perturb!} 
 	\item Recent studies using neural field models have demonstrated the theoretical implications of specific connectivity structure of the cortical columns in neural field models, where the connectivity kernel governs the bifurcation points of the system \cite{Hutt2005} and types of oscillations that can be generated \cite{Schmidt2009}. This implies that if we could estimate the connectivity structure for an individual, then we could capture patient specific neurodynamics that lead to various oscillatory states.
-	\item Estimating functional cortical connectivity via EEG promises to shed light on the hierarchy of brain regions that are involved in specific tasks, motivating the use of techniques like DCM. Other comparable methods are based on auto-regressive (AR) modelling of the EEG, MEG, or fMRI times series \todo{[refs!]}. Studies have concentrated on finding functional connectivity patterns using information contained in the AR coefficients using techniques like Granger causality \cite{Hesse2003}, the direct transfer function \cite{Kaminski1991}, and partial directed coherence \cite{Sameshima1999}. Again, like the DCM approach, these methods estimate long range connectivity patterns that does not provide a clear relationship between the continuum field models and data.
-	\item Long range connectivity can be estimated using DTI \cite{Knock2009}, however this short range connectivity can not estimated using DTI
 \end{itemize}
 
 \section{Conclusion}\label{ConclusionSection}
@@ -488,36 +490,36 @@ In future work, we aim to show how heterogeneous can be modelled within this for
 \section{Discrete Time Model}\label{Time Discretization} To form the IDE neural field model a time discretization must be perform. We used a one-step Euler method where Eq.~\ref{FinalFormContinuous} can be approximated by 
 \begin{eqnarray}
 	\label{Euler Approximation} \lefteqn{\frac{v\left( \mathbf{r},t+T \right) - v\left( \mathbf{r},t\right)}{T_s} =}\nonumber\\
-& -&\zeta v\left( \mathbf{r},t \right) + \int_\Omega {w\left( \mathbf{r}-\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)d\mathbf{r}'} + u\left(\mathbf{r},t\right).\nonumber \\ 
+& -&\zeta v\left( \mathbf{r},t \right) + \int_\Omega {w\left( \mathbf{r}-\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)d\mathbf{r}'}.\nonumber \\ 
 \end{eqnarray}
 For clarity, we shall index time points in the discrete time form of the model using the subscript $t$ and the next time point as $t+1$. Rearranging Eq.~\ref{Euler Approximation} we get 
 \begin{eqnarray}
 	\label{Euler Approximation2} v_{t+1}\left( \mathbf{r}\right) &=& v_t\left( \mathbf{r}\right) -T_s \zeta v_t\left( \mathbf{r}\right)\nonumber \\
-&+& T_s \int_\Omega {w\left( \mathbf{r}-\mathbf{r}' \right)f\left( {v_t\left( \mathbf{r}'\right)} \right)d\mathbf{r}'} + T_s u_t\left(\mathbf{r}\right).\nonumber \\ 
+&+& T_s \int_\Omega {w\left( \mathbf{r}-\mathbf{r}' \right)f\left( {v_t\left( \mathbf{r}'\right)} \right)d\mathbf{r}'}.\nonumber \\ 
 \end{eqnarray}
 The discrete time form of the model is 
 \begin{equation}
-	\label{Discrete Time Model1} v_{t+1}\left(\mathbf{r}\right) = \xi v_t\left(\mathbf{r}\right) + T_s \int_\Omega { w\left(\mathbf{r}-\mathbf{r}'\right) f\left(v_t\left(\mathbf{r}'\right)\right) d\mathbf{r}'} + T_s u_t\left(\mathbf{r}\right), 
+	\label{Discrete Time Model1} v_{t+1}\left(\mathbf{r}\right) = \xi v_t\left(\mathbf{r}\right) + T_s \int_\Omega { w\left(\mathbf{r}-\mathbf{r}'\right) f\left(v_t\left(\mathbf{r}'\right)\right) d\mathbf{r}'}, 
 \end{equation}
 where $\xi = 1 - T_s \zeta$. 
 \section{Numerical Simulation of IDE Model}\label{Space Discretization} To solve the intregro-difference equation in Eq.~\ref{Discrete Time Model1} we define the spatial aspect of the model on a regular square $i,j$ grid of neural masses, where the spatial step size $\Delta \mathbf{r}_i = \Delta \mathbf{r}_j = \Delta $ giving 
 \begin{eqnarray}
 	\label{discrete space} \lefteqn{v_{t+1}\left(\mathbf{r}_{ij}\right)=}\nonumber\\
 &&\xi v_t\left(\mathbf{r}_{ij}\right)+T_s \Delta^2\sum_{i=1}^{i=I}{\sum_{j=1}^{j=J}{w\left(\mathbf{r}-\mathbf{r}_{ij}'\right)f\left( v_t\left( \mathbf{r}_{ij}'\right)\right)}}\nonumber\\
-&+& T_s u_t\left(\mathbf{r}\right) + e_t(\mathbf{r}_{i,j}), 
+&+& e_t(\mathbf{r}_{i,j}), 
 \end{eqnarray}
 where $e_t(\mathbf{r}_{i,j}) \sim \mathcal{N}\left(0,\Sigma\right)$. We have used free boundary conditions and extended the spatial domain to alleviate problems associated with edge effects. 
 \section{Reduction to Finite State-Space Model}\label{Simplifying Decomposition} Starting from Eq.~\ref{reduced continuous model} we multiply throughout by $\boldsymbol{\phi}(r)$ and integrate over the spatial domain $\Omega$ to get 
 \begin{eqnarray}
 	\label{StartofReduction}\lefteqn{ \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) d\mathbf{r}} \mathbf{x}_{t+1}=} \nonumber\\
  &&T_s \int_\Omega {\boldsymbol{\phi} (\mathbf{r}) \boldsymbol{\theta}^{\top} \int_\Omega {\boldsymbol{\psi} \left(\mathbf{r}-\mathbf{r}'\right) f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right) \mathbf{x}_t \right)d\mathbf{r}'}d\mathbf{r}} \nonumber\\
-&-& \xi\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\phi}^{\top}(\mathbf{r})d\mathbf{r}} \mathbf{x}_t+T_s \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) u_t\left(\mathbf{r}\right)d\mathbf{r}}\nonumber\\
-&+&\int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) e_t\left(\mathbf{r}\right)d\mathbf{r}}. 
+&-& \xi\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\phi}^{\top}(\mathbf{r})d\mathbf{r}} \mathbf{x}_t+
+\int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) e_t\left(\mathbf{r}\right)d\mathbf{r}}. 
 \end{eqnarray}
-Substituting Eq.~\ref{DefGamma} into Eq.~\ref{StartofReduction} and cross-multiplying by $\boldsymbol{\Gamma}^{-1}$ gives 
+Substituting equation~\ref{DefGamma} into equation~\ref{StartofReduction} and cross-multiplying by $\boldsymbol{\Gamma}^{-1}$ gives 
 \begin{eqnarray}\label{eq:ReducedForm}
-	 \lefteqn{\mathbf{x}_{t+1} \nonumber= T_s\boldsymbol{\Gamma}^{ - 1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r}) \int_\Omega {f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}')d\mathbf{r}'} d\mathbf{r}} \boldsymbol{\theta}} \nonumber\\
-&-&\xi\mathbf{x}_t+\boldsymbol{\Gamma}^{-1}T_s\int_\Omega{\boldsymbol{\phi}(\mathbf{r}) u_t(\mathbf{r})d\mathbf{r}}\nonumber+\boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})d\mathbf{r}}.\\ 
+	 \lefteqn{\mathbf{x}_{t+1} \nonumber = T_s\boldsymbol{\Gamma}^{ - 1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r}) \int_\Omega {f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}')d\mathbf{r}'} d\mathbf{r}} \boldsymbol{\theta}} \nonumber\\
+&-&\xi\mathbf{x}_t + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})d\mathbf{r}}.\\ 
 \end{eqnarray}
 \section{}\label{ColoredNoise} 
 \newtheorem{lemma}{Lemma} 
