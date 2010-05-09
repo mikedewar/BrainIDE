@@ -598,7 +598,7 @@ The finite state space model  given in \ref{eq:ReducedForm} is linear in paramet
 	\lefteqn {\mathbf{Q}(\mathbf{x}_t)=} \\
 &&\boldsymbol{\Gamma}^{ - 1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r}) \int_\Omega {f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t)\boldsymbol{\psi}^{\top} \left(\mathbf{r}-\mathbf{r}'\right)d\mathbf{r}'} d\mathbf{r}}\nonumber
 \end{eqnarray}
-by substituting \ref{eq:Reducednoiseterm} and \ref{eq:QMatrix} in \ref{eq:ReducedForm} with zero input and using $\xi = 1-\zeta T_s$ at each time instant we can write
+by substituting \ref{eq:Reducednoiseterm} and \ref{eq:QMatrix} in \ref{eq:ReducedForm} and using $\xi = 1-\zeta T_s$ at each time instant we can write
 \begin{eqnarray}
 	\mathbf x_{1}&=&\mathbf x_{0}+T_s \mathbf Q(\mathbf x_0) \boldsymbol{\theta}-\zeta T_s\mathbf x_0+\mathbf e_0 \nonumber \\
 	\mathbf x_{2}&=&\mathbf x_{1}+T_s \mathbf Q(\mathbf x_1) \boldsymbol{\theta}-\zeta T_s\mathbf x_1+\mathbf e_1\nonumber\\
