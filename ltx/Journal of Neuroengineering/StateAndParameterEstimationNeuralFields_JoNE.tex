@@ -404,7 +404,7 @@ The sensors were spaced in a regular square \omg{M $\times$ N} grid, the sensor 
 \subfigure[][]{\includegraphics[width=0.24\textwidth]{./Graph/theta0.pdf}}\\
 \subfigure[][]{\includegraphics[width=0.24\textwidth]{./Graph/theta1.pdf}}
 \subfigure[][]{\includegraphics[width=0.24\textwidth]{./Graph/theta2.pdf}}
-\caption{Distribution of the parameters estimates over 272
+\caption{Distribution of the parameters estimates over 250
 runs.}
 \label{fig:Parameters}
 \end{figure}
@@ -423,17 +423,17 @@ The spatial frequency of the observations is shown in Figure~\ref{fig:FreqAnalys
 \end{figure*}
 Following this, the distance between basis function, $\Delta_b$, was set to $2.5$ and the basis function width, $\sigma_{\phi}^2$, was set to 3.6, 3.16 mm full width at half maximum. Analysis said 3.9 from Parham's derivation, but 3.6 still overlaps and allows more high frequency details to be represented.
 
-\subsection{State and Parameter Estimates} To demonstrate the performance of the parameter and state estimation, $200$ realisations of the data were generated. Each realisation consisted of 200~ms of data and the estimation was applied to the final 195~ms, allowing the model filter the initial conditions. The initial state and parameters were unknown to the estimator. The distribution of the parameters and the resulting kernel are shown in figure~\ref{fig:Parameters} and figure~\ref{fig:KernelEstimates} respectively. Although a wide distribution can be seen over the parameter estimates the ratio between them remans in a narrow range as shown in figure~\ref{fig:ParametersRatio}. The state estimates for one realization were evaluated by comparing the field reconstruction to the true field using the mean over time of the Root Mean Square Error (RMSE) and standard deviation of the RMSE giving $0.19\pm 0.01$. The RMSE of the field estimate over time is also shown in figure~\ref{fig:RMSE}. One snapshot for the original and the field estimate and their corresponding error are illustrated in figure~\ref{fig:FieldEstimate}.
+\subsection{State and Parameter Estimates} To demonstrate the performance of the parameter and state estimation, $250$ realisations of the data were generated. Each realisation consisted of 200 ms of data and the estimation was applied to the final 200 ms, allowing the model to stabilise. The initial state and parameters were unknown to the estimator. The distribution of the parameters and the resulting kernel are shown in figure~\ref{fig:Parameters} and figure~\ref{fig:KernelEstimates} respectively. Although a wide distribution can be seen over the parameter estimates the ratio between them remans in a narrow range as shown in figure~\ref{fig:ParametersRatio}. The state estimates for one realization were evaluated by comparing the field reconstruction to the true field using the mean over time of the Root Mean Square Error (RMSE) and standard deviation of the RMSE giving $0.19\pm 0.01$. The RMSE of the field estimate over time is also shown in figure~\ref{fig:RMSE}. One snapshot for the original and the field estimate and their corresponding error are illustrated in figure~\ref{fig:FieldEstimate}.
 \begin{figure}
 \includegraphics[width=0.5\textwidth]{./Graph/KernelEstimate_KernelFreqResponse.pdf}
-\caption{Mean kernel estimates over 200 runs ;  true and estimated kernels are shown by solid
-and dashed line respectively, the red area shows 95\% confedence interval; top: spatial domain; bottom: frequency domain}
+\caption{Mean kernel estimates over 250 runs ;  true and estimated kernels are shown by solid
+and dashed line respectively, the gray area shows 95\% confedence interval; top: spatial domain; bottom: frequency domain}
 \label{fig:KernelEstimates}
 \end{figure}
 \begin{figure}[th]
 \subfigure[][]{\includegraphics[width=0.24\textwidth]{./Graph/theta0_theta1_ratio.pdf}}
 \subfigure[][]{\includegraphics[width=0.24\textwidth]{./Graph/theta0_theta2_ratio.pdf}}\\
-\caption{Distribution of the parameters ratios over 272 runs.}
+\caption{Distribution of the parameters ratios over 250 runs.}
 \end{figure}
 \label{fig:ParametersRatio}
 \begin{figure}[th]
@@ -452,7 +452,8 @@ and dashed line respectively, the red area shows 95\% confedence interval; top: 
    \end{figure}
 
 
-\begin{figure*}[!th] 
+\begin{figure*}[!th]
+\centering 
 \subfigure[][]{\includegraphics[width=2in]{./Graph/TrueField90.pdf}}
 \subfigure[][]{\includegraphics[width=2in]{./Graph/EstimatedField90.pdf}}
 \subfigure[][]{\includegraphics[width=2in]{./Graph/EstimationError90.pdf}}\\
