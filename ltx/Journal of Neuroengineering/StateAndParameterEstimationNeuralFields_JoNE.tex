@@ -261,9 +261,8 @@ The basis function width, $\sigma^2_{\nu}$, should be chosen to give at least 3 
 \begin{equation}\label{eq:WidthFrequencyRelationship}
  \sigma^2_{\nu}=\frac{2\boldsymbol\nu_c^\top \boldsymbol\nu_c}{\ln 2}.
 \end{equation}
-This ensures that the basis functions can represent field with frequency content up to $\boldsymbol\nu_{co} $. Proofs for equations~\ref{eq:GaussianFT} and \ref{eq:WidthFrequencyRelationship} are given in~\ref{ap:FrequencyAnalysis}.
+This ensures that the basis functions can represent field with frequency content up to $\boldsymbol\nu_{co}$. Proofs for equations~\ref{eq:GaussianFT} and \ref{eq:WidthFrequencyRelationship} are given in~\ref{ap:FrequencyAnalysis}.
 % Thus to ensure that the basis functions can represent fields with frequency content up to $\boldsymbol{\nu}_c$, $\sigma_{\nu}$ should be set with at least the 3~dB frequency for the basis functions equal to $\boldsymbol{\nu}_c$, thus obtained $\sigma^2_{\nu}$ and therefore $\sigma_{\phi}^2$.
-
 The dynamic field must be spatially oversampled using a larger number of sensors then imposed by frequency analysis considerations, to use frequency analysis to determine the minimum distance and width of the basis functions. Following this, the distance between basis functions is usually larger then the distance between sensors, although this is not a requirement for using this estimation framework. \omg{Ken: can you please write something about what should be done in this case?} For a spatially homogeneous isotropic fields, the basis functions can be placed on a regular grid. Following this, the knowledge of the distance between basis functions directly implies the total number of basis functions required.
 
 % 
@@ -282,9 +281,9 @@ The unscented Rauch Tung Striebel Smoother (URTSS)~\cite{Sarkka2010} was used fo
 \end{equation}
 where $\bar x$ represents either $\hat{\mathbf x}_t^{f}$ or $\hat{\mathbf x}_t^{b}$, $\mathbf{P}_x$ is the corresponding covariance matrix from the filtering or smoothing, $(\sqrt{( L + \lambda)\mathbf P_x})_i$ is the $i$th column of the weighted matrix square root of $\mathbf P_x$ and $L$ is the dimension of the state space. The total number of sigma points is $2L+1$. The scaling parameter $\lambda$ is defined as 
 \begin{equation}\label{eq:sigmapoints3}
-	\lambda=\alpha^2( L+\kappa)- L 
+	\lambda=\alpha^2( L+\kappa) - L 
 \end{equation}
-where $\alpha$, $\beta$ and $\kappa$ are constants (see ~\cite{Haykin2001} for more details). The sigma vectors are propagated through the system equations and weighted to form the predicted mean and covariance. The weights are calculated by 
+where $\alpha$ (determines spread of sigma points), $\beta$ (incorporate prior knowledge of the distribution of $\mathbf{x}$) and $\kappa$ (scaling parameter) are constants (see ~\cite{Haykin2001} for more details). The sigma vectors are propagated through the system equations and weighted to form the predicted mean and covariance. The weights are calculated by 
 \begin{equation}
 	\mathbf W_0^{(m)}=\frac{\lambda}{ L+\lambda} 
 \end{equation}
@@ -294,7 +293,7 @@ where $\alpha$, $\beta$ and $\kappa$ are constants (see ~\cite{Haykin2001} for m
 \begin{equation}
 	\mathbf W_i^{(m)}=\mathbf W_i^{(c)}=\frac{1}{2( L+\lambda)} \quad i=1, \dots, 2L. 
 \end{equation}
-Since the observation equation is linear (equation~\ref{ObservationEquation}) the standard Kalman Filter update equations are  used to correct the predicted states. The state estimates from the forward filtering are used to form a new set of sigma points for the smoother, as described above. To compute the smoother gain, the predicted cross-covariance matrix of the states is also calculated. A summary of the URTSS procedure is given in Algorithm~\ref{UKFAlgorithm}. It should be noted that as the disturbance, $e_t\left(\mathbf{r}\right)$ and the measurement noise $ \boldsymbol{\varepsilon}_t$ are additive the additive form of the URTS can be used , otherwise the state vector should be augmented with the noise terms. Using the additive form reduces the dimension and the number of sigma points used in the algorithm.
+Since the observation equation is linear (equation~\ref{ObservationEquation}) the standard Kalman Filter update equations are  used to correct the predicted states. The state estimates from the forward filtering are used to form a new set of sigma points for the smoother, as described above. To compute the smoother gain, the predicted cross-covariance matrix of the states is also calculated. A summary of the URTSS procedure is given in Algorithm~\ref{UKFAlgorithm}. It should be noted that as the disturbance, $e_t\left(\mathbf{r}\right)$ and the measurement noise $ \boldsymbol{\varepsilon}_t$ are additive, therefore the additive form of the URTS is used, otherwise the state vector should be augmented with the noise terms. The additive form reduces the dimension and the number of sigma points used in the algorithm.
 \begin{algorithm}
 	\begin{small}
 	\caption{The Unscented RTS Smoother}\label{UKFAlgorithm} 
