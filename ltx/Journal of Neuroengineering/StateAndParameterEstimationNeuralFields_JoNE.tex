@@ -412,6 +412,15 @@ The sensors were spaced in a regular square \omg{M $\times$ N} grid, the sensor 
 runs. True parameters are $\zeta=100$, $\theta_0 = 10$, $\theta_1 = -8$, $\theta_3 = 0.5$. Grey bars show distributions with wider basis functions and blue bars show improved parameter distributions with narrower basis functions.}
 \label{fig:Parameters}
 \end{figure}
+\begin{figure}[th]
+\subfigure[][]{\includegraphics[width=0.24\textwidth]{./Graph/ZetaConvergence.pdf}}
+\subfigure[][]{\includegraphics[width=0.24\textwidth]{./Graph/theta0Convergence.pdf}}\\
+\subfigure[][]{\includegraphics[width=0.24\textwidth]{./Graph/theta1Convergence.pdf}}
+\subfigure[][]{\includegraphics[width=0.24\textwidth]{./Graph/theta2Convergence.pdf}}
+\caption{Convergence of the parameters: averaged over 250 runs.}
+\label{fig:ParametersConvergence}
+\end{figure}
+
 \subsection{Spatial Frequency Analysis} In accordance with Section~\ref{SpectralAnalysisSection}, the spatial frequency of the field was used to confirm the spacing and width of the sensors was adequate to capture the significant dynamics of the field. Figure~\ref{fig:FieldFFT} (part a.) shows the spatial frequency of the field. The cut-off frequency, $\nu_c$, was taken to be \omg{??} ($-3$~dB point). From equation~\ref{eq:MinimumSensorDistance}, this yielded a minimum sensor separation of \omg{??}. This confirms our separation of \omg{??} was enough to prevent problems associated with aliasing.
 
 The spatial frequency of the observations is shown in Figure~\ref{fig:FreqAnalysis} (part c.). The peak power of the spatial frequency of the observations was approximately \omg{$??$}~dB. The cut-off frequency (-3~dB point) was taken to correspond to  approximately \omg{$??$}~dB. This provided a conservative estimate of the spatial bandwidth. The oversampling parameter $\rho_b$ was set to $??$ giving a minimum distance between basis functions of $??$ to satisfy Shannon's sampling criterion (from equation~\ref{eq:BasisFunctionSeparation}). \todo{maybe from Parham's derivation... From equation~\ref{} the width was calculated to be... or...}. The width of the basis functions was chosen such that they had sufficient overlap to represent the dynamic field.
