@@ -41,11 +41,11 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
- % \documentclass[twocolumn,11pt,a4paper]{article}		%<-use this for checking equation length
-\documentclass[12pt]{iopart} 
+  \documentclass[twocolumn,11pt,a4paper]{article}		%<-use this for checking equation length
+% \documentclass[12pt]{iopart} 
 
 %<-comment out this for checking equations (author list too)
-\usepackage{iopams,setstack} 
+% \usepackage{iopams,setstack} 
 %<-comment out this for checking equations
 \usepackage{graphicx}
 \usepackage{algorithm, algorithmicx, algpseudocode} 
@@ -64,7 +64,7 @@
  \usepackage{anysize}							%<-use this for checking equation length
  % \marginsize{1.7cm}{1.5cm}{0.3cm}{0.8cm}			%<-use this for checking equation length
  % \setlength{\columnsep}{0.5cm}					%<-use this for checking equation length
- % \usepackage{amsmath}
+ \usepackage{amsmath}
 \usepackage{amssymb,amsfonts} 			%<-use this for checking equation length
 \newcommand{\todo}[1]{\textsf{\emph{\textbf{\textcolor{blue}{#1}}}}} 
 \newcommand{\wtf}[1]{\textsf{\emph{\textbf{\textcolor{red}{#1}}}}} 
@@ -76,7 +76,7 @@
 
 \author{Dean R. Freestone$^1$, Parham Aram$^2$, Michael Dewar$^3$, Kenneth Scerri$^4$, David B. Grayden$^1$, and Visakan Kadirkamanathan$^2$}
 
-\address{$^1$ Department of Electrical and Electronic Engineering, University of Melbourne, Melbourne, Vic, 3010 Australia} \address{$^2$ Department of Automatic Control and Systems Engineering, University of Sheffield, Mappin Street, Sheffield, S1 3JD, UK} \address{$^3$ Department of Applied Physics and Applied Mathematics, Columbia University, US} \address{$^4$ Ken's} \ead{dfreestone@bionicear.org} 
+% \address{$^1$ Department of Electrical and Electronic Engineering, University of Melbourne, Melbourne, Vic, 3010 Australia} \address{$^2$ Department of Automatic Control and Systems Engineering, University of Sheffield, Mappin Street, Sheffield, S1 3JD, UK} \address{$^3$ Department of Applied Physics and Applied Mathematics, Columbia University, US} \address{$^4$ Ken's} \ead{dfreestone@bionicear.org} 
 
 \begin{abstract}
 	This paper presents a framework for creating patient-specific neural field models from electrophysiological data. The Wilson and Cowen or Amari style neural field equations are used as the parametric form of the model, where the parameters are estimated from data. To illustrate the estimation framework, data is generated using modelled sensors and the field model. We introduce a method to reduce the continuum neural field model, using a basis function decomposition, to form a finite dimensional state-space model to facilitate state and parameter estimation. Spatial frequency analysis methods are introduced for model selection, by systematically specifying the basis function configuration required to capture the dominant characteristics of the neural field. The estimation process consists of a two stage algorithm, incorporating the unscented Rauch Tung Striebel Smoother for state estimation, and a least squares algorithm for parameter estimation. The results show that it is possible to reconstruct the neural field and estimate intracortical connectivity and synaptic time constant with the proposed framework. The results illustrate the cost of the model reduction with a loss of the high spatial frequency information. This framework provides a link between patient specific neurophysiological data and theoretical neural fields models. This link may lead to greater understanding of cortical dynamics at the meso/macroscopic scale where diseases such as epilepsy are manifested.   
@@ -436,12 +436,16 @@ The spatial frequency of the observations is shown in Figure~\ref{fig:FreqAnalys
 Following this, the distance between basis function, $\Delta_b$, was set to $2.5$ and the basis function width, $\sigma_{\phi}^2$, was set to 3.6, 3.16 mm full width at half maximum. Analysis said 3.9 from Parham's derivation, but 3.6 still overlaps and allows more high frequency details to be represented.
 
 \subsection{State and Parameter Estimates} To demonstrate the performance of the parameter and state estimation, $250$ realisations of the data were generated. Each realisation consisted of 200 ms of data and the estimation was applied to the final 200 ms, allowing the model to stabilise. The initial state and parameters were unknown to the estimator. The distribution of the parameters and the resulting kernel are shown in figure~\ref{fig:Parameters} and figure~\ref{fig:KernelEstimates} respectively. Although a wide distribution can be seen over the parameter estimates the ratio between them remans in a narrow range as shown in figure~\ref{fig:ParametersRatio}. The state estimates for one realization were evaluated by comparing the field reconstruction to the true field using the mean over time of the Root Mean Square Error (RMSE) and standard deviation of the RMSE giving $0.19\pm 0.01$. The RMSE of the field estimate over time is also shown in figure~\ref{fig:RMSE}. One snapshot for the original and the field estimate and their corresponding error are illustrated in figure~\ref{fig:FieldEstimate}.
-\begin{figure}
-\includegraphics[width=0.5\textwidth]{./Graph/KernelEstimate_KernelFreqResponse.pdf}
+\begin{figure*}
+\subfigure[][]{\includegraphics{./Graph/KernelEstimate_skinny.pdf}}
+\subfigure[][]{\includegraphics{./Graph/KernelEstimateFFT_skinny.pdf}}\\
+\subfigure[][]{\includegraphics{./Graph/KernelEstimate_wide.pdf}}
+\subfigure[][]{\includegraphics{./Graph/KernelEstimateFFT_wide.pdf}}\\
+
 \caption{Mean kernel estimates over 250 runs ;  true and estimated kernels are shown by solid
-and dashed line respectively, the grey area shows 95\% confidence interval; Top: spatial domain; Bottom: frequency domain}
+and dashed line respectively, the grey area shows 95\% confidence interval; Left: spatial domain; Right: frequency domain; a, b: wider basis functions; c,d: narrower basis functions.}
 \label{fig:KernelEstimates}
-\end{figure}
+\end{figure*}
 \begin{figure}[th]
 \subfigure[][]{\includegraphics[width=0.24\textwidth]{./Graph/theta0_theta1_ratio.pdf}}
 \subfigure[][]{\includegraphics[width=0.24\textwidth]{./Graph/theta0_theta2_ratio.pdf}}\\
