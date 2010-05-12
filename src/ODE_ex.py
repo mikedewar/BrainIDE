@@ -40,7 +40,7 @@ beta_variance=1.3**2
 alpha=100
 threshold=2
 nu=20
-beta=.8
+beta=30
 act_func=ActivationFunction(threshold,nu,beta)
 #----------observations--------------------------
 Delta_s = 1.5	# mm

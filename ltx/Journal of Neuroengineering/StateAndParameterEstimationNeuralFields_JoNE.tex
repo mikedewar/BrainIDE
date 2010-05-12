@@ -41,11 +41,11 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-  \documentclass[twocolumn,11pt,a4paper]{article}		%<-use this for checking equation length
-% \documentclass[12pt]{iopart} 
+  % \documentclass[twocolumn,11pt,a4paper]{article}		%<-use this for checking equation length
+\documentclass[12pt]{iopart} 
 
 %<-comment out this for checking equations (author list too)
-% \usepackage{iopams,setstack} 
+\usepackage{iopams,setstack} 
 %<-comment out this for checking equations
 \usepackage{graphicx}
 \usepackage{algorithm, algorithmicx, algpseudocode} 
@@ -62,9 +62,9 @@
 % \usepackage{pstool}
 \renewcommand{\subcapsize}{\small}
  \usepackage{anysize}							%<-use this for checking equation length
- % \marginsize{1.7cm}{1.5cm}{0.3cm}{0.8cm}			%<-use this for checking equation length
- % \setlength{\columnsep}{0.5cm}					%<-use this for checking equation length
- \usepackage{amsmath}
+ % \marginsize {1.7cm}{1.5cm}{0.3cm}{0.8cm}			%<-use this for checking equation length
+ %  \setlength{\columnsep}{0.5cm}					%<-use this for checking equation length
+ % \usepackage{amsmath}
 \usepackage{amssymb,amsfonts} 			%<-use this for checking equation length
 \newcommand{\todo}[1]{\textsf{\emph{\textbf{\textcolor{blue}{#1}}}}} 
 \newcommand{\wtf}[1]{\textsf{\emph{\textbf{\textcolor{red}{#1}}}}} 
@@ -76,10 +76,10 @@
 
 \author{Dean R. Freestone$^1$, Parham Aram$^2$, Michael Dewar$^3$, Kenneth Scerri$^4$, David B. Grayden$^1$, and Visakan Kadirkamanathan$^2$}
 
-% \address{$^1$ Department of Electrical and Electronic Engineering, University of Melbourne, Melbourne, Vic, 3010 Australia} \address{$^2$ Department of Automatic Control and Systems Engineering, University of Sheffield, Mappin Street, Sheffield, S1 3JD, UK} \address{$^3$ Department of Applied Physics and Applied Mathematics, Columbia University, US} \address{$^4$ Ken's} \ead{dfreestone@bionicear.org} 
+\address{$^1$ Department of Electrical and Electronic Engineering, University of Melbourne, Melbourne, Vic, 3010 Australia} \address{$^2$ Department of Automatic Control and Systems Engineering, University of Sheffield, Mappin Street, Sheffield, S1 3JD, UK} \address{$^3$ Department of Applied Physics and Applied Mathematics, Columbia University, US} \address{$^4$ Ken's} \ead{dfreestone@bionicear.org} 
 
 \begin{abstract}
-	This paper presents a framework for creating patient-specific neural field models from electrophysiological data. The Wilson and Cowen or Amari style neural field equations are used as the parametric form of the model, where the parameters are estimated from data. To illustrate the estimation framework, data is generated using modelled sensors and the field model. We introduce a method to reduce the continuum neural field model, using a basis function decomposition, to form a finite dimensional state-space model to facilitate state and parameter estimation. Spatial frequency analysis methods are introduced for model selection, by systematically specifying the basis function configuration required to capture the dominant characteristics of the neural field. The estimation process consists of a two stage algorithm, incorporating the unscented Rauch Tung Striebel Smoother for state estimation, and a least squares algorithm for parameter estimation. The results show that it is possible to reconstruct the neural field and estimate intracortical connectivity and synaptic time constant with the proposed framework. The results illustrate the cost of the model reduction with a loss of the high spatial frequency information. This framework provides a link between patient specific neurophysiological data and theoretical neural fields models. This link may lead to greater understanding of cortical dynamics at the meso/macroscopic scale where diseases such as epilepsy are manifested.   
+	This paper presents a framework for creating patient-specific neural field models from electrophysiological data. The Wilson and Cowen or Amari style neural field equations are used as the parametric form of the model, where the parameters are estimated from data. To illustrate the estimation framework, data is generated using modelled sensors and the field model. We introduce a method to reduce the continuum neural field model, using a basis function decomposition, to form a finite dimensional state-space model to facilitate state and parameter estimation. Spatial frequency analysis methods are introduced for model selection, by systematically specifying the basis function configuration required to capture the dominant characteristics of the neural field. We use the reduced model for the estimation that consists of a two stage algorithm incorporating the unscented Rauch Tung Striebel Smoother for state estimation, and a least squares algorithm for parameter estimation. The results show that it is possible to reconstruct the neural field and estimate intracortical connectivity and synaptic time constant with the proposed framework. The results illustrate the cost of the model reduction with a loss of the high spatial frequency information. This framework provides a link between patient specific neurophysiological data and theoretical neural fields models. This link may lead to greater understanding of cortical dynamics at the meso/macroscopic scale where diseases such as epilepsy are manifested.   
 \end{abstract}
 
 %Uncomment for PACS numbers title message
@@ -197,7 +197,7 @@ where $\mathbf{e}_t$ is a zero-mean normal white noise term with the covariance 
 \begin{equation}
 	\boldsymbol{\Sigma}_e=\boldsymbol{\Gamma}^{-1}\int_{\Omega}\int_{\Omega}\boldsymbol{\phi}\left(\mathbf r\right) \gamma\left(\mathbf{r}- \mathbf{r}' \right)\boldsymbol{\phi}\left(\mathbf{r}'\right)^{\top}d\mathbf{r}' d\mathbf{r}\boldsymbol{\Gamma}^{- \top} 
 \end{equation}
-The observation equation of the reduced model is 
+The observation equation of the reduced model is \omg{Should this be $\mathbf{y}_t \approx \mathbf{C}\mathbf{x}_t + \boldsymbol{\varepsilon}_t$}
 \begin{equation}
 	\label{ObservationEquation} \mathbf{y}_t = \mathbf{C}\mathbf{x}_t + \boldsymbol{\varepsilon}_t 
 \end{equation}
@@ -257,9 +257,9 @@ where
 \begin{equation}\label{eq:GaussianFTWidth}
 	\sigma^2_{\nu} = \frac{1}{\pi^2\sigma_{\phi}^2}. 
 \end{equation}
-The basis function width, $\sigma^2_{\nu}$, should be chosen to give at least 3 dB attenuation at $\boldsymbol\nu_{co}$ giving
+The basis function width, $\sigma^2_{\nu}$, should be chosen to give at least 3~dB attenuation at $\boldsymbol\nu_{co}$ giving
 \begin{equation}\label{eq:WidthFrequencyRelationship}
- \sigma^2_{\nu}=\frac{2\boldsymbol\nu_c^\top \boldsymbol\nu_c}{\ln 2}.
+ \sigma^2_{\nu}=\frac{2\boldsymbol\nu_{co}^\top \boldsymbol\nu_{co}}{\ln 2}.
 \end{equation}
 This ensures that the basis functions can represent field with frequency content up to $\boldsymbol\nu_{co}$. Proofs for equations~\ref{eq:GaussianFT} and \ref{eq:WidthFrequencyRelationship} are given in~\ref{ap:FrequencyAnalysis}.
 % Thus to ensure that the basis functions can represent fields with frequency content up to $\boldsymbol{\nu}_c$, $\sigma_{\nu}$ should be set with at least the 3~dB frequency for the basis functions equal to $\boldsymbol{\nu}_c$, thus obtained $\sigma^2_{\nu}$ and therefore $\sigma_{\phi}^2$.
@@ -482,7 +482,7 @@ and dashed line respectively, the grey area shows 95\% confidence interval; Left
 \omg{NOTE: I HAVE ADDED A SENTENCE DESCRIBING SIMPLY WHAT I WANT TO SAY IN EACH PARAGRAPH. PLEASE USE THIS AS A GUIDE FROM EDITING.}
 
 \omg{FIRST DESCRIBE AN OVER ALL SUMMARY OF WHAT WE HAVE DONE AND WHAT IS NOVEL}
-This paper presents a novel framework for model reduction to facilitate practical state and parameter estimation of neural fields. A basis function decomposition reduces the infinite dimensional neural field (continuous space), to a finite dimensional state-space model. The level of detail of the estimated field is related to the basis functions decomposition, thereby providing a flexible approach where a trade-off can be made between physiological detail and computational complexity. By forming a state-space model, the unscented Rauch Tung Striebel Smoother was implemented for state estimation. Using the sequence of state estimates, a least squares algorithm was implemented for parameter estimation.  
+This paper presents a novel framework for model reduction to facilitate practical state and parameter estimation of neural fields. A basis function decomposition reduces the infinite dimensional neural field (continuous space), to a finite dimensional state-space model. The level of detail of the estimated field is related to the basis functions decomposition, thereby flexible framework is provided where a trade-off can be made between physiological detail and computational complexity. By forming a state-space model, the unscented Rauch Tung Striebel Smoother was implemented for state estimation. Using the sequence of state estimates, a least squares algorithm was implemented for parameter estimation.  
 
 \omg{DISCUSS RESULTS: FREQ ANALYSIS. USE THIS TO JUSTIFY KERNEL ERRORS.}
 The frequency analysis and model selection tools presented in this paper specify the sensor and field basis function arrangement required to form a state-space model that is capable of capturing the dominant cortical dynamics. These tools can be also used to better design electrophysiological recording techniques to advance model-based neural parameter estimation in order to avoid spatial aliasing. The effect of the basis function decomposition will restrict the frequency content of the estimated field. This is evident in when comparing Figures~\ref{fig:FieldFFT} and~\ref{fig:EstimatedFieldFFT} where the estimated field is spatially band-limited. The spatial frequency content of the field is governed by disturbance covariance and the shape of the connectivity kernel, therefore some information will be lost due to the field decomposition. The implication of this loss of information is the high spatial frequency content of the connectivity kernel. This is demonstrated in Figure~\ref{fig:KernelEstimates} of the results where the frequency content of the estimated connectivity kernel is less than the true kernel.
