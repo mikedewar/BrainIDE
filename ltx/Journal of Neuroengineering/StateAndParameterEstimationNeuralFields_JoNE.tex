@@ -256,7 +256,11 @@ Similar considerations need to be made regarding the representation of the dynam
 \begin{equation}\label{eq:BasisFunctionSeparation}
 	\Delta_b < \frac{1}{2\rho_b\nu_{co}}. 
 \end{equation}
-where $\rho_b$ is an over-sampling parameter to determine the basis function separation and $\nu_{co}$ is the spatial cut-off frequency from the observations. For the Gaussian basis functions, $\phi(\mathbf{r})$, being considered, the basis function width parameter, $\sigma_{\phi}^2$, can also be inferred using spectral considerations~\cite{Sanner1992,Scerri2009}. The Fourier transform of an \textit{n}-dimensional Gaussian is another Gaussian given by
+where $\rho_b$ is an over-sampling parameter to determine the basis function separation and $\nu_{co}$ is the spatial cut-off frequency from the observations. For the Gaussian basis functions, $\phi(\mathbf{r})$, being considered, the basis function width parameter, $\sigma_{\phi}^2$, can also be inferred using spectral considerations~\cite{Sanner1992,Scerri2009}. The Fourier transform of an \textit{n}-dimensional Gaussian
+\begin{equation}\label{eq:nDimensionalGaussian}
+	\phi(\mathbf r)=\mathrm{exp}\left({-\frac{1}{\sigma_{\phi}^2} \mathbf r^\top\mathbf r}\right)
+\end{equation}
+ is another Gaussian given by
 \begin{equation}\label{eq:GaussianFT}
 \boldsymbol\Phi(\boldsymbol \nu)=\left(\frac{1}{\pi\sigma_{\nu}^2}\right)^{\frac{n}{2}}\mathrm{exp}\left(-\frac{1}{\sigma_{\nu}^2}\boldsymbol\nu^\top \boldsymbol\nu\right),
 \end{equation}
@@ -264,9 +268,13 @@ where
 \begin{equation}\label{eq:GaussianFTWidth}
 	\sigma^2_{\nu} = \frac{1}{\pi^2\sigma_{\phi}^2}. 
 \end{equation}
-The basis function width, $\sigma^2_{\nu}$, should be chosen to give at least 3~dB attenuation at $\boldsymbol\nu_{co}$ giving
+The basis function width, $\sigma^2_{\phi}$, should be chosen to give at least 3~dB attenuation at $\boldsymbol\nu_{co}$ giving \omg{need to rewrite eq~\ref{eq:WidthFrequencyRelationship} in terms of $\sigma_{\phi}$. At the mo it is writen in terms of $\sigma_{nu}$}
 \begin{equation}\label{eq:WidthFrequencyRelationship}
- \sigma^2_{\nu}=\frac{2\boldsymbol\nu_{co}^\top \boldsymbol\nu_{co}}{\ln 2}.
+ \sigma^2_{\phi}= \frac{1}{\pi^2\sigma_{\nu_{co}}^2},
+\end{equation}
+where
+\begin{equation}\label{eq:WidthFrequencyRelationship}
+ \sigma^2_{\nu_{co}}= \frac{2\boldsymbol\nu_{co}^\top \boldsymbol\nu_{co}}{\ln 2}.
 \end{equation}
 This ensures that the basis functions can represent field with frequency content up to $\boldsymbol\nu_{co}$. Proofs for equations~\ref{eq:GaussianFT} and \ref{eq:WidthFrequencyRelationship} are given in~\ref{ap:FrequencyAnalysis}.
 % Thus to ensure that the basis functions can represent fields with frequency content up to $\boldsymbol{\nu}_c$, $\sigma_{\nu}$ should be set with at least the 3~dB frequency for the basis functions equal to $\boldsymbol{\nu}_c$, thus obtained $\sigma^2_{\nu}$ and therefore $\sigma_{\phi}^2$.
