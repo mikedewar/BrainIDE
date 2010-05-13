@@ -40,7 +40,7 @@ beta_variance=1.3**2
 alpha=100
 threshold=2
 nu=20
-beta=.8
+beta=30
 act_func=ActivationFunction(threshold,nu,beta)
 #----------observations--------------------------
 Delta_s = 1.5	# mm
@@ -69,7 +69,7 @@ pb.show()
 # -------Sampling properties-------------
 Fs = 1e3   #sampling rate                                       
 Ts = 1/Fs   #sampling period, second
-t_end = .08 # seconds
+t_end = 1 # seconds
 NSamples = t_end*Fs;
 T = pb.linspace(0,t_end,NSamples);
 
