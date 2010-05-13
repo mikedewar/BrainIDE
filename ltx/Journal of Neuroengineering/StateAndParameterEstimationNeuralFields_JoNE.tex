@@ -132,7 +132,7 @@ where $f(\cdot)$ is the firing rate function, $w(\cdot)$ is the spatial connecti
 
 The firing rate of the presynaptic neurons is related to the postsynaptic membrane potential by the sigmoidal activation function 
 \begin{equation}
-	\label{ActivationFunction} f\left( v\left( \mathbf{r}', t \right) \right) = \frac{f_{max}\left(\mathbf{r}\right)}{1 + \exp \left( \varsigma \left( v_0\left( \mathbf{r} \right) - v\left(\mathbf{r}',t\right) \right) \right)}. 
+	\label{ActivationFunction} f\left( v\left( \mathbf{r}', t \right) \right) = \frac{f_{max}}{1 + \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right)}. 
 \end{equation}
 The parameters $f_{max}$ and $v_0$ describe the maximum firing rate and firing threshold of the neural populations. The parameter $\varsigma$ governs the slope of the sigmoid. By substituting equation~\ref{RateBasedInteractions} into \ref{SpikesToPotential} we get the spatiotemporal model 
 \begin{eqnarray}
@@ -150,7 +150,7 @@ where $D=\frac{d}{dt} + \zeta$ is a temporal differential operator and $\delta(t
 \end{eqnarray}
 To arrive at the integro-difference equation (IDE) form of the model we discretise time using a first-order Euler method (see~\ref{Time Discretization}) giving 
 \begin{eqnarray}
-	\label{DiscreteTimeModel} v_{t+1}\left(\mathbf{r}\right) &=& \xi v_t\left(\mathbf{r}\right) + T_s \int_\Omega { w\left(\mathbf{r}-\mathbf{r}'\right) f\left(v_t\left(\mathbf{r}'\right)\right) d\mathbf{r}'} \nonumber\\ 
+	\label{DiscreteTimeModel} v_{t+T_s}\left(\mathbf{r}\right) &=& \xi v_t\left(\mathbf{r}\right) + T_s \int_\Omega { w\left(\mathbf{r}-\mathbf{r}'\right) f\left(v_t\left(\mathbf{r}'\right)\right) d\mathbf{r}'} \nonumber\\ 
 	&+& e_t\left(\mathbf{r}\right), 
 \end{eqnarray}
 where $T_s$ is the time step, $\xi = 1-\zeta T_s$ and $e_t(\mathbf{r})$ is i.i.d. such that $e_t\sim\mathcal{GP}(\mathbf 0,\gamma(\mathbf{s}-\mathbf{r}))$. This term was added to account for uncertainty in the model. To generate iEEG/LFP data we used the output function 
@@ -209,7 +209,7 @@ where the observation matrix is
 	\begin{array}{{ccc}} 
 		c_{1,1} & \dots & c_{1,L} \\
 		\vdots & \ddots & \vdots \\
-		c_{n_y,L} & \dots & c_{n_y,L} 
+		c_{N,1} & \dots & c_{N,L} 
 	\end{array}
 	\right] 
 \end{equation}
@@ -239,8 +239,7 @@ where $L$ is the number of basis functions and
 
 The spectral characteristics of the field are governed by the shape of the connectivity kernel and the covariance of the field disturbance. If the bandwidth of the field disturbance covariance is wider than the bandwidth of the connectivity kernel, then the disturbance covariance governs the bandwidth of the system. Conversely, a wider kernel bandwidth will govern the system bandwidth.
 
-Let the spectral representation of the dynamic field at time $t$ be denoted by $V_t(\boldsymbol{\nu})$.
-Given $V_t(\boldsymbol{\nu})$, the distance between adjacent sensors should be no more than
+Let the spectral representation of the dynamic field at time $t$ be denoted by $V_t(\boldsymbol{\nu})$, where $\nu$ denotes spatial frequency. Given $V_t(\boldsymbol{\nu})$, the distance between adjacent sensors should be no more than
 % 
 % Then, for an accurate representation, $V_t(\boldsymbol{\nu})$ needs to be spatially band-limited. Such a condition is usually satisfied due to the band-limiting effect of most practical kernels and covariance functions \todo{~cite\{some EEG literature here\}} \omg{will try to find something. These kernel are kinda theoretical and I have not ever seen and estimate of the covariance function. Can we remove the sentence ``Such a condition is usually satisfied...'' }. Thus we can assume that the spectral response $V_t(\boldsymbol{\nu})$ is band-limited with $V_t(\boldsymbol{\nu}) \approx 0 ~ \forall \boldsymbol{\nu} > \boldsymbol{\nu}_c$,  
 % 
@@ -250,7 +249,7 @@ Given $V_t(\boldsymbol{\nu})$, the distance between adjacent sensors should be n
 \end{equation}
 where $\boldsymbol{\nu}_c$ the cut-off frequency, $\rho_s \in \mathbb{R} \ge 1$ is an oversampling parameter. This condition must be satisfied for the hidden dynamic field $v_t(\mathbf{r})$ to be precisely inferred from the sampled observations, $\mathbf{y}_t$. If the condition is not satisfied, spatial aliasing will occur. 
 
-There are two options available to alleviate problems with aliasing. The first, which is the most desirable, is to increase the spatial sampling frequency (using a higher resolution of sensors). The second is to use wider sensors, where the spatial averaging acts like a low-pass anti-aliasing filter. This option is a compromise between alleviating issues with aliasing and losing high frequency information contained in the field. In practice, it is difficult  to estimate the bandwidth of the cortex using traditional electrophysiological measurements due to spatial limitations. However, we envisage it may be possible the estimate it using other modalities with higher spatial resolution such as, fMRI, NIRS or other optical imaging techniques~\cite{Issa2000}. Errors associated with mild aliasing result in distortions in the high frequency components of the field dynamics. However, after applying the basis function decomposition, high frequency components contribute negligibly to the inverse problem and are therefore not a major problem for the state and parameter estimation~\cite{Sanner1992}. This is further illustrated our results. \omg{Although our results are severely effected by the loss of high frequency info! Ken: Do you think you can word this a little better than what I have done.}
+There are two options available to alleviate problems with aliasing. The first, which is the most desirable, is to increase the spatial sampling frequency (using a higher resolution of sensors). The second is to use wider sensors, where the spatial averaging acts like a low-pass anti-aliasing filter. This option is a compromise between alleviating issues with aliasing and losing high frequency information contained in the field. In practice, it is difficult  to estimate the bandwidth of the cortex using traditional electrophysiological measurements due to spatial limitations. However, we envisage it may be possible to estimate it using other modalities with higher spatial resolution such as, fMRI, NIRS or other optical imaging techniques~\cite{Issa2000}. Errors associated with mild aliasing result in distortions in the high frequency components of the field dynamics. However, after applying the basis function decomposition, high frequency components contribute negligibly to the inverse \omg{problem} and are therefore not a major problem for the state and parameter estimation~\cite{Sanner1992}. This is further illustrated our results. \omg{Although our results are severely effected by the loss of high frequency info! Ken: Do you think you can word this a little better than what I have done.}
 
 Similar considerations need to be made regarding the representation of the dynamic field $v_t(\mathbf{r})$ using the basis function decomposition. The minimum distance between adjacent basis functions must also satisfy Shannon's sampling theorem to capture the dominant spectral information of the field. Thus, the minimum distance between basis functions must satisfy 
 \begin{equation}\label{eq:BasisFunctionSeparation}
@@ -318,10 +317,10 @@ Since the observation equation is linear (equation~\ref{ObservationEquation}) th
 		 \hat{\mathbf x}_0, \mathbf P_0 
 		\end{equation*}
 		\State Forward iteration: for $t \in \left\lbrace 0,\cdots, T\right\rbrace $,
-		calculate the sigma points $\mathcal X_{i,t}^f$ using \ref{eq:sigmapoints1}-\ref{eq:sigmapoints3} and propogate them through equation \ref{eq:QmatrixForSigmapoints}
+		calculate the sigma points $\mathcal X_{i,t}^f$ using equations \ref{eq:sigmapoints1}-\ref{eq:sigmapoints3} and propagate through equation~\ref{eq:QmatrixForSigmapoints}
 % 		\begin{small}
 		\begin{equation*}
-			\mathcal X_{i,t+1}^{f-}=Q(\mathcal X_{i,t}^f,u_t) 
+			\mathcal X_{i,t+1}^{f-}=Q(\mathcal X_{i,t}^f) 
 		\end{equation*}
 % 		\end{small}
 		calculate the predicted state and the predicted covariance matrix
@@ -450,7 +449,7 @@ The spatial frequency of the observations is shown in Figure~\ref{fig:FreqAnalys
 \end{figure*}
 Following this, the distance between basis function, $\Delta_b$, was set to $2.5$ and the basis function width, $\sigma_{\phi}^2$, was set to 3.6, 3.16 mm full width at half maximum. Analysis said 3.9 from Parham's derivation, but 3.6 still overlaps and allows more high frequency details to be represented.
 
-\subsection{State and Parameter Estimates} To demonstrate the performance of the parameter and state estimation, $250$ realisations of the data were generated. Each realisation consisted of 200 ms of data and the estimation was applied to the final 200 ms, allowing the model to stabilise. The initial state and parameters were unknown to the estimator. The distribution of the parameters and the resulting kernel are shown in figure~\ref{fig:Parameters} and figure~\ref{fig:KernelEstimates} respectively. Although a wide distribution can be seen over the parameter estimates the ratio between them remans in a narrow range as shown in figure~\ref{fig:ParametersRatio}. The state estimates for one realization were evaluated by comparing the field reconstruction to the true field using the mean over time of the Root Mean Square Error (RMSE) and standard deviation of the RMSE giving $0.19\pm 0.01$. The RMSE of the field estimate over time is also shown in figure~\ref{fig:RMSE}. One snapshot for the original and the field estimate and their corresponding error are illustrated in figure~\ref{fig:FieldEstimate}.
+\subsection{State and Parameter Estimates} To demonstrate the performance of the parameter and state estimation, $250$ realisations of the data were generated. Each realisation consisted of 200 ms of data and the estimation was applied to the final 195 ms, allowing the model to stabilise. \omg{transient!} The initial state and parameters were unknown to the estimator. The distribution of the parameters and the resulting kernel are shown in figure~\ref{fig:Parameters} and figure~\ref{fig:KernelEstimates} respectively. Although a wide distribution can be seen over the parameter estimates the ratio between them remans in a narrow range as shown in figure~\ref{fig:ParametersRatio}. The state estimates for one realisation were evaluated by comparing the field reconstruction to the true field using the mean over time of the Root Mean Square Error (RMSE) and standard deviation of the RMSE giving $0.19\pm 0.01$. The RMSE of the field estimate over time is also shown in figure~\ref{fig:RMSE}. One snapshot for the original and the field estimate and their corresponding error are illustrated in figure~\ref{fig:FieldEstimate}.
 \begin{figure*}
 \subfigure[][]{\includegraphics{./Graph/KernelEstimate_skinny.pdf}}
 \subfigure[][]{\includegraphics{./Graph/KernelEstimateFFT_skinny.pdf}}\\
@@ -495,6 +494,17 @@ and dashed line respectively, the grey area shows 95\% confidence interval; Left
 \section{Discussion}\label{DiscussionSection}
 
 \omg{NOTE: I HAVE ADDED A SENTENCE DESCRIBING SIMPLY WHAT I WANT TO SAY IN EACH PARAGRAPH. PLEASE USE THIS AS A GUIDE FROM EDITING.}
+
+POSSIBLE SOURCES OF THE ERROR
+\begin{itemize}
+	\item slope of nonlinearity interacting with tails of Gaussian basis functions
+	\item loss of high frequency info from basis function decomposition
+	\item distortions of the spectral content of the basis function from the nonlinearity
+	\item disturbance covariance to narrow
+	\item disturbance variance to low (no exciting the kernel enough)
+	\item boundary conditions
+	\item
+\end{itemize}
 
 \omg{FIRST DESCRIBE AN OVER ALL SUMMARY OF WHAT WE HAVE DONE AND WHAT IS NOVEL}
 This paper presents a novel framework for model reduction to facilitate practical state and parameter estimation of neural fields. A basis function decomposition reduces the infinite dimensional neural field (continuous space), to a finite dimensional state-space model. The level of detail of the estimated field is related to the basis functions decomposition, thereby flexible framework is provided where a trade-off can be made between physiological detail and computational complexity. By forming a state-space model, the unscented Rauch Tung Striebel Smoother was implemented for state estimation. Using the sequence of state estimates, a least squares algorithm was implemented for parameter estimation.  
@@ -564,6 +574,7 @@ Substituting equation~\ref{DefGamma} into equation~\ref{StartofReduction} and cr
 	 \lefteqn{\mathbf{x}_{t+1} \nonumber = T_s\boldsymbol{\Gamma}^{ - 1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r}) \int_\Omega {f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}')d\mathbf{r}'} d\mathbf{r}} \boldsymbol{\theta}} \nonumber\\
 &+&\xi\mathbf{x}_t + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})d\mathbf{r}}.\\ 
 \end{eqnarray}
+\omg{DEFINE q HERE!!!!!}
 \section{}\label{ColoredNoise} 
 \newtheorem{lemma}{Lemma} 
 \begin{lemma}
