@@ -6,7 +6,6 @@ import quickio
 #-------------reading parameters--------------------
 parameters=quickio.read('parameters')
 parameters=parameters['var0']
-
 field_width=(parameters['field_width'])/2.
 dimension=parameters['dimension']
 k_centers=parameters['k_centers']
@@ -23,8 +22,8 @@ obs_locns=parameters['obs_locns']
 obs_noise_covariance=parameters['obs_noise_covariance']
 Fs=parameters['Fs']
 t_end=parameters['t_end']
-#-------------field--------------------
 
+#-------------field--------------------
 field_basis_width=2.5#3.6
 spacestep=0.5
 S=pb.linspace(-10,10,9)
