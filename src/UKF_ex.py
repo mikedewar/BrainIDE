@@ -69,8 +69,11 @@ init_field=pb.matrix(pb.multivariate_normal(mean,initial_field_covariance,[1])).
 Ts = 1/Fs   #sampling period, second
 NSamples = t_end*Fs;
 T = pb.linspace(0,t_end,NSamples);
+#absolute value of the estimation field starting point 
+Estimated_field_startingpoint=10
+
 #--------------model and simulation------------------
-model=IDE(k,f,EEG_signals, act_func,alpha,field_cov_function,field_noise_variance,obs_noise_covariance,Sensorwidth,obs_locns,spacestep,init_field,initial_field_covariance,Ts)
+model=IDE(k,f,EEG_signals, act_func,alpha,field_cov_function,field_noise_variance,obs_noise_covariance,Sensorwidth,obs_locns,spacestep,init_field,initial_field_covariance,Ts,Estimated_field_startingpoint)
 model.gen_ssmodel(sim=1)
 Y=quickio.read('Y')
 Y=Y['var0']

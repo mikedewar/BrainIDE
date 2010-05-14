@@ -39,7 +39,7 @@ class IDE():
 	----------
 	"""
 
-	def __init__(self,kernel,field,EEG,act_fun,alpha,beta,field_noise_variance,obs_noise_covariance,Sensorwidth,obs_locns,spacestep,init_field,initial_field_covariance,Ts):
+	def __init__(self,kernel,field,EEG,act_fun,alpha,beta,field_noise_variance,obs_noise_covariance,Sensorwidth,obs_locns,spacestep,init_field,initial_field_covariance,Ts,Estimated_field_startingpoint):
 
 		self.kernel = kernel
 		self.field = field
@@ -55,6 +55,7 @@ class IDE():
 		self.init_field=init_field
 		self.initial_field_covariance=initial_field_covariance
 		self.Ts=Ts
+		self.Estimated_field_startingpoint=Estimated_field_startingpoint
 		
 
 	def gen_ssmodel(self,sim=0):
@@ -157,8 +158,7 @@ class IDE():
 
 		#finding the starting point of the original field for zero padding
 		Original_field_startingpoint=2*pb.absolute(self.field.space[-1])
-		Estimated_field_startingpoint=10
-		Starting_index=(Original_field_startingpoint-Estimated_field_startingpoint)*(1./self.spacestep)
+		Starting_index=(Original_field_startingpoint-self.Estimated_field_startingpoint)*(1./self.spacestep)
 		Ending_index=-Starting_index
 			
 
