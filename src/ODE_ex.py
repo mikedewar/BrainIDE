@@ -39,7 +39,9 @@ beta_variance=1.3**2
 #-------Brain----------------
 alpha=100
 threshold=2
+
 nu=20
+
 beta=0.8
 act_func=ActivationFunction(threshold,nu,beta)
 #----------observations--------------------------
@@ -104,13 +106,13 @@ parameters['Fs']=Fs
 parameters['t_end']=t_end
 quickio.writed('parameters','w',parameters)
 #---------------save results in mat format---------------
-V_matrix_dic={}
-V_filtered_dic={}
-Y_dic={}
-V_matrix_dic['V_matrix']=V_matrix
-V_filtered_dic['V_filtered']=V_filtered
-Y_dic['Y']=Y
-io.savemat('V_filtered',V_filtered_dic)
-io.savemat('Y',Y_dic)
-io.savemat('V_matrix',V_matrix_dic)
+#V_matrix_dic={}
+#V_filtered_dic={}
+#Y_dic={}
+#V_matrix_dic['V_matrix']=V_matrix
+#V_filtered_dic['V_filtered']=V_filtered
+#Y_dic['Y']=Y
+#io.savemat('V_filtered',V_filtered_dic)
+#io.savemat('Y',Y_dic)
+#io.savemat('V_matrix',V_matrix_dic)
 
