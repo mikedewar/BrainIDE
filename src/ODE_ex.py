@@ -39,8 +39,8 @@ beta_variance=1.3**2
 #-------Brain----------------
 alpha=100
 threshold=2
-nu=5
-beta=10
+nu=20
+beta=0.8
 act_func=ActivationFunction(threshold,nu,beta)
 #----------observations--------------------------
 Delta_s = 1.5	# mm
@@ -69,7 +69,7 @@ pb.show()
 # -------Sampling properties-------------
 Fs = 1e3   #sampling rate                                       
 Ts = 1/Fs   #sampling period, second
-t_end = 0.5 # seconds
+t_end = 0.2 # seconds
 NSamples = t_end*Fs;
 T = pb.linspace(0,t_end,NSamples);
 
