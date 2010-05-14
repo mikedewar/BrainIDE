@@ -39,7 +39,9 @@ beta_variance=1.3**2
 #-------Brain----------------
 alpha=100
 threshold=2
-nu=10
+
+nu=20
+
 beta=0.8
 act_func=ActivationFunction(threshold,nu,beta)
 #----------observations--------------------------
