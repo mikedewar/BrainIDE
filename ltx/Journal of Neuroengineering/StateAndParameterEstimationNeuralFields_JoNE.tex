@@ -68,7 +68,9 @@
 \usepackage{amssymb,amsfonts} 			%<-use this for checking equation length
 \newcommand{\todo}[1]{\textsf{\emph{\textbf{\textcolor{blue}{#1}}}}} 
 \newcommand{\wtf}[1]{\textsf{\emph{\textbf{\textcolor{red}{#1}}}}} 
-\newcommand{\omg}[1]{\textsf{\emph{\textbf{\textcolor{green}{#1}}}}} \begin{document}
+\newcommand{\omg}[1]{\textsf{\emph{\textbf{\textcolor{green}{#1}}}}}
+\newcommand{\haq}[1]{\textsf{\emph{\textbf{\textcolor{magenta}{#1}}}}}
+\begin{document}
 
 % \begin{document}
 
@@ -76,7 +78,8 @@
 
 \author{Dean R. Freestone$^1$, Parham Aram$^2$, Michael Dewar$^3$, Kenneth Scerri$^4$, David B. Grayden$^1$, and Visakan Kadirkamanathan$^2$}
 
-\address{$^1$ Department of Electrical and Electronic Engineering, University of Melbourne, Melbourne, Vic, 3010 Australia} \address{$^2$ Department of Automatic Control and Systems Engineering, University of Sheffield, Mappin Street, Sheffield, S1 3JD, UK} \address{$^3$ Department of Applied Physics and Applied Mathematics, Columbia University, US} \address{$^4$ Ken's} \ead{dfreestone@bionicear.org} 
+\address{$^1$ Department of Electrical and Electronic Engineering, University of Melbourne, Melbourne, Vic, 3010 Australia} \address{$^2$ Department of Automatic Control and Systems Engineering, University of Sheffield, Mappin Street, Sheffield, S1 3JD, UK} \address{$^3$ Department of Applied Physics and Applied Mathematics, Columbia University, US} \address{$^4$ Deaprtment of Systems and Control Engeineering, University of Malta, Msida, MSD 1333, Malta} \ead{dfreestone@bionicear.org} 
+
 
 \begin{abstract}
 	This paper presents a framework for creating patient-specific neural field models from electrophysiological data. The Wilson and Cowen or Amari style neural field equations are used as the parametric form of the model, where the parameters are estimated from data. To illustrate the estimation framework, data is generated using modelled sensors and the field model. We introduce a method to reduce the continuum neural field model, using a basis function decomposition, to form a finite dimensional state-space model to facilitate state and parameter estimation. Spatial frequency analysis methods are introduced for model selection, by systematically specifying the basis function configuration required to capture the dominant characteristics of the neural field. We use the reduced model for the estimation that consists of a two stage algorithm incorporating the unscented Rauch Tung Striebel Smoother for state estimation, and a least squares algorithm for parameter estimation. The results show that it is possible to reconstruct the neural field and estimate intracortical connectivity and synaptic time constant with the proposed framework. The results illustrate the cost of the model reduction with a loss of the high spatial frequency information. This framework provides a link between patient specific neurophysiological data and theoretical neural fields models. This link may lead to greater understanding of cortical dynamics at the meso/macroscopic scale where diseases such as epilepsy are manifested.   
@@ -125,7 +128,7 @@ where $\zeta=\tau^{-1}$ and $\tau$ is the synaptic time constant and $\eta(t)$ i
 \begin{equation}
 	\label{RateBasedInteractions} g\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( v\left( \mathbf{r}',t \right) \right)d\mathbf{r}'}, 
 \end{equation}
-where $f(\cdot)$ is the firing rate function, $w(\cdot)$ is the spatial connectivity kernel, and $\Omega$ is the spatial domain, representing a cortical sheet or surface. The connectivity kernel is typically a ``Mexican hat'' function which describes strong local activation, weak mid-range repression and weak long-range activation. The exact shape of this kernel is assumed to vary across patients, and hence needs to be inferred from data. 
+where $f(\cdot)$ is the firing rate function, $w(\cdot)$ is the spatial connectivity kernel, and $\Omega$ is the spatial domain, representing a cortical sheet or surface. The connectivity kernel is typically a ``Mexican hat'' function which describes strong local activation, weak mid-range repression and weak long-range activation. The exact shape of this kernel is assumed to vary across patients, and hence needs to be inferred from data. \haq{Risky comment if we don't get better estimates.}
 
 \omg{show figure with the Mexican hat here.}
 
@@ -184,7 +187,7 @@ By defining the term
 \begin{equation}
 	\label{DefGamma} \boldsymbol{\Gamma} = \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi} ^{\top}\left(\mathbf{r}\right)d\mathbf{r}} 
 \end{equation}
-and manipulating the model (see~\ref{Simplifying Decomposition}) we isolate the state vector to form a state-space model 
+and manipulating equation \ref{reduced continuous model} (see Appendix \ref{Simplifying Decomposition}) we isolate the state vector to form a state-space model 
 \begin{eqnarray}
 	\label{Homogeneous SS Model} \mathbf{x}_{t+1} &=& q(\mathbf{x}_t)\boldsymbol{\theta} - \xi\mathbf{x}_t + \mathbf{e}_t \\
 	&=& Q\left(\mathbf{x}_t\right) + \mathbf{e}_t 
@@ -236,29 +239,22 @@ where $L$ is the number of basis functions used to decompose the voltage field a
 % and $m(\mathbf r_n - \mathbf{r}')$ is the observation kernel.
 \section{Spectral Analysis and Model Selection}\label{SpectralAnalysisSection} Spectral analysis was used to identify both the number of sensors and the number of basis functions required to reconstruct the neural field from sampled observations \cite{Sanner1992,Scerri2009}. Based on a two-dimensional extension of Shannon's sampling theorem \cite{Peterson1962}, the spatial bandwidth of the observed field can be used to provide a lower bound on both the number of sensors and the number of basis functions required to capture the dominant spectral characteristics of the neural field.
 
-The spectral characteristics of the field are governed by the shape of the connectivity kernel and the covariance of the field disturbance. If the bandwidth of the field disturbance covariance is wider than the bandwidth of the connectivity kernel, then the disturbance covariance governs the bandwidth of the system. Conversely, a wider kernel bandwidth will govern the system bandwidth.
-
-Let the spectral representation of the dynamic field at time $t$ be denoted by $V_t(\boldsymbol{\nu})$, where $\nu$ denotes spatial frequency. Given $V_t(\boldsymbol{\nu})$, the distance between adjacent sensors should be no more than
-% 
-% Then, for an accurate representation, $V_t(\boldsymbol{\nu})$ needs to be spatially band-limited. Such a condition is usually satisfied due to the band-limiting effect of most practical kernels and covariance functions \todo{~cite\{some EEG literature here\}} \omg{will try to find something. These kernel are kinda theoretical and I have not ever seen and estimate of the covariance function. Can we remove the sentence ``Such a condition is usually satisfied...'' }. Thus we can assume that the spectral response $V_t(\boldsymbol{\nu})$ is band-limited with $V_t(\boldsymbol{\nu}) \approx 0 ~ \forall \boldsymbol{\nu} > \boldsymbol{\nu}_c$,  
-% 
-% Note that for the two-dimensional, homogeneous and isotropic fields being considered $\boldsymbol{\nu}_c = [\nu_c ~ \nu_c]^\top$. Given such a band-limited field the distance between adjacent sensors, $\Delta_s$, needs to satisfy 
+Let the spectral representation of the dynamic field at time $t$ be denoted by $V_t(\boldsymbol{\nu})$. Then, based on Shannon's sampling Theorem, for an accurate representation of this field by spatially discrete observations, $V_t(\boldsymbol{\nu})$ needs to be spatially band-limited. Such a condition ensures that $V_t(\boldsymbol{\nu}) \approx 0 ~ \forall \boldsymbol{\nu} > \boldsymbol{\nu}_c$, where $\boldsymbol{\nu}_c$ is a cutoff frequency with  $\boldsymbol{\nu}_c = [\nu_c ~ \nu_c]^\top$. Given such a band-limited field, the distance between adjacent sensors, $\Delta_s$, needs to satisfy 
 \begin{equation}
 	\label{eq:MinimumSensorDistance} \Delta_s < \frac{1}{2\rho_s\nu_{c}}, 
 \end{equation}
-where $\boldsymbol{\nu}_c$ the cut-off frequency, $\rho_s \in \mathbb{R} \ge 1$ is an oversampling parameter. This condition must be satisfied for the hidden dynamic field $v_t(\mathbf{r})$ to be precisely inferred from the sampled observations, $\mathbf{y}_t$. If the condition is not satisfied, spatial aliasing will occur. 
+where $\rho_s \in \mathbb{R} \ge 1$ is an oversampling parameter. This condition must be satisfied to avoid spectral aliasing effects in the representation of the hidden dynamic field $v_t(\mathbf{r})$ by the sampled observations, $\mathbf{y}_t$.
 
-There are two options available to alleviate problems with aliasing. The first, which is the most desirable, is to increase the spatial sampling frequency (using a higher resolution of sensors). The second is to use wider sensors, where the spatial averaging acts like a low-pass anti-aliasing filter. This option is a compromise between alleviating issues with aliasing and losing high frequency information contained in the field. In practice, it is difficult to estimate the bandwidth of the cortex using traditional electrophysiological measurements due to spatial limitations. However, we envisage it may be possible the estimate the bandwidth of the cortex using other modalities with higher spatial resolution such as fMRI, NIRS or other optical imaging techniques~\cite{Issa2000}. Errors associated with mild aliasing result in distortions in the high frequency components of the field dynamics. However, after applying the basis function decomposition, high frequency components contribute negligibly to the inverse problem and are therefore not a major problem for the state and parameter estimation~\cite{Sanner1992}. This is further illustrated our results. \omg{Although our results are severely effected by the loss of high frequency info! Ken: Do you think you can word this a little better than what I have done.}
+In practice, it is difficult to estimate the bandwidth of the cortex using traditional electrophysiological measurements thus allowing the positioning of sensor in accordance to \ref{eq:MinimumSensorDistance}. However, we envisage it may be possible to estimate it using other modalities with higher spatial resolution such as, fMRI, NIRS or other optical imaging techniques~\cite{Issa2000}. Nevertheless, using electrophysiological measurements, spectral aliasing can still be avoided by a proper choice of the spatial sampling distance given the sensor's spectral characteristics. Sensors with smooth wide spatial responses result in a spectral low-pass action, thus providing spatial anti-aliasing filtering. Such sensors therefore bandlimit the field to a known bandwidth, denoted by $\nu_{co}$. Aliasing can then be avoided by positioning the sensors according to \ref{eq:MinimumSensorDistance}, with $\nu_{co}$ replacing $\nu_c$. 
+
+Although such sensors avoid errors due to aliasing, they attenuate the high frequency variations in the observations. Therefore, any procedure applied to estimate the original field or the kernel from these bandlimited observations will underestimate the high frequency component in both the field and the kernel. Such a remark motivates the use of sensors with wider bandwidths. Nevertheless, this choice would require an excessive number or sensors in order to satisfy Shannon's sampling theorem for a reasonable spatial region. Therefore, a compromise needs to be found between the bandwidth of the sensor response and therefore the accurate of the estimation results and the number of sensors used and thus the computational demands of estimation procedure.
 
 Similar considerations need to be made regarding the representation of the dynamic field $v_t(\mathbf{r})$ using the basis function decomposition. The minimum distance between adjacent basis functions must also satisfy Shannon's sampling theorem to capture the dominant spectral information of the field. Thus, the minimum distance between basis functions must satisfy 
 \begin{equation}\label{eq:BasisFunctionSeparation}
 	\Delta_b < \frac{1}{2\rho_b\nu_{co}}
 \end{equation}
-where $\rho_b$ is an over-sampling parameter to determine the basis function separation and $\nu_{co}$ is the spatial cut-off frequency from the observations. For the Gaussian basis functions, $\phi(\mathbf{r})$, being considered, the basis function width parameter, $\sigma_{\phi}^2$, can also be inferred using spectral considerations~\cite{Sanner1992,Scerri2009}. The Fourier transform of an \textit{n}-dimensional Gaussian
-\begin{equation}\label{eq:nDimensionalGaussian}
-	\phi(\mathbf r)=\mathrm{exp}\left({-\frac{1}{\sigma_{\phi}^2} \mathbf r^\top\mathbf r}\right)
-\end{equation}
- is another Gaussian given by
+where $\rho_b$ is an over-sampling parameter to determine the basis function separation. For the Gaussian basis functions, $\phi(\mathbf{r})$, being considered, the basis function width parameter, $\sigma_{\phi}^2$, can also be inferred using spectral considerations~\cite{Sanner1992,Scerri2009}. The Fourier transform of an \textit{n}-dimensional Gaussian is another Gaussian given by
+
 \begin{equation}\label{eq:GaussianFT}
 \boldsymbol\Phi(\boldsymbol \nu)=\left(\frac{1}{\pi\sigma_{\nu}^2}\right)^{\frac{n}{2}}\mathrm{exp}\left(-\frac{1}{\sigma_{\nu}^2}\boldsymbol\nu^\top \boldsymbol\nu\right),
 \end{equation}
@@ -274,9 +270,9 @@ where
 \begin{equation}\label{eq:WidthFrequencyRelationship}
  \sigma^2_{\nu_{co}}= \frac{2\boldsymbol\nu_{co}^\top \boldsymbol\nu_{co}}{\ln 2}.
 \end{equation}
-This ensures that the basis functions can represent a field with frequency content up to $\boldsymbol\nu_{co}$. Proofs for equations~\ref{eq:GaussianFT} and \ref{eq:WidthFrequencyRelationship} are given in~\ref{ap:FrequencyAnalysis}.
-% Thus to ensure that the basis functions can represent fields with frequency content up to $\boldsymbol{\nu}_c$, $\sigma_{\nu}$ should be set with at least the 3~dB frequency for the basis functions equal to $\boldsymbol{\nu}_c$, thus obtained $\sigma^2_{\nu}$ and therefore $\sigma_{\phi}^2$.
-The dynamic field must be spatially oversampled using a larger number of sensors than imposed by the frequency analysis, to use frequency analysis to determine the minimum distance and width of the basis functions. Following this, the distance between basis functions is usually larger then the distance between sensors, although this is not a requirement for using this estimation framework. \omg{Ken: can you please write something about what should be done in this case?} For a spatially isotropic field, the basis functions can be placed on a regular grid and hence the distance between basis functions dictates the total number of basis functions required.
+This ensures that the basis functions can represent field with frequency content up to $\boldsymbol\nu_{co}$. Proofs for equations~\ref{eq:GaussianFT} and \ref{eq:WidthFrequencyRelationship} are given in~\ref{ap:FrequencyAnalysis}.
+
+Note that for a spatially homogeneous isotropic fields, the basis functions can be placed on a regular grid. Thus, the knowledge of the distance between basis functions directly implies the total number of basis functions required to represent a known spatial region.
 
 % 
 % Due to the high dimensionality of the brain and the current electrode systems, we can not expect to have more sensors than basis functions.
