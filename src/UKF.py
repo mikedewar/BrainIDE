@@ -153,49 +153,64 @@ class IDE():
 					K2[i,j]=gaussian(pb.matrix([[self.kernel.space[i]],[self.kernel.space[j]]]),k2_center,k2_width,self.kernel.dimension)
 					K3[i,j]=gaussian(pb.matrix([[self.kernel.space[i]],[self.kernel.space[j]]]),k3_center,k3_width,self.kernel.dimension)
 
+
+
+		#finding the starting point of the original field for zero padding
+		Original_field_startingpoint=2*pb.absolute(self.field.space[-1])
+		Estimated_field_startingpoint=10
+		Starting_index=(Original_field_startingpoint-Estimated_field_startingpoint)*(1./self.spacestep)
+		Ending_index=-Starting_index
+			
+
+
+
+
 		if hasattr(self,'K3'):
 			pass
 		else:
 
 			#Padding the kernel with zeros
+			
 
-			field_width=2* pb.absolute(self.field.space[-1])
 			#column
-			K1[:,0:field_width/2.]=0 
-			K1[:,K_center[0]+1+(field_width/2.):]=0
+			K1[:,0:Starting_index]=0 
+			K1[:,Ending_index:]=0
 
-			K2[:,0:field_width/2.]=0 
-			K2[:,K_center[0]+1+(field_width/2.):]=0
+			
+			K2[:,0:Starting_index]=0 
+			K2[:,Ending_index:]=0
 
-			K3[:,0:field_width/2.]=0 
-			K3[:,K_center[0]+1+(field_width/2.):]=0
+			
+			K3[:,0:Starting_index]=0 
+			K3[:,Ending_index:]=0
 			#rows
- 			K1[0:field_width/2]=0
- 			K1[K_center[0]+1+(field_width/2.):]=0
+ 			K1[0:Starting_index,:]=0
+ 			K1[Ending_index:,:]=0
 
- 			K2[0:field_width/2]=0
- 			K2[K_center[0]+1+(field_width/2.):]=0
+ 			
+ 			K2[0:Starting_index,:]=0
+ 			K2[Ending_index:,:]=0
 
- 			K3[0:field_width/2]=0
- 			K3[K_center[0]+1+(field_width/2.):]=0
+ 			
+ 			K3[0:Starting_index,:]=0
+ 			K3[Ending_index:,:]=0
 
 			self.K1=K1
 			self.K2=K2
 			self.K3=K3
 
+
 		if sim==1:
 
 
 			#Padding the kernel with zeros
-			field_width=2* pb.absolute(self.field.space[-1])
-
 			#column
-			K[:,0:field_width/2.]=0 
-			K[:,K_center[0]+1+(field_width/2.):]=0
+			K[:,0:Starting_index]=0 
+			K[:,Ending_index:]=0
 
 			#rows
- 			K[0:field_width/2]=0
- 			K[K_center[0]+1+(field_width/2.):]=0
+ 			K[0:Starting_index,:]=0
+ 			K[Ending_index:,:]=0
 
 			self.K=K
 
@@ -205,15 +220,13 @@ class IDE():
 
 
 			#Padding the kernel with zeros
-			field_width=2* pb.absolute(self.field.space[-1])
-
 			#column
-			Beta[:,0:field_width/2.]=0 
-			Beta[:,K_center[0]+1+(field_width/2.):]=0
+			Beta[:,0:Starting_index]=0 
+			Beta[:,Ending_index:]=0
 
 			#rows
- 			Beta[0:field_width/2]=0
- 			Beta[K_center[0]+1+(field_width/2.):]=0
+ 			Beta[0:Starting_index,:]=0
+ 			Beta[Ending_index:,:]=0
 
 
 			self.Beta=Beta
@@ -230,7 +243,6 @@ class IDE():
 					fbases.append(self.field.field_bases(pb.matrix([[s1],[s2]])))
 			self.field.fbases=fbases
 			print "Elapsed time in seconds is", time.time()-t0
-
 
 		
 		if hasattr(self,'observation_matrix'):
