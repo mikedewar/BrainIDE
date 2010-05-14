@@ -6,7 +6,6 @@ import quickio
 #-------------reading parameters--------------------
 parameters=quickio.read('parameters')
 parameters=parameters['var0']
-
 field_width=(parameters['field_width'])/2.
 dimension=parameters['dimension']
 k_centers=parameters['k_centers']
@@ -23,8 +22,8 @@ obs_locns=parameters['obs_locns']
 obs_noise_covariance=parameters['obs_noise_covariance']
 Fs=parameters['Fs']
 t_end=parameters['t_end']
-#-------------field--------------------
 
+#-------------field--------------------
 field_basis_width=2.5#3.6
 spacestep=0.5
 S=pb.linspace(-10,10,9)
@@ -69,6 +68,7 @@ init_field=pb.matrix(pb.multivariate_normal(mean,initial_field_covariance,[1])).
 Ts = 1/Fs   #sampling period, second
 NSamples = t_end*Fs;
 T = pb.linspace(0,t_end,NSamples);
+
 #--------------model and simulation------------------
 model=IDE(k,f,EEG_signals, act_func,alpha,field_cov_function,field_noise_variance,obs_noise_covariance,Sensorwidth,obs_locns,spacestep,init_field,initial_field_covariance,Ts)
 model.gen_ssmodel(sim=1)
