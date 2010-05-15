@@ -1,12 +1,14 @@
+from __future__ import division
 import pylab as pb
 import numpy as np
 from scipy import io
 from UKF import *
 import quickio
+
 #-------------reading parameters--------------------
 parameters=quickio.read('parameters')
 parameters=parameters['var0']
-field_width=(parameters['field_width'])/2.
+estimation_field_width=(parameters['field_width'])/2.     # need to change to estimation field width
 dimension=parameters['dimension']
 k_centers=parameters['k_centers']
 k_weights=parameters['k_weights']
@@ -24,15 +26,38 @@ Fs=parameters['Fs']
 t_end=parameters['t_end']
 
 #-------------field--------------------
-field_basis_width=2.5#3.6
-spacestep=0.5
-S=pb.linspace(-10,10,9)
+field_basis_width=2.5			# sigma^2_b, width of field basis functions
+spacestep=0.5					# space step for estimator
+NBasisFunction_x_or_y_dir = 8	# the total number basis functions is this value squared (9=>81 basis functions)
+
+# in this part of the code we make sure the basis functions are symetric with the spatial discretisation
+steps_in_estimated_field = estimation_field_width/spacestep + 1;								#in space indexes
+print "steps (indexes) in estimated field is", steps_in_estimated_field
+Dist_between_basis_func = pb.floor(steps_in_estimated_field / (NBasisFunction_x_or_y_dir - 1) ) 		#in space indexes
+print "distance between basis functions (in space index) is", Dist_between_basis_func
+twice_offset = steps_in_estimated_field - Dist_between_basis_func * (NBasisFunction_x_or_y_dir-1) #in space indexes
+basis_func_offset = twice_offset/2.
+
+# we need to make sure that twice_offset/2 is an integer
+# if twice_offset/2 is not an integer the basis functions will be assymetrically placed in the field we are trying to estimate
+print "offset (in index) = " ,basis_func_offset
+assert pb.mod(basis_func_offset,.5)==0, "offset for positioning basis functions not an int. Choose at different number of basis functions"
+  
+print "basis function offset ok"
+S_index = pb.arange(basis_func_offset,steps_in_estimated_field-basis_func_offset+Dist_between_basis_func,Dist_between_basis_func)
+S = (S_index - steps_in_estimated_field/2.) * spacestep
+# S=pb.linspace(-estimation_field_width/2+basis_func_offset*spacestep,estimation_field_width/2-basis_func_offset*spacestep,NBasisFunction_x_or_y_dir)			# location of field basis functions
+
+print "basis function indexes:", S_index
+print "basis function centers:", S
+# reset the edge of the estimated field such that the edge cuts a basis function in half
+# estimation_field_width = estimation_field_width - twice_offset*spacestep
 
 f_centers=gen_spatial_lattice(S)
 nx=len(f_centers)
 f_widths=[pb.matrix([[field_basis_width,0],[0,field_basis_width]])]*nx
 f_weights=[1]*nx
-f_space=pb.arange(-field_width/2.,(field_width/2.)+spacestep,spacestep)# the step size should in a way that we have (0,0) in our kernel as the center
+f_space=pb.arange(-estimation_field_width/2.,(estimation_field_width/2.)+spacestep,spacestep)# the step size should in a way that we have (0,0) in our kernel as the center
 f=Field(f_weights,f_centers,f_widths,dimension,f_space,nx,spacestep)
 
 
@@ -42,7 +67,7 @@ f=Field(f_weights,f_centers,f_widths,dimension,f_space,nx,spacestep)
 #Spatial domain of the kernel is twice wider than the field for the fast simulation and the kernel must have center and |
 #it must be located at (0,0), therefore len(k_space) must be odd.                                                       |
 #_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _|
-k_space=pb.arange(-field_width,(field_width)+spacestep,spacestep)
+k_space=pb.arange(-estimation_field_width,(estimation_field_width)+spacestep,spacestep)
 k=Kernel(k_weights,k_centers,k_widths,k_space,dimension)
 #k.plot(k_space)
 #------Field noise----------
@@ -53,7 +78,7 @@ act_func=ActivationFunction(threshold,nu,beta)
 l1=[circle(cent,2*pb.sqrt(pb.log(2),)*pb.sqrt(Sensorwidth)/2,'b') for cent in obs_locns]
 l2=[circle(cent,2*pb.sqrt(pb.log(2),)*pb.sqrt(f_widths[0][0,0])/2,'r') for cent in f_centers]
 # pb.legend((l1, l2), ('r:field basis functions', 'b:Sensors'), loc='best')
-pb.axis([-field_width/2.,field_width/2.,-field_width/2,field_width/2])
+pb.axis([-estimation_field_width/2.,estimation_field_width/2.,-estimation_field_width/2,estimation_field_width/2])
 pb.show()
 ny=len(obs_locns)
 widths=[pb.matrix([[Sensorwidth,0],[0,Sensorwidth]])]
