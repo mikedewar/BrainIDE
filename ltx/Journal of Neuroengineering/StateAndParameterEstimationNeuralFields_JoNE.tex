@@ -129,14 +129,12 @@ where $\zeta=\tau^{-1}$ and $\tau$ is the synaptic time constant and $\eta(t)$ i
 	\label{RateBasedInteractions} g\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( v\left( \mathbf{r}',t \right) \right)d\mathbf{r}'}, 
 \end{equation}
 where $f(\cdot)$ is the firing rate function, $w(\cdot)$ is the spatial connectivity kernel, and $\Omega$ is the spatial domain, representing a cortical sheet or surface. The connectivity kernel is typically a ``Mexican hat'' function which describes strong local activation, weak mid-range repression and weak long-range activation. The exact shape of this kernel is assumed to vary across patients, and hence needs to be inferred from data. \ken{Risky comment if we don't get better estimates.}
-
-\begin{figure}[th]\label{fig:experimental design}
+\begin{figure}[ th]\label{fig:2d_kernel}
    	\begin{center}
-   		\includegraphics[width=0.3\textwidth]{./Graph/2D_kernel.pdf} 
+   		\includegraphics[angle = 90, scale=0.5]{./Graph/2D_kernel.pdf} 
    	\end{center}
    	\caption{Kernel centred at zero as a function of space.} 
    \end{figure}
-
 The firing rate of the presynaptic neurons is related to the postsynaptic membrane potential by the sigmoidal activation function 
 \begin{equation}
 	\label{ActivationFunction} f\left( v\left( \mathbf{r}', t \right) \right) = \frac{f_{max}}{1 + \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right)}. 
@@ -160,7 +158,7 @@ To arrive at the integro-difference equation (IDE) form of the model we discreti
 	\label{DiscreteTimeModel} v_{t+T_s}\left(\mathbf{r}\right) &=& \xi v_t\left(\mathbf{r}\right) + T_s \int_\Omega { w\left(\mathbf{r}-\mathbf{r}'\right) f\left(v_t\left(\mathbf{r}'\right)\right) d\mathbf{r}'} \nonumber\\ 
 	&+& e_t\left(\mathbf{r}\right), 
 \end{eqnarray}
-where $T_s$ is the time step, $\xi = 1-\zeta T_s$ and $e_t(\mathbf{r})$ is an i.i.d. disturbance such that $e_t\sim\mathcal{GP}(\mathbf 0,\gamma(\mathbf{s}-\mathbf{r}))$. Here $\mathcal{GP}(\mathbf 0,\gamma(\mathbf{s}-\mathbf{r}))$ denotes a spatial Gaussian Process with mean zero and covariance function $\gamma(\mathbf{s}-\mathbf{r})$~\cite{Rasmussen2005}. This term is added to account for uncertainty in the model. The mapping between the membrane voltage and the collected iEEG/LFP data is modelled using the observation function 
+where $T_s$ is the time step, $\xi = 1-\zeta T_s$ and $e_t(\mathbf{r})$ is an i.i.d. disturbance such that $e_t\sim\mathcal{GP}(\mathbf 0,\gamma(\mathbf{s}-\mathbf{r}))$. Here $\mathcal{GP}(\mathbf 0,\gamma(\mathbf{s}-\mathbf{r}))$ denotes a spatial Gaussian Process with mean zero and covariance function $\gamma(\mathbf{s}-\mathbf{r})$~\cite{Rasmussen2005}. This term is added to account for uncertainty in the model. To simplify the notation, the index of the future time sample, $t+T_s$, shall be referred to as $t+1$ throughout the rest of the paper. The mapping between the membrane voltage and the collected iEEG/LFP data is modelled using the observation function 
 \begin{equation}
 	\mathbf{y}_t = \int_{\Omega}{m\left(\mathbf{r}_n-\mathbf{r}'\right)v_t\left(\mathbf{r}'\right)d\mathbf{r}'} + \boldsymbol{\varepsilon}_t, 
 \end{equation}
@@ -170,29 +168,25 @@ where $\mathbf{r}_n$ defines the location of the sensors in the field, $n=1,...,
 \end{equation}
 
 \subsection{Derivation of Finite Dimensional State-Space Model} 
-In order to implement standard estimation techniques, we use a decomposition of the field using a set of Gaussian basis functions defined by
+In order to implement standard estimation techniques, we use a decomposition of the field using a set of Gaussian basis functions that are defined by
 \begin{equation}\label{eq:FieldBasisFunction}
 	\phi\left(\mathbf{r}-\mathbf{r}'\right) =
 \exp{\left(-\frac{(\mathbf{r}-\mathbf{r}')^\top(\mathbf{r}-\mathbf{r}')}{\sigma_{\phi}^2}\right)}. 
 \end{equation}
- Decomposition allows a continuous field to be represented by a finite dimensional state vector. This facilitates application of standard nonlinear state estimation methods such as the unscented Kalman filter. The field decomposition is described by 
+Decomposition allows a continuous field to be represented by a finite dimensional state vector. This facilitates application of standard nonlinear state estimation methods such as the unscented Kalman filter. The field decomposition is described by 
 \begin{equation}
 	\label{DefFieldDecomp} v_t\left(\mathbf{r}\right) \approx \boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) \mathbf{x}_t, 
 \end{equation}
-where $\mathbf{\boldsymbol{\phi}}(\mathbf{r})$ is a vector of Gaussian basis functions that are scaled by the state vector, $\mathbf{x}_t$. The choice of Gaussian basis functions can be justified by the existence of the so called bump solutions for this class of model, which have a Gaussian shape~\cite{Coombes2005}. The width and positioning of the basis functions can be determined by spectral analysis (explained in detail in Section~\ref{SpectralAnalysisSection}). The connectivity kernel can also be decomposed into a set of basis functions where 
+where $\mathbf{\boldsymbol{\phi}}(\mathbf{r})$ is a vector of Gaussian basis functions that are scaled by the state vector, $\mathbf{x}_t$. The choice of Gaussian basis functions can be justified by the existence of the so called bump solutions for this class of model, which have a Gaussian shape~\cite{Coombes2005}. The width and positioning of the basis functions can be determined by spectral analysis (explained in detail in Section~\ref{SpectralAnalysisSection}). The connectivity kernel can also be decomposed as 
 \begin{equation}\label{DefKernelDecomp}
-	 w\left(\mathbf{r}-\mathbf{r}'\right) =\boldsymbol{\psi}^\top\left(\mathbf{r}-\mathbf{r}'\right) \boldsymbol{\theta}.
+	 w\left(\mathbf{r}-\mathbf{r}'\right) =\boldsymbol{\psi}^\top\left(\mathbf{r}-\mathbf{r}'\right) \boldsymbol{\theta},
 \end{equation}
-We will assume that we know the parametric form of the connectivity basis functions, where the parameter $\boldsymbol{\theta}$ is unknown. Each connectivity basis function can, individually, be considered a layer in the Wilson and Cowan model, representing short range excitation, surround inhibition and mid-range excitation. Making substitutions of equations~\ref{DefFieldDecomp} and~\ref{DefKernelDecomp} into~\ref{DiscreteTimeModel} we get 
+where $\boldsymbol{\psi}(r-r')$ is a vector of Gaussian basis functions and $\boldsymbol{\theta}$ is a vector of scaling parameters. We will assume that we know the parametric form of the connectivity basis functions, where the scaling parameters $\boldsymbol{\theta}$ are unknown. Each connectivity basis function can, individually, be considered a layer in the Wilson and Cowan model, representing short range excitation, surround inhibition and mid-range excitation. Making substitutions of equations~\ref{DefFieldDecomp} and~\ref{DefKernelDecomp} into~\ref{DiscreteTimeModel} we get 
 \begin{eqnarray}
 	\label{reduced continuous model}\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_{t+1}&=& T_s\int_\Omega{f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t )\boldsymbol{\psi}^{\top}(\mathbf{r}-\mathbf{r}')d\mathbf{r}'}\boldsymbol{\theta}\nonumber \\ 
 	&+& \xi\boldsymbol{\phi}^{\top}(\mathbf{r})x_t + e_t(\mathbf{r}). 
 \end{eqnarray}
-By defining the term 
-\begin{equation}
-	\label{DefGamma} \boldsymbol{\Gamma} = \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi} ^{\top}\left(\mathbf{r}\right)d\mathbf{r}} 
-\end{equation}
-and manipulating equation \ref{reduced continuous model} (see \ref{Simplifying Decomposition}) we isolate the state vector to form a state-space model 
+This reduced model can be manipulated into a standard state-space model in the form (see \ref{Simplifying Decomposition})
 \begin{eqnarray}
 	\label{Homogeneous SS Model} \mathbf{x}_{t+1} &=& q(\mathbf{x}_t)\boldsymbol{\theta} - \xi\mathbf{x}_t + \mathbf{e}_t \\
 	&=& Q\left(\mathbf{x}_t\right) + \mathbf{e}_t 
@@ -200,7 +194,8 @@ and manipulating equation \ref{reduced continuous model} (see \ref{Simplifying D
 where
 \begin{eqnarray}
 Q\left( \mathbf{x}_t \right) &=& q(\mathbf{x}_t)\boldsymbol{\theta} - \xi\mathbf{x}_t \label{eq:QmatrixForSigmapoints}\\
-	\mathbf{e}_t &=& \label{eq:Reducednoiseterm} \boldsymbol{\Gamma}^{-1}\int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})d\mathbf{r}}, 
+	\mathbf{e}_t &=& \label{eq:Reducednoiseterm} \boldsymbol{\Gamma}^{-1}\int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})d\mathbf{r}}, \\
+	\boldsymbol{\Gamma} &=& \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi} ^{\top}\left(\mathbf{r}\right)d\mathbf{r}}, \label{DefGamma} 
 \end{eqnarray}
 where $\mathbf{e}_t$ is a zero-mean normal white noise term with the covariance (see~\ref{ColoredNoise}) 
 \begin{equation}
@@ -208,7 +203,7 @@ where $\mathbf{e}_t$ is a zero-mean normal white noise term with the covariance 
 \end{equation}
 Under the assumption the basis function decomposition is accurate, the observation equation of the reduced model is
 \begin{equation}
-	\label{ObservationEquation} \mathbf{y}_t = \mathbf{C}\mathbf{x}_t + \boldsymbol{\varepsilon}_t 
+	\label{ObservationEquation} \mathbf{y}_t = \mathbf{C}\mathbf{x}_t + \boldsymbol{\varepsilon}_t,
 \end{equation}
 where the observation matrix is 
 \begin{equation}
@@ -220,7 +215,7 @@ where the observation matrix is
 	\end{array}
 	\right] 
 \end{equation}
-where $L$ is the number of basis functions used to decompose the voltage field and 
+where $L$ is the number of basis functions used to decompose the neural field and 
 \begin{equation}
 	c_{i,j} = \int_{\Omega}m(\mathbf{r}_i - \mathbf{r}')\boldsymbol{\phi}_j(\mathbf{r}')d\mathbf{r}'. 
 \end{equation}
@@ -244,22 +239,21 @@ where $L$ is the number of basis functions used to decompose the voltage field a
 % and $m(\mathbf r_n - \mathbf{r}')$ is the observation kernel.
 \section{Spectral Analysis and Model Selection}\label{SpectralAnalysisSection} Spectral analysis was used to identify both the number of sensors and the number of basis functions required to reconstruct the neural field from sampled observations \cite{Sanner1992,Scerri2009}. Based on a two-dimensional extension of Shannon's sampling theorem \cite{Peterson1962}, the spatial bandwidth of the observed field can be used to provide a lower bound on both the number of sensors and the number of basis functions required to capture the dominant spectral characteristics of the neural field.
 
-Let the spectral representation of the dynamic field at time $t$ be denoted by $V_t(\boldsymbol{\nu})$. Then, based on Shannon's sampling Theorem, for an accurate representation of this field by spatially discrete observations, $V_t(\boldsymbol{\nu})$ needs to be spatially band-limited. Such a condition ensures that $V_t(\boldsymbol{\nu}) \approx 0 ~ \forall \boldsymbol{\nu} > \boldsymbol{\nu}_c$, where $\boldsymbol{\nu}_c$ is a cutoff frequency with  $\boldsymbol{\nu}_c = [\nu_c ~ \nu_c]^\top$. Given such a band-limited field, the distance between adjacent sensors, $\Delta_s$, needs to satisfy 
+Let the spectral representation of the dynamic field at time $t$ be denoted by $V_t(\boldsymbol{\nu})$. Based on Shannon's sampling theorem, for an accurate representation of this field by spatially discrete observations, $V_t(\boldsymbol{\nu})$ needs to be spatially band-limited. Such a condition ensures that $V_t(\boldsymbol{\nu}) \approx 0 ~ \forall \boldsymbol{\nu} > \boldsymbol{\nu}_c$, where $\boldsymbol{\nu}_c$ is a cutoff frequency with  $\boldsymbol{\nu}_c = [\nu_c ~ \nu_c]^\top$. Given such a band-limited field, the distance between adjacent sensors, $\Delta_s$, needs to satisfy 
 \begin{equation}
 	\label{eq:MinimumSensorDistance} \Delta_s < \frac{1}{2\rho_s\nu_{c}}, 
 \end{equation}
 where $\rho_s \in \mathbb{R} \ge 1$ is an oversampling parameter. This condition must be satisfied to avoid spectral aliasing effects in the representation of the hidden dynamic field $v_t(\mathbf{r})$ by the sampled observations, $\mathbf{y}_t$.
 
-In practice, it is difficult to estimate the bandwidth of the cortex using traditional electrophysiological measurements thus allowing the positioning of sensor in accordance to equation~\ref{eq:MinimumSensorDistance}. However, we envisage it may be possible to estimate it using other modalities with higher spatial resolution such as, fMRI, NIRS or other optical imaging techniques~\cite{Issa2000}. Nevertheless, using electrophysiological measurements, spectral aliasing can still be avoided by a proper choice of the spatial sampling distance given the sensors spectral characteristics. Sensors with smooth wide spatial responses result in a spectral low-pass action, thus providing spatial anti-aliasing filtering. Such sensors therefore bandlimit the field to a known bandwidth, denoted by $\nu_{co}$. Aliasing can then be avoided by positioning the sensors according to equation~\ref{eq:MinimumSensorDistance}, with $\nu_{co}$ replacing $\nu_c$. 
+In practice, it is difficult to estimate the bandwidth of the cortex using traditional electrophysiological measurements thus allowing the positioning of sensor in accordance to equation~\ref{eq:MinimumSensorDistance}. However, we envisage it may be possible to estimate it using other modalities with higher spatial resolution such as, fMRI, NIRS or other optical imaging techniques~\cite{Issa2000}. Nevertheless, using electrophysiological measurements, spectral aliasing can still be avoided by a proper choice of the spatial sampling distance given the sensors spectral characteristics. Sensors with smooth wide spatial responses result in a spectral low-pass action, thus providing spatial anti-aliasing filtering. Such sensors therefore band-limit the field to a known bandwidth, denoted by $\nu_{co}$. Aliasing can then be avoided by positioning the sensors according to equation~\ref{eq:MinimumSensorDistance}, with $\nu_{co}$ replacing $\nu_c$. 
 
-Although such sensors avoid errors due to aliasing, they attenuate the high frequency variations in the observations. Therefore, any procedure applied to estimate the original field or the kernel from these bandlimited observations will underestimate the high frequency component in both the field and the kernel. Such a remark motivates the use of sensors with wider bandwidths. Nevertheless, this choice would require an excessive number of sensors in order to satisfy Shannon's sampling theorem for a reasonable spatial region. Therefore, a compromise needs to be found between the bandwidth of the sensor response, the accuracy of the estimation results and the number of sensors used and thus the computational demands of estimation procedure.
+Although such sensors avoid errors due to aliasing, they attenuate the high frequency variations in the observations. Therefore, any procedure applied to estimate the original field or the underlying connectivity structure from these band-limited observations will underestimate the high frequency component in both the field and the kernel. Such a remark motivates the use of sensors with wider bandwidths. Nevertheless, this choice would require an excessive number of sensors in order to satisfy Shannon's sampling theorem for a reasonable spatial region. Therefore, a compromise needs to be found between the bandwidth of the sensor response, the accuracy of the estimation results and the number of sensors used and thus the computational demands of estimation procedure.
 
 Similar considerations need to be made regarding the representation of the dynamic field, $v_t(\mathbf{r})$, using the basis function decomposition. The minimum distance between adjacent basis functions must also satisfy Shannon's sampling theorem to capture the dominant spectral information of the field. Thus, the minimum distance between basis functions must satisfy 
 \begin{equation}\label{eq:BasisFunctionSeparation}
-	\Delta_b < \frac{1}{2\rho_b\nu_{co}}
+	\Delta_{\phi} < \frac{1}{2\rho_{\phi}\nu_{co}}
 \end{equation}
-where $\rho_b$ is an over-sampling parameter to determine the basis function separation. For the Gaussian basis functions, $\phi(\mathbf{r})$, being considered, the basis function width parameter, $\sigma_{\phi}^2$, can also be inferred using spectral considerations~\cite{Sanner1992,Scerri2009}. The Fourier transform of an \textit{n}-dimensional Gaussian is another Gaussian given by
-
+where $\rho_{phi}$ is an over-sampling parameter to determine the basis function separation. For the Gaussian basis functions, $\phi(\mathbf{r})$, being considered, the basis function width parameter, $\sigma_{\phi}^2$, can also be inferred using spectral considerations~\cite{Sanner1992,Scerri2009}. The Fourier transform of an \textit{n}-dimensional Gaussian is another Gaussian given by
 \begin{equation}\label{eq:GaussianFT}
 \boldsymbol\Phi(\boldsymbol \nu)=\left(\frac{1}{\pi\sigma_{\nu}^2}\right)^{\frac{n}{2}}\mathrm{exp}\left(-\frac{1}{\sigma_{\nu}^2}\boldsymbol\nu^\top \boldsymbol\nu\right),
 \end{equation}
@@ -267,7 +261,7 @@ where
 \begin{equation}\label{eq:GaussianFTWidth}
 	\sigma^2_{\nu} = \frac{1}{\pi^2\sigma_{\phi}^2}. 
 \end{equation}
-The basis function width, $\sigma^2_{\phi}$, should be chosen to give at least 3~dB attenuation at $\boldsymbol\nu_{co}$ giving \dean{need to rewrite eq~\ref{eq:WidthFrequencyRelationship} in terms of $\sigma_{\phi}$. At the mo it is writen in terms of $\sigma_{nu}$}
+The basis function width, $\sigma^2_{\phi}$, should be chosen to give at least 3~dB attenuation at $\boldsymbol\nu_{co}$ giving
 \begin{equation}\label{eq:WidthCutOffRelationship}
  \sigma^2_{\phi}= \frac{1}{\pi^2\sigma_{\nu_{co}}^2},
 \end{equation}
