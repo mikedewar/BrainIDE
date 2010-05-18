@@ -12,8 +12,8 @@ dimension=2;
 spacestep=0.5;
 steps_in_field = field_width/spacestep + 1;
 
-Delta = 1./spacestep;
-Nspacestep_in_observed_field = Delta*observedfieldwidth+1	
+inv_spacestep = 1./spacestep;						
+Nspacestep_in_observed_field = inv_spacestep*observedfieldwidth+1	
 
 observation_offest = field_width/4;     # mm
 observation_offset_units = observation_offest / spacestep -1;
