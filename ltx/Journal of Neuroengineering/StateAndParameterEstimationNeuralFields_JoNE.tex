@@ -340,9 +340,9 @@ Since the observation equation is linear (equation~\ref{ObservationEquation}) th
 		\begin{equation*}
 			\mathbf P_T^b= \mathbf P_T^f, \quad \hat{\mathbf x}^b_T= \hat{\mathbf x}^f_T 
 		\end{equation*}
-		\State Backward iteration: for $t \in \left\lbrace T-1, \cdots, 0 \right\rbrace $ calculate the sigma points $\mathcal X_{i,t}^b$ and propogate them through equation \ref{eq:QmatrixForSigmapoints}
+		\State Backward iteration: for $t \in \left\lbrace T-1, \cdots, 0 \right\rbrace $ calculate the sigma points $\mathcal X_{i,t}^b$ and propagate them through equation \ref{eq:QmatrixForSigmapoints}
 		\begin{equation*}
-			\mathcal X_{i,t+1}^{b-}=Q(\mathcal X_{i,t}^b,u_t) 
+			\mathcal X_{i,t+1}^{b-}=Q(\mathcal X_{i,t}^b) 
 		\end{equation*}
 		 compute the predicted state, the predicted covariance matrix and the cross-covariance matrix
 		\begin{equation*}
