@@ -570,11 +570,27 @@ Starting from equation~\ref{reduced continuous model} we multiply throughout by 
 &+& \xi\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\phi}^{\top}(\mathbf{r})d\mathbf{r}} \mathbf{x}_t+
 \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) e_t\left(\mathbf{r}\right)d\mathbf{r}}. 
 \end{eqnarray}
-Substituting equation~\ref{DefGamma} into equation~\ref{StartofReduction} and cross-multiplying by $\boldsymbol{\Gamma}^{-1}$ gives 
+Now defining
+\begin{equation}\label{eq:DefGamma2}
+	\boldsymbol{\Gamma} = \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi} ^{\top}\left(\mathbf{r}\right)d\mathbf{r}}, 
+\end{equation}
+and substituting equation~\ref{eq:DefGamma2} into equation~\ref{StartofReduction} and cross-multiplying by $\boldsymbol{\Gamma}^{-1}$ gives 
 \begin{eqnarray}\label{eq:ReducedForm}
 	 \lefteqn{\mathbf{x}_{t+1} \nonumber = T_s\boldsymbol{\Gamma}^{ - 1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r}) \int_\Omega {f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}')d\mathbf{r}'} d\mathbf{r}} \boldsymbol{\theta}} \nonumber\\
-&+&\xi\mathbf{x}_t + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})d\mathbf{r}}.\\ 
+&+&\xi\mathbf{x}_t + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})d\mathbf{r}}.
 \end{eqnarray}
+Equation~\ref{eq:ReducedForm} can be simplified by exploiting the symmetry (isotropy) of the connectivity kernel where
+\begin{equation}
+	\boldsymbol{\psi} (\mathbf{r}-\mathbf{r}') = \boldsymbol{\psi} (\mathbf{r}'-\mathbf{r}).
+\end{equation}
+To make the simplification we first define
+\begin{equation}\label{eq:DefPsi}
+	\boldsymbol{\Psi}(\mathbf{r}') = T_s\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\psi} (\mathbf{r}'-\mathbf{r})d\mathbf{r}},
+\end{equation}
+which is constant and can be defined analytically. Now substituting~\ref{eq:DefPsi} into~\ref{eq:ReducedForm} gives
+\begin{equation}
+	\mathbf{x}_{t+1} \nonumber = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) d\mathbf{r}' \boldsymbol{\theta} + \xi\mathbf{x}_t + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})d\mathbf{r}}.
+\end{equation}
 \dean{DEFINE q HERE!!!!!}
 \section{}\label{ColoredNoise} 
 \newtheorem{lemma}{Lemma} 
@@ -642,7 +658,7 @@ by substituting \ref{eq:Reducednoiseterm} and \ref{eq:QMatrix} in \ref{eq:Reduce
 	\mathbf x_{1}&=&\mathbf x_{0}+T_s \mathbf Q(\mathbf x_0) \boldsymbol{\theta}-\zeta T_s\mathbf x_0+\mathbf e_0 \nonumber \\
 	\mathbf x_{2}&=&\mathbf x_{1}+T_s \mathbf Q(\mathbf x_1) \boldsymbol{\theta}-\zeta T_s\mathbf x_1+\mathbf e_1\nonumber\\
 	&\vdots& \\
-	\mathbf x_{n}&=&\mathbf x_{n-1}+T_s \mathbf Q(\mathbf x_{n-1}) \boldsymbol{\theta}-\zeta T_s\mathbf x_{n-1}+\mathbf e_{n-1} \nonumber
+	\mathbf x_{T}&=&\mathbf x_{T-1}+T_s \mathbf Q(\mathbf x_{T-1}) \boldsymbol{\theta}-\zeta T_s\mathbf x_{T-1}+\mathbf e_{n-1} \nonumber
 \end{eqnarray}
 % in matrix form 
 % \begin{equation}
@@ -681,13 +697,13 @@ where
 	\begin{array}{cccc}
 		\mathbf x_{1}-\mathbf x_{0}\\
 		\mathbf x_{2}-\mathbf x_{1}\\\vdots\\
-		\mathbf x_{n}-\mathbf x_{n-1}
+		\mathbf x_{T}-\mathbf x_{T-1}
 	\end{array}
 	\right],\quad \mathbf X=T_s\left[
 	\begin{array}{cccc}
 		\mathbf Q(\mathbf x_0)&-\mathbf x_{0}\\
 		\mathbf Q(\mathbf x_1)&-\mathbf x_{1}\\\vdots\\
-		\mathbf Q(\mathbf x_{n-1})&-\mathbf x_{n-1}
+		\mathbf Q(\mathbf x_{T-1})&-\mathbf x_{T-1}
 	\end{array}
 	\right] 
 \end{equation*}
