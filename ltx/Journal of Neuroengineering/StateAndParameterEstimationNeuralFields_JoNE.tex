@@ -186,24 +186,45 @@ where $\boldsymbol{\psi}(r,r')$ is a vector of Gaussian basis functions and $\bo
 	\label{reduced continuous model}\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_{t+1}&=& T_s\int_\Omega{f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t )\boldsymbol{\psi}^{\top}(\mathbf{r}-\mathbf{r}')d\mathbf{r}'}\boldsymbol{\theta}\nonumber \\ 
 	&+& \xi\boldsymbol{\phi}^{\top}(\mathbf{r})x_t + e_t(\mathbf{r}). 
 \end{eqnarray}
-This reduced model can be manipulated into a standard state-space model in the form (see \ref{Simplifying Decomposition})
+Next we multiply equation~\ref{reduced continuous model} by $\boldsymbol{\phi}(r)$ and integrate over the spatial domain $\Omega$ to get 
 \begin{eqnarray}
-	\label{Homogeneous SS Model} \mathbf{x}_{t+1} &=& q(\mathbf{x}_t)\boldsymbol{\theta} - \xi\mathbf{x}_t + \mathbf{e}_t \\
-	&=& Q\left(\mathbf{x}_t\right) + \mathbf{e}_t 
+	\label{StartofReduction}\lefteqn{ \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) d\mathbf{r}} \mathbf{x}_{t+1}=} \nonumber\\
+ &&T_s \int_\Omega {\boldsymbol{\phi} (\mathbf{r}) \boldsymbol{\theta}^{\top} \int_\Omega {\boldsymbol{\psi} \left(\mathbf{r}-\mathbf{r}'\right) f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right) \mathbf{x}_t \right)d\mathbf{r}'}d\mathbf{r}} \nonumber\\
+&+& \xi\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\phi}^{\top}(\mathbf{r})d\mathbf{r}} \mathbf{x}_t+
+\int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) e_t\left(\mathbf{r}\right)d\mathbf{r}}. 
 \end{eqnarray}
-where
-\begin{eqnarray}
-Q\left( \mathbf{x}_t \right) &=& q(\mathbf{x}_t)\boldsymbol{\theta} - \xi\mathbf{x}_t \label{eq:QmatrixForSigmapoints}\\
-	\mathbf{e}_t &=& \label{eq:Reducednoiseterm} \boldsymbol{\Gamma}^{-1}\int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})d\mathbf{r}}, \\
-	\boldsymbol{\Gamma} &=& \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi} ^{\top}\left(\mathbf{r}\right)d\mathbf{r}}, \label{DefGamma} 
+Now defining
+\begin{equation}\label{eq:DefGamma}
+	\boldsymbol{\Gamma} = \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi} ^{\top}\left(\mathbf{r}\right)d\mathbf{r}}, 
+\end{equation}
+and substituting this into equation~\ref{StartofReduction} and cross-multiplying by $\boldsymbol{\Gamma}^{-1}$ gives 
+\begin{eqnarray}\label{eq:ReducedForm}
+	 \lefteqn{\mathbf{x}_{t+1} \nonumber = T_s\boldsymbol{\Gamma}^{ - 1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r}) \int_\Omega {f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}')d\mathbf{r}'} d\mathbf{r}} \boldsymbol{\theta}} \nonumber\\
+&+&\xi\mathbf{x}_t + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})d\mathbf{r}}.
 \end{eqnarray}
-where $\mathbf{e}_t$ is a zero-mean normal white noise term with the covariance (see~\ref{ColoredNoise}) 
+This can be simplified by exploiting the symmetry (isotropy) of the connectivity kernel where
 \begin{equation}
-	\boldsymbol{\Sigma}_e=\boldsymbol{\Gamma}^{-1}\int_{\Omega}\int_{\Omega}\boldsymbol{\phi}\left(\mathbf r\right) \gamma\left(\mathbf{r}- \mathbf{r}' \right)\boldsymbol{\phi}\left(\mathbf{r}'\right)^{\top}d\mathbf{r}' d\mathbf{r}\boldsymbol{\Gamma}^{-1} 
+	\boldsymbol{\psi} (\mathbf{r}-\mathbf{r}') = \boldsymbol{\psi} (\mathbf{r}'-\mathbf{r}).
+\end{equation}
+To make the simplification we first define
+\begin{equation}\label{eq:DefPsi}
+	\boldsymbol{\Psi}(\mathbf{r}') = T_s\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\psi} (\mathbf{r}'-\mathbf{r})d\mathbf{r}},
+\end{equation}
+which is constant and can be defined analytically. Now substituting~\ref{eq:DefPsi} into~\ref{eq:ReducedForm} gives
+\begin{equation}
+	\mathbf{x}_{t+1} = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) d\mathbf{r}' \boldsymbol{\theta} + \xi\mathbf{x}_t + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})d\mathbf{r}}.
+\end{equation}
+Now we define the state disturbance as
+\begin{equation}\label{eq:AppendixWt} 
+	\mathbf{e}_t=\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi} ( \mathbf{r} )e_t( \mathbf{r} )d\mathbf{r}} 
+\end{equation}
+which is a zero mean normally distributed white noise process with covariance (see~\ref{ColoredNoise})
+\begin{equation}
+	\boldsymbol\Sigma_e =\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega}\boldsymbol{\phi}\left(\mathbf r\right) \gamma\left(\mathbf r- \mathbf r' \right)\boldsymbol{\phi}\left(\mathbf r'\right)^{\top}d\mathbf r' d\mathbf r\mathbf{\Gamma}^{- \top}. 
 \end{equation}
 Under the assumption the basis function decomposition is accurate, the observation equation of the reduced model is
-\begin{equation}
-	\label{ObservationEquation} \mathbf{y}_t = \mathbf{C}\mathbf{x}_t + \boldsymbol{\varepsilon}_t,
+\begin{equation}\label{ObservationEquation} 
+	\mathbf{y}_t = \mathbf{C}\mathbf{x}_t + \boldsymbol{\varepsilon}_t,
 \end{equation}
 where the observation matrix is 
 \begin{equation}
@@ -219,6 +240,26 @@ where $L$ is the number of basis functions used to decompose the neural field an
 \begin{equation}
 	c_{i,j} = \int_{\Omega}m(\mathbf{r}_i - \mathbf{r}')\boldsymbol{\phi}_j(\mathbf{r}')d\mathbf{r}'. 
 \end{equation}
+Now we have the final form of the state-space model where
+\begin{equation}
+	\mathbf{x}_{t+1} = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) d\mathbf{r}' \boldsymbol{\theta} + \xi\mathbf{x}_t +\mathbf{e}_t.
+\end{equation}
+\begin{equation} 
+	\mathbf{y}_t = \mathbf{C}\mathbf{x}_t + \boldsymbol{\varepsilon}_t,
+\end{equation}
+
+This reduced model can be manipulated into a standard state-space model in the form (see \ref{Simplifying Decomposition})
+\begin{eqnarray}
+	\label{Homogeneous SS Model} \mathbf{x}_{t+1} &=& q(\mathbf{x}_t)\boldsymbol{\theta} - \xi\mathbf{x}_t + \mathbf{e}_t \\
+	&=& Q\left(\mathbf{x}_t\right) + \mathbf{e}_t 
+\end{eqnarray}
+where
+\begin{eqnarray}
+Q\left( \mathbf{x}_t \right) &=& q(\mathbf{x}_t)\boldsymbol{\theta} - \xi\mathbf{x}_t \label{eq:QmatrixForSigmapoints}\\
+	\mathbf{e}_t &=& \label{eq:Reducednoiseterm} \boldsymbol{\Gamma}^{-1}\int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})d\mathbf{r}}, \\
+	\boldsymbol{\Gamma} &=& \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi} ^{\top}\left(\mathbf{r}\right)d\mathbf{r}}, \label{DefGamma} 
+\end{eqnarray}
+
 
 % \begin{equation}
 % \mathbf{C} = \left[\begin{array}{{cccc}}
@@ -562,42 +603,42 @@ where $\xi = 1 - T_s \zeta$.
 &+& e_t(\mathbf{r}_{i,j}), 
 \end{eqnarray}
 where $e_t(\mathbf{r}_{i,j}) \sim \mathcal{N}\left(0,\Sigma\right)$. We have used free boundary conditions and extended the spatial domain to alleviate problems associated with edge effects. 
-\section{Reduction to Finite State-Space Model}\label{Simplifying Decomposition} 
-Starting from equation~\ref{reduced continuous model} we multiply throughout by $\boldsymbol{\phi}(r)$ and integrate over the spatial domain $\Omega$ to get 
-\begin{eqnarray}
-	\label{StartofReduction}\lefteqn{ \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) d\mathbf{r}} \mathbf{x}_{t+1}=} \nonumber\\
- &&T_s \int_\Omega {\boldsymbol{\phi} (\mathbf{r}) \boldsymbol{\theta}^{\top} \int_\Omega {\boldsymbol{\psi} \left(\mathbf{r}-\mathbf{r}'\right) f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right) \mathbf{x}_t \right)d\mathbf{r}'}d\mathbf{r}} \nonumber\\
-&+& \xi\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\phi}^{\top}(\mathbf{r})d\mathbf{r}} \mathbf{x}_t+
-\int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) e_t\left(\mathbf{r}\right)d\mathbf{r}}. 
-\end{eqnarray}
-Now defining
-\begin{equation}\label{eq:DefGamma2}
-	\boldsymbol{\Gamma} = \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi} ^{\top}\left(\mathbf{r}\right)d\mathbf{r}}, 
-\end{equation}
-and substituting equation~\ref{eq:DefGamma2} into equation~\ref{StartofReduction} and cross-multiplying by $\boldsymbol{\Gamma}^{-1}$ gives 
-\begin{eqnarray}\label{eq:ReducedForm}
-	 \lefteqn{\mathbf{x}_{t+1} \nonumber = T_s\boldsymbol{\Gamma}^{ - 1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r}) \int_\Omega {f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}')d\mathbf{r}'} d\mathbf{r}} \boldsymbol{\theta}} \nonumber\\
-&+&\xi\mathbf{x}_t + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})d\mathbf{r}}.
-\end{eqnarray}
-Equation~\ref{eq:ReducedForm} can be simplified by exploiting the symmetry (isotropy) of the connectivity kernel where
-\begin{equation}
-	\boldsymbol{\psi} (\mathbf{r}-\mathbf{r}') = \boldsymbol{\psi} (\mathbf{r}'-\mathbf{r}).
-\end{equation}
-To make the simplification we first define
-\begin{equation}\label{eq:DefPsi}
-	\boldsymbol{\Psi}(\mathbf{r}') = T_s\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\psi} (\mathbf{r}'-\mathbf{r})d\mathbf{r}},
-\end{equation}
-which is constant and can be defined analytically. Now substituting~\ref{eq:DefPsi} into~\ref{eq:ReducedForm} gives
-\begin{equation}
-	\mathbf{x}_{t+1} \nonumber = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) d\mathbf{r}' \boldsymbol{\theta} + \xi\mathbf{x}_t + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})d\mathbf{r}}.
-\end{equation}
-\dean{DEFINE q HERE!!!!!}
+% \section{Reduction to Finite State-Space Model}\label{Simplifying Decomposition} 
+% Starting from equation~\ref{reduced continuous model} we multiply throughout by $\boldsymbol{\phi}(r)$ and integrate over the spatial domain $\Omega$ to get 
+% \begin{eqnarray}
+% 	\label{StartofReduction}\lefteqn{ \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) d\mathbf{r}} \mathbf{x}_{t+1}=} \nonumber\\
+%  &&T_s \int_\Omega {\boldsymbol{\phi} (\mathbf{r}) \boldsymbol{\theta}^{\top} \int_\Omega {\boldsymbol{\psi} \left(\mathbf{r}-\mathbf{r}'\right) f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right) \mathbf{x}_t \right)d\mathbf{r}'}d\mathbf{r}} \nonumber\\
+% &+& \xi\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\phi}^{\top}(\mathbf{r})d\mathbf{r}} \mathbf{x}_t+
+% \int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) e_t\left(\mathbf{r}\right)d\mathbf{r}}. 
+% \end{eqnarray}
+% Now defining
+% \begin{equation}\label{eq:DefGamma2}
+% 	\boldsymbol{\Gamma} = \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi} ^{\top}\left(\mathbf{r}\right)d\mathbf{r}}, 
+% \end{equation}
+% and substituting equation~\ref{eq:DefGamma2} into equation~\ref{StartofReduction} and cross-multiplying by $\boldsymbol{\Gamma}^{-1}$ gives 
+% \begin{eqnarray}\label{eq:ReducedForm}
+% 	 \lefteqn{\mathbf{x}_{t+1} \nonumber = T_s\boldsymbol{\Gamma}^{ - 1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r}) \int_\Omega {f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}')d\mathbf{r}'} d\mathbf{r}} \boldsymbol{\theta}} \nonumber\\
+% &+&\xi\mathbf{x}_t + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})d\mathbf{r}}.
+% \end{eqnarray}
+% Equation~\ref{eq:ReducedForm} can be simplified by exploiting the symmetry (isotropy) of the connectivity kernel where
+% \begin{equation}
+% 	\boldsymbol{\psi} (\mathbf{r}-\mathbf{r}') = \boldsymbol{\psi} (\mathbf{r}'-\mathbf{r}).
+% \end{equation}
+% To make the simplification we first define
+% \begin{equation}\label{eq:DefPsi}
+% 	\boldsymbol{\Psi}(\mathbf{r}') = T_s\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\psi} (\mathbf{r}'-\mathbf{r})d\mathbf{r}},
+% \end{equation}
+% which is constant and can be defined analytically. Now substituting~\ref{eq:DefPsi} into~\ref{eq:ReducedForm} gives
+% \begin{equation}
+% 	\mathbf{x}_{t+1} \nonumber = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) d\mathbf{r}' \boldsymbol{\theta} + \xi\mathbf{x}_t + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})d\mathbf{r}}.
+% \end{equation}
+% \dean{DEFINE q HERE!!!!!}
 \section{}\label{ColoredNoise} 
 \newtheorem{lemma}{Lemma} 
 \begin{lemma}
-	Consider the i.i.d. noise term $e_t\sim\mathcal{GP}(\mathbf 0,\gamma(\mathbf{s}-\mathbf{r}))$ then 
-	\begin{equation}
-		\mathbf e_t=\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi} ( \mathbf{r} )e_t( \mathbf{r} )d\mathbf{r}} \label{eq:AppendixWt} 
+	Consider the i.i.d. noise term $e_t(\mathbf{r})\sim\mathcal{GP}(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r'}))$ then 
+	\begin{equation}\label{eq:AppendixWt} 
+		\mathbf e_t=\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi} ( \mathbf{r} )e_t( \mathbf{r} )d\mathbf{r}} 
 	\end{equation}
 	is a vector valued, zero mean normally distributed white noise process with covariance 
 	\begin{equation}
@@ -648,7 +689,7 @@ solving for $\sigma_{\nu}^2$ we get
 \end{equation}
 
 \section{Parameter Estimation Using Least Squares}\label{LeastSquaresAppendix} 
-The finite state space model  given in \ref{eq:ReducedForm} is linear in parameters and therefore Least Square (LS) method can be applied to estimate the unknown parameters. We define $n_x \times n_{\theta}$ matrix
+The finite state space model  given in \ref{eq:ReducedForm} is linear in parameters and therefore Least Square (LS) method can be applied to estimate the unknown parameters. We define $L \times n_{\theta}$ matrix
 \begin{eqnarray}\label{eq:QMatrix}
 	\lefteqn {\mathbf{Q}(\mathbf{x}_t)=} \\
 &&\boldsymbol{\Gamma}^{ - 1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r}) \int_\Omega {f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t)\boldsymbol{\psi}^{\top} \left(\mathbf{r}-\mathbf{r}'\right)d\mathbf{r}'} d\mathbf{r}}\nonumber
@@ -658,7 +699,7 @@ by substituting \ref{eq:Reducednoiseterm} and \ref{eq:QMatrix} in \ref{eq:Reduce
 	\mathbf x_{1}&=&\mathbf x_{0}+T_s \mathbf Q(\mathbf x_0) \boldsymbol{\theta}-\zeta T_s\mathbf x_0+\mathbf e_0 \nonumber \\
 	\mathbf x_{2}&=&\mathbf x_{1}+T_s \mathbf Q(\mathbf x_1) \boldsymbol{\theta}-\zeta T_s\mathbf x_1+\mathbf e_1\nonumber\\
 	&\vdots& \\
-	\mathbf x_{T}&=&\mathbf x_{T-1}+T_s \mathbf Q(\mathbf x_{T-1}) \boldsymbol{\theta}-\zeta T_s\mathbf x_{T-1}+\mathbf e_{n-1} \nonumber
+	\mathbf x_{T}&=&\mathbf x_{T-1}+T_s \mathbf Q(\mathbf x_{T-1}) \boldsymbol{\theta}-\zeta T_s\mathbf x_{T-1}+\mathbf e_{T-1} \nonumber
 \end{eqnarray}
 % in matrix form 
 % \begin{equation}
@@ -726,6 +767,65 @@ and
 using the LS method $ \mathbf W$ can be estimated 
 \begin{equation}
 	\mathbf W\approx(\mathbf X^\top\mathbf X)^{-1}\mathbf X^\top\mathbf Z 
+\end{equation}
+
+\section{Parameter Estimation Using Least Squares - Dean}\label{App:LeastSquaresAppendix} 
+The finite state space model given in \ref{eq:ReducedForm} is linear with respect to parameters. Therefore a least square (LS) method can be applied to estimate the unknown parameters. We define $L \times n_{\theta}$ matrix
+\begin{equation}
+	\mathbf{q}(\mathbf{x}_t) = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) d\mathbf{r}' \boldsymbol{\theta}
+\end{equation}
+Given a state estimate sequence from the unscented Rauch Tung Striebel smoother (URTSS), we can write
+\begin{eqnarray}
+	\mathbf x_{1} &=& \mathbf{q}(\mathbf x_0) \boldsymbol{\theta}+\xi\mathbf x_0+\mathbf e_0 \nonumber \\
+	\mathbf x_{2} &=& \mathbf{q}(\mathbf x_1) \boldsymbol{\theta}+\xi\mathbf x_1+\mathbf e_1 \nonumber \\
+	&\vdots& \\
+	\mathbf x_{T}&=&\mathbf{q}(\mathbf x_{T-1}) \boldsymbol{\theta}+\xi\mathbf x_{T-1}+\mathbf e_{T-1}. \nonumber \\
+\end{eqnarray}
+This can be written in the compact form
+\begin{equation}
+	\mathbf Z=\mathbf X \mathbf W+\mathbf{e} 
+\end{equation}
+where
+\begin{small}
+\begin{equation*}
+	\mathbf Z=\left[
+	\begin{array}{cccc}
+		\mathbf x_{1}\\
+		\mathbf x_{2}\\
+		\vdots\\
+		\mathbf x_{T}
+	\end{array}
+	\right],\quad \mathbf X=\left[
+	\begin{array}{cccc}
+		\mathbf q(\mathbf x_0)& \mathbf x_{0}\\
+		\mathbf q(\mathbf x_1)& \mathbf x_{1}\\
+		\vdots & \vdots\\
+		\mathbf q(\mathbf x_{T-1})& \mathbf x_{T-1}
+	\end{array}
+	\right] 
+\end{equation*}
+\end{small}
+and
+\begin{small}
+\begin{equation*}
+\quad \mathbf W=\left[
+	\begin{array}{cc}
+		\boldsymbol{\theta} \\
+		\xi
+	\end{array}
+	\right],\quad \boldsymbol \xi=\left[
+	\begin{array}{cccc}
+		\mathbf e_0\\
+		\mathbf e_1\\
+		\vdots\\
+		\mathbf e_{T-1}
+	\end{array}
+	\right].
+\end{equation*}
+\end{small}
+Following this, the parameters, $ \mathbf W$, can be estimated by
+\begin{equation}
+	\mathbf W\approx(\mathbf X^\top\mathbf X)^{-1}\mathbf X^\top\mathbf Z. 
 \end{equation}
 \section{Parameters} 
 \begin{tabular}
