@@ -158,7 +158,7 @@ To arrive at the integro-difference equation (IDE) form of the model we discreti
 	\label{DiscreteTimeModel} v_{t+T_s}\left(\mathbf{r}\right) &=& \xi v_t\left(\mathbf{r}\right) + T_s \int_\Omega { w\left(\mathbf{r},\mathbf{r}'\right) f\left(v_t\left(\mathbf{r}'\right)\right) d\mathbf{r}'} \nonumber\\ 
 	&+& e_t\left(\mathbf{r}\right), 
 \end{eqnarray}
-where $T_s$ is the time step, $\xi = 1-\zeta T_s$ and $e_t(\mathbf{r})$ is an i.i.d. disturbance such that $e_t\sim\mathcal{GP}(\mathbf 0,\gamma(\mathbf{s}-\mathbf{r}))$. Here $\mathcal{GP}(\mathbf 0,\gamma(\mathbf{s}-\mathbf{r}))$ denotes a spatial Gaussian Process with mean zero and covariance function $\gamma(\mathbf{s}-\mathbf{r})$~\cite{Rasmussen2005}. This term is added to account for uncertainty in the model. To simplify the notation, the index of the future time sample, $t+T_s$, shall be referred to as $t+1$ throughout the rest of the paper. The mapping between the membrane voltage and the collected iEEG/LFP data is modelled using the observation function 
+where $T_s$ is the time step, $\xi = 1-\zeta T_s$ and $e_t(\mathbf{r})$ is an i.i.d. disturbance such that $e_t\sim\mathcal{GP}(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}'))$. Here $\mathcal{GP}(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}'))$ denotes a spatial Gaussian Process with mean zero and covariance function $\gamma(\mathbf{r}-\mathbf{r}')$~\cite{Rasmussen2005}. This term is added to account for uncertainty in the model. To simplify the notation, the index of the future time sample, $t+T_s$, shall be referred to as $t+1$ throughout the rest of the paper. The mapping between the membrane voltage and the collected iEEG/LFP data is modelled using the observation function 
 \begin{equation}
 	\mathbf{y}_t = \int_{\Omega}{m\left(\mathbf{r}_n-\mathbf{r}'\right)v_t\left(\mathbf{r}'\right)d\mathbf{r}'} + \boldsymbol{\varepsilon}_t, 
 \end{equation}
@@ -242,24 +242,15 @@ where $L$ is the number of basis functions used to decompose the neural field an
 \end{equation}
 Now we have the final form of the state-space model where
 \begin{equation}
-	\mathbf{x}_{t+1} = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) d\mathbf{r}' \boldsymbol{\theta} + \xi\mathbf{x}_t +\mathbf{e}_t.
+	\mathbf{x}_{t+1} = Q(\mathbf{x}_t) +\mathbf{e}_t.
 \end{equation}
 \begin{equation} 
 	\mathbf{y}_t = \mathbf{C}\mathbf{x}_t + \boldsymbol{\varepsilon}_t,
 \end{equation}
-
-This reduced model can be manipulated into a standard state-space model in the form (see \ref{Simplifying Decomposition})
-\begin{eqnarray}
-	\label{Homogeneous SS Model} \mathbf{x}_{t+1} &=& q(\mathbf{x}_t)\boldsymbol{\theta} - \xi\mathbf{x}_t + \mathbf{e}_t \\
-	&=& Q\left(\mathbf{x}_t\right) + \mathbf{e}_t 
-\end{eqnarray}
-where
-\begin{eqnarray}
-Q\left( \mathbf{x}_t \right) &=& q(\mathbf{x}_t)\boldsymbol{\theta} - \xi\mathbf{x}_t \label{eq:QmatrixForSigmapoints}\\
-	\mathbf{e}_t &=& \label{eq:Reducednoiseterm} \boldsymbol{\Gamma}^{-1}\int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})d\mathbf{r}}, \\
-	\boldsymbol{\Gamma} &=& \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi} ^{\top}\left(\mathbf{r}\right)d\mathbf{r}}, \label{DefGamma} 
-\end{eqnarray}
-
+where 
+\begin{equation}\label{eq:QmatrixForSigmapoints}
+	Q(\mathbf{x}_t) = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) d\mathbf{r}' \boldsymbol{\theta} + \xi\mathbf{x}_t.
+\end{equation}
 
 % \begin{equation}
 % \mathbf{C} = \left[\begin{array}{{cccc}}
@@ -770,11 +761,11 @@ using the LS method $ \mathbf W$ can be estimated
 \end{equation}
 
 \section{Parameter Estimation Using Least Squares - Dean}\label{App:LeastSquaresAppendix} 
-The finite state space model given in \ref{eq:ReducedForm} is linear with respect to parameters. Therefore a least square (LS) method can be applied to estimate the unknown parameters. We define $L \times n_{\theta}$ matrix
+The finite state space model given in \ref{eq:ReducedForm} is linear with respect to parameters. Therefore a least square (LS) method can be applied to estimate the unknown parameters. The create the least squares parameter estimator we first define the $L \times n_{\theta}$ matrix
 \begin{equation}
-	\mathbf{q}(\mathbf{x}_t) = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) d\mathbf{r}' \boldsymbol{\theta}
+	\mathbf{q}(\mathbf{x}_t) = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) d\mathbf{r}' \boldsymbol{\theta}.
 \end{equation}
-Given a state estimate sequence from the unscented Rauch Tung Striebel smoother (URTSS), we can write
+Now given a state estimate sequence from the unscented Rauch Tung Striebel smoother (URTSS), we can write
 \begin{eqnarray}
 	\mathbf x_{1} &=& \mathbf{q}(\mathbf x_0) \boldsymbol{\theta}+\xi\mathbf x_0+\mathbf e_0 \nonumber \\
 	\mathbf x_{2} &=& \mathbf{q}(\mathbf x_1) \boldsymbol{\theta}+\xi\mathbf x_1+\mathbf e_1 \nonumber \\
@@ -813,7 +804,7 @@ and
 		\boldsymbol{\theta} \\
 		\xi
 	\end{array}
-	\right],\quad \boldsymbol \xi=\left[
+	\right],\quad \mathbf{e}=\left[
 	\begin{array}{cccc}
 		\mathbf e_0\\
 		\mathbf e_1\\
