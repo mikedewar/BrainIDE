@@ -115,7 +115,7 @@ The paper proceeds by first deriving the continuum neural field equations in Sec
 
 \section{Neural Field Model}\label{NeuralModelSection} In this section, we describe a variant of the WC neural field model that was used to create our intracortical connectivity estimator. Neural field models relate mean firing rates of pre-synaptic neural populations to mean post-synaptic membrane potentials. They are popular due to being parsimonious yet having a strong link with the underlying physiology. Each neural population represents a functional cortical processing unit, such as a column. The columnar organisation of the cortex is continuous, where pyramidal cells are members of many columns. In general, cortical structure can be modelled in a physiologically plausible manner as being locally homogeneous (in short range intracortical connectivity) and heterogeneous (in long range cortico-cortical and corticothalamic connectivity)~\cite{Jirsa2009,Qubbaj2007}. In certain regions of the cortex, each column is thought to be connected locally via symmetric short range local excitation, with surround inhibition \cite{Braitenberg1998}. For example, this structural organisation is most studied in the visual system, where the surrounding inhibition effectively tunes a cortical column to a particular receptive visual field~\cite{Sullivan2006}. Neural field models are descriptive of a range of neurodynamics of the cortex such as evoked potentials, visual hallucinations, and epileptic behaviour~\cite{David2003,Bressloff2001,Breakspear2006}. Field models are also capable of generating complex patterns of activity such as Turing patterns, spirals, and travelling oscillations~\cite{Amari1977,Coombes2005,Coombes2007}.
 
-\subsection{Derivation of the Integro-difference Equation Representation}
+\subsection{Derivation of the Integro-Difference Equation Representation}
 The model relates the average number of action potentials $g(\mathbf{r},t)$ arriving at position $\mathbf{r}$ to the local post synaptic membrane voltage $v(\mathbf{r},t)$. The post-synaptic potentials generated at a neuronal population at location $\mathbf{r}$ by action potentials arriving from all other connected populations at locations $\mathbf{r}'$ can be described by 
 \begin{equation}
 	\label{SpikesToPotential} v\left( {\mathbf{r},t} \right) = \int_{ - \infty }^t {h\left( {t - t'} \right)g\left( {\mathbf{r},t'} \right)dt'}. 
@@ -208,7 +208,7 @@ This can be simplified by exploiting the symmetry (isotropy) of the connectivity
 \end{equation}
 To make the simplification we first define
 \begin{equation}\label{eq:DefPsi}
-	\boldsymbol{\Psi}(\mathbf{r}') = T_s\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\psi} (\mathbf{r}'-\mathbf{r})d\mathbf{r}},
+	\boldsymbol{\Psi}(\mathbf{r}') = T_s\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\psi}^{\top} (\mathbf{r}'-\mathbf{r})d\mathbf{r}},
 \end{equation}
 which is constant and can be defined analytically. Now substituting~\ref{eq:DefPsi} into~\ref{eq:ReducedForm} gives
 \begin{equation}
