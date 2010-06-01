@@ -763,7 +763,7 @@ using the LS method $ \mathbf W$ can be estimated
 \section{Parameter Estimation Using Least Squares - Dean}\label{App:LeastSquaresAppendix} 
 The finite state space model given in \ref{eq:ReducedForm} is linear with respect to parameters. Therefore a least square (LS) method can be applied to estimate the unknown parameters. The create the least squares parameter estimator we first define the $L \times n_{\theta}$ matrix
 \begin{equation}
-	\mathbf{q}(\mathbf{x}_t) = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) d\mathbf{r}' \boldsymbol{\theta}.
+	\mathbf{q}(\mathbf{x}_t) = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) d\mathbf{r}'.
 \end{equation}
 Now given a state estimate sequence from the unscented Rauch Tung Striebel smoother (URTSS), we can write
 \begin{eqnarray}
