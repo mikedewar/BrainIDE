@@ -360,7 +360,7 @@ Since the observation equation is linear (equation~\ref{ObservationEquation}) th
 		\end{equation*}
 		compute the filter gain, the filtered state and the filtered covariance matrix using the standard Kalman Filter update equations
 		\begin{equation*}
-			\mathcal K_{t+1}=\mathbf P_{t +1}^{f-}\mathbf C ^\top(\mathbf C \mathbf P_{t +1}^{f-}\mathbf C ^\top+\boldsymbol \Sigma_v)^{-1} 
+			\mathcal K_{t+1}=\mathbf P_{t +1}^{f-}\mathbf C ^\top(\mathbf C \mathbf P_{t +1}^{f-}\mathbf C ^\top+\boldsymbol \Sigma_{\epsilon})^{-1} 
 		\end{equation*}
 		\begin{equation*}
 			\hat{\mathbf x}_{t+1}^{f}=\hat{\mathbf x}_{t+1}^{f-}+\mathcal K_{t+1}(\mathbf y_{t+1}-\mathbf C\hat{\mathbf x}_{t +1}^{f-}) 
