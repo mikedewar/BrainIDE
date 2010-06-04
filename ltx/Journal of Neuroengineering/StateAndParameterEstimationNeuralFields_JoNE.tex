@@ -62,8 +62,8 @@
 % \usepackage{pstool}
 \renewcommand{\subcapsize}{\small}
  \usepackage{anysize}							%<-use this for checking equation length
- % \marginsize {1.7cm}{1.5cm}{0.3cm}{0.8cm}			%<-use this for checking equation length
- %  \setlength{\columnsep}{0.5cm}					%<-use this for checking equation length
+ \marginsize {1.7cm}{1.5cm}{0.3cm}{0.8cm}			%<-use this for checking equation length
+  \setlength{\columnsep}{0.5cm}					%<-use this for checking equation length
   \usepackage{amsmath}
 \usepackage{amssymb,amsfonts} 			%<-use this for checking equation length
 \newcommand{\parham}[1]{\textsf{\emph{\textbf{\textcolor{blue}{#1}}}}} 
@@ -486,7 +486,7 @@ To demonstrate the performance of the parameter and state estimation, $250$ real
 
 \begin{figure*}
 \subfigure[][]{\includegraphics{./Graph/KernelEstimate.pdf}}
-\subfigure[][]{\includegraphics{./Graph/KernelEstimateFFT.pdf}}\\
+% \subfigure[][]{\includegraphics{./Graph/KernelEstimateFFT.pdf}}\\
 \caption{Results for connectivity estimate. In all the subplots the true kernel is shown by the solid line, the mean kernel estimate (over 100 realisations) is shown by the dashed line and the 95~\% confidence interval is shown by the shaded grey region. \textbf{a.} Comparison of kernel estimates to true kernel in the spatial domain. \textbf{b.} Comparison of the true kernel to the estimated kernel in the frequency domain. \dean{Note: needs to be changed to absolute values if we include it.} \dean{Note: Power and dB needs to be non-italicised.}}
 \label{fig:KernelEstimates}
 \end{figure*}
