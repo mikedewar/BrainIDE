@@ -469,7 +469,7 @@ Using the model selection techniques described in Section~\ref{SpectralAnalysisS
 
 The spatial frequency of the observations is shown in Figure~\ref{fig:FreqAnalysis}(c). The peak power of the spatial frequency of the observations was approximately \dean{$??$}~dB. The cut-off frequency (-3~dB point) was taken to correspond to  approximately \dean{$??$}~dB. This provided a conservative estimate of the spatial bandwidth. The oversampling parameter $\rho_b$ was set to \dean{??} giving a minimum distance between basis functions of \dean{??} to satisfy Shannon's sampling criterion (from equation~\ref{eq:BasisFunctionSeparation}). The width of the basis functions was chosen such that the basis functions had sufficient overlap to represent the dynamic field. Equation~\ref{eq:WidthCutOffRelationship} (where $sigma_{\phi}^2 = $ \dean{??}) was used to confirm the width of the basis functions was sufficiently small to capture the characteristics of the field.
 
-\begin{figure}
+\begin{figure*}
 	\label{fig:FreqAnalysis} 
 	\begin{center}
 \subfigure[][]{\includegraphics[scale=0.8]{./Graph/BasisChar.pdf}}
@@ -477,7 +477,7 @@ The spatial frequency of the observations is shown in Figure~\ref{fig:FreqAnalys
 \subfigure[][]{\includegraphics[width=1.8in]{./Graph/ObservationFrequencyResponse.pdf}}\\
 	\end{center}
 	\caption{Frequency analysis of the. \textbf{a.} The spatial frequency response of a 1-dimensional neural field basis functions project. The symmetry of the field basis functions, connectivity kernel basis functions and sensors allow for the 1-dimensional representation of the spectral characteristics. The dashed line shows the cut-off frequency (-3 dB point). \textbf{b} The spatial frequency response of a 1-dimensional model sensor. The dashed line shows the cut-off frequency (-3 dB point), indicating a wider bandwidth than the field basis function. \textbf{c.} Two 2-dimensional spatial frequency (in power dB, averaged over 200 time steps) of the observed field.} 
-\end{figure}
+\end{figure*}
 Following this, the distance between basis function, $\Delta_{phi}$, was set to $2.5$ and the basis function width, $\sigma_{\phi}^2$, was set to 3.6, 3.16 mm full width at half maximum. \mike{Analysis said 3.9 from Parham's derivation, but 3.6 still overlaps and allows more high frequency details to be represented.}
 
 \subsection{State and Parameter Estimates} 
