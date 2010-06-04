@@ -485,13 +485,9 @@ Following this, the distance between basis function, $\Delta_{phi}$, was set to 
 To demonstrate the performance of the parameter and state estimation, $250$ realisations of the data were generated. Each realisation consisted of 200~ms of data and the estimation was applied to the final 195~ms, allowing the model to stabilise.\dean{transient!} The initial state and parameters were unknown to the estimator. The distribution of the parameters and the resulting kernel are shown in figure~\ref{fig:Parameters} and figure~\ref{fig:KernelEstimates}, respectively. Although a wide distribution can be seen over the parameter estimates, the ratio between them remains within a narrow range as shown in figure~\ref{fig:ParametersRatio}. The state estimates for one realisation were evaluated by comparing the field reconstruction to the true field using the mean over time of the Root Mean Square Error (RMSE) and standard deviation of the RMSE giving $0.19\pm 0.01$. The RMSE of the field estimate over time is also shown in figure~\ref{fig:RMSE}. A snapshot of the true field, the estimated field and their corresponding error is illustrated in Figure~\ref{fig:FieldEstimate}.
 
 \begin{figure*}
-\subfigure[][]{\includegraphics{./Graph/KernelEstimate_skinny.pdf}}
-\subfigure[][]{\includegraphics{./Graph/KernelEstimateFFT_skinny.pdf}}\\
-\subfigure[][]{\includegraphics{./Graph/KernelEstimate_wide.pdf}}
-\subfigure[][]{\includegraphics{./Graph/KernelEstimateFFT_wide.pdf}}\\
-\subfigure[][]{\includegraphics{./Graph/KernelEstimateFFT_skinny_db.pdf}}
-
-\caption{Results for connectivity estimate. In all the subplots the true kernel is show by the solid line, the mean kernel estimate (over 250 realisations) is shown by the dashed line and the 95~\% confidence interval is shown by the shaded grey region. \textbf{a.} Comparison of kernel estimates to true kernel in the spatial domain. \textbf{b.} Comparison of the true kernel to the estimated kernel in the frequency domain. \dean{Note: needs to be changed to absolute values if we include it.} \textbf{c.} Same as part a., except narrower wider (in space) basis functions where used in the model reduction. \textbf{d.} Same as part b., except narrower wider (in space) basis functions where used in the model reduction. \textbf{e.} Frequency domain (power dB) representation of the true kernel and the estimated kernel (using the narrower basis functions). \dean{Note: Power and dB needs to be non-italicised.}}
+\subfigure[][]{\includegraphics{./Graph/KernelEstimate.pdf}}
+\subfigure[][]{\includegraphics{./Graph/KernelEstimateFFT.pdf}}\\
+\caption{Results for connectivity estimate. In all the subplots the true kernel is shown by the solid line, the mean kernel estimate (over 100 realisations) is shown by the dashed line and the 95~\% confidence interval is shown by the shaded grey region. \textbf{a.} Comparison of kernel estimates to true kernel in the spatial domain. \textbf{b.} Comparison of the true kernel to the estimated kernel in the frequency domain. \dean{Note: needs to be changed to absolute values if we include it.} \dean{Note: Power and dB needs to be non-italicised.}}
 \label{fig:KernelEstimates}
 \end{figure*}
 \begin{figure}[th]
