@@ -41,11 +41,11 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-  % \documentclass[twocolumn,11pt,a4paper]{article}		%<-use this for checking equation length
-\documentclass[12pt]{iopart} 
+\documentclass[twocolumn,11pt,a4paper]{article}		%<-use this for checking equation length
+% \documentclass[12pt]{iopart} 
 
 %<-comment out this for checking equations (author list too)
-\usepackage{iopams,setstack} 
+% \usepackage{iopams,setstack} 
 %<-comment out this for checking equations
 \usepackage{graphicx}
 \usepackage{algorithm, algorithmicx, algpseudocode} 
@@ -64,7 +64,7 @@
  \usepackage{anysize}							%<-use this for checking equation length
  % \marginsize {1.7cm}{1.5cm}{0.3cm}{0.8cm}			%<-use this for checking equation length
  %  \setlength{\columnsep}{0.5cm}					%<-use this for checking equation length
- % \usepackage{amsmath}
+  \usepackage{amsmath}
 \usepackage{amssymb,amsfonts} 			%<-use this for checking equation length
 \newcommand{\parham}[1]{\textsf{\emph{\textbf{\textcolor{blue}{#1}}}}} 
 \newcommand{\mike}[1]{\textsf{\emph{\textbf{\textcolor{red}{#1}}}}} 
@@ -78,8 +78,8 @@
 
 \author{Dean R. Freestone$^{1,5}$, Parham Aram$^2$, Michael Dewar$^3$, Kenneth Scerri$^4$, David B. Grayden$^{1,5}$, and Visakan Kadirkamanathan$^2$}
 
-\address{$^1$ Department of Electrical and Electronic Engineering, University of Melbourne, Melbourne, VIC 3010 Australia} \address{$^2$ Department of Automatic Control and Systems Engineering, University of Sheffield, Mappin Street, Sheffield, S1 3JD, UK} \address{$^3$ Department of Applied Physics and Applied Mathematics, Columbia University, NY, USA} \address{$^4$ Department of Systems and Control Engineering, University of Malta, Msida, MSD 1333, Malta} \address{$^5$ The Bionic Ear Institute, East Melbourne, VIC 3002
- Australia} \ead{dfreestone@bionicear.org} 
+% \address{$^1$ Department of Electrical and Electronic Engineering, University of Melbourne, Melbourne, VIC 3010 Australia} \address{$^2$ Department of Automatic Control and Systems Engineering, University of Sheffield, Mappin Street, Sheffield, S1 3JD, UK} \address{$^3$ Department of Applied Physics and Applied Mathematics, Columbia University, NY, USA} \address{$^4$ Department of Systems and Control Engineering, University of Malta, Msida, MSD 1333, Malta} \address{$^5$ The Bionic Ear Institute, East Melbourne, VIC 3002
+%  Australia} \ead{dfreestone@bionicear.org} 
 
 \begin{abstract}
 	This paper presents a framework for creating patient-specific neural field models from electrophysiological data. The Wilson and Cowen or Amari style neural field equations are used to form a parametric model, where the parameters are estimated from data. To illustrate the estimation framework, data is generated using the neural field equations incorporating modelled sensors, so a comparison can be made between estimated and true parameters. To facilitate state and parameter estimation, we introduce a method to reduce the continuum neural field model, using a basis function decomposition, to form a finite dimensional state-space model. Spatial frequency analysis methods are introduced for model selection, by systematically specifying the basis function configuration required to capture the dominant characteristics of the neural field. We use the reduced model to estimate the state and parameters of the non-reduced model. The estimation procedure consists of a two-stage algorithm incorporating the unscented Rauch Tung Striebel Smoother for state estimation, and a least squares algorithm for parameter estimation. The results show that it is possible to reconstruct the neural field and estimate intracortical connectivity and synaptic time constant with the proposed framework. The results also illustrate the cost of the model reduction with a loss of the high spatial frequency information. This framework provides a link between patient-specific neurophysiological data and theoretical neural fields models. This link may lead to greater understanding of cortical dynamics at the meso/macroscopic scale where diseases such as epilepsy are manifested.   
@@ -131,7 +131,7 @@ where $\zeta=\tau^{-1}$ and $\tau$ is the synaptic time constant and $\eta(t)$ i
 where $f(\cdot)$ is the firing rate function, $w(\cdot)$ is the spatial connectivity kernel, and $\Omega$ is the spatial domain, representing a cortical sheet or surface. The connectivity kernel is typically a ``Mexican hat'' function which describes strong local activation, weak mid-range repression and weak long-range activation. The exact shape of this kernel is assumed to vary across patients, and hence needs to be inferred from data. \ken{Risky comment if we don't get better estimates.}
 \begin{figure}[ th]\label{fig:2d_kernel}
    	\begin{center}
-   		\includegraphics[angle = 90, scale=0.5]{./Graph/2D_kernel.pdf} 
+   		\includegraphics{./Graph/Cross_section_kernel.pdf} 
    	\end{center}
    	\caption{Kernel centred at zero as a function of space.} 
    \end{figure}
