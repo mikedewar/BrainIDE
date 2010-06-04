@@ -49,11 +49,11 @@ for n=1:NBasisFunctions_xy
 end
 
 % sensor parameters
-NSensors_xy = 9;%14;
+NSensors_xy = 11;%14;
 NSensors = NSensors_xy^2;
 mu_y_xy = linspace(-10,10,NSensors_xy);%linspace(-9.75,9.75,NSensors_xy);               % sensor centers
 sensor_indexes = (mu_y_xy+SpaceMax)/Delta +1;             % so we can easily get the observations from the filed filtered by the sensors
-sigma_y = 0.9;                                                         % sensor width
+sigma_y = 0.6;                                                         % sensor width
 m = Define2DGaussian(0,0, sigma_y^2, 0,NPoints,SpaceMin,SpaceMax);
 M = fft2(m);                                            % fft of sensor kernel to get observations quickly
 % define all sensor centers
@@ -71,7 +71,7 @@ sigma_varepsilon = 0.0001;
 Sigma_varepsilon = sigma_varepsilon*eye(NSensors);        % observation covariance matrix
 
 % sigmoid parameters
-f_max = 20;             % maximum firing rate
+f_max = 10;             % maximum firing rate
 varsigma = 0.8;         % sigmoid slope
 v_0 = 2;                    % firing threshold
 
