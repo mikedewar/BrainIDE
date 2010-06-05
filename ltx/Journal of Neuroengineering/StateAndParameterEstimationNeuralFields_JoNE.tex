@@ -461,7 +461,7 @@ realisations. Grey bars show distributions with wider basis functions ($\sigma_{
 \subfigure[][]{\includegraphics[scale=0.7]{./Graph/theta0Convergence.pdf}}\\
 \subfigure[][]{\includegraphics[scale=0.7]{./Graph/theta1Convergence.pdf}}
 \subfigure[][]{\includegraphics[scale=0.7]{./Graph/theta2Convergence.pdf}}
-\caption{Convergence of the parameters averaged over 250 runs. }
+\caption{Convergence of the parameters averaged over 100 runs. }
 \label{fig:ParametersConvergence}
 \end{figure}
 \subsection{Spatial Frequency Analysis} 
@@ -476,13 +476,13 @@ The spatial frequency of the observations is shown in Figure~\ref{fig:FreqAnalys
 \subfigure[][]{\includegraphics[scale=0.8]{./Graph/SensorChar.pdf}}
 \subfigure[][]{\includegraphics[width=1.8in]{./Graph/ObservationFrequencyResponse.pdf}}\\
 	\end{center}
-	\caption{Frequency analysis of the. \textbf{a.} The spatial frequency response of a 1-dimensional neural field basis functions project. The symmetry of the field basis functions, connectivity kernel basis functions and sensors allow for the 1-dimensional representation of the spectral characteristics. The dashed line shows the cut-off frequency (-3 dB point). \textbf{b} The spatial frequency response of a 1-dimensional model sensor. The dashed line shows the cut-off frequency (-3 dB point), indicating a wider bandwidth than the field basis function. \textbf{c.} Two 2-dimensional spatial frequency (in power dB, averaged over 200 time steps) of the observed field.} 
+	\caption{Frequency analysis of the. \textbf{a.} The spatial frequency response of a 1-dimensional neural field basis functions project. The symmetry of the field basis functions, connectivity kernel basis functions and sensors allow for the 1-dimensional representation of the spectral characteristics. The dashed line shows the cut-off frequency (-3 dB point). \textbf{b} The spatial frequency response of a 1-dimensional model sensor. The dashed line shows the cut-off frequency (-3 dB point), indicating a wider bandwidth than the field basis function. \textbf{c.} Two 2-dimensional spatial frequency (in power dB, averaged over 400 time steps) of the observed field.} 
 \end{figure*}
 Following this, the distance between basis function, $\Delta_{phi}$, was set to $2.5$ and the basis function width, $\sigma_{\phi}^2$, was set to 3.6, 3.16 mm full width at half maximum. \mike{Analysis said 3.9 from Parham's derivation, but 3.6 still overlaps and allows more high frequency details to be represented.}
 
 \subsection{State and Parameter Estimates} 
 \label{sec:state_and_param_results}
-To demonstrate the performance of the parameter and state estimation, $250$ realisations of the data were generated. Each realisation consisted of 200~ms of data and the estimation was applied to the final 195~ms, allowing the model to stabilise.\dean{transient!} The initial state and parameters were unknown to the estimator. The distribution of the parameters and the resulting kernel are shown in figure~\ref{fig:Parameters} and figure~\ref{fig:KernelEstimates}, respectively. Although a wide distribution can be seen over the parameter estimates, the ratio between them remains within a narrow range as shown in figure~\ref{fig:ParametersRatio}. The state estimates for one realisation were evaluated by comparing the field reconstruction to the true field using the mean over time of the Root Mean Square Error (RMSE) and standard deviation of the RMSE giving $0.19\pm 0.01$. The RMSE of the field estimate over time is also shown in figure~\ref{fig:RMSE}. A snapshot of the true field, the estimated field and their corresponding error is illustrated in Figure~\ref{fig:FieldEstimate}.
+To demonstrate the performance of the parameter and state estimation, $100$ realisations of the data were generated. Each realisation consisted of 500~ms of data and the estimation was applied to the final 400~ms, allowing the model to stabilise.\dean{transient!} The initial state and parameters were unknown to the estimator. The distribution of the parameters and the resulting kernel are shown in figure~\ref{fig:Parameters} and figure~\ref{fig:KernelEstimates}, respectively. Although a wide distribution can be seen over the parameter estimates, the ratio between them remains within a narrow range as shown in figure~\ref{fig:ParametersRatio}. The state estimates for one realisation were evaluated by comparing the field reconstruction to the true field using the mean over time of the Root Mean Square Error (RMSE) and standard deviation of the RMSE giving $0.19\pm 0.01$. The RMSE of the field estimate over time is also shown in figure~\ref{fig:RMSE}. A snapshot of the true field, the estimated field and their corresponding error is illustrated in Figure~\ref{fig:FieldEstimate}.
 
 \begin{figure*}
 \subfigure[][]{\includegraphics{./Graph/KernelEstimate.pdf}}
