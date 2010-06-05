@@ -62,8 +62,8 @@
 % \usepackage{pstool}
 \renewcommand{\subcapsize}{\small}
  \usepackage{anysize}							%<-use this for checking equation length
- \marginsize {1.7cm}{1.5cm}{0.3cm}{0.8cm}			%<-use this for checking equation length
-  \setlength{\columnsep}{0.5cm}					%<-use this for checking equation length
+ % \marginsize {1.7cm}{1.5cm}{0.3cm}{0.8cm}			%<-use this for checking equation length
+ %  \setlength{\columnsep}{0.5cm}					%<-use this for checking equation length
   \usepackage{amsmath}
 \usepackage{amssymb,amsfonts} 			%<-use this for checking equation length
 \newcommand{\parham}[1]{\textsf{\emph{\textbf{\textcolor{blue}{#1}}}}} 
@@ -452,15 +452,15 @@ The sensors were spaced in a regular square \dean{M $\times$ N} grid, the sensor
 \subfigure[][]{\includegraphics{./Graph/theta0.pdf}}\\
 \subfigure[][]{\includegraphics{./Graph/theta1.pdf}}
 \subfigure[][]{\includegraphics{./Graph/theta2.pdf}}
-\caption{Distribution of the parameters estimates over 250
+\caption{\parham{caption should be changed}Distribution of the parameters estimates over 100
 realisations. Grey bars show distributions with wider basis functions ($\sigma_{\phi} = ?$) and blue bars show improved parameter distributions with narrower basis functions ($\sigma_{\phi} = ?$). \textbf{a.} The distribution of the synaptic time constant estimates (true parameter: $\zeta=100$). \textbf{b.} The distribution of the central excitatory connectivity kernel basis function parameters estimates (true parameter: $\theta_0 = 10$). \textbf{c.} The distribution of the surround inhibition connectivity kernel basis function parameter estimates (true parameter: $\theta_1 = -8$). \textbf{d.} The distribution of the longer range excitatory connectivity kernel basis function parameter estimates (true parameter $\theta_3 = 0.5$).}
 \label{fig:Parameters}
 \end{figure}
 \begin{figure}[th]
-\subfigure[$\zeta$ convergence]{\includegraphics[width=1.5in]{./Graph/ZetaConvergence.pdf}}
-\subfigure[][]{\includegraphics[width=0.24\textwidth]{./Graph/theta0Convergence.pdf}}\\
-\subfigure[][]{\includegraphics[width=0.24\textwidth]{./Graph/theta1Convergence.pdf}}
-\subfigure[][]{\includegraphics[width=0.24\textwidth]{./Graph/theta2Convergence.pdf}}
+\subfigure[]{\includegraphics[scale=0.7]{./Graph/ZetaConvergence.pdf}}
+\subfigure[][]{\includegraphics[scale=0.7]{./Graph/theta0Convergence.pdf}}\\
+\subfigure[][]{\includegraphics[scale=0.7]{./Graph/theta1Convergence.pdf}}
+\subfigure[][]{\includegraphics[scale=0.7]{./Graph/theta2Convergence.pdf}}
 \caption{Convergence of the parameters averaged over 250 runs. }
 \label{fig:ParametersConvergence}
 \end{figure}
@@ -486,14 +486,14 @@ To demonstrate the performance of the parameter and state estimation, $250$ real
 
 \begin{figure*}
 \subfigure[][]{\includegraphics{./Graph/KernelEstimate.pdf}}
-% \subfigure[][]{\includegraphics{./Graph/KernelEstimateFFT.pdf}}\\
+\subfigure[][]{\includegraphics{./Graph/KernelEstimateFFT.pdf}}\\
 \caption{Results for connectivity estimate. In all the subplots the true kernel is shown by the solid line, the mean kernel estimate (over 100 realisations) is shown by the dashed line and the 95~\% confidence interval is shown by the shaded grey region. \textbf{a.} Comparison of kernel estimates to true kernel in the spatial domain. \textbf{b.} Comparison of the true kernel to the estimated kernel in the frequency domain. \dean{Note: needs to be changed to absolute values if we include it.} \dean{Note: Power and dB needs to be non-italicised.}}
 \label{fig:KernelEstimates}
 \end{figure*}
 \begin{figure}[th]
 \subfigure[][]{\includegraphics{./Graph/theta0_theta1_ratio.pdf}}
 \subfigure[][]{\includegraphics{./Graph/theta0_theta2_ratio.pdf}}\\
-\caption{Distribution of the connectivity kernel basis function parameter ratios over 250 realisations. \textbf{a.} The absolute value of the ratio of the local excitatory parameter to the surround inhibition parameter (true ratio is 1.25). \textbf{b.} The ratio of the local excitatory parameter to the longer range excitatory parameter (true ratio is 20).}
+\caption{Distribution of the connectivity kernel basis function parameter ratios over 100 realisations. \textbf{a.} The absolute value of the ratio of the local excitatory parameter to the surround inhibition parameter (true ratio is 1.25). \textbf{b.} The ratio of the local excitatory parameter to the longer range excitatory parameter (true ratio is 20).}
 \end{figure}
 \label{fig:ParametersRatio}
 \begin{figure}[th]
@@ -508,7 +508,7 @@ To demonstrate the performance of the parameter and state estimation, $250$ real
    	\begin{center}
    		\includegraphics{./Graph/MRMSE.pdf} 
    	\end{center}
-   	\caption{The mean of average RMSE of the estimated field over 250 realisations (solid line) and the 95~\% confidence interval (grey region). \dean{David suggested for us to use percentage error, and use a hard threshold of points close to zero to stop problems with divide by zeros. Also, it might be good to show the data points along the line, so we can see the number of iterations it takes to stabilise.}} 
+   	\caption{The mean of average RMSE of the estimated field over 100 realisations (solid line) and the 95~\% confidence interval (grey region). \dean{David suggested for us to use percentage error, and use a hard threshold of points close to zero to stop problems with divide by zeros. Also, it might be good to show the data points along the line, so we can see the number of iterations it takes to stabilise.}} 
 \label{fig:RMSE}
    \end{figure}
 \begin{figure*}[!th]
