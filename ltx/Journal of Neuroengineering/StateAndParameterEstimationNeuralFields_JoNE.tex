@@ -407,14 +407,15 @@ Alternatives to the UKF are the Extended Kalman Filter (EKF)~\cite{Haykin2001} a
 
 %The method is appropriate for state estimation of stochastic nonlinear dynamical systems. 
 \section{Results}\label{ResultsSection} The neural field model derived in Section~\ref{NeuralModelSection} was used to generate the data for state and parameter estimation. All parameters for the model are given in Table~\ref{tab:Model Parameters}. An example of the simulated field can be seen in figure~\ref{fig:experimental design}(a). This figure demonstrates the experimental design used where the sensor array was placed in the centre of the field (sensor centres marked by crosses). This design allowed for uncertainty around the edges of the sensor array, which would be typical from physical data, and alleviated problems associated with boundary conditions. Figure~\ref{fig:experimental design}(b) shows example data from the sensors of the model, and figure~\ref{fig:experimental design}(c) shows the power spectral density (PSD) of the simulated time-series. The PSD shows the typical $1/f$ characteristics of intracranial EEG.
-\begin{table}
+\begin{table*}
 	
 \centering
 \begin{tabular}{c|c|c}
 	\hline\hline Symbol & Value & Units \\
 	\hline\hline
+	\small
 	$\zeta$ & 0.01 & ms$^{-1}$\\
-	$f_{max}$ & 20 & spikes/s \\
+	$f_{max}$ & 10 & spikes/s \\
 	$\varsigma$ & 0.8 & spike/mV\\
 	$v_0$ & 2 & mV\\
 	$\boldsymbol{\theta}$ & $\left[\begin{array}{ccc}
@@ -431,7 +432,7 @@ Alternatives to the UKF are the Extended Kalman Filter (EKF)~\cite{Haykin2001} a
 	\hline\hline
 \end{tabular}\label{tab:Model Parameters}
 \caption{Parameters for neural field model used to generate data to demonstrate the estimation framework.}
-\end{table}
+\end{table*}
 The sensors were spaced in a regular square \dean{M $\times$ N} grid, the sensor width $\sigma^2_m$ was \dean{1.44} which equals \dean{$2$}~mm full width at half maximum, with spacing $\Delta_y$ equal to \dean{$2.22$}~mm. This arrangement modelled the recording as having some cross talk, which is typical from neurophysiological recordings. Note, sensor design that is sufficient to guarantee an accurate representation of the field can be achieved using the frequency analysis from Section~\ref{SpectralAnalysisSection} given access to the true field. 
 \begin{figure}[th]\label{fig:experimental design}
    	\begin{center}
