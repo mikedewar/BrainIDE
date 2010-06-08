@@ -349,7 +349,7 @@ where the superscripts $m$ and $c$ stand for mean and covariance. Since the obse
 		calculate the sigma points $\mathcal X_{i,t}^f$ using equations \ref{eq:sigmapoints1}-\ref{eq:sigmapoints3} and propagate through equation~\ref{eq:QmatrixForSigmapoints}
 % 		\begin{small}
 		\begin{equation*}
-			\mathcal X_{i,t+1}^{f-}=Q(\mathcal X_{i,t}^f) 
+			\mathcal X_{i,t+1}^{f-}=Q(\mathcal X_{i,t}^f) \quad i=0, \dots, 2L
 		\end{equation*}
 % 		\end{small}
 		calculate the predicted state and the predicted covariance matrix
@@ -375,7 +375,7 @@ where the superscripts $m$ and $c$ stand for mean and covariance. Since the obse
 		\end{equation*}
 		\State Backward iteration: for $t \in \left\lbrace T-1, \cdots, 0 \right\rbrace $ calculate the sigma points $\mathcal X_{i,t}^b$ and propagate them through equation \ref{eq:QmatrixForSigmapoints}
 		\begin{equation*}
-			\mathcal X_{i,t+1}^{b-}=Q(\mathcal X_{i,t}^b) 
+			\mathcal X_{i,t+1}^{b-}=Q(\mathcal X_{i,t}^b) \quad i=0, \dots, 2L
 		\end{equation*}
 		 compute the predicted state, the predicted covariance matrix and the cross-covariance matrix
 		\begin{equation*}
