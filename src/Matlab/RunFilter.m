@@ -39,7 +39,7 @@ Wc = [(lambda/(L+lambda)) + (1-alpha^2+beta) ; 1/(2*(L+lambda))*ones(2*L,1)];
 sqrt_L_plus_lambda = sqrt(L+lambda);
 
 tic
-NIterations = 3;
+NIterations = 5;
 for Iteration = 1:NIterations
     for t=1:T-1
 
@@ -75,4 +75,8 @@ plot(r,k0+k1+k2,'r'),hold on,drawnow
 
 disp(['true ratio = ' num2str(10/-8) ', estimated ratio = ' num2str(theta(1)/theta(2))])
 resultsfilename = ['Results' SaveTime '.mat'];
+if exist('RunningBatch') == 1
+    theta_save(Realisation,:) = theta;
+    xi_save(Realisation) = xi;
+end
 save(resultsfilename,'theta','xi','x')
