@@ -189,9 +189,9 @@ where $\boldsymbol{\psi}(r,r')$ is a vector of Gaussian basis functions and $\bo
 Next we multiply equation~\ref{reduced continuous model} by $\boldsymbol{\phi}(r)$ and integrate over the spatial domain $\Omega$ to get 
 \begin{eqnarray}
 	\label{StartofReduction}\lefteqn{ \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) d\mathbf{r}} \mathbf{x}_{t+1}=} \nonumber\\
- &&T_s \int_\Omega {\boldsymbol{\phi} (\mathbf{r}) \boldsymbol{\theta}^{\top} \int_\Omega {\boldsymbol{\psi} \left(\mathbf{r}-\mathbf{r}'\right) f\left(\boldsymbol{\phi}^{\top}\left(\mathbf{r}'\right) \mathbf{x}_t \right)d\mathbf{r}'}d\mathbf{r}} \nonumber\\
+ &&T_s \int_\Omega {\boldsymbol{\phi} (\mathbf{r}) \int_\Omega {\boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}') \mathbf{x}_t ) d\mathbf{r}'}d\mathbf{r}}\boldsymbol{\theta} \nonumber\\
 &+& \xi\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\phi}^{\top}(\mathbf{r})d\mathbf{r}} \mathbf{x}_t+
-\int_\Omega{\boldsymbol{\phi} \left(\mathbf{r}\right) e_t\left(\mathbf{r}\right)d\mathbf{r}}. 
+\int_\Omega{\boldsymbol{\phi} (\mathbf{r}) e_t(\mathbf{r})d\mathbf{r}}. 
 \end{eqnarray}
 Now defining
 \begin{equation}\label{eq:DefGamma}
@@ -199,7 +199,7 @@ Now defining
 \end{equation}
 and substituting this into equation~\ref{StartofReduction} and cross-multiplying by $\boldsymbol{\Gamma}^{-1}$ gives 
 \begin{eqnarray}\label{eq:ReducedForm}
-	 \lefteqn{\mathbf{x}_{t+1} \nonumber = T_s\boldsymbol{\Gamma}^{ - 1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r}) \int_\Omega {f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}')d\mathbf{r}'} d\mathbf{r}} \boldsymbol{\theta}} \nonumber\\
+	 \lefteqn{\mathbf{x}_{t+1} \nonumber = T_s\boldsymbol{\Gamma}^{ - 1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r}) \int_\Omega {\boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}')f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) d\mathbf{r}'} d\mathbf{r}} \boldsymbol{\theta}} \nonumber\\
 &+&\xi\mathbf{x}_t + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})d\mathbf{r}}.
 \end{eqnarray}
 This can be simplified by exploiting the symmetry (isotropy) of the connectivity kernel where
@@ -211,9 +211,10 @@ To make the simplification we first define
 	\boldsymbol{\Psi}(\mathbf{r}') = T_s\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\psi}^{\top} (\mathbf{r}'-\mathbf{r})d\mathbf{r}},
 \end{equation}
 which is constant and can be defined analytically. Now substituting~\ref{eq:DefPsi} into~\ref{eq:ReducedForm} gives
-\begin{equation}
-	\mathbf{x}_{t+1} = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) d\mathbf{r}' \boldsymbol{\theta} + \xi\mathbf{x}_t + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})d\mathbf{r}}.
-\end{equation}
+\begin{eqnarray}
+	\lefteqn{\mathbf{x}_{t+1} \nonumber= \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) d\mathbf{r}' \boldsymbol{\theta} + \xi\mathbf{x}_t}\nonumber \\
+& +& \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})d\mathbf{r}}.
+\end{eqnarray}
 Now we define the state disturbance as
 \begin{equation}\label{eq:AppendixWt} 
 	\mathbf{e}_t=\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi} ( \mathbf{r} )e_t( \mathbf{r} )d\mathbf{r}} 
@@ -241,7 +242,7 @@ where $L$ is the number of basis functions used to decompose the neural field an
 	c_{i,j} = \int_{\Omega}m(\mathbf{r}_i - \mathbf{r}')\boldsymbol{\phi}_j(\mathbf{r}')d\mathbf{r}'. 
 \end{equation}
 Now we have the final form of the state-space model where
-\begin{equation}
+\begin{equation}\label{eq:finalformstatespacemodel}
 	\mathbf{x}_{t+1} = Q(\mathbf{x}_t) +\mathbf{e}_t.
 \end{equation}
 \begin{equation} 
@@ -335,7 +336,7 @@ The sigma vectors are propagated through the system equations and weighted to fo
 \begin{equation}
 	\mathbf W_i^{(m)}=\mathbf W_i^{(c)}=\frac{1}{2( L+\lambda)} \quad i=1, \dots, 2L. 
 \end{equation}
-where the superscripts $m$ and $c$ stand for mean and covariance. Since the observation equation is linear (equation~\ref{ObservationEquation}) the standard Kalman Filter update equations are  used to correct the predicted states. The state estimates from the forward filtering are used to form a new set of sigma points for the smoother, as described above. To compute the smoother gain, the predicted cross-covariance matrix of the states is used with the covariance matrix. A summary of the URTSS procedure is given in Algorithm~\ref{UKFAlgorithm}. It should be noted that  the disturbance, $e_t\left(\mathbf{r}\right)$ and the measurement noise, $\boldsymbol{\varepsilon}_t$, are additive. Therefore, the additive form of the URTS is used, otherwise the state vector should be augmented with the noise terms. The additive disturbance form reduces the dimension and the number of sigma points used in the algorithm.
+where the superscripts $m$ and $c$ stand for mean and covariance. Since the observation equation is linear (equation~\ref{ObservationEquation}) the standard Kalman Filter update equations are  used to correct the predicted states. The state estimates from the forward filtering are used to form a new set of sigma points for the smoother, as described above. To compute the smoother gain, the cross-covariance matrix of the states, $\mathbf M$, needs to be computed. A summary of the URTSS procedure is given in Algorithm~\ref{UKFAlgorithm}. It should be noted that  the disturbance, $e_t\left(\mathbf{r}\right)$ and the measurement noise, $\boldsymbol{\varepsilon}_t$, are additive. Therefore, the additive form of the URTS is used, otherwise the state vector should be augmented with the noise terms. The additive disturbance form reduces the dimension and the number of sigma points used in the algorithm.
 \begin{algorithm}
 	\begin{small}
 	\caption{The Unscented RTS Smoother}\label{UKFAlgorithm} 
@@ -348,7 +349,7 @@ where the superscripts $m$ and $c$ stand for mean and covariance. Since the obse
 		calculate the sigma points $\mathcal X_{i,t}^f$ using equations \ref{eq:sigmapoints1}-\ref{eq:sigmapoints3} and propagate through equation~\ref{eq:QmatrixForSigmapoints}
 % 		\begin{small}
 		\begin{equation*}
-			\mathcal X_{i,t+1}^{f-}=Q(\mathcal X_{i,t}^f) 
+			\mathcal X_{i,t+1}^{f-}=Q(\mathcal X_{i,t}^f) \quad i=0, \dots, 2L
 		\end{equation*}
 % 		\end{small}
 		calculate the predicted state and the predicted covariance matrix
@@ -374,7 +375,7 @@ where the superscripts $m$ and $c$ stand for mean and covariance. Since the obse
 		\end{equation*}
 		\State Backward iteration: for $t \in \left\lbrace T-1, \cdots, 0 \right\rbrace $ calculate the sigma points $\mathcal X_{i,t}^b$ and propagate them through equation \ref{eq:QmatrixForSigmapoints}
 		\begin{equation*}
-			\mathcal X_{i,t+1}^{b-}=Q(\mathcal X_{i,t}^b) 
+			\mathcal X_{i,t+1}^{b-}=Q(\mathcal X_{i,t}^b) \quad i=0, \dots, 2L
 		\end{equation*}
 		 compute the predicted state, the predicted covariance matrix and the cross-covariance matrix
 		\begin{equation*}
@@ -400,7 +401,7 @@ where the superscripts $m$ and $c$ stand for mean and covariance. Since the obse
 \end{small}
 \end{algorithm}
 
-Although the system is nonlinear, the parameters of the system are linear with respect to the state. This is exploited by our procedure where the parameter estimation uses a least squares (LS) method that minimises the sum of the squared errors (of a predicted state update) with each new state vector sequence estimate (see~\ref{LeastSquaresAppendix}).
+Although the system is nonlinear, the parameters of the system are linear with respect to the state. This is exploited by our procedure where the parameter estimation uses a least squares (LS) method that minimises the sum of the squared errors (of a predicted state update) with each new state vector sequence estimate (see~\ref{App:LeastSquaresAppendix}).
 
 % The accuracy of the approximation is linked to the time step used in the temporal discretisation of the system, where the state transition appears more linear with a finer resolution. 
 Alternatives to the UKF are the Extended Kalman Filter (EKF)~\cite{Haykin2001} and the Sequential Monte Carlo (SMC) filter~\cite{doucet2001}. The EKF approximates the state transition equation by linearising about the current state estimates (by calculating the Jacobian) at each time instance. The linearisation maintains the Gaussianality of the model. The unscented Kalman filter approximates the posterior state density by a Gaussian distribution using a minimal set of carefully chosen sigma points, while maintaining the nonlinearity in the system. This has been shown to give superior performance over the EKF in state estimation, since the EKF maintains a first order approximation where the UKF provides an approximation accurate at least to the second order. In addition, the computation of the Jacobian used in the EKF can be problematic. SMC filtering can theoretically provide an exact posterior state density for nonlinear systems. However, currently this method is not appropriate for our problem, due to high computation demands. 
@@ -435,7 +436,7 @@ Alternatives to the UKF are the Extended Kalman Filter (EKF)~\cite{Haykin2001} a
 The sensors were spaced in a regular square \parham{14 $\times$ 14} grid, the sensor width $\sigma^2_m$ was \parham{0.81} which equals \parham{$1.5$}~mm full width at half maximum, with spacing $\Delta_y$ equal to \parham{$1.5$}~mm. This arrangement modelled the recording as having some cross talk, which is typical from neurophysiological recordings. Note, sensor design that is sufficient to guarantee an accurate representation of the field can be achieved using the frequency analysis from Section~\ref{SpectralAnalysisSection} given access to the true field. 
 \begin{figure}[th]\label{fig:experimental design}
    	\begin{center}
-   		\subfigure[][]{\includegraphics[width=0.3\textwidth]{./Graph/ExperimentFigureEEGPy.pdf}} \\
+   		\subfigure[][]{\includegraphics{./Graph/ExperimentFigureEEGPy.pdf}} \\
    		\subfigure[][]{\includegraphics[width=0.3\textwidth]{./Graph/ExperimentFigurePSDPy.pdf}} \\
    	\end{center}
    	\caption{Example of experimental design and model output.  \textbf{a} Example of data generated by the model through a subset of the observations. \textbf{b}. Power spectral density of the data generated by an observation showing the typical $1/f$ characteristic of iEEG.} 
@@ -453,8 +454,8 @@ The sensors were spaced in a regular square \parham{14 $\times$ 14} grid, the se
 \subfigure[][]{\includegraphics{./Graph/theta0.pdf}}\\
 \subfigure[][]{\includegraphics{./Graph/theta1.pdf}}
 \subfigure[][]{\includegraphics{./Graph/theta2.pdf}}
-\caption{\parham{caption should be changed}Distribution of the parameters estimates over 100
-realisations. Grey bars show distributions with wider basis functions ($\sigma_{\phi} = ?$) and blue bars show improved parameter distributions with narrower basis functions ($\sigma_{\phi} = ?$). \textbf{a.} The distribution of the synaptic time constant estimates (true parameter: $\zeta=100$). \textbf{b.} The distribution of the central excitatory connectivity kernel basis function parameters estimates (true parameter: $\theta_0 = 10$). \textbf{c.} The distribution of the surround inhibition connectivity kernel basis function parameter estimates (true parameter: $\theta_1 = -8$). \textbf{d.} The distribution of the longer range excitatory connectivity kernel basis function parameter estimates (true parameter $\theta_3 = 0.5$).}
+\caption{Distribution of the parameters estimates over 100
+realisations. \textbf{a.} The distribution of the synaptic time constant estimates (true parameter: $\zeta=100$). \textbf{b.} The distribution of the central excitatory connectivity kernel basis function parameters estimates (true parameter: $\theta_0 = 10$). \textbf{c.} The distribution of the surround inhibition connectivity kernel basis function parameter estimates (true parameter: $\theta_1 = -8$). \textbf{d.} The distribution of the longer range excitatory connectivity kernel basis function parameter estimates (true parameter $\theta_3 = 0.5$).}
 \label{fig:Parameters}
 \end{figure}
 \begin{figure}[th]
@@ -479,11 +480,11 @@ The spatial frequency of the observations is shown in Figure~\ref{fig:FreqAnalys
 	\end{center}
 	\caption{Frequency analysis of the. \textbf{a.} The spatial frequency response of a 1-dimensional neural field basis functions project. The symmetry of the field basis functions, connectivity kernel basis functions and sensors allow for the 1-dimensional representation of the spectral characteristics. The dashed line shows the cut-off frequency (-3 dB point). \textbf{b} The spatial frequency response of a 1-dimensional model sensor. The dashed line shows the cut-off frequency (-3 dB point), indicating a wider bandwidth than the field basis function. \textbf{c.} Two 2-dimensional spatial frequency (in power dB, averaged over 400 time steps) of the observed field.} 
 \end{figure*}
-Following this, the distance between basis function, $\Delta_{\phi}$, was set to $2.5$ and the basis function width, $\sigma_{\phi}^2$, was set to 2.5, 2.63 mm full width at half maximum. \mike{Analysis said 0.44 from Parham's derivation, but 2.5 still overlaps and allows more high frequency details to be represented.}
+Following this, the distance between basis function, $\Delta_{\phi}$, was set to $2.5$ and the basis function width, $\sigma_{\phi}^2$, was set to 2.5, 2.63 mm full width at half maximum. \mike{Analysis said 1 from Parham's derivation, but 2.5 still overlaps and allows more high frequency details to be represented.}\parham{maybe we can argue that this width is for perfect recunstruction up to 0.19 Hz which requires the smaller distance between basis functions and hence more number of basis functions but we choose to go for lower number of basis function and loosing high frequency contents.}
 
 \subsection{State and Parameter Estimates} 
 \label{sec:state_and_param_results}
-To demonstrate the performance of the parameter and state estimation, $100$ realisations of the data were generated. Each realisation consisted of 500~ms of data and the estimation was applied to the final 400~ms, allowing the model to stabilise.\dean{transient!} The initial state and parameters were unknown to the estimator. The distribution of the parameters and the resulting kernel are shown in figure~\ref{fig:Parameters} and figure~\ref{fig:KernelEstimates}, respectively. Although a wide distribution can be seen over the parameter estimates, the ratio between them remains within a narrow range as shown in figure~\ref{fig:ParametersRatio}. The state estimates for one realisation were evaluated by comparing the field reconstruction to the true field using the mean over time of the Root Mean Square Error (RMSE) and standard deviation of the RMSE giving $0.5\pm 0.02$. The RMSE of the field estimates over time for 100 realizations is also shown in figure~\ref{fig:RMSE}. A snapshot of the true field, the estimated field and their corresponding error is illustrated in Figure~\ref{fig:FieldEstimate}.
+To demonstrate the performance of the parameter and state estimation, $100$ realisations of the data were generated. Each realisation consisted of 500~ms of data and the estimation was applied to the final 400~ms, allowing the model to stabilise.\dean{transient!} The initial state and parameters were unknown to the estimator. The distribution of the parameters and the resulting kernel are shown in figure~\ref{fig:Parameters} and figure~\ref{fig:KernelEstimates}, respectively. Although a wide distribution can be seen over the parameter estimates, the ratio between them remains within a narrow range as shown in figure~\ref{fig:ParametersRatio}. The state estimates for one realisation were evaluated by comparing the field reconstruction to the true field using the mean over time of the Root Mean Square Error (RMSE) and standard deviation of the RMSE giving $0.5\pm 0.02$. The RMSE of the field estimates over time for 100 realizations is also shown in figure~\ref{fig:RMSE}. A snapshot of the true field, the estimated field and their corresponding error is illustrated in figure~\ref{fig:FieldEstimate}. The convergence of the parameter estimation is shown in figure~\ref{fig:ParametersConvergence}.
 
 \begin{figure*}
 \subfigure[][]{\includegraphics{./Graph/KernelEstimate.pdf}}
@@ -668,16 +669,15 @@ substituting $\sigma_{\nu}^2=\frac{1}{\pi^2\sigma_{\phi}^2}$ gives
 \end{equation}
 and hence completing the proof. For 3 dB attenuation at $\boldsymbol\nu_c$ we need to set
 \begin{eqnarray}
- |\boldsymbol\Phi(\boldsymbol\nu_c)|^2=\frac{1}{2}|\boldsymbol\Phi(\mathbf 0)|^2
+ |\boldsymbol\Phi(\boldsymbol\nu_{c})|^2=\frac{1}{2}|\boldsymbol\Phi(\mathbf 0)|^2
 \end{eqnarray}
-%\left(\frac{1}{\pi\sigma_{\nu}^2}\right)^{n}\mathrm{exp}\left(-\frac{2}{\sigma_{\nu}^2}\boldsymbol\nu_c^\top \boldsymbol\nu_c\right)\\
 solving for $\sigma_{\nu}^2$ we get
 \begin{equation}
- \sigma_{\nu}^2=\frac{2\boldsymbol\nu_c^\top \boldsymbol\nu_c}{\ln 2 }.
+ \sigma_{\nu}^2=\frac{2\boldsymbol\nu_{c}^\top \boldsymbol\nu_{c}}{\ln 2 }.
 \end{equation}
 
 \section{Parameter Estimation Using Least Squares}\label{App:LeastSquaresAppendix} 
-The finite state space model given in \ref{eq:ReducedForm} is linear with respect to parameters. Therefore a least square (LS) method can be applied to estimate the unknown parameters. To create the least squares parameter estimator we first define the $L \times n_{\theta}$ matrix
+The finite state space model given in \ref{eq:finalformstatespacemodel} is linear with respect to parameters. Therefore a least square (LS) method can be applied to estimate the unknown parameters. To create the least squares parameter estimator we first define the $L \times n_{\theta}$ matrix
 \begin{equation}
 	\mathbf{q}(\mathbf{x}_t) = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) d\mathbf{r}'.
 \end{equation}
