@@ -17,7 +17,7 @@ r = linspace(SpaceMin,SpaceMax,NPoints);      % define space
 
 % temporal parameter
 Ts = 1e-3;          % sampling period
-T = 300;            % maximum time (ms)
+T = 1000;            % maximum time (ms)
 
 % kernel parameters
 theta(1) = 10;     % local kernel amplitude
@@ -53,7 +53,7 @@ NSensors_xy = 11;%14;
 NSensors = NSensors_xy^2;
 mu_y_xy = linspace(-10,10,NSensors_xy);%linspace(-9.75,9.75,NSensors_xy);               % sensor centers
 sensor_indexes = (mu_y_xy+SpaceMax)/Delta +1;             % so we can easily get the observations from the filed filtered by the sensors
-sigma_y = 0.6;                                                         % sensor width
+sigma_y = 0.9;                                                         % sensor width
 m = Define2DGaussian(0,0, sigma_y^2, 0,NPoints,SpaceMin,SpaceMax);
 M = fft2(m);                                            % fft of sensor kernel to get observations quickly
 % define all sensor centers
@@ -67,7 +67,7 @@ for n=1:NSensors_xy
 end
 
 % observation noise characteristics
-sigma_varepsilon = 0.0001;                                  
+sigma_varepsilon = 0.1;                                  
 Sigma_varepsilon = sigma_varepsilon*eye(NSensors);        % observation covariance matrix
 
 % sigmoid parameters
