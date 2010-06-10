@@ -128,7 +128,7 @@ where $\zeta=\tau^{-1}$ and $\tau$ is the synaptic time constant and $\eta(t)$ i
 \begin{equation}
 	\label{RateBasedInteractions} g\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( v\left( \mathbf{r}',t \right) \right)d\mathbf{r}'}, 
 \end{equation}
-where $f(\cdot)$ is the firing rate function, $w(\cdot)$ is the spatial connectivity kernel, and $\Omega$ is the spatial domain, representing a cortical sheet or surface. The connectivity kernel is typically a ``Mexican hat'' function which describes strong local activation, weak mid-range repression and weak long-range activation. The exact shape of this kernel is assumed to vary across patients, and hence needs to be inferred from data. \ken{Risky comment if we don't get better estimates.}
+where $f(\cdot)$ is the firing rate function, $w(\cdot)$ is the spatial connectivity kernel, and $\Omega$ is the spatial domain, representing a cortical sheet or surface. The connectivity kernel is typically a ``Mexican hat'' function which describes strong local activation, weak mid-range repression and weak long-range activation. The exact shape of this kernel is assumed to vary across patients, and hence needs to be inferred from data.
 \begin{figure}[ th]\label{fig:2d_kernel}
    	\begin{center}
    		\includegraphics{./Graph/Cross_section_kernel.pdf} 
@@ -158,7 +158,7 @@ To arrive at the integro-difference equation (IDE) form of the model we discreti
 	\label{DiscreteTimeModel} v_{t+T_s}\left(\mathbf{r}\right) &=& \xi v_t\left(\mathbf{r}\right) + T_s \int_\Omega { w\left(\mathbf{r},\mathbf{r}'\right) f\left(v_t\left(\mathbf{r}'\right)\right) d\mathbf{r}'} \nonumber\\ 
 	&+& e_t\left(\mathbf{r}\right), 
 \end{eqnarray}
-where $T_s$ is the time step, $\xi = 1-\zeta T_s$ and $e_t(\mathbf{r})$ is an i.i.d. disturbance such that $e_t\sim\mathcal{GP}(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}'))$. Here $\mathcal{GP}(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}'))$ denotes a spatial Gaussian Process with mean zero and covariance function $\gamma(\mathbf{r}-\mathbf{r}')$~\cite{Rasmussen2005}. This term is added to account for uncertainty in the model. To simplify the notation, the index of the future time sample, $t+T_s$, shall be referred to as $t+1$ throughout the rest of the paper. The mapping between the membrane voltage and the collected iEEG/LFP data is modelled using the observation function 
+where $T_s$ is the time step, $\xi = 1-\zeta T_s$ and $e_t(\mathbf{r})$ is an i.i.d. disturbance such that $e_t\sim\mathcal{GP}(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}'))$. Here $\mathcal{GP}(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}'))$ denotes a spatial Gaussian process with mean zero and covariance function $\gamma(\mathbf{r}-\mathbf{r}')$~\cite{Rasmussen2005}. This term is added to account for uncertainty in the model. To simplify the notation, the index of the future time sample, $t+T_s$, shall be referred to as $t+1$ throughout the rest of the paper. The mapping between the membrane voltage and the collected iEEG/LFP data is modelled using the observation function 
 \begin{equation}
 	\mathbf{y}_t = \int_{\Omega}{m\left(\mathbf{r}_n-\mathbf{r}'\right)v_t\left(\mathbf{r}'\right)d\mathbf{r}'} + \boldsymbol{\varepsilon}_t, 
 \end{equation}
@@ -177,7 +177,8 @@ Decomposition allows a continuous field to be represented by a finite dimensiona
 \begin{equation}
 	\label{DefFieldDecomp} v_t\left(\mathbf{r}\right) \approx \boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) \mathbf{x}_t, 
 \end{equation}
-where $\mathbf{\boldsymbol{\phi}}(\mathbf{r})$ is a vector of Gaussian basis functions that are scaled by the state vector, $\mathbf{x}_t$. The choice of Gaussian basis functions can be justified by the existence of the so called bump solutions for this class of model, which have a Gaussian shape~\cite{Coombes2005}. The width and positioning of the basis functions can be determined by spectral analysis (explained in detail in Section~\ref{SpectralAnalysisSection}). The connectivity kernel can also be decomposed as 
+where $\mathbf{\boldsymbol{\phi}}(\mathbf{r})$ is a vector of Gaussian basis functions that are scaled by the state vector, $\mathbf{x}_t$. %The choice of Gaussian basis functions can be justified by the existence of the so called bump solutions for this class of model, which have a Gaussian shape~\cite{Coombes2005}. 
+The width and positioning of the basis functions can be determined by spectral analysis (explained in detail in Section~\ref{SpectralAnalysisSection}). The connectivity kernel can also be decomposed as 
 \begin{equation}\label{DefKernelDecomp}
 	 w\left(\mathbf{r},\mathbf{r}'\right) =\boldsymbol{\psi}^\top\left(\mathbf{r},\mathbf{r}'\right) \boldsymbol{\theta},
 \end{equation}
@@ -199,8 +200,8 @@ Now defining
 \end{equation}
 and substituting this into equation~\ref{StartofReduction} and cross-multiplying by $\boldsymbol{\Gamma}^{-1}$ gives 
 \begin{eqnarray}\label{eq:ReducedForm}
-	 \lefteqn{\mathbf{x}_{t+1} \nonumber = T_s\boldsymbol{\Gamma}^{ - 1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r}) \int_\Omega {\boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}')f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) d\mathbf{r}'} d\mathbf{r}} \boldsymbol{\theta}} \nonumber\\
-&+&\xi\mathbf{x}_t + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})d\mathbf{r}}.
+	 \mathbf{x}_{t+1} = T_s\boldsymbol{\Gamma}^{-1}\int_\Omega \boldsymbol{\phi}(\mathbf{r}) \int_\Omega \boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}')f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \nonumber \\ 
+	\times d\mathbf{r}' d\mathbf{r} \boldsymbol{\theta} + \xi\mathbf{x}_t + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})d\mathbf{r}}.
 \end{eqnarray}
 This can be simplified by exploiting the symmetry (isotropy) of the connectivity kernel where
 \begin{equation}
@@ -485,7 +486,7 @@ To demonstrate the performance of the parameter and state estimation, $100$ real
 
 \begin{figure*}
 \subfigure[][]{\includegraphics{./Graph/KernelEstimate.pdf}}
- \subfigure[][]{\includegraphics{./Graph/KernelEstimateFFT.pdf}}\\
+ % \subfigure[][]{\includegraphics{./Graph/KernelEstimateFFT.pdf}}\\
 \caption{Results for connectivity estimate. In all the subplots the true kernel is shown by the solid line, the mean kernel estimate (over 100 realisations) is shown by the dashed line and the 95~\% confidence interval is shown by the shaded grey region. \textbf{a.} Comparison of kernel estimates to true kernel in the spatial domain. \textbf{b.} Comparison of the true kernel to the estimated kernel in the frequency domain. \dean{Note: needs to be changed to absolute values if we include it.} \dean{Note: Power and dB needs to be non-italicised.}}
 \label{fig:KernelEstimates}
 \end{figure*}
