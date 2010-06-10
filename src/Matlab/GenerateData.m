@@ -6,7 +6,7 @@ if exist('RunningBatch') == 0
     clear
     close all
     clc
-    load Parameters
+%     load Parameters
 end
 
 % run the script that sets all the parameters
