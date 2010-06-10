@@ -459,10 +459,7 @@ realisations. \textbf{a.} The distribution of the synaptic time constant estimat
 \label{fig:Parameters}
 \end{figure}
 \begin{figure}[th]
-\subfigure[]{\includegraphics[scale=1]{./Graph/ZetaConvergence.pdf}}
-\subfigure[][]{\includegraphics[scale=1]{./Graph/theta0Convergence.pdf}}\\
-\subfigure[][]{\includegraphics[scale=1]{./Graph/theta1Convergence.pdf}}
-\subfigure[][]{\includegraphics[scale=1]{./Graph/theta2Convergence.pdf}}
+\includegraphics[scale=1]{./Graph/convergence.pdf}
 \caption{Convergence of the parameters averaged over 100 runs. }
 \label{fig:ParametersConvergence}
 \end{figure}
@@ -474,9 +471,9 @@ The spatial frequency of the observations is shown in Figure~\ref{fig:FreqAnalys
 \begin{figure*}
 	\label{fig:FreqAnalysis} 
 	\begin{center}
-\subfigure[][]{\includegraphics[scale=0.8]{./Graph/BasisChar.pdf}}
-\subfigure[][]{\includegraphics[scale=0.8]{./Graph/SensorChar.pdf}}
-\subfigure[][]{\includegraphics[width=1.8in]{./Graph/ObservationFrequencyResponse.pdf}}\\
+\subfigure[][]{\includegraphics[scale=1]{./Graph/BasisChar.pdf}}
+\subfigure[][]{\includegraphics[scale=1]{./Graph/SensorChar.pdf}}
+\subfigure[][]{\includegraphics[scale=1]{./Graph/ObservationFrequencyResponse.pdf}}\\
 	\end{center}
 	\caption{Frequency analysis of the. \textbf{a.} The spatial frequency response of a 1-dimensional neural field basis functions project. The symmetry of the field basis functions, connectivity kernel basis functions and sensors allow for the 1-dimensional representation of the spectral characteristics. The dashed line shows the cut-off frequency (-3 dB point). \textbf{b} The spatial frequency response of a 1-dimensional model sensor. The dashed line shows the cut-off frequency (-3 dB point), indicating a wider bandwidth than the field basis function. \textbf{c.} Two 2-dimensional spatial frequency (in power dB, averaged over 400 time steps) of the observed field.} 
 \end{figure*}
@@ -488,7 +485,7 @@ To demonstrate the performance of the parameter and state estimation, $100$ real
 
 \begin{figure*}
 \subfigure[][]{\includegraphics{./Graph/KernelEstimate.pdf}}
-% \subfigure[][]{\includegraphics{./Graph/KernelEstimateFFT.pdf}}\\
+ \subfigure[][]{\includegraphics{./Graph/KernelEstimateFFT.pdf}}\\
 \caption{Results for connectivity estimate. In all the subplots the true kernel is shown by the solid line, the mean kernel estimate (over 100 realisations) is shown by the dashed line and the 95~\% confidence interval is shown by the shaded grey region. \textbf{a.} Comparison of kernel estimates to true kernel in the spatial domain. \textbf{b.} Comparison of the true kernel to the estimated kernel in the frequency domain. \dean{Note: needs to be changed to absolute values if we include it.} \dean{Note: Power and dB needs to be non-italicised.}}
 \label{fig:KernelEstimates}
 \end{figure*}
@@ -500,8 +497,8 @@ To demonstrate the performance of the parameter and state estimation, $100$ real
 \label{fig:ParametersRatio}
 \begin{figure}[th]
 \centering
-\subfigure[][]{\label{fig:FieldFFT}\includegraphics[scale=0.9]{./Graph/FFTTrueField.pdf}}
-\subfigure[][]{\label{fig:EstimatedFieldFFT}\includegraphics[scale=0.9]{./Graph/FFTEstimatedField.pdf}}\\
+\subfigure[][]{\label{fig:FieldFFT}\includegraphics[scale=1]{./Graph/FFTTrueField.pdf}}
+\subfigure[][]{\label{fig:EstimatedFieldFFT}\includegraphics[scale=1]{./Graph/FFTEstimatedField.pdf}}\\
 \caption{Spatial frequency of the neural fields. \textbf{a.} The average (over time) spatial frequency of the neural field. \textbf{b.} The average (over time) spatial frequency of the estimated neural field resulting from the basis function decomposition. As a result of the band limiting properties of the sensors and basis functions the reconstructed shows a narrower bandwidth.}
 \label{fig:FFTTrueEstimate}
 \end{figure}
@@ -515,9 +512,9 @@ To demonstrate the performance of the parameter and state estimation, $100$ real
    \end{figure}
 \begin{figure*}[!th]
 \centering 
-\subfigure[][]{\includegraphics[scale=0.9]{./Graph/TrueField90.pdf}}
-\subfigure[][]{\includegraphics[scale=0.9]{./Graph/EstimatedField90.pdf}}
-\subfigure[][]{\includegraphics[scale=0.9]{./Graph/EstimationError90.pdf}}\\
+\subfigure[][]{\includegraphics[scale=1]{./Graph/TrueField90.pdf}}
+\subfigure[][]{\includegraphics[scale=1]{./Graph/EstimatedField90.pdf}}
+\subfigure[][]{\includegraphics[scale=1]{./Graph/EstimationError90.pdf}}\\
 \caption{Examples of the neural fields. \textbf{a.} The true field from the non-reduced model the was used to generate data. \textbf{b.} The reconstructed estimated field of the reduced model. \textbf{c.} The absolute error between the true and reconstructed fields.}
 \label{fig:FieldEstimate}
 \end{figure*}
