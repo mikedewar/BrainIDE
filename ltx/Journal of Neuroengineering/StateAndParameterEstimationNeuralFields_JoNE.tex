@@ -72,8 +72,6 @@
 \newcommand{\ken}[1]{\textsf{\emph{\textbf{\textcolor{magenta}{#1}}}}}
 \begin{document}
 
-% \begin{document}
-
 \title[State and Parameter Estimation for Spatio-Temporal Neural Fields]{State and Parameter Estimation for Spatio-Temporal Neural Fields}
 
 \author{Dean R. Freestone$^{1,5}$, Parham Aram$^2$, Michael Dewar$^3$, Kenneth Scerri$^4$, David B. Grayden$^{1,5}$, and Visakan Kadirkamanathan$^2$}
@@ -129,11 +127,11 @@ where $\zeta=\tau^{-1}$ and $\tau$ is the synaptic time constant and $\eta(t)$ i
 	\label{RateBasedInteractions} g\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( v\left( \mathbf{r}',t \right) \right)d\mathbf{r}'}, 
 \end{equation}
 where $f(\cdot)$ is the firing rate function, $w(\cdot)$ is the spatial connectivity kernel, and $\Omega$ is the spatial domain, representing a cortical sheet or surface. The connectivity kernel is typically a ``Mexican hat'' function which describes strong local activation, weak mid-range repression and weak long-range activation. The exact shape of this kernel is assumed to vary across patients, and hence needs to be inferred from data.
-\begin{figure}[ th]\label{fig:2d_kernel}
+\begin{figure}[th]\label{fig:2d_kernel}
    	\begin{center}
    		\includegraphics{./Graph/Cross_section_kernel.pdf} 
    	\end{center}
-   	\caption{A mexican-hat connectivity kernel, $w(\mathbf{r},\mathbf{r'})$ used in this paper. The function $w(.)$ is rotationally symetric (isotropic) about zero, hence a cross section captures the important aspect of the connectivity kernel's shape. The kernel decays asymptotically to zero.} 
+   	\caption{A mexican-hat connectivity kernel, $w(\mathbf{r},\mathbf{r'})$ used in this paper. The function $w(.)$ is rotationally symmetric (isotropic) about zero, hence a cross section captures the important aspect of the connectivity kernel's shape. The kernel decays asymptotically to zero with space.} 
    \end{figure}
 The firing rate of the presynaptic neurons is related to the postsynaptic membrane potential by the sigmoidal activation function 
 \begin{equation}
@@ -473,7 +471,7 @@ Following this, the parameters, $ \mathbf W$, can be estimated by
 % Alternatives to the UKF are the Extended Kalman Filter (EKF)~\cite{Haykin2001} and the Sequential Monte Carlo (SMC) filter~\cite{doucet2001}. The EKF approximates the state transition equation by linearising about the current state estimates (by calculating the Jacobian) at each time instance. The linearisation maintains the Gaussianality of the model. The unscented Kalman filter approximates the posterior state density by a Gaussian distribution using a minimal set of carefully chosen sigma points, while maintaining the nonlinearity in the system. This has been shown to give superior performance over the EKF in state estimation, since the EKF maintains a first order approximation where the UKF provides an approximation accurate at least to the second order. In addition, the computation of the Jacobian used in the EKF can be problematic. SMC filtering can theoretically provide an exact posterior state density for nonlinear systems. However, currently this method is not appropriate for our problem, due to high computation demands. 
 
 %The method is appropriate for state estimation of stochastic nonlinear dynamical systems. 
-\section{Results}\label{ResultsSection} The non-reduced neural field model derived in Section~\ref{NeuralModelSection} was used to generate the data for state and parameter estimation. All parameters for the model are given in Table~\ref{tab:Model Parameters}. Figure~\ref{fig:experimental design}(a) shows example data from the sensors of the model, and figure~\ref{fig:experimental design}(b) shows the power spectral density (PSD) of the simulated time-series. The PSD shows the typical $1/f^2$ characteristics of intracranial EEG.
+\section{Results}\label{ResultsSection} The non-reduced neural field model derived in Section~\ref{NeuralModelSection} was used to generate the data for state and parameter estimation. All parameters for the model are given in Table~\ref{tab:Model Parameters}. Figure~\ref{fig:experimental design}(a) shows example data from the sensors of the model, and Figure~\ref{fig:experimental design}(b) shows the power spectral density (PSD) of the simulated time-series. The PSD shows the typical $1/f^2$ characteristics of intracranial EEG.
 \begin{table*}
 \centering
 \begin{tabular}{c|c|c}
@@ -496,25 +494,25 @@ Following this, the parameters, $ \mathbf W$, can be estimated by
 	$T_s$ & 1 & ms time step \\ 
 	\hline\hline
 \end{tabular}
-\caption{Parameters for neural field model used to generate data to demonstrate the estimation framework.}
+\caption{Parameters for the neural field model, which are used to generate synthetic data.}
 \label{tab:Model Parameters}
 \end{table*}
 The sensors were spaced in a regular square 14 $\times$ 14 grid, the sensor width $\sigma^2_m$ was 0.81 which equals $1.5$~mm full width at half maximum, with spacing $\Delta_y$ equal to $1.5$~mm. This arrangement modelled the recording as having some cross talk, which is typical from neurophysiological recordings. %Note, sensor design that is sufficient to guarantee an accurate representation of the field can be achieved using the frequency analysis from Section~\ref{SpectralAnalysisSection} given access to the true field. 
 \begin{figure}[th]
    	\begin{center}
-    	\subfigure[][]{\includegraphics{./Graph/ExperimentFigureEEGPy.pdf}} \\
+    		\subfigure[][]{\includegraphics{./Graph/ExperimentFigureEEGPy.pdf}} \\
    		\subfigure[][]{\includegraphics{./Graph/ExperimentFigurePSDPy.pdf}} \\
    	\end{center}
-   	\caption{Example of experimental design and model output.  \textbf{a} Example of data generated by the non-reduced model through a subset of the observations. \textbf{b}. Power spectral density of the data generated by an observation showing the typical $1/f^2$ characteristic of iEEG.} 
+   	\caption{\textbf{a.} Example of data generated by the non-reduced model. \textbf{b.} Power spectral density of the data generated by an observation showing the typical $1/f^2$ characteristic of iEEG.} 
 \label{fig:experimental design}
 \end{figure}
 \subsection{Spatial Frequency Analysis} 
 Using the model selection techniques described in Section~\ref{SpectralAnalysisSection}, the spatial frequency of the field was used to confirm that the spacing and width of the sensors was adequate to capture the significant dynamics of the field. Figure~\ref{fig:FieldFFT} shows the spatial frequency of the neural field. The cut-off frequency, $\nu_c$, was taken to be 0.24~Hz ($-3$~dB point). From equation~\ref{eq:MinimumSensorDistance}, this yielded a minimum sensor separation of 2.05~mm. This confirms the separation, $\Delta_{y}$, of 1.5~mm was sufficient to prevent problems associated with spatial aliasing.
-\begin{figure}[th]
+\begin{figure}
 \centering
 \subfigure[][]{\label{fig:FieldFFT}\includegraphics[scale=1]{./Graph/FFTTrueField.pdf}}
 \subfigure[][]{\label{fig:EstimatedFieldFFT}\includegraphics[scale=1]{./Graph/FFTEstimatedField.pdf}}\\
-\caption{Spatial frequency of the neural fields. \textbf{a.} The average (over time) spatial frequency of the neural field. \textbf{b.} The average (over time) spatial frequency of the estimated neural field resulting from the basis function decomposition. As a result of the band limiting properties of the sensors and basis functions the reconstructed field shows a narrower bandwidth.}
+\caption{Spatial frequency of the neural fields. \textbf{a.} The average (over time) spatial frequency of the neural field. \textbf{b.} The average (over time) spatial frequency of the estimated neural field. As a result of the band limiting properties of the sensors and basis functions the reconstructed field shows a narrower bandwidth.}
 \label{fig:FFTTrueEstimate}
 \end{figure}
 The spatial frequency from the observations is shown in Figure~\ref{fig:ObservationFreqAnal}. The cut-off frequency, $\nu_{cy}$, was taken to be $0.19$~Hz ($-3$~dB point). The observation cut-off frequency is lower than the field cut-off due to the low-pass filtering effect of the sensors. The spatial frequency response of the sensors can be seen in Figure~\ref{fig:SensorFunctionFreqResponse}. Using an oversampling parameter, $\rho_{\phi}$, of $1$, the minimum distance between basis functions was calculated to be $2.63$ to satisfy Shannon's sampling criterion (from equation~\ref{eq:BasisFunctionSeparation}). From equation~\ref{eq:WidthCutOffRelationship} the required basis function width to represent the dominant spatial frequencies was calculated to be $1$. The distance between basis functions, $\Delta_{\phi}$, was set to $2.5$, which is sufficient to capture the significant dynamics according to our criteria. The basis function width, $\sigma_{\phi}^2$, was set above the calculated width to $2.5$, which reflected a design choice. This was a result of a trade-off that ensured that the lower spatial frequency components of the field were better represented at the expense of higher spatial frequency components. The spatial frequency response of the basis function can be seen in Figure~\ref{fig:BasisFunctionFreqResponse}.
@@ -530,11 +528,12 @@ The spatial frequency from the observations is shown in Figure~\ref{fig:Observat
 \label{sec:state_and_param_results}
 To demonstrate the performance of the parameter and state estimation a Monte Carlo approach was employed where $100$ realisations of the data were generated. Each realisation consisted of 500~ms of data (sampled at $1$~kHz) and the estimation was applied to the final $400$~ms, allowing the model to stabilise and transients to die out from the initial conditions. The initial state and parameters were unknown to the estimator. The distribution of the estimated parameters is shown in Figure~\ref{fig:Parameters}. The distribution of the parameters estimates are centred about the true values indicating good results. Although the distributions are quite wide, the ratio of the estimates for each realisation falls into relatively tight distributions, as seen in Figure~\ref{fig:ParametersRatio}, This indicates the balance of excitation and inhibition can be estimated more accurately than the individual parameters. The reconstructed connectivity kernel from the estimated parameters can be seen in Figure~\ref{fig:KernelEstimates}. This Figure verifies the expected net shape of the connectivity kernel is in good accordance to the true kernel. Figure~\ref{fig:ParametersConvergence} shows the rate of convergence for parameter estimates.
 \begin{figure}[th]
-\subfigure[][]{\includegraphics{./Graph/zeta.pdf}}
-\subfigure[][]{\includegraphics{./Graph/theta0.pdf}}\\
-\subfigure[][]{\includegraphics{./Graph/theta1.pdf}}
-\subfigure[][]{\includegraphics{./Graph/theta2.pdf}}
-\caption{Distribution of the parameters estimates over 100
+    \centering
+    \subfigure[][]{\includegraphics{./Graph/zeta.pdf}}
+    \subfigure[][]{\includegraphics{./Graph/theta0.pdf}}\\
+    \subfigure[][]{\includegraphics{./Graph/theta1.pdf}}
+    \subfigure[][]{\includegraphics{./Graph/theta2.pdf}}
+\caption{Distribution of the parameter estimates over 100
 realisations. \textbf{a.} The distribution of $\xi$ estimates where $\xi=1-\zeta T_s $ and $\zeta$ is the synaptic time constant (true parameter: $\xi=0.9$). \textbf{b.} The distribution of the central excitatory connectivity kernel basis function parameters estimates (true parameter: $\theta_0 = 10$). \textbf{c.} The distribution of the surround inhibition connectivity kernel basis function parameter estimates (true parameter: $\theta_1 = -8$). \textbf{d.} The distribution of the longer range excitatory connectivity kernel basis function parameter estimates (true parameter $\theta_3 = 0.5$). The dotted line shows the location of the true parameter in each case.}
 \label{fig:Parameters}
 \end{figure}
@@ -592,7 +591,7 @@ This paper presents a novel framework for model reduction to facilitate practica
 
 The frequency analysis and model selection tools presented in this paper specify the sensor and field basis function arrangement required to form a state-space model that is capable of capturing the dominant cortical dynamics. In addition to providing conditions to ensure the reduced model can capture the significant spectral properties of the field, these new tools can be used to better design electrophysiological recording techniques avoid spatial aliasing. This analysis is becoming increasingly relevant as recording systems are becoming more sophisticated with higher density recordings~\cite{Brinkmann2009}. The effect of the basis function decomposition will restrict the frequency content of the estimated field. This is evident in when comparing Figures~\ref{fig:FieldFFT} and~\ref{fig:EstimatedFieldFFT} where the estimated field is spatially band-limited. The spatial frequency content of the field is governed by disturbance covariance and the shape of the connectivity kernel.
 % 
-% In practice Even though the some high spatial frequency content of the connectivity kernel is lost through the basis function decomposition, the dominant dynamics are still captured with the estimated reduced model. This is illustrated in figure~\ref{fig:FieldEstimate}. In addition, the ratio of the kernel parameters follows a tight distribution as seen in figure~\ref{fig:ParametersRatio}. This indicates that the ratio of excitation to inhibition can be tracked with this approach. 
+% In practice Even though the some high spatial frequency content of the connectivity kernel is lost through the basis function decomposition, the dominant dynamics are still captured with the estimated reduced model. This is illustrated in Figure~\ref{fig:FieldEstimate}. In addition, the ratio of the kernel parameters follows a tight distribution as seen in Figure~\ref{fig:ParametersRatio}. This indicates that the ratio of excitation to inhibition can be tracked with this approach. 
 
 To the authors' best knowledge, this is the first paper to propose an estimation framework for intracortical connectivity from electrophysiological data. The importance of the estimation framework can be illustrated by considering that the connectivity structure at this scale can not be estimated using diffusion tensor imaging due to the near isotropic diffusion of water in grey matter~\cite{Assaf2008}. In addition, other non-model-based techniques for estimating functional connectivity, such as Granger causality~\cite{Hesse2003}, the direct transfer function~\cite{Kaminski1991} and partial directed coherence~\cite{Sameshima1999}, are restricted to the spatial scales of the recording electrodes. The model-based technique proposed in this paper estimates the connectivity structure of the number of sensors. An advantage of the auto-regressive (AR) methods is that they allow for anisotropic connectivity, which is present in cortico-cortical fibres. It should be noted, however, that the AR and the proposed model-based methods are complementary, where connectivity is estimated at different spatial scales. Therefore, we envisage that by combining these methods a more realistic model can be acquired. A recent theoretical study~\cite{Jirsa2009} has demonstrated the importance of this multi-scale structure in generating the characteristic rhythms of the brain.
 
@@ -715,30 +714,38 @@ solving for $\sigma_{\nu}^2$ we get
  \sigma_{\nu}^2=\frac{2\boldsymbol\nu_{c}^\top \boldsymbol\nu_{c}}{\ln 2 }.
 \end{equation}
 
-\section{Parameters} 
-\begin{tabular}
-	{c|c} Symbol & Description \\
-	\hline
-	\\ & \textbf{Domain and indicies} \\
-	\hline
-	$\Omega$ & spatial domain \\
-	$t$ & time (seconds) \\
-	$\mathbf{r}$ & spatial location \\
-	$n$ & sensor index $n=1,..,N$ \\
-	$T$ & time step \\
-	\\ & \textbf{Spatiotemporal Signals} \\
-	\hline
-	$y(\mathbf{r}_n,t)$ & observation \\
-	$v(\mathbf{r},t)$ & mean membrane potential \\
-	$g(\mathbf{r},t)$ & average action potential rate \\
-	$f(\mathbf{r},t)$ & firing function rate \\
-	$u(\mathbf{r},t)$ & external input \\
-	$e(\mathbf{r},t)$ & field disturbance, covariance $\gamma$\\
-	$\epsilon(\mathbf{r}_n,t)$ & observation noise, covariance $\Sigma_\epsilon$ \\
-	\\ & \textbf{Model} \\
-	\hline
-	$h(t)$ & post-synaptic response kernel \\
-	$m(\mathbf{r},\mathbf{r}')$ & sensor kernel, variance $\sigma_m^2$ \\
+\section{Notation}
+
+\begin{table}[h!]\footnotesize
+    \centering
+    \begin{tabular}{cl}
+        $\Omega$ & spatial domain \\
+	    $t$ & time (seconds) \\
+    	$\mathbf{r}$ & spatial location \\
+	    $n$ & sensor index $n=1,..,N$ \\
+    	$T$ & time step
+    \end{tabular}
+    \caption{Domain and indices}
+\end{table}
+
+\begin{table}[h!]\footnotesize
+    \centering
+    \begin{tabular}{cl}
+        $y(\mathbf{r}_n,t)$ & observation \\
+	    $v(\mathbf{r},t)$ & mean membrane potential \\
+    	$g(\mathbf{r},t)$ & average action potential rate \\
+    	$f(\mathbf{r},t)$ & firing function rate \\
+    	$e(\mathbf{r},t)$ & field disturbance, covariance $\gamma$\\
+    	$\epsilon(\mathbf{r}_n,t)$ & observation noise, covariance$\Sigma_\epsilon$ \\
+    \end{tabular}
+    \caption{Spatiotemporal Signals}
+\end{table}
+
+\begin{table}[h!]\footnotesize
+    \centering
+    \begin{tabular}{cl}
+        	$h(t)$ & post-synaptic response kernel \\
+	$m(\mathbf{r},\mathbf{r}')$ & sensor kernel, width $\sigma_m^2$ \\
 	$\eta(t)$ & Heaviside function \\
 	$\zeta$ & inverse synaptic time constant \\
 	$w(\mathbf{r},\mathbf{r}')$ & spatial connectivity kernel \\
@@ -747,22 +754,32 @@ solving for $\sigma_{\nu}^2$ we get
 	$v_0$ & firing threshold \\
 	$\delta(t)$ & Dirac-delta function \\
 	$D$ & Temporal differential operator \\
-	$\xi$ & time constant parameter \\
-	\\ & \textbf{Decomposition} \\
-	\hline
-	$L$ & number of field basis functions  \\
-	$\mathbf{\phi(r)}$ & vector of Gaussian basis functions \\
-	$\mathbf{x}_t$ & state vector at time $t$ \\
-	$\mathbf{\psi}$ & vector of connectivity kernel basis functions \\
-	$\theta$ & vector of connectivity kernel parameters \\
-	$\Gamma$ & inner product of field basis functions \\
-	$q()$ & state function \\
-	$k()$ & maps into to discrete state of input function \\
-	$\mathbf{e}_t$ & state disturbance, covariance $\Sigma_e$ \\
-	$\mathbf{C}$ & observation matrix \\
-	\\ & \textbf{Frequency Analysis} \\
-	\hline
-	$V(\nu)$ & Spectrum of the dynamic field \\
+	$\xi$ & time constant parameter
+    \end{tabular}
+    \caption{Model}
+\end{table}
+
+\begin{table}[h!]\footnotesize
+    \centering
+    \begin{tabular}{cl}
+        $L$ & number of field basis functions  \\
+    	$\mathbf{\phi(r)}$ & vector of Gaussian basis functions \\
+    	$\mathbf{x}_t$ & state vector at time $t$ \\
+    	$\mathbf{\psi}$ & vector of connectivity kernel basis functions \\
+    	$\theta$ & vector of connectivity kernel parameters \\
+    	$\Gamma$ & inner product of field basis functions \\
+    	$q()$ & state function \\
+    	$k()$ & maps into to discrete state of input function \\
+    	$\mathbf{e}_t$ & state disturbance, covariance $\Sigma_e$ \\
+    	$\mathbf{C}$ & observation matrix \\
+    \end{tabular}
+    \caption{Decomposition}
+\end{table}
+
+\begin{table}[h!]\footnotesize
+    \centering
+    \begin{tabular}{cl}
+        $V(\nu)$ & Spectrum of the dynamic field \\
 	$\nu$ & Spatial frequency \\
 	$\nu_c$ & Spatial cut-off frequency \\
 	$\Delta_s$ & Distance between adjacent sensors \\
@@ -770,17 +787,27 @@ solving for $\sigma_{\nu}^2$ we get
 	$\Delta_b$ & Distance between field basis functions \\
 	$\sigma_{nu}^2$ & Variance of FT of Gaussian basis function \\
 	$\sigma^2$ & Spatial variance of Gaussian in spatial domain \\
-	\\ & \textbf{State Estimation} \\
-	\hline
-	$\hat{\mathbf{x}}$ & State estimate \\
-	$\chi$ & Matrix of sigma vectors \\
-	$\hat{\mathbf{x}}_t^{f-}$ & Forward prior estimate \\
-	$\hat{\mathbf{x}}_t^f$ & Forward posterior estimate \\
-	$\hat{\mathbf{x}}_t^{b-}$ & Backward prior estimate \\
-	$\hat{\mathbf{x}}_t^{b}$ & Backward posterior estimate \\
-	$P^f_t$ & Forward posterior covariance matrix \\
-	$P^{f-}_t$ & Forward prior covariance matrix \\
-\end{tabular}
+    \end{tabular}
+    \caption{Frequency Analysis}
+\end{table}
+
+\begin{table}[h!]\footnotesize
+    \centering
+    \begin{tabular}{cl}
+        $\hat{\mathbf{x}}$ & State estimate \\
+	    $\chi$ & Matrix of sigma vectors \\
+    	$\hat{\mathbf{x}}_t^{f-}$ & Forward prior estimate \\
+    	$\hat{\mathbf{x}}_t^f$ & Forward posterior estimate \\
+    	$\hat{\mathbf{x}}_t^{b-}$ & Backward prior estimate \\
+    	$\hat{\mathbf{x}}_t^{b}$ & Backward posterior estimate \\
+    	$P^f_t$ & Forward posterior covariance matrix \\
+    	$P^{f-}_t$ & Forward prior covariance matrix
+    \end{tabular}
+    \caption{State Estimation}
+\end{table}
+
+\newpage
+
 \section*{References} 
 \bibliographystyle{unsrt} 
 \bibliography{BrainIDE}
