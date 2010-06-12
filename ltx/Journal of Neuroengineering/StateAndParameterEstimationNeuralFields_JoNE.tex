@@ -477,7 +477,7 @@ Following this, the parameters, $ \mathbf W$, can be estimated by
 \begin{tabular}{c|c|c}
 	\hline\hline Symbol & Value & Units \\
 	\hline\hline
-	$\zeta$ & 0.01 & ms$^{-1}$\\
+	$\tau$ & 0.01 & ms$^{-1}$\\
 	$f_{max}$ & 10 & spikes/s \\
 	$\varsigma$ & 0.8 & spike/mV\\
 	$v_0$ & 2 & mV\\
@@ -485,12 +485,11 @@ Following this, the parameters, $ \mathbf W$, can be estimated by
 	10 &-8 &0.5
 	\end{array}
 	\right]^{\top}$ & synaptic strength\\
-	$\sigma_{\psi,1}$ & 1.8 & inner connectivity kernel width\\
-	$\sigma_{\psi,2}$ & 2.4 & middle connectivity kernel width\\
-	$\sigma_{\psi,3}$ & 6 & outer connectivity kernel width\\
-	$\Sigma$ & & field disturbance covariance \\
-	sensor parameters & & \\
-	$\Delta$ & 0.5 & space step \\
+	$\sigma_{\psi_{1}}, \sigma_{\psi_{2}}, \sigma_{\psi_{3}}$ & 1.8, 2.4, 6 & inner, middle and outer widths\\
+	$\sigma_{m},\Delta_{y}$&0.9, 1.5&mm\\
+	$\Sigma_{\epsilon}$ &$0.1 \times I_{N} $& observation noise covariance \\
+	$\sigma_{\gamma}$&1.3&mm\\
+	$\Delta$ & 0.5 & mm space step \\
 	$T_s$ & 1 & ms time step \\ 
 	\hline\hline
 \end{tabular}
