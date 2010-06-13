@@ -1,52 +1,8 @@
 
+\documentclass[10pt,a4paper]{article}
+% \documentclass[12pt]{iopart} 
+% \usepackage{iopams,setstack} 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%    INSTITUTE OF PHYSICS PUBLISHING                                   %
-%                                                                      %
-%   `Preparing an article for publication in an Institute of Physics   %
-%    Publishing journal using LaTeX'                                   %
-%                                                                      %
-%    LaTeX source code `ioplau2e.tex' used to generate `author         %
-%    guidelines', the documentation explaining and demonstrating use   %
-%    of the Institute of Physics Publishing LaTeX preprint files       %
-%    `iopart.cls, iopart12.clo and iopart10.clo'.                      %
-%                                                                      %
-%    `ioplau2e.tex' itself uses LaTeX with `iopart.cls'                %
-%                                                                      %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%
-% First we have a character check
-%
-% ! exclamation mark    " double quote  
-% # hash                ` opening quote (grave)
-% & ampersand           ' closing quote (acute)
-% $ dollar              % percent       
-% ( open parenthesis    ) close paren.  
-% - hyphen              = equals sign
-% | vertical bar        ~ tilde         
-% @ at sign             _ underscore
-% { open curly brace    } close curly   
-% [ open square         ] close square bracket
-% + plus sign           ; semi-colon    
-% * asterisk            : colon
-% < open angle bracket  > close angle   
-% , comma               . full stop
-% ? question mark       / forward slash 
-% \ backslash           ^ circumflex
-%
-% ABCDEFGHIJKLMNOPQRSTUVWXYZ 
-% abcdefghijklmnopqrstuvwxyz 
-% 1234567890
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% \documentclass[twocolumn,11pt,a4paper]{article}		%<-use this for checking equation length
-\documentclass[12pt]{iopart} 
-
-%<-comment out this for checking equations (author list too)
-\usepackage{iopams,setstack} 
-%<-comment out this for checking equations
 \usepackage{graphicx}
 \usepackage{algorithm, algorithmicx, algpseudocode} 
 \usepackage{color} 
@@ -59,39 +15,29 @@
 \renewcommand{\subfigbottomskip}{1\p@}
 \renewcommand{\subfiglabelskip}{0.05em plus 0.02em minus 0.01em}
 \makeatother
-% \usepackage{pstool}
 \renewcommand{\subcapsize}{\small}
- \usepackage{anysize}							%<-use this for checking equation length
- % \marginsize {1.7cm}{1.5cm}{0.3cm}{0.8cm}			%<-use this for checking equation length
- %  \setlength{\columnsep}{0.5cm}					%<-use this for checking equation length
-  % \usepackage{amsmath}
-\usepackage{amssymb,amsfonts} 			%<-use this for checking equation length
+
+% maths
+\usepackage{amssymb,amsfonts,amsmath}
+% notes
 \newcommand{\parham}[1]{\textsf{\emph{\textbf{\textcolor{blue}{#1}}}}} 
 \newcommand{\mike}[1]{\textsf{\emph{\textbf{\textcolor{red}{#1}}}}} 
 \newcommand{\dean}[1]{\textsf{\emph{\textbf{\textcolor{green}{#1}}}}}
 \newcommand{\ken}[1]{\textsf{\emph{\textbf{\textcolor{magenta}{#1}}}}}
+
 \begin{document}
 
-\title[State and Parameter Estimation for Spatio-Temporal Neural Fields]{State and Parameter Estimation for Spatio-Temporal Neural Fields}
+\title{State and Parameter Estimation for Spatio-Temporal Neural Fields}
 
-\author{Dean R. Freestone$^{1,5}$, Parham Aram$^2$, Michael Dewar$^3$, Kenneth Scerri$^4$, David B. Grayden$^{1,5}$, and Visakan Kadirkamanathan$^2$}
+\author{Dean R. Freestone$^{1,5}$, Parham Aram$^2$, Michael Dewar$^3$, Kenneth Scerri$^4$, \\David B. Grayden$^{1,5}$, and Visakan Kadirkamanathan$^2$}
 
-\address{$^1$ Department of Electrical and Electronic Engineering, University of Melbourne, Melbourne, VIC 3010 Australia} \address{$^2$ Department of Automatic Control and Systems Engineering, University of Sheffield, Mappin Street, Sheffield, S1 3JD, UK} \address{$^3$ Department of Applied Physics and Applied Mathematics, Columbia University, NY, USA} \address{$^4$ Department of Systems and Control Engineering, University of Malta, Msida, MSD 1333, Malta} \address{$^5$ The Bionic Ear Institute, East Melbourne, VIC 3002
- Australia} \ead{dfreestone@bionicear.org} 
+%\address{$^1$ Department of Electrical and Electronic Engineering, University of Melbourne, Melbourne, VIC 3010 Australia} \address{$^2$ Department of Automatic Control and Systems Engineering, University of Sheffield, Mappin Street, Sheffield, S1 3JD, UK} \address{$^3$ Department of Applied Physics and Applied Mathematics, Columbia University, NY, USA} \address{$^4$ Department of Systems and Control Engineering, University of Malta, Msida, MSD 1333, Malta} \address{$^5$ The Bionic Ear Institute, East Melbourne, VIC 3002Australia} \ead{dfreestone@bionicear.org} 
+
+\maketitle
 
 \begin{abstract}
 	This paper presents a framework for creating patient-specific neural field models from electrophysiological data. The Wilson and Cowen or Amari style neural field equations are used to form a parametric model, where the parameters are estimated from data. To illustrate the estimation framework, data is generated using the neural field equations incorporating modelled sensors, so a comparison can be made between estimated and true parameters. To facilitate state and parameter estimation, we introduce a method to reduce the continuum neural field model, using a basis function decomposition, to form a finite dimensional state-space model. Spatial frequency analysis methods are introduced for model selection, by systematically specifying the basis function configuration required to capture the dominant characteristics of the neural field. We use the reduced model to estimate the parameters of the full neural field model \mike{not sure what this last sentence meant?}. The estimation procedure consists of a two-stage iterative algorithm incorporating the unscented Rauch Tung Striebel Smoother for state estimation, and a least squares algorithm for parameter estimation. The results show that it is possible to reconstruct the neural field and estimate intracortical connectivity and synaptic time constant with the proposed framework. The results also illustrate the loss of high spatial frequency information as the cost incurred by the model reduction procedure. This framework provides a link between patient-specific neurophysiological data and theoretical neural fields models. This link may lead to greater understanding of cortical dynamics at the meso/macroscopic scale where diseases such as epilepsy are manifested.   
 \end{abstract}
-
-%Uncomment for PACS numbers title message
-%\pacs{00.00, 20.00, 42.10}
-% Keywords required only for MST, PB, PMB, PM, JOA, JOB? 
-%\vspace{2pc}
-%\noindent{\it Keywords}: Article preparation, IOP journals
-% Uncomment for Submitted to journal title message
-%\submitto{\JPA}
-% Comment out if separate title page not required
-\maketitle
 
 \section{Introduction} 
 
@@ -144,30 +90,44 @@ The firing rate of the presynaptic neurons is related to the postsynaptic membra
 	\label{ActivationFunction} f\left( v\left( \mathbf{r}', t \right) \right) = \frac{f_{max}}{1 + \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right)}. 
 \end{equation}
 The parameters $f_{max}$ and $v_0$ describe the maximum firing rate and firing threshold of the neural populations. The parameter $\varsigma$ governs the slope of the sigmoid. By substituting equation~\ref{RateBasedInteractions} into \ref{SpikesToPotential} we get the spatiotemporal model 
-\begin{eqnarray}
-	\label{FullDoubleIntModel} v\left(\mathbf{r},t\right) &=&  \int_{-\infty}^t h\left(t - t'\right) \\
-	&\times&\int_\Omega w\left(\mathbf{r},\mathbf{r}'\right) f\left( v\left( \mathbf{r}',t \right)\right)d\mathbf{r}'dt'. \nonumber
-\end{eqnarray}
+\begin{equation}
+	\label{FullDoubleIntModel} v\left(\mathbf{r},t\right) =
+	\int_{-\infty}^t 
+	h\left(t - t'\right) \int_\Omega
+	w\left(\mathbf{r},\mathbf{r}'\right) 
+	f\left( v\left( \mathbf{r}',t \right)\right)
+	d\mathbf{r}'dt'.
+\end{equation}
 To arrive at the final form of the model we shall express the synaptic response kernel as a Green's function 
 \begin{equation}
 	\label{GreensFuncDef} Dh\left( t \right) = \delta \left( t \right), 
 \end{equation}
 where $D=\frac{d}{dt} + \zeta$ is a temporal differential operator and $\delta(t)$ is the Dirac-delta function giving 
-\begin{eqnarray}
-	\label{FinalFormContinuous} \frac{dv\left( \mathbf{r},t \right)}{dt} &+& \zeta v\left( \mathbf{r},t \right) = \\
-	&&\int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)d\mathbf{r}'}. \nonumber
-\end{eqnarray}
+\begin{equation}
+	\label{FinalFormContinuous} 
+	\frac{dv\left( \mathbf{r},t \right)}{dt} + \zeta v\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)d\mathbf{r}'}. 
+\end{equation}
 To arrive at the integro-difference equation (IDE) form of the model we discretise time using a first-order Euler method (see~\ref{Time Discretization}) giving 
-\begin{eqnarray}
-	\label{DiscreteTimeModel} v_{t+T_s}\left(\mathbf{r}\right) &=& \xi v_t\left(\mathbf{r}\right) + T_s \int_\Omega { w\left(\mathbf{r},\mathbf{r}'\right) f\left(v_t\left(\mathbf{r}'\right)\right) d\mathbf{r}'} \nonumber\\ 
-	&+& e_t\left(\mathbf{r}\right), 
-\end{eqnarray}
+\begin{equation}
+	\label{DiscreteTimeModel} 
+	v_{t+T_s}\left(\mathbf{r}\right) = 
+	\xi v_t\left(\mathbf{r}\right) + 
+	T_s \int_\Omega { 
+	    w\left(\mathbf{r},\mathbf{r}'\right)
+	    f\left(v_t\left(\mathbf{r}'\right)\right) 
+	d\mathbf{r}'} 
+	+ e_t\left(\mathbf{r}\right), 
+\end{equation}
 where $T_s$ is the time step, $\xi = 1-\zeta T_s$ and $e_t(\mathbf{r})$ is an $i.i.d.$ disturbance such that $e_t\sim\mathcal{GP}(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}'))$. Here $\mathcal{GP}(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}'))$ denotes a spatial Gaussian Process with mean zero and covariance function $\gamma(\mathbf{r}-\mathbf{r}')$~\cite{Rasmussen2005}. This term is added to account for uncertainty in the model. To simplify the notation, the index of the future time sample, $t+T_s$, shall be referred to as $t+1$ throughout the rest of the paper. 
 
 The mapping between the membrane voltage and the collected iEEG/LFP data is modelled using the observation function 
 \begin{equation}
     \label{eq:ObservationEquation}
-	\mathbf{y}_t = \int_{\Omega}{m\left(\mathbf{r}_n-\mathbf{r}'\right)v_t\left(\mathbf{r}'\right)d\mathbf{r}'} + \boldsymbol{\varepsilon}_t, 
+	\mathbf{y}_t =
+	\int_{\Omega}{
+	    m\left(\mathbf{r}_n-\mathbf{r}'\right)v_t\left(\mathbf{r}'\right)
+	d\mathbf{r}'} + 
+	\boldsymbol{\varepsilon}_t, 
 \end{equation}
 where $\mathbf{r}_n$ defines the location of the sensors in the field, $n=1,...,N$ indexes the sensors, $\boldsymbol{\varepsilon}_t \sim \mathcal{N}\left(0,\Sigma_{\varepsilon}\right)$ and $\mathcal{N}\left(0,\Sigma_{\varepsilon}\right)$ denotes the multivariate normal distribution with mean zero and covariance matrix $\Sigma_{\varepsilon}$. The output kernel $m(\mathbf{r}-\mathbf{r}')$ governs the sensor pick-up geometry where 
 \begin{equation}
@@ -190,26 +150,33 @@ The width and positioning of the basis functions can be determined by spectral a
 	 w\left(\mathbf{r},\mathbf{r}'\right) =\boldsymbol{\psi}^\top\left(\mathbf{r},\mathbf{r}'\right) \boldsymbol{\theta},
 \end{equation}
 where $\boldsymbol{\psi}(r,r')$ is a vector of Gaussian basis functions and $\boldsymbol{\theta}$ is a vector of scaling parameters. By assuming a Gaussian isotropic connectivity structure the kernel basis functions can be written as $\psi(\mathbf{r}-\mathbf{r}')$. We will assume that we know the parametric form of the connectivity basis functions, where the scaling parameters $\boldsymbol{\theta}$ are unknown. Each connectivity basis function can, individually, be considered a layer in the Wilson and Cowan model, representing short range excitation, surround inhibition and mid-range excitation. Making substitutions of equations~\ref{DefFieldDecomp} and~\ref{DefKernelDecomp} into~\ref{DiscreteTimeModel} we get 
-\begin{eqnarray}
-	\label{reduced continuous model}\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_{t+1}&=& T_s\int_\Omega{f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t )\boldsymbol{\psi}^{\top}(\mathbf{r}-\mathbf{r}')d\mathbf{r}'}\boldsymbol{\theta}\nonumber \\ 
-	&+& \xi\boldsymbol{\phi}^{\top}(\mathbf{r})x_t + e_t(\mathbf{r}). 
-\end{eqnarray}
+\begin{equation}
+	\label{reduced continuous model}\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_{t+1}= T_s\int_\Omega{f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t )\boldsymbol{\psi}^{\top}(\mathbf{r}-\mathbf{r}')d\mathbf{r}'}\boldsymbol{\theta}
+	+ \xi\boldsymbol{\phi}^{\top}(\mathbf{r})x_t + e_t(\mathbf{r}). 
+\end{equation}
 Next we multiply equation~\ref{reduced continuous model} by $\boldsymbol{\phi}(r)$ and integrate over the spatial domain $\Omega$ to get 
-\begin{eqnarray}
-	\label{StartofReduction}\lefteqn{ \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) d\mathbf{r}} \mathbf{x}_{t+1}=} \nonumber\\
- &&T_s \int_\Omega {\boldsymbol{\phi} (\mathbf{r}) \int_\Omega {\boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}') \mathbf{x}_t ) d\mathbf{r}'}d\mathbf{r}}\boldsymbol{\theta} \nonumber\\
-&+& \xi\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\phi}^{\top}(\mathbf{r})d\mathbf{r}} \mathbf{x}_t+
+\begin{equation}
+    \begin{split}
+	\label{StartofReduction}
+	\lefteqn{ \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) d\mathbf{r}} \mathbf{x}_{t+1}=} \\
+ &T_s \int_\Omega {\boldsymbol{\phi} (\mathbf{r}) \int_\Omega {\boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}') \mathbf{x}_t ) d\mathbf{r}'}d\mathbf{r}}\boldsymbol{\theta}  \\ & + \xi\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\phi}^{\top}(\mathbf{r})d\mathbf{r}} \mathbf{x}_t+
 \int_\Omega{\boldsymbol{\phi} (\mathbf{r}) e_t(\mathbf{r})d\mathbf{r}}. 
-\end{eqnarray}
+\end{split}
+\end{equation}
 Now defining
 \begin{equation}\label{eq:DefGamma}
 	\boldsymbol{\Gamma} \triangleq \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi} ^{\top}\left(\mathbf{r}\right)d\mathbf{r}}, 
 \end{equation}
 and substituting this into equation~\ref{StartofReduction} and cross-multiplying by $\boldsymbol{\Gamma}^{-1}$ gives 
-\begin{eqnarray}\label{eq:ReducedForm}
-	 \mathbf{x}_{t+1} = T_s\boldsymbol{\Gamma}^{-1}\int_\Omega \boldsymbol{\phi}(\mathbf{r}) \int_\Omega \boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}')f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \nonumber \\ 
-	\times d\mathbf{r}' d\mathbf{r} \boldsymbol{\theta} + \xi\mathbf{x}_t + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})d\mathbf{r}}.
-\end{eqnarray}
+\begin{equation}
+    \label{eq:ReducedForm}
+    \begin{split}
+	 \mathbf{x}_{t+1} = T_s\boldsymbol{\Gamma}^{-1}
+	 \int_\Omega \boldsymbol{\phi}(\mathbf{r}) 
+	 \int_\Omega \boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}')f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) d\mathbf{r}' d\mathbf{r} \boldsymbol{\theta} \\ 
+	 + \xi\mathbf{x}_t + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r}) e_t(\mathbf{r})d\mathbf{r}}.
+	 \end{split}
+\end{equation}
 This can be simplified by exploiting the symmetry (isotropy) of the connectivity kernel where
 \begin{equation}
 	\boldsymbol{\psi} (\mathbf{r}-\mathbf{r}') = \boldsymbol{\psi} (\mathbf{r}'-\mathbf{r}).
