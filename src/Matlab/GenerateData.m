@@ -6,11 +6,14 @@ if exist('RunningBatch') == 0
     clear
     close all
     clc
+    
+    % run the script that sets all the parameters
+    Set_Parameters
+    plotdata = 1;
 %     load Parameters
+else
+    plotdata = 0;
 end
-
-% run the script that sets all the parameters
-Set_Parameters
 
 % create the observation disturbance
 varepsilon = mvnrnd(zeros(1,NSensors),Sigma_varepsilon,T);
@@ -21,11 +24,12 @@ varepsilon = mvnrnd(zeros(1,NSensors),Sigma_varepsilon,T);
 % if exist(DisturbanceFileName) == 2
 %     load(DisturbanceFileName)
 % else
-
+disp('generating disturbance signal')
 e = mvnrnd(zeros(1,NPoints^2),Sigma_gamma,T);
 %     save(DisturbanceFileName,'e')
 % end
 
+disp('generating data')
 % initialize field
 v = zeros(T,NPoints,NPoints);
 v(1,:,:) = Define2DGaussian(0,0, sigma_phi^2, 0,NPoints,SpaceMin,SpaceMax);
@@ -38,13 +42,7 @@ for t=1:T-1
     F = fft2(f);                                                                                % take FFT of firing for conv with kernel
     g = ifftshift(ifft2(F.*Ts_W,'symmetric'))*Delta_squared;            % conv kernel with firing rate 
     v(t+1,:,:) = g + xi*squeeze(v(t,:,:)) + reshape(e(t,:,:),NPoints,NPoints);  % update field
-    
-%     imagesc(r,r,squeeze(v(t+1,:,:)))                          % plot field to check things are working
-%     axis xy
-%     axis square
-%     colorbar
-%     drawnow
-    
+        
     V = fft2(squeeze(v(t+1,:,:)));                                                  % take FFT of field for conv with sensor
     m_conv_v = ifftshift(ifft2(M.*V,'symmetric'))*Delta_squared;    % conv with sensor 
     
@@ -53,10 +51,26 @@ for t=1:T-1
     y(t+1,:) = y_temp(:);                                                                 % observations as a vector
     
 end
-SaveTime = datestr(now,30);                                                     % save parameters
-datefilename = ['Parameters' SaveTime '.mat'];
-save(datefilename,'y','Delta','SpaceMax','Ts','T','theta',...
-    'sigma_psi','sigma_phi','NBasisFunctions_xy',...
-    'mu_phi_xy','NSensors_xy','mu_y_xy','sigma_y','sigma_varepsilon',...
-    'f_max','varsigma','v_0','zeta','sigma_gamma','gamma_weight')
- 
+
+if plotdata == 1
+    disp('plotting data')
+    figure
+    for t=1:T
+        imagesc(r,r,squeeze(v(t,:,:)))                          % plot field to check things are working
+        title(['Time = ' num2str(t) ' ms'])
+        axis xy
+        axis square
+        colorbar
+        drawnow
+    end
+end
+
+if exist('RunningBatch') == 1
+    disp('saving generated data and parameters')
+    SaveTime = datestr(now,30);                                                     % save parameters
+    datefilename = ['Parameters' SaveTime '.mat'];
+    save(datefilename,'y','Delta','SpaceMax','Ts','T','theta',...
+        'sigma_psi','sigma_phi','NBasisFunctions_xy',...
+        'mu_phi_xy','NSensors_xy','mu_y_xy','sigma_y','sigma_varepsilon',...
+        'f_max','varsigma','v_0','zeta','sigma_gamma','gamma_weight')
+end 
