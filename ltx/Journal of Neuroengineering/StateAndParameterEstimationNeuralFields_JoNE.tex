@@ -267,7 +267,7 @@ Similar considerations need to be made regarding the representation of the dynam
 \end{equation}
 where $\rho_{\phi} \in \mathbb{R} \ge 1$ is an oversampling parameter to determine the basis function separation. 
 
-The width parameter of the Gaussian basis functions can also be inferred using spectral considerations~\cite{Sanner1992,Scerri2009}. To demonstrate this, we begin with the two-dimensional Gaussian basis function defined as
+The width parameter of the Gaussian basis functions can also be inferred using spectral considerations~\cite{Sanner1992,Scerri2009}. Alternatively, the upper spatial frequency content of the neural field modelled by the basis function decomposition can be determined, given the basis function width. Since Shannon's sampling theorem is derived for perfect point sensors, this is particularly useful when considering spatially distributed basis functions. To demonstrate this, we begin with the two-dimensional Gaussian basis function defined as
 \begin{equation}
  \phi(\mathbf r)=\mathrm{exp}\left({-\frac{1}{\sigma_{\phi}^2} \mathbf r^\top\mathbf r}\right)
 \end{equation}
@@ -492,7 +492,7 @@ Using the model selection techniques described in Section~\ref{SpectralAnalysisS
 \end{figure}
 The spatial frequency from the observations is shown in Figure~\ref{fig:ObservationFreqAnal}. The cut-off frequency, $\nu_{cy}$, was taken to be $0.19$~Hz ($-3$~dB point). The observation cut-off frequency is lower than the field cut-off due to the low-pass filtering effect of the sensors. The spatial frequency response of the sensors can be seen in Figure~\ref{fig:SensorFunctionFreqResponse}. Using an oversampling parameter, $\rho_{\phi}=1$, the minimum distance between basis functions was calculated to be $2.63$ to satisfy Shannon's sampling criterion (from equation~\ref{eq:BasisFunctionSeparation}). The distance between basis functions, $\Delta_{\phi}$, was set to $2.5$, which is sufficient to capture the significant dynamics according to our criteria.
 
-Given the basis function separation, the basis function width was set to $\sigma_{\phi}^2=2.5$. This facilitated a smooth representation of the field by the basis function decomposition given the basis function separation and provided further low-pass spatial filtering of the disturbance. From equation~\ref{eq:WidthCutOffRelationship}, this allowed the basis function decomposition to represent spatial frequencies up to approximately $0.12$~Hz. The spatial frequency response of the basis functions can be seen in Figure~\ref{fig:BasisFunctionFreqResponse}.
+Given the basis function separation, the basis function width was set to $\sigma_{\phi}^2=2.5$~mm. This facilitated a smooth representation of the field by the basis function decomposition given the basis function separation and provided low-pass spatial filtering of the field. From equation~\ref{eq:WidthCutOffRelationship}, this allowed the basis function decomposition to represent spatial frequencies up to approximately $0.12$~Hz. The spatial frequency response of the basis functions can be seen in Figure~\ref{fig:BasisFunctionFreqResponse}.
 \begin{figure} 
 	\begin{center}
 		\subfigure[][]{\label{fig:ObservationFreqAnal}\includegraphics{./Graph/ObservationFrequencyResponse.pdf}}\\	
