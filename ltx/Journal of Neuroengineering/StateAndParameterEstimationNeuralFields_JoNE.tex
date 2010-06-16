@@ -508,6 +508,20 @@ To demonstrate the performance of the parameter and state estimation, a Monte Ca
 
 The distribution of the estimated parameters is shown in Figure~\ref{fig:Parameters}. The estimates for $\xi$, where $\xi=1-\zeta T_s $ and $\zeta$ is the reciprocal of the synaptic time constant, are consistently over the true value (with a mean bias of 2.5~\%). The estimates of the connectivity kernel parameters ($\theta_0$, $\theta_1$, $\theta_2$) form distributions that are approximately Gaussian, which centred about the true values, with standard deviations 2.88, 1.99 and 0.08\parham{(0.0829)} respectively.  \dean{ for discussion: indicating good results}. The ratios of the estimates ($\hat\theta_0/\hat\theta_1$ and $\hat\theta_0/\hat\theta_2$) are shown in Figure~\ref{fig:ParametersRatio}. The distribution of estimates for $\hat\theta_0/\hat\theta_1$ are relativity tighter\parham{(it's 0.0812 (a bit tighter) and 3.757 respectively)}, though indicate a bias... This indicates the balance of excitation and inhibition can be estimated more accurately than the individual parameters. 
 
+\begin{table}
+\centering
+\begin{tabular}{cccc}
+	\hline\hline Parameter & Actual Value & Mean Estimate & Standard Deviation \\
+	\hline\hline
+ 	$\xi$ & 0.9 &  &\\
+	$\theta_0$ & 10 &  & 2.88\\
+	$\theta_1$ & -8 & & 1.99\\
+	$\theta_2$ & 0.5 & & 0.0829\\
+\end{tabular}
+\caption{List of the true par.}
+\label{tab:Model Parameters}
+\end{table}
+
 The reconstructed connectivity kernel from the estimated parameters can be seen in Figure~\ref{fig:KernelEstimates}. This Figure verifies the expected net shape of the estimated connectivity kernel is in good accordance to the true kernel. The shape is generally well preserved.
 
 Figure~\ref{fig:ParametersConvergence} shows the rate of convergence for parameter estimates.
