@@ -289,13 +289,13 @@ To obtain a 3~dB attenuation at $\boldsymbol\nu_{cy}$, the basis function width,
 \end{equation}
 where
 \begin{equation}\label{eq:WidthFrequencyRelationship}
- \sigma^2_{\nu_{cy}}= \frac{2\boldsymbol\nu_{cy}^\top \boldsymbol\nu_{cy}}{\ln 2}.
+ \sigma^2_{\nu_{cy}}= \frac{2\boldsymbol\nu_{cy}^\top \boldsymbol\nu_{cy}}{\ln2}.
 \end{equation}
 This ensures that the basis functions can represent the neural field with frequency content up to $\boldsymbol\nu_{cy}$. Derivations for equations~\ref{eq:GaussianFT} and \ref{eq:WidthFrequencyRelationship} are given in~\ref{ap:FrequencyAnalysis}.
 
 Alternatively, given the basis function width, the spatial cut-off frequency of the field modelled by the decomposition can be determined from spectral analysis. This is particularly useful when considering the spatially distributed basis functions, since Shannon's sampling theorem is derived for perfect point sensors. To calculate the cut-off frequency imposed by the basis function, $\boldsymbol{\nu}_{c\phi}$, we rearrange equations~\ref{eq:WidthCutOffRelationship} and \ref{eq:WidthFrequencyRelationship} giving
 \begin{equation}\label{eq:CutoffFromBasisFuncWidth}
-	\boldsymbol{\nu}_{c\phi}=\sqrt{\frac{\ln(2)}{2\pi^2\sigma_{\phi}^2}}.
+	\boldsymbol{\nu}_{c\phi}=\sqrt{\frac{\ln2}{2}}\frac{1}{\pi\sigma_{\phi}}.
 \end{equation} 
 
 Note that for a spatially homogeneous isotropic field, the basis functions can be placed on a regular grid. Thus, the knowledge of the distance between basis functions can be used to determine the total number of basis functions required to represent a known spatial region.
@@ -456,7 +456,8 @@ Following this, the LS parameter estimates, $ \mathbf{\hat{W}}$, are
 % Alternatives to the UKF are the Extended Kalman Filter (EKF)~\cite{Haykin2001} and the Sequential Monte Carlo (SMC) filter~\cite{doucet2001}. The EKF approximates the state transition equation by linearising about the current state estimates (by calculating the Jacobian) at each time instance. The linearisation maintains the Gaussianality of the model. The unscented Kalman filter approximates the posterior state density by a Gaussian distribution using a minimal set of carefully chosen sigma points, while maintaining the nonlinearity in the system. This has been shown to give superior performance over the EKF in state estimation, since the EKF maintains a first order approximation where the UKF provides an approximation accurate at least to the second order. In addition, the computation of the Jacobian used in the EKF can be problematic. SMC filtering can theoretically provide an exact posterior state density for nonlinear systems. However, currently this method is not appropriate for our problem, due to high computation demands. 
 
 %The method is appropriate for state estimation of stochastic nonlinear dynamical systems. 
-\section{Results}\label{ResultsSection} The full neural field model derived in Section~\ref{NeuralModelSection} was used to generate the data for state and parameter estimation. All parameters for the model are given in Table~\ref{tab:Model Parameters}. Note that, the parameters for the spatial and temporal aspects of the model can be considered arbitrary when demonstrating the estimation methodology. This is due to the fact that the temporal aspects scale with the sampling rate and the length of the times series, and the spatial aspects scale with the size of the neural field and the space step used for numerical simulation. Figure~\ref{fig:experimental design}(a) shows example data from the sensors of the model and Figure~\ref{fig:experimental design}(b) shows the power spectral density (PSD) of the simulated time-series. The PSD shows the typical $1/f^2$ characteristics of intracranial EEG.
+\section{Results}\label{ResultsSection} The full neural field model derived in Section~\ref{NeuralModelSection} was used to generate the data for state and parameter estimation. All parameters for the model are given in Table~\ref{tab:Model Parameters}. Note that, the parameters for the spatial and temporal aspects of the model can be considered arbitrary when demonstrating the estimation methodology. This is due to the fact that the temporal aspects scale with the sampling rate and the length of the times series, and the spatial aspects scale with the size of the neural field and the space step used for numerical simulation. An example of the simulated field can
+be seen in Figure~\ref{fig:experimental design}(a). Figure~\ref{fig:experimental design}(b) shows example data from the sensors of the model and Figure~\ref{fig:experimental design}(c) shows the power spectral density (PSD) of the simulated time-series. The PSD shows the typical $1/f^2$ characteristics of intracranial EEG.
 \begin{table}\footnotesize
 \centering
 \begin{tabular}{ccl}
@@ -476,6 +477,7 @@ Following this, the LS parameter estimates, $ \mathbf{\hat{W}}$, are
 	$\sigma_{\gamma}$&1.3&mm\\
 	$\Delta$ & 0.5 & mm \\
 	$T_s$ & 1 & ms \\ 
+\hline\hline
 \end{tabular}
 \caption{Parameters for the neural field model that are used to generate synthetic data.}
 \label{tab:Model Parameters}
@@ -484,14 +486,15 @@ Following this, the LS parameter estimates, $ \mathbf{\hat{W}}$, are
 The sensors were spaced on a regular square $14 \times 14$ grid, the sensor width parameter $\sigma^2_m$ was set to $0.81$, which provides a width of $1.5$~mm at half the maximum amplitude of the basis function, with spacing $\Delta_y=1.5$~mm. This arrangement modelled the recording as having some cross talk, which is typical for neurophysiological recordings. 
 \begin{figure}
    	\begin{center}
+    		\subfigure[][]{\includegraphics{./Graph/ExperimentFigurePy.pdf}} \\
     		\subfigure[][]{\includegraphics{./Graph/ExperimentFigureEEGPy.pdf}} \\
    		\subfigure[][]{\includegraphics{./Graph/ExperimentFigurePSDPy.pdf}} \\
    	\end{center}
-   	\caption{\textbf{a.} Example of data generated by the full neural field model from the first 5 sensors. \textbf{b.} Power spectral density of the data generated by an observation showing the typical $1/f^2$ characteristic of intracranial EEG.} 
+   	\caption{\textbf{a.} Example of the neural feld. \textbf{b.} Example of data generated by the full neural field model from the first 5 sensors. \textbf{c.} Power spectral density of the data generated by an observation showing the typical $1/f^2$ characteristic of intracranial EEG.} 
 \label{fig:experimental design}
 \end{figure}
 \subsection{Spatial Frequency Analysis} 
-Using the model selection techniques described in Section~\ref{SpectralAnalysisSection}, the spatial frequency analysis was used to confirm that the spacing and width of the sensors was adequate to capture the significant dynamics of the field. Figure~\ref{fig:FieldFFT} shows the spatial frequency of the neural field. The cut-off frequency of the neural was taken to be $\nu_c \approx 0.24$~Hz ($-3$~dB point). From equation~\ref{eq:MinimumSensorDistance}, this yielded a minimum sensor separation of $2.05$~mm. This confirms that the separation of $\Delta_{y} = 1.5$~mm was sufficient to prevent problems associated with spatial aliasing.
+Using the model selection techniques described in Section~\ref{SpectralAnalysisSection}, the spatial frequency analysis was used to confirm that the spacing and width of the sensors was adequate to capture the significant dynamics of the field. Figure~\ref{fig:FieldFFT} shows the spatial frequency of the neural field. The cut-off frequency of the neural field was taken to be $\nu_c \approx 0.24$~Hz ($-3$~dB point). From equation~\ref{eq:MinimumSensorDistance}, this yielded a minimum sensor separation of $2.05$~mm. This confirms that the separation of $\Delta_{y} = 1.5$~mm was sufficient to prevent problems associated with spatial aliasing.
 \begin{figure}
 \centering
 \subfigure[][]{\label{fig:FieldFFT}\includegraphics{./Graph/FFTTrueField.pdf}}
@@ -507,7 +510,7 @@ Given the basis function separation, the basis function width parameter was set 
 		\subfigure[][]{\label{fig:SensorFunctionFreqResponse}\includegraphics{./Graph/SensorChar.pdf}}
 		\subfigure[][]{\label{fig:BasisFunctionFreqResponse}\includegraphics{./Graph/BasisChar.pdf}}
 	\end{center}
-	\caption{\dean{Note: we use $\nu_{cy}$ and $\nu_{c\phi}$ in the labels on the graphs.} Spatial frequency analysis. The dashed line shows the cut-off frequency (-3 dB point). \textbf{a.} Two-dimensional spatial frequency in power dB, averaged over 400 time steps) of the observed field. The symmetry of the sensors and field basis functions allow for the one-dimensional representation of the spectral characteristics. \textbf{b.} The spatial frequency response of a one-dimensional model sensor. \textbf{c.} The spatial frequency response of a one-dimensional neural field basis function, illustrating a narrower band width than the sensors.} 
+	\caption{Spatial frequency analysis. The dashed line shows the cut-off frequency (-3 dB point). \textbf{a.} Two-dimensional spatial frequency in power dB, averaged over 400 time steps) of the observed field. The symmetry of the sensors and field basis functions allow for the 1-dimensional representation of the spectral characteristics. \textbf{b.} The spatial frequency response of a 1-dimensional model sensor. \textbf{c.} The spatial frequency response of a 1-dimensional neural field basis function, illustrating a narrower band width than the sensors.} 
 \end{figure}
 
 \subsection{State and Parameter Estimates} 
@@ -552,7 +555,7 @@ realisations. The dotted line shows the actual value of the parameters and the s
     \centering
 \subfigure[][]{\includegraphics{./Graph/theta0_theta1_ratio.pdf}}
 \subfigure[][]{\includegraphics{./Graph/theta0_theta2_ratio.pdf}}\\
-\caption{\dean{Note: need to put $\left| \right|$ around $\hat\theta_0/\hat\theta_1$ in xlabel in \textbf{a.}} Distribution of the connectivity kernel basis function parameter ratios over 100 realisations. \textbf{a.} The absolute value of the ratio of the local excitatory parameter to the surround inhibition parameter (true ratio is 1.25). \textbf{b.} The ratio of the local excitatory parameter to the longer range excitatory parameter (true ratio is 20). The dotted line shows the location of the true ratio in each case.}
+\caption{\textbf{a.} Distribution of the connectivity kernel basis function parameter ratios over 100 realisations. \textbf{a.} The absolute value of the ratio of the local excitatory parameter to the surround inhibition parameter (true ratio is 1.25). \textbf{b.} The ratio of the local excitatory parameter to the longer range excitatory parameter (true ratio is 20). The dotted line shows the location of the true ratio in each case.}
 \label{fig:ParametersRatio}
 \end{figure}
 The reconstructed connectivity kernels from the estimated parameters are illustrated in Figure~\ref{fig:KernelEstimates}, where the mean over the 100 realisations is shown as a solid line and the range indicated by the shaded region, which is  the $95\%$ confidence interval. The figure verifies that the shape of the estimated connectivity kernel is in good accordance to the true kernel. The true kernel lies within the confidence interval; however, the mean estimated kernel is more negative than the actual kernel due to the small bias on the estimates of the inhibitory parameter, $\hat\theta_1$, as seen in Figure~\ref{fig:theta1dis}.
