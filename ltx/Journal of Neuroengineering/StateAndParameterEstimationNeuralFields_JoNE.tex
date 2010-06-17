@@ -257,7 +257,7 @@ Let the spectral representation of the post-synaptic membrane voltage field at t
 \end{equation}
 where $\boldsymbol{\nu}_c$ is a cutoff frequency (typically taken as the -3~dB point) with $\boldsymbol{\nu}_c = [\nu_c ~ \nu_c]^\top$. Given such a band-limited field, the distance between adjacent sensors, $\Delta_y$, must satisfy 
 \begin{equation}
-	\label{eq:MinimumSensorDistance} \Delta_y < \frac{1}{2\rho_y\nu_{c}}, 
+	\label{eq:MinimumSensorDistance} \Delta_y \leq \frac{1}{2\rho_y\nu_{c}}, 
 \end{equation}
 where $\rho_y \in \mathbb{R} \ge 1$ is an oversampling parameter. This condition must be satisfied to avoid spatial spectral aliasing effects when reconstructing the hidden dynamic field, $v_t(\mathbf{r})$, using the sampled observations, $\mathbf{y}_t$.
 
@@ -267,7 +267,7 @@ Although such sensors avoid errors due to aliasing, they attenuate the high spat
 
 Similar considerations need to be made regarding the representation of the dynamic field, $v_t(\mathbf{r})$, using the basis function decomposition. Again applying Shannon's sampling theorem, the minimum distance between basis functions must satisfy 
 \begin{equation}\label{eq:BasisFunctionSeparation}
-	\Delta_{\phi} < \frac{1}{2\rho_{\phi}\nu_{cy}}
+	\Delta_{\phi} \leq \frac{1}{2\rho_{\phi}\nu_{cy}}
 \end{equation}
 where $\rho_{\phi} \in \mathbb{R} \ge 1$ is an oversampling parameter to determine the basis function separation. 
 
