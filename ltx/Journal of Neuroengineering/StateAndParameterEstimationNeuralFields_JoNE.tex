@@ -557,7 +557,7 @@ realisations. The dotted line shows the actual value of the parameters and the s
 \label{fig:ParametersRatio}
 \end{figure}
 
-The reconstructed connectivity kernels from the estimated parameters are illustrated in Figure~\ref{fig:KernelEstimates}, where the mean over the 100 realisations is shown as a solid line and the range indicated by the shaded region, which is  the $95\%$ confidence interval. The figure verifies that the shape of the estimated connectivity kernel is in good accordance to the true kernel. The mean estimated kernel in more negative than the actual kernel due to the bias on the estimates of the inhibitory parameter, $\hat\theta_1$, as seen in Figure~\ref{fig:theta1dis}.
+The reconstructed connectivity kernels from the estimated parameters are illustrated in Figure~\ref{fig:KernelEstimates}, where the mean over the 100 realisations is shown as a solid line and the range indicated by the shaded region, which is  the $95\%$ confidence interval. The figure verifies that the shape of the estimated connectivity kernel is in good accordance to the true kernel. The true kernel lies within the confidence interval; however, the mean estimated kernel is more negative than the actual kernel due to the bias on the estimates of the inhibitory parameter, $\hat\theta_1$, as seen in Figure~\ref{fig:theta1dis}.
 \begin{figure}
     \centering
 % \subfigure[][]{
@@ -567,12 +567,12 @@ The reconstructed connectivity kernels from the estimated parameters are illustr
 \label{fig:KernelEstimates}
 \end{figure}
 
-The accuracy for state estimates were evaluated by comparing the field reconstruction (see equation~\ref{DefFieldDecomp}) to the true field using the mean (over time) of the root mean square error (MRMSE) (over space) and standard deviation of the RMSE. The RMSE of the field estimates over time for 100 realisations is shown in Figure~\ref{fig:RMSE}. A snapshot at a single time instant of the true field, the estimated field and their corresponding error is shown in Figure~\ref{fig:FieldEstimate}. This figure highlights the loss of the high spatial frequency information in the basis function decomposition.
+The accuracy of the state estimates was evaluated by comparing the field reconstruction (see equation~\ref{DefFieldDecomp}) to the true field using the mean (over time) of the root mean square error (MRMSE) (over space). The RMSE of the field estimates over time for 100 realisations is shown in Figure~\ref{fig:RMSE}, with the 95~\% confidence interval. The error is consistently around 0.5 over time, which approximately \dean{??}~\% of the voltages, which range over \dean{(??,??)}. The error in the reconstructed field is mostly due to the loss high spatial frequency information due to the basis function decomposition; this is illustrated in Figure~\ref{fig:FieldEstimate}, which shows a snapshot at a single time instant of the true neural field, the estimated field and the corresponding error, which is the difference between the true and estimated neural fields. It can be seen in Fig 10b that the estimated field contains the basic structure of the true field (fig10a), but is missing the higher-frequency detail.
   \begin{figure}
    	\begin{center}
    		\includegraphics{./Graph/MRMSE.pdf} 
    	\end{center}
-   	\caption{The mean of average RMSE of the estimated field over 100 realisations (solid line) and the 95~\% confidence interval (grey region). The error remains consistent over time.} 
+   	\caption{The mean of average RMSE of the estimated field over 100 realisations (solid line) and the 95~\% confidence interval (grey region). } 
 \label{fig:RMSE}
    \end{figure}
   
@@ -586,11 +586,9 @@ The accuracy for state estimates were evaluated by comparing the field reconstru
 \end{figure}
 
 \section{Discussion}\label{DiscussionSection}
+This paper has presented an method for estimating intracortical connectivity and synaptic dynamics from intracranial EEG / LFP data. The results indicate good estimation performance, where the mean parameter estimates are close to the actual values. The distributions of the estimates of the connectivity kernel parameters show a relatively wide spreads, which is expected considering the large disturbances in the system that is driven by noise. In addition the observations contain a large amount of noise. 
 
-This paper has presented an method for estimating intracortical connectivity and synaptic dynamics from intracranial EEG / LFP data. The results indicate a good estimation performance, where the mean parameter estimates are in close accordance to the actual values. The distributions for the estimates of the connectivity kernel parameters also show a significant spread. This is expected, considering the disturbance  the system is driven by noise and the This that the estimation methodolgy 
-
-
-One thing that is shown is that noise has a large impact in the estimation results. To reduce the effect of noise, an evoked response paradigm should be considered when using real data. 
+To reduce the effect of noise, an evoked response paradigm should be considered when using real data. 
 
 The main contribution of this paper is the methodology for...
 
