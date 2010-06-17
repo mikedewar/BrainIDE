@@ -735,7 +735,7 @@ solving for $\sigma_{\nu}^2$ we get
     	$g(\mathbf{r},t)$ & average action potential rate \\
     	$f(\mathbf{r},t)$ & firing function rate \\
     	$e(\mathbf{r},t)$ & field disturbance, covariance $\gamma$\\
-    	$\epsilon(\mathbf{r}_n,t)$ & observation noise, covariance$\Sigma_\epsilon$ \\
+	$\epsilon(\mathbf{r}_n,t)$ & observation noise, covariance$\Sigma_\epsilon$ \\
     \end{tabular}
     \caption{Spatiotemporal Signals}
 \end{table}
@@ -766,9 +766,14 @@ solving for $\sigma_{\nu}^2$ we get
     	$\theta$ & vector of connectivity kernel parameters \\
     	$\Gamma$ & inner product of field basis functions \\
     	$q()$ & state function \\
-    	$k()$ & maps into to discrete state of input function \\
-    	$\mathbf{e}_t$ & state disturbance, covariance $\Sigma_e$ \\
+    	$Q()$ & state function \\
+	$\gamma(\mathbf r-\mathbf r')$& field disturbance covariance function\\
+    	$\mathbf{e}_t$ & state disturbance \\
+	$\Sigma_e$ &state disturbance covariance matrix\\
+	$\mathbf{\epsilon}_t$ & observation noise \\
+	$\Sigma_{\epsilon}$ &observation noise covariance matrix\\
     	$\mathbf{C}$ & observation matrix \\
+	$c_{ij}$& elements of observation matrix
     \end{tabular}
     \caption{Decomposition}
 \end{table}
