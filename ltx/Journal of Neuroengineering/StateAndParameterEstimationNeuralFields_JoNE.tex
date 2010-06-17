@@ -257,7 +257,7 @@ Let the spectral representation of the post-synaptic membrane voltage field at t
 \end{equation}
 where $\boldsymbol{\nu}_c$ is a cutoff frequency (typically taken as the -3~dB point) with $\boldsymbol{\nu}_c = [\nu_c ~ \nu_c]^\top$. Given such a band-limited field, the distance between adjacent sensors, $\Delta_y$, must satisfy 
 \begin{equation}
-	\label{eq:MinimumSensorDistance} \Delta_y < \frac{1}{2\rho_y\nu_{c}}, 
+	\label{eq:MinimumSensorDistance} \Delta_y \leq \frac{1}{2\rho_y\nu_{c}}, 
 \end{equation}
 where $\rho_y \in \mathbb{R} \ge 1$ is an oversampling parameter. This condition must be satisfied to avoid spatial spectral aliasing effects when reconstructing the hidden dynamic field, $v_t(\mathbf{r})$, using the sampled observations, $\mathbf{y}_t$.
 
@@ -267,7 +267,7 @@ Although such sensors avoid errors due to aliasing, they attenuate the high spat
 
 Similar considerations need to be made regarding the representation of the dynamic field, $v_t(\mathbf{r})$, using the basis function decomposition. Again applying Shannon's sampling theorem, the minimum distance between basis functions must satisfy 
 \begin{equation}\label{eq:BasisFunctionSeparation}
-	\Delta_{\phi} < \frac{1}{2\rho_{\phi}\nu_{cy}}
+	\Delta_{\phi} \leq \frac{1}{2\rho_{\phi}\nu_{cy}}
 \end{equation}
 where $\rho_{\phi} \in \mathbb{R} \ge 1$ is an oversampling parameter to determine the basis function separation. 
 
@@ -502,7 +502,7 @@ Using the model selection techniques described in Section~\ref{SpectralAnalysisS
 \caption{Spatial frequency analysis of the neural field. \textbf{a.} The average (over time) power in dB of the spatial frequency of the neural field. \textbf{b.} The average (over time) power in dB of the spatial frequency of the reconstructed neural field from the basis function decomposition. The reconstructed field shows a narrower bandwidth as a result of the band limiting properties of the sensors and basis functions.}
 \label{fig:FFTTrueEstimate}
 \end{figure}
-The spatial frequency of the observed field is shown in Figure~\ref{fig:ObservationFreqAnal}. The cut-off frequency was taken to be $\nu_{cy} \approx 0.19$~Hz ($-3$~dB point) \dean{the Figure~\ref{fig:SensorFunctionFreqResponse} has the cut-off as $\approx 0.2$~Hz!}. The observation cut-off frequency is lower than the field cut-off due to the low-pass filtering effect of the sensors. The spatial frequency response of the sensors can be seen in Figure~\ref{fig:SensorFunctionFreqResponse}. Using an oversampling parameter of $\rho_{\phi}=1$, the minimum distance between basis functions was calculated to be $2.63$~mm to satisfy Shannon's sampling criterion (from equation~\ref{eq:BasisFunctionSeparation}). The distance between basis functions, $\Delta_{\phi}$, was set to $2.5$~mm, which is sufficient to capture the significant dynamics according to our criteria.
+The spatial frequency of the observed field is shown in Figure~\ref{fig:ObservationFreqAnal}. The cut-off frequency was taken to be $\nu_{cy} \approx 0.2$~Hz ($-3$~dB point). The observation cut-off frequency is lower than the field cut-off due to the low-pass filtering effect of the sensors. The spatial frequency response of the sensors can be seen in Figure~\ref{fig:SensorFunctionFreqResponse}. Using an oversampling parameter of $\rho_{\phi}=1$, the minimum distance between basis functions was calculated to be $2.5$~mm to satisfy Shannon's sampling criterion (from equation~\ref{eq:BasisFunctionSeparation}). The distance between basis functions, $\Delta_{\phi}$, was set to $2.5$~mm, which is sufficient to capture the significant dynamics according to our criteria.
 Given the basis function separation, the basis function width parameter was set to $\sigma_{\phi}^2=2.5$~mm. This allowed a smooth representation of the field by the basis function decomposition up to a spatial frequency $\mathbf{\nu_{c\phi}} \approx 0.12$~Hz, as described by equation~\ref{eq:CutoffFromBasisFuncWidth}. The band-limiting effect is due to the spatial frequency response of the basis functions as seen in Figure~\ref{fig:BasisFunctionFreqResponse}.
 \begin{figure} 
 	\begin{center}
@@ -568,7 +568,7 @@ The reconstructed connectivity kernels from the estimated parameters are illustr
 \caption{Connectivity kernel estimate. The actual kernel is shown by the solid line, the mean kernel estimate (over 100 realisations) is shown by the dotted line and the $95~\%$ confidence interval is shown by the shaded grey region.}
 \label{fig:KernelEstimates}
 \end{figure}
-The accuracy of the state estimates was evaluated by comparing the field reconstruction to the true field using the mean (over time) of the root mean square error (MRMSE) (over space). The RMSE of the field estimates over time for 100 realisations is shown in Figure~\ref{fig:RMSE}, with the $95~\%$ confidence interval. The error is consistently around 0.5 over time, which approximately \dean{??}~\% of the voltages, which range over \dean{(??,??)}. The error in the reconstructed field is mostly due to the loss high spatial frequency information due to the basis function decomposition; this is illustrated in Figure~\ref{fig:FieldEstimate}, which shows a snapshot at a single time instant of the true neural field, the estimated field and the corresponding error, which is the difference between the true and estimated neural fields. It can be seen in Fig 10b that the estimated field contains the basic structure of the true field (fig10a), but is missing the higher-frequency detail.
+The accuracy of the state estimates was evaluated by comparing the field reconstruction to the true field using the mean (over time) of the root mean square error (MRMSE) (over space). The RMSE of the field estimates over time for 100 realisations is shown in Figure~\ref{fig:RMSE}, with the $95~\%$ confidence interval. The error is consistently around 0.5 over time, which approximately $7.1$~\% of the voltages, which range over $(-3.29,3.77)$. The error in the reconstructed field is mostly due to the loss high spatial frequency information due to the basis function decomposition; this is illustrated in Figure~\ref{fig:FieldEstimate}, which shows a snapshot at a single time instant of the true neural field, the estimated field and the corresponding error, which is the difference between the true and estimated neural fields. It can be seen in Fig 10b that the estimated field contains the basic structure of the true field (fig10a), but is missing the higher-frequency detail.
   \begin{figure}
    	\begin{center}
    		\includegraphics{./Graph/MRMSE.pdf} 
