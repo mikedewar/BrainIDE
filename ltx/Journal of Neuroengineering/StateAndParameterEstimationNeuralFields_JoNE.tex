@@ -289,13 +289,13 @@ To obtain a 3~dB attenuation at $\boldsymbol\nu_{cy}$, the basis function width,
 \end{equation}
 where
 \begin{equation}\label{eq:WidthFrequencyRelationship}
- \sigma^2_{\nu_{cy}}= \frac{2\boldsymbol\nu_{cy}^\top \boldsymbol\nu_{cy}}{\ln 2}.
+ \sigma^2_{\nu_{cy}}= \frac{2\boldsymbol\nu_{cy}^\top \boldsymbol\nu_{cy}}{\ln2}.
 \end{equation}
 This ensures that the basis functions can represent the neural field with frequency content up to $\boldsymbol\nu_{cy}$. Derivations for equations~\ref{eq:GaussianFT} and \ref{eq:WidthFrequencyRelationship} are given in~\ref{ap:FrequencyAnalysis}.
 
 Alternatively, given the basis function width, the spatial cut-off frequency of the field modelled by the decomposition can be determined from spectral analysis. This is particularly useful when considering the spatially distributed basis functions, since Shannon's sampling theorem is derived for perfect point sensors. To calculate the cut-off frequency imposed by the basis function, $\boldsymbol{\nu}_{c\phi}$, we rearrange equations~\ref{eq:WidthCutOffRelationship} and \ref{eq:WidthFrequencyRelationship} giving
 \begin{equation}\label{eq:CutoffFromBasisFuncWidth}
-	\boldsymbol{\nu}_{c\phi}=\sqrt{\frac{\ln(2)}{2\pi^2\sigma_{\phi}^2}}.
+	\boldsymbol{\nu}_{c\phi}=\sqrt{\frac{\ln2}{2}}\frac{1}{\pi\sigma_{\phi}}.
 \end{equation} 
 
 Note that for a spatially homogeneous isotropic field, the basis functions can be placed on a regular grid. Thus, the knowledge of the distance between basis functions can be used to determine the total number of basis functions required to represent a known spatial region.
