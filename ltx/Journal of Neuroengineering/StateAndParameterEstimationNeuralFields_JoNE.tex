@@ -483,7 +483,7 @@ be seen in Figure~\ref{fig:experimental design}(a). Figure~\ref{fig:experimental
 \label{tab:Model Parameters}
 \end{table}
 
-The sensors were spaced on a regular square 14 $\times$ 14 grid, the sensor width parameter $\sigma^2_m$ was $0.81$, which provides a width of $1.5$~mm at half the maximum amplitude of the basis function, with spacing $\Delta_y=1.5$~mm. This arrangement modelled the recording as having some cross talk, which is typical for neurophysiological recordings. 
+The sensors were spaced on a regular square $14 \times 14$ grid, the sensor width parameter $\sigma^2_m$ was set to $0.81$, which provides a width of $1.5$~mm at half the maximum amplitude of the basis function, with spacing $\Delta_y=1.5$~mm. This arrangement modelled the recording as having some cross talk, which is typical for neurophysiological recordings. 
 \begin{figure}
    	\begin{center}
     		\subfigure[][]{\includegraphics{./Graph/ExperimentFigurePy.pdf}} \\
@@ -502,7 +502,6 @@ Using the model selection techniques described in Section~\ref{SpectralAnalysisS
 \caption{Spatial frequency analysis of the neural field. \textbf{a.} The average (over time) power in dB of the spatial frequency of the neural field. \textbf{b.} The average (over time) power in dB of the spatial frequency of the reconstructed neural field from the basis function decomposition. The reconstructed field shows a narrower bandwidth as a result of the band limiting properties of the sensors and basis functions.}
 \label{fig:FFTTrueEstimate}
 \end{figure}
-
 The spatial frequency of the observed field is shown in Figure~\ref{fig:ObservationFreqAnal}. The cut-off frequency was taken to be $\nu_{cy} \approx 0.19$~Hz ($-3$~dB point) \dean{the Figure~\ref{fig:SensorFunctionFreqResponse} has the cut-off as $\approx 0.2$~Hz!}. The observation cut-off frequency is lower than the field cut-off due to the low-pass filtering effect of the sensors. The spatial frequency response of the sensors can be seen in Figure~\ref{fig:SensorFunctionFreqResponse}. Using an oversampling parameter of $\rho_{\phi}=1$, the minimum distance between basis functions was calculated to be $2.63$~mm to satisfy Shannon's sampling criterion (from equation~\ref{eq:BasisFunctionSeparation}). The distance between basis functions, $\Delta_{\phi}$, was set to $2.5$~mm, which is sufficient to capture the significant dynamics according to our criteria.
 Given the basis function separation, the basis function width parameter was set to $\sigma_{\phi}^2=2.5$~mm. This allowed a smooth representation of the field by the basis function decomposition up to a spatial frequency $\mathbf{\nu_{c\phi}} \approx 0.12$~Hz, as described by equation~\ref{eq:CutoffFromBasisFuncWidth}. The band-limiting effect is due to the spatial frequency response of the basis functions as seen in Figure~\ref{fig:BasisFunctionFreqResponse}.
 \begin{figure} 
@@ -559,8 +558,8 @@ realisations. The dotted line shows the actual value of the parameters and the s
 \caption{\textbf{a.} Distribution of the connectivity kernel basis function parameter ratios over 100 realisations. \textbf{a.} The absolute value of the ratio of the local excitatory parameter to the surround inhibition parameter (true ratio is 1.25). \textbf{b.} The ratio of the local excitatory parameter to the longer range excitatory parameter (true ratio is 20). The dotted line shows the location of the true ratio in each case.}
 \label{fig:ParametersRatio}
 \end{figure}
+The reconstructed connectivity kernels from the estimated parameters are illustrated in Figure~\ref{fig:KernelEstimates}, where the mean over the 100 realisations is shown as a solid line and the range indicated by the shaded region, which is  the $95\%$ confidence interval. The figure verifies that the shape of the estimated connectivity kernel is in good accordance to the true kernel. The true kernel lies within the confidence interval; however, the mean estimated kernel is more negative than the actual kernel due to the small bias on the estimates of the inhibitory parameter, $\hat\theta_1$, as seen in Figure~\ref{fig:theta1dis}.
 
-The reconstructed connectivity kernels from the estimated parameters are illustrated in Figure~\ref{fig:KernelEstimates}, where the mean over the 100 realisations is shown as a solid line and the range indicated by the shaded region, which is  the $95\%$ confidence interval. The figure verifies that the shape of the estimated connectivity kernel is in good accordance to the true kernel. The true kernel lies within the confidence interval; however, the mean estimated kernel is more negative than the actual kernel due to the bias on the estimates of the inhibitory parameter, $\hat\theta_1$, as seen in Figure~\ref{fig:theta1dis}.
 \begin{figure}
     \centering
 % \subfigure[][]{
@@ -569,7 +568,6 @@ The reconstructed connectivity kernels from the estimated parameters are illustr
 \caption{Connectivity kernel estimate. The actual kernel is shown by the solid line, the mean kernel estimate (over 100 realisations) is shown by the dotted line and the $95~\%$ confidence interval is shown by the shaded grey region.}
 \label{fig:KernelEstimates}
 \end{figure}
-
 The accuracy of the state estimates was evaluated by comparing the field reconstruction to the true field using the mean (over time) of the root mean square error (MRMSE) (over space). The RMSE of the field estimates over time for 100 realisations is shown in Figure~\ref{fig:RMSE}, with the $95~\%$ confidence interval. The error is consistently around 0.5 over time, which approximately \dean{??}~\% of the voltages, which range over \dean{(??,??)}. The error in the reconstructed field is mostly due to the loss high spatial frequency information due to the basis function decomposition; this is illustrated in Figure~\ref{fig:FieldEstimate}, which shows a snapshot at a single time instant of the true neural field, the estimated field and the corresponding error, which is the difference between the true and estimated neural fields. It can be seen in Fig 10b that the estimated field contains the basic structure of the true field (fig10a), but is missing the higher-frequency detail.
   \begin{figure}
    	\begin{center}
