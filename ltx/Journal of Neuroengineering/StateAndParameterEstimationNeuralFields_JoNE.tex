@@ -778,11 +778,11 @@ solving for $\sigma_{\nu}^2$ we get
         $V(\nu)$ & Spectrum of the dynamic field \\
 	$\nu$ & Spatial frequency \\
 	$\nu_c$ & Spatial cut-off frequency \\
-	$\Delta_s$ & Distance between adjacent sensors \\
+	$\Delta_y$ & Distance between adjacent sensors \\
 	$\rho$ & Over-sampling parameter \\
-	$\Delta_b$ & Distance between field basis functions \\
-	$\sigma_{nu}^2$ & Variance of FT of Gaussian basis function \\
-	$\sigma^2$ & Spatial variance of Gaussian in spatial domain \\
+	$\Delta_{\phi}$ & Distance between field basis functions \\
+	$\sigma_{\nu}^2$ & Variance of FT of Gaussian basis function \\
+	$\sigma^2_{\phi}$ & Spatial variance of Gaussian in spatial domain \\
     \end{tabular}
     \caption{Frequency Analysis}
 \end{table}
@@ -790,13 +790,18 @@ solving for $\sigma_{\nu}^2$ we get
 \begin{table}[h!]\footnotesize
     \begin{tabular}{ll}
         $\hat{\mathbf{x}}$ & State estimate \\
-	    $\chi$ & Matrix of sigma vectors \\
+	$\chi$ & Matrix of sigma vectors \\
     	$\hat{\mathbf{x}}_t^{f-}$ & Forward prior estimate \\
     	$\hat{\mathbf{x}}_t^f$ & Forward posterior estimate \\
     	$\hat{\mathbf{x}}_t^{b-}$ & Backward prior estimate \\
     	$\hat{\mathbf{x}}_t^{b}$ & Backward posterior estimate \\
     	$P^f_t$ & Forward posterior covariance matrix \\
-    	$P^{f-}_t$ & Forward prior covariance matrix
+    	$P^{f-}_t$ & Forward prior covariance matrix \\
+    	$P^b_t$ & Backward posterior covariance matrix \\
+    	$P^{b-}_t$ & Backward prior covariance matrix \\
+	$\mathcal K_{t} $& Filter gain\\
+	$M_t$& Cross-covariance matrix\\
+	$S_t$& Smoother gain
     \end{tabular}
     \caption{State Estimation}
 \end{table}
