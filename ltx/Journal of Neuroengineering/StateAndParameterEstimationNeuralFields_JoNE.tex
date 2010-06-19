@@ -695,7 +695,7 @@ where
 =(\pi\sigma_{\phi}^2)^{\frac{n}{2}}&&
 \end{eqnarray}
 substituting \ref{eq:IntegralOfGaussian} in \ref{eq:AppendixGaussianFT} gives another scaled  Gaussian 
-\begin{equation}
+\begin{equation}\label{eq:FTofGaussian}
    \boldsymbol\Phi(\boldsymbol\nu)=(\pi\sigma_{\phi}^2)^{\frac{n}{2}}\mathrm{exp}(-\sigma_{\phi}^2\pi^2\boldsymbol\nu^\top \boldsymbol\nu)
 \end{equation}
 substituting $\sigma_{\nu}^2=\frac{1}{\pi^2\sigma_{\phi}^2}$ gives 
@@ -710,7 +710,51 @@ solving for $\sigma_{\nu}^2$ we get
 \begin{equation}
  \sigma_{\nu}^2=\frac{2\boldsymbol\nu_{c}^\top \boldsymbol\nu_{c}}{\ln 2 }.
 \end{equation}
+\section{Convolution and inner product of two $n$-dimensional Gaussian basis functions}\label{ap:ConvandIn}
+Consider two Gaussian basis functions
+\begin{equation}
+ \phi_i(\mathbf r)=\mathrm{exp}\left({-\frac{1}{\sigma_i^2} (\mathbf r-\boldsymbol \mu_i)^\top(\mathbf r-\boldsymbol \mu_i})\right)
+\end{equation}
+\begin{equation}
+\phi_j(\mathbf r)=\mathrm{exp}\left({-\frac{1}{\sigma_j^2} (\mathbf r-\boldsymbol \mu_j)^\top(\mathbf r-\boldsymbol \mu_j})\right)
+\end{equation}
+First we derive the convolution of two Gaussian basis functions assuming $\boldsymbol\mu_i=\boldsymbol\mu_j=\mathbf 0$. Convolution theorem states that the Fourier transform of a convolution is the product of Fourier transforms. Using equation \ref{eq:FTofGaussian} we have
+\begin{eqnarray}
+\boldsymbol\Phi_i(\boldsymbol\nu)\boldsymbol\Phi_j(\boldsymbol\nu)&=&\left(\pi\sigma_i^2\sigma_j^2\right)^{\frac{n}{2}}\left(\frac{1}{\sigma_i^2+\sigma_j^2}\right)^{\frac{n}{2}} \nonumber \\
+&\times& (\pi(\sigma_i^2+\sigma_j^2))^{\frac{n}{2}}\mathrm{exp}\left(-(\sigma_i^2+\sigma_j^2)\pi^2\boldsymbol\nu^\top\boldsymbol\nu\right),
+\end{eqnarray}
+taking the inverse Fourier transform we can write the convolution as
+\begin{equation}\label{eq:ConvoftwoGaussian}
+ (\phi_i*\phi_j)(\mathbf r)=\left(\frac{\pi\sigma_i^2\sigma_j^2}{\sigma_i^2+\sigma_j^2}\right)^{\frac{n}{2}}\mathrm{exp}\left({-\frac{1}{\sigma_i^2+\sigma_j^2} \mathbf r^\top\mathbf r}\right).
+\end{equation}
+In the case where $\boldsymbol\mu_i\neq\boldsymbol\mu_j\neq\mathbf 0$ equation \ref{eq:ConvoftwoGaussian} becomes
+\begin{equation}\label{eq:ConvoftwoGaussianNonzeroMean}
+ (\phi_i*\phi_j)(\mathbf r)=\left(\frac{\pi\sigma_i^2\sigma_j^2}{\sigma_i^2+\sigma_j^2}\right)^{\frac{n}{2}}\mathrm{exp}\left({-\frac{1}{\sigma_i^2+\sigma_j^2} (\mathbf r-\boldsymbol\mu)^\top(\mathbf r-\boldsymbol\mu)}\right).
+\end{equation}
+where $\boldsymbol\mu=\mu_i+\mu_j$.
 
+The inner product of two Gaussian basis functions is defined as
+\begin{equation}\label{eq:InofGaussianDefinition}
+\phi_i\otimes\phi_j=\int_{\mathcal R^n}\phi_i(\mathbf r)\phi_j(\mathbf r)d\mathbf r
+\end{equation}
+A Gaussian basis function is symmetric with respect to its center, therefore
+\begin{equation}\label{eq:GaussianSymmetry}
+ \phi_i(\boldsymbol \mu_i+\mathbf r)= \phi_i(\boldsymbol \mu_i-\mathbf r)
+\end{equation}
+A direct consequence of equation \ref{eq:GaussianSymmetry} is
+\begin{equation}\label{eq:ConsequenceofGaussianSymmetry}
+ \phi_i(\mathbf r)= \phi_i(2\boldsymbol \mu_i-\mathbf r)
+\end{equation}
+substituting equation \ref{eq:ConsequenceofGaussianSymmetry} in equation \ref{eq:InofGaussianDefinition} we have 
+\begin{eqnarray}
+\phi_i\otimes\phi_j&=&\int_{\mathcal R^n}\phi_i(\mathbf r)\phi_j(\mathbf r)d\mathbf r\\
+&=&\int_{\mathcal R^n}\phi_i(2\boldsymbol \mu_i-\mathbf r)\phi_j(\mathbf r)d\mathbf r\\
+&=&(\phi_i*\phi_j)(2\boldsymbol \mu_i)
+\end{eqnarray}
+from equation \ref{eq:ConvoftwoGaussianNonzeroMean} we have
+\begin{equation}
+ \phi_i\otimes\phi_j=\left(\frac{\pi\sigma_i^2\sigma_j^2}{\sigma_i^2+\sigma_j^2}\right)^{\frac{n}{2}}\mathrm{exp}\left({-\frac{1}{\sigma_i^2+\sigma_j^2} (\boldsymbol\mu_i-\boldsymbol\mu_j)^\top(\boldsymbol\mu_i-\boldsymbol\mu_j)}\right).
+\end{equation}
 \section{Notation}
 
 \begin{table}[h!]\footnotesize
