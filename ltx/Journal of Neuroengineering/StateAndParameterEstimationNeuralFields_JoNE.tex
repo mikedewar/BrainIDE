@@ -175,7 +175,7 @@ and substituting this into equation~\ref{StartofReduction} and cross-multiplying
 	 + \xi\mathbf{x}_t + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r}) e_t(\mathbf{r})d\mathbf{r}}.
 	 \end{split}
 \end{equation}
-The analytic derivation of the inner product of the \emph{n}-dimensional Gaussians is provided in~\ref{ap:InnerProdOfGaussians}. Equation~\ref{eq:ReducedForm} can be simplified by exploiting the symmetry (isotropy) of the connectivity kernel where
+An analytic derivation of the inner product of \emph{n}-dimensional Gaussians is provided in~\ref{ap:InnerProdOfGaussians}. Equation~\ref{eq:ReducedForm} can be simplified by exploiting the symmetry (isotropy) of the connectivity kernel where
 \begin{equation}
 	\boldsymbol{\psi} (\mathbf{r}-\mathbf{r}') = \boldsymbol{\psi} (\mathbf{r}'-\mathbf{r}).
 \end{equation}
@@ -183,7 +183,7 @@ To make the simplification, we first define
 \begin{equation}\label{eq:DefPsi}
 	\boldsymbol{\Psi}(\mathbf{r}') \triangleq T_s\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\psi}^{\top} (\mathbf{r}'-\mathbf{r})d\mathbf{r}},
 \end{equation}
-which is constant $L \times n_{\theta}$ matrix that can be defined analytically (see~\ref{ap:ConvOfGaussians} for analytic convolution of two Gaussians), where $n_{\theta}$ is the number of connectivity basis functions. Now substituting equation~\ref{eq:DefPsi} into~\ref{eq:ReducedForm} gives
+which is a constant $L \times n_{\theta}$ matrix that can is defined analytically (see~\ref{ap:ConvOfGaussians} for analytic convolution of two Gaussians), where $L$ is the number of basis functions (and states) and $n_{\theta}$ is the number of connectivity basis functions. Now substituting equation~\ref{eq:DefPsi} into~\ref{eq:ReducedForm} gives
 \begin{eqnarray}
 	\mathbf{x}_{t+1} = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) d\mathbf{r}' \boldsymbol{\theta} + \xi\mathbf{x}_t\nonumber \\
 + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})d\mathbf{r}}.
@@ -214,7 +214,7 @@ where the observation matrix is
 	\end{array}
 	\right] 
 \end{equation}
-where $L$ is the number of basis functions used to decompose the neural field and 
+and 
 \begin{equation}
 	c_{i,j} = \int_{\Omega}m(\mathbf{r}_i - \mathbf{r}')\boldsymbol{\phi}_j(\mathbf{r}')d\mathbf{r}'. 
 \end{equation}
@@ -247,7 +247,7 @@ and
 % \end{array}\right],
 % \end{equation}
 % and $m(\mathbf r_n - \mathbf{r}')$ is the observation kernel.
-\section{Spectral Analysis and Model Selection}\label{SpectralAnalysisSection} Spectral analysis has been used to identify both the number of sensors and the number of basis functions required to reconstruct the neural field from sampled observations \cite{Sanner1992,Scerri2009}. Based on a two-dimensional extension of Shannon's sampling theorem \cite{Peterson1962}, the spatial bandwidth of the observed field can be used to provide a lower bound on both the number of sensors and the number of basis functions required to capture the dominant spectral characteristics of the neural field.
+\section{Spectral Analysis and Model Selection}\label{SpectralAnalysisSection} Spectral analysis has been used to identify both the number of sensors and the number of basis functions required to reconstruct the neural field from sampled observations~\cite{Sanner1992,Scerri2009}. Based on a two-dimensional extension of Shannon's sampling theorem \cite{Peterson1962}, the spatial bandwidth of the observed field can be used to provide a lower bound on both the number of sensors and the number of basis functions required to capture the dominant spectral characteristics of the neural field.
 
 Let the spectral representation of the post-synaptic membrane voltage field at time $t$ be denoted by $V_t(\boldsymbol{\nu})$. According to Shannon's sampling theorem, the field must be spatially band-limited for an accurate reconstruction using spatially discrete observations. Nevertheless, an approximate reconstruction can be obtained if the field is approximately band-limited with 
 \begin{equation}
@@ -261,7 +261,7 @@ where $\rho_y \in \mathbb{R} \ge 1$ is an oversampling parameter. This condition
 
 In practice, it is difficult to estimate the bandwidth of the cortex using traditional electrophysiological measurements, possibly preventing us from positioning sensors in accordance to equation~\ref{eq:MinimumSensorDistance}. However, we envisage it may be possible to estimate the spatial bandwidth using other modalities with higher spatial resolution such as, fMRI, NIRS or other optical imaging techniques~\cite{Issa2000}. Nevertheless, spectral aliasing can still be avoided by a proper choice of the spatial sampling distance given the sensors' spectral characteristics. The spatial extent of the sensors results in a spectral low-pass action, thus providing spatial anti-aliasing filtering. Such sensors therefore can only sense the field up to a known spatial bandwidth, denoted by $\nu_{cy}$. Aliasing can then be avoided by positioning the sensors according to equation~\ref{eq:MinimumSensorDistance}, with $\nu_{cy}$ replacing $\nu_c$. 
 
-Although such sensors avoid errors due to aliasing, they attenuate the high spatial frequency variations in the observations. Therefore, any procedure applied to estimate the original field or the underlying connectivity structure from these band-limited observations has the potential to underestimate the high spatial frequency components of both the field and the connectivity kernel. This motivates the use of sensors with wider bandwidths (narrower in space). Nevertheless, this choice would require more sensors in order to satisfy Shannon's sampling theorem for a reasonable spatial region. Therefore, a compromise needs to be found between the bandwidth of the sensor response, the accuracy of the estimation results, the number of sensors used and the computational demands of the estimation procedure when designing experiments.
+Although such sensors avoid errors due to aliasing, they attenuate the high spatial frequency variations in the observations. Therefore, any procedure applied to estimate the original field or the underlying connectivity structure from these band-limited observations has the potential to underestimate the high spatial frequency components of both the field and the connectivity kernel. This motivates the use of sensors with wider bandwidths (narrower in space). Nevertheless, this choice would require more sensors in order to satisfy Shannon's sampling theorem for a given spatial region. Therefore, a compromise needs to be found between the bandwidth of the sensor response, the accuracy of the estimation results, the number of sensors used and the computational demands of the estimation procedure when designing experiments.
 
 Similar considerations need to be made regarding the representation of the dynamic field, $v_t(\mathbf{r})$, using the basis function decomposition. Again applying Shannon's sampling theorem, the minimum distance between basis functions must satisfy 
 \begin{equation}\label{eq:BasisFunctionSeparation}
@@ -291,7 +291,7 @@ where
 \end{equation}
 This ensures that the basis functions can represent the neural field with frequency content up to $\boldsymbol\nu_{cy}$. Derivations for equations~\ref{eq:GaussianFT} and \ref{eq:WidthFrequencyRelationship} are given in~\ref{ap:FrequencyAnalysis}.
 
-Alternatively, given the basis function width, the spatial cut-off frequency of the field modelled by the decomposition can be determined from spectral analysis. This is particularly useful when considering the spatially distributed basis functions, since Shannon's sampling theorem is derived for perfect point sensors. To calculate the cut-off frequency imposed by the basis function, $\boldsymbol{\nu}_{c\phi}$, we rearrange equations~\ref{eq:WidthCutOffRelationship} and \ref{eq:WidthFrequencyRelationship} giving
+Alternatively, given the basis function width, the spatial cut-off frequency of the field modelled by the decomposition can be determined from spectral analysis. This is particularly useful when considering the spatially distributed basis functions, since Shannon's sampling theorem is derived for perfect point sensors. To calculate the cut-off frequency imposed by the basis functions, $\boldsymbol{\nu}_{c\phi}$, we rearrange equations~\ref{eq:WidthCutOffRelationship} and \ref{eq:WidthFrequencyRelationship} giving
 \begin{equation}\label{eq:CutoffFromBasisFuncWidth}
 	\boldsymbol{\nu}_{c\phi}=\frac{1}{\pi\sigma_{\phi}}\sqrt{\frac{\ln2}{2}}.
 \end{equation} 
@@ -302,7 +302,7 @@ Note that for a spatially homogeneous isotropic field, the basis functions can b
 % Due to the high dimensionality of the brain and the current electrode systems, we can not expect to have more sensors than basis functions.
 \section{State and Parameter Estimation}\label{StateAndParameterEstimationSection} In this section we describe the procedure for estimating the states, $\mathbf{x}_t$, the connectivity kernel parameters, $\boldsymbol \theta$, and the synaptic dynamics, $\xi$. The estimation process is a two part iterative algorithm, consisting of a state estimation step followed by a parameter estimation step. At each iteration, the sequence of estimated state vectors is used to update the parameter set. The resulting parameters are then used when estimating the new state vector sequence for the next iteration. The procedure stops when the parameters converge. The algorithm is initialised using a bounded random state vector sequence guaranteeing that the initial estimated parameter set forms a stable kernel.
 
-The unscented Rauch Tung Striebel smoother (URTSS)~\cite{Sarkka2010} is used for the state estimation. The URTSS incorporates an unscented Kalman filter (UKF)~\cite{Julier1997, Merwe2003} in a forward iteration to estimate posterior states, $\hat{\mathbf x}_t^{f}$, followed by a backward iteration to compute the smoothed state estimates, $\hat{\mathbf x}_t^{b}$. The first and the second order moments of the predicted state are captured by propagating the so-called sigma points through the state equation. The sigma points, $\mathcal X_i$, are calculated using the unscented transform as follows:
+The unscented Rauch-Tung-Striebel smoother (URTSS)~\cite{Sarkka2010} is used for the state estimation. The URTSS incorporates an unscented Kalman filter (UKF)~\cite{Julier1997, Merwe2003} in a forward iteration to estimate posterior states, $\hat{\mathbf x}_t^{f}$, followed by a backward iteration to compute the smoothed state estimates, $\hat{\mathbf x}_t^{b}$. The first and the second order moments of the predicted state are captured by propagating the so-called sigma points through the state equation. The sigma points, $\mathcal X_i$, are calculated using the unscented transform as follows:
 \begin{equation}\label{eq:sigmapoints1}
 	\mathcal X_{0}=\bar x 
 \end{equation}
@@ -316,7 +316,7 @@ where $\bar x$ represents either $\hat{\mathbf x}_t^{f}$ or $\hat{\mathbf x}_t^{
 \begin{equation}\label{eq:sigmapoints3}
 	\lambda=\alpha^2( L+\kappa) - L, 
 \end{equation}
-where the constant $\alpha$ determines the spread of the sigma points, $\beta$ incorporates prior knowledge of the distribution of $\mathbf{x}$ and $\kappa$ is a scaling parameter (see~\cite{Haykin2001} for more details). 
+where the constant $\alpha$ determines the spread of the sigma points, $\beta$ incorporates prior knowledge of the distribution of $\mathbf{x}$ and $\kappa$ is an additional scaling parameter (see~\cite{Haykin2001} for more details). 
 
 The sigma vectors are propagated through the system equations and weighted to form the predicted mean and covariance. The weights are calculated by 
 \begin{equation}
@@ -328,7 +328,7 @@ The sigma vectors are propagated through the system equations and weighted to fo
 \begin{equation}
 	\mathbf W_i^{(m)}=\mathbf W_i^{(c)}=\frac{1}{2( L+\lambda)} \quad i=1, \dots, 2L, 
 \end{equation}
-where the superscripts $m$ and $c$ stand for mean and covariance. Since the observation equation is linear (equation~\ref{ObservationEquation}) the standard Kalman Filter update equations are used to correct the predicted states. The state estimates from forward filtering are used to form a new set of sigma points for the smoother, as described above. To compute the smoother gain, the cross-covariance matrix of the states, $\mathbf M$, needs to be computed. A summary of the URTSS procedure is given in Algorithm~\ref{UKFAlgorithm}. It should be noted that the disturbance, $\mathbf{e}_t$ and the measurement noise, $\boldsymbol{\varepsilon}_t$, are additive. Therefore, the additive form of the URTSS is used, instead of augmenting the state vector with the noise terms with the added benefit of reducing the dimension and the number of sigma points required in the algorithm.
+where the superscripts $m$ and $c$ stand for mean and covariance. Since the observation equation is linear (equation~\ref{ObservationEquation}) the standard Kalman Filter update equations are used to correct the predicted states. The state estimates from forward filtering are used to form a new set of sigma points for the smoother, as described above. To compute the smoother gain, the cross-covariance matrix of the states, $\mathbf M$, is also computed. A summary of the URTSS procedure is given in Algorithm~\ref{UKFAlgorithm}. It should be noted that the disturbance, $\mathbf{e}_t$ and the measurement noise, $\boldsymbol{\varepsilon}_t$, are additive. Therefore, the additive form of the URTSS is used, instead of augmenting the state vector with the noise terms with the added benefit of reducing the dimension and the number of sigma points required in the algorithm.
 \begin{algorithm}
 	\begin{small}
 	\caption{The Unscented RTS Smoother}\label{UKFAlgorithm} 
@@ -393,11 +393,11 @@ where the superscripts $m$ and $c$ stand for mean and covariance. Since the obse
 \end{small}
 \end{algorithm}
 
-Although the system is nonlinear, the parameters of the system are linear with respect to the state. This feature is exploited by our procedure where the parameter estimation uses a least squares (LS) method that minimises the sum of the squared errors (of a predicted state update) with each new state vector sequence estimate. To create the least squares parameter estimator, we first define the $L \times n_{\theta}$ matrix
+Although the system is nonlinear, the parameters of the system are linear with respect to the state. This feature is exploited by our procedure where the parameter estimation uses a least squares (LS) method that minimises the sum of the squared errors (of a predicted state update) with each new estimate of the state vector sequence. To create the least squares parameter estimator, we first define the $L \times n_{\theta}$ matrix
 \begin{equation}
 	\mathbf{q}(\mathbf{x}_t) = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) d\mathbf{r}'.
 \end{equation}
-Now given a state estimate sequence from the URTSS, we can write
+Now given a state estimate sequence from an iteration of the URTSS, we can write
 \begin{eqnarray*}
 	\mathbf x_{1} &=& \mathbf{q}(\mathbf x_0) \boldsymbol{\theta}+\xi\mathbf x_0+\mathbf e_0 \\
 	\mathbf x_{2} &=& \mathbf{q}(\mathbf x_1) \boldsymbol{\theta}+\xi\mathbf x_1+\mathbf e_1  \\
@@ -512,7 +512,7 @@ Given the basis function separation, the basis function width parameter was set 
 
 \subsection{State and Parameter Estimates} 
 \label{sec:state_and_param_results}
-To demonstrate the performance of the parameter and state estimation, a Monte Carlo approach was employed where $100$ realisations of the data were generated. Each realisation consisted of $500$~ms of data (sampled at $1$~kHz) and the estimation was applied to the final $400$~ms, allowing the model's initial transients to die out. The initial state and parameters were unknown to the estimator. Eleven iterations of the estimation algorithm were used to ensure the parameters  converged. Figure~\ref{fig:ParametersConvergence} shows the rate of convergence, confirming the parameters converged, with the changes in parameters falling to less than $10^{-4}$ after six iterations.
+To demonstrate the performance of the state and parameter estimation algorithm, a Monte Carlo approach was employed where $100$ realisations of the data were generated. Each realisation consisted of $500$~ms of data (sampled at $1$~kHz) and the estimation was applied to the final $400$~ms, allowing the model's initial transients to die out. The initial state and parameters were unknown to the estimator. Eleven iterations of the estimation algorithm were used to ensure the parameters  converged. Figure~\ref{fig:ParametersConvergence} shows the rate of convergence, confirming the parameters converged, with the changes in parameters falling to less than $10^{-4}$ after six iterations.
 \begin{figure}
         \centering
 \includegraphics{./Graph/convergence.pdf}
@@ -565,7 +565,7 @@ The reconstructed connectivity kernels from the estimated parameters are illustr
 \caption{Cross-section of connectivity kernel estimate. The actual kernel is shown by the solid line, the mean kernel estimate (over 100 realisations) is shown by the dotted line and the $95~\%$ confidence interval is shown by the shaded grey region.}
 \label{fig:KernelEstimates}
 \end{figure}
-The accuracy of the state estimates was evaluated by comparing the field reconstruction to the true field using the mean (over time) of the root mean square error (MRMSE) (over space). The RMSE of the field estimates over time for 100 realisations is shown in Figure~\ref{fig:RMSE}, with the $95~\%$ confidence interval. At each time point the error is consistently around 0.5, which approximately $7.1$~\% of the field voltage range, which is $(-3.29,3.77)$~mV. The error in the reconstructed field is mostly due to the loss of high spatial frequency information due to the basis function decomposition as illustrated in Figure~\ref{fig:FieldEstimate}. The figure shows a snapshot at a single time instant of the true neural field, the estimated field and the corresponding error, which is the difference between the true and estimated neural fields. It can be seen in Figure~\ref{fig:FieldEstimate}(b) that the estimated field contains the basic structure of the true field (Figure~\ref{fig:FieldEstimate}(a)), but is missing the higher-frequency detail.
+The accuracy of the state estimates was evaluated by comparing the field reconstruction to the true field using the mean (over iterations) of the root mean square error (MRMSE) (over space). The RMSE of the field estimates over time for 100 realisations is shown in Figure~\ref{fig:RMSE}, with the $95~\%$ confidence interval. At each time point the error is consistently around 0.5, which approximately $7.1$~\% of the field voltage range, which is $(-3.29,3.77)$~mV. The error in the reconstructed field is mostly due to the loss of high spatial frequency information due to the basis function decomposition as illustrated in Figure~\ref{fig:FieldEstimate}. The figure shows a snapshot at a single time instant of the true neural field, the estimated field and the corresponding error, which is the difference between the true and estimated neural fields. It can be seen in Figure~\ref{fig:FieldEstimate}(b) that the estimated field contains the basic structure of the true field (Figure~\ref{fig:FieldEstimate}(a)), but is missing the higher-frequency detail.
   \begin{figure}
    	\begin{center}
    		\includegraphics{./Graph/MRMSE.pdf} 
@@ -598,9 +598,9 @@ Generating patient specific neural field models has the potential to have signif
 
 Parameter estimation may also have significant impact on the treatment of disease. For example, recent theoretical work has demonstrated that seemingly similar electrographic seizures in absence epilepsy may arise from either abnormal excitatory or inhibitory mechanisms~\cite{Marten2009}. These very different mechanisms would require very different medications for successful treatment. However, the underlying mechanisms would be hidden from the clinician in the normal clinical setting. Successful parameter estimation has the potential to reveal these hidden mechanisms allowing for improved treatment strategies. 
 
-The development of an estimation framework also has theoretical implications. The the ability to estimate parameters will allow testing of hypotheses that have been generated in theoretical studies. This has the potential to validate neural field models, and in doing so, provide new insights that may lead to a greater understanding of macro-scale neurodynamics. For example, using the proposed model-based framework we can reconstruct a neural field from data and estimate parameters and check if they correspond to the theoretically derived parameters where certain solutions can exist. In addition, the parameters and the state-space can be explored during cognitive tasks and states of arousal such as during sleep and anaesthesia. 
+The development of an estimation framework also has theoretical implications. The the ability to estimate parameters will allow testing of hypotheses that have been generated in theoretical studies. This has the potential to validate neural field models, and in doing so, provide new insights that may lead to a greater understanding of macro-scale neurodynamics. For example, using the proposed model-based framework we can reconstruct a neural field from data and estimate parameters and check if they correspond to theoretically derived parameters where certain solutions can exist. In addition, the parameters and the state-space can be explored during cognitive tasks and states of arousal such as during sleep and anaesthesia. 
 
-In this paper, assumption was made that the chosen kernel basis functions can exactly represent the actual connectivity kernel. In future work, we plan to relax this assumption. We hope to achieve this by using the actual kernel that cannot exactly be presented by the chosen finite number of basis functions. In addition, we have assumed the neural field is isotropic and homogeneous. It is generally accepted that the intracortical connectivity structure can be accurately modelled as being isotropic. However, the assumption of homogeneity is quite strong. Future work should be focussed on developing estimation algorithms where assumption of homogeneity can be relaxed. Future work should also be targeted to include a more realistic synaptic response kernel, with finite rise and decay times and finite, distant dependant propagation times into the parametric neural field equations.
+In this paper, an assumption was made that the chosen kernel basis functions can exactly represent the actual connectivity kernel. In future work, we plan to relax this assumption. We hope to achieve this by using the actual kernel that cannot exactly be presented by the chosen finite number of basis functions. In addition, we have assumed the neural field is isotropic and homogeneous. It is generally accepted that the intracortical connectivity structure can be accurately modelled as being isotropic. However, the assumption of homogeneity is quite strong. Future work should be focussed on developing estimation algorithms where assumption of homogeneity can be relaxed. Future work should also be targeted to include a more realistic synaptic response kernel, with finite rise and decay times and finite, and distant dependant propagation times into the parametric neural field equations.
 
 \section{Conclusion}
 This paper presents a novel framework for state and parameter estimation of spatio-temporal neural fields to create patient specific models. A basis function decomposition reduces the infinite dimensional neural field (continuous space) to a finite dimensional state-space model. The frequency analysis methods presented in this paper provide a systematic procedure for specifying the sensor and basis function arrangement required to describe the significant neuro-dynamics by the reduced neural field model. The level of detail of the estimated field is related to the basis functions decomposition, providing a flexible framework where a trade-off can be made between physiological detail and computational complexity. Using the state-space model, the unscented Rauch Tung Striebel smoother was applied for state estimation. Using the sequence of state estimates, a least squares algorithm was implemented for parameter estimation. We have demonstrated that it is theoretically possible to estimate intracortical connectivity and the synaptic dynamics using the proposed methodology.  
@@ -684,7 +684,7 @@ The covariance of $\mathbf{e}_t$ is
 	&=&\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega}\boldsymbol{\phi}(\mathbf r) \gamma(\mathbf r- \mathbf r' )\boldsymbol{\phi}^{\top}(\mathbf r')d\mathbf r' d\mathbf r\mathbf{\Gamma}^{-\top} 
 \end{eqnarray}
 \section{Calculation of Spatial Cut-off Frequency of Field Basis Functions}\label{ap:FrequencyAnalysis}
-This Appendix provides the derivation of the field basis function cut-off frequency as a function of the basis function width (equations~\ref{eq:GaussianFT} and \ref{eq:WidthFrequencyRelationship} in the main text). Applying the \textit{n}-dimensional Fourier transform \cite{Arsac1966} to a \textit{n}-dimensional Gaussian centred at the origin (see equation~\ref{eq:BasisFunctionAtOrigin}) yields
+This Appendix provides the derivation of the field basis function cut-off frequency as a function of the basis function width (equations~\ref{eq:GaussianFT} and \ref{eq:WidthFrequencyRelationship} in the main text). Applying the \textit{n}-dimensional Fourier transform \cite{Arsac1966} to a \textit{n}-dimensional Gaussian centred at the origin (defined in equation~\ref{eq:BasisFunctionAtOrigin}) yields
 \begin{eqnarray}\label{eq:AppendixGaussianFT}
  \lefteqn{\boldsymbol\Phi(\boldsymbol \nu)=\int_{\mathbb{R}^n}{\mathrm{exp}\left({-\frac{1}{\sigma_{\phi}^2}\mathbf r^\top\mathbf r}\right)\mathrm{exp}\left(-2\pi i\boldsymbol\nu^\top\mathbf r\right)d\mathbf r}} \nonumber \\
 &=&\int_{\mathbb{R}^n}\mathrm{exp}\left(-\frac{1}{\sigma_{\phi}^2}\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]^\top\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]\right)d\mathbf r \nonumber \\
@@ -703,11 +703,11 @@ Substituting $\sigma_{\nu}^2=\frac{1}{\pi^2\sigma_{\phi}^2}$ gives
 \begin{equation}
 \boldsymbol\Phi(\boldsymbol \nu)=\left(\frac{1}{\pi\sigma_{\nu}^2}\right)^{\frac{n}{2}}\mathrm{exp}\left(-\frac{1}{\sigma_{\nu}^2}\boldsymbol\nu^\top \boldsymbol\nu\right).
 \end{equation}
-For 3 dB attenuation at $\boldsymbol\nu_c$ we need to set
+For $3$~dB attenuation at $\boldsymbol\nu_c$ we need to set
 \begin{eqnarray}
  \left|\boldsymbol\Phi(\boldsymbol\nu_{c})\right|^2=\frac{1}{2}\left|\boldsymbol\Phi(\mathbf 0)\right|^2,
 \end{eqnarray}
-since the maxima of Gaussian described in equation~\ref{eq:FTofGaussian} is at the origin. Now solving for $\sigma_{\nu}^2$ we get
+since the maximum of Gaussian described in equation~\ref{eq:FTofGaussian} is at the origin. Now solving for $\sigma_{\nu}^2$ we get
 \begin{equation}
  \sigma_{\nu}^2=\frac{2\boldsymbol\nu_{c}^\top \boldsymbol\nu_{c}}{\ln 2 }.
 \end{equation}
