@@ -718,9 +718,9 @@ In this appendix we provide derivations for the convolution and the inner produc
 \end{equation}
 and the connectivity kernel basis function
 \begin{equation}
-\psi_j(\mathbf r)=\mathrm{exp}\left({-\frac{1}{\sigma_{\psi_j}^2} \mathbf{r}^\top\mathbf{r}}\right)
+\psi_j(\mathbf r)=\mathrm{exp}\left({-\frac{1}{\sigma_{\psi_j}^2} \mathbf{r}^\top\mathbf{r}}\right).
 \end{equation}
-We will proceed in the derivation of the convolution assuming the field basis function is positioned at the origin ($\boldsymbol\mu_i=\mathbf 0$). The convolution theorem states that the Fourier transform of a convolution is the product of Fourier transforms. Using the derivation of the Fourier transform of a \emph{n}-dimensional Gaussian from equation~\ref{eq:FTofGaussian} of \ref{ap:FrequencyAnalysis} we have
+The derivation proceeds by assuming the field basis function is positioned at the origin ($\boldsymbol\mu_i=\mathbf 0$). The convolution theorem states that the Fourier transform of a convolution is the product of Fourier transforms. Using the derivation of the Fourier transform of a \emph{n}-dimensional Gaussian from equation~\ref{eq:FTofGaussian} of \ref{ap:FrequencyAnalysis} we have
 \begin{eqnarray}
 \mathcal{F}\left(\phi_i(\mathbf{r})*\psi_j(\mathbf{r}'-\mathbf{r})\right) &=& \left(\pi\sigma_{\phi}^2\sigma_{\psi_j}^2\right)^{\frac{n}{2}}\left(\frac{1}{\sigma_{\phi}^2+\sigma_{\psi_j}^2}\right)^{\frac{n}{2}} \nonumber \\
 &\times& (\pi(\sigma_{\phi}^2+\sigma_{\psi_j}^2))^{\frac{n}{2}}\mathrm{exp}\left(-(\sigma_{\phi}^2+\sigma_{\psi_j}^2)\pi^2\boldsymbol\nu^\top\boldsymbol\nu\right),
@@ -731,12 +731,23 @@ where $\mathcal{F}$ denotes the Fourier transform. Taking the inverse Fourier tr
 \end{equation}
 In the case where $\boldsymbol\mu_i\neq\mathbf 0$ equation \ref{eq:ConvoftwoGaussian} becomes
 \begin{equation}\label{eq:ConvoftwoGaussianNonzeroMean}
- (\phi_i*\phi_j)(\mathbf r)=\left(\frac{\pi\sigma_{\phi}^2\sigma_{\psi_j}^2}{\sigma_{\phi}^2+\sigma_{\psi_j}^2}\right)^{\frac{n}{2}}\mathrm{exp}\left({-\frac{1}{\sigma_{\phi}^2+\sigma_{\psi_j}^2} (\mathbf r-\boldsymbol\mu_i)^\top(\mathbf r-\boldsymbol\mu_i)}\right).
+ \phi_i(\mathbf{r})*\psi_j(\mathbf{r}'-\mathbf{r}) = \left( \frac{\pi\sigma_{\phi}^2\sigma_{\psi_j}^2} {\sigma_{\phi}^2+\sigma_{\psi_j}^2}\right)^{\frac{n}{2}} \mathrm{exp}\left({-\frac{1}{\sigma_{\phi}^2+\sigma_{\psi_j}^2} (\mathbf r-\boldsymbol\mu_i)^\top(\mathbf r-\boldsymbol\mu_i)}\right).
 \end{equation}
 
+
 The inner product of two Gaussian basis functions is defined as
+\begin{equation}
+	\boldsymbol\Gamma = \left[
+	\begin{array}{{ccc}} 
+		\Gamma_{1,1} & \dots & \Gamma_{1,L} \\
+		\vdots & \ddots & \vdots \\
+		\Gamma_{L,1} & \dots & \Gamma_{L,L} 
+	\end{array}
+	\right]
+\end{equation}
+
 \begin{equation}\label{eq:InofGaussianDefinition}
-\phi_i\otimes\phi_j=\int_{\mathcal R^n}\phi_i(\mathbf r)\phi_j(\mathbf r)d\mathbf r
+\Gamma_{1,1} = \phi_i\otimes\phi_j=\int_{\mathcal R^n}\phi_i(\mathbf r)\phi_j(\mathbf r)d\mathbf r
 \end{equation}
 A Gaussian basis function is symmetric with respect to its centre, therefore
 \begin{equation}\label{eq:GaussianSymmetry}
