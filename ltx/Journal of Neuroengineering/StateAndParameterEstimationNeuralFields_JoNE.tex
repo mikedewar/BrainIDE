@@ -663,7 +663,7 @@ where $\xi = 1 - T_s \zeta$.
 \begin{lemma}
 	Consider the i.i.d. noise term $e_t(\mathbf{r})\sim\mathcal{GP}(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r'}))$ then 
 	\begin{equation}\label{eq:AppendixWt} 
-		\mathbf e_t=\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi} ( \mathbf{r} )e_t( \mathbf{r} )d\mathbf{r}} 
+		\mathbf e_t(\mathbf r)=\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi} ( \mathbf{r} )e_t( \mathbf{r} )d\mathbf{r}} 
 	\end{equation}
 	is a vector valued, zero mean normally distributed white noise process with covariance 
 	\begin{equation}
@@ -671,14 +671,14 @@ where $\xi = 1 - T_s \zeta$.
 	\end{equation}
 	\label{lemma:FieldCovariance} 
 \end{lemma}
-\section*{Proof} Equation (\ref{eq:AppendixWt}) is a linear function of $e_t(\mathbf r)$ and hence $\mathbf{e}_t$ is also normally distributed. The expected value of $\mathbf e_t$ is given by 
+\section*{Proof} Equation (\ref{eq:AppendixWt}) is a linear function of $e_t(\mathbf r)$ and hence $\mathbf{e}_t$ is also normally distributed. The expected value of $\mathbf e_t(\mathbf r)$ is given by 
 \begin{eqnarray}
-	\mathbf E\left[ \mathbf e_t\right]&=& \mathbf{\Gamma}^{-1}\int_{\Omega}\boldsymbol\phi\left(\mathbf{r}\right)\mathbf E\left[e_t\left(\mathbf{r}\right)\right] d\mathbf{r} \nonumber \\
+	\mathbf E\left[ \mathbf e_t(\mathbf r)\right]&=& \mathbf{\Gamma}^{-1}\int_{\Omega}\boldsymbol\phi\left(\mathbf{r}\right)\mathbf E\left[e_t\left(\mathbf{r}\right)\right] d\mathbf{r} \nonumber \\
 	&=&\mathbf 0 
 \end{eqnarray}
 The covariance of $\mathbf{e}_t$ is 
 \begin{eqnarray}
-	\lefteqn{\mathbf{\Sigma}_e} \nonumber \\ 
+	\lefteqn{\mathbf E\left[ \mathbf e_t(\mathbf r) \mathbf e_t^\top(\mathbf r')\right]} \nonumber \\ 
 &=&\mathbf{\Gamma}^{-1}\mathbf E[\int_{\Omega}\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})d\mathbf{r} \int_{\Omega}\boldsymbol{\phi}^{\top}(\mathbf{r}') e_t(\mathbf{r}')d\mathbf{r}']\mathbf{\Gamma}^{- \top} \nonumber \\
 	&=&\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega} \boldsymbol{\phi}(\mathbf{r}) \mathbf E[e_t(\mathbf{r})e_t(\mathbf{r}')]\boldsymbol{\phi}^{\top}(\mathbf{r}')d\mathbf{r}' d\mathbf r\mathbf{\Gamma}^{- \top} \nonumber\\
 	&=&\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega}\boldsymbol{\phi}(\mathbf r) \gamma(\mathbf r- \mathbf r' )\boldsymbol{\phi}^{\top}(\mathbf r')d\mathbf r' d\mathbf r\mathbf{\Gamma}^{-\top} 
