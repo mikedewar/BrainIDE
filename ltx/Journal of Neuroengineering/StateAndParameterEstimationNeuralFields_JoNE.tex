@@ -683,23 +683,23 @@ The covariance of $\mathbf{e}_t$ is
 	&=&\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega} \boldsymbol{\phi}(\mathbf{r}) \mathbf E[e_t(\mathbf{r})e_t(\mathbf{r}')]\boldsymbol{\phi}^{\top}(\mathbf{r}')d\mathbf{r}' d\mathbf r\mathbf{\Gamma}^{- \top} \nonumber\\
 	&=&\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega}\boldsymbol{\phi}(\mathbf r) \gamma(\mathbf r- \mathbf r' )\boldsymbol{\phi}^{\top}(\mathbf r')d\mathbf r' d\mathbf r\mathbf{\Gamma}^{-\top} 
 \end{eqnarray}
-\section{Derivation for equations~\ref{eq:GaussianFT} and \ref{eq:WidthFrequencyRelationship} }\label{ap:FrequencyAnalysis}
-Applying the \textit{n}-dimensional Fourier transform \cite{Arsac1966} to a \textit{n}-dimensional Gaussian centered at the origin (see equation~\ref{eq:BasisFunctionAtOrigin}) yields
+\section{Calculation of Spatial Cut-off Frequency of Field Basis Functions}\label{ap:FrequencyAnalysis}
+This Appendix provides the derivation of the field basis function cut-off frequency as a function of the basis function width (equations~\ref{eq:GaussianFT} and \ref{eq:WidthFrequencyRelationship} in the main text). Applying the \textit{n}-dimensional Fourier transform \cite{Arsac1966} to a \textit{n}-dimensional Gaussian centred at the origin (see equation~\ref{eq:BasisFunctionAtOrigin}) yields
 \begin{eqnarray}\label{eq:AppendixGaussianFT}
  \lefteqn{\boldsymbol\Phi(\boldsymbol \nu)=\int_{\mathcal R^n}{\mathrm{exp}\left({-\frac{1}{\sigma_{\phi}^2}\mathbf r^\top\mathbf r}\right)\mathrm{exp}\left(-2\pi i\boldsymbol\nu^\top\mathbf r\right)d\mathbf r}} \nonumber \\
 &=&\int_{\mathcal R^n}\mathrm{exp}\left(-\frac{1}{\sigma_{\phi}^2}\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]^\top\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]\right)d\mathbf r \nonumber \\
-&\times& \mathrm{exp}\left(-\sigma_{\phi}^2\pi^2\boldsymbol\nu^\top \boldsymbol\nu\right)
+&\times& \mathrm{exp}\left(-\sigma_{\phi}^2\pi^2\boldsymbol\nu^\top \boldsymbol\nu\right),
 \end{eqnarray}
 where 
 \begin{eqnarray}\label{eq:IntegralOfGaussian}
 \int_{\mathcal R^n}\mathrm{exp}\left(-\frac{1}{\sigma_{\phi}^2}\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]^\top\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]\right)d\mathbf r&& \nonumber \\
-=\left(\pi\sigma_{\phi}^2\right)^{\frac{n}{2}}&&
+=\left(\pi\sigma_{\phi}^2\right)^{\frac{n}{2}}.&&
 \end{eqnarray}
-substituting \ref{eq:IntegralOfGaussian} in \ref{eq:AppendixGaussianFT} gives another scaled  Gaussian 
+Substituting equation~\ref{eq:IntegralOfGaussian} into equation~\ref{eq:AppendixGaussianFT} gives the scaled Gaussian 
 \begin{equation}\label{eq:FTofGaussian}
-   \boldsymbol\Phi(\boldsymbol\nu)=(\pi\sigma_{\phi}^2)^{\frac{n}{2}}\mathrm{exp}(-\sigma_{\phi}^2\pi^2\boldsymbol\nu^\top \boldsymbol\nu)
+   \boldsymbol\Phi(\boldsymbol\nu)=(\pi\sigma_{\phi}^2)^{\frac{n}{2}}\mathrm{exp}(-\sigma_{\phi}^2\pi^2\boldsymbol\nu^\top \boldsymbol\nu).
 \end{equation}
-substituting $\sigma_{\nu}^2=\frac{1}{\pi^2\sigma_{\phi}^2}$ gives 
+Substituting $\sigma_{\nu}^2=\frac{1}{\pi^2\sigma_{\phi}^2}$ gives 
 \begin{equation}
 \boldsymbol\Phi(\boldsymbol \nu)=\left(\frac{1}{\pi\sigma_{\nu}^2}\right)^{\frac{n}{2}}\mathrm{exp}\left(-\frac{1}{\sigma_{\nu}^2}\boldsymbol\nu^\top \boldsymbol\nu\right).
 \end{equation}
@@ -712,33 +712,33 @@ solving for $\sigma_{\nu}^2$ we get
  \sigma_{\nu}^2=\frac{2\boldsymbol\nu_{c}^\top \boldsymbol\nu_{c}}{\ln 2 }.
 \end{equation}
 \section{Convolution and inner product of two $n$-dimensional Gaussian basis functions}\label{ap:ConvandIn}
-In this appendix we provide derivations for the convolution and the inner product of Gaussian basis functions. These derivations are used in the analytic calculation of $\boldsymbol\Psi(\mathbf{r})$. Consider two Gaussian basis functions
+In this appendix we provide derivations for the convolution and the inner product of Gaussian basis functions. These derivations are used in the analytic calculation of $\boldsymbol\Psi(\mathbf{r})$. Consider the field Gaussian basis function
 \begin{equation}
- \phi_i(\mathbf r)=\mathrm{exp}\left({-\frac{1}{\sigma_i^2} (\mathbf r-\boldsymbol \mu_i)^\top(\mathbf r-\boldsymbol \mu_i})\right)
+ \phi_i(\mathbf r)=\mathrm{exp}\left({-\frac{1}{\sigma_{\phi}^2} (\mathbf r-\boldsymbol \mu_i)^\top(\mathbf r-\boldsymbol \mu_i})\right)
 \end{equation}
+and the connectivity kernel basis function
 \begin{equation}
-\phi_j(\mathbf r)=\mathrm{exp}\left({-\frac{1}{\sigma_j^2} (\mathbf r-\boldsymbol \mu_j)^\top(\mathbf r-\boldsymbol \mu_j})\right)
+\psi_j(\mathbf r)=\mathrm{exp}\left({-\frac{1}{\sigma_{\psi_j}^2} \mathbf{r}^\top\mathbf{r}}\right)
 \end{equation}
-First we derive the convolution of two Gaussian basis functions assuming $\boldsymbol\mu_i=\boldsymbol\mu_j=\mathbf 0$. Convolution theorem states that the Fourier transform of a convolution is the product of Fourier transforms. Using equation \ref{eq:FTofGaussian} we have
+We will proceed in the derivation of the convolution assuming the field basis function is positioned at the origin ($\boldsymbol\mu_i=\mathbf 0$). The convolution theorem states that the Fourier transform of a convolution is the product of Fourier transforms. Using the derivation of the Fourier transform of a \emph{n}-dimensional Gaussian from equation~\ref{eq:FTofGaussian} of \ref{ap:FrequencyAnalysis} we have
 \begin{eqnarray}
-\boldsymbol\Phi_i(\boldsymbol\nu)\boldsymbol\Phi_j(\boldsymbol\nu)&=&\left(\pi\sigma_i^2\sigma_j^2\right)^{\frac{n}{2}}\left(\frac{1}{\sigma_i^2+\sigma_j^2}\right)^{\frac{n}{2}} \nonumber \\
-&\times& (\pi(\sigma_i^2+\sigma_j^2))^{\frac{n}{2}}\mathrm{exp}\left(-(\sigma_i^2+\sigma_j^2)\pi^2\boldsymbol\nu^\top\boldsymbol\nu\right),
+\mathcal{F}\left(\phi_i(\mathbf{r})*\psi_j(\mathbf{r}'-\mathbf{r})\right) &=& \left(\pi\sigma_{\phi}^2\sigma_{\psi_j}^2\right)^{\frac{n}{2}}\left(\frac{1}{\sigma_{\phi}^2+\sigma_{\psi_j}^2}\right)^{\frac{n}{2}} \nonumber \\
+&\times& (\pi(\sigma_{\phi}^2+\sigma_{\psi_j}^2))^{\frac{n}{2}}\mathrm{exp}\left(-(\sigma_{\phi}^2+\sigma_{\psi_j}^2)\pi^2\boldsymbol\nu^\top\boldsymbol\nu\right),
 \end{eqnarray}
-taking the inverse Fourier transform we can write the convolution as
+where $\mathcal{F}$ denotes the Fourier transform. Taking the inverse Fourier transform, the convolution is
 \begin{equation}\label{eq:ConvoftwoGaussian}
- (\phi_i*\phi_j)(\mathbf r)=\left(\frac{\pi\sigma_i^2\sigma_j^2}{\sigma_i^2+\sigma_j^2}\right)^{\frac{n}{2}}\mathrm{exp}\left({-\frac{1}{\sigma_i^2+\sigma_j^2} \mathbf r^\top\mathbf r}\right).
+ \phi_i(\mathbf{r})*\psi_j(\mathbf{r}'-\mathbf{r}) = \left(\frac{\pi\sigma_{\phi}^2\sigma_{\psi_j}^2}{\sigma_{\phi}^2+\sigma_{\psi_j}^2}\right)^{\frac{n}{2}}\mathrm{exp}\left({-\frac{1}{\sigma_{\phi}^2+\sigma_{\psi_j}^2} \mathbf r^\top\mathbf r}\right).
 \end{equation}
-In the case where $\boldsymbol\mu_i\neq\boldsymbol\mu_j\neq\mathbf 0$ equation \ref{eq:ConvoftwoGaussian} becomes
+In the case where $\boldsymbol\mu_i\neq\mathbf 0$ equation \ref{eq:ConvoftwoGaussian} becomes
 \begin{equation}\label{eq:ConvoftwoGaussianNonzeroMean}
- (\phi_i*\phi_j)(\mathbf r)=\left(\frac{\pi\sigma_i^2\sigma_j^2}{\sigma_i^2+\sigma_j^2}\right)^{\frac{n}{2}}\mathrm{exp}\left({-\frac{1}{\sigma_i^2+\sigma_j^2} (\mathbf r-\boldsymbol\mu)^\top(\mathbf r-\boldsymbol\mu)}\right).
+ (\phi_i*\phi_j)(\mathbf r)=\left(\frac{\pi\sigma_{\phi}^2\sigma_{\psi_j}^2}{\sigma_{\phi}^2+\sigma_{\psi_j}^2}\right)^{\frac{n}{2}}\mathrm{exp}\left({-\frac{1}{\sigma_{\phi}^2+\sigma_{\psi_j}^2} (\mathbf r-\boldsymbol\mu_i)^\top(\mathbf r-\boldsymbol\mu_i)}\right).
 \end{equation}
-where $\boldsymbol\mu=\boldsymbol\mu_i+\boldsymbol\mu_j$.
 
 The inner product of two Gaussian basis functions is defined as
 \begin{equation}\label{eq:InofGaussianDefinition}
 \phi_i\otimes\phi_j=\int_{\mathcal R^n}\phi_i(\mathbf r)\phi_j(\mathbf r)d\mathbf r
 \end{equation}
-A Gaussian basis function is symmetric with respect to its center, therefore
+A Gaussian basis function is symmetric with respect to its centre, therefore
 \begin{equation}\label{eq:GaussianSymmetry}
  \phi_i(\boldsymbol \mu_i+\mathbf r)= \phi_i(\boldsymbol \mu_i-\mathbf r)
 \end{equation}
