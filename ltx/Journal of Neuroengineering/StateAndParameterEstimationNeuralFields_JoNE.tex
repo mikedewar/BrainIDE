@@ -686,13 +686,13 @@ The covariance of $\mathbf{e}_t$ is
 \section{Calculation of Spatial Cut-off Frequency of Field Basis Functions}\label{ap:FrequencyAnalysis}
 This Appendix provides the derivation of the field basis function cut-off frequency as a function of the basis function width (equations~\ref{eq:GaussianFT} and \ref{eq:WidthFrequencyRelationship} in the main text). Applying the \textit{n}-dimensional Fourier transform \cite{Arsac1966} to a \textit{n}-dimensional Gaussian centred at the origin (see equation~\ref{eq:BasisFunctionAtOrigin}) yields
 \begin{eqnarray}\label{eq:AppendixGaussianFT}
- \lefteqn{\boldsymbol\Phi(\boldsymbol \nu)=\int_{\mathcal R^n}{\mathrm{exp}\left({-\frac{1}{\sigma_{\phi}^2}\mathbf r^\top\mathbf r}\right)\mathrm{exp}\left(-2\pi i\boldsymbol\nu^\top\mathbf r\right)d\mathbf r}} \nonumber \\
-&=&\int_{\mathcal R^n}\mathrm{exp}\left(-\frac{1}{\sigma_{\phi}^2}\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]^\top\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]\right)d\mathbf r \nonumber \\
+ \lefteqn{\boldsymbol\Phi(\boldsymbol \nu)=\int_{\mathbb{R}^n}{\mathrm{exp}\left({-\frac{1}{\sigma_{\phi}^2}\mathbf r^\top\mathbf r}\right)\mathrm{exp}\left(-2\pi i\boldsymbol\nu^\top\mathbf r\right)d\mathbf r}} \nonumber \\
+&=&\int_{\mathbb{R}^n}\mathrm{exp}\left(-\frac{1}{\sigma_{\phi}^2}\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]^\top\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]\right)d\mathbf r \nonumber \\
 &\times& \mathrm{exp}\left(-\sigma_{\phi}^2\pi^2\boldsymbol\nu^\top \boldsymbol\nu\right),
 \end{eqnarray}
 where 
 \begin{eqnarray}\label{eq:IntegralOfGaussian}
-\int_{\mathcal R^n}\mathrm{exp}\left(-\frac{1}{\sigma_{\phi}^2}\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]^\top\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]\right)d\mathbf r&& \nonumber \\
+\int_{\mathbb{R}^n}\mathrm{exp}\left(-\frac{1}{\sigma_{\phi}^2}\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]^\top\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]\right)d\mathbf r&& \nonumber \\
 =\left(\pi\sigma_{\phi}^2\right)^{\frac{n}{2}}.&&
 \end{eqnarray}
 Substituting equation~\ref{eq:IntegralOfGaussian} into equation~\ref{eq:AppendixGaussianFT} gives the scaled Gaussian 
@@ -703,11 +703,11 @@ Substituting $\sigma_{\nu}^2=\frac{1}{\pi^2\sigma_{\phi}^2}$ gives
 \begin{equation}
 \boldsymbol\Phi(\boldsymbol \nu)=\left(\frac{1}{\pi\sigma_{\nu}^2}\right)^{\frac{n}{2}}\mathrm{exp}\left(-\frac{1}{\sigma_{\nu}^2}\boldsymbol\nu^\top \boldsymbol\nu\right).
 \end{equation}
-and hence completing the derivation. For 3 dB attenuation at $\boldsymbol\nu_c$ we need to set
+For 3 dB attenuation at $\boldsymbol\nu_c$ we need to set
 \begin{eqnarray}
- \left|\boldsymbol\Phi(\boldsymbol\nu_{c})\right|^2=\frac{1}{2}\left|\boldsymbol\Phi(\mathbf 0)\right|^2
+ \left|\boldsymbol\Phi(\boldsymbol\nu_{c})\right|^2=\frac{1}{2}\left|\boldsymbol\Phi(\mathbf 0)\right|^2,
 \end{eqnarray}
-solving for $\sigma_{\nu}^2$ we get
+since the maxima of Gaussian described in equation~\ref{eq:FTofGaussian} is at the origin. Now solving for $\sigma_{\nu}^2$ we get
 \begin{equation}
  \sigma_{\nu}^2=\frac{2\boldsymbol\nu_{c}^\top \boldsymbol\nu_{c}}{\ln 2 }.
 \end{equation}
@@ -747,7 +747,7 @@ The matrix $\Gamma$ is defined as the inner product of the field basis function 
 \end{equation}
 where
 \begin{equation}\label{eq:InofGaussianDefinition}
-\Gamma_{i,j} = \phi_i\otimes\phi_j=\int_{\Omega}\phi_i(\mathbf r)\phi_j(\mathbf r)d\mathbf{r}.
+\Gamma_{i,j} = \phi_i\otimes\phi_j=\int_{\mathbb{R}^n}\phi_i(\mathbf r)\phi_j(\mathbf r)d\mathbf{r}.
 \end{equation}
 A Gaussian basis function is symmetric with respect to its centre, therefore
 \begin{equation}\label{eq:GaussianSymmetry}
@@ -759,8 +759,8 @@ Letting $\mathbf{r}= \mathbf{r}-\boldsymbol{\mu}_i$ equation~\ref{eq:GaussianSym
 \end{equation}
 Now substituting equation~\ref{eq:ConsequenceofGaussianSymmetry} into equation~\ref{eq:InofGaussianDefinition} gives 
 \begin{eqnarray}
-\phi_i\otimes\phi_j&=&\int_{\Omega}\phi_i(\mathbf r)\phi_j(\mathbf r)d\mathbf r\\
-&=&\int_{\Omega}\phi_i(2\boldsymbol \mu_i-\mathbf r)\phi_j(\mathbf r)d\mathbf r\\
+\phi_i\otimes\phi_j&=&\int_{\mathbb{R}^n}\phi_i(\mathbf r)\phi_j(\mathbf r)d\mathbf r\\
+&=&\int_{\mathbb{R}^n}\phi_i(2\boldsymbol \mu_i-\mathbf r)\phi_j(\mathbf r)d\mathbf r\\
 &=&(\phi_i*\phi_j)(2\boldsymbol \mu_i).
 \end{eqnarray}
 Evaluating equation \ref{eq:ConvoftwoGaussianNonzeroMean} at $\mathbf r=2\boldsymbol\mu_i $ gives
