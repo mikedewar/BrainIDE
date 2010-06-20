@@ -727,11 +727,11 @@ The derivation proceeds by assuming the field basis function is positioned at th
 \end{eqnarray}
 where $\mathcal{F}$ denotes the Fourier transform. Taking the inverse Fourier transform, the convolution is
 \begin{equation}\label{eq:ConvoftwoGaussian}
- \phi_i(\mathbf{r})*\psi_j(\mathbf{r}'-\mathbf{r}) = \left(\frac{\pi\sigma_{\phi}^2\sigma_{\psi_j}^2}{\sigma_{\phi}^2+\sigma_{\psi_j}^2}\right)^{\frac{n}{2}}\mathrm{exp}\left({-\frac{1}{\sigma_{\phi}^2+\sigma_{\psi_j}^2} \mathbf r^\top\mathbf r}\right).
+ \phi_i(\mathbf{r})*\psi_j(\mathbf{r}) = \left(\frac{\pi\sigma_{\phi}^2\sigma_{\psi_j}^2}{\sigma_{\phi}^2+\sigma_{\psi_j}^2}\right)^{\frac{n}{2}}\mathrm{exp}\left({-\frac{1}{\sigma_{\phi}^2+\sigma_{\psi_j}^2} \mathbf r^\top\mathbf r}\right).
 \end{equation}
 In the case where $\boldsymbol\mu_i\neq\mathbf 0$ equation \ref{eq:ConvoftwoGaussian} becomes
 \begin{equation}\label{eq:ConvoftwoGaussianNonzeroMean}
- \phi_i(\mathbf{r})*\psi_j(\mathbf{r}'-\mathbf{r}) = \left( \frac{\pi\sigma_{\phi}^2\sigma_{\psi_j}^2} {\sigma_{\phi}^2+\sigma_{\psi_j}^2}\right)^{\frac{n}{2}} \mathrm{exp}\left({-\frac{1}{\sigma_{\phi}^2+\sigma_{\psi_j}^2} (\mathbf r-\boldsymbol\mu_i)^\top(\mathbf r-\boldsymbol\mu_i)}\right).
+ \phi_i(\mathbf{r})*\psi_j(\mathbf{r}) = \left( \frac{\pi\sigma_{\phi}^2\sigma_{\psi_j}^2} {\sigma_{\phi}^2+\sigma_{\psi_j}^2}\right)^{\frac{n}{2}} \mathrm{exp}\left({-\frac{1}{\sigma_{\phi}^2+\sigma_{\psi_j}^2} (\mathbf r-\boldsymbol\mu_i)^\top(\mathbf r-\boldsymbol\mu_i)}\right).
 \end{equation}
 
 \section{Inner Product Bit}
@@ -747,7 +747,7 @@ The matrix $\Gamma$ is defined as the inner product of the field basis function 
 \end{equation}
 where
 \begin{equation}\label{eq:InofGaussianDefinition}
-\Gamma_{1,1} = \phi_i\otimes\phi_j=\int_{\Omega}\phi_i(\mathbf r)\phi_j(\mathbf r)d\mathbf{r}.
+\Gamma_{i,j} = \phi_i\otimes\phi_j=\int_{\mathcal R^n}\phi_i(\mathbf r)\phi_j(\mathbf r)d\mathbf{r}.
 \end{equation}
 A Gaussian basis function is symmetric with respect to its centre, therefore
 \begin{equation}\label{eq:GaussianSymmetry}
