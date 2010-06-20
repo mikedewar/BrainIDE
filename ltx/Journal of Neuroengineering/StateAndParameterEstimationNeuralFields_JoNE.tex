@@ -711,7 +711,7 @@ solving for $\sigma_{\nu}^2$ we get
 \begin{equation}
  \sigma_{\nu}^2=\frac{2\boldsymbol\nu_{c}^\top \boldsymbol\nu_{c}}{\ln 2 }.
 \end{equation}
-\section{Convolution and inner product of two $n$-dimensional Gaussian basis functions}\label{ap:ConvandIn}
+\section{Convolution of two $n$-dimensional Gaussian basis functions}\label{ap:ConvandIn}
 In this appendix we provide derivations for the convolution and the inner product of Gaussian basis functions. These derivations are used in the analytic calculation of $\boldsymbol\Psi(\mathbf{r})$. Consider the field Gaussian basis function
 \begin{equation}
  \phi_i(\mathbf r)=\mathrm{exp}\left({-\frac{1}{\sigma_{\phi}^2} (\mathbf r-\boldsymbol \mu_i)^\top(\mathbf r-\boldsymbol \mu_i})\right)
@@ -734,8 +734,8 @@ In the case where $\boldsymbol\mu_i\neq\mathbf 0$ equation \ref{eq:ConvoftwoGaus
  \phi_i(\mathbf{r})*\psi_j(\mathbf{r}'-\mathbf{r}) = \left( \frac{\pi\sigma_{\phi}^2\sigma_{\psi_j}^2} {\sigma_{\phi}^2+\sigma_{\psi_j}^2}\right)^{\frac{n}{2}} \mathrm{exp}\left({-\frac{1}{\sigma_{\phi}^2+\sigma_{\psi_j}^2} (\mathbf r-\boldsymbol\mu_i)^\top(\mathbf r-\boldsymbol\mu_i)}\right).
 \end{equation}
 
-
-The inner product of two Gaussian basis functions is defined as
+\section{Inner Product Bit}
+The matrix $\Gamma$ is defined as the inner product of the field basis function vector as
 \begin{equation}
 	\boldsymbol\Gamma = \left[
 	\begin{array}{{ccc}} 
@@ -743,11 +743,11 @@ The inner product of two Gaussian basis functions is defined as
 		\vdots & \ddots & \vdots \\
 		\Gamma_{L,1} & \dots & \Gamma_{L,L} 
 	\end{array}
-	\right]
+	\right],
 \end{equation}
-
+where
 \begin{equation}\label{eq:InofGaussianDefinition}
-\Gamma_{1,1} = \phi_i\otimes\phi_j=\int_{\mathcal R^n}\phi_i(\mathbf r)\phi_j(\mathbf r)d\mathbf r
+\Gamma_{1,1} = \phi_i\otimes\phi_j=\int_{\mathcal R^n}\phi_i(\mathbf r)\phi_j(\mathbf r)d\mathbf{r}.
 \end{equation}
 A Gaussian basis function is symmetric with respect to its centre, therefore
 \begin{equation}\label{eq:GaussianSymmetry}
