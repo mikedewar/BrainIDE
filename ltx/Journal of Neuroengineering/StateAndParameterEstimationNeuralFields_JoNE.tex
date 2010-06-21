@@ -720,28 +720,29 @@ since the maximum of Gaussian described in equation~\ref{eq:FTofGaussian} is at 
  \sigma_{\nu}^2=\frac{2\boldsymbol\nu_{c}^\top \boldsymbol\nu_{c}}{\ln 2 }.
 \end{equation}
 \section{Convolution of two $n$-dimensional Gaussian basis functions}\label{ap:ConvOfGaussians}
-In this appendix we provide derivations for the convolution and the inner product of Gaussian basis functions. These derivations are used in the analytic calculation of $\boldsymbol\Psi(\mathbf{r})$. Consider the field Gaussian basis function
+In this appendix we provide derivation for the convolution of Gaussian basis functions. This derivation is used in the analytic calculation of $\boldsymbol\Psi(\mathbf{r})$ and the observation matrix, $\mathbf C$. Consider two Gaussian basis functions
 \begin{equation}
- \phi_i(\mathbf r)=\mathrm{exp}\left({-\frac{1}{\sigma_{\phi}^2} (\mathbf r-\boldsymbol \mu_i)^\top(\mathbf r-\boldsymbol \mu_i})\right)
+ \varphi_i(\mathbf r)=\mathrm{exp}\left({-\frac{1}{\sigma_i^2} (\mathbf r-\boldsymbol \mu_i)^\top(\mathbf r-\boldsymbol \mu_i})\right)
 \end{equation}
-and the connectivity kernel basis function
+and 
 \begin{equation}
-\psi_j(\mathbf r)=\mathrm{exp}\left({-\frac{1}{\sigma_{\psi_j}^2} \mathbf{r}^\top\mathbf{r}}\right).
+\varphi_j(\mathbf r)=\mathrm{exp}\left({-\frac{1}{\sigma_j^2} (\mathbf r-\boldsymbol \mu_j)^\top(\mathbf r-\boldsymbol \mu_j})\right).
 \end{equation}
-The derivation proceeds by assuming the field basis function is positioned at the origin ($\boldsymbol\mu_i=\mathbf 0$). The convolution theorem states that the Fourier transform of a convolution is the product of Fourier transforms. Using the derivation of the Fourier transform of a \emph{n}-dimensional Gaussian from equation~\ref{eq:FTofGaussian} of \ref{ap:FrequencyAnalysis} we have
+The derivation proceeds by assuming the Gaussian basis functions are positioned at the origin ($\boldsymbol\mu_i=\boldsymbol\mu_j=\mathbf 0$). The convolution theorem states that the Fourier transform of the convolution of two functions is the product of their Fourier transforms. Using the derivation of the Fourier transform of a \emph{n}-dimensional Gaussian from equation~\ref{eq:FTofGaussian} of \ref{ap:FrequencyAnalysis} we have
 \begin{eqnarray}
-\mathcal{F}\left(\phi_i*\psi_j\right)(\mathbf{r}) &=& \left(\pi\sigma_{\phi}^2\sigma_{\psi_j}^2\right)^{\frac{n}{2}}\left(\frac{1}{\sigma_{\phi}^2+\sigma_{\psi_j}^2}\right)^{\frac{n}{2}} \nonumber \\
-&\times& (\pi(\sigma_{\phi}^2+\sigma_{\psi_j}^2))^{\frac{n}{2}}\mathrm{exp}\left(-(\sigma_{\phi}^2+\sigma_{\psi_j}^2)\pi^2\boldsymbol\nu^\top\boldsymbol\nu\right),
+\mathcal{F}\left(\varphi_i*\varphi_j\right)(\mathbf{r}) &=& \left(\pi\sigma_i^2\sigma_j^2\right)^{\frac{n}{2}}\left(\frac{1}{\sigma_i^2+\sigma_j^2}\right)^{\frac{n}{2}} \nonumber \\
+&\times& (\pi(\sigma_i^2+\sigma_j^2))^{\frac{n}{2}}\mathrm{exp}\left(-(\sigma_i^2+\sigma_j^2)\pi^2\boldsymbol\nu^\top\boldsymbol\nu\right),
 \end{eqnarray}
 where $\mathcal{F}$ denotes the Fourier transform. Taking the inverse Fourier transform, the convolution is
 \begin{equation}\label{eq:ConvoftwoGaussian}
- \left(\phi_i*\psi_j\right)(\mathbf{r}) = \left(\frac{\pi\sigma_{\phi}^2\sigma_{\psi_j}^2}{\sigma_{\phi}^2+\sigma_{\psi_j}^2}\right)^{\frac{n}{2}}\mathrm{exp}\left({-\frac{1}{\sigma_{\phi}^2+\sigma_{\psi_j}^2} \mathbf r^\top\mathbf r}\right).
+ \left(\varphi_i*\varphi_j\right)(\mathbf{r}) = \left(\frac{\pi\sigma_i^2\sigma_j^2}{\sigma_i^2+\sigma_j^2}\right)^{\frac{n}{2}}\mathrm{exp}\left({-\frac{1}{\sigma_i^2+\sigma_j^2} \mathbf r^\top\mathbf r}\right).
 \end{equation}
-In the case where $\boldsymbol\mu_i\neq\mathbf 0$ equation \ref{eq:ConvoftwoGaussian} becomes
+In the case where $\boldsymbol\mu_i\neq\boldsymbol\mu_j\neq\mathbf 0$ equation \ref{eq:ConvoftwoGaussian} becomes
 \begin{equation}\label{eq:ConvoftwoGaussianNonzeroMean}
- \left(\phi_i*\psi_j\right)(\mathbf{r}) = \left( \frac{\pi\sigma_{\phi}^2\sigma_{\psi_j}^2} {\sigma_{\phi}^2+\sigma_{\psi_j}^2}\right)^{\frac{n}{2}} \mathrm{exp}\left({-\frac{1}{\sigma_{\phi}^2+\sigma_{\psi_j}^2} (\mathbf r-\boldsymbol\mu_i)^\top(\mathbf r-\boldsymbol\mu_i)}\right).
+ \left(\varphi_i*\varphi_j\right)(\mathbf{r}) = \left( \frac{\pi\sigma_i^2\sigma_j^2} {\sigma_i^2+\sigma_j^2}\right)^{\frac{n}{2}} \mathrm{exp}\left({-\frac{1}{\sigma_i^2+\sigma_j^2} (\mathbf r-\boldsymbol\mu)^\top(\mathbf r-\boldsymbol\mu)}\right).
 \end{equation}
-The analytic definition of the observation matrix, $C$, can be derived in a similar fashion, replacing connectivity kernel basis with the sensor.  
+where $\boldsymbol\mu=\boldsymbol\mu_i+\boldsymbol\mu_j$. 
+% The analytic definition of the observation matrix, $C$, can be derived in a similar fashion, replacing connectivity kernel basis with the sensor.  
 \section{Inner Product Bit}\label{ap:InnerProdOfGaussians}
 The matrix $\Gamma$ is defined as the inner product of the field basis function vector as
 \begin{equation}
