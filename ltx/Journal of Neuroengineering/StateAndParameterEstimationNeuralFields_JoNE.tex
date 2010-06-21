@@ -77,11 +77,12 @@ where $\zeta=\tau^{-1}$, $\tau$ is the synaptic time constant and $\eta(t)$ is t
 	\label{RateBasedInteractions} g\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( v\left( \mathbf{r}',t \right) \right)d\mathbf{r}'}, 
 \end{equation}
 where $f(\cdot)$ is the firing rate function, $w(\cdot)$ is the spatial connectivity kernel and $\Omega$ is the spatial domain representing a cortical sheet or surface. The connectivity kernel is typically a ``Mexican hat'' function, which describes local excitation and surround inhibition. To demonstrate flexibility in estimation algorithm, a third component of the kernel is introduced describing weak longer-range excitation. An example of the connectivity kernel is shown in in Figure~\ref{fig:2d_kernel}. The exact shape of this kernel is assumed to vary across patients, and hence needs to be inferred from data.
-\begin{figure}\label{fig:2d_kernel}
+\begin{figure}
    	\begin{center}
    		\includegraphics{./Graph/Cross_section_kernel.pdf} 
    	\end{center}
-   	\caption{Mexican-hat connectivity kernel, $w(\mathbf{r},\mathbf{r'})$, used in this paper. The function $w(.)$ is rotationally symmetric (isotropic) about zero, hence a cross-section captures the important aspect of the connectivity kernel's shape. The kernel decays asymptotically to zero.} 
+   	\caption{Mexican-hat connectivity kernel, $w(\mathbf{r},\mathbf{r'})$, used in this paper. The function $w(.)$ is rotationally symmetric (isotropic) about zero, hence a cross-section captures the important aspect of the connectivity kernel's shape. The kernel decays asymptotically to zero.}
+ 	\label{fig:2d_kernel}
    \end{figure}
 The firing rate of the presynaptic neurons is related to the postsynaptic membrane potential by the sigmoidal activation function 
 \begin{equation}
@@ -142,7 +143,14 @@ Decomposition allows a continuous field to be represented by a finite-dimensiona
 \begin{equation}
 	\label{DefFieldDecomp} v_t\left(\mathbf{r}\right) \approx \boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) \mathbf{x}_t, 
 \end{equation}
-where $\mathbf{\boldsymbol{\phi}}(\mathbf{r})$ is a vector of Gaussian basis functions that are scaled by the state vector, $\mathbf{x}_t$. %The choice of Gaussian basis functions can be justified by the existence of the so called bump solutions for this class of model, which have a Gaussian shape~\cite{Coombes2005}. 
+where $\mathbf{\boldsymbol{\phi}}(\mathbf{r})$ is a vector of Gaussian basis functions that are scaled by the state vector, $\mathbf{x}_t$. An example of the field decomposition is given in Figure~\ref{fig:FieldDecomposition}.%The choice of Gaussian basis functions can be justified by the existence of the so called bump solutions for this class of model, which have a Gaussian shape~\cite{Coombes2005}.
+\begin{figure}
+   	\begin{center}
+   		\includegraphics{./Graph/FieldDecomposition.pdf} 
+   	\end{center}
+   	\caption{An example of continuous field decompposed by a finite number of basis functions scaled by the state vector. } 
+	\label{fig:FieldDecomposition}
+   \end{figure}
 The width and positioning of the basis functions can be determined by spectral analysis (explained in detail in Section~\ref{SpectralAnalysisSection}). The connectivity kernel can also be decomposed as 
 \begin{equation}\label{DefKernelDecomp}
 	 w\left(\mathbf{r},\mathbf{r}'\right) =\boldsymbol{\psi}^\top\left(\mathbf{r},\mathbf{r}'\right) \boldsymbol{\theta},
@@ -663,7 +671,7 @@ where $\xi = 1 - T_s \zeta$.
 \begin{lemma}
 	Consider the i.i.d. noise term $e_t(\mathbf{r})\sim\mathcal{GP}(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r'}))$ then 
 	\begin{equation}\label{eq:AppendixWt} 
-		\mathbf e_t=\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi} ( \mathbf{r} )e_t( \mathbf{r} )d\mathbf{r}} 
+		\mathbf e_t(\mathbf r)=\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi} ( \mathbf{r} )e_t( \mathbf{r} )d\mathbf{r}} 
 	\end{equation}
 	is a vector valued, zero mean normally distributed white noise process with covariance 
 	\begin{equation}
@@ -671,14 +679,14 @@ where $\xi = 1 - T_s \zeta$.
 	\end{equation}
 	\label{lemma:FieldCovariance} 
 \end{lemma}
-\section*{Proof} Equation (\ref{eq:AppendixWt}) is a linear function of $e_t(\mathbf r)$ and hence $\mathbf{e}_t$ is also normally distributed. The expected value of $\mathbf e_t$ is given by 
+\section*{Proof} Equation (\ref{eq:AppendixWt}) is a linear function of $e_t(\mathbf r)$ and hence $\mathbf{e}_t$ is also normally distributed. The expected value of $\mathbf e_t(\mathbf r)$ is given by 
 \begin{eqnarray}
-	\mathbf E\left[ \mathbf e_t\right]&=& \mathbf{\Gamma}^{-1}\int_{\Omega}\boldsymbol\phi\left(\mathbf{r}\right)\mathbf E\left[e_t\left(\mathbf{r}\right)\right] d\mathbf{r} \nonumber \\
+	\mathbf E\left[ \mathbf e_t(\mathbf r)\right]&=& \mathbf{\Gamma}^{-1}\int_{\Omega}\boldsymbol\phi\left(\mathbf{r}\right)\mathbf E\left[e_t\left(\mathbf{r}\right)\right] d\mathbf{r} \nonumber \\
 	&=&\mathbf 0 
 \end{eqnarray}
-The covariance of $\mathbf{e}_t$ is 
+The covariance of $\mathbf{e}_t(\mathbf r)$ is 
 \begin{eqnarray}
-	\lefteqn{\mathbf{\Sigma}_e} \nonumber \\ 
+	\lefteqn{\mathbf E\left[ \mathbf e_t(\mathbf r) \mathbf e_t^\top(\mathbf r')\right]} \nonumber \\ 
 &=&\mathbf{\Gamma}^{-1}\mathbf E[\int_{\Omega}\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})d\mathbf{r} \int_{\Omega}\boldsymbol{\phi}^{\top}(\mathbf{r}') e_t(\mathbf{r}')d\mathbf{r}']\mathbf{\Gamma}^{- \top} \nonumber \\
 	&=&\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega} \boldsymbol{\phi}(\mathbf{r}) \mathbf E[e_t(\mathbf{r})e_t(\mathbf{r}')]\boldsymbol{\phi}^{\top}(\mathbf{r}')d\mathbf{r}' d\mathbf r\mathbf{\Gamma}^{- \top} \nonumber\\
 	&=&\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega}\boldsymbol{\phi}(\mathbf r) \gamma(\mathbf r- \mathbf r' )\boldsymbol{\phi}^{\top}(\mathbf r')d\mathbf r' d\mathbf r\mathbf{\Gamma}^{-\top} 
