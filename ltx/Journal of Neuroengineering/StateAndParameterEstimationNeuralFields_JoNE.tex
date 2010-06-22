@@ -679,7 +679,7 @@ The covariance of $\mathbf{e}_t$ is
 	&=&\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega} \boldsymbol{\phi}(\mathbf{r}) \mathbf E[e_t(\mathbf{r})e_t(\mathbf{r}')]\boldsymbol{\phi}^{\top}(\mathbf{r}')d\mathbf{r}' d\mathbf r\mathbf{\Gamma}^{- \top} \nonumber\\
 	&=&\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega}\boldsymbol{\phi}(\mathbf r) \gamma(\mathbf r- \mathbf r' )\boldsymbol{\phi}^{\top}(\mathbf r')d\mathbf r' d\mathbf r\mathbf{\Gamma}^{-\top}.
 \end{eqnarray}
-\section{Calculation of Spatial Cut-off Frequency of Field Basis Functions}\label{ap:FrequencyAnalysis}
+\section{Spatial Cut-off Frequency of Field Basis Functions}\label{ap:FrequencyAnalysis}
 This Appendix provides the derivation of the field basis function cut-off frequency as a function of the basis function width (equations~\ref{eq:GaussianFT} and \ref{eq:WidthFrequencyRelationship} in the main text). Applying the \textit{n}-dimensional Fourier transform \cite{Arsac1966} to a \textit{n}-dimensional Gaussian centred at the origin (defined in equation~\ref{eq:BasisFunctionAtOrigin}) yields
 \begin{eqnarray}\label{eq:AppendixGaussianFT}
  \lefteqn{\boldsymbol\Phi(\boldsymbol \nu)=\int_{\mathbb{R}^n}{\mathrm{exp}\left({-\frac{1}{\sigma_{\phi}^2}\mathbf r^\top\mathbf r}\right)\mathrm{exp}\left(-2\pi i\boldsymbol\nu^\top\mathbf r\right)d\mathbf r}} \nonumber \\
@@ -712,7 +712,7 @@ since the maximum of Gaussian described in equation~\ref{eq:FTofGaussian} is at 
 \begin{equation}
  \sigma_{\nu}^2=\frac{2\boldsymbol\nu_{c}^\top \boldsymbol\nu_{c}}{\ln 2 }.
 \end{equation}
-\section{Convolution of two $n$-dimensional Gaussian basis functions}\label{ap:ConvOfGaussians}
+\section{Convolution of Two $n$-Dimensional Gaussians}\label{ap:ConvOfGaussians}
 In this appendix we provide derivation for the convolution of Gaussian basis functions. This derivation is used in the analytic calculation of $\boldsymbol\Psi(\mathbf{r})$ and the observation matrix, $\mathbf C$. Consider two Gaussian basis functions
 \begin{equation}
  \varphi_i(\mathbf r)=\mathrm{exp}\left({-\frac{1}{\sigma_i^2} (\mathbf r-\boldsymbol \mu_i)^\top(\mathbf r-\boldsymbol \mu_i})\right)
@@ -736,7 +736,7 @@ In the case where $\boldsymbol\mu_i\neq\boldsymbol\mu_j\neq\mathbf 0$ equation \
 \end{equation}
 where $\boldsymbol\mu=\boldsymbol\mu_i+\boldsymbol\mu_j$. 
 % The analytic definition of the observation matrix, $C$, can be derived in a similar fashion, replacing connectivity kernel basis with the sensor.  
-\section{Inner Product Bit}\label{ap:InnerProdOfGaussians}
+\section{Inner Product of Two \emph{n}-Dimensional Gaussians}\label{ap:InnerProdOfGaussians}
 The matrix $\Gamma$ is defined as the inner product of the field basis function vector as
 \begin{equation}
 	\boldsymbol\Gamma = \left[
