@@ -823,6 +823,7 @@ In this paper, an assumption was made that the chosen kernel basis functions can
 	\hline
 	\multicolumn{4}{|c|}{\emph{Decomposition}} \\
 	\hline
+	$\hat{\mathbf{x}}$ & State estimate & & \\
     $L$ & number of field basis functions & 81 & \\
    	$\boldsymbol\phi(\mathbf{r})$ & vector of Gaussian basis functions & & \\
    	$\mathbf{x}_t$ & state vector at time $t$ & & \\
@@ -876,33 +877,6 @@ In this paper, an assumption was made that the chosen kernel basis functions can
 \label{tab:label}
 \end{table}
 
-% ~~~~~~~~~~~~~~~~~~~~
-
-\begin{table}[h!]\footnotesize
-    \begin{tabular}{ll}
-        $\hat{\mathbf{x}}$ & State estimate \\
-	$\chi$ & Matrix of sigma vectors \\
-	$\lambda$& Scaling parameter\\
-	$\alpha$& Determines the spread of sigma points\\
-	$\beta$& Prior knowledge of the sigma points distribution\\
-	$\kappa$& Scaling parameter\\
-	$W$& Sigma vecors weights\\
-    	$\hat{\mathbf{x}}_t^{f-}$ & Forward prior estimate \\
-    	$\hat{\mathbf{x}}_t^f$ & Forward posterior estimate \\
-    	$\hat{\mathbf{x}}_t^{b-}$ & Backward prior estimate \\
-    	$\hat{\mathbf{x}}_t^{b}$ & Backward posterior estimate \\
-    	$P^f_t$ & Forward posterior covariance matrix \\
-    	$P^{f-}_t$ & Forward prior covariance matrix \\
-    	$P^b_t$ & Backward posterior covariance matrix \\
-    	$P^{b-}_t$ & Backward prior covariance matrix \\
-	$\mathcal K_{t} $& Filter gain\\
-	$M_t$& Cross-covariance matrix\\
-	$S_t$& Smoother gain
-    \end{tabular}
-    \caption{State Estimation}
-\end{table}
-
-% ~~~~~~~~~~~~~~~~~~~
 \begin{table}[!ht]
 \caption{
 \bf{Steps in the Algorithm for the Unscented RTS Smoother}}
