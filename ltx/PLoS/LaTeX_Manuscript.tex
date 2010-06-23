@@ -736,27 +736,140 @@ In this paper, an assumption was made that the chosen kernel basis functions can
 \begin{table}[!ht]
 \caption{
 \bf{Notation and Parameters}}
-\begin{tabular}{|c|c|c|c|}
+\begin{tabular}{|c|l|c|c|}
 	\hline
 	\textbf{Symbol} & \textbf{Quantity} & \textbf{Value} & \textbf{Units}\\
 	\hline
-\multicolumn{4}{|c|}{\emph{Domain and indices}}\\
-\hline
-$\Omega$ & spatial domain & &\\
-$t$ & time & & seconds\\
-$\mathbf{r}$ & spatial location & &\\
-$n$ & sensor index $n=1,..,N$ & &\\
-$T_s$ & time step & $0.001$ & seconds\\
-$T$ & number of time steps & 0.4 & seconds\\
-\hline
-\multicolumn{4}{|c|}{\emph{Spatiotemporal signals}}\\
-\hline
+	\multicolumn{4}{|c|}{\emph{Domain and indices}}\\
+	\hline
+	$\Omega$ & spatial domain & &\\
+	$\Delta$ & spatial discretisation step & 0.5 & mm \\
+	$t$ & time & & s\\
+	$\mathbf{r}$ & spatial location & &\\
+	$n$ & sensor index $n=1,..,N$ & &\\
+	$T_s$ & time step & $0.001$ & s\\
+	$T$ & number of time steps & 0.4 & s\\
+	\hline
+	\multicolumn{4}{|c|}{\emph{Spatiotemporal signals}}\\
+	\hline
     $y(\mathbf{r}_n,t)$ & observation & & mV\\
     $v(\mathbf{r},t)$ & mean membrane potential & & mV \\
 	$g(\mathbf{r},t)$ & weighted firing rate function & & \\
 	$f(\mathbf{r},t)$ & firing rate function & & spikes.s$^{-1}$\\
 	$e(\mathbf{r},t)$ & field disturbance, (covariance $\gamma$) & &\\
-	$\varepsilon(\mathbf{r}_n,t)$ & observation noise, (covariance $\Sigma_\epsilon$) & &\\
+	$\varepsilon(\mathbf{r}_n,t)$ & observation noise, (covariance $\Sigma_\varepsilon$) & &\\
+	\hline 
+\multicolumn{4}{|c|}{\emph{Model}}\\
+	\hline
+	$h(t)$ & post-synaptic response kernel & & mV\\
+	$\tau$ & synaptic time constant & 0.01 & s$^{-1}$ \\
+	$\zeta$ & inverse synaptic time constant & & s$^{-1}$\\
+	$\xi$ & time constant parameter & & \\
+	$\eta(t)$ & Heaviside step function & & \\
+	$m(\mathbf{r},\mathbf{r}')$ & sensor kernel (width $\sigma_m^2$) & & \\
+	$w(\mathbf{r},\mathbf{r}')$ & spatial connectivity kernel & & \\
+	$f_{max}$ & maximal firing rate & & spikes.s$^{-1}$\\
+	$\varsigma$ & slope of sigmoidal activation function & & \\
+	$v_0$ & firing threshold & & mV \\
+	$\delta(t)$ & Dirac-delta function & & \\
+	$D$ & Temporal differential operator & &\\
+	$\boldsymbol{\theta}$ & & $\left[\begin{array}{ccc}
+	10 &-8 &0.5
+	\end{array}
+	\right]^{\top}$ & mV/spike\\
+	$\sigma_{\psi_{1}}, \sigma_{\psi_{2}}, \sigma_{\psi_{3}}$ & & 1.8, 2.4, 6 & mm\\
+	$\sigma_{m},\Delta_{y}$& & 0.9, 1.5 & mm\\
+	$\Sigma_{\varepsilon}$ & & $0.1 \times I_{N}$ & mm$^2$ \\
+	$\sigma_{\gamma}$& & 1.3 & mm\\
+	\hline
+\end{tabular}
+\begin{flushleft}Table caption
+\end{flushleft}
+\label{tab:label}
+\end{table}
+	
+% 	\hline
+% 	\multicolumn{4}{|c|}{\emph{Decomposition}} \\
+% 	\hline
+%     $L$ & number of field basis functions & 81 & \\
+%    	$\boldsymbol\phi(\mathbf{r})$ & vector of Gaussian basis functions & & \\
+%    	$\mathbf{x}_t$ & state vector at time $t$ & & \\
+%    	$\boldsymbol{\psi}$ & vector of connectivity kernel basis functions & & \\
+%    	$\theta$ & vector of connectivity kernel parameters & & \\
+%    	$\Gamma$ & inner product of field basis functions & &\\
+%    	$q()$ & state function & &\\
+%    	$Q()$ & state function & &\\
+% 	$\gamma(\mathbf r-\mathbf r')$& field disturbance covariance function & &\\
+%    	$\mathbf{e}_t$ & state disturbance & &\\
+% 	$\Sigma_e$ &state disturbance covariance matrix& &\\
+% 	$\mathbf{\epsilon}_t$ & observation noise & &\\
+% 	$\Sigma_{\epsilon}$ &observation noise covariance matrix& &\\
+%    	$\mathbf{C}$ & observation matrix& & \\
+% 	$c_{ij}$& elements of observation matrix & & \\
+% 	\hline
+% \end{tabular}
+% \begin{flushleft}Table caption
+% \end{flushleft}
+% \label{tab:label}
+% \end{table}
+
+
+\begin{table}[!ht]
+\caption{
+\bf{Notation and Parameters - Part 2}}
+\begin{tabular}{|c|l|c|c|}
+	\hline
+	\textbf{Symbol} & \textbf{Quantity} & \textbf{Value} & \textbf{Units}\\
+	\hline
+	\multicolumn{4}{|c|}{\emph{Decomposition}} \\
+	\hline
+    $L$ & number of field basis functions & 81 & \\
+   	$\boldsymbol\phi(\mathbf{r})$ & vector of Gaussian basis functions & & \\
+   	$\mathbf{x}_t$ & state vector at time $t$ & & \\
+   	$\boldsymbol{\psi}$ & vector of connectivity kernel basis functions & & \\
+   	$\theta$ & vector of connectivity kernel parameters & & \\
+   	$\Gamma$ & inner product of field basis functions & &\\
+   	$q()$ & state function & &\\
+   	$Q()$ & state function & &\\
+	$\gamma(\mathbf r-\mathbf r')$& field disturbance covariance function & &\\
+   	$\mathbf{e}_t$ & state disturbance & &\\
+	$\Sigma_e$ &state disturbance covariance matrix& &\\
+	$\mathbf{\varepsilon}_t$ & observation noise & &\\
+	$\Sigma_{\varepsilon}$ &observation noise covariance matrix& &\\
+   	$\mathbf{C}$ & observation matrix& & \\
+	$c_{ij}$& elements of observation matrix & & \\
+	\hline
+	\multicolumn{4}{|c|}{\emph{Frequency Analysis}} \\
+	\hline
+    $V(\nu)$ & Spectrum of the dynamic field & &\\
+	$\nu$ & Spatial frequency & &\\
+	$\nu_c$ & Spatial cut-off frequency & &\\
+	$\Delta_y$ & Distance between adjacent sensors & &\\
+	$\rho$ & Over-sampling parameter & &\\
+	$\Delta_{\phi}$ & Distance between field basis functions & &\\
+	$\sigma_{\nu}^2$ & Variance of FT of Gaussian basis function & &\\
+	$\sigma^2_{\phi}$ & Spatial variance of Gaussian in spatial domain & &\\
+	\hline
+	\multicolumn{4}{|c|}{\emph{State Estimation}} \\
+	\hline
+	$\chi$ & Matrix of sigma vectors & &\\
+	$\lambda$& Scaling parameter & &\\
+	$\alpha$& Determines the spread of sigma points & &\\
+	$\beta$& Prior knowledge of the sigma points distribution & &\\
+	$\kappa$& Scaling parameter & & \\
+	$W$& Sigma vecors weights & & \\
+   	$\hat{\mathbf{x}}_t^{f-}$ & Forward prior estimate & & \\
+   	$\hat{\mathbf{x}}_t^f$ & Forward posterior estimate & & \\
+   	$\hat{\mathbf{x}}_t^{b-}$ & Backward prior estimate & & \\
+   	$\hat{\mathbf{x}}_t^{b}$ & Backward posterior estimate & & \\
+   	$P^f_t$ & Forward posterior covariance matrix & & \\
+   	$P^{f-}_t$ & Forward prior covariance matrix & & \\
+   	$P^b_t$ & Backward posterior covariance matrix & & \\
+   	$P^{b-}_t$ & Backward prior covariance matrix & & \\
+	$\mathcal K_{t} $& Filter gain & & \\
+	$M_t$& Cross-covariance matrix & & \\
+	$S_t$& Smoother gain & & \\	
+	\hline
 \end{tabular}
 \begin{flushleft}Table caption
 \end{flushleft}
@@ -765,83 +878,29 @@ $T$ & number of time steps & 0.4 & seconds\\
 
 % ~~~~~~~~~~~~~~~~~~~~
 
-
-% 
-% \begin{table}[h!]\footnotesize
-%     \begin{tabular}{ll}
-%         	$h(t)$ & post-synaptic response kernel \\
-% 	$m(\mathbf{r},\mathbf{r}')$ & sensor kernel, width $\sigma_m^2$ \\
-% 	$\eta(t)$ & Heaviside function \\
-% 	$\zeta$ & inverse synaptic time constant \\
-% 	$w(\mathbf{r},\mathbf{r}')$ & spatial connectivity kernel \\
-% 	$f_{max}$ & maximal firing rate \\
-% 	$\varsigma$ & slope of sigmoidal activation function \\
-% 	$v_0$ & firing threshold \\
-% 	$\delta(t)$ & Dirac-delta function \\
-% 	$D$ & Temporal differential operator \\
-% 	$\xi$ & time constant parameter
-%     \end{tabular}
-%     \caption{Model}
-% \end{table}
-% 
-% \begin{table}[h!]\footnotesize
-%     \begin{tabular}{ll}
-%         $L$ & number of field basis functions  \\
-%     	$\mathbf{\phi(r)}$ & vector of Gaussian basis functions \\
-%     	$\mathbf{x}_t$ & state vector at time $t$ \\
-%     	$\mathbf{\psi}$ & vector of connectivity kernel basis functions \\
-%     	$\theta$ & vector of connectivity kernel parameters \\
-%     	$\Gamma$ & inner product of field basis functions \\
-%     	$q()$ & state function \\
-%     	$Q()$ & state function \\
-% 	$\gamma(\mathbf r-\mathbf r')$& field disturbance covariance function\\
-%     	$\mathbf{e}_t$ & state disturbance \\
-% 	$\Sigma_e$ &state disturbance covariance matrix\\
-% 	$\mathbf{\epsilon}_t$ & observation noise \\
-% 	$\Sigma_{\epsilon}$ &observation noise covariance matrix\\
-%     	$\mathbf{C}$ & observation matrix \\
-% 	$c_{ij}$& elements of observation matrix
-%     \end{tabular}
-%     \caption{Decomposition}
-% \end{table}
-% 
-% \begin{table}[h!]\footnotesize
-%     \begin{tabular}{rl}
-%         $V(\nu)$ & Spectrum of the dynamic field \\
-% 	$\nu$ & Spatial frequency \\
-% 	$\nu_c$ & Spatial cut-off frequency \\
-% 	$\Delta_y$ & Distance between adjacent sensors \\
-% 	$\rho$ & Over-sampling parameter \\
-% 	$\Delta_{\phi}$ & Distance between field basis functions \\
-% 	$\sigma_{\nu}^2$ & Variance of FT of Gaussian basis function \\
-% 	$\sigma^2_{\phi}$ & Spatial variance of Gaussian in spatial domain \\
-%     \end{tabular}
-%     \caption{Frequency Analysis}
-% \end{table}
-% 
-% \begin{table}[h!]\footnotesize
-%     \begin{tabular}{ll}
-%         $\hat{\mathbf{x}}$ & State estimate \\
-% 	$\chi$ & Matrix of sigma vectors \\
-% 	$\lambda$& Scaling parameter\\
-% 	$\alpha$& Determines the spread of sigma points\\
-% 	$\beta$& Prior knowledge of the sigma points distribution\\
-% 	$\kappa$& Scaling parameter\\
-% 	$W$& Sigma vecors weights\\
-%     	$\hat{\mathbf{x}}_t^{f-}$ & Forward prior estimate \\
-%     	$\hat{\mathbf{x}}_t^f$ & Forward posterior estimate \\
-%     	$\hat{\mathbf{x}}_t^{b-}$ & Backward prior estimate \\
-%     	$\hat{\mathbf{x}}_t^{b}$ & Backward posterior estimate \\
-%     	$P^f_t$ & Forward posterior covariance matrix \\
-%     	$P^{f-}_t$ & Forward prior covariance matrix \\
-%     	$P^b_t$ & Backward posterior covariance matrix \\
-%     	$P^{b-}_t$ & Backward prior covariance matrix \\
-% 	$\mathcal K_{t} $& Filter gain\\
-% 	$M_t$& Cross-covariance matrix\\
-% 	$S_t$& Smoother gain
-%     \end{tabular}
-%     \caption{State Estimation}
-% \end{table}
+\begin{table}[h!]\footnotesize
+    \begin{tabular}{ll}
+        $\hat{\mathbf{x}}$ & State estimate \\
+	$\chi$ & Matrix of sigma vectors \\
+	$\lambda$& Scaling parameter\\
+	$\alpha$& Determines the spread of sigma points\\
+	$\beta$& Prior knowledge of the sigma points distribution\\
+	$\kappa$& Scaling parameter\\
+	$W$& Sigma vecors weights\\
+    	$\hat{\mathbf{x}}_t^{f-}$ & Forward prior estimate \\
+    	$\hat{\mathbf{x}}_t^f$ & Forward posterior estimate \\
+    	$\hat{\mathbf{x}}_t^{b-}$ & Backward prior estimate \\
+    	$\hat{\mathbf{x}}_t^{b}$ & Backward posterior estimate \\
+    	$P^f_t$ & Forward posterior covariance matrix \\
+    	$P^{f-}_t$ & Forward prior covariance matrix \\
+    	$P^b_t$ & Backward posterior covariance matrix \\
+    	$P^{b-}_t$ & Backward prior covariance matrix \\
+	$\mathcal K_{t} $& Filter gain\\
+	$M_t$& Cross-covariance matrix\\
+	$S_t$& Smoother gain
+    \end{tabular}
+    \caption{State Estimation}
+\end{table}
 
 % ~~~~~~~~~~~~~~~~~~~
 \begin{table}[!ht]
