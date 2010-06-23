@@ -736,15 +736,27 @@ In this paper, an assumption was made that the chosen kernel basis functions can
 \begin{table}[!ht]
 \caption{
 \bf{Notation and Parameters}}
-\begin{tabular}{|c|c|}
+\begin{tabular}{|c|c|c|c|}
 	\hline
-\multicolumn{2}{|c|}{\textbf{Domain and indices}}\\
+	\textbf{Symbol} & \textbf{Quantity} & \textbf{Value} & \textbf{Units}\\
+	\hline
+\multicolumn{4}{|c|}{\emph{Domain and indices}}\\
 \hline
-$\Omega$ & spatial domain \\
-$t$ & time (seconds) \\
-$\mathbf{r}$ & spatial location \\
-$n$ & sensor index $n=1,..,N$ \\
-$T$ & time step
+$\Omega$ & spatial domain & &\\
+$t$ & time & & seconds\\
+$\mathbf{r}$ & spatial location & &\\
+$n$ & sensor index $n=1,..,N$ & &\\
+$T_s$ & time step & $0.001$ & seconds\\
+$T$ & number of time steps & 0.4 & seconds\\
+\hline
+\multicolumn{4}{|c|}{\emph{Spatiotemporal signals}}\\
+\hline
+    $y(\mathbf{r}_n,t)$ & observation & & mV\\
+    $v(\mathbf{r},t)$ & mean membrane potential & & mV \\
+	$g(\mathbf{r},t)$ & weighted firing rate function & & \\
+	$f(\mathbf{r},t)$ & firing rate function & & spikes.s$^{-1}$\\
+	$e(\mathbf{r},t)$ & field disturbance, (covariance $\gamma$) & &\\
+	$\varepsilon(\mathbf{r}_n,t)$ & observation noise, (covariance $\Sigma_\epsilon$) & &\\
 \end{tabular}
 \begin{flushleft}Table caption
 \end{flushleft}
@@ -752,28 +764,8 @@ $T$ & time step
 \end{table}
 
 % ~~~~~~~~~~~~~~~~~~~~
-\begin{table}[h!]\footnotesize
-    \begin{tabular}{ll}
-        $\Omega$ & spatial domain \\
-	    $t$ & time (seconds) \\
-    	$\mathbf{r}$ & spatial location \\
-	    $n$ & sensor index $n=1,..,N$ \\
-    	$T$ & time step
-    \end{tabular}
-    \caption{Domain and indices}
-\end{table}
 
-% \begin{table}[h!]\footnotesize
-%     \begin{tabular}{ll}
-%         $y(\mathbf{r}_n,t)$ & observation \\
-% 	    $v(\mathbf{r},t)$ & mean membrane potential \\
-%     	$g(\mathbf{r},t)$ & average action potential rate \\
-%     	$f(\mathbf{r},t)$ & firing function rate \\
-%     	$e(\mathbf{r},t)$ & field disturbance, covariance $\gamma$\\
-% 	$\epsilon(\mathbf{r}_n,t)$ & observation noise, covariance$\Sigma_\epsilon$ \\
-%     \end{tabular}
-%     \caption{Spatiotemporal Signals}
-% \end{table}
+
 % 
 % \begin{table}[h!]\footnotesize
 %     \begin{tabular}{ll}
