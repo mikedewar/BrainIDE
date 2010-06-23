@@ -28,8 +28,6 @@
 %\usepackage{setspace} 
 %\doublespacing
 
-% put this in temporarily
-\usepackage{algorithm, algorithmicx, algpseudocode} 
 
 % Text layout
 \topmargin 0.0cm
@@ -382,70 +380,7 @@ The sigma vectors are propagated through the system equations and weighted to fo
 \begin{equation}
 	\mathbf W_i^{(m)}=\mathbf W_i^{(c)}=\frac{1}{2( L+\lambda)} \quad i=1, \dots, 2L, 
 \end{equation}
-where the superscripts $m$ and $c$ stand for mean and covariance. Since the observation equation is linear (equation~\ref{ObservationEquation}) the standard Kalman Filter update equations are used to correct the predicted states. The state estimates from forward filtering are used to form a new set of sigma points for the smoother, as described above. To compute the smoother gain, the cross-covariance matrix of the states, $\mathbf M$, is also computed. A summary of the URTSS procedure is given in Algorithm~\ref{UKFAlgorithm}. It should be noted that the disturbance, $\mathbf{e}_t$ and the measurement noise, $\boldsymbol{\varepsilon}_t$, are additive. Therefore, the additive form of the URTSS is used, instead of augmenting the state vector with the noise terms with the added benefit of reducing the dimension and the number of sigma points required in the algorithm.
-\begin{algorithm}
-	\begin{small}
-	\caption{The Unscented RTS Smoother}\label{UKFAlgorithm} 
-	\begin{algorithmic}[1] 
-		\State Forward initialisation 
-		\begin{equation*}
-		 \hat{\mathbf x}_0, \mathbf P_0 
-		\end{equation*}
-		\State Forward iteration: for $t \in \left\lbrace 0,\cdots, T\right\rbrace $,
-		calculate the sigma points $\mathcal X_{i,t}^f$ using equations \ref{eq:sigmapoints1}-\ref{eq:sigmapoints3} and propagate through equation~\ref{eq:QmatrixForSigmapoints}
-% 		\begin{small}
-		\begin{equation*}
-			\mathcal X_{i,t+1}^{f-}=Q(\mathcal X_{i,t}^f) \quad i=0, \dots, 2L
-		\end{equation*}
-% 		\end{small}
-		calculate the predicted state and the predicted covariance matrix
-		\begin{equation*}
-			\hat{\mathbf x}_{t+1}^{f-}=\sum_{i=0}^{2L} W_i^{(m)}\mathcal X_{i,t+1}^{f-} 
-		\end{equation*}
-		\begin{equation*}
-			\mathbf P_{t +1}^{f-}=\sum_{i=0}^{2L} W_i^{(c)}(\mathcal X_{i,t+1}^{f-}-\hat{\mathbf x}_{t +1}^{f-})(\mathcal X_{i,t+1}^{f-}-\hat{\mathbf x}_{t +1}^{f-})^\top+\boldsymbol \Sigma_e 
-		\end{equation*}
-		compute the filter gain, the filtered state and the filtered covariance matrix using the standard Kalman Filter update equations
-		\begin{equation*}
-			\mathcal K_{t+1}=\mathbf P_{t +1}^{f-}\mathbf C ^\top(\mathbf C \mathbf P_{t +1}^{f-}\mathbf C ^\top+\boldsymbol \Sigma_{\epsilon})^{-1} 
-		\end{equation*}
-		\begin{equation*}
-			\hat{\mathbf x}_{t+1}^{f}=\hat{\mathbf x}_{t+1}^{f-}+\mathcal K_{t+1}(\mathbf y_{t+1}-\mathbf C\hat{\mathbf x}_{t +1}^{f-}) 
-		\end{equation*}
-		\begin{equation*}
-			\mathbf P_{t+1}^f=(\mathbf I - \mathcal K_{t+1}\mathbf C)\mathbf P_{t +1}^{f-} 
-		\end{equation*}
-		\State Backward initialisation 
-		\begin{equation*}
-			\mathbf P_T^b= \mathbf P_T^f, \quad \hat{\mathbf x}^b_T= \hat{\mathbf x}^f_T 
-		\end{equation*}
-		\State Backward iteration: for $t \in \left\lbrace T-1, \cdots, 0 \right\rbrace $ calculate the sigma points $\mathcal X_{i,t}^b$ and propagate them through equation \ref{eq:QmatrixForSigmapoints}
-		\begin{equation*}
-			\mathcal X_{i,t+1}^{b-}=Q(\mathcal X_{i,t}^b) \quad i=0, \dots, 2L
-		\end{equation*}
-		 compute the predicted state, the predicted covariance matrix and the cross-covariance matrix
-		\begin{equation*}
-			\hat{\mathbf x}_{t+1}^{b-}=\sum_{i=0}^{2L} W_i^{(m)}\mathcal X_{i,t+1}^{b-} 
-		\end{equation*}
-		\begin{equation*}
-			\mathbf P_{t +1}^{b-}=\sum_{i=0}^{2L} W_i^{(c)}(\mathcal X_{i,t+1}^{b-}-\hat{\mathbf x}_{t +1}^{b-})(\mathcal X_{i,t+1}^{b-}-\hat{\mathbf x}_{t +1}^{b-})^\top+\boldsymbol \Sigma_e 
-		\end{equation*}
-		\begin{equation*}
-			\mathbf M_{t +1}=\sum_{i=0}^{2L} W_i^{(c)}(\mathcal X_{i,t}^{b-}-\hat{\mathbf x}_{t}^{f})(\mathcal X_{i,t+1}^{b-}-\hat{\mathbf x}_{t+1}^{b-})^\top 
-		\end{equation*}
-		 Compute the smoother gain, the smoothed state and the smoothed covariance matrix
-		\begin{equation*}
-			\mathbf S_t=\mathbf M_{t +1}\left[ \mathbf P_{t +1}^{b-}\right] ^{-1} 
-		\end{equation*}
-		\begin{equation*}
-			\hat{\mathbf x}_t^b=\hat{\mathbf x}_t^f+\mathbf S_t\left[\hat{\mathbf x}_{t+1}^{b}-\hat{\mathbf x}_{t+1}^{b-}\right] 
-		\end{equation*}
-		\begin{equation*}
-			\mathbf P_{t}^{b}=\mathbf P_{t}^{f}+\mathbf S_t\left[\mathbf P_{t+1}^{b}-\mathbf P_{t+1}^{b-} \right]\mathbf S_t^\top 
-		\end{equation*}
-	\end{algorithmic}
-\end{small}
-\end{algorithm}
+where the superscripts $m$ and $c$ stand for mean and covariance. Since the observation equation is linear (equation~\ref{ObservationEquation}) the standard Kalman Filter update equations are used to correct the predicted states. The state estimates from forward filtering are used to form a new set of sigma points for the smoother, as described above. To compute the smoother gain, the cross-covariance matrix of the states, $\mathbf M$, is also computed. A summary of the steps in the URTSS algorithm is given in Table~\ref{tab:UKFAlgorithm}. It should be noted that the disturbance, $\mathbf{e}_t$ and the measurement noise, $\boldsymbol{\varepsilon}_t$, are additive. Therefore, the additive form of the URTSS is used, instead of augmenting the state vector with the noise terms with the added benefit of reducing the dimension and the number of sigma points required in the algorithm.
 
 Although the system is nonlinear, the parameters of the system are linear with respect to the state. This feature is exploited by our procedure where the parameter estimation uses a least squares (LS) method that minimises the sum of the squared errors (of a predicted state update) with each new estimate of the state vector sequence. To create the least squares parameter estimator, we first define the $L \times n_{\theta}$ matrix
 \begin{equation}
@@ -800,6 +735,125 @@ In this paper, an assumption was made that the chosen kernel basis functions can
 
 \begin{table}[!ht]
 \caption{
+\bf{Notation and Parameters}}
+\begin{tabular}{|c|c|}
+	\hline
+\multicolumn{2}{|c|}{\textbf{Domain and indices}}\\
+\hline
+$\Omega$ & spatial domain \\
+$t$ & time (seconds) \\
+$\mathbf{r}$ & spatial location \\
+$n$ & sensor index $n=1,..,N$ \\
+$T$ & time step
+\end{tabular}
+\begin{flushleft}Table caption
+\end{flushleft}
+\label{tab:label}
+\end{table}
+
+% ~~~~~~~~~~~~~~~~~~~~
+\begin{table}[h!]\footnotesize
+    \begin{tabular}{ll}
+        $\Omega$ & spatial domain \\
+	    $t$ & time (seconds) \\
+    	$\mathbf{r}$ & spatial location \\
+	    $n$ & sensor index $n=1,..,N$ \\
+    	$T$ & time step
+    \end{tabular}
+    \caption{Domain and indices}
+\end{table}
+
+% \begin{table}[h!]\footnotesize
+%     \begin{tabular}{ll}
+%         $y(\mathbf{r}_n,t)$ & observation \\
+% 	    $v(\mathbf{r},t)$ & mean membrane potential \\
+%     	$g(\mathbf{r},t)$ & average action potential rate \\
+%     	$f(\mathbf{r},t)$ & firing function rate \\
+%     	$e(\mathbf{r},t)$ & field disturbance, covariance $\gamma$\\
+% 	$\epsilon(\mathbf{r}_n,t)$ & observation noise, covariance$\Sigma_\epsilon$ \\
+%     \end{tabular}
+%     \caption{Spatiotemporal Signals}
+% \end{table}
+% 
+% \begin{table}[h!]\footnotesize
+%     \begin{tabular}{ll}
+%         	$h(t)$ & post-synaptic response kernel \\
+% 	$m(\mathbf{r},\mathbf{r}')$ & sensor kernel, width $\sigma_m^2$ \\
+% 	$\eta(t)$ & Heaviside function \\
+% 	$\zeta$ & inverse synaptic time constant \\
+% 	$w(\mathbf{r},\mathbf{r}')$ & spatial connectivity kernel \\
+% 	$f_{max}$ & maximal firing rate \\
+% 	$\varsigma$ & slope of sigmoidal activation function \\
+% 	$v_0$ & firing threshold \\
+% 	$\delta(t)$ & Dirac-delta function \\
+% 	$D$ & Temporal differential operator \\
+% 	$\xi$ & time constant parameter
+%     \end{tabular}
+%     \caption{Model}
+% \end{table}
+% 
+% \begin{table}[h!]\footnotesize
+%     \begin{tabular}{ll}
+%         $L$ & number of field basis functions  \\
+%     	$\mathbf{\phi(r)}$ & vector of Gaussian basis functions \\
+%     	$\mathbf{x}_t$ & state vector at time $t$ \\
+%     	$\mathbf{\psi}$ & vector of connectivity kernel basis functions \\
+%     	$\theta$ & vector of connectivity kernel parameters \\
+%     	$\Gamma$ & inner product of field basis functions \\
+%     	$q()$ & state function \\
+%     	$Q()$ & state function \\
+% 	$\gamma(\mathbf r-\mathbf r')$& field disturbance covariance function\\
+%     	$\mathbf{e}_t$ & state disturbance \\
+% 	$\Sigma_e$ &state disturbance covariance matrix\\
+% 	$\mathbf{\epsilon}_t$ & observation noise \\
+% 	$\Sigma_{\epsilon}$ &observation noise covariance matrix\\
+%     	$\mathbf{C}$ & observation matrix \\
+% 	$c_{ij}$& elements of observation matrix
+%     \end{tabular}
+%     \caption{Decomposition}
+% \end{table}
+% 
+% \begin{table}[h!]\footnotesize
+%     \begin{tabular}{rl}
+%         $V(\nu)$ & Spectrum of the dynamic field \\
+% 	$\nu$ & Spatial frequency \\
+% 	$\nu_c$ & Spatial cut-off frequency \\
+% 	$\Delta_y$ & Distance between adjacent sensors \\
+% 	$\rho$ & Over-sampling parameter \\
+% 	$\Delta_{\phi}$ & Distance between field basis functions \\
+% 	$\sigma_{\nu}^2$ & Variance of FT of Gaussian basis function \\
+% 	$\sigma^2_{\phi}$ & Spatial variance of Gaussian in spatial domain \\
+%     \end{tabular}
+%     \caption{Frequency Analysis}
+% \end{table}
+% 
+% \begin{table}[h!]\footnotesize
+%     \begin{tabular}{ll}
+%         $\hat{\mathbf{x}}$ & State estimate \\
+% 	$\chi$ & Matrix of sigma vectors \\
+% 	$\lambda$& Scaling parameter\\
+% 	$\alpha$& Determines the spread of sigma points\\
+% 	$\beta$& Prior knowledge of the sigma points distribution\\
+% 	$\kappa$& Scaling parameter\\
+% 	$W$& Sigma vecors weights\\
+%     	$\hat{\mathbf{x}}_t^{f-}$ & Forward prior estimate \\
+%     	$\hat{\mathbf{x}}_t^f$ & Forward posterior estimate \\
+%     	$\hat{\mathbf{x}}_t^{b-}$ & Backward prior estimate \\
+%     	$\hat{\mathbf{x}}_t^{b}$ & Backward posterior estimate \\
+%     	$P^f_t$ & Forward posterior covariance matrix \\
+%     	$P^{f-}_t$ & Forward prior covariance matrix \\
+%     	$P^b_t$ & Backward posterior covariance matrix \\
+%     	$P^{b-}_t$ & Backward prior covariance matrix \\
+% 	$\mathcal K_{t} $& Filter gain\\
+% 	$M_t$& Cross-covariance matrix\\
+% 	$S_t$& Smoother gain
+%     \end{tabular}
+%     \caption{State Estimation}
+% \end{table}
+
+% ~~~~~~~~~~~~~~~~~~~
+\begin{table}[!ht]
+\caption{
 \bf{Steps in the Algorithm for the Unscented RTS Smoother}}
 \begin{tabular}{|c|}\hline
 \multicolumn{1}{|p{16cm}|}{\textbf{1.} Forward initialisation} \\ 
@@ -843,74 +897,11 @@ $\hat{\mathbf x}_t^b=\hat{\mathbf x}_t^f+\mathbf S_t\left[\hat{\mathbf x}_{t+1}^
 \\
 $\mathbf P_{t}^{b}=\mathbf P_{t}^{f}+\mathbf S_t\left[\mathbf P_{t+1}^{b}-\mathbf P_{t+1}^{b-} \right]\mathbf S_t^\top $\\\hline
 \end{tabular}
-\begin{flushleft}This table shows the steps in the unscented Rauch-Tung-Smoothers smoother. The steps are iterated 11 times for our state estimation procedure and the least squares algorithm is run at the after each iteration.
+\begin{flushleft}This table shows the steps in the unscented Rauch-Tung-Striebel smoother algorithm. The steps are iterated 11 times for our state estimation procedure. The least squares algorithm is run after each iteration to update the parameter estimates.
 \end{flushleft}
-\label{tab:label}
+\label{tab:UKFAlgorithm}
 \end{table}
 
-\begin{algorithm}
-	\begin{small}
-	\caption{The Unscented RTS Smoother}\label{UKFAlgorithm} 
-	\begin{algorithmic}[1] 
-		\State Forward initialisation 
-		\begin{equation*}
-		 \hat{\mathbf x}_0, \mathbf P_0 
-		\end{equation*}
-		\State Forward iteration: for $t \in \left\lbrace 0,\cdots, T\right\rbrace $,
-		calculate the sigma points $\mathcal X_{i,t}^f$ using equations \ref{eq:sigmapoints1}-\ref{eq:sigmapoints3} and propagate through equation~\ref{eq:QmatrixForSigmapoints}
-% 		\begin{small}
-		\begin{equation*}
-			\mathcal X_{i,t+1}^{f-}=Q(\mathcal X_{i,t}^f) \quad i=0, \dots, 2L
-		\end{equation*}
-% 		\end{small}
-		calculate the predicted state and the predicted covariance matrix
-		\begin{equation*}
-			\hat{\mathbf x}_{t+1}^{f-}=\sum_{i=0}^{2L} W_i^{(m)}\mathcal X_{i,t+1}^{f-} 
-		\end{equation*}
-		\begin{equation*}
-			\mathbf P_{t +1}^{f-}=\sum_{i=0}^{2L} W_i^{(c)}(\mathcal X_{i,t+1}^{f-}-\hat{\mathbf x}_{t +1}^{f-})(\mathcal X_{i,t+1}^{f-}-\hat{\mathbf x}_{t +1}^{f-})^\top+\boldsymbol \Sigma_e 
-		\end{equation*}
-		compute the filter gain, the filtered state and the filtered covariance matrix using the standard Kalman filter update equations
-		\begin{equation*}
-			\mathcal K_{t+1}=\mathbf P_{t +1}^{f-}\mathbf C ^\top(\mathbf C \mathbf P_{t +1}^{f-}\mathbf C ^\top+\boldsymbol \Sigma_{\epsilon})^{-1} 
-		\end{equation*}
-		\begin{equation*}
-			\hat{\mathbf x}_{t+1}^{f}=\hat{\mathbf x}_{t+1}^{f-}+\mathcal K_{t+1}(\mathbf y_{t+1}-\mathbf C\hat{\mathbf x}_{t +1}^{f-}) 
-		\end{equation*}
-		\begin{equation*}
-			\mathbf P_{t+1}^f=(\mathbf I - \mathcal K_{t+1}\mathbf C)\mathbf P_{t +1}^{f-} 
-		\end{equation*}
-		\State Backward initialisation 
-		\begin{equation*}
-			\mathbf P_T^b= \mathbf P_T^f, \quad \hat{\mathbf x}^b_T= \hat{\mathbf x}^f_T 
-		\end{equation*}
-		\State Backward iteration: for $t \in \left\lbrace T-1, \cdots, 0 \right\rbrace $ calculate the sigma points $\mathcal X_{i,t}^b$ and propagate them through equation \ref{eq:QmatrixForSigmapoints}
-		\begin{equation*}
-			\mathcal X_{i,t+1}^{b-}=Q(\mathcal X_{i,t}^b) \quad i=0, \dots, 2L
-		\end{equation*}
-		 compute the predicted state, the predicted covariance matrix and the cross-covariance matrix
-		\begin{equation*}
-			\hat{\mathbf x}_{t+1}^{b-}=\sum_{i=0}^{2L} W_i^{(m)}\mathcal X_{i,t+1}^{b-} 
-		\end{equation*}
-		\begin{equation*}
-			\mathbf P_{t +1}^{b-}=\sum_{i=0}^{2L} W_i^{(c)}(\mathcal X_{i,t+1}^{b-}-\hat{\mathbf x}_{t +1}^{b-})(\mathcal X_{i,t+1}^{b-}-\hat{\mathbf x}_{t +1}^{b-})^\top+\boldsymbol \Sigma_e 
-		\end{equation*}
-		\begin{equation*}
-			\mathbf M_{t +1}=\sum_{i=0}^{2L} W_i^{(c)}(\mathcal X_{i,t}^{b-}-\hat{\mathbf x}_{t}^{f})(\mathcal X_{i,t+1}^{b-}-\hat{\mathbf x}_{t+1}^{b-})^\top 
-		\end{equation*}
-		 Compute the smoother gain, the smoothed state and the smoothed covariance matrix
-		\begin{equation*}
-			\mathbf S_t=\mathbf M_{t +1}\left[ \mathbf P_{t +1}^{b-}\right] ^{-1} 
-		\end{equation*}
-		\begin{equation*}
-			\hat{\mathbf x}_t^b=\hat{\mathbf x}_t^f+\mathbf S_t\left[\hat{\mathbf x}_{t+1}^{b}-\hat{\mathbf x}_{t+1}^{b-}\right] 
-		\end{equation*}
-		\begin{equation*}
-			\mathbf P_{t}^{b}=\mathbf P_{t}^{f}+\mathbf S_t\left[\mathbf P_{t+1}^{b}-\mathbf P_{t+1}^{b-} \right]\mathbf S_t^\top 
-		\end{equation*}
-	\end{algorithmic}
-\end{small}
-\end{algorithm}
 
 \end{document}
 
