@@ -110,7 +110,7 @@ Unfortunately, the use of these models in the clinic has been limited, since the
 
 For models to be clinically viable, they must be patient-specific. A possible approach to achieve this would be to fit a general continuum neural field model, like the Wilson and Cohen (WC)~\cite{Wilson1973} or Amari~\cite{Amari1977} models or a neural mass model like the Jansen and Ritt model~\cite{Jansen1995}, to patient-specific EEG data. Fitting the neural models to individuals is a highly non-trivial task and, until very recently, has not been reported in the literature. 
 
-An estimation framework for neural field models known as dynamical causal modelling (DCM) \cite{David2003,David2006} has recently been proposed for studying evoked potential dynamics. Via a Bayesian inference scheme, DCM estimates the long range (cortico-cortical) connectivity structure between the specific isolated brain regions that best explains a given data set using the Jansen and Ritt equations. Another recent publication describing a parameter estimation method with a neural field model used an unscented Kalman filter with the WC neural field equations~\cite{schiff2008kalman}. This work takes a system theoretic approach to the neural estimation problem, successfully demonstrating that it is possible to perform state estimation of modified WC equations. This marks the first step in what has the potential to revolutionise the treatment of many neurological diseases where therapeutic electrical stimulation is viable.
+An estimation framework for neural field models known as dynamical causal modelling (DCM) \cite{David2003,David2006} has recently been proposed for studying evoked potential dynamics. Via a Bayesian inference scheme, DCM estimates the long range (cortico-cortical) connectivity structure between the specific isolated brain regions that best explains a given data set using the Jansen and Ritt equations. Another recent publication describing a parameter estimation method with a neural field model used an unscented Kalman filter with modified WC neural field equations~\cite{schiff2008kalman}. This work takes a system theoretic approach to the neural estimation problem, successfully demonstrating that it is possible to perform state estimation on spatio-temporal neural fields. This marks the first step in what has the potential to revolutionise the treatment of many neurological diseases where therapeutic electrical stimulation is viable.
 
 We present an extension to the work of Schiff and Sauer~\cite{schiff2008kalman} by establishing a framework for estimating the state of the WC equations for larger scale (more space) systems via a systematic model reduction procedure. In addition, a method is presented for estimating the connectivity structure and the synaptic time dynamics. Until now, model-based estimation of local intracortical connectivity has not been reported in the literature (to the best of the authors' knowledge). Our work builds on recent work which shows that it is possible to estimate local coupling of spatio-temporal systems using techniques from control systems theory and machine learning~\cite{Dewar2009}. The key development of this previous work was to represent the spatiotemporal system as a standard state-space model, with the number of states independent of the number of observations (recording electrodes in this case). In addition, the appropriate model selection tools have been developed~\cite{Scerri2009} allowing for the application of the technique to neural fields. 
 
@@ -151,7 +151,7 @@ The firing rate of the presynaptic neurons is related to the postsynaptic membra
 \begin{equation}
 	\label{ActivationFunction} f\left( v\left( \mathbf{r}', t \right) \right) = \frac{f_{max}}{1 + \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right)}. 
 \end{equation}
-The parameters $f_{max}$ and $v_0$ describe the maximum firing rate and firing threshold of the neural populations respectively. The parameter $\varsigma$ governs the slope of the sigmoid. By substituting equation~\ref{RateBasedInteractions} into \ref{SpikesToPotential} we get the spatiotemporal model 
+The parameters $f_{max}$ and $v_0$ describe the maximum firing rate and firing threshold of the neural populations respectively. The parameter $\varsigma$ governs the slope of the sigmoid. By substituting equation~\ref{RateBasedInteractions} into equation~\ref{SpikesToPotential} we get the spatio-temporal model 
 \begin{equation}
 	\label{FullDoubleIntModel} v\left(\mathbf{r},t\right) =
 	\int_{-\infty}^t 
@@ -199,12 +199,12 @@ where $\mathbf{r}_n$ defines the location of the sensors in the field, $n=1,...,
 \subsection{Derivation of Finite Dimensional State-Space Model}\label{Sect:ReducedModelDerivation}
 In order to implement standard estimation techniques, we use a decomposition of the field using a set of Gaussian basis functions that are defined by
 \begin{equation}\label{eq:FieldBasisFunction}
-	\phi\left(\mathbf{r}-\mathbf{r}'\right) =
+	\boldsymbol\phi\left(\mathbf{r}-\mathbf{r}'\right) =
 \exp{\left(-\frac{(\mathbf{r}-\mathbf{r}')^\top(\mathbf{r}-\mathbf{r}')}{\sigma_{\phi}^2}\right)}. 
 \end{equation}
 Decomposition allows a continuous field to be represented by a finite-dimensional state vector. This facilitates application of standard nonlinear state estimation methods such as the unscented Kalman filter. The field decomposition is described by 
 \begin{equation}
-	\label{DefFieldDecomp} v_t\left(\mathbf{r}\right) \approx \mathbf{\phi}^{\top}\left(\mathbf{r}\right) \mathbf{x}_t, 
+	\label{DefFieldDecomp} v_t\left(\mathbf{r}\right) \approx \boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) \mathbf{x}_t, 
 \end{equation}
 where $\mathbf{\boldsymbol{\phi}}(\mathbf{r})$ is a vector of Gaussian basis functions that are scaled by the state vector, $\mathbf{x}_t$. An example of the field decomposition is given in Figure~\ref{fig:FieldDecomposition}.%The choice of Gaussian basis functions can be justified by the existence of the so called bump solutions for this class of model, which have a Gaussian shape~\cite{Coombes2005}.
 \begin{figure}
@@ -259,7 +259,7 @@ which is a constant $L \times n_{\theta}$ matrix that can is defined analyticall
 	\mathbf{x}_{t+1} = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) d\mathbf{r}' \boldsymbol{\theta} + \xi\mathbf{x}_t\nonumber \\
 + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})d\mathbf{r}}.
 \end{eqnarray}
-This simplification has transformed the description of the spatial coupling from a convolution, to an inner product. This transformation provides a dramatic increase in simulation speed, which is of great importance considering the computational demands of the estimation algorithm. Now we define the state disturbance as
+This simplification has transformed the description of the spatial coupling from a convolution to an inner product. This transformation provides a dramatic increase in simulation speed, which is of great importance considering the computational demands of the estimation algorithm. Now we define the state disturbance as
 \begin{equation}\label{eq:Wt} 
 	\mathbf{e}_t \triangleq \boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi} ( \mathbf{r} )e_t( \mathbf{r} )d\mathbf{r}} 
 \end{equation}
@@ -313,7 +313,7 @@ where $\boldsymbol{\nu}_c$ is a cutoff frequency (typically taken as the -3~dB p
 \end{equation}
 where $\rho_y \in \mathbb{R} \ge 1$ is an oversampling parameter. This condition must be satisfied to avoid spatial spectral aliasing effects when reconstructing the hidden dynamic field, $v_t(\mathbf{r})$, using the sampled observations, $\mathbf{y}_t$.
 
-In practice, it is difficult to estimate the bandwidth of the cortex using traditional electrophysiological measurements, possibly preventing us from positioning sensors in accordance to equation~\ref{eq:MinimumSensorDistance}. However, we envisage it may be possible to estimate the spatial bandwidth using other modalities with higher spatial resolution such as, fMRI, NIRS or other optical imaging techniques~\cite{Issa2000}. Nevertheless, spectral aliasing can still be avoided by a proper choice of the spatial sampling distance given the sensors' spectral characteristics. The spatial extent of the sensors results in a spectral low-pass action, thus providing spatial anti-aliasing filtering. Such sensors therefore can only sense the field up to a known spatial bandwidth, denoted by $\boldsymbol{\nu}_{cy}$. Aliasing can then be avoided by positioning the sensors according to equation~\ref{eq:MinimumSensorDistance}, with $\boldsymbol{\nu}_{cy}$ replacing $\boldsymbol{\nu}_c$. 
+In practice, it is difficult to estimate the bandwidth of the cortex using traditional electrophysiological measurements, possibly preventing us from positioning sensors in accordance to equation~\ref{eq:MinimumSensorDistance}. However, we envisage it may be possible to estimate the spatial bandwidth using other modalities with higher spatial resolution such as, fMRI, NIRS or other optical imaging techniques~\cite{Issa2000}. Nevertheless, spectral aliasing can still be avoided by a proper choice of the spatial sampling distance given the sensors' spectral characteristics. The spatial extent of the sensors results in a spectral low-pass action, thus providing spatial anti-aliasing filtering. Such sensors therefore can only sense the field up to a known spatial bandwidth, denoted by $\boldsymbol{\nu}_{cy}$. Aliasing can then be avoided by positioning the sensors according to equation~\ref{eq:MinimumSensorDistance}, replacing $\boldsymbol{\nu}_c$ with $\boldsymbol{\nu}_{cy}$.
 
 Although such sensors avoid errors due to aliasing, they attenuate the high spatial frequency variations in the observations. Therefore, any procedure applied to estimate the original field or the underlying connectivity structure from these band-limited observations has the potential to underestimate the high spatial frequency components of both the field and the connectivity kernel. This motivates the use of sensors with wider bandwidths (narrower in space). Nevertheless, this choice would require more sensors in order to satisfy Shannon's sampling theorem for a given spatial region. Therefore, a compromise needs to be found between the bandwidth of the sensor response, the accuracy of the estimation results, the number of sensors used and the computational demands of the estimation procedure when designing experiments.
 
@@ -364,7 +364,7 @@ The unscented Rauch-Tung-Striebel smoother (URTSS)~\cite{Sarkka2010} is used for
 \begin{equation}\label{eq:sigmapoints2}
 	\mathcal X_{i}=\bar x-\left(\sqrt{( L + \lambda)\mathbf P_x}\right)_{i- L}, \quad i= L+1, \dots, 2 L 
 \end{equation}
-where $\bar x$ represents either $\hat{\mathbf x}_t^{f}$ or $\hat{\mathbf x}_t^{b}$, $\mathbf{P}_x$ is the corresponding covariance matrix from the filtering or smoothing, $\left(\sqrt{( L + \lambda)\mathbf P_x}\right)_i$ is the $i^{th}$ column of the weighted matrix square root of $\mathbf P_x$ and $L$ is the dimension of the state space. The total number of sigma points is $2L+1$. The scaling parameter, $\lambda$, is defined as 
+where $\bar x$ represents either $\hat{\mathbf x}_t^{f}$ or $\hat{\mathbf x}_t^{b}$, $\mathbf{P}_x$ is the corresponding covariance matrix for the filtering or smoothing, $\left(\sqrt{( L + \lambda)\mathbf P_x}\right)_i$ is the $i^{th}$ column of the weighted matrix square root of $\mathbf P_x$ and $L$ is the dimension of the state space. The total number of sigma points is $2L+1$. The scaling parameter, $\lambda$, is defined as 
 \begin{equation}\label{eq:sigmapoints3}
 	\lambda=\alpha^2( L+\kappa) - L, 
 \end{equation}
@@ -380,9 +380,9 @@ The sigma vectors are propagated through the system equations and weighted to fo
 \begin{equation}
 	\mathbf W_i^{(m)}=\mathbf W_i^{(c)}=\frac{1}{2( L+\lambda)} \quad i=1, \dots, 2L, 
 \end{equation}
-where the superscripts $m$ and $c$ stand for mean and covariance. Since the observation equation is linear (equation~\ref{ObservationEquation}) the standard Kalman Filter update equations are used to correct the predicted states. The state estimates from forward filtering are used to form a new set of sigma points for the smoother, as described above. To compute the smoother gain, the cross-covariance matrix of the states, $\mathbf M$, is also computed. A summary of the steps in the URTSS algorithm is given in Table~\ref{tab:UKFAlgorithm}. It should be noted that the disturbance, $\mathbf{e}_t$ and the measurement noise, $\boldsymbol{\varepsilon}_t$, are additive. Therefore, the additive form of the URTSS is used, instead of augmenting the state vector with the noise terms with the added benefit of reducing the dimension and the number of sigma points required in the algorithm.
+where the superscripts $m$ and $c$ denote mean and covariance. Since the observation equation is linear (equation~\ref{ObservationEquation}) the standard Kalman Filter update equations are used to correct the predicted states. The state estimates from forward filtering are used to form a new set of sigma points for the smoother, as described above. The cross-covariance matrix of the states, $\mathbf M$, is also required for computing the smoother gain. A summary of the steps in the URTSS algorithm is given in Table~\ref{tab:UKFAlgorithm}. It should be noted that the disturbance, $\mathbf{e}_t$ and the measurement noise, $\boldsymbol{\varepsilon}_t$, are additive. Therefore, the additive form of the URTSS is used.
 
-Although the system is nonlinear, the parameters of the system are linear with respect to the state. This feature is exploited by our procedure where the parameter estimation uses a least squares (LS) method that minimises the sum of the squared errors (of a predicted state update) with each new estimate of the state vector sequence. To create the least squares parameter estimator, we first define the $L \times n_{\theta}$ matrix
+Although the system is nonlinear, the parameters of the system are linear with respect to the state. This is exploited by our procedure where the parameter estimation uses a least squares (LS) method that minimises the sum of the squared errors (of a predicted state update) with each new estimate of the state vector sequence. To create the least squares parameter estimator, we first define the $L \times n_{\theta}$ matrix
 \begin{equation}
 	\mathbf{q}(\mathbf{x}_t) = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) d\mathbf{r}'.
 \end{equation}
@@ -550,31 +550,7 @@ Evaluating equation~\ref{eq:ConvoftwoGaussianNonzeroMean} at $\mathbf r=2\boldsy
 \end{equation}
 
 % Results and Discussion can be combined.
-\section*{Results}\label{ResultsSection} In this section we provide a demonstration of the estimation procedure using the methods described above. The full neural field model derived in Section~\ref{NeuralModelSection} was used to generate the data for state and parameter estimation. All parameters for the model are given in Table~\ref{tab:Model Parameters}. Note that, the parameters for the spatial and temporal aspects of the model can be considered arbitrary when demonstrating the estimation methodology. This is due to the fact that the temporal aspects scale with the sampling rate and the length of the times series, and the spatial aspects scale with the size of the neural field and the space step used for numerical simulation. When generating the simulated data we assumed free boundary conditions for the neural field. An example of the simulated field can be seen in Figure~\ref{fig:experimental design}(a). Figure~\ref{fig:experimental design}(b) shows an example of data from the modelled sensors and Figure~\ref{fig:experimental design}(c) shows the power spectral density (PSD) of the simulated time-series. The PSD shows the typical $1/f^2$ characteristics of intracranial EEG.
-\begin{table}\footnotesize
-\centering
-\begin{tabular}{ccl}
-	\hline\hline Symbol & Value & Units \\
-	\hline\hline
-	$\tau$ & 0.01 & s$^{-1}$\\
-	$f_{max}$ & 10 & spikes/s \\
-	$\varsigma$ & 0.8 & spike/mV\\
-	$v_0$ & 2 & mV\\
-	$\boldsymbol{\theta}$ & $\left[\begin{array}{ccc}
-	10 &-8 &0.5
-	\end{array}
-	\right]^{\top}$ & mV/spike\\
-	$\sigma_{\psi_{1}}, \sigma_{\psi_{2}}, \sigma_{\psi_{3}}$ & 1.8, 2.4, 6 & mm\\
-	$\sigma_{m},\Delta_{y}$&0.9, 1.5&mm\\
-	$\Sigma_{\epsilon}$ &$0.1 \times I_{N} $& mm$^2$ \\
-	$\sigma_{\gamma}$&1.3&mm\\
-	$\Delta$ & 0.5 & mm \\
-	$T_s$ & 1 & ms \\ 
-\hline\hline
-\end{tabular}
-\caption{Parameters for the neural field model that are used to generate synthetic data.}
-\label{tab:Model Parameters}
-\end{table}
+\section*{Results}\label{ResultsSection} In this section we provide a demonstration of the estimation procedure using the new methods that are described above. The full neural field model described in Section~\ref{NeuralModelSection} was used to generate the data for state and parameter estimation. All parameters for the model are given in Table~\ref{tab:Parameters}. Note that, the parameters for the spatial and temporal aspects of the model can be considered arbitrary when demonstrating the estimation methodology. This is due to the fact that the temporal aspects scale with the sampling rate and the length of the times series, and the spatial aspects scale with the size of the neural field and the space step used for numerical simulation. When generating the simulated data we assumed free boundary conditions for the neural field. An example of the simulated field can be seen in Figure~\ref{fig:experimental design}(a). Figure~\ref{fig:experimental design}(b) shows an example of data from the modelled sensors and Figure~\ref{fig:experimental design}(c) shows the power spectral density (PSD) of the simulated time-series. The PSD shows the typical $1/f^2$ characteristics of intracranial EEG.
 
 The sensors were spaced on a regular square $14 \times 14$ grid, the sensor width was set to $\sigma^2_m = 0.81$. This provides a width of $1.5$~mm at half the maximum amplitude of the basis function, with spacing $\Delta_y = 1.5$~mm. This arrangement modelled the recording as having some cross talk, which is typical for neurophysiological recordings.
  \begin{figure}
@@ -613,22 +589,6 @@ To demonstrate the performance of the state and parameter estimation algorithm, 
 
 Histograms of the parameter estimates obtained over the 100 realisations are shown in Figure~\ref{fig:Parameters}. The actual parameter values, the mean estimates, corresponding standard deviations and biases are given in Table~\ref{tab:Parameters estimates}. The biases show the percentage differences between the actual values and the mean parameter estimates. The mean estimates are in good concordance with the actual values. 
 % It should be noted that when the excitatory connectivity parameters, $\hat\theta_0$ and $\hat\theta_2$, were under (or over) estimated, the inhibitory connectivity parameter, $\hat\theta_1$, tended to be over (or under) estimated. This is demonstrated in Figure~\ref{fig:ParametersRatio} where we show the distribution of the ratios of the parameter estimates. 
-\begin{table}
-\centering
-\begin{tabular}{cccc}
-	\hline\hline Parameter & Actual Value & Mean Estimate $\pm$ Std. Dev. & Bias (\%) \\
-	\hline\hline
- 	$\xi$ & $0.9$ & $0.925\pm 0.004$ & $2.778$ \\
-	$\theta_0$ & $10$ & $10.228\pm2.794$ & $2.28$\\
-	$\theta_1$ & $-8$ & $-8.495\pm1.913$ & $-6.187$\\
-	$\theta_2$ & $0.5$ & $0.545\pm0.077$ & $9$\\
-	% $\mid\theta_0/\theta_1\mid$ &$1.25 $ & $1.189\pm 0.0812$ &$4.88$\\
-	% $\theta_0/\theta_2$ &$20$ & $18.567\pm3.757$ &$7.165$ \\
-\hline\hline
-\end{tabular}
-\caption{Actual parameter values compared to parameter estimates.}
-\label{tab:Parameters estimates}
-\end{table}
 \begin{figure}
     \centering
     \includegraphics{./Graph/ParametesDistributions.pdf}
@@ -643,7 +603,8 @@ realisations}. The solid line shows the actual value of the parameters and the d
 % \caption{Distribution of the connectivity kernel basis function parameter ratios over 100 realisations. \textbf{a.} The absolute value of the ratio of the local excitatory parameter to the surround inhibition parameter (true ratio is 1.25). \textbf{b.} The ratio of the local excitatory parameter to the longer range excitatory parameter (true ratio is 20). In each case, the solid and dotted lines show the locations of the true and estimated ratios respectively.}
 % \label{fig:ParametersRatio}
 % \end{figure}
-The reconstructed connectivity kernels from the estimated parameters are illustrated in Figure~\ref{fig:KernelEstimates}, where the mean over the 100 realisations is shown as a dotted line and the $95\%$ confidence interval is indicated by the grey shaded region. The figure verifies that the shape of the estimated connectivity kernel is in good accordance to the true kernel. The true kernel lies within the confidence interval; however, the mean estimated kernel is more negative than the actual kernel due to the small bias on the estimates of the inhibitory parameter, $\hat\theta_1$, as seen in Figure~\ref{fig:theta1dis}.
+
+The reconstructed connectivity kernels from the estimated parameters are shown in Figure~\ref{fig:KernelEstimates}, where the mean over the $100$ realisations is shown as a dotted line and the $95\%$ confidence interval is indicated by the grey shaded region. The figure verifies that the shape of the estimated connectivity kernel is in good accordance to the true kernel. The true kernel lies within the confidence interval; however, the mean estimated kernel is more negative than the actual kernel due to the small bias on the estimates of the inhibitory parameter, $\hat\theta_1$, as seen in Figure~\ref{fig:theta1dis}.
 
 \begin{figure}
     \centering
@@ -652,7 +613,7 @@ The reconstructed connectivity kernels from the estimated parameters are illustr
 \caption{{\bf Cross-section of connectivity kernel estimate}. The actual kernel is shown by the solid line, the mean kernel estimate (over 100 realisations) is shown by the dotted line and the $95~\%$ confidence interval is shown by the shaded grey region.}
 \label{fig:KernelEstimates}
 \end{figure}
-The accuracy of the state estimates was evaluated by comparing the field reconstruction to the true field using the mean (over iterations) of the root mean square error (MRMSE) (over space). The MRMSE of the field estimates over time for 100 realisations is shown in Figure~\ref{fig:RMSE}, with the $95~\%$ confidence interval. At each time point the error is consistently around 0.5~mV, which approximately $7.1$~\% of the field voltage range, which is $(-3.29,3.77)$~mV. The error in the reconstructed field is mostly due to the loss of high spatial frequency information due to the basis function decomposition as illustrated in Figure~\ref{fig:FieldEstimate}. The figure shows a snapshot at a single time instant of the true neural field, the estimated field and the corresponding error, which is the difference between the true and estimated neural fields. It can be seen in Figure~\ref{fig:FieldEstimate}(b) that the estimated field contains the basic structure of the true field (Figure~\ref{fig:FieldEstimate}(a)), but is missing the higher-frequency detail.
+The accuracy of the state estimates was evaluated by comparing the field reconstruction to the true field using the mean (over iterations) of the root mean square error (MRMSE) (over space). The MRMSE of the field estimates over time for 100 realisations is shown in Figure~\ref{fig:RMSE}, with the $95~\%$ confidence interval. At each time point the error is consistently around 0.5~mV, which is approximately $7.1$~\% of the field voltage range ($[-3.29,3.77]$~mV). The error in the reconstructed field is mostly due to the loss of high spatial frequency information from the basis function decomposition as illustrated in Figure~\ref{fig:FieldEstimate}. The figure shows a snapshot at a single time instant of the true neural field, the estimated field and the corresponding error, which is the difference between the true and estimated neural fields. It can be seen in Figure~\ref{fig:FieldEstimate}(b) that the estimated field contains the basic structure of the true field (Figure~\ref{fig:FieldEstimate}(a)), but is missing the higher-frequency detail.
   \begin{figure}
    	\begin{center}
    		\includegraphics{./Graph/MRMSE.pdf} 
@@ -671,11 +632,11 @@ The accuracy of the state estimates was evaluated by comparing the field reconst
 \section*{Discussion}\label{DiscussionSection}
 This paper has presented a method for estimating intracortical connectivity and synaptic dynamics from electrophysiological data. As seen in the Section~\ref{sec:state_and_param_results} the results indicate good estimation performance, where the mean parameter estimates are in good agreement with the actual values. The estimates of the connectivity kernel parameters show relatively broad distributions, which is expected considering the system is driven by an unknown input, modelled as a random disturbance, and the observations are corrupted by noise. To overcome the effect of noise, an evoked-response paradigm should be considered when applying the estimation algorithm to electrophysiological recordings. Following such a paradigm, data can be epoched into a sufficient number of trials (realisations), where each trial is a response to a stimulus, such that a distribution of the parameter estimates can be formed.
 
-Previous work from Schiff and Sauer~\cite{schiff2008kalman} demonstrated for the first time the applicability of the unscented Kalman filter (UKF) for state estimation for discrete (in space and time) nonlinear spatio-temporal systems. Within their framework, each discrete spatial location forms an element of the state vector to be estimated with the UKF. A limitation of this framework lies in an increase in dimensionality with increases in the spatial resolution and in the physical size of the neural field. Increases in dimensionality lead to increases in uncertainty of the estimated state and problems associated with computational complexity. This paper builds on this previous study, where the estimator is constructed to approximate a continuous field and the dimensionality of the state vector is independent of the resolution of a spatial discretisation and is governed by the inherent spatial properties of the field. The frequency analysis methods presented in Section~\ref{SpectralAnalysisSection} provide a rigorous framework for the placement and the number of the basis functions required for the decomposition. This enables estimation of a larger field, with a lower dimensional state vector. The basis function decomposition also enabled the coupling to be described by an inner product rather than a spatial convolution. This transformation greatly simplifies the computational complexity of the estimator, which is important for the estimator to run in a real-time scenario.
+Previous work from Schiff and Sauer~\cite{schiff2008kalman} demonstrated for the first time the applicability of the unscented Kalman filter (UKF) for state estimation for discrete (in space and time) nonlinear spatio-temporal systems. Within their framework, each discrete spatial location forms an element of the state vector to be estimated with the UKF. A limitation of this framework lies in an increase in dimensionality with increases in the spatial resolution and in the physical size of the neural field. Increases in dimensionality lead to increases in uncertainty of the estimated state and problems associated with computational complexity. This paper builds on this previous study, where the estimator is constructed to approximate a continuous field and the dimensionality of the state vector is independent of the resolution of a spatial discretisation. and is governed by the . The frequency analysis methods presented in Section~\ref{SpectralAnalysisSection} provide a rigorous framework determining the dimensionality of the system using inherent spatial properties of the field. This enables estimation of a larger field, with a lower dimensional state vector. The basis function decomposition also enabled the coupling to be described by an inner product rather than a spatial convolution. This transformation greatly simplifies the computational complexity of the estimator, which is important for the estimator to run in a real-time scenario.
 
 The frequency analysis and model selection tools presented in Section~\ref{SpectralAnalysisSection} specify the sensor arrangement that is required for capturing the dominant cortical dynamics. Importantly, these new tools can also be used to design electrophysiological recording systems to avoid spatial aliasing. This analysis is becoming increasingly relevant as recording systems are becoming more sophisticated with higher density recordings~\cite{Brinkmann2009}. 
 
-To the authors' best knowledge, this is the first paper derive a continuum neural field model-based estimation framework for intracortical connectivity from electrophysiological data. The importance of the estimation framework can be illustrated by considering that the connectivity structure at this scale can not be estimated using diffusion tensor imaging due to the near isotropic diffusion of water in grey matter~\cite{Assaf2008}. 
+This is the first paper derive a continuum neural field model-based estimation framework for intracortical connectivity from electrophysiological data. The importance of the estimation framework can be illustrated by considering that the connectivity structure at this scale can not be estimated using diffusion tensor imaging due to the near isotropic diffusion of water in grey matter~\cite{Assaf2008}. 
 
 The closest competitor to our `grey-box' integro-difference equation (IDE) based approach is perhaps the `black-box' multivariate auto-regressive (MVAR) model. Examples of MVAR models for estimating functional connectivity include Granger causality~\cite{Hesse2003}, the direct transfer function~\cite{Kaminski1991} and partial directed coherence~\cite{Sameshima1999}. A distinct advantage of the IDE-based technique proposed in this paper, is that the estimates of the connectivity structure are made independently of the number of sensors (assuming the field is sufficiently sampled). In addition, the number of parameters required to model the system is considerably less than a typical MVAR model. Furthermore, by using the neural field equations as a parametric form of the model, the parameters have physical meaning and therefore, can be clinically relevant. An advantage of the MVAR-based methods is that they allow for anisotropic connectivity, which is present in the longer range cortico-cortical fibres. A recent theoretical study~\cite{Jirsa2009} has demonstrated the importance of a multi-scale connectivity structure in generating the characteristic rhythms of the brain. A possible method of creating more precise models with this multi-scale structure maybe to estimate anisotropic cortico-cortical connectivity using a MVAR approach and intracortical connectivity using the methods proposed in this paper.
 
@@ -683,7 +644,7 @@ Generating patient specific neural field models has the potential to have signif
 
 Parameter estimation may also have significant impact on the treatment of disease. For example, recent theoretical work has demonstrated that seemingly similar electrographic seizures in absence epilepsy may arise from either abnormal excitatory or inhibitory mechanisms~\cite{Marten2009}. These very different mechanisms would require very different medications for successful treatment. However, the underlying mechanisms would be hidden from the clinician in the normal clinical setting. Successful parameter estimation has the potential to reveal these hidden mechanisms allowing for improved treatment strategies. 
 
-The development of an estimation framework also has theoretical implications. The the ability to estimate parameters will allow testing of hypotheses that have been generated in theoretical studies. This has the potential to validate neural field models, and in doing so, provide new insights that may lead to a greater understanding of macro-scale neurodynamics. For example, using the proposed model-based framework we can reconstruct a neural field from data and estimate parameters and check if they correspond to theoretically derived parameters where certain solutions can exist. In addition, the parameters and the state-space can be explored during cognitive tasks and states of arousal such as during sleep and anaesthesia. 
+The development of an estimation framework also has theoretical implications. The the ability to estimate parameters will allow testing of hypotheses that have been generated in theoretical studies. This has the potential to validate neural field models, and in doing so, provide new insights that may lead to a greater understanding of macro-scale neurodynamics. For example, using the proposed model-based framework we can reconstruct a neural field from data and estimate parameters to check if they correspond to theoretically derived values where certain solutions can exist. In addition, the parameters and the state-space can be explored during cognitive tasks and states of arousal such as during sleep and anaesthesia. 
 
 In this paper, an assumption was made that the chosen kernel basis functions can exactly represent the actual connectivity kernel. In future work, we plan to relax this assumption. We hope to achieve this by using the actual kernel that cannot exactly be presented by the chosen finite number of basis functions. In addition, we have assumed the neural field is isotropic and homogeneous. It is generally accepted that the intracortical connectivity structure can be accurately modelled as being isotropic. However, the assumption of homogeneity is quite strong. Future work should be focussed on developing estimation algorithms where assumption of homogeneity can be relaxed. Future work should also be targeted to include a more realistic synaptic response kernel, with finite rise and decay times and finite, and distant dependant propagation times into the parametric neural field equations.
 
@@ -713,157 +674,122 @@ In this paper, an assumption was made that the chosen kernel basis functions can
 
 
 \section*{Tables}
-%\begin{table}[!ht]
-%\caption{
-%\bf{Table title}}
-%\begin{tabular}{|c|c|c|}
-%table information
-%\end{tabular}
-%\begin{flushleft}Table caption
-%\end{flushleft}
-%\label{tab:label}
-% \end{table}
 
 \begin{table}[!ht]
 \caption{
-\bf{Notation and Parameters}}
+\bf{Parameters}}
 \begin{tabular}{|c|l|c|c|}
 	\hline
 	\textbf{Symbol} & \textbf{Quantity} & \textbf{Value} & \textbf{Units}\\
 	\hline
 	\multicolumn{4}{|c|}{\emph{Domain and indices}}\\
 	\hline
-	$\Omega$ & spatial domain & &\\
 	$\Delta$ & spatial discretisation step & 0.5 & mm \\
-	$t$ & time & & s\\
-	$\mathbf{r}$ & spatial location & &\\
-	$n$ & sensor index $n=1,..,N$ & &\\
 	$T_s$ & time step & $0.001$ & s\\
-	$T$ & number of time steps & 0.4 & s\\
-	\hline
-	\multicolumn{4}{|c|}{\emph{Spatiotemporal signals}}\\
-	\hline
-    $y(\mathbf{r}_n,t)$ & observation & & mV\\
-    $v(\mathbf{r},t)$ & mean membrane potential & & mV \\
-	$g(\mathbf{r},t)$ & weighted firing rate function & & \\
-	$f(\mathbf{r},t)$ & firing rate function & & spikes.s$^{-1}$\\
-	$e(\mathbf{r},t)$ & field disturbance, (covariance $\gamma$) & &\\
-	$\varepsilon(\mathbf{r}_n,t)$ & observation noise, (covariance $\Sigma_\varepsilon$) & &\\
+	$T$ & number of time steps used in estimation & 0.4 & s\\
 	\hline 
 \multicolumn{4}{|c|}{\emph{Model}}\\
 	\hline
-	$h(t)$ & post-synaptic response kernel & & mV\\
 	$\tau$ & synaptic time constant & 0.01 & s$^{-1}$ \\
-	$\zeta$ & inverse synaptic time constant & & s$^{-1}$\\
-	$\xi$ & time constant parameter & & \\
-	$\eta(t)$ & Heaviside step function & & \\
-	$m(\mathbf{r},\mathbf{r}')$ & sensor kernel (width $\sigma_m^2$) & & \\
-	$w(\mathbf{r},\mathbf{r}')$ & spatial connectivity kernel & & \\
-	$f_{max}$ & maximal firing rate & & spikes.s$^{-1}$\\
-	$\varsigma$ & slope of sigmoidal activation function & & \\
-	$v_0$ & firing threshold & & mV \\
-	$\delta(t)$ & Dirac-delta function & & \\
-	$D$ & Temporal differential operator & &\\
-	$\boldsymbol{\theta}$ & & $\left[\begin{array}{ccc}
+	$f_{max}$ & maximal firing rate & 10 & spikes.s$^{-1}$\\
+	$\varsigma$ & slope of sigmoidal activation function & 0.8 & mV$^{-1}$\\
+	$v_0$ & firing threshold & 2 & mV \\
+	$\boldsymbol{\theta}$ & vector of connectivity kernel parameters & $\left[\begin{array}{ccc}
 	10 &-8 &0.5
 	\end{array}
-	\right]^{\top}$ & mV/spike\\
-	$\sigma_{\psi_{1}}, \sigma_{\psi_{2}}, \sigma_{\psi_{3}}$ & & 1.8, 2.4, 6 & mm\\
-	$\sigma_{m},\Delta_{y}$& & 0.9, 1.5 & mm\\
-	$\Sigma_{\varepsilon}$ & & $0.1 \times I_{N}$ & mm$^2$ \\
-	$\sigma_{\gamma}$& & 1.3 & mm\\
+	\right]^{\top}$ & mV.spike$^{-1}$\\
+	$\sigma_{\psi_{1}}, \sigma_{\psi_{2}}, \sigma_{\psi_{3}}$ & connectivity kernel width parameters & 1.8, 2.4, 6 & mm\\
+	$\Delta_y$ & distance between adjacent sensors & 1.5 & mm\\
+	$\sigma_{m}$ & sensor width parameter & 0.9 & mm \\
+	$\Sigma_{\varepsilon}$ & observation noise variance & $0.1 \times I_{N}$ & mm$^2$ \\
+	$\sigma_{\gamma}$& disturbance spatial covariance width & 1.3 & mm\\
+	$\sigma_{\gamma,t}$ & disturbance temporal variance & 0.1 & mV$^2$ \\
+	\hline 
+	\multicolumn{4}{|c|}{\emph{Reduced Model}}\\
+	\hline
+	$\Delta_{\phi}$ & Distance between field basis functions & 2.5 & mm \\
+	$\sigma^2_{\phi}$ & Spatial variance of Gaussian in spatial domain & 2.5 & mm$^2$\\
+	\hline 
+	\multicolumn{4}{|c|}{\emph{Frequency Analysis}}\\
+	\hline
+	$\rho_y$ & Sensor over-sampling parameter & 1 & n.a.\\
+	$\rho_\phi$ & Field basis function over-sampling parameter & 1 & n.a.\\
+	\hline 
+	\multicolumn{4}{|c|}{\emph{Estimation}}\\
+	\hline
+	$\alpha$& Determines the spread of sigma points & 0.001 & n.a.\\
+	$\beta$& Prior knowledge of the sigma points distribution & 2 & n.a.\\
+	$\kappa$& Scaling parameter & $3-L$ & n.a.\\
 	\hline
 \end{tabular}
-\begin{flushleft}Table caption
+\begin{flushleft}Parameters for the neural field model, the model reduction, the frequency analysis and the estimation procedure.
 \end{flushleft}
-\label{tab:label}
+\label{tab:Parameters}
 \end{table}
 	
-% 	\hline
-% 	\multicolumn{4}{|c|}{\emph{Decomposition}} \\
-% 	\hline
-%     $L$ & number of field basis functions & 81 & \\
-%    	$\boldsymbol\phi(\mathbf{r})$ & vector of Gaussian basis functions & & \\
-%    	$\mathbf{x}_t$ & state vector at time $t$ & & \\
-%    	$\boldsymbol{\psi}$ & vector of connectivity kernel basis functions & & \\
-%    	$\theta$ & vector of connectivity kernel parameters & & \\
-%    	$\Gamma$ & inner product of field basis functions & &\\
-%    	$q()$ & state function & &\\
-%    	$Q()$ & state function & &\\
-% 	$\gamma(\mathbf r-\mathbf r')$& field disturbance covariance function & &\\
-%    	$\mathbf{e}_t$ & state disturbance & &\\
-% 	$\Sigma_e$ &state disturbance covariance matrix& &\\
-% 	$\mathbf{\epsilon}_t$ & observation noise & &\\
-% 	$\Sigma_{\epsilon}$ &observation noise covariance matrix& &\\
-%    	$\mathbf{C}$ & observation matrix& & \\
-% 	$c_{ij}$& elements of observation matrix & & \\
-% 	\hline
-% \end{tabular}
-% \begin{flushleft}Table caption
-% \end{flushleft}
-% \label{tab:label}
-% \end{table}
-
 
 \begin{table}[!ht]
 \caption{
-\bf{Notation and Parameters - Part 2}}
-\begin{tabular}{|c|l|c|c|}
+\bf{Notation}}
+\begin{tabular}{|c|l|c|}
 	\hline
-	\textbf{Symbol} & \textbf{Quantity} & \textbf{Value} & \textbf{Units}\\
+	\textbf{Symbol} & \textbf{Quantity} & \textbf{Units}\\
 	\hline
-	\multicolumn{4}{|c|}{\emph{Decomposition}} \\
+	\multicolumn{3}{|c|}{\emph{Domain and indices}}\\
 	\hline
-	$\hat{\mathbf{x}}$ & State estimate & & \\
-    $L$ & number of field basis functions & 81 & \\
-   	$\boldsymbol\phi(\mathbf{r})$ & vector of Gaussian basis functions & & \\
-   	$\mathbf{x}_t$ & state vector at time $t$ & & \\
-   	$\boldsymbol{\psi}$ & vector of connectivity kernel basis functions & & \\
-   	$\theta$ & vector of connectivity kernel parameters & & \\
-   	$\Gamma$ & inner product of field basis functions & &\\
-   	$q()$ & state function & &\\
-   	$Q()$ & state function & &\\
-	$\gamma(\mathbf r-\mathbf r')$& field disturbance covariance function & &\\
-   	$\mathbf{e}_t$ & state disturbance & &\\
-	$\Sigma_e$ &state disturbance covariance matrix& &\\
-	$\mathbf{\varepsilon}_t$ & observation noise & &\\
-	$\Sigma_{\varepsilon}$ &observation noise covariance matrix& &\\
-   	$\mathbf{C}$ & observation matrix& & \\
-	$c_{ij}$& elements of observation matrix & & \\
+	$\Omega$ & spatial domain &\\
+	$\mathbf{r}$ & spatial location & [mm, mm]\\
+	$t$ & time & s\\
 	\hline
-	\multicolumn{4}{|c|}{\emph{Frequency Analysis}} \\
+	\multicolumn{3}{|c|}{\emph{Model}}\\
 	\hline
-    $V(\nu)$ & Spectrum of the dynamic field & &\\
-	$\nu$ & Spatial frequency & &\\
-	$\nu_c$ & Spatial cut-off frequency & &\\
-	$\Delta_y$ & Distance between adjacent sensors & &\\
-	$\rho$ & Over-sampling parameter & &\\
-	$\Delta_{\phi}$ & Distance between field basis functions & &\\
-	$\sigma_{\nu}^2$ & Variance of FT of Gaussian basis function & &\\
-	$\sigma^2_{\phi}$ & Spatial variance of Gaussian in spatial domain & &\\
+    $y(\mathbf{r}_n,t)$ & observation & mV\\
+    $v(\mathbf{r},t)$ & mean membrane potential & mV \\
+	$g(\mathbf{r},t)$ & weighted firing rate function & spikes.s$^{-1}$\\
+	$f(\mathbf{r},t)$ & firing rate function & spikes.s$^{-1}$\\
+	$e(\mathbf{r},t)$ & field disturbance, with covariance function $\gamma(\mathbf r-\mathbf r')$ & mV\\
+	$\varepsilon(\mathbf{r}_n,t)$ & observation noise, with covariance matrix $\Sigma_\varepsilon$ & mV\\
+	$m(\mathbf{r}_n,\mathbf{r}')$ & sensor kernel where $n$ is sensor index $n=1,..,N$ (width $\sigma_m^2$) & n.a. \\
+	$w(\mathbf{r},\mathbf{r}')$ & spatial connectivity kernel & n.a.\\
+	$h(t)$ & post-synaptic response kernel & mV\\
+	$\zeta$ & inverse synaptic time constant & s$^{-1}$\\
+	$\xi$ & time constant parameter & n.a.\\
+	$\eta(t)$ & Heaviside step function & n.a.\\
+	$\delta(t)$ & Dirac-delta function & n.a.\\
+	$D$ & temporal differential operator & n.a.\\
 	\hline
-	\multicolumn{4}{|c|}{\emph{State Estimation}} \\
+	\multicolumn{3}{|c|}{\emph{Reduced Model}} \\
 	\hline
-	$\chi$ & Matrix of sigma vectors & &\\
-	$\lambda$& Scaling parameter & &\\
-	$\alpha$& Determines the spread of sigma points & &\\
-	$\beta$& Prior knowledge of the sigma points distribution & &\\
-	$\kappa$& Scaling parameter & & \\
-	$W$& Sigma vecors weights & & \\
-   	$\hat{\mathbf{x}}_t^{f-}$ & Forward prior estimate & & \\
-   	$\hat{\mathbf{x}}_t^f$ & Forward posterior estimate & & \\
-   	$\hat{\mathbf{x}}_t^{b-}$ & Backward prior estimate & & \\
-   	$\hat{\mathbf{x}}_t^{b}$ & Backward posterior estimate & & \\
-   	$P^f_t$ & Forward posterior covariance matrix & & \\
-   	$P^{f-}_t$ & Forward prior covariance matrix & & \\
-   	$P^b_t$ & Backward posterior covariance matrix & & \\
-   	$P^{b-}_t$ & Backward prior covariance matrix & & \\
-	$\mathcal K_{t} $& Filter gain & & \\
-	$M_t$& Cross-covariance matrix & & \\
-	$S_t$& Smoother gain & & \\	
+   	$\boldsymbol\phi(\mathbf{r})$ & vector of $L$ Gaussian basis functions & n.a.\\
+   	$\mathbf{x}_t$ & state vector at time $t$ & mV\\
+   	$\boldsymbol{\psi}(\mathbf{r}-\mathbf{r}')$ & vector of connectivity kernel basis functions & n.a.\\
+   	$\Gamma$ & inner product of field basis functions & n.a.\\
+   	$q()$ & parameterised nonlinear state function (used in LS estimator) & n.a.\\
+   	$Q()$ & state transition function &\\
+   	$\mathbf{e}_t$ & state disturbance vector, with covariance $\Sigma_e$ & mV\\
+   	$\mathbf{C}$ & observation matrix & n.a. \\
+	\hline
+	\multicolumn{3}{|c|}{\emph{Frequency Analysis}} \\
+	\hline
+    $V(\nu)$ & Fourier transform of the neural field & Hz\\
+	$\nu$ & Spatial frequency & Hz \\
+	$\nu_c$ & Field spatial cut-off frequency & Hz\\
+	$\sigma_{\nu}^2$ & Variance of Fourier transformed Gaussian basis function & Hz$^2$\\
+	\hline
+	\multicolumn{3}{|c|}{\emph{Estimation}} \\
+	\hline
+	$\mathcal{X}$ & matrix of sigma vectors & mV\\
+	$W$ & matrix of sigma vector weights (scaling parameter $\lambda$) & n.a.\\
+   	$\hat{\mathbf{x}}_t^{f-}$, $\hat{\mathbf{x}}_t^f$ & forward prior and posterior state estimates & mV\\
+   	$\hat{\mathbf{x}}_t^{b-}$, $\hat{\mathbf{x}}_t^{b}$ & backward prior and posterior state estimates & mV\\
+ 	$P^{f-}_t$, $P^f_t$  & forward prior and posterior covariance matrices & mV$^2$\\
+   	$P^{b-}_t$, $P^b_t$ & backward prior and posterior covariance matrices & mV$^2$\\
+	$M_t$& cross-covariance matrix & mV$^2$\\
+	$\mathcal K_{t} $ & filter gain & n.a.\\
+	$S_t$ & smoother gain & n.a.\\	
 	\hline
 \end{tabular}
-\begin{flushleft}Table caption
+\begin{flushleft}The first column of the table gives the symbols for all the notation used the paper. The second column provides a brief description of the quantity, and the third column provide the relevant SI unit where appropriate.
 \end{flushleft}
 \label{tab:label}
 \end{table}
@@ -918,6 +844,23 @@ $\mathbf P_{t}^{b}=\mathbf P_{t}^{f}+\mathbf S_t\left[\mathbf P_{t+1}^{b}-\mathb
 \label{tab:UKFAlgorithm}
 \end{table}
 
+\begin{table}[!ht]
+\caption{
+\bf{Estimation Results}}
+\begin{tabular}{|c|ccc|}	
+\hline\hline 
+Parameter & Actual Value & Mean Estimate $\pm$ Std. Dev. & Bias (\%) \\
+\hline\hline
+$\xi$ & $0.9$ & $0.925\pm 0.004$ & $2.778$ \\
+$\theta_0$ & $10$ & $10.228\pm2.794$ & $2.28$\\
+$\theta_1$ & $-8$ & $-8.495\pm1.913$ & $-6.187$\\
+$\theta_2$ & $0.5$ & $0.545\pm0.077$ & $9$\\
+\hline
+\end{tabular}
+\begin{flushleft}Actual parameter values compared to mean parameter estimates.
+\end{flushleft}
+\label{tab:Parameters estimates}
+\end{table}
 
 \end{document}
 
