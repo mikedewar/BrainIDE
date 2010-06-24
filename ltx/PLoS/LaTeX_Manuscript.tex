@@ -459,6 +459,7 @@ Using the model selection techniques described in Section~\ref{SpectralAnalysisS
 \caption{{\bf Spatial frequency analysis of the neural field}. (\textbf{A}) The average (over time) power in dB of the spatial frequency of the neural field. (\textbf{B}) The average (over time) power in dB of the spatial frequency of the reconstructed neural field from the basis function decomposition. The reconstructed field shows a narrower bandwidth as a result of the band limiting properties of the sensors and basis functions.}
 \label{fig:FFTTrueEstimate}
 \end{figure}
+
 The spatial frequency of the observed field is shown in Figure~\ref{fig:ObservationFreqAnal}(C). The cut-off frequency is $\nu_{cy} \approx 0.2$~Hz ($-3$~dB point). The observation cut-off frequency is lower than the field cut-off due to the low-pass filtering effect of the sensors. The spatial frequency response of the sensors can be seen in Figure~\ref{fig:ObservationFreqAnal}(A). Using an oversampling parameter of $\rho_{\phi}=1$, the minimum distance between the field basis functions was calculated to be $2.5$~mm to satisfy Shannon's sampling criterion (from equation~\ref{eq:BasisFunctionSeparation}). The distance between basis functions was set to $\Delta_{\phi}=2.5$~mm, which is sufficient to capture the significant dynamics according to our criteria.
 Given the basis function separation, the basis function width parameter was set to $\sigma_{\phi}^2=2.5$~mm. This allowed a smooth representation of the field by the basis function decomposition up to a spatial frequency $\mathbf{\nu_{c\phi}} \approx 0.12$~Hz, as described by equation~\ref{eq:CutoffFromBasisFuncWidth}. The band-limiting effect is due to the spatial frequency response of the basis functions as seen in Figure~\ref{fig:ObservationFreqAnal}(B). The spatial frequency of the reconstructed field from the basis function decomposition is shown in Figure~\ref{fig:FFTTrueEstimate}(B). This figure illustrates the band-limiting effect of the basis function decomposition.
 \begin{figure}[!ht] 
@@ -522,7 +523,7 @@ The accuracy of the state estimates was evaluated by comparing the field reconst
    	\begin{center}
    		\includegraphics{./Graph/MRMSE.pdf} 
    	\end{center}
-   	\caption{{\bf The mean of average RMSE of the estimated field over 100 realisations (solid line) and the 95~\% confidence interval (grey region).}} 
+   	\caption{{\bf Error in the field reconstruction}. The mean of average RMSE of the estimated field over 100 realisations (solid line) and the 95~\% confidence interval (grey region).} 
 \label{fig:RMSE}
    \end{figure}
   
@@ -635,7 +636,7 @@ In this paper, an assumption was made that the chosen kernel basis functions can
 \begin{table}[!ht]
 \caption{
 \bf{Notation}}
-\begin{tabular}{|c|l|l|}
+\begin{tabular}{|l|l|l|}
 	\hline
 	\textbf{Symbol} & \textbf{Quantity} & \textbf{Units}\\
 	\hline
@@ -675,7 +676,7 @@ In this paper, an assumption was made that the chosen kernel basis functions can
 	\hline
 	\multicolumn{3}{|c|}{\emph{Frequency Analysis}} \\
 	\hline
-    $V(\nu)$ & Fourier transform of the neural field & Hz\\
+    % $V(\nu)$ & Fourier transform of the neural field & Hz\\
 	$\nu$ & Spatial frequency & Hz \\
 	$\nu_c$ & Field spatial cut-off frequency & Hz\\
 	$\sigma_{\nu}^2$ & Variance of Fourier transformed Gaussian basis function & Hz$^2$\\
@@ -698,7 +699,7 @@ In this paper, an assumption was made that the chosen kernel basis functions can
 \label{tab:label}
 \end{table}
 
-\renewcommand{\arraystretch}{1.8}
+\renewcommand{\arraystretch}{1.7}
 \begin{table}[!ht]
 \caption{
 \bf{Steps in the Algorithm for the Unscented RTS Smoother}}
