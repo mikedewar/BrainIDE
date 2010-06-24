@@ -8,6 +8,9 @@
 % latex plos.template
 % dvipdf plos.template
 
+% TO DELETE
+\newcommand{\mike}[1]{\textsf{\emph{\textbf{\textcolor{red}{#1}}}}} 
+
 %  \documentclass[twocolumn,10pt]{article}						%<-use this for checking equation length
  \documentclass[10pt]{article}
 
@@ -539,6 +542,14 @@ The accuracy of the state estimates was evaluated by comparing the field reconst
 
 \section*{Discussion}\label{DiscussionSection}
 This paper has presented a method for estimating intracortical connectivity and synaptic dynamics from electrophysiological data. As seen in the Section~\ref{sec:state_and_param_results} the results indicate good estimation performance, where the mean parameter estimates are in good agreement with the actual values. The estimates of the connectivity kernel parameters show relatively broad distributions, which is expected considering the system is driven by an unknown input, modelled as a random disturbance, and the observations are corrupted by noise. To overcome the effect of noise, an evoked-response paradigm should be considered when applying the estimation algorithm to electrophysiological recordings. Following such a paradigm, data can be epoched into a sufficient number of trials (realisations), where each trial is a response to a stimulus, such that a distribution of the parameter estimates can be formed.
+
+\mike{The previous paragraph seems to say this: we get good estimates, but with wide variance. We could shrink those aspects of the variance to do with observation noise by including an input. Then, in a practical setting, do multiple runs to get a distribution of parameters. It seems to me there are two messages here. 1: we could reduce the variance using an input. 2: we could deal with the fact that we get a wide range of parameter estimates in practice by conducting multiple trials. I think these messages could be made a bit more clearly, and turned on their heads a bit. I've had a go at this paragraph again.}
+
+\mike{This paper has presented a method for estimating intracortical connectivity and synaptic dynamics from electrophysiological data. As seen in  Section~\ref{sec:state_and_param_results}, the results indicate ubiased estimation, where the mean parameter estimates are in good agreement with the actual values. The estimates of the connectivity kernel parameters show relatively broad distributions, which can be expected considering the system's input is modelled as a random disturbance, and the observations are corrupted by noise.}
+
+\mike{To overcome the effect of noise, an evoked-response paradigm should be considered when applying the estimation algorithm to electrophysiological recordings. Given knowledge of the input, it is expected that the variance of the parameter estimates will decrease.}
+
+\mike{Even with an evoked potential, our results imply that we should only expect to learn distributions of parameters, rather than hope to uncover a `true' parameter set. By designing an input signal carefully, data could be epoched into a sufficient number of trials (realisations), where each trial is a response to a stimulus, such that a distribution of the parameter estimates can be formed.}
 
 Previous work from Schiff and Sauer~\cite{schiff2008kalman} demonstrated for the first time the applicability of the unscented Kalman filter (UKF) for state estimation for discrete (in space and time) nonlinear spatio-temporal systems. Within their framework, each discrete spatial location forms an element of the state vector to be estimated with the UKF. A limitation of this framework lies in an increase in dimensionality with increases in the spatial resolution and in the physical size of the neural field. Increases in dimensionality lead to increases in uncertainty of the estimated state and problems associated with computational complexity. This paper builds on this previous study, where the estimator is constructed to approximate a continuous field and the dimensionality of the state vector is independent of the resolution of a spatial discretisation. and is governed by the . The frequency analysis methods presented in Section~\ref{SpectralAnalysisSection} provide a rigorous framework determining the dimensionality of the system using inherent spatial properties of the field. This enables estimation of a larger field, with a lower dimensional state vector. The basis function decomposition also enabled the coupling to be described by an inner product rather than a spatial convolution. This transformation greatly simplifies the computational complexity of the estimator, which is important for the estimator to run in a real-time scenario.
 
