@@ -119,32 +119,34 @@ The covariance of $\mathbf{e}_t$ is
 \end{align}
 
 \section*{Spatial Cut-off Frequency of Field Basis Functions}\label{ap:FrequencyAnalysis}
-This Appendix provides the derivation of the field basis function cut-off frequency as a function of the basis function width (equations~\ref{eq:GaussianFT} and \ref{eq:WidthFrequencyRelationship} in the main text). Applying the \textit{n}-dimensional Fourier transform \cite{Arsac1966} to a \textit{n}-dimensional Gaussian centred at the origin (defined in equation~\ref{eq:BasisFunctionAtOrigin}) yields
-\begin{eqnarray}\label{eq:AppendixGaussianFT}
- \lefteqn{\boldsymbol\Phi(\boldsymbol \nu)=\int_{\mathbb{R}^n}{\mathrm{exp}\left({-\frac{1}{\sigma_{\phi}^2}\mathbf r^\top\mathbf r}\right)\mathrm{exp}\left(-2\pi i\boldsymbol\nu^\top\mathbf r\right)d\mathbf r}} \nonumber \\
-&=&\int_{\mathbb{R}^n}\mathrm{exp}\left(-\frac{1}{\sigma_{\phi}^2}\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]^\top\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]\right)d\mathbf r \nonumber \\
-&\times& \mathrm{exp}\left(-\sigma_{\phi}^2\pi^2\boldsymbol\nu^\top \boldsymbol\nu\right).
-\end{eqnarray}
-Now evaluating the integral on the RHS of equation~\ref{eq:AppendixGaussianFT} gives 
-\begin{eqnarray}\label{eq:IntegralOfGaussian}
-\int_{\mathbb{R}^n}\mathrm{exp}\left(-\frac{1}{\sigma_{\phi}^2}\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]^\top\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]\right)d\mathbf r&& \nonumber \\
-=\left(\pi\sigma_{\phi}^2\right)^{\frac{n}{2}}.&&
-\end{eqnarray}
-Substituting equation~\ref{eq:IntegralOfGaussian} into equation~\ref{eq:AppendixGaussianFT} gives the scaled Gaussian
-\begin{equation}\label{eq:FTofGaussian}
+This section gives the derivation for the field basis function spatial cut-off frequency as a function of the basis function width (equations~\ref{eq:GaussianFT} and \ref{eq:WidthFrequencyRelationship} in the main text). For we define an \textit{n}-dimensional Gaussian  centred at the origin as 
+\begin{equation}\tag{S1.7}
+ \phi(\mathbf r)=\mathrm{exp}\left(-\frac{1}{\sigma^2}\mathbf r^\top\mathbf r\right).
+\end{equation}
+Now applying the \textit{n}-dimensional Fourier transform~\cite{Arsac1966} yields
+\begin{align}\label{eq:AppendixGaussianFT}
+ \boldsymbol\Phi(\boldsymbol \nu)&=\int_{\mathbb{R}^n} {\mathrm{exp}\left({-\frac{1}{\sigma_{\phi}^2}\mathbf r^\top\mathbf r}\right)\mathrm{exp}\left(-2\pi i\boldsymbol\nu^\top\mathbf r\right)d\mathbf r} \nonumber \\
+&=\int_{\mathbb{R}^n}\mathrm{exp}\left(-\frac{1}{\sigma_{\phi}^2}\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]^\top\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]\right)d\mathbf r \times\mathrm{exp}\left(-\sigma_{\phi}^2\pi^2\boldsymbol\nu^\top \boldsymbol\nu\right).\tag{S1.8}
+\end{align}
+Now evaluating the integral on the RHS of equation~S1.8 gives 
+\begin{equation}\label{eq:IntegralOfGaussian}\tag{S1.9}
+\int_{\mathbb{R}^n}\mathrm{exp}\left(-\frac{1}{\sigma_{\phi}^2}\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]^\top\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]\right)d\mathbf r
+=\left(\pi\sigma_{\phi}^2\right)^{\frac{n}{2}}.
+\end{equation}
+Substituting equation~S1.9 into equation~S1.8 gives the scaled Gaussian
+\begin{equation}\label{eq:FTofGaussian}\tag{S1.10}
 \boldsymbol\Phi(\boldsymbol \nu)=\left(\frac{1}{\pi\sigma_{\nu}^2}\right)^{\frac{n}{2}}\mathrm{exp}\left(-\frac{1}{\sigma_{\nu}^2}\boldsymbol\nu^\top \boldsymbol\nu\right),
 \end{equation} 
 where 
-\begin{equation}
+\begin{equation}\tag{S1.11}
 	\sigma_{\nu}^2=\frac{1}{\pi^2\sigma_{\phi}^2}. 
 \end{equation}
-
 For $3$~dB attenuation ($1/2$ to peak power) at the cut-off frequency, $\boldsymbol\nu_c$, we need to set
-\begin{eqnarray}
+\begin{equation}\tag{S1.12}
  \left|\boldsymbol\Phi(\boldsymbol\nu_{c})\right|^2=\frac{1}{2}\left|\boldsymbol\Phi(\mathbf 0)\right|^2,
-\end{eqnarray}
-since the maximum of Gaussian described in equation~\ref{eq:FTofGaussian} is at the origin. Now solving for $\sigma_{\nu}^2$ we get
-\begin{equation}
+\end{equation}
+since the maximum of Gaussian described in equation~S1.10 is at the origin. Now solving for $\sigma_{\nu}^2$ we get
+\begin{equation}\tag{S1.13}
  \sigma_{\nu}^2=\frac{2\boldsymbol\nu_{c}^\top \boldsymbol\nu_{c}}{\ln 2 }.
 \end{equation}
 
