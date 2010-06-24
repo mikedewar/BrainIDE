@@ -95,25 +95,28 @@ For clarity, we shall index time points in the discrete time form of the model u
 \begin{equation}
 	\label{Euler Approximation2}\tag{S1.2} v_{t+1}\left( \mathbf{r}\right) = v_t\left( \mathbf{r}\right) -T_s \zeta v_t\left( \mathbf{r}\right) + T_s \int_\Omega {w\left( \mathbf{r}-\mathbf{r}' \right)f\left( {v_t\left( \mathbf{r}'\right)} \right)d\mathbf{r}'}. 
 \end{equation}
-The discrete time form of the model is 
+Now making simplifications, the discrete time form of the model is 
 \begin{equation}
-	\label{Discrete Time Model1}\tag{S1} v_{t+1}\left(\mathbf{r}\right) = \xi v_t\left(\mathbf{r}\right) + T_s \int_\Omega { w\left(\mathbf{r}-\mathbf{r}'\right) f\left(v_t\left(\mathbf{r}'\right)\right) d\mathbf{r}'}, 
+	\label{Discrete Time Model1}\tag{S1.3} v_{t+1}\left(\mathbf{r}\right) = \xi v_t\left(\mathbf{r}\right) + T_s \int_\Omega { w\left(\mathbf{r}-\mathbf{r}'\right) f\left(v_t\left(\mathbf{r}'\right)\right) d\mathbf{r}'}, 
 \end{equation}
 where $\xi = 1 - T_s \zeta$.
 
 \section*{Mean and Covariance of the State Disturbance }\label{ColoredNoise} 
-The state disturbance defined in equation~\ref{eq:Wt} is a linear function of $e_t(\mathbf r)$, therefore $\mathbf{e}_t$ is also normally distributed. The expected value of $\mathbf e_t$ is given by 
-\begin{eqnarray}
-	\mathbf E\left[ \mathbf e_t\right]&=& \mathbf{\Gamma}^{-1}\int_{\Omega}\boldsymbol\phi\left(\mathbf{r}\right)\mathbf E\left[e_t\left(\mathbf{r}\right)\right] d\mathbf{r} \nonumber \\
-	&=&\mathbf 0.
-\end{eqnarray}
+In this section we show that the state disturbance vector is $\mathbf{e}_t\sim\mathcal{N}(0,\Sigma_e)$ if $e_t(\mathbf{r})\sim\mathcal{GP}\left(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}')\right)$. We begin the derivation by acknowledging the state disturbance vector is a linear function of $e_t(\mathbf r)$. Therefore, $\mathbf{e}_t$ is also normally distributed. From equation~\ref{} the state disturbance vector is defined as
+\begin{equation} \tag{S1.4}
+	\mathbf{e}_t \triangleq \boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi} ( \mathbf{r} )e_t( \mathbf{r} )d\mathbf{r}}.
+\end{equation}
+The expected value of $\mathbf e_t$ is given by 
+\begin{equation}\tag{S1.5}
+	\mathbf E\left[ \mathbf e_t\right]= \mathbf{\Gamma}^{-1}\int_{\Omega}\boldsymbol\phi\left(\mathbf{r}\right)\mathbf E\left[e_t\left(\mathbf{r}\right)\right] d\mathbf{r}=\mathbf 0.
+\end{equation}
 The covariance of $\mathbf{e}_t$ is 
-\begin{eqnarray}
-	\boldsymbol\Sigma_e =\lefteqn{\mathbf E\left[ \mathbf e_t\mathbf e_t^\top\right]} \nonumber \\ 
-&=&\mathbf{\Gamma}^{-1}\mathbf E[\int_{\Omega}\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})d\mathbf{r} \int_{\Omega}\boldsymbol{\phi}^{\top}(\mathbf{r}') e_t(\mathbf{r}')d\mathbf{r}']\mathbf{\Gamma}^{- \top} \nonumber \\
-	&=&\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega} \boldsymbol{\phi}(\mathbf{r}) \mathbf E[e_t(\mathbf{r})e_t(\mathbf{r}')]\boldsymbol{\phi}^{\top}(\mathbf{r}')d\mathbf{r}' d\mathbf r\mathbf{\Gamma}^{- \top} \nonumber\\
-	&=&\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega}\boldsymbol{\phi}(\mathbf r) \gamma(\mathbf r- \mathbf r' )\boldsymbol{\phi}^{\top}(\mathbf r')d\mathbf r' d\mathbf r\mathbf{\Gamma}^{-\top}.
-\end{eqnarray}
+\begin{align}
+	\boldsymbol\Sigma_e &=\lefteqn{\mathbf E\left[ \mathbf e_t\mathbf e_t^\top\right]} \nonumber \\ 
+&=\mathbf{\Gamma}^{-1}\mathbf E[\int_{\Omega}\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})d\mathbf{r} \int_{\Omega}\boldsymbol{\phi}^{\top}(\mathbf{r}') e_t(\mathbf{r}')d\mathbf{r}']\mathbf{\Gamma}^{- \top} \nonumber \\
+	&=\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega} \boldsymbol{\phi}(\mathbf{r}) \mathbf E[e_t(\mathbf{r})e_t(\mathbf{r}')]\boldsymbol{\phi}^{\top}(\mathbf{r}')d\mathbf{r}' d\mathbf r\mathbf{\Gamma}^{- \top} \nonumber\\
+	&=\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega}\boldsymbol{\phi}(\mathbf r) \gamma(\mathbf r- \mathbf r' )\boldsymbol{\phi}^{\top}(\mathbf r')d\mathbf r' d\mathbf r\mathbf{\Gamma}^{-\top}.\tag{S1.6}
+\end{align}
 
 \section*{Spatial Cut-off Frequency of Field Basis Functions}\label{ap:FrequencyAnalysis}
 This Appendix provides the derivation of the field basis function cut-off frequency as a function of the basis function width (equations~\ref{eq:GaussianFT} and \ref{eq:WidthFrequencyRelationship} in the main text). Applying the \textit{n}-dimensional Fourier transform \cite{Arsac1966} to a \textit{n}-dimensional Gaussian centred at the origin (defined in equation~\ref{eq:BasisFunctionAtOrigin}) yields
