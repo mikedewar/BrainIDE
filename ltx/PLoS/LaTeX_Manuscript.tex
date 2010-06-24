@@ -8,8 +8,8 @@
 % latex plos.template
 % dvipdf plos.template
 
-% \documentclass[twocolumn,a4paper,10pt]{article}						%<-use this for checking equation length
-\documentclass[10pt]{article}
+%  \documentclass[twocolumn,10pt]{article}						%<-use this for checking equation length
+ \documentclass[10pt]{article}
 
 % amsmath package, useful for mathematical formulas
 \usepackage{amsmath}
@@ -465,13 +465,13 @@ Using the model selection techniques described in Section~\ref{SpectralAnalysisS
 
 The spatial frequency of the observed field is shown in Figure~\ref{fig:ObservationFreqAnal}(C). The cut-off frequency is $\nu_{cy} \approx 0.2$~Hz ($-3$~dB point). The observation cut-off frequency is lower than the field cut-off due to the low-pass filtering effect of the sensors. The spatial frequency response of the sensors can be seen in Figure~\ref{fig:ObservationFreqAnal}(A). Using an oversampling parameter of $\rho_{\phi}=1$, the minimum distance between the field basis functions was calculated to be $2.5$~mm to satisfy Shannon's sampling criterion (from equation~\ref{eq:BasisFunctionSeparation}). The distance between basis functions was set to $\Delta_{\phi}=2.5$~mm, which is sufficient to capture the significant dynamics according to our criteria.
 Given the basis function separation, the basis function width parameter was set to $\sigma_{\phi}^2=2.5$~mm. This allowed a smooth representation of the field by the basis function decomposition up to a spatial frequency $\mathbf{\nu_{c\phi}} \approx 0.12$~Hz, as described by equation~\ref{eq:CutoffFromBasisFuncWidth}. The band-limiting effect is due to the spatial frequency response of the basis functions as seen in Figure~\ref{fig:ObservationFreqAnal}(B). The spatial frequency of the reconstructed field from the basis function decomposition is shown in Figure~\ref{fig:FFTTrueEstimate}(B). This figure illustrates the band-limiting effect of the basis function decomposition.
-\begin{figure}[!ht] 
+\begin{figure*}[!ht] 
 	\begin{center}
 		\includegraphics{./Graph/SensorBasisObsFrequencyResponse.pdf}	
 	\end{center}
 	\caption{{\bf Spatial frequency analysis}. The dashed line shows the cut-off frequency (-3 dB point). (\textbf{A}) Two-dimensional spatial frequency in power dB, averaged over 400 time steps) of the observed field. The symmetry of the sensors and field basis functions allow for the one-dimensional representation of the spectral characteristics. (\textbf{B}) The spatial frequency response of a one-dimensional model sensor. (\textbf{C}) The spatial frequency response of a one-dimensional neural field basis function, illustrating a narrower band width than the sensors.} 
 	\label{fig:ObservationFreqAnal}
-\end{figure}
+\end{figure*}
 
 %\begin{figure}[!ht]
 %\begin{center}
@@ -530,12 +530,12 @@ The accuracy of the state estimates was evaluated by comparing the field reconst
 \label{fig:RMSE}
    \end{figure}
   
-\begin{figure}
+\begin{figure*}
 \centering 
 \label{fig:TrueField}\includegraphics{./Graph/FieldTrueEstimationError.pdf}
 \caption{{\bf Examples of the actual and estimated neural fields and the error}. (\textbf{A}) The actual field at a single time instant from the full neural field model that was used to generate data. (\textbf{B}) The reconstructed field of the reduced model, showing the effect of the basis function decomposition on the frequency content of the estimated field. (\textbf{C}) The absolute error between the true and reconstructed fields. The error shows high frequency behaviour.}
 \label{fig:FieldEstimate}
-\end{figure}
+\end{figure*}
 
 \section*{Discussion}\label{DiscussionSection}
 This paper has presented a method for estimating intracortical connectivity and synaptic dynamics from electrophysiological data. As seen in the Section~\ref{sec:state_and_param_results} the results indicate good estimation performance, where the mean parameter estimates are in good agreement with the actual values. The estimates of the connectivity kernel parameters show relatively broad distributions, which is expected considering the system is driven by an unknown input, modelled as a random disturbance, and the observations are corrupted by noise. To overcome the effect of noise, an evoked-response paradigm should be considered when applying the estimation algorithm to electrophysiological recordings. Following such a paradigm, data can be epoched into a sufficient number of trials (realisations), where each trial is a response to a stimulus, such that a distribution of the parameter estimates can be formed.
