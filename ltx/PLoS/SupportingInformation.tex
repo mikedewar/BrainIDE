@@ -50,7 +50,7 @@
 \else
 \usepackage{graphicx}
 \fi
-\title{S1: Extended Derivations}
+\title{S1: Extended Derivations for `A Data Driven Framework for Patient-Specific Neural Field Modelling'}
 \author{Dean R. Freestone$^{1,2,3}$, 
 Parham Aram$^{4}$, 
 Michael Dewar$^{5,\ast}$,\\
@@ -87,11 +87,11 @@ $\ast$ E-mail: dfreestone@bionicear.org
 \end{flushleft}
 
 \section*{Time Discretisation of Neural Field Model}\label{Time Discretization} To form the IDE neural field model a 
-time discretisation must be performed. We used a one-step Euler method where equation~\ref{FinalFormContinuous} can be approximated by 
+time discretisation must be performed. To do this we used a one-step Euler method, where equation~7 of the main text can be approximated by 
 \begin{equation}
 	\label{Euler Approximation}\tag{S1.1} \frac{v\left( \mathbf{r},t+T \right) - v\left( \mathbf{r},t\right)}{T_s} =-\zeta v\left( \mathbf{r},t \right) + \int_\Omega {w\left( \mathbf{r}-\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)d\mathbf{r}'}. 
 \end{equation}
-For clarity, we shall index time points in the discrete time form of the model using the subscript $t$ and the next time point as $t+1$. Rearranging equation~\ref{Euler Approximation} we get 
+For clarity, we shall index time points in the discrete time form of the model using the subscript $t$ and the next time point as $t+1$. Rearranging equation~S1.1 we get 
 \begin{equation}
 	\label{Euler Approximation2}\tag{S1.2} v_{t+1}\left( \mathbf{r}\right) = v_t\left( \mathbf{r}\right) -T_s \zeta v_t\left( \mathbf{r}\right) + T_s \int_\Omega {w\left( \mathbf{r}-\mathbf{r}' \right)f\left( {v_t\left( \mathbf{r}'\right)} \right)d\mathbf{r}'}. 
 \end{equation}
@@ -102,7 +102,7 @@ Now making simplifications, the discrete time form of the model is
 where $\xi = 1 - T_s \zeta$.
 
 \section*{Mean and Covariance of the State Disturbance }\label{ColoredNoise} 
-In this section we show that the state disturbance vector is $\mathbf{e}_t\sim\mathcal{N}(0,\Sigma_e)$ if $e_t(\mathbf{r})\sim\mathcal{GP}\left(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}')\right)$. We begin the derivation by acknowledging the state disturbance vector is a linear function of $e_t(\mathbf r)$. Therefore, $\mathbf{e}_t$ is also normally distributed. From equation~\ref{} the state disturbance vector is defined as
+In this section we show that the state disturbance vector is $\mathbf{e}_t\sim\mathcal{N}(0,\Sigma_e)$ if $e_t(\mathbf{r})\sim\mathcal{GP}\left(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}')\right)$. We begin the derivation by acknowledging the state disturbance vector is a linear function of $e_t(\mathbf r)$. Therefore, $\mathbf{e}_t$ is also normally distributed. From equation~21 of the main text, the state disturbance vector is defined as
 \begin{equation} \tag{S1.4}
 	\mathbf{e}_t \triangleq \boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi} ( \mathbf{r} )e_t( \mathbf{r} )d\mathbf{r}}.
 \end{equation}
@@ -119,11 +119,11 @@ The covariance of $\mathbf{e}_t$ is
 \end{align}
 
 \section*{Spatial Cut-off Frequency of Field Basis Functions}\label{ap:FrequencyAnalysis}
-This section gives the derivation for the field basis function spatial cut-off frequency as a function of the basis function width (equations~\ref{eq:GaussianFT} and \ref{eq:WidthFrequencyRelationship} in the main text). For we define an \textit{n}-dimensional Gaussian  centred at the origin as 
+This section gives the derivation for the field basis function spatial cut-off frequency as a function of the basis function width (equations~34 and~37 in the main text). For we define an \textit{n}-dimensional Gaussian  centred at the origin as 
 \begin{equation}\tag{S1.7}
  \phi(\mathbf r)=\mathrm{exp}\left(-\frac{1}{\sigma^2}\mathbf r^\top\mathbf r\right).
 \end{equation}
-Now applying the \textit{n}-dimensional Fourier transform~\cite{Arsac1966} yields
+Now applying the \textit{n}-dimensional Fourier transform yields
 \begin{align}\label{eq:AppendixGaussianFT}
  \boldsymbol\Phi(\boldsymbol \nu)&=\int_{\mathbb{R}^n} {\mathrm{exp}\left({-\frac{1}{\sigma_{\phi}^2}\mathbf r^\top\mathbf r}\right)\mathrm{exp}\left(-2\pi i\boldsymbol\nu^\top\mathbf r\right)d\mathbf r} \nonumber \\
 &=\int_{\mathbb{R}^n}\mathrm{exp}\left(-\frac{1}{\sigma_{\phi}^2}\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]^\top\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]\right)d\mathbf r \times\mathrm{exp}\left(-\sigma_{\phi}^2\pi^2\boldsymbol\nu^\top \boldsymbol\nu\right).\tag{S1.8}
@@ -174,7 +174,7 @@ In the case where $\boldsymbol\mu_i\neq\boldsymbol\mu_j\neq\mathbf 0$ equation~S
 where $\boldsymbol\mu=\boldsymbol\mu_i+\boldsymbol\mu_j$. 
 
 \section*{Inner Product of Two \emph{n}-Dimensional Gaussians}\label{ap:InnerProdOfGaussians}
-The derivation in this section was used for calculating the matrix $\Gamma$, from equation~\ref{} in the main text. The inner product of the two \emph{n}-dimensional Gaussians (from equations~\ref{eq:n_dimensional_Gaussian1} and~\ref{eq:n_dimensional_Gaussian2}) is defined as
+The derivation in this section was used for calculating the matrix $\Gamma$, from equation~16 in the main text. The inner product of the two \emph{n}-dimensional Gaussians (from equations~S1.14 and~S1.15) is defined as
 \begin{equation}\label{eq:InofGaussianDefinition}\tag{S1.18}
 \varphi_i\otimes\varphi_j=\int_{\mathbb{R}^n}\varphi_i(\mathbf r)\varphi_j(\mathbf r)d\mathbf{r}.
 \end{equation}
