@@ -8,6 +8,7 @@
 % latex plos.template
 % dvipdf plos.template
 
+% \documentclass[twocolumn,a4paper,10pt]{article}						%<-use this for checking equation length
 \documentclass[10pt]{article}
 
 % amsmath package, useful for mathematical formulas
@@ -58,7 +59,9 @@
 
 %% ** EDIT HERE **
 %% PLEASE INCLUDE ALL MACROS BELOW
-
+% \usepackage{anysize} 									%<-use this for checking equation length
+% \marginsize {1.7cm}{1.5cm}{0.3cm}{0.8cm} 				%<-use this for checking equation length
+% \setlength{\columnsep}{0.5cm}							%<-use this for checking equation length
 %% END MACROS SECTION
 
 \begin{document}
@@ -211,7 +214,7 @@ where $\mathbf{\boldsymbol{\phi}}(\mathbf{r})$ is a vector of Gaussian basis fun
    	\begin{center}
    		\includegraphics{./Graph/FieldDecomposition.pdf} 
    	\end{center}
-   	\caption{{\bf Example of a field decomposition.} An example of a continuous one-dimensional field decomposed by a finite number of basis functions scaled by the state vector. The dashed line depicts the field and the solid lines show the Gaussian basis functions.} 
+   	\caption{{\bf Example of a field decomposition.} An example of a continuous one-dimensional field decomposed by a finite number of basis functions scaled by the state vector. The dashed line depicts the field and the solid lines shows the Gaussian basis functions.} 
 	\label{fig:FieldDecomposition}
    \end{figure}
 The width and positioning of the basis functions can be determined by spectral analysis (explained in detail in Section~\ref{SpectralAnalysisSection}). The connectivity kernel can also be decomposed as 
