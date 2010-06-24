@@ -669,7 +669,6 @@ In this paper, an assumption was made that the chosen kernel basis functions can
    	$\mathbf{x}_t$ & state vector at time $t$ & mV\\
    	$\boldsymbol{\psi}(\mathbf{r}-\mathbf{r}')$ & vector of connectivity kernel basis functions & n.a.\\
    	$\Gamma$ & inner product of field basis functions & n.a.\\
-   	$q()$ & parameterised nonlinear state function (used in LS estimator) & n.a.\\
    	$Q()$ & state transition function &\\
    	$\mathbf{e}_t$ & state disturbance vector, with covariance $\Sigma_e$ & mV\\
    	$\mathbf{C}$ & observation matrix & n.a. \\
@@ -677,8 +676,7 @@ In this paper, an assumption was made that the chosen kernel basis functions can
 	\multicolumn{3}{|c|}{\emph{Frequency Analysis}} \\
 	\hline
     % $V(\nu)$ & Fourier transform of the neural field & Hz\\
-	$\nu$ & Spatial frequency & Hz \\
-	$\nu_c$ & Field spatial cut-off frequency & Hz\\
+	$\nu$, $\nu_c$ & spatial frequency and spatial cut-off frequency & Hz \\
 	$\sigma_{\nu}^2$ & Variance of Fourier transformed Gaussian basis function & Hz$^2$\\
 	\hline
 	\multicolumn{3}{|c|}{\emph{Estimation}} \\
@@ -691,10 +689,12 @@ In this paper, an assumption was made that the chosen kernel basis functions can
    	$P^{b-}_t$, $P^b_t$ & backward prior and posterior covariance matrices & mV$^2$\\
 	$M_t$& cross-covariance matrix & mV$^2$\\
 	$\mathcal K_{t} $ & filter gain & n.a.\\
-	$S_t$ & smoother gain & n.a.\\	
+	$S_t$ & smoother gain & n.a.\\
+	$q()$ & parameterised nonlinear state function (used in LS estimator) & n.a.\\
+   	$\mathcal{\hat{W}}$& vector of parameter estimates (used in LS estimator) & n.a.\\	
 	\hline
 \end{tabular}
-\begin{flushleft}The first column of the table gives the symbols for all the notation used the paper. The second column provides a brief description of the quantity, and the third column provide the relevant SI unit where appropriate.
+\begin{flushleft}The first column of the table gives the symbols for all the notation used the paper. The second column provides a brief description of the quantity, and the third column provide the relevant SI units.
 \end{flushleft}
 \label{tab:label}
 \end{table}
