@@ -85,29 +85,29 @@ Visakan Kadirkamanathan$^{4}$}
 \\
 $\ast$ E-mail: dfreestone@bionicear.org
 \end{flushleft}
-
+\renewcommand{\theequation}{S1.\arabic{equation}}
 \section*{Time Discretisation of Neural Field Model}\label{Time Discretization} To form the IDE neural field model a 
 time discretisation must be performed. To do this we used a one-step Euler method, where equation~7 of the main text can be approximated by 
 \begin{equation}
-	\label{Euler Approximation}\tag{S1.1} \frac{v\left( \mathbf{r},t+T \right) - v\left( \mathbf{r},t\right)}{T_s} =-\zeta v\left( \mathbf{r},t \right) + \int_\Omega {w\left( \mathbf{r}-\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)d\mathbf{r}'}. 
+	\label{Euler Approximation}\frac{v\left( \mathbf{r},t+T_s \right) - v\left( \mathbf{r},t\right)}{T_s} =-\zeta v\left( \mathbf{r},t \right) + \int_\Omega {w\left( \mathbf{r}-\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)d\mathbf{r}'}. 
 \end{equation}
 For clarity, we shall index time points in the discrete time form of the model using the subscript $t$ and the next time point as $t+1$. Rearranging equation~S1.1 we get 
 \begin{equation}
-	\label{Euler Approximation2}\tag{S1.2} v_{t+1}\left( \mathbf{r}\right) = v_t\left( \mathbf{r}\right) -T_s \zeta v_t\left( \mathbf{r}\right) + T_s \int_\Omega {w\left( \mathbf{r}-\mathbf{r}' \right)f\left( {v_t\left( \mathbf{r}'\right)} \right)d\mathbf{r}'}. 
+	\label{Euler Approximation2} v_{t+1}\left( \mathbf{r}\right) = v_t\left( \mathbf{r}\right) -T_s \zeta v_t\left( \mathbf{r}\right) + T_s \int_\Omega {w\left( \mathbf{r}-\mathbf{r}' \right)f\left( {v_t\left( \mathbf{r}'\right)} \right)d\mathbf{r}'}. 
 \end{equation}
 Now making simplifications, the discrete time form of the model is 
 \begin{equation}
-	\label{Discrete Time Model1}\tag{S1.3} v_{t+1}\left(\mathbf{r}\right) = \xi v_t\left(\mathbf{r}\right) + T_s \int_\Omega { w\left(\mathbf{r}-\mathbf{r}'\right) f\left(v_t\left(\mathbf{r}'\right)\right) d\mathbf{r}'}, 
+	\label{Discrete Time Model1}v_{t+1}\left(\mathbf{r}\right) = \xi v_t\left(\mathbf{r}\right) + T_s \int_\Omega { w\left(\mathbf{r}-\mathbf{r}'\right) f\left(v_t\left(\mathbf{r}'\right)\right) d\mathbf{r}'}, 
 \end{equation}
 where $\xi = 1 - T_s \zeta$.
 
 \section*{Mean and Covariance of the State Disturbance }\label{ColoredNoise} 
-In this section we show that the state disturbance vector is $\mathbf{e}_t\sim\mathcal{N}(0,\Sigma_e)$ if $e_t(\mathbf{r})\sim\mathcal{GP}\left(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}')\right)$. We begin the derivation by acknowledging the state disturbance vector is a linear function of $e_t(\mathbf r)$. Therefore, $\mathbf{e}_t$ is also normally distributed. From equation~21 of the main text, the state disturbance vector is defined as
-\begin{equation} \tag{S1.4}
+In this section we show that the state disturbance vector is $\mathbf{e}_t\sim\mathcal{N}(\mathbf 0,\boldsymbol\Sigma_e)$ if $e_t(\mathbf{r})\sim\mathcal{GP}\left(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}')\right)$. We begin the derivation by acknowledging the state disturbance vector is a linear function of $e_t(\mathbf r)$. Therefore, $\mathbf{e}_t$ is also normally distributed. From equation~21 of the main text, the state disturbance vector is defined as
+\begin{equation}
 	\mathbf{e}_t \triangleq \boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi} ( \mathbf{r} )e_t( \mathbf{r} )d\mathbf{r}}.
 \end{equation}
 The expected value of $\mathbf e_t$ is given by 
-\begin{equation}\tag{S1.5}
+\begin{equation}
 	\mathbf E\left[ \mathbf e_t\right]= \mathbf{\Gamma}^{-1}\int_{\Omega}\boldsymbol\phi\left(\mathbf{r}\right)\mathbf E\left[e_t\left(\mathbf{r}\right)\right] d\mathbf{r}=\mathbf 0.
 \end{equation}
 The covariance of $\mathbf{e}_t$ is 
@@ -115,85 +115,89 @@ The covariance of $\mathbf{e}_t$ is
 	\boldsymbol\Sigma_e &=\lefteqn{\mathbf E\left[ \mathbf e_t\mathbf e_t^\top\right]} \nonumber \\ 
 &=\mathbf{\Gamma}^{-1}\mathbf E[\int_{\Omega}\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})d\mathbf{r} \int_{\Omega}\boldsymbol{\phi}^{\top}(\mathbf{r}') e_t(\mathbf{r}')d\mathbf{r}']\mathbf{\Gamma}^{- \top} \nonumber \\
 	&=\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega} \boldsymbol{\phi}(\mathbf{r}) \mathbf E[e_t(\mathbf{r})e_t(\mathbf{r}')]\boldsymbol{\phi}^{\top}(\mathbf{r}')d\mathbf{r}' d\mathbf r\mathbf{\Gamma}^{- \top} \nonumber\\
-	&=\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega}\boldsymbol{\phi}(\mathbf r) \gamma(\mathbf r- \mathbf r' )\boldsymbol{\phi}^{\top}(\mathbf r')d\mathbf r' d\mathbf r\mathbf{\Gamma}^{-\top}.\tag{S1.6}
+	&=\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega}\boldsymbol{\phi}(\mathbf r) \gamma(\mathbf r- \mathbf r' )\boldsymbol{\phi}^{\top}(\mathbf r')d\mathbf r' d\mathbf r\mathbf{\Gamma}^{-\top}.
 \end{align}
 
 \section*{Spatial Cut-off Frequency of Field Basis Functions}\label{ap:FrequencyAnalysis}
-This section gives the derivation for the field basis function spatial cut-off frequency as a function of the basis function width (equations~34 and~37 in the main text). For we define an \textit{n}-dimensional Gaussian  centred at the origin as 
-\begin{equation}\tag{S1.7}
+This section gives the derivation for the width of the Fourier transform of  the field basis function in terms of its spatial cut-off frequency (equations~34 and~37 in the main text). We define an \textit{n}-dimensional Gaussian  centred at the origin as 
+\begin{equation}
  \phi(\mathbf r)=\mathrm{exp}\left(-\frac{1}{\sigma_{\phi}^2}\mathbf r^\top\mathbf r\right).
 \end{equation}
 Now applying the \textit{n}-dimensional Fourier transform yields
 \begin{align}\label{eq:AppendixGaussianFT}
  \boldsymbol\Phi(\boldsymbol \nu)&=\int_{\mathbb{R}^n} {\mathrm{exp}\left({-\frac{1}{\sigma_{\phi}^2}\mathbf r^\top\mathbf r}\right)\mathrm{exp}\left(-2\pi i\boldsymbol\nu^\top\mathbf r\right)d\mathbf r} \nonumber \\
-&=\int_{\mathbb{R}^n}\mathrm{exp}\left(-\frac{1}{\sigma_{\phi}^2}\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]^\top\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]\right)d\mathbf r \times\mathrm{exp}\left(-\sigma_{\phi}^2\pi^2\boldsymbol\nu^\top \boldsymbol\nu\right).\tag{S1.8}
+&=\int_{\mathbb{R}^n}\mathrm{exp}\left(-\frac{1}{\sigma_{\phi}^2}\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]^\top\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]\right)d\mathbf r \times\mathrm{exp}\left(-\sigma_{\phi}^2\pi^2\boldsymbol\nu^\top \boldsymbol\nu\right).
 \end{align}
-Now evaluating the integral on the RHS of equation~S1.8 gives 
-\begin{equation}\label{eq:IntegralOfGaussian}\tag{S1.9}
+Now evaluating the integral on the RHS of equation~\ref{eq:AppendixGaussianFT} gives 
+\begin{equation}\label{eq:IntegralOfGaussian}
 \int_{\mathbb{R}^n}\mathrm{exp}\left(-\frac{1}{\sigma_{\phi}^2}\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]^\top\left[\mathbf r +\sigma_{\phi}\pi i \boldsymbol\nu\right]\right)d\mathbf r
 =\left(\pi\sigma_{\phi}^2\right)^{\frac{n}{2}}.
 \end{equation}
-Substituting equation~S1.9 into equation~S1.8 gives the scaled Gaussian
-\begin{equation}\label{eq:FTofGaussian}\tag{S1.10}
+Substituting equation~\ref{eq:IntegralOfGaussian} into equation~\ref{eq:AppendixGaussianFT} gives the scaled Gaussian
+\begin{equation}\label{eq:FTofGaussian}
 \boldsymbol\Phi(\boldsymbol \nu)=\left(\frac{1}{\pi\sigma_{\nu}^2}\right)^{\frac{n}{2}}\mathrm{exp}\left(-\frac{1}{\sigma_{\nu}^2}\boldsymbol\nu^\top \boldsymbol\nu\right),
 \end{equation} 
 where 
-\begin{equation}\tag{S1.11}
+\begin{equation}
 	\sigma_{\nu}^2=\frac{1}{\pi^2\sigma_{\phi}^2}. 
 \end{equation}
 For $3$~dB attenuation ($1/2$ to peak power) at the cut-off frequency, $\boldsymbol\nu_c$, we need to set
-\begin{equation}\tag{S1.12}
+\begin{equation}
  \left|\boldsymbol\Phi(\boldsymbol\nu_{c})\right|^2=\frac{1}{2}\left|\boldsymbol\Phi(\mathbf 0)\right|^2,
 \end{equation}
 since the maximum of Gaussian described in equation~S1.10 is at the origin. Now solving for $\sigma_{\nu}^2$ we get
-\begin{equation}\tag{S1.13}
+\begin{equation}
  \sigma_{\nu}^2=\frac{2\boldsymbol\nu_{c}^\top \boldsymbol\nu_{c}}{\ln 2 }.
 \end{equation}
 
 \section*{Convolution of Two $n$-Dimensional Gaussians}\label{ap:ConvOfGaussians}
 In this section we provide derivation for the convolution of two $n$-dimensional Gaussian basis functions. This derivation is used in the analytic calculation of $\boldsymbol\Psi(\mathbf{r})$ and the observation matrix, $\mathbf C$. Consider two Gaussian basis functions
-\begin{equation}\label{eq:n_dimensional_Gaussian1}\tag{S1.14}
+\begin{equation}\label{eq:n_dimensional_Gaussian1}
  \varphi_i(\mathbf r)=\mathrm{exp}\left({-\frac{1}{\sigma_i^2} (\mathbf r-\boldsymbol \mu_i)^\top(\mathbf r-\boldsymbol \mu_i})\right)
 \end{equation}
 and 
-\begin{equation}\label{eq:n_dimensional_Gaussian2}\tag{S1.15}
+\begin{equation}\label{eq:n_dimensional_Gaussian2}
 \varphi_j(\mathbf r)=\mathrm{exp}\left({-\frac{1}{\sigma_j^2} (\mathbf r-\boldsymbol \mu_j)^\top(\mathbf r-\boldsymbol \mu_j})\right).
 \end{equation}
 The derivation proceeds by assuming the Gaussian basis functions are positioned at the origin ($\boldsymbol\mu_i=\boldsymbol\mu_j=\mathbf 0$). The convolution theorem states that the Fourier transform of the convolution of two functions is the product of their Fourier transforms. Using the derivation of the Fourier transform of a \emph{n}-dimensional Gaussian from equation~S1.10 of the previous section we have
-\begin{equation}\tag{S1.16}
+\begin{equation}\label{eq:FTTwoGaussianMultiplication}
+\mathcal{F}\left(\varphi_i*\varphi_j\right)(\mathbf{r}) = \left(\pi^2\sigma_i^2\sigma_j^2\right)^{\frac{n}{2}}\mathrm{exp}\left(-(\sigma_i^2+\sigma_j^2)\pi^2\boldsymbol\nu^\top\boldsymbol\nu\right).
+\end{equation}
+where $\mathcal{F}$ denotes the Fourier transform. Multiplying and dividing by $\left(\pi\left(\sigma_i^2+\sigma_j^2\right)\right)^{\frac{n}{2}}$ equation~\ref{eq:FTTwoGaussianMultiplication} can be written as 
+\begin{equation}
 \mathcal{F}\left(\varphi_i*\varphi_j\right)(\mathbf{r}) = \left(\pi\sigma_i^2\sigma_j^2\right)^{\frac{n}{2}}\left(\frac{1}{\sigma_i^2+\sigma_j^2}\right)^{\frac{n}{2}} (\pi(\sigma_i^2+\sigma_j^2))^{\frac{n}{2}}\mathrm{exp}\left(-(\sigma_i^2+\sigma_j^2)\pi^2\boldsymbol\nu^\top\boldsymbol\nu\right),
 \end{equation}
-where $\mathcal{F}$ denotes the Fourier transform. Taking the inverse Fourier transform, the convolution becomes
-\begin{equation}\label{eq:ConvoftwoGaussian}\tag{S1.17}
+ Taking the inverse Fourier transform, the convolution becomes
+\begin{equation}\label{eq:ConvoftwoGaussian}
  \left(\varphi_i*\varphi_j\right)(\mathbf{r}) = \left(\frac{\pi\sigma_i^2\sigma_j^2}{\sigma_i^2+\sigma_j^2}\right)^{\frac{n}{2}}\mathrm{exp}\left({-\frac{1}{\sigma_i^2+\sigma_j^2} \mathbf r^\top\mathbf r}\right).
 \end{equation}
-In the case where $\boldsymbol\mu_i\neq\boldsymbol\mu_j\neq\mathbf 0$ equation~S1.17 becomes
-\begin{equation}\label{eq:ConvoftwoGaussianNonzeroMean}\tag{S1.18}
+In the case where $\boldsymbol\mu_i\neq\boldsymbol\mu_j\neq\mathbf 0$ equation~\ref{eq:ConvoftwoGaussian} becomes
+\begin{equation}\label{eq:ConvoftwoGaussianNonzeroMean}
  \left(\varphi_i*\varphi_j\right)(\mathbf{r}) = \left( \frac{\pi\sigma_i^2\sigma_j^2} {\sigma_i^2+\sigma_j^2}\right)^{\frac{n}{2}} \mathrm{exp}\left({-\frac{1}{\sigma_i^2+\sigma_j^2} (\mathbf r-\boldsymbol\mu)^\top(\mathbf r-\boldsymbol\mu)}\right),
 \end{equation}
 where $\boldsymbol\mu=\boldsymbol\mu_i+\boldsymbol\mu_j$. 
 
 \section*{Inner Product of Two \emph{n}-Dimensional Gaussians}\label{ap:InnerProdOfGaussians}
-The derivation in this section was used for calculating the matrix $\Gamma$, from equation~16 in the main text. The inner product of the two \emph{n}-dimensional Gaussians (from equations~S1.14 and~S1.15) is defined as
-\begin{equation}\label{eq:InofGaussianDefinition}\tag{S1.18}
+The derivation in this section was used for calculating the matrix $\Gamma$, from equation~16 in the main text. The inner product of the two \emph{n}-dimensional Gaussians (from equations~\ref{eq:n_dimensional_Gaussian1} and~\ref{eq:n_dimensional_Gaussian2}) is defined as
+\begin{equation}\label{eq:InofGaussianDefinition}
 \varphi_i\otimes\varphi_j=\int_{\mathbb{R}^n}\varphi_i(\mathbf r)\varphi_j(\mathbf r)d\mathbf{r}.
 \end{equation}
 A Gaussian basis function is symmetric with respect to its centre, therefore
-\begin{equation}\label{eq:GaussianSymmetry}\tag{S1.19}
+\begin{equation}\label{eq:GaussianSymmetry}
  \varphi_i(\boldsymbol \mu_i+\mathbf r)= \varphi_i(\boldsymbol \mu_i-\mathbf r).
 \end{equation}
-Letting $\mathbf{r}= \mathbf{r}-\boldsymbol{\mu}_i$ equation~S1.19 becomes
-\begin{equation}\label{eq:ConsequenceofGaussianSymmetry}\tag{S1.20}
+Letting $\mathbf{r}= \mathbf{r}-\boldsymbol{\mu}_i$ equation~\ref{eq:GaussianSymmetry} becomes
+\begin{equation}\label{eq:ConsequenceofGaussianSymmetry}
  \varphi_i(\mathbf r)= \varphi_i(2\boldsymbol \mu_i-\mathbf r).
 \end{equation}
-Now substituting equation~S1.20 into equation~S1.18 gives 
+Now substituting equation~\ref{eq:ConsequenceofGaussianSymmetry} into equation~\ref{eq:InofGaussianDefinition} gives 
 \begin{align}
 \varphi_i\otimes\varphi_j&=\int_{\mathbb{R}^n}\varphi_i(\mathbf r)\varphi_j(\mathbf r)d\mathbf r \nonumber\\
 &=\int_{\mathbb{R}^n}\varphi_i(2\boldsymbol \mu_i-\mathbf r)\varphi_j(\mathbf r)d\mathbf r \nonumber\\
-&=(\varphi_i*\varphi_j)(2\boldsymbol \mu_i).\tag{S1.21}
+&=(\varphi_i*\varphi_j)(2\boldsymbol \mu_i).
 \end{align}
 Evaluating derivation of the convolution of two Gaussians given in the previous section and evaluating it at $\mathbf r=2\boldsymbol\mu_i $ gives
-\begin{equation}\tag{S1.22}
+\begin{equation}
  \varphi_i\otimes\varphi_j=\left(\frac{\pi\sigma_i^2\sigma_j^2}{\sigma_i^2+\sigma_j^2}\right)^{\frac{n}{2}}\mathrm{exp}\left({-\frac{1}{\sigma_i^2+\sigma_j^2} (\boldsymbol\mu_i-\boldsymbol\mu_j)^\top(\boldsymbol\mu_i-\boldsymbol\mu_j)}\right).
 \end{equation}
 This completes the derivation.
