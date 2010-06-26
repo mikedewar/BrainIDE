@@ -478,19 +478,6 @@ Given the basis function separation, the basis function width parameter was set 
 	\caption{{\bf Spatial frequency analysis}. The dashed line shows the cut-off frequency (-3 dB point). (\textbf{A}) Two-dimensional spatial frequency in power dB, averaged over 400 time steps) of the observed field. The symmetry of the sensors and field basis functions allow for the one-dimensional representation of the spectral characteristics. (\textbf{B}) The spatial frequency response of a one-dimensional model sensor. (\textbf{C}) The spatial frequency response of a one-dimensional neural field basis function, illustrating a narrower band width than the sensors.} 
 	\label{fig:ObservationFreqAnal}
 \end{figure*}
-
-%\begin{figure}[!ht]
-%\begin{center}
-%%\includegraphics[width=4in]{figure_name.2.eps}
-%\end{center}
-%\caption{
-%{\bf Bold the first sentence.}  Rest of figure 2  caption.  Caption 
-%should be left justified, as specified by the options to the caption 
-%package.
-%}
-%\label{Figure_label}
-%\end{figure}
-
 \subsection*{State and Parameter Estimates} 
 \label{sec:state_and_param_results}
 To demonstrate the performance of the state and parameter estimation algorithm, a Monte Carlo approach was employed where $100$ realisations of the data were generated. Each realisation consisted of $500$~ms of data (sampled at $1$~kHz) and the estimation was applied to the final $400$~ms, allowing the model's initial transients to die out. The initial state and parameters were unknown to the estimator. Eleven iterations of the estimation algorithm were used to ensure the parameters  converged. Figure~\ref{fig:ParametersConvergence} shows the rate of convergence, confirming the parameters converged, with the changes in parameters falling to less than $10^{-4}$ after six iterations.
@@ -501,8 +488,7 @@ To demonstrate the performance of the state and parameter estimation algorithm, 
 \label{fig:ParametersConvergence}
 \end{figure}
 
-Histograms of the parameter estimates obtained over the 100 realisations are shown in Figure~\ref{fig:Parameters}. The actual parameter values, the mean estimates, corresponding standard deviations and biases are given in Table~\ref{tab:Parameters estimates}. The biases show the percentage differences between the actual values and the mean parameter estimates. The mean estimates are in good concordance with the actual values. 
-% It should be noted that when the excitatory connectivity parameters, $\hat\theta_0$ and $\hat\theta_2$, were under (or over) estimated, the inhibitory connectivity parameter, $\hat\theta_1$, tended to be over (or under) estimated. This is demonstrated in Figure~\ref{fig:ParametersRatio} where we show the distribution of the ratios of the parameter estimates. 
+Histograms of the parameter estimates obtained over the 100 realisations are shown in Figure~\ref{fig:Parameters}. The actual parameter values, the mean estimates, corresponding standard deviations and biases are given in Table~\ref{tab:Parameters estimates}. The biases show the percentage differences between the actual values and the mean parameter estimates. The mean estimates are in good concordance with the actual values.
 \begin{figure}
     \centering
     \includegraphics{./Graph/ParametesDistributions.pdf}
@@ -510,16 +496,7 @@ Histograms of the parameter estimates obtained over the 100 realisations are sho
 realisations}. The solid line shows the actual value of the parameters and the dotted line shows the mean of the estimated parameters. (\textbf{A}) The histogram of the $\xi$ estimates where $\xi=1-\zeta T_s $ and $\zeta$ is the reciprocal of the synaptic time constant. (\textbf{B}) The histogram of the central excitatory connectivity kernel basis function parameter estimates, $\theta_0$. (\textbf{C}) The histogram of the surround inhibition connectivity kernel basis function parameter estimates, $\theta_1$. (\textbf{D}) The histogram of the longer range excitatory connectivity kernel basis function parameter estimates, $\theta_2$.}
 \label{fig:Parameters}
 \end{figure}
-% \begin{figure}
-%     \centering
-% \subfigure[][]{\includegraphics{./Graph/theta0_theta1_ratio.pdf}}
-% \subfigure[][]{\includegraphics{./Graph/theta0_theta2_ratio.pdf}}\\
-% \caption{Distribution of the connectivity kernel basis function parameter ratios over 100 realisations. \textbf{a.} The absolute value of the ratio of the local excitatory parameter to the surround inhibition parameter (true ratio is 1.25). \textbf{b.} The ratio of the local excitatory parameter to the longer range excitatory parameter (true ratio is 20). In each case, the solid and dotted lines show the locations of the true and estimated ratios respectively.}
-% \label{fig:ParametersRatio}
-% \end{figure}
-
 The reconstructed connectivity kernels from the estimated parameters are shown in Figure~\ref{fig:KernelEstimates}, where the mean over the $100$ realisations is shown as a dotted line and the $95\%$ confidence interval is indicated by the grey shaded region. The figure verifies that the shape of the estimated connectivity kernel is in good accordance to the true kernel. The true kernel lies within the confidence interval; however, the mean estimated kernel is more negative than the actual kernel due to the small bias on the estimates of the inhibitory parameter, $\hat\theta_1$, as seen in Figure~\ref{fig:Parameters}(C).
-
 \begin{figure}
     \centering
 % \subfigure[][]{
