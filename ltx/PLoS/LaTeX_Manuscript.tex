@@ -233,7 +233,7 @@ where $\boldsymbol{\psi}(\mathbf{r},\mathbf{r}')$ is a vector of Gaussian basis 
 	\label{reduced continuous model}\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_{t+1}= T_s\int_\Omega{f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t )\boldsymbol{\psi}^{\top}(\mathbf{r}-\mathbf{r}')d\mathbf{r}'}\boldsymbol{\theta}
 	+ \xi\boldsymbol{\phi}^{\top}(\mathbf{r})x_t + e_t(\mathbf{r}). 
 \end{equation}
-Next we multiply equation~\ref{reduced continuous model} by $\boldsymbol{\phi}(r)$ and integrate over the spatial domain $\Omega$ to get 
+Next we multiply equation~\ref{reduced continuous model} by $\boldsymbol{\phi}(\mathbf{r})$ and integrate over the spatial domain $\Omega$ to get 
 \begin{equation}
     \begin{split}
 	\label{StartofReduction}
@@ -256,7 +256,7 @@ and substituting this into equation~\ref{StartofReduction} and cross-multiplying
 	 + \xi\mathbf{x}_t + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r}) e_t(\mathbf{r})d\mathbf{r}}.
 	 \end{split}
 \end{equation}
-An analytic derivation of the inner product of \emph{n}-dimensional Gaussians is provided in~\ref{ap:InnerProdOfGaussians}. Equation~\ref{eq:ReducedForm} can be simplified by exploiting the symmetry (isotropy) of the connectivity kernel where
+An analytic derivation of the inner product of \emph{n}-dimensional Gaussians is provided in the Supporting Information, S1. Equation~\ref{eq:ReducedForm} can be simplified by exploiting the symmetry (isotropy) of the connectivity kernel where
 \begin{equation}
 	\boldsymbol{\psi} (\mathbf{r}-\mathbf{r}') = \boldsymbol{\psi} (\mathbf{r}'-\mathbf{r}).
 \end{equation}
@@ -264,7 +264,7 @@ To make the simplification, we first define
 \begin{equation}\label{eq:DefPsi}
 	\boldsymbol{\Psi}(\mathbf{r}') \triangleq T_s\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\psi}^{\top} (\mathbf{r}'-\mathbf{r})d\mathbf{r}},
 \end{equation}
-which is a constant $L \times n_{\theta}$ matrix that can is defined analytically (see~\ref{ap:ConvOfGaussians} for analytic convolution of two Gaussians), where $L$ is the number of basis functions (and states) and $n_{\theta}$ is the number of connectivity basis functions. Now substituting equation~\ref{eq:DefPsi} into~\ref{eq:ReducedForm} gives
+which is a constant $L \times n_{\theta}$ matrix that can is defined analytically (see the Supporting Information, S1, for analytic convolution of two Gaussians), where $L$ is the number of basis functions (and states) and $n_{\theta}$ is the number of connectivity basis functions. Now substituting equation~\ref{eq:DefPsi} into~\ref{eq:ReducedForm} gives
 \begin{eqnarray}
 	\mathbf{x}_{t+1} = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) d\mathbf{r}' \boldsymbol{\theta} + \xi\mathbf{x}_t\nonumber \\
 + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})d\mathbf{r}}.
@@ -273,7 +273,7 @@ This simplification has transformed the description of the spatial coupling from
 \begin{equation}\label{eq:Wt} 
 	\mathbf{e}_t \triangleq \boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi} ( \mathbf{r} )e_t( \mathbf{r} )d\mathbf{r}} 
 \end{equation}
-which is a zero mean normally distributed white noise process with covariance (see~\ref{ColoredNoise})
+which is a zero mean normally distributed white noise process with covariance (see the Supporting Information, S1, for the derivation)
 \begin{equation}
 	\boldsymbol\Sigma_e =\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega}\boldsymbol{\phi}\left(\mathbf r\right) \gamma\left(\mathbf r- \mathbf r' \right)\boldsymbol{\phi}\left(\mathbf r'\right)^{\top}d\mathbf r' d\mathbf r\mathbf{\Gamma}^{- \top}. 
 \end{equation}
@@ -333,11 +333,11 @@ Similar considerations need to be made regarding the representation of the dynam
 \end{equation}
 where $\rho_{\phi} \in \mathbb{R} \ge 1$ is an oversampling parameter to determine the basis function separation. 
 
-The field basis function widths can also be inferred using spectral considerations~\cite{Sanner1992,Scerri2009}. To demonstrate this, we begin with the two-dimensional Gaussian basis function defined as
+The field basis function widths can also be inferred using spectral considerations~\cite{Sanner1992,Scerri2009}. To demonstrate this, we begin with the two-dimensional Gaussian basis function located at the origin defined as
 \begin{equation}\label{eq:BasisFunctionAtOrigin}
- \phi(\mathbf r)=\mathrm{exp}\left({-\frac{1}{\sigma_{\phi}^2} \mathbf r^\top\mathbf r}\right)
+ \phi(\mathbf r)=\mathrm{exp}\left({-\frac{1}{\sigma_{\phi}^2} \mathbf r^\top\mathbf r}\right).
 \end{equation}
-with the corresponding Fourier transform
+The corresponding Fourier transform
 \begin{equation}\label{eq:GaussianFT}
 \boldsymbol\Phi(\boldsymbol \nu)=\left(\frac{1}{\pi\sigma_{\nu}^2}\right)\mathrm{exp}\left(-\frac{1}{\sigma_{\nu}^2}\boldsymbol\nu^\top \boldsymbol\nu\right),
 \end{equation}
@@ -353,7 +353,7 @@ where
 \begin{equation}\label{eq:WidthFrequencyRelationship}
  \sigma^2_{\nu_{cy}}= \frac{2\boldsymbol\nu_{cy}^\top \boldsymbol\nu_{cy}}{\ln2}.
 \end{equation}
-This ensures that the basis functions can represent the neural field with frequency content up to $\boldsymbol\nu_{cy}$. Derivations for equations~\ref{eq:GaussianFT} and \ref{eq:WidthFrequencyRelationship} are given in~\ref{ap:FrequencyAnalysis}.
+This ensures that the basis functions can represent the neural field with frequency content up to $\boldsymbol\nu_{cy}$. Derivations for equations~\ref{eq:GaussianFT} and \ref{eq:WidthFrequencyRelationship} are given in the Supporting Information, S1.
 
 Alternatively, given the basis function width, the spatial cut-off frequency of the field modelled by the decomposition can be determined from spectral analysis. This is particularly useful when considering the spatially distributed basis functions, since Shannon's sampling theorem is derived for perfect point sensors. To calculate the cut-off frequency imposed by the basis functions, $\boldsymbol{\nu}_{c\phi}$, we rearrange equations~\ref{eq:WidthCutOffRelationship} and \ref{eq:WidthFrequencyRelationship} giving
 \begin{equation}\label{eq:CutoffFromBasisFuncWidth}
@@ -390,7 +390,7 @@ The sigma vectors are propagated through the system equations and weighted to fo
 \begin{equation}
 	\mathbf W_i^{(m)}=\mathbf W_i^{(c)}=\frac{1}{2( L+\lambda)} \quad i=1, \dots, 2L, 
 \end{equation}
-where the superscripts $m$ and $c$ denote mean and covariance. Since the observation equation is linear (equation~\ref{ObservationEquation}) the standard Kalman Filter update equations are used to correct the predicted states. The state estimates from forward filtering are used to form a new set of sigma points for the smoother, as described above. The cross-covariance matrix of the states, $\mathbf M$, is also required for computing the smoother gain. A summary of the steps in the URTSS algorithm is given in Table~\ref{tab:UKFAlgorithm}. It should be noted that the disturbance, $\mathbf{e}_t$ and the measurement noise, $\boldsymbol{\varepsilon}_t$, are additive. Therefore, the additive form of the URTSS is used.
+where the superscripts $m$ and $c$ denote mean and covariance. Since the observation equation is linear, (equation~\ref{ObservationEquation}) the standard Kalman Filter update equations are used to correct the predicted states. The state estimates from forward filtering are used to form a new set of sigma points for the smoother, as described above. The cross-covariance matrix of the states, $\mathbf M$, is also required for computing the smoother gain. A summary of the steps in the URTSS algorithm is given in Table~\ref{tab:UKFAlgorithm}. It should be noted that the disturbance, $\mathbf{e}_t$ and the measurement noise, $\boldsymbol{\varepsilon}_t$, are additive. Therefore, the additive form of the URTSS is used.
 
 Although the system is nonlinear, the parameters of the system are linear with respect to the state. This is exploited by our procedure where the parameter estimation uses a least squares (LS) method that minimises the sum of the squared errors (of a predicted state update) with each new estimate of the state vector sequence. To create the least squares parameter estimator, we first define the $L \times n_{\theta}$ matrix
 \begin{equation}
@@ -451,9 +451,9 @@ Following this, the LS parameter estimates, $ \mathcal{\hat{W}}$, are
 \end{equation}
 
 % Results and Discussion can be combined.
-\section*{Results}\label{ResultsSection} In this section we provide a demonstration of the estimation procedure using the new methods that are described above. The full neural field model described in Section~\ref{NeuralModelSection} was used to generate the data for state and parameter estimation. All parameters for the model are given in Table~\ref{tab:Parameters}. Note that, the parameters for the spatial and temporal aspects of the model can be considered arbitrary when demonstrating the estimation methodology. This is due to the fact that the temporal aspects scale with the sampling rate and the length of the times series, and the spatial aspects scale with the size of the neural field and the space step used for numerical simulation. When generating the simulated data we assumed free boundary conditions for the neural field. An example of the simulated field can be seen in Figure~\ref{fig:experimental design}(A). Figure~\ref{fig:experimental design}(B) shows an example of data from the modelled sensors and Figure~\ref{fig:experimental design}(C) shows the power spectral density (PSD) of the simulated time-series. The PSD shows the typical $1/f^2$ characteristics of intracranial EEG.
+\section*{Results}\label{ResultsSection} In this section we provide a demonstration of the estimation procedure using the new methods that are described above. The full neural field model described in Section~\ref{NeuralModelSection} was used to generate the data for state and parameter estimation. All parameters for the model are given in Table~\ref{tab:Parameters}. Note, the parameters for the spatial and temporal aspects of the model can be considered arbitrary when demonstrating the estimation methodology. This is due to the fact that the temporal aspects scale with the sampling rate and the length of the times series, and the spatial aspects scale with the size of the neural field and the space step used for numerical simulation. When generating the simulated data we assumed free boundary conditions for the neural field. An example of the simulated field can be seen in Figure~\ref{fig:experimental design}(A). Figure~\ref{fig:experimental design}(B) shows an example of data from the modelled sensors and Figure~\ref{fig:experimental design}(C) shows the power spectral density (PSD) of the simulated time-series. The PSD shows the typical $1/f^2$ characteristics of intracranial EEG.
 
-The sensors were spaced on a regular square $14 \times 14$ grid, the sensor width was set to $\sigma^2_m = 0.81$. This provides a width of $1.5$~mm at half the maximum amplitude of the basis function, with spacing $\Delta_y = 1.5$~mm. This arrangement modelled the recording as having some cross talk, which is typical for neurophysiological recordings.
+The sensors were spaced on a regular square $14 \times 14$ grid and the sensor width was set to $\sigma^2_m = 0.81$. This provides a width of $1.5$~mm at half the maximum amplitude of the sensor kernel. The distance between sensors was set to $\Delta_y = 1.5$~mm. This arrangement modelled the recording as having some cross talk, which is typical for neurophysiological recordings.
  \begin{figure}
     	\begin{center}
      		\includegraphics{./Graph/ExperimentalFigure.pdf}
@@ -462,7 +462,7 @@ The sensors were spaced on a regular square $14 \times 14$ grid, the sensor widt
  \label{fig:experimental design}
  \end{figure}
 \subsection*{Spatial Frequency Analysis} 
-Using the model selection techniques described in Section~\ref{SpectralAnalysisSection}, the spatial frequency analysis was used to confirm that the spacing and width of the sensors was adequate to capture the significant dynamics of the field. Figure~\ref{fig:FFTTrueEstimate}(A) shows the spatial frequency of the neural field. The cut-off frequency of the neural field is $\nu_c \approx 0.24$~Hz ($-3$~dB point). From equation~\ref{eq:MinimumSensorDistance}, this yielded a minimum sensor separation of $2.05$~mm. This confirms that the separation of $\Delta_{y} = 1.5$~mm was sufficient to prevent problems associated with spatial aliasing.
+Using the model selection techniques described in Section~\ref{SpectralAnalysisSection}, the spatial frequency analysis was used to confirm that the spacing and width of the sensors was adequate to capture the significant dynamics of the field. Figure~\ref{fig:FFTTrueEstimate}(A) shows the spatial frequency of the neural field. The cut-off frequency of the neural field is $\boldsymbol{\nu}_c \approx 0.24$~Hz ($-3$~dB point). From equation~\ref{eq:MinimumSensorDistance}, this yielded a minimum sensor separation of $2.05$~mm. This confirms that the separation of $\Delta_{y} = 1.5$~mm was sufficient to prevent problems associated with spatial aliasing.
 \begin{figure}
 \centering
 \label{fig:FieldFFT}\includegraphics{./Graph/FFTField.pdf}
@@ -470,8 +470,8 @@ Using the model selection techniques described in Section~\ref{SpectralAnalysisS
 \label{fig:FFTTrueEstimate}
 \end{figure}
 
-The spatial frequency of the observed field is shown in Figure~\ref{fig:ObservationFreqAnal}(C). The cut-off frequency is $\nu_{cy} \approx 0.2$~Hz ($-3$~dB point). The observation cut-off frequency is lower than the field cut-off due to the low-pass filtering effect of the sensors. The spatial frequency response of the sensors can be seen in Figure~\ref{fig:ObservationFreqAnal}(A). Using an oversampling parameter of $\rho_{\phi}=1$, the minimum distance between the field basis functions was calculated to be $2.5$~mm to satisfy Shannon's sampling criterion (from equation~\ref{eq:BasisFunctionSeparation}). The distance between basis functions was set to $\Delta_{\phi}=2.5$~mm, which is sufficient to capture the significant dynamics according to our criteria.
-Given the basis function separation, the basis function width parameter was set to $\sigma_{\phi}^2=2.5$~mm. This allowed a smooth representation of the field by the basis function decomposition up to a spatial frequency $\mathbf{\nu_{c\phi}} \approx 0.12$~Hz, as described by equation~\ref{eq:CutoffFromBasisFuncWidth}. The band-limiting effect is due to the spatial frequency response of the basis functions as seen in Figure~\ref{fig:ObservationFreqAnal}(B). The spatial frequency of the reconstructed field from the basis function decomposition is shown in Figure~\ref{fig:FFTTrueEstimate}(B). This figure illustrates the band-limiting effect of the basis function decomposition.
+The spatial frequency of the observed field is shown in Figure~\ref{fig:ObservationFreqAnal}(C). The cut-off frequency is $\boldsymbol{\nu}_{cy} \approx 0.2$~Hz (-3~dB point). The observation cut-off frequency is lower than the field cut-off due to the low-pass filtering effect of the sensors. The spatial frequency response of the sensors can be seen in Figure~\ref{fig:ObservationFreqAnal}(A). Using an oversampling parameter of $\rho_{\phi}=1$, the minimum distance between the field basis functions was calculated to be 2.5~mm to satisfy Shannon's sampling criterion (from equation~\ref{eq:BasisFunctionSeparation}). The distance between basis functions was set to $\Delta_{\phi}=2.5$~mm, which is sufficient to capture the significant dynamics according to our criteria.
+Given the basis function separation, the basis function width parameter was set to $\sigma_{\phi}^2=2.5$~mm. This allowed a smooth representation of the field by the basis function decomposition up to a spatial frequency $\boldsymbol{\nu}_{c\phi} \approx 0.12$~Hz, as described by equation~\ref{eq:CutoffFromBasisFuncWidth}. The band-limiting effect is due to the spatial frequency response of the basis functions as seen in Figure~\ref{fig:ObservationFreqAnal}(B). The spatial frequency of the reconstructed field from the basis function decomposition is shown in Figure~\ref{fig:FFTTrueEstimate}(B). This figure illustrates the band-limiting effect of the basis function decomposition when compared to Figure~\ref{fig:FFTTrueEstimate}(A).
 \begin{figure*}[!ht] 
 	\begin{center}
 		\includegraphics{./Graph/SensorBasisObsFrequencyResponse.pdf}	
@@ -530,13 +530,13 @@ Previous work from Schiff and Sauer~\cite{schiff2008kalman} demonstrated for the
 
 Due to the relationship between the number of states in the model and the number of model parameters, increases in dimensionality lead to increases in uncertainty of the estimates. In addition, directly linking the complexity of the underlying system to the spatial resolution of the observation process implies that the system's dynamics become increasingly more complex the closer we look, which may not be an accurate modelling assumption.
 
-The current study builds on this previous work~\cite{schiff2008kalman}, where the estimator is constructed to approximate a continuous field and the dimensionality of the state vector is independent of the resolution of the observation process and spatial resolution of the model. Instead, the dimensionality is governed by the expected complexity of the underlying field, which we measure using the frequency analysis methods presented in Section~\ref{SpectralAnalysisSection}. These methods provide a rigorous framework for determining the dimensionality of the system using inherent spatial properties of the field. This enables estimation of a larger field, with a lower dimensional state vector than would be possible otherwise. 
+The current study builds on this previous work~\cite{schiff2008kalman}, where the estimator is constructed to approximate a continuous field and the dimensionality of the state vector is independent of the resolution of the observation process and spatial resolution of the model. Instead, the dimensionality is governed by the expected complexity of the underlying field, which we measure using the frequency analysis methods presented in Section~\ref{SpectralAnalysisSection}. These methods provide a rigorous framework for determining the dimensionality of the system using inherent spatial properties of the field. This enables estimation of a larger field with a lower dimensional state vector than would be possible otherwise. 
 
-The fact that the connectivity kernel is isotropic means that we are able to re-write the spatial mixing effect of the kernel on the firing rate as a convolution of the kernel on the membrane voltage field basis functions. This transformation greatly simplifies the computational complexity of the estimator, which is important for the estimator to run in a real-time scenario.
+The fact that the connectivity kernel is isotropic means that we are able to re-write the spatial mixing effect of the kernel on the firing rates as a convolution of the kernel with the membrane voltage field basis functions. This transformation greatly simplifies the computational complexity of the estimator, which is important for the estimator to run in a real-time scenario.
 
 The frequency analysis and model selection tools presented in Section~\ref{SpectralAnalysisSection} specify the sensor arrangement that is required for capturing the dominant cortical dynamics. Importantly, these new tools can also be used to design electrophysiological recording systems to avoid spatial aliasing. In addition, the frequency analysis highlights the relationship between the spatial width of the sensors and the information in the data. This analysis is becoming increasingly relevant as recording systems are becoming more sophisticated with higher density recordings~\cite{Brinkmann2009}, 
 
-This is the first paper to derive a continuum neural field model-based estimation framework for intracortical connectivity from electrophysiological data. The importance of the estimation framework can be illustrated by considering that the connectivity structure at this scale can not be estimated using diffusion tensor imaging due to the near isotropic diffusion of water in grey matter~\cite{Assaf2008}. The closest competitor to our `grey-box' integro-difference equation (IDE) based approach is perhaps the multivariate auto-regressive (MVAR) model, which is a `black-box' approach. Examples of MVAR models for estimating functional connectivity include Granger causality~\cite{Hesse2003}, the direct transfer function~\cite{Kaminski1991} and partial directed coherence~\cite{Sameshima1999}. A distinct advantage of the IDE-based technique proposed in this current study is that the number of parameters required to model the system is considerably less than a typical MVAR model. Furthermore, by using the neural field equations as a parametric form of a model, the parameters have physical meaning and, therefore, can be clinically relevant. An advantage of the MVAR-based methods is that they allow for anisotropic connectivity, which is present in the longer range cortico-cortical fibres. 
+This is the first paper to derive a continuum neural field model-based estimation framework for intracortical connectivity from electrophysiological data. The importance of the estimation framework can be illustrated by considering that the connectivity structure at this scale can not be estimated using diffusion tensor imaging due to the near isotropic diffusion of water in grey matter~\cite{Assaf2008}. The closest competitor to our `grey-box' integro-difference equation based approach is perhaps the multivariate auto-regressive (MVAR) model, which is a `black-box' approach. Examples of MVAR models for estimating functional connectivity include Granger causality~\cite{Hesse2003}, the direct transfer function~\cite{Kaminski1991} and partial directed coherence~\cite{Sameshima1999}. A distinct advantage of the integro-difference equation based technique proposed in this current study is that the number of parameters required to model the system is considerably less than a typical MVAR model. Furthermore, by using the neural field equations as a parametric form of a model, the parameters have physical meaning and, therefore, can be clinically relevant. An advantage of the MVAR-based methods is that they allow for anisotropic connectivity, which is present in the longer range cortico-cortical fibres. 
 % A recent theoretical study~\cite{Jirsa2009} has demonstrated the importance of a multi-scale connectivity structure in generating the characteristic rhythms of the brain. A possible method of creating more precise models with this multi-scale structure maybe to estimate anisotropic cortico-cortical connectivity using a MVAR approach and intracortical connectivity using the methods proposed in this paper. 
 
 Generating patient-specific neural field models has the potential to have significant impact on several areas of neuroscientific research and clinical neurology. Specifically, the development of a patient-specific state-space model will allow for the application of techniques from engineering to be applied to neuro-dynamics. For example, state tracking could be used in brain-computer interfaces or epileptic seizure prediction, where specific regions of the state-space may indicate intent of movement or imminent seizures, respectively. In addition, a patient-specific state-space model will allow application of control engineering techniques to robustly prevent the neuro-dynamics entering pathological regions of state-space using electrical stimulation, thereby possibly preventing seizure onset or abating seizure activity.
@@ -573,6 +573,44 @@ This research was funded in part by the Australian Research Council (Linkage Pro
 
 
 \section*{Tables}
+
+\renewcommand{\arraystretch}{1.7}
+\begin{table}[!ht]
+\caption{
+\bf{Steps in the Algorithm for the Unscented RTS Smoother}}
+\begin{tabular}{|c|}\hline
+\multicolumn{1}{|p{16cm}|}{\textbf{1.} Forward initialisation} \\ 
+$\hat{\mathbf x}_0, \mathbf P_0$ \\
+\hline
+\multicolumn{1}{|p{16cm}|}{\textbf{2.} Forward iteration: for $t \in \left\lbrace 0,\cdots, T\right\rbrace $, calculate the sigma points $\mathcal X_{i,t}^f$ using equations \ref{eq:sigmapoints1}-\ref{eq:sigmapoints3} and propagate through equation~\ref{eq:QmatrixForSigmapoints}} \\
+$\mathcal X_{i,t+1}^{f-}=Q(\mathcal X_{i,t}^f) \quad i=0, \dots, 2L$\\
+\multicolumn{1}{|p{16cm}|}{Calculate the predicted state and the predicted covariance matrix} \\
+$\hat{\mathbf x}_{t+1}^{f-}=\sum_{i=0}^{2L} W_i^{(m)}\mathcal X_{i,t+1}^{f-} $ \\
+$\mathbf P_{t +1}^{f-}=\sum_{i=0}^{2L} W_i^{(c)}(\mathcal X_{i,t+1}^{f-}-\hat{\mathbf x}_{t +1}^{f-})(\mathcal X_{i,t+1}^{f-}-\hat{\mathbf x}_{t +1}^{f-})^\top+\boldsymbol \Sigma_e$ \\ 
+\multicolumn{1}{|p{16cm}|}{Compute the filter gain, the filtered state and the filtered covariance matrix using the standard Kalman filter update equations} \\
+$\mathcal K_{t+1}=\mathbf P_{t +1}^{f-}\mathbf C ^\top(\mathbf C \mathbf P_{t +1}^{f-}\mathbf C ^\top+\boldsymbol \Sigma_{\varepsilon})^{-1}$\\
+$\hat{\mathbf x}_{t+1}^{f}=\hat{\mathbf x}_{t+1}^{f-}+\mathcal K_{t+1}(\mathbf y_{t+1}-\mathbf C\hat{\mathbf x}_{t +1}^{f-}) $\\
+$\mathbf P_{t+1}^f=(\mathbf I - \mathcal K_{t+1}\mathbf C)\mathbf P_{t +1}^{f-}$\\ 
+\hline
+\multicolumn{1}{|p{16cm}|}{\textbf{3.} Backward initialisation}\\
+$\mathbf P_T^b= \mathbf P_T^f, \quad \hat{\mathbf x}^b_T= \hat{\mathbf x}^f_T$ \\
+\hline
+\multicolumn{1}{|p{16cm}|}{\textbf{4.} Backward iteration: for $t \in \left\lbrace T-1, \cdots, 0 \right\rbrace $ calculate the sigma points $\mathcal X_{i,t}^b$ and propagate them through equation \ref{eq:QmatrixForSigmapoints}}\\
+$\mathcal X_{i,t+1}^{b-}=Q(\mathcal X_{i,t}^b) \quad i=0, \dots, 2L$\\
+\multicolumn{1}{|p{16cm}|}{Calculate the predicted state and the predicted covariance matrix}\\
+$\hat{\mathbf x}_{t+1}^{b-}=\sum_{i=0}^{2L} W_i^{(m)}\mathcal X_{i,t+1}^{b-}$\\
+$\mathbf P_{t +1}^{f-}=\sum_{i=0}^{2L} W_i^{(c)}(\mathcal X_{i,t+1}^{f-}-\hat{\mathbf x}_{t +1}^{f-})(\mathcal X_{i,t+1}^{f-}-\hat{\mathbf x}_{t +1}^{f-})^\top+\boldsymbol \Sigma_e $\\
+$\mathbf M_{t +1}=\sum_{i=0}^{2L} W_i^{(c)}(\mathcal X_{i,t}^{b-}-\hat{\mathbf x}_{t}^{f})(\mathcal X_{i,t+1}^{b-}-\hat{\mathbf x}_{t+1}^{b-})^\top$\\
+\multicolumn{1}{|p{16cm}|}{Compute the smoother gain, the smoothed state and the smoothed covariance matrix}\\
+$\mathbf S_t=\mathbf M_{t +1}\left[ \mathbf P_{t +1}^{b-}\right] ^{-1} $\\
+$\hat{\mathbf x}_t^b=\hat{\mathbf x}_t^f+\mathbf S_t\left[\hat{\mathbf x}_{t+1}^{b}-\hat{\mathbf x}_{t+1}^{b-}\right]$\\
+$\mathbf P_{t}^{b}=\mathbf P_{t}^{f}+\mathbf S_t\left[\mathbf P_{t+1}^{b}-\mathbf P_{t+1}^{b-} \right]\mathbf S_t^\top $\\
+\hline
+\end{tabular}
+\begin{flushleft}This table shows the steps in the unscented Rauch-Tung-Striebel smoother algorithm. The steps are iterated 11 times for our state estimation procedure. The least squares algorithm is run after each iteration to update the parameter estimates.
+\end{flushleft}
+\label{tab:UKFAlgorithm}
+\end{table}
 
 \begin{table}[!ht]
 \caption{
@@ -662,7 +700,7 @@ This research was funded in part by the Australian Research Council (Linkage Pro
    	$\boldsymbol\phi(\mathbf{r})$ & vector of $L$ Gaussian basis functions & n.a.\\
    	$\mathbf{x}_t$ & state vector at time $t$ & mV\\
    	$\boldsymbol{\psi}(\mathbf{r}-\mathbf{r}')$ & vector of connectivity kernel basis functions & n.a.\\
-   	$\Gamma$ & inner product of field basis functions & n.a.\\
+   	$\boldsymbol{\Gamma}$ & inner product of field basis functions & n.a.\\
    	$Q()$ & state transition function &\\
    	$\mathbf{e}_t$ & state disturbance vector, with covariance $\Sigma_e$ & mV\\
    	$\mathbf{C}$ & observation matrix & n.a. \\
@@ -670,7 +708,7 @@ This research was funded in part by the Australian Research Council (Linkage Pro
 	\multicolumn{3}{|c|}{\emph{Frequency Analysis}} \\
 	\hline
     % $V(\nu)$ & Fourier transform of the neural field & Hz\\
-	$\nu$, $\nu_c$ & spatial frequency and spatial cut-off frequency & Hz \\
+	$\boldsymbol{\nu}$, $\boldsymbol{\nu}_c$ & spatial frequency and spatial cut-off frequency & Hz \\
 	$\sigma_{\nu}^2$ & Variance of Fourier transformed Gaussian basis function & Hz$^2$\\
 	\hline
 	\multicolumn{3}{|c|}{\emph{Estimation}} \\
@@ -688,47 +726,9 @@ This research was funded in part by the Australian Research Council (Linkage Pro
    	$\mathcal{\hat{W}}$& vector of parameter estimates (used in LS estimator) & n.a.\\	
 	\hline
 \end{tabular}
-\begin{flushleft}The first column of the table gives the symbols for all the notation used the paper. The second column provides a brief description of the quantity, and the third column provide the relevant SI units.
+\begin{flushleft}The first column of the table gives the symbols for all the notation used the paper. The second column provides a brief description of the quantity, and the third column provides the SI units where relevant.
 \end{flushleft}
 \label{tab:label}
-\end{table}
-
-\renewcommand{\arraystretch}{1.7}
-\begin{table}[!ht]
-\caption{
-\bf{Steps in the Algorithm for the Unscented RTS Smoother}}
-\begin{tabular}{|c|}\hline
-\multicolumn{1}{|p{16cm}|}{\textbf{1.} Forward initialisation} \\ 
-$\hat{\mathbf x}_0, \mathbf P_0$ \\
-\hline
-\multicolumn{1}{|p{16cm}|}{\textbf{2.} Forward iteration: for $t \in \left\lbrace 0,\cdots, T\right\rbrace $, calculate the sigma points $\mathcal X_{i,t}^f$ using equations \ref{eq:sigmapoints1}-\ref{eq:sigmapoints3} and propagate through equation~\ref{eq:QmatrixForSigmapoints}} \\
-$\mathcal X_{i,t+1}^{f-}=Q(\mathcal X_{i,t}^f) \quad i=0, \dots, 2L$\\
-\multicolumn{1}{|p{16cm}|}{Calculate the predicted state and the predicted covariance matrix} \\
-$\hat{\mathbf x}_{t+1}^{f-}=\sum_{i=0}^{2L} W_i^{(m)}\mathcal X_{i,t+1}^{f-} $ \\
-$\mathbf P_{t +1}^{f-}=\sum_{i=0}^{2L} W_i^{(c)}(\mathcal X_{i,t+1}^{f-}-\hat{\mathbf x}_{t +1}^{f-})(\mathcal X_{i,t+1}^{f-}-\hat{\mathbf x}_{t +1}^{f-})^\top+\boldsymbol \Sigma_e$ \\ 
-\multicolumn{1}{|p{16cm}|}{Compute the filter gain, the filtered state and the filtered covariance matrix using the standard Kalman filter update equations} \\
-$\mathcal K_{t+1}=\mathbf P_{t +1}^{f-}\mathbf C ^\top(\mathbf C \mathbf P_{t +1}^{f-}\mathbf C ^\top+\boldsymbol \Sigma_{\varepsilon})^{-1}$\\
-$\hat{\mathbf x}_{t+1}^{f}=\hat{\mathbf x}_{t+1}^{f-}+\mathcal K_{t+1}(\mathbf y_{t+1}-\mathbf C\hat{\mathbf x}_{t +1}^{f-}) $\\
-$\mathbf P_{t+1}^f=(\mathbf I - \mathcal K_{t+1}\mathbf C)\mathbf P_{t +1}^{f-}$\\ 
-\hline
-\multicolumn{1}{|p{16cm}|}{\textbf{3.} Backward initialisation}\\
-$\mathbf P_T^b= \mathbf P_T^f, \quad \hat{\mathbf x}^b_T= \hat{\mathbf x}^f_T$ \\
-\hline
-\multicolumn{1}{|p{16cm}|}{\textbf{4.} Backward iteration: for $t \in \left\lbrace T-1, \cdots, 0 \right\rbrace $ calculate the sigma points $\mathcal X_{i,t}^b$ and propagate them through equation \ref{eq:QmatrixForSigmapoints}}\\
-$\mathcal X_{i,t+1}^{b-}=Q(\mathcal X_{i,t}^b) \quad i=0, \dots, 2L$\\
-\multicolumn{1}{|p{16cm}|}{Calculate the predicted state and the predicted covariance matrix}\\
-$\hat{\mathbf x}_{t+1}^{b-}=\sum_{i=0}^{2L} W_i^{(m)}\mathcal X_{i,t+1}^{b-}$\\
-$\mathbf P_{t +1}^{f-}=\sum_{i=0}^{2L} W_i^{(c)}(\mathcal X_{i,t+1}^{f-}-\hat{\mathbf x}_{t +1}^{f-})(\mathcal X_{i,t+1}^{f-}-\hat{\mathbf x}_{t +1}^{f-})^\top+\boldsymbol \Sigma_e $\\
-$\mathbf M_{t +1}=\sum_{i=0}^{2L} W_i^{(c)}(\mathcal X_{i,t}^{b-}-\hat{\mathbf x}_{t}^{f})(\mathcal X_{i,t+1}^{b-}-\hat{\mathbf x}_{t+1}^{b-})^\top$\\
-\multicolumn{1}{|p{16cm}|}{Compute the smoother gain, the smoothed state and the smoothed covariance matrix}\\
-$\mathbf S_t=\mathbf M_{t +1}\left[ \mathbf P_{t +1}^{b-}\right] ^{-1} $\\
-$\hat{\mathbf x}_t^b=\hat{\mathbf x}_t^f+\mathbf S_t\left[\hat{\mathbf x}_{t+1}^{b}-\hat{\mathbf x}_{t+1}^{b-}\right]$\\
-$\mathbf P_{t}^{b}=\mathbf P_{t}^{f}+\mathbf S_t\left[\mathbf P_{t+1}^{b}-\mathbf P_{t+1}^{b-} \right]\mathbf S_t^\top $\\
-\hline
-\end{tabular}
-\begin{flushleft}This table shows the steps in the unscented Rauch-Tung-Striebel smoother algorithm. The steps are iterated 11 times for our state estimation procedure. The least squares algorithm is run after each iteration to update the parameter estimates.
-\end{flushleft}
-\label{tab:UKFAlgorithm}
 \end{table}
 
 \renewcommand{\arraystretch}{1}
