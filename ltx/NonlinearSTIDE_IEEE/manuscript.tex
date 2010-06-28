@@ -651,14 +651,40 @@ Dynamic spatio-temporal modelling, Integro-Difference Equation (IDE), ...
 The dynamics of the $p$th order non-linear, stochastic, spatio-temporal IDE
  is described by
  \begin{equation}
-  \epsilon_t(\mathbf r)=\int_{\Omega}w(\mathbf r,\mathbf r')f(v_{t-p}(\mathbf r'))d\mathbf r'+\mathbf e_{t-p}(\mathbf r)
+  \rho_t(\mathbf r)=\int_{\Omega}w(\mathbf r,\mathbf r')f(v_{t-p}(\mathbf r'))d\mathbf r'+\mathbf e_{t-p}(\mathbf r)
  \end{equation}
-where $\epsilon_t(\mathbf r)$ is a lag polynomial defined as
+where $\rho_t(\mathbf r)$ is a lag polynomial defined as
 \begin{equation}
- \epsilon_t(\mathbf r)=(1+\sum_{i=1}^{p}\varphi_i L_i)v_{t}\left(\br\right)
+ \rho_t(\mathbf r)=(1+\sum_{i=1}^{p}\varphi_i L_i)v_{t}\left(\mathbf r\right)
 \end{equation}
 
-where $v_t(\mathbf r)$ denotes the spatial field at time $t$ and spatial location $\mathbf r$, $f(.)$ is some nonlinear function, and $w(.)$ is the spatial kernel. Here we consider the case where $p=1$, therefore we have
+where $v_t(\mathbf r)$ denotes the spatial field at time $t$ and at spatial location $\mathbf r$, $f(.)$ is some nonlinear map, and $w(.)$ is the spatial kernel. The disturbance $\mathbf e_{t-p}(\mathbf r)$ is a zero-mean normally distributed noise process, spatially
+coloured but temporally independent, with covariance
+\begin{equation}
+cov\left(e_{t}\left(\mathbf{r}\right),e_{t+\tau}\left(\mathbf{r'}\right)\right)=
+\gamma\left(\mathbf{r}-\mathbf{r'}\right)\delta(t-\tau)
+\label{eq:FieldCovariance}
+\end{equation}
+where $\delta(.)$ is the Dirac-delta function.
+ The spatial field is observed by
+\begin{equation}
+    \label{eq:ObservationEquation}
+	\mathbf{y}_t =
+	\int_{\Omega}{
+	    m\left(\mathbf{r}_{n_y}-\mathbf{r}'\right)v_t\left(\mathbf{r}'\right)
+	d\mathbf{r}'} + 
+	\boldsymbol{\varepsilon}_t, 
+\end{equation}
+where the observation vector $\mathbf{y}_{t}$, compiled at $n_{y}$ spatial locations and at time $t$, is corrupted by an i.i.d normally distributed zero-mean white noise ${\boldsymbol\varepsilon}_t\sim \mathcal{N}\left(\mathbf{0},\boldsymbol\Sigma_{\varepsilon}\right)$ with $\mathbf{\Sigma}_{\boldsymbol\varepsilon}=\sigma_{\varepsilon}^2\mathbf I_{n_y} $. It is assumed here that $\boldsymbol\Sigma_{\varepsilon}$ and $\gamma\left(\mathbf r-\mathbf r' \right)$ are known. The output kernel $m(\mathbf{r}-\mathbf{r}')$ governs the sensor pick-up geometry and is defined by 
+\begin{equation}
+	m\left(\mathbf{r}-\mathbf{r}'\right) = \exp{\left(-\frac{(\mathbf{r}-\mathbf{r}')^\top(\mathbf{r}-\mathbf{r}')}{\sigma_m^2}\right)},
+\end{equation}
+where $\sigma_m$ sets the sensor width. The superscript $\top$ denotes the transpose operator.
+
+
+
+
+Here we consider the case where $p=1$, therefore we have
 \begin{equation}
 v_t(\mathbf r) +\varphi_{1} v_{t-1}(\mathbf r)=\int_{\Omega}w(\mathbf r,\mathbf r')f(v_{t-1}(\mathbf r'))d\mathbf r'+\mathbf e_{t-1}(\mathbf r)
 \end{equation}

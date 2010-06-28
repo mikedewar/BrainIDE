@@ -1,4 +1,4 @@
-This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdflatex 2010.6.26)  28 JUN 2010 22:49
+This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdflatex 2010.6.26)  28 JUN 2010 23:35
 entering extended mode
  %&-line parsing enabled.
 **manuscript.tex
@@ -251,27 +251,30 @@ File: umsb.fd 2002/01/19 v2.2g AMS font definitions
 \c@lemma=\count110
  [1
 
-] (./manuscript.aux) ) 
+] [2] (./manuscript.aux) ) 
 Here is how much of TeX's memory you used:
- 2418 strings out of 95086
- 33641 string characters out of 1183255
- 82175 words of memory out of 1500000
- 5584 multiletter control sequences out of 10000+50000
- 37093 words of font info for 75 fonts, out of 1200000 for 2000
+ 2438 strings out of 95086
+ 33917 string characters out of 1183255
+ 83175 words of memory out of 1500000
+ 5598 multiletter control sequences out of 10000+50000
+ 38928 words of font info for 81 fonts, out of 1200000 for 2000
  28 hyphenation exceptions out of 8191
- 27i,5n,24p,260b,177s stack positions out of 5000i,500n,6000p,200000b,5000s
-{/usr/share/texmf-texlive/fonts/enc/dvips/base/8r.enc}</u
-sr/share/texmf-texlive/fonts/type1/bluesky/cm/cmbx10.pfb></usr/share/texmf-texl
-ive/fonts/type1/bluesky/cm/cmex10.pfb></usr/share/texmf-texlive/fonts/type1/blu
-esky/cm/cmmi10.pfb></usr/share/texmf-texlive/fonts/type1/bluesky/cm/cmmi8.pfb><
-/usr/share/texmf-texlive/fonts/type1/bluesky/cm/cmr10.pfb></usr/share/texmf-tex
-live/fonts/type1/bluesky/cm/cmr8.pfb></usr/share/texmf-texlive/fonts/type1/blue
-sky/cm/cmsy8.pfb></usr/share/texmf-texlive/fonts/type1/urw/times/utmb8a.pfb></u
-sr/share/texmf-texlive/fonts/type1/urw/times/utmr8a.pfb></usr/share/texmf-texli
-ve/fonts/type1/urw/times/utmri8a.pfb>
-Output written on manuscript.pdf (2 pages, 63591 bytes).
+ 27i,7n,24p,611b,194s stack positions out of 5000i,500n,6000p,200000b,5000s
+{/usr/share/texmf-texlive/fonts/enc/dvips/base/8r.enc
+}</usr/share/texmf-texlive/fonts/type1/bluesky/cm/cmbx10.pfb></usr/share/texmf-
+texlive/fonts/type1/bluesky/cm/cmex10.pfb></usr/share/texmf-texlive/fonts/type1
+/bluesky/cm/cmmi10.pfb></usr/share/texmf-texlive/fonts/type1/bluesky/cm/cmmi5.p
+fb></usr/share/texmf-texlive/fonts/type1/bluesky/cm/cmmi8.pfb></usr/share/texmf
+-texlive/fonts/type1/bluesky/cm/cmmib10.pfb></usr/share/texmf-texlive/fonts/typ
+e1/bluesky/ams/cmmib7.pfb></usr/share/texmf-texlive/fonts/type1/bluesky/cm/cmr1
+0.pfb></usr/share/texmf-texlive/fonts/type1/bluesky/cm/cmr8.pfb></usr/share/tex
+mf-texlive/fonts/type1/bluesky/cm/cmsy10.pfb></usr/share/texmf-texlive/fonts/ty
+pe1/bluesky/cm/cmsy8.pfb></usr/share/texmf-texlive/fonts/type1/urw/times/utmb8a
+.pfb></usr/share/texmf-texlive/fonts/type1/urw/times/utmr8a.pfb></usr/share/tex
+mf-texlive/fonts/type1/urw/times/utmri8a.pfb>
+Output written on manuscript.pdf (3 pages, 83874 bytes).
 PDF statistics:
- 50 PDF objects out of 1000 (max. 8388607)
+ 69 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 131072)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
