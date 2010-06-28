@@ -1,0 +1,96 @@
+%
+%  untitled
+%
+%  Created by Dean Freestone on 2010-06-28.
+%  Copyright (c) 2010 . All rights reserved.
+%
+\documentclass[]{article}
+
+% Use utf-8 encoding for foreign characters
+\usepackage[utf8]{inputenc}
+
+% Setup for fullpage use
+\usepackage{fullpage}
+
+% Uncomment some of the following if you use the features
+%
+% Running Headers and footers
+%\usepackage{fancyhdr}
+
+% Multipart figures
+%\usepackage{subfigure}
+
+% More symbols
+%\usepackage{amsmath}
+%\usepackage{amssymb}
+%\usepackage{latexsym}
+
+% Surround parts of graphics with box
+\usepackage{boxedminipage}
+
+% Package for including code in the document
+\usepackage{listings}
+
+% If you want to generate a toc for each chapter (use with book)
+\usepackage{minitoc}
+
+% This is now the recommended way for checking for PDFLaTeX:
+\usepackage{ifpdf}
+
+%\newif\ifpdf
+%\ifx\pdfoutput\undefined
+%\pdffalse % we are not running PDFLaTeX
+%\else
+%\pdfoutput=1 % we are running PDFLaTeX
+%\pdftrue
+%\fi
+
+\ifpdf
+\usepackage[pdftex]{graphicx}
+\else
+\usepackage{graphicx}
+\fi
+\title{The letter}
+\author{  }
+
+\date{2010-06-28}
+
+\begin{document}
+
+\ifpdf
+\DeclareGraphicsExtensions{.pdf, .jpg, .tif}
+\else
+\DeclareGraphicsExtensions{.eps, .jpg}
+\fi
+
+\maketitle
+
+
+\section{Letter}
+\emph{Please explain why this manuscript is suitable for publication in PLoS Computational Biology; why will your paper inspire the other members of your field, and how will it drive research forward?}
+
+
+To the editor/reviewer,
+
+
+We hope that this work will inspire both theoreticians and experimentalists by providing a framework for linking continuum neural field models to patient-specific data. Recent increases in bandwidths in data acquisition systems, higher resolution recording technology and data storage capabilities have led to significant advances in neurophysiological recording techniques. In parallel to these experiment/clinical developments, the development of neural field theory has led to a many insights into the mass action of cortical systems. This work provides an essential link, bridging the data driven and theoretically driven areas of research. We hope that this work will help bring together these previously separated experimental and theoretical communities by providing a framework where both new and existing hypotheses may be tested.
+
+
+The novel aspects of this paper include:
+\begin{itemize}
+	\item the representation of a continuum neural field model as reduced finite-dimensional state-space model,
+	\item derivations for the conditions for placement and geometry of sensors/electrodes to sufficiently sample a neural field to capture significant cortical dynamics,
+	\item conditions for the model reduction to represent the neural field as a finite-dimensional state-space model,
+	\item an implementation of the unscented Rauch-Tung-Striebel smoother for state estimation,
+	\item a derivation for an algorithm for estimating intracortical connectivity and synaptic dynamics using the neural field equations.
+\end{itemize}
+
+Please contact us if you have any questions regarding any aspects of this paper.
+
+Best Regards,
+
+
+Dean Freestone, Parham Aram, Mike Dewar, Ken Scerri, David Grayden and Visakan Kadirkamanathan.
+\bibliographystyle{plain}
+\bibliography{}
+\end{document}
