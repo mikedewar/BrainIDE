@@ -53,7 +53,7 @@ class Basis():
 			--------
 			convolution of two gaussian basis functions'''
 
-		assert In.__class__ is basis, 'The input must be a Gaussian basis function'
+		assert In.__class__ is Basis, 'The input must be a Gaussian basis function'
 		
 		convolution_weight=((pb.pi*self.width*In.width)/(self.width+In.width))**(self.dimension*0.5)
 		convolution_width=self.width+In.width
@@ -74,7 +74,7 @@ class Basis():
 			--------
 			Inner product of two gaussian basis functions'''
 
-		assert In.__class__ is basis, 'The input must be a Gaussian basis function'
+		assert In.__class__ is Basis, 'The input must be a Gaussian basis function'
 		cij=(self.width+In.width)/(self.width*In.width)
 		rij=(self.center-In.center).T*(1/(self.width+In.width))*(self.center-In.center)
 		return float(self.constant*In.constant*(pb.pi)**(self.dimension*0.5)*(cij**(-0.5*self.dimension))*pb.exp(-rij))
