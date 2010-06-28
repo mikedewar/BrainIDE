@@ -11,9 +11,10 @@ import numpy as np
 import scipy as sp
 
 #My modules
-from Bases import *
-from Data_generator import *
-from IDE_Analytic import *
+from bases import *
+from data_generator import *
+from IDE_analytic import *
+import quickio
 
 #space properties
 
@@ -82,7 +83,7 @@ IDE_field=IDE_Field(Phi)
 gamma_center=pb.matrix([[0],[0]])
 gamma_width=1.3**2 
 gamma_weight=0.1
-gamma=basis(gamma_center,gamma_width,dimension)
+gamma=Basis(gamma_center,gamma_width,dimension)
 #Observation noise
 varepsilon=0.1
 Sigma_varepsilon =varepsilon*pb.matrix(np.eye(len(obs_locns),len(obs_locns)))

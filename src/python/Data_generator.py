@@ -14,9 +14,7 @@ import time
 import os
 from scipy import signal
 import scipy as sp
-
-#My modules
-from Bases import basis
+from bases import Basis
 
 
 class NF():

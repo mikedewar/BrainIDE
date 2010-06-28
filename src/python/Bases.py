@@ -8,8 +8,7 @@ from __future__ import division
 import pylab as pb
 import numpy as np
 
-class basis():
-
+class Basis():
 	'''This is a class to define Gaussian basis functions'''
 
 	def __init__(self,center,width,dimension,constant=1):
@@ -54,12 +53,12 @@ class basis():
 			--------
 			convolution of two gaussian basis functions'''
 
-		assert In.__class__ is basis, 'The input must be a Gaussian basis function'
+		assert In.__class__ is Basis, 'The input must be a Gaussian basis function'
 		
 		convolution_weight=((pb.pi*self.width*In.width)/(self.width+In.width))**(self.dimension*0.5)
 		convolution_width=self.width+In.width
 		convolution_center=self.center+In.center
-		return basis(convolution_center,convolution_width,self.dimension,constant=convolution_weight)
+		return Basis(convolution_center,convolution_width,self.dimension,constant=convolution_weight)
 
 
 
@@ -75,7 +74,7 @@ class basis():
 			--------
 			Inner product of two gaussian basis functions'''
 
-		assert In.__class__ is basis, 'The input must be a Gaussian basis function'
+		assert In.__class__ is Basis, 'The input must be a Gaussian basis function'
 		cij=(self.width+In.width)/(self.width*In.width)
 		rij=(self.center-In.center).T*(1/(self.width+In.width))*(self.center-In.center)
 		return float(self.constant*In.constant*(pb.pi)**(self.dimension*0.5)*(cij**(-0.5*self.dimension))*pb.exp(-rij))
