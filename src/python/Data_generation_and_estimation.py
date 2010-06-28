@@ -5,9 +5,9 @@ import numpy as np
 import scipy as sp
 from scipy import io
 #My modules
-from Bases import *
-from Data_generator import *
-from IDE_Analytic import *
+from bases import *
+from data_generator import *
+from IDE_analytic import *
 import quickio
 
 #simulation properties
@@ -53,9 +53,9 @@ psi3_width=6.**2
 psi1_weight=10
 psi2_weight=-8
 psi3_weight=0.5
-psi1=basis(psi1_center,psi1_width,dimension)
-psi2=basis(psi2_center,psi2_width,dimension)
-psi3=basis(psi3_center,psi3_width,dimension)
+psi1=Basis(psi1_center,psi1_width,dimension)
+psi2=Basis(psi2_center,psi2_width,dimension)
+psi3=Basis(psi3_center,psi3_width,dimension)
 #create a list of connectivity kernel basis functions
 Connectivity_kernel_basis_functions=[psi1,psi2,psi3]
 Connectivity_kernel_weights=[psi1_weight,psi2_weight,psi3_weight]
@@ -65,7 +65,7 @@ IDE_Connectivity_kernel=IDE_Kernel(Connectivity_kernel_basis_functions,Connectiv
 #Define basis functions
 phi_widths=2.5 #must be float
 #place field basis functions in an array in the form of n_x*1
-Phi=pb.array([basis(center,phi_widths,dimension) for center in phi_centers],ndmin=2).T
+Phi=pb.array([Basis(center,phi_widths,dimension) for center in phi_centers],ndmin=2).T
 IDE_field=IDE_Field(Phi)
 
 
@@ -74,7 +74,7 @@ IDE_field=IDE_Field(Phi)
 gamma_center=pb.matrix([[0],[0]])
 gamma_width=1.3**2 
 gamma_weight=0.1
-gamma=basis(gamma_center,gamma_width,dimension)
+gamma=Basis(gamma_center,gamma_width,dimension)
 #Observation noise
 varepsilon=0.1
 Sigma_varepsilon =varepsilon*pb.matrix(np.eye(len(obs_locns),len(obs_locns)))
@@ -82,7 +82,7 @@ Sigma_varepsilon =varepsilon*pb.matrix(np.eye(len(obs_locns),len(obs_locns)))
 #Define sensor geometry
 sensor_center=pb.matrix([[0],[0]])
 sensor_width=0.9**2 
-sensor_kernel=basis(sensor_center,sensor_width,dimension)
+sensor_kernel=Basis(sensor_center,sensor_width,dimension)
 Sensor_vector=ODE_Sensor(obs_locns,sensor_width,dimension) #this is to calculate the sensors at each spatial locations
 #plot sensors and basis functions
 l1=[circle(cent,2*pb.sqrt(pb.log(2),)*pb.sqrt(sensor_width)/2,'b') for cent in obs_locns]

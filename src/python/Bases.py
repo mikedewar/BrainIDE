@@ -2,7 +2,7 @@ from __future__ import division
 import pylab as pb
 import numpy as np
 
-class basis():
+class Basis():
 	'''This is a class to define Gaussian basis functions'''
 
 	def __init__(self,center,width,dimension,constant=1):
@@ -50,14 +50,14 @@ class basis():
 		convolution_weight=((pb.pi*self.width*In.width)/(self.width+In.width))**(self.dimension*0.5)
 		convolution_width=self.width+In.width
 		convolution_center=self.center+In.center
-		return basis(convolution_center,convolution_width,self.dimension,constant=convolution_weight)
+		return Basis(convolution_center,convolution_width,self.dimension,constant=convolution_weight)
 
 	def FT(self):
 
 		#assert self.center==pb.matrix(pb.zeros((self.dimension,1))),'center must be at zero'
 		FT_weight=(pb.pi*self.width)**(self.dimension*0.5)
 		FT_width=1./(((pb.pi)**2)*self.width)
-		return basis(self.center,FT_width,self.dimension,constant=FT_weight)
+		return Basis(self.center,FT_width,self.dimension,constant=FT_weight)
 		
 		
 
@@ -99,7 +99,7 @@ if __name__=="__main__":
 	#field basis functions'widths
 	phi_widths=2.5
 	#place field basis functions in an array in the form of n_x*1
-	Phi=pb.array([basis(cen,phi_widths,dimension) for cen in field_centers],ndmin=2).T
+	Phi=pb.array([Basis(cen,phi_widths,dimension) for cen in field_centers],ndmin=2).T
 	nx=len(Phi)
 	total_time=time.time()
 	t_Gamma=time.time()
@@ -121,9 +121,9 @@ if __name__=="__main__":
 	psi1_weight=10
 	psi2_weight=-8
 	psi3_weight=0.5
-	psi1=basis(psi1_center,psi1_width,dimension)
-	psi2=basis(psi2_center,psi2_width,dimension)
-	psi3=basis(psi3_center,psi3_width,dimension)
+	psi1=Basis(psi1_center,psi1_width,dimension)
+	psi2=Basis(psi2_center,psi2_width,dimension)
+	psi3=Basis(psi3_center,psi3_width,dimension)
 	#vectorizing convolution function of the kernel basis functions
 	psi1_convolution_vectorized=pb.vectorize(psi1.conv) 	
 	psi2_convolution_vectorized=pb.vectorize(psi2.conv) 	
@@ -224,7 +224,7 @@ if __name__=="__main__":
 	#Define Sensor Kernel
 	sensor_center=pb.matrix([[0],[0]])
 	sensor_width=0.9**2 
-	sensor_kernel=basis(sensor_center,sensor_width,dimension)
+	sensor_kernel=Basis(sensor_center,sensor_width,dimension)
 	sensor_kernel_convolution_vecrorized=pb.vectorize(sensor_kernel.conv)
 	sensor_kernel_conv_Phi=sensor_kernel_convolution_vecrorized(Phi).T #first row
 	t_observation_matrix=time.time()
@@ -241,7 +241,7 @@ if __name__=="__main__":
 	gamma_center=pb.matrix([[0],[0]])
 	gamma_width=1.3**2 
 	gamma_weight=0.01
-	gamma=basis(gamma_center,gamma_width,dimension)
+	gamma=Basis(gamma_center,gamma_width,dimension)
 	t_Sigma_e_c=time.time()
 	gamma_convolution_vecrorized=pb.vectorize(gamma.conv)
 	gamma_conv_Phi=gamma_convolution_vecrorized(Phi).T 

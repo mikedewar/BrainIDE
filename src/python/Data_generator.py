@@ -6,7 +6,7 @@ import time
 import os
 from scipy import signal
 import scipy as sp
-from Bases import basis
+from bases import Basis
 
 
 class ODE():
@@ -258,7 +258,7 @@ class ODE_Sensor():
 		vector of observation kernels: matrix
 			matrix of ny x 1 dimension [m_1(s) m_2(s) ... m_ny(s)].T
 		"""
-		return pb.matrix([basis(cen,self.width,self.dimension)(s) for cen in self.centers]).T
+		return pb.matrix([Basis(cen,self.width,self.dimension)(s) for cen in self.centers]).T
 
 
 class ActivationFunction():
