@@ -80,7 +80,7 @@
 \\
 Dean R. Freestone$^{1,2,3,\ast}$, 
 Parham Aram$^{4}$, 
-Michael Dewar$^{5}$,
+Michael Dewar$^{3,5}$,
 Kenneth Scerri$^{6}$,
 David B. Grayden$^{1}$,
 Visakan Kadirkamanathan$^{4}$
@@ -146,7 +146,7 @@ The post-synaptic response kernel $h(t)$ is described by
 \end{equation}
 where $\zeta=\tau^{-1}$, $\tau$ is the synaptic time constant and $\eta(t)$ is the Heaviside step function. Non-local interactions between cortical populations are described by 
 \begin{equation}
-	\label{RateBasedInteractions} g\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( v\left( \mathbf{r}',t \right) \right)d\mathbf{r}'}, 
+	\label{RateBasedInteractions} g\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( v\left( \mathbf{r}',t \right) \right)\textrm{d}\mathbf{r}'}, 
 \end{equation}
 where $f(\cdot)$ is the firing rate function, $w(\cdot)$ is the spatial connectivity kernel and $\Omega$ is the spatial domain representing a cortical sheet or surface. The connectivity kernel is typically a ``Mexican hat'' function, which describes local excitation and surround inhibition. To demonstrate flexibility in estimation algorithm, a third component of the kernel is introduced describing weak longer-range excitation. An example of the connectivity kernel is shown in in Figure~\ref{fig:2d_kernel}. The exact shape of this kernel is assumed to vary across patients, and hence needs to be inferred from data.
 \begin{figure}
@@ -167,7 +167,7 @@ The parameters $f_{max}$ and $v_0$ describe the maximum firing rate and firing t
 	h\left(t - t'\right) \int_\Omega
 	w\left(\mathbf{r},\mathbf{r}'\right) 
 	f\left( v\left( \mathbf{r}',t \right)\right)
-	d\mathbf{r}'dt'.
+	\textrm{d}\mathbf{r}'dt'.
 \end{equation}
 To arrive at the final form of the model, we shall express the synaptic response kernel as a Green's function 
 \begin{equation}
@@ -176,7 +176,7 @@ To arrive at the final form of the model, we shall express the synaptic response
 where $D=\frac{d}{dt} + \zeta$ is a temporal differential operator and $\delta(t)$ is the Dirac-delta function giving 
 \begin{equation}
 	\label{FinalFormContinuous} 
-	\frac{dv\left( \mathbf{r},t \right)}{dt} + \zeta v\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)d\mathbf{r}'}. 
+	\frac{dv\left( \mathbf{r},t \right)}{dt} + \zeta v\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)\textrm{d}\mathbf{r}'}. 
 \end{equation}
 To arrive at the integro-difference equation (IDE) form of the model, we discretise time using a first-order Euler method (see the S1 for derivation) giving 
 \begin{equation}
@@ -186,7 +186,7 @@ To arrive at the integro-difference equation (IDE) form of the model, we discret
 	T_s \int_\Omega { 
 	    w\left(\mathbf{r},\mathbf{r}'\right)
 	    f\left(v_t\left(\mathbf{r}'\right)\right) 
-	d\mathbf{r}'} 
+	\textrm{d}\mathbf{r}'} 
 	+ e_t\left(\mathbf{r}\right), 
 \end{equation}
 where $T_s$ is the time step, $\xi = 1-\zeta T_s$ and $e_t(\mathbf{r})$ is an $i.i.d.$ disturbance such that $e_t(\mathbf{r})\sim\mathcal{GP}(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}'))$. Here $\mathcal{GP}(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}'))$ denotes a zero mean spatial Gaussian process with covariance function $\gamma(\mathbf{r}-\mathbf{r}')$~\cite{Rasmussen2005}. This term is added to account for uncertainty and unmodelled inputs. To simplify the notation, the index of the future time sample, $t+T_s$, shall be referred to as $t+1$ throughout the rest of the paper. 
@@ -197,7 +197,7 @@ The mapping between the membrane voltage and the electrophysiological data (iEEG
 	\mathbf{y}_t =
 	\int_{\Omega}{
 	    m\left(\mathbf{r}_n-\mathbf{r}'\right)v_t\left(\mathbf{r}'\right)
-	d\mathbf{r}'} + 
+	\textrm{d}\mathbf{r}'} + 
 	\boldsymbol{\varepsilon}_t, 
 \end{equation}
 where $\mathbf{r}_n$ defines the location of the sensors in the field, $n=1,...,N$ indexes the sensors and $\boldsymbol{\varepsilon}_t \sim \mathcal{N}\left(0,\boldsymbol{\Sigma}_{\varepsilon}\right)$, $\mathcal{N}\left(0,\boldsymbol{\Sigma}_{\varepsilon}\right)$ denotes the multivariate normal distribution with mean zero and covariance matrix $\boldsymbol{\Sigma}_{\varepsilon}$. The output kernel $m(\mathbf{r}-\mathbf{r}')$ governs the sensor pick-up geometry and is defined by 
@@ -230,21 +230,21 @@ The width and positioning of the basis functions can be determined by spectral a
 \end{equation}
 where $\boldsymbol{\psi}(\mathbf{r},\mathbf{r}')$ is a vector of Gaussian basis functions and $\boldsymbol{\theta}$ is a vector of scaling parameters. By assuming a Gaussian isotropic connectivity structure, the kernel basis functions can be written as $\boldsymbol{\psi}(\mathbf{r}-\mathbf{r}')$. We will assume that we know the parametric form of the connectivity basis functions, where the scaling parameters $\boldsymbol{\theta}$ are unknown. Each connectivity basis function can, individually, be considered a layer in the Wilson and Cowan model. Typically, the Mexican hat connectivity kernel is comprised of two basis functions representing local excitation and surround inhibition. To demonstrate the flexibility of the estimation framework, a third basis function is incorporated, corresponding to weaker mid-range excitation. Making substitutions of equations~\ref{DefFieldDecomp} and~\ref{DefKernelDecomp} into~\ref{DiscreteTimeModel} we get 
 \begin{equation}
-	\label{reduced continuous model}\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_{t+1}= T_s\int_\Omega{f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t )\boldsymbol{\psi}^{\top}(\mathbf{r}-\mathbf{r}')d\mathbf{r}'}\boldsymbol{\theta}
+	\label{reduced continuous model}\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_{t+1}= T_s\int_\Omega{f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t )\boldsymbol{\psi}^{\top}(\mathbf{r}-\mathbf{r}')\textrm{d}\mathbf{r}'}\boldsymbol{\theta}
 	+ \xi\boldsymbol{\phi}^{\top}(\mathbf{r})x_t + e_t(\mathbf{r}). 
 \end{equation}
 Next we multiply equation~\ref{reduced continuous model} by $\boldsymbol{\phi}(\mathbf{r})$ and integrate over the spatial domain $\Omega$ to get 
 \begin{equation}
     \begin{split}
 	\label{StartofReduction}
-	\lefteqn{ \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) d\mathbf{r}} \mathbf{x}_{t+1}=} \\
- &T_s \int_\Omega {\boldsymbol{\phi} (\mathbf{r}) \int_\Omega {\boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}') \mathbf{x}_t ) d\mathbf{r}'}d\mathbf{r}}\boldsymbol{\theta}  \\ & + \xi\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\phi}^{\top}(\mathbf{r})d\mathbf{r}} \mathbf{x}_t+
-\int_\Omega{\boldsymbol{\phi} (\mathbf{r}) e_t(\mathbf{r})d\mathbf{r}}. 
+	\lefteqn{ \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) \textrm{d}\mathbf{r}} \mathbf{x}_{t+1}=} \\
+ &T_s \int_\Omega {\boldsymbol{\phi} (\mathbf{r}) \int_\Omega {\boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}') \mathbf{x}_t ) \textrm{d}\mathbf{r}'}\textrm{d}\mathbf{r}}\boldsymbol{\theta}  + \xi\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\phi}^{\top}(\mathbf{r})\textrm{d}\mathbf{r}} \mathbf{x}_t+
+\int_\Omega{\boldsymbol{\phi} (\mathbf{r}) e_t(\mathbf{r})\textrm{d}\mathbf{r}}. 
 \end{split}
 \end{equation}
 Now defining the matrix
 \begin{equation}\label{eq:DefGamma}
-	\boldsymbol{\Gamma} \triangleq \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi} ^{\top}\left(\mathbf{r}\right)d\mathbf{r}}, 
+	\boldsymbol{\Gamma} \triangleq \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi} ^{\top}\left(\mathbf{r}\right)\textrm{d}\mathbf{r}}, 
 \end{equation}
 and substituting this into equation~\ref{StartofReduction} and cross-multiplying by $\boldsymbol{\Gamma}^{-1}$ gives 
 \begin{equation}
@@ -252,26 +252,27 @@ and substituting this into equation~\ref{StartofReduction} and cross-multiplying
     \begin{split}
 	 \mathbf{x}_{t+1} = T_s\boldsymbol{\Gamma}^{-1}
 	 \int_\Omega \boldsymbol{\phi}(\mathbf{r}) 
-	 \int_\Omega \boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}')f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) d\mathbf{r}' d\mathbf{r} \boldsymbol{\theta} \\ 
-	 + \xi\mathbf{x}_t + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r}) e_t(\mathbf{r})d\mathbf{r}}.
+	 \int_\Omega \boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}')f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \textrm{d}\mathbf{r}' \textrm{d}\mathbf{r} \boldsymbol{\theta}  
+	 + \xi\mathbf{x}_t + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r}) e_t(\mathbf{r})\textrm{d}\mathbf{r}}.
 	 \end{split}
 \end{equation}
-An analytic derivation of the inner product of \emph{n}-dimensional Gaussians is provided in the Supporting Information, S1. Equation~\ref{eq:ReducedForm} can be simplified by exploiting the symmetry (isotropy) of the connectivity kernel where
+An analytic derivation of the inner product of \emph{n}-dimensional Gaussians is provided in the Supporting Information, S1. Equation~\ref{eq:ReducedForm} can be simplified by exploiting the isotropy of the connectivity kernel
+\mike{This doesn't seem to be the isotropy of the kernel, it's the isotropy of the kernel's basis functions. The whole thing holds for the kernel itself or, if they're isostropic, the basis functions. You just can't say one and write the other! You could put something like ``.. by exploiting the isotropy of the kernel and, hence, the basis functions used to represent it''}
 \begin{equation}
 	\boldsymbol{\psi} (\mathbf{r}-\mathbf{r}') = \boldsymbol{\psi} (\mathbf{r}'-\mathbf{r}).
 \end{equation}
 To make the simplification, we first define
 \begin{equation}\label{eq:DefPsi}
-	\boldsymbol{\Psi}(\mathbf{r}') \triangleq T_s\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\psi}^{\top} (\mathbf{r}'-\mathbf{r})d\mathbf{r}},
+	\boldsymbol{\Psi}(\mathbf{r}') \triangleq T_s\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\psi}^{\top} (\mathbf{r}'-\mathbf{r})\textrm{d}\mathbf{r}},
 \end{equation}
 which is a constant $L \times n_{\theta}$ matrix that can is defined analytically (see the Supporting Information, S1, for analytic convolution of two Gaussians), where $L$ is the number of basis functions (and states) and $n_{\theta}$ is the number of connectivity basis functions. Now substituting equation~\ref{eq:DefPsi} into~\ref{eq:ReducedForm} gives
-\begin{eqnarray}
-	\mathbf{x}_{t+1} = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) d\mathbf{r}' \boldsymbol{\theta} + \xi\mathbf{x}_t\nonumber \\
-+ \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})d\mathbf{r}}.
-\end{eqnarray}
-This simplification has transformed the description of the spatial coupling from a convolution to an inner product. This transformation provides a dramatic increase in simulation speed, which is of great importance considering the computational demands of the estimation algorithm. Now we define the state disturbance as
+\begin{equation}
+	\mathbf{x}_{t+1} = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \textrm{d}\mathbf{r}' \boldsymbol{\theta} + \xi\mathbf{x}_t 
++ \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})\textrm{d}\mathbf{r}}.
+\end{equation}
+This simplification has transformed the description of the spatial coupling from a convolution to an inner product. \mike{This is a bit deceptive. What you've actually done is move the convolution of the kernel basis functions with the nonlinearly transformed field to the convolution of field basis functions with the kernel basis functions. To see this, you could've done the same trick by just calling $\int \psi(r-r')f(\phi^Tx_t)dr' = A(r)$ and the saying hey! We now have the inner product $\int \phi(r) A(r) dr$. The point is that you can do the convolution $\phi * \psi$ analytically whereas you have to do the inner product $\Psi f(\phi^Tx_t)$ numerically. I wouldn't make a big deal about this except a fuss is made (rightly so) about this in the Discussion section.} This transformation provides a dramatic increase in simulation speed, which is of great importance considering the computational demands of the estimation algorithm. Now we define the state disturbance as
 \begin{equation}\label{eq:Wt} 
-	\mathbf{e}_t \triangleq \boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi} ( \mathbf{r} )e_t( \mathbf{r} )d\mathbf{r}} 
+	\mathbf{e}_t \triangleq \boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi} ( \mathbf{r} )e_t( \mathbf{r} )\textrm{d}\mathbf{r}} 
 \end{equation}
 which is a zero mean normally distributed white noise process with covariance (see the Supporting Information, S1, for the derivation)
 \begin{equation}
@@ -279,7 +280,7 @@ which is a zero mean normally distributed white noise process with covariance (s
 \end{equation}
 Under the assumption that the basis function decomposition is accurate, the observation equation of the reduced model is found by substituting equation~\ref{DefFieldDecomp} into~\ref{eq:ObservationEquation} giving
 \begin{equation}\label{eq:ReducedObservationEquation}
-	\mathbf{y}_t = \int_{\Omega}{m\left(\mathbf{r}_n-\mathbf{r}'\right)\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) \mathbf{x}_td\mathbf{r}'} + \boldsymbol{\varepsilon}_t. 
+	\mathbf{y}_t = \int_{\Omega}{m\left(\mathbf{r}_n-\mathbf{r}'\right)\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) \mathbf{x}_t\textrm{d}\mathbf{r}'} + \boldsymbol{\varepsilon}_t. 
 \end{equation}
 The observation equation is linear and can be written in the more compact form
 \begin{equation}\label{ObservationEquation} 
@@ -297,7 +298,7 @@ where the observation matrix is
 \end{equation}
 and 
 \begin{equation}
-	c_{i,j} = \int_{\Omega}m(\mathbf{r}_i - \mathbf{r}')\boldsymbol{\phi}_j(\mathbf{r}')d\mathbf{r}'. 
+	c_{i,j} = \int_{\Omega}m(\mathbf{r}_i - \mathbf{r}')\boldsymbol{\phi}_j(\mathbf{r}')\textrm{d}\mathbf{r}'. 
 \end{equation}
 Now we have the final form of the state-space model where
 \begin{equation}\label{eq:finalformstatespacemodel}
@@ -308,7 +309,7 @@ Now we have the final form of the state-space model where
 \end{equation}
 and 
 \begin{equation}\label{eq:QmatrixForSigmapoints}
-	Q(\mathbf{x}_t) = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) d\mathbf{r}' \boldsymbol{\theta} + \xi\mathbf{x}_t.
+	Q(\mathbf{x}_t) = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \textrm{d}\mathbf{r}' \boldsymbol{\theta} + \xi\mathbf{x}_t.
 \end{equation}
 
 \subsection{Spectral Analysis and Model Selection}\label{SpectralAnalysisSection} Spectral analysis has been used to identify both the number of sensors and the number of basis functions required to reconstruct the neural field from sampled observations~\cite{Sanner1992,Scerri2009}. Based on a two-dimensional extension of Shannon's sampling theorem \cite{Peterson1962}, the spatial bandwidth of the observed field can be used to provide a lower bound on both the number of sensors and the number of basis functions required to capture the dominant spectral characteristics of the neural field.
@@ -394,7 +395,7 @@ where the superscripts $m$ and $c$ denote mean and covariance. Since the observa
 
 Although the system is nonlinear, the parameters of the system are linear with respect to the state. This is exploited by our procedure where the parameter estimation uses a least squares (LS) method that minimises the sum of the squared errors (of a predicted state update) with each new estimate of the state vector sequence. To create the least squares parameter estimator, we first define the $L \times n_{\theta}$ matrix
 \begin{equation}
-	\mathbf{q}(\mathbf{x}_t) = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) d\mathbf{r}'.
+	\mathbf{q}(\mathbf{x}_t) = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \textrm{d}\mathbf{r}'.
 \end{equation}
 Now given a state estimate sequence from an iteration of the URTSS, we can write
 \begin{eqnarray*}
@@ -521,10 +522,30 @@ The accuracy of the state estimates was evaluated by comparing the field reconst
 \label{fig:FieldEstimate}
 \end{figure*}
 
-\section*{Discussion}\label{DiscussionSection}
+\section*{Discussion}
+\label{DiscussionSection}
+
+This paper has presented a method for extracting patient-specific models of synaptic dynamics from electrophysiological data. In so doing, we have highlighted important aspects of the experiment design process, demonstrating the relationship between sensor bandwidth and the complexity of the field that can be inferred. The mathematical formulation we have presented scales well with the number of sensors, and we have derived a finite-order state-space representation which allows us to perform inference efficiently. 
+
+\subsection*{Patient Specific Modelling}
+
+Generating patient-specific neural field models has the potential to have significant impact on several areas of neuroscientific research and clinical neurology. Specifically, the development of a patient-specific state-space model will allow for the application of techniques from engineering to be applied to neuro-dynamics. For example, state tracking could be used in brain-computer interfaces or epileptic seizure prediction, where specific regions of the state-space may indicate intent of movement or imminent seizures, respectively. In addition, a patient-specific state-space model will allow application of control engineering techniques to robustly prevent the neuro-dynamics entering pathological regions of state-space using electrical stimulation, thereby possibly preventing seizure onset or abating seizure activity.
+
+Kernel parameter estimation may also have significant impact on the treatment of disease. For example, recent theoretical work has demonstrated that seemingly similar electrographic seizures in absence epilepsy may arise from either abnormal excitatory or inhibitory mechanisms~\cite{Marten2009}. These very different mechanisms would require very different medications for successful treatment. However, the underlying mechanisms would be hidden from the clinician in the normal clinical setting. Successful parameter estimation has the potential to reveal these hidden mechanisms allowing for improved treatment strategies. 
+
+The development of an estimation framework also has theoretical implications, where the ability to estimate parameters will allow testing of hypotheses that have been generated in computational modelling studies. This has the potential to validate neural field models, and in doing so, provide new insights that may lead to a greater understanding of macro-scale neurodynamics. For example, using the proposed model-based framework, we can reconstruct a neural field from data and estimate parameters to check if they correspond to theoretically derived values where certain solutions can exist. In addition, the parameters and the state-space can be explored during cognitive tasks and states of arousal such as during sleep and anaesthesia. 
+
+\subsection*{Implications for Experiment Design}
+
 This paper has presented a method for estimating intracortical connectivity and synaptic dynamics from electrophysiological data. As seen in Section~\ref{sec:state_and_param_results}, the results indicate accurate estimation, where the mean parameter estimates are in good agreement with the actual values. The estimates of the connectivity kernel parameters show relatively broad distributions, which can be expected considering the system's input is modelled as a random disturbance, and the observations are corrupted by noise.
 
 To overcome the effect of noise, the use of a controlled input stimulus should be considered when applying the estimation algorithm to electrophysiological recordings. Given knowledge of the input and the appropriate model, it is expected that the variance of the parameter estimates will decrease. Even when using an input, our results imply that we should only expect to learn distributions of parameters, rather than uncover a `true' parameter set. By designing an input signal carefully and using an evoked-potential paradigm, where stimuli are repeated many times, data could be epoched into (and averaged over) a sufficient number of trials (realisations), where each trial is a response to a stimulus, such that a distribution of the parameter estimates can be formed.
+
+The frequency analysis and model selection tools presented in Section~\ref{SpectralAnalysisSection} specify the sensor arrangement that is required for capturing the dominant cortical dynamics. Importantly, these new tools can also be used to design electrophysiological recording systems to avoid spatial aliasing. In addition, the frequency analysis highlights the relationship between the spatial width of the sensors and the information in the data. This analysis is becoming increasingly relevant as recording systems are becoming more sophisticated with higher density recordings~\cite{Brinkmann2009}. 
+
+\subsection*{Computational Complexity}
+
+This is the first paper to derive a continuum neural field model-based estimation framework for intracortical connectivity from electrophysiological data. The importance of the estimation framework can be illustrated by considering that the connectivity structure at this scale can not be estimated using diffusion tensor imaging due to the near isotropic diffusion of water in grey matter~\cite{Assaf2008}. The closest competitor to our `grey-box' integro-difference equation based approach is perhaps the multivariate auto-regressive (MVAR) model, which is a `black-box' approach. Examples of MVAR models for estimating functional connectivity include Granger causality~\cite{Hesse2003}, the direct transfer function~\cite{Kaminski1991} and partial directed coherence~\cite{Sameshima1999}. A distinct advantage of the integro-difference equation based technique proposed in this current study is that the number of parameters required to model the system is considerably less than a typical MVAR model. Furthermore, by using the neural field equations as a parametric form of a model, the parameters have physical meaning and, therefore, can be clinically relevant. An advantage of the MVAR-based methods is that they allow for anisotropic connectivity, which is present in the longer range cortico-cortical fibres. 
 
 Previous work from Schiff and Sauer~\cite{schiff2008kalman} demonstrated for the first time the applicability of the unscented Kalman filter (UKF) for state estimation for discrete (in space and time) nonlinear spatio-temporal systems. Within their framework, each discrete spatial location forms an element of the state vector to be estimated with the UKF. A limitation of this framework is that an increase in spatial resolution and/or the physical size of the neural field will results in an increased state dimension. 
 
@@ -534,25 +555,16 @@ The current study builds on this previous work~\cite{schiff2008kalman}, where th
 
 The fact that the connectivity kernel is isotropic means that we are able to re-write the spatial mixing effect of the kernel on the firing rates as a convolution of the kernel with the membrane voltage field basis functions. This transformation greatly simplifies the computational complexity of the estimator, which is important for the estimator to run in a real-time scenario.
 
-The frequency analysis and model selection tools presented in Section~\ref{SpectralAnalysisSection} specify the sensor arrangement that is required for capturing the dominant cortical dynamics. Importantly, these new tools can also be used to design electrophysiological recording systems to avoid spatial aliasing. In addition, the frequency analysis highlights the relationship between the spatial width of the sensors and the information in the data. This analysis is becoming increasingly relevant as recording systems are becoming more sophisticated with higher density recordings~\cite{Brinkmann2009}. 
+\subsection*{Future Work}
 
-This is the first paper to derive a continuum neural field model-based estimation framework for intracortical connectivity from electrophysiological data. The importance of the estimation framework can be illustrated by considering that the connectivity structure at this scale can not be estimated using diffusion tensor imaging due to the near isotropic diffusion of water in grey matter~\cite{Assaf2008}. The closest competitor to our `grey-box' integro-difference equation based approach is perhaps the multivariate auto-regressive (MVAR) model, which is a `black-box' approach. Examples of MVAR models for estimating functional connectivity include Granger causality~\cite{Hesse2003}, the direct transfer function~\cite{Kaminski1991} and partial directed coherence~\cite{Sameshima1999}. A distinct advantage of the integro-difference equation based technique proposed in this current study is that the number of parameters required to model the system is considerably less than a typical MVAR model. Furthermore, by using the neural field equations as a parametric form of a model, the parameters have physical meaning and, therefore, can be clinically relevant. An advantage of the MVAR-based methods is that they allow for anisotropic connectivity, which is present in the longer range cortico-cortical fibres. 
-% A recent theoretical study~\cite{Jirsa2009} has demonstrated the importance of a multi-scale connectivity structure in generating the characteristic rhythms of the brain. A possible method of creating more precise models with this multi-scale structure maybe to estimate anisotropic cortico-cortical connectivity using a MVAR approach and intracortical connectivity using the methods proposed in this paper. 
+In this paper, an assumption was made that the chosen kernel basis functions can exactly represent the actual connectivity kernel. In future work, we plan to relax this assumption.
 
-Generating patient-specific neural field models has the potential to have significant impact on several areas of neuroscientific research and clinical neurology. Specifically, the development of a patient-specific state-space model will allow for the application of techniques from engineering to be applied to neuro-dynamics. For example, state tracking could be used in brain-computer interfaces or epileptic seizure prediction, where specific regions of the state-space may indicate intent of movement or imminent seizures, respectively. In addition, a patient-specific state-space model will allow application of control engineering techniques to robustly prevent the neuro-dynamics entering pathological regions of state-space using electrical stimulation, thereby possibly preventing seizure onset or abating seizure activity.
-
-Kernel parameter estimation may also have significant impact on the treatment of disease. For example, recent theoretical work has demonstrated that seemingly similar electrographic seizures in absence epilepsy may arise from either abnormal excitatory or inhibitory mechanisms~\cite{Marten2009}. These very different mechanisms would require very different medications for successful treatment. However, the underlying mechanisms would be hidden from the clinician in the normal clinical setting. Successful parameter estimation has the potential to reveal these hidden mechanisms allowing for improved treatment strategies. 
-
-The development of an estimation framework also has theoretical implications, where the ability to estimate parameters will allow testing of hypotheses that have been generated in computational modelling studies. This has the potential to validate neural field models, and in doing so, provide new insights that may lead to a greater understanding of macro-scale neurodynamics. For example, using the proposed model-based framework, we can reconstruct a neural field from data and estimate parameters to check if they correspond to theoretically derived values where certain solutions can exist. In addition, the parameters and the state-space can be explored during cognitive tasks and states of arousal such as during sleep and anaesthesia. 
-
-In this paper, an assumption was made that the chosen kernel basis functions can exactly represent the actual connectivity kernel. In future work, we plan to relax this assumption. We hope to achieve this by using the actual kernel that cannot exactly be presented by the chosen finite number of basis functions. In addition, we have assumed that the neural field is isotropic and homogeneous. It is generally accepted that the intracortical connectivity structure can be accurately modelled as being isotropic. However, the assumption of homogeneity is quite strong. Future work should focus on developing estimation algorithms where assumptions of homogeneity can be relaxed. Future work should also include a more realistic synaptic response kernel, with finite rise and decay times, and finite distant dependant propagation times into the parametric neural field equations.
-
-% This paper presents a novel framework for state and parameter estimation of spatio-temporal neural fields to create patient-specific models. A basis function decomposition reduces the infinite-dimensional neural field (continuous space) to a finite-dimensional state-space model. The frequency analysis methods presented in this paper provide a systematic procedure for specifying the sensor and basis function arrangement required to describe the significant neuro-dynamics by the reduced neural field model. The level of detail of the estimated field is related to the basis functions decomposition, providing a flexible framework where a trade-off can be made between physiological detail and computational complexity. Using the state-space model, the unscented Rauch-Tung-Striebel smoother was applied for state estimation. Using the sequence of state estimates, a least squares algorithm was implemented for parameter estimation. We have demonstrated that it is theoretically possible to estimate intracortical connectivity and the synaptic dynamics using the proposed methodology.  
+In addition, we have assumed that the neural field is isotropic and homogeneous. It is generally accepted that the intracortical connectivity structure can be accurately modelled as being isotropic. However, the assumption of homogeneity is quite strong. Future work should focus on developing estimation algorithms where assumptions of homogeneity can be relaxed. Future work should also include a more realistic synaptic response kernel, with finite rise and decay times, and finite distant dependant propagation times into the parametric neural field equations.
 
 
 % Do NOT remove this, even if you are not including acknowledgments
 \section*{Acknowledgments}
-Dean Freestone would like to thank Dr. Mark van Rossum for hosting him whilst visiting the University of Edinburgh where this work was undertaken. Authors would also like to thank Andrew Hills for useful discussions and help with some code and the generation of figures.
+Dean Freestone would like to thank Dr. Mark van Rossum for hosting him whilst visiting the University of Edinburgh where this work was undertaken. Parham Aram would also like to thank Andrew Hills for useful discussions and help with some code and the generation of figures.
 
 % This research was funded in part by the Australian Research Council (Linkage Project LP0560684). The Bionic Ear Institute acknowledges the support it receives from the Victorian State Government through the Operational Infrastructure Support Program. Dean Freestone would like to thank the University of Melbourne's Scholarships Office for the Postgraduate Overseas Research Experience Scholarship and the Harold Mitchell Foundation for a traveling scholarship and supporting this research. 
 
