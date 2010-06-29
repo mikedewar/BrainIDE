@@ -4,77 +4,35 @@
 %  Created by Dean Freestone on 2010-06-28.
 %  Copyright (c) 2010 . All rights reserved.
 %
-\documentclass[]{article}
+\documentclass[a4paper,10pt]{letter}
+\usepackage{anysize} 									%<-use this for checking equation length
 
-% Use utf-8 encoding for foreign characters
-\usepackage[utf8]{inputenc}
+\marginsize {1.7cm}{1.5cm}{2cm}{2cm} 				%<-use this for checking equation length
 
-% Setup for fullpage use
-\usepackage{fullpage}
-
-% Uncomment some of the following if you use the features
-%
-% Running Headers and footers
-%\usepackage{fancyhdr}
-
-% Multipart figures
-%\usepackage{subfigure}
-
-% More symbols
-%\usepackage{amsmath}
-%\usepackage{amssymb}
-%\usepackage{latexsym}
-
-% Surround parts of graphics with box
-\usepackage{boxedminipage}
-
-% Package for including code in the document
-\usepackage{listings}
-
-% If you want to generate a toc for each chapter (use with book)
-\usepackage{minitoc}
-
-% This is now the recommended way for checking for PDFLaTeX:
-\usepackage{ifpdf}
-
-%\newif\ifpdf
-%\ifx\pdfoutput\undefined
-%\pdffalse % we are not running PDFLaTeX
-%\else
-%\pdfoutput=1 % we are running PDFLaTeX
-%\pdftrue
-%\fi
-
-\ifpdf
-\usepackage[pdftex]{graphicx}
-\else
-\usepackage{graphicx}
-\fi
-\title{The letter}
-\author{  }
-
-\date{2010-06-28}
+\signature{Dean R. Freestone}
+\address{Department of Electrical \\
+and Electronic Engineering \\ The University of Melbourne \\ Parkville \\ Victoria, 3010 \\ Australia}
 
 \begin{document}
 
-\ifpdf
-\DeclareGraphicsExtensions{.pdf, .jpg, .tif}
-\else
-\DeclareGraphicsExtensions{.eps, .jpg}
-\fi
+\begin{letter}{Editor/Reviewer \\ PloS Computational Biology}
 
-\maketitle
+\opening{Dear Sir or Madam,}
 
 
-\section{Letter}
-\emph{Please explain why this manuscript is suitable for publication in PLoS Computational Biology; why will your paper inspire the other members of your field, and how will it drive research forward?}
+% \emph{Please explain why this manuscript is suitable for publication in PLoS Computational Biology; why will your paper inspire the other members of your field, and how will it drive research forward?}
 
 
-To the editor/reviewer,
+I am writing to seek publication of our research article titled `A Data Driven Framework for Patient-Specific Neural Field Modelling' in PLoS Computational Biology.
 
+This paper brings several new techniques to Computational Biology, where as the title suggests, we have developed a data-driven framework for generating patient-specific neural field models. This paper is timely as it draws together several areas of cutting-edge technologies including:
+\begin{itemize}
+	\item Recent increases in bandwidths in data acquisition systems, higher resolution recording technology and data storage capabilities have led to significant advances in neurophysiological recording techniques. 
+	\item In parallel to these experiment/clinical developments, the development of neural field theory has led to a many insights into the mass action of cortical systems. 
+	\item In addition, recent advances in computing power and nonlinear systems theory have made possible state estimation from nonlinear spatio-temporal systems.
+\end{itemize}
 
-We hope that this work will inspire both theoreticians and experimentalists by providing a framework for linking continuum neural field models to patient-specific data. Recent increases in bandwidths in data acquisition systems, higher resolution recording technology and data storage capabilities have led to significant advances in neurophysiological recording techniques. In parallel to these experiment/clinical developments, the development of neural field theory has led to a many insights into the mass action of cortical systems. This work provides an essential link, bridging the data driven and theoretically driven areas of research. We hope that this work will help bring together these previously separated experimental and theoretical communities by providing a framework where both new and existing hypotheses may be tested.
-
+This work provides an essential link, bridging the data driven and theoretically driven areas of research. We hope that this work will help bring together these previously separated experimental and theoretical communities by providing a framework where both new and existing hypotheses may be tested.
 
 The novel aspects of this paper include:
 \begin{itemize}
@@ -85,12 +43,14 @@ The novel aspects of this paper include:
 	\item a derivation for an algorithm for estimating intracortical connectivity and synaptic dynamics using the neural field equations.
 \end{itemize}
 
-Please contact us if you have any questions regarding any aspects of this paper.
+Since this primarily a methods paper, we have taken the option of preceding the results by the methods section.
 
-Best Regards,
+Thank you for your time and consideration in reviewing this article. Please contact us if you have any questions regarding any aspects of this paper. I look forward to hearing the outcome of the review soon.
 
+\closing{Best Regards,}
 
-Dean Freestone, Parham Aram, Mike Dewar, Ken Scerri, David Grayden and Visakan Kadirkamanathan.
-\bibliographystyle{plain}
-\bibliography{}
+% The authors.
+% 
+% (Dean Freestone, Parham Aram, Mike Dewar, Ken Scerri, David Grayden and Visakan Kadirkamanathan.)
+\end{letter}
 \end{document}
