@@ -767,7 +767,7 @@ Let $W(\mathbf r,t)$ be a spatio-temporal Wiener process. Then, for $\sigma \in 
 \begin{equation}\label{eq:ActPotComponents}
   g\left( {\mathbf{r},t} \right)dt=g'\left( {\mathbf{r},t} \right)dt+\sigma d W(r,t)
 \end{equation}
-As a result, the post-synaptic membrane voltage $v(\mathbf r, t)$ is itself a stochastic process. The deterministic part $g'(\mathbf r, t)$ is usually modelled as an integral equation with exogenous deterministic input, $ u(\mathbf r,t)$, of the form
+As a result, the post-synaptic membrane voltage $v(\mathbf r, t)$ is itself a stochastic process. The deterministic part $g'(\mathbf r, t)$ is usually modelled as an integral equation with exogenous deterministic input \cite{Atay2005}, $ u(\mathbf r,t)$, of the form
 \begin{equation}
 	\label{DeterministicRateBasedInteractions} g'\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( v\left( \mathbf{r}',t \right) \right)\textrm{d}\mathbf{r}'}+u(\mathbf r,t)
 \end{equation}
@@ -870,10 +870,12 @@ and multiplying throughout by $e^{-\zeta t}$ gives
 % http://www.ctan.org/tex-archive/biblio/bibtex/contrib/doc/
 % The IEEEtran BibTeX style support page is at:
 % http://www.michaelshell.org/tex/ieeetran/bibtex/
-  \newpage
-% \bibliographystyle{IEEEtran}
+\newpage
+\bibliographystyle{IEEEtran}
 % argument is your BibTeX string definitions and bibliography database(s)
+\bibliography{IEEEabrv,STIDE}
 % \bibliography{IEEEabrv,../../../Papers/SpatioTemporalSystems,../../../Papers/Wavelet}
+
 
 % <OR> manually copy in the resultant .bbl file
 % set second argument of \begin to the number of references
