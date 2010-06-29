@@ -708,7 +708,7 @@ cross-multiplying \eqref{eq:GammaDecompModel} by $\boldsymbol{\Gamma}^{-1}$ give
 
 Here we consider the case where $p=1$, therefore we have
 \begin{equation}
-v_t(\mathbf r) +\varphi_{1} v_{t-1}(\mathbf r)=\int_{\Omega}w(\mathbf r,\mathbf r')f(v_{t-1}(\mathbf r'))d\mathbf r'+\mathbf e_{t-1}(\mathbf r)
+x_t+\varphi_{1} x_{t-1}=\boldsymbol\Gamma^{-1}\int_{\Omega}\boldsymbol \phi(\mathbf r)\int_{\Omega}\boldsymbol{\psi}^\top\left(\mathbf{r},\mathbf{r}'\right) f(\boldsymbol{\phi}^{\top}\left(\mathbf{r'}\right) \mathbf{x}_{t-1})d\mathbf r'\boldsymbol{\theta}+\boldsymbol\Gamma^{-1}\int_{\Omega}\boldsymbol\phi(\mathbf r)\mathbf e_{t-1}(\mathbf r)d\mathbf r
 \end{equation}
 
 \section{Estimation of the Non-linear Spatio-temporal IDE Model}
