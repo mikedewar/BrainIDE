@@ -256,8 +256,9 @@ and substituting this into equation~\ref{StartofReduction} and cross-multiplying
 	 + \xi\mathbf{x}_t + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r}) e_t(\mathbf{r})\textrm{d}\mathbf{r}}.
 	 \end{split}
 \end{equation}
-An analytic derivation of the inner product of \emph{n}-dimensional Gaussians is provided in the Supporting Information, S1. Equation~\ref{eq:ReducedForm} can be simplified by exploiting the isotropy of the connectivity kernel
-\mike{This doesn't seem to be the isotropy of the kernel, it's the isotropy of the kernel's basis functions. The whole thing holds for the kernel itself or, if they're isostropic, the basis functions. You just can't say one and write the other! You could put something like ``.. by exploiting the isotropy of the kernel and, hence, the basis functions used to represent it''}
+An analytic derivation of the inner product of \emph{n}-dimensional Gaussians is provided in the Supporting Information, S1. Equation~\ref{eq:ReducedForm} can be simplified by exploiting the isotropy of the kernel and, hence, the basis functions used to represent it where
+% \mike{This doesn't seem to be the isotropy of the kernel, it's the isotropy of the kernel's basis functions. The whole thing holds for the kernel itself or, if they're isotropic, the basis functions. You just can't say one and write the other! You could put something like ``.. by exploiting the isotropy of the kernel and, hence, the basis functions used to represent it''}
+% \dean{nice point Mike. I have changed it like you suggested.}
 \begin{equation}
 	\boldsymbol{\psi} (\mathbf{r}-\mathbf{r}') = \boldsymbol{\psi} (\mathbf{r}'-\mathbf{r}).
 \end{equation}
@@ -270,7 +271,12 @@ which is a constant $L \times n_{\theta}$ matrix that can is defined analyticall
 	\mathbf{x}_{t+1} = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \textrm{d}\mathbf{r}' \boldsymbol{\theta} + \xi\mathbf{x}_t 
 + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})\textrm{d}\mathbf{r}}.
 \end{equation}
-This simplification has transformed the description of the spatial coupling from a convolution to an inner product. \mike{This is a bit deceptive. What you've actually done is move the convolution of the kernel basis functions with the nonlinearly transformed field to the convolution of field basis functions with the kernel basis functions. To see this, you could've done the same trick by just calling $\int \psi(r-r')f(\phi^Tx_t)dr' = A(r)$ and the saying hey! We now have the inner product $\int \phi(r) A(r) dr$. The point is that you can do the convolution $\phi * \psi$ analytically whereas you have to do the inner product $\Psi f(\phi^Tx_t)$ numerically. I wouldn't make a big deal about this except a fuss is made (rightly so) about this in the Discussion section.} This transformation provides a dramatic increase in simulation speed, which is of great importance considering the computational demands of the estimation algorithm. Now we define the state disturbance as
+This simplification has transformed the description of the spatial coupling from a convolution of the firing rates with the connectivity kernel, to a convolution of the of the connectivity kernel basis functions with the field basis functions. This transformation provides a dramatic increase in estimation speed, since the matrix $\Psi(\mathbf{r}')$ is constant an can be pre-defined analytically. This is of great importance considering the computational demands of the estimation algorithm. 
+
+% \dean{Cheers Mike, I think it is better now.}
+% \mike{This is a bit deceptive. What you've actually done is move the convolution of the kernel basis functions with the nonlinearly transformed field to the convolution of field basis functions with the kernel basis functions. To see this, you could've done the same trick by just calling $\int \psi(r-r')f(\phi^Tx_t)dr' = A(r)$ and the saying hey! We now have the inner product $\int \phi(r) A(r) dr$. The point is that you can do the convolution $\phi * \psi$ analytically whereas you have to do the inner product $\Psi f(\phi^Tx_t)$ numerically. I wouldn't make a big deal about this except a fuss is made (rightly so) about this in the Discussion section.} 
+
+Now we define the state disturbance as
 \begin{equation}\label{eq:Wt} 
 	\mathbf{e}_t \triangleq \boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi} ( \mathbf{r} )e_t( \mathbf{r} )\textrm{d}\mathbf{r}} 
 \end{equation}
@@ -338,7 +344,7 @@ The field basis function widths can also be inferred using spectral consideratio
 \begin{equation}\label{eq:BasisFunctionAtOrigin}
  \phi(\mathbf r)=\mathrm{exp}\left({-\frac{1}{\sigma_{\phi}^2} \mathbf r^\top\mathbf r}\right).
 \end{equation}
-The corresponding Fourier transform
+The corresponding Fourier transform is
 \begin{equation}\label{eq:GaussianFT}
 \boldsymbol\Phi(\boldsymbol \nu)=\left(\frac{1}{\pi\sigma_{\nu}^2}\right)\mathrm{exp}\left(-\frac{1}{\sigma_{\nu}^2}\boldsymbol\nu^\top \boldsymbol\nu\right),
 \end{equation}
@@ -471,8 +477,8 @@ Using the model selection techniques described in Section~\ref{SpectralAnalysisS
 \label{fig:FFTTrueEstimate}
 \end{figure}
 
-The spatial frequency of the observed field is shown in Figure~\ref{fig:ObservationFreqAnal}(C). The cut-off frequency is $\boldsymbol{\nu}_{cy} \approx 0.2$~Hz (-3~dB point). The observation cut-off frequency is lower than the field cut-off due to the low-pass filtering effect of the sensors. The spatial frequency response of the sensors can be seen in Figure~\ref{fig:ObservationFreqAnal}(A). Using an oversampling parameter of $\rho_{\phi}=1$, the minimum distance between the field basis functions was calculated to be 2.5~mm to satisfy Shannon's sampling criterion (from equation~\ref{eq:BasisFunctionSeparation}). The distance between basis functions was set to $\Delta_{\phi}=2.5$~mm, which is sufficient to capture the significant dynamics according to our criteria.
-Given the basis function separation, the basis function width parameter was set to $\sigma_{\phi}^2=2.5$~mm. This allowed a smooth representation of the field by the basis function decomposition up to a spatial frequency $\boldsymbol{\nu}_{c\phi} \approx 0.12$~Hz, as described by equation~\ref{eq:CutoffFromBasisFuncWidth}. The band-limiting effect is due to the spatial frequency response of the basis functions as seen in Figure~\ref{fig:ObservationFreqAnal}(B). The spatial frequency of the reconstructed field from the basis function decomposition is shown in Figure~\ref{fig:FFTTrueEstimate}(B). This figure illustrates the band-limiting effect of the basis function decomposition when compared to Figure~\ref{fig:FFTTrueEstimate}(A).
+The spatial frequency of the observed field is shown in Figure~\ref{fig:ObservationFreqAnal}(A). The cut-off frequency is $\boldsymbol{\nu}_{cy} \approx 0.2$~Hz (-3~dB point). The observation cut-off frequency is lower than the field cut-off due to the low-pass filtering effect of the sensors. The spatial frequency response of the sensors can be seen in Figure~\ref{fig:ObservationFreqAnal}(B). Using an oversampling parameter of $\rho_{\phi}=1$, the minimum distance between the field basis functions was calculated to be 2.5~mm to satisfy Shannon's sampling criterion (from equation~\ref{eq:BasisFunctionSeparation}). The distance between basis functions was set to $\Delta_{\phi}=2.5$~mm, which is sufficient to capture the significant dynamics according to our criteria.
+Given the basis function separation, the basis function width parameter was set to $\sigma_{\phi}^2=2.5$~mm. This allowed a smooth representation of the field by the basis function decomposition up to a spatial frequency $\boldsymbol{\nu}_{c\phi} \approx 0.12$~Hz, as described by equation~\ref{eq:CutoffFromBasisFuncWidth}. The band-limiting effect is due to the spatial frequency response of the basis functions as seen in Figure~\ref{fig:ObservationFreqAnal}(C). The spatial frequency of the reconstructed field from the basis function decomposition is shown in Figure~\ref{fig:FFTTrueEstimate}(B). This figure illustrates the band-limiting effect of the basis function decomposition when compared to Figure~\ref{fig:FFTTrueEstimate}(A).
 \begin{figure*}[!ht] 
 	\begin{center}
 		\includegraphics{./Graph/SensorBasisObsFrequencyResponse.pdf}	
@@ -527,7 +533,7 @@ The accuracy of the state estimates was evaluated by comparing the field reconst
 
 This paper has presented a method for extracting patient-specific models of synaptic dynamics from electrophysiological data. In so doing, we have highlighted important aspects of the experiment design process, demonstrating the relationship between sensor bandwidth and the complexity of the field that can be inferred. The mathematical formulation we have presented scales well with the number of sensors, and we have derived a finite-order state-space representation which allows us to perform inference efficiently. 
 
-\subsection*{Patient Specific Modelling}
+\subsection*{Patient-Specific Modelling}
 
 Generating patient-specific neural field models has the potential to have significant impact on several areas of neuroscientific research and clinical neurology. Specifically, the development of a patient-specific state-space model will allow for the application of techniques from engineering to be applied to neuro-dynamics. For example, state tracking could be used in brain-computer interfaces or epileptic seizure prediction, where specific regions of the state-space may indicate intent of movement or imminent seizures, respectively. In addition, a patient-specific state-space model will allow application of control engineering techniques to robustly prevent the neuro-dynamics entering pathological regions of state-space using electrical stimulation, thereby possibly preventing seizure onset or abating seizure activity.
 
