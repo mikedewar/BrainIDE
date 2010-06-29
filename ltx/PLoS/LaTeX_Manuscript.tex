@@ -12,6 +12,8 @@
 \newcommand{\mike}[1]{\textsf{\emph{\textbf{\textcolor{red}{#1}}}}} 
 \newcommand{\dean}[1]{\textsf{\emph{\textbf{\textcolor{green}{#1}}}}} 
 \newcommand{\parham}[1]{\textsf{\emph{\textbf{\textcolor{blue}{#1}}}}} 
+\newcommand{\ken}[1]{\textsf{\emph{\textbf{\textcolor{magenta}{#1}}}}} 
+
  % \documentclass[twocolumn,10pt]{article}						%<-use this for checking equation length
  \documentclass[10pt]{article}
 
@@ -108,10 +110,10 @@ This paper presents a framework for creating neural field models from patient-sp
 % Use first person. PLoS ONE authors please skip this step. 
 % Author Summary not valid for PLoS ONE submissions.   
 \section*{Author Summary}
-With recent advances in medical imaging techniques and computing power, we are entering a new age of neuroscientific research, where patient-specific information and experimental data is becoming incredibly detailed. In order to make the best use of this information, mathematical models should be formed. This is particularly poignant where considering poorly understood complex systems such as large-scale dynamics of the human brain. There currently exists a library of mathematical models describing large-scale brain dynamics, providing a theoretical explanation of various phenomena associated with various cognitive states and disease. In this paper, we have created a framework for creating a data-driven mathematical model, forming a bridge between theory and electrophysiological data. Within this framework, we propose rules for designing experiments and we derive the mathematical formula to create the model. To demonstrate the utility of this framework, we provide an example using synthetic data that shows a comparison between true and estimated model characteristics. The ability to create patient-specific models of large-scale brain dynamics has the potential to revolutionise the treatment of diseases such as epilepsy, where techniques from engineering may be used to prevent abnormal neural oscillations.
+With recent advances in medical imaging techniques and computing power, we are entering a new age of neuroscientific research, where patient-specific information and experimental data is becoming incredibly detailed. In order to make the best use of this information, mathematical models should be formed. This is particularly poignant where considering poorly understood complex systems such as the large-scale dynamics of the human brain. There currently exists a library of mathematical models describing large-scale brain dynamics, providing a theoretical explanation of various phenomena associated with various cognitive states and diseases. In this paper, we have created a framework for creating a data-driven mathematical model, forming a bridge between theory and electrophysiological data. Within this framework, we propose rules for designing experiments and we derive the mathematical formula to create the model. To demonstrate the utility of this framework, we provide an example using synthetic data that shows a comparison between true and estimated model characteristics. The ability to create patient-specific models of large-scale brain dynamics has the potential to revolutionise the treatment of diseases such as epilepsy, where techniques from engineering may be used to prevent abnormal neural oscillations.
 
 \section*{Introduction}
-Generating physiologically plausible neural field models are of great importance for studying brain dynamics at the mesoscopic and macroscopic scale. While our understanding of the function of neurons is well developed, the overall behaviour of the brain's mesoscopic and macroscopic scale dynamics remains largely theoretical. Understanding the brain at this level is extremely important since it is at this scale that pathologies such as epilepsy, Parkinson's disease and schizophrenia are manifested. 
+Generating physiologically plausible neural field models is of great importance for studying brain dynamics at the mesoscopic and macroscopic scale. While our understanding of the function of neurons is well developed, the overall behaviour of the brain's mesoscopic and macroscopic scale dynamics remains largely theoretical. Understanding the brain at this level is extremely important since it is at this scale that pathologies such as epilepsy, Parkinson's disease and schizophrenia are manifested. 
 
 Mathematical neural field models provide insights into the underlying physics and dynamics of electroencephalography (EEG) and magnetoencephalography (MEG) (see~\cite{Deco2008,David2003} for recent reviews). These models have demonstrated possible mechanisms for the genesis of neural rhythms (such as the alpha and gamma rhythms) \cite{Liley1999,RENNIE2000}, epileptic seizure generation \cite{DaSilva2003,Suffczynski2004,Wendling2005} and insights into other pathologies \cite{Moran2008,Schiff2009} that would be difficult to gain from experimental data alone. 
 
@@ -148,7 +150,7 @@ where $\zeta=\tau^{-1}$, $\tau$ is the synaptic time constant and $\eta(t)$ is t
 \begin{equation}
 	\label{RateBasedInteractions} g\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( v\left( \mathbf{r}',t \right) \right)\textrm{d}\mathbf{r}'}, 
 \end{equation}
-where $f(\cdot)$ is the firing rate function, $w(\cdot)$ is the spatial connectivity kernel and $\Omega$ is the spatial domain representing a cortical sheet or surface. The connectivity kernel is typically a ``Mexican hat'' function, which describes local excitation and surround inhibition. An example of the connectivity kernel is shown in in Figure~\ref{fig:2d_kernel}. To demonstrate flexibility in the estimation algorithm, a third component of the kernel is introduced describing weak longer-range excitation. The exact shape of this kernel is assumed to vary across patients, and hence needs to be inferred from data.
+where $f(\cdot)$ is the firing rate function, $w(\cdot)$ is the spatial connectivity kernel and $\Omega$ is the spatial domain representing a cortical sheet or surface. The connectivity kernel is typically a ``Mexican hat'' function, which describes local excitation and surround inhibition. An example of the connectivity kernel is shown in Figure~\ref{fig:2d_kernel}. To demonstrate flexibility in the estimation algorithm, a third component of the kernel is introduced describing weak longer-range excitation. The exact shape of this kernel is assumed to vary across patients, and hence needs to be inferred from data.
 \begin{figure}
    	\begin{center}
    		\includegraphics{./Graph/Cross_section_kernel.pdf} 
@@ -189,7 +191,7 @@ To arrive at the integro-difference equation (IDE) form of the model, we discret
 	\textrm{d}\mathbf{r}'} 
 	+ e_t\left(\mathbf{r}\right), 
 \end{equation}
-where $T_s$ is the time step, $\xi = 1-\zeta T_s$ and $e_t(\mathbf{r})$ is an $i.i.d.$ disturbance such that $e_t(\mathbf{r})\sim\mathcal{GP}(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}'))$. Here $\mathcal{GP}(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}'))$ denotes a zero mean spatial Gaussian process with covariance function $\gamma(\mathbf{r}-\mathbf{r}')$~\cite{Rasmussen2005}. This term is added to account for uncertainty and unmodelled inputs. To simplify the notation, the index of the future time sample, $t+T_s$, shall be referred to as $t+1$ throughout the rest of the paper. 
+where $T_s$ is the time step, $\xi = 1-\zeta T_s$ and $e_t(\mathbf{r})$ is an $i.i.d.$ disturbance such that $e_t(\mathbf{r})\sim\mathcal{GP}(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}'))$. Here $\mathcal{GP}(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}'))$ denotes a zero mean spatial Gaussian process with covariance function $\gamma(\mathbf{r}-\mathbf{r}')$~\cite{Rasmussen2005}. This term is added to account for model uncertainty and unmodelled inputs. To simplify the notation, the index of the future time sample, $t+T_s$, shall be referred to as $t+1$ throughout the rest of the paper. 
 
 The mapping between the membrane voltage and the electrophysiological data (iEEG/LFP) is modelled using the observation function that incorporates sensors with a spatial extent by
 \begin{equation}
@@ -256,7 +258,7 @@ and substituting this into equation~\ref{StartofReduction} and cross-multiplying
 	 + \xi\mathbf{x}_t + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r}) e_t(\mathbf{r})\textrm{d}\mathbf{r}}.
 	 \end{split}
 \end{equation}
-An analytic derivation of the inner product of \emph{n}-dimensional Gaussians is provided in the Supporting Information, S1. Equation~\ref{eq:ReducedForm} can be simplified by exploiting the isotropy of the kernel and, hence, the basis functions used to represent it where
+An analytic derivation of the inner product of Equation~\ref{eq:DefGamma} of \emph{n}-dimensional Gaussians is provided in the Supporting Information, S1. Equation~\ref{eq:ReducedForm} can be simplified by exploiting the isotropy of the kernel and, hence, the basis functions used to represent it where
 % \mike{This doesn't seem to be the isotropy of the kernel, it's the isotropy of the kernel's basis functions. The whole thing holds for the kernel itself or, if they're isotropic, the basis functions. You just can't say one and write the other! You could put something like ``.. by exploiting the isotropy of the kernel and, hence, the basis functions used to represent it''}
 % \dean{nice point Mike. I have changed it like you suggested.}
 \begin{equation}
@@ -266,12 +268,12 @@ To make the simplification, we first define
 \begin{equation}\label{eq:DefPsi}
 	\boldsymbol{\Psi}(\mathbf{r}') \triangleq T_s\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\psi}^{\top} (\mathbf{r}'-\mathbf{r})\textrm{d}\mathbf{r}},
 \end{equation}
-which is a constant $L \times n_{\theta}$ matrix that can is defined analytically (see the Supporting Information, S1, for analytic convolution of two Gaussians), where $L$ is the number of basis functions (and states) and $n_{\theta}$ is the number of connectivity basis functions. Now substituting equation~\ref{eq:DefPsi} into~\ref{eq:ReducedForm} gives
+which is a constant $L \times n_{\theta}$ matrix that can is defined analytically (see the Supporting Information, S1, for analytic convolution of two Gaussians as given by Equation~\ref{eq:DefPsi}), where $L$ is the number of basis functions (and states) and $n_{\theta}$ is the number of connectivity basis functions. Now substituting equation~\ref{eq:DefPsi} into~\ref{eq:ReducedForm} gives
 \begin{equation}
 	\mathbf{x}_{t+1} = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \textrm{d}\mathbf{r}' \boldsymbol{\theta} + \xi\mathbf{x}_t 
 + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})\textrm{d}\mathbf{r}}.
 \end{equation}
-This simplification has transformed the description of the spatial coupling from a convolution of the firing rates with the connectivity kernel, to a convolution of the of the connectivity kernel basis functions with the field basis functions. This transformation provides a dramatic increase in estimation speed, since the matrix $\Psi(\mathbf{r}')$ is constant an can be pre-defined analytically. This is of great importance considering the computational demands of the estimation algorithm. 
+This simplification has transformed the description of the spatial coupling from a convolution of the firing rates with the connectivity kernel, to a convolution of the connectivity kernel basis functions with the field basis functions. This transformation provides a dramatic increase in estimation speed, since the matrix $\Psi(\mathbf{r}')$ is constant and can be pre-defined analytically. This is of great importance considering the computational demands of the estimation algorithm. 
 
 % \dean{Cheers Mike, I think it is better now.}
 % \mike{This is a bit deceptive. What you've actually done is move the convolution of the kernel basis functions with the nonlinearly transformed field to the convolution of field basis functions with the kernel basis functions. To see this, you could've done the same trick by just calling $\int \psi(r-r')f(\phi^Tx_t)dr' = A(r)$ and the saying hey! We now have the inner product $\int \phi(r) A(r) dr$. The point is that you can do the convolution $\phi * \psi$ analytically whereas you have to do the inner product $\Psi f(\phi^Tx_t)$ numerically. I wouldn't make a big deal about this except a fuss is made (rightly so) about this in the Discussion section.} 
@@ -318,7 +320,9 @@ and
 	Q(\mathbf{x}_t) = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \textrm{d}\mathbf{r}' \boldsymbol{\theta} + \xi\mathbf{x}_t.
 \end{equation}
 
-\subsection{Spectral Analysis and Model Selection}\label{SpectralAnalysisSection} Spectral analysis has been used to identify both the number of sensors and the number of basis functions required to reconstruct the neural field from sampled observations~\cite{Sanner1992,Scerri2009}. Based on a two-dimensional extension of Shannon's sampling theorem \cite{Peterson1962}, the spatial bandwidth of the observed field can be used to provide a lower bound on both the number of sensors and the number of basis functions required to capture the dominant spectral characteristics of the neural field.
+\subsection{Spectral Analysis}\label{SpectralAnalysisSection} 
+\ken{Guys, changed the name for this section cause it only contains spectral analysis and no real model selection. I can understand the argument that the spectral analysis leads to a model choice, but no model selection follows it. Thus I'd rather use this revised name.}
+Spectral analysis has been used to identify both the number of sensors and the number of basis functions required to reconstruct the neural field from sampled observations~\cite{Sanner1992,Scerri2009}. Based on a two-dimensional extension of Shannon's sampling theorem \cite{Peterson1962}, the spatial bandwidth of the observed field can be used to provide a lower bound on both the number of sensors and the number of basis functions required to capture the dominant spectral characteristics of the neural field.
 
 Let the spectral representation of the post-synaptic membrane voltage field at time $t$ be denoted by $V_t(\boldsymbol{\nu})$. According to Shannon's sampling theorem, the field must be spatially band-limited for an accurate reconstruction using spatially discrete observations. Nevertheless, an approximate reconstruction can be obtained if the field is approximately band-limited with 
 \begin{equation}
@@ -362,6 +366,7 @@ where
 \end{equation}
 This ensures that the basis functions can represent the neural field with frequency content up to $\boldsymbol\nu_{cy}$. Derivations for equations~\ref{eq:GaussianFT} and \ref{eq:WidthFrequencyRelationship} are given in the Supporting Information, S1.
 
+\ken{I cannot understand the motivation being including this paragraph? I do not feel that this argument has any practical implications; can anyone enlighten me?}
 Alternatively, given the basis function width, the spatial cut-off frequency of the field modelled by the decomposition can be determined from spectral analysis. This is particularly useful when considering the spatially distributed basis functions, since Shannon's sampling theorem is derived for perfect point sensors. To calculate the cut-off frequency imposed by the basis functions, $\boldsymbol{\nu}_{c\phi}$, we rearrange equations~\ref{eq:WidthCutOffRelationship} and \ref{eq:WidthFrequencyRelationship} giving
 \begin{equation}\label{eq:CutoffFromBasisFuncWidth}
 	\boldsymbol{\nu}_{c\phi}=\frac{1}{\pi\sigma_{\phi}}\sqrt{\frac{\ln2}{2}}.
@@ -377,7 +382,7 @@ The unscented Rauch-Tung-Striebel smoother (URTSS)~\cite{Sarkka2010} is used for
 	\mathcal X_{i}&=\bar x+\left(\sqrt{( L + \lambda)\mathbf P_x}\right)_i, \quad i=1, \dots, L \\
 	\mathcal X_{i}&=\bar x-\left(\sqrt{( L + \lambda)\mathbf P_x}\right)_{i- L}, \quad i= L+1, \dots, 2L 
 \end{align}
-where $\bar x$ represents either $\hat{\mathbf x}_t^{f}$ or $\hat{\mathbf x}_t^{b}$, $\mathbf{P}_x$ is the corresponding covariance matrix for the filtering or smoothing, $\left(\sqrt{( L + \lambda)\mathbf P_x}\right)_i$ is the $i^{th}$ column of the scaled matrix square root of $\mathbf P_x$ and $L$ is the dimension of the state space. The total number of sigma points is $2L+1$. The scaling parameter, $\lambda$, is defined as 
+where $\bar x$ represents either $\hat{\mathbf x}_t^{f}$ or $\hat{\mathbf x}_t^{b}$, $\mathbf{P}_x$ is the corresponding covariance matrix for filtering or smoothing, $\left(\sqrt{( L + \lambda)\mathbf P_x}\right)_i$ is the $i^{th}$ column of the scaled matrix square root of $\mathbf P_x$ and $L$ is the dimension of the state space. The total number of sigma points is $2L+1$. The scaling parameter, $\lambda$, is defined as 
 \begin{equation}\label{eq:sigmapoints3}
 	\lambda=\alpha^2( L+\kappa) - L, 
 \end{equation}
@@ -461,7 +466,7 @@ The sensors were spaced on a regular square $14 \times 14$ grid and the sensor w
  \label{fig:experimental design}
  \end{figure}
 \subsection*{Spatial Frequency Analysis} 
-Using the model selection techniques described in Section~\ref{SpectralAnalysisSection}, the spatial frequency analysis was used to confirm that the spacing and width of the sensors was adequate to capture the significant dynamics of the field. Figure~\ref{fig:FFTTrueEstimate}(A) shows the spatial frequency of the neural field. The cut-off frequency of the neural field is $\boldsymbol{\nu}_c \approx 0.24$~Hz ($-3$~dB point). From equation~\ref{eq:MinimumSensorDistance}, this yielded a minimum sensor separation of 2.05~mm. This confirms that the separation of $\Delta_{y} = 1.5$~mm was sufficient to prevent problems associated with spatial aliasing.
+The spectral analysis described in Section~\ref{SpectralAnalysisSection} was used to confirm that the spacing and width of the sensors was adequate to capture the significant dynamics of the field. Figure~\ref{fig:FFTTrueEstimate}(A) shows the spatial frequency of the neural field. The cut-off frequency of the neural field is $\boldsymbol{\nu}_c \approx 0.24$~Hz ($-3$~dB point). From equation~\ref{eq:MinimumSensorDistance}, this yielded a minimum sensor separation of 2.05~mm. This confirms that the separation of $\Delta_{y} = 1.5$~mm was sufficient to mitigate problems associated with spatial aliasing.
 \begin{figure}
 \centering
 \label{fig:FieldFFT}\includegraphics{./Graph/FFTField.pdf}
@@ -469,13 +474,13 @@ Using the model selection techniques described in Section~\ref{SpectralAnalysisS
 \label{fig:FFTTrueEstimate}
 \end{figure}
 
-The spatial frequency of the observed field is shown in Figure~\ref{fig:ObservationFreqAnal}(A). The cut-off frequency is $\boldsymbol{\nu}_{cy} \approx 0.2$~Hz (-3~dB point). The observation cut-off frequency is lower than the field cut-off due to the low-pass filtering effect of the sensors. The spatial frequency response of the sensors can be seen in Figure~\ref{fig:ObservationFreqAnal}(B). Using an oversampling parameter of $\rho_{\phi}=1$, the minimum distance between the field basis functions was calculated to be 2.5~mm to satisfy Shannon's sampling criterion (from equation~\ref{eq:BasisFunctionSeparation}). The distance between basis functions was set to $\Delta_{\phi}=2.5$~mm, which is sufficient to capture the significant dynamics according to our criteria.
-Given the basis function separation, the basis function width parameter was set to $\sigma_{\phi}^2=2.5$~mm. This allowed a smooth representation of the field by the basis function decomposition up to a spatial frequency $\boldsymbol{\nu}_{c\phi} \approx 0.12$~Hz, as described by equation~\ref{eq:CutoffFromBasisFuncWidth}. The band-limiting effect is due to the spatial frequency response of the basis functions as seen in Figure~\ref{fig:ObservationFreqAnal}(C). The spatial frequency of the reconstructed field from the basis function decomposition is shown in Figure~\ref{fig:FFTTrueEstimate}(B). This figure illustrates the band-limiting effect of the basis function decomposition when compared to Figure~\ref{fig:FFTTrueEstimate}(A).
+The spatial frequency of the observed field is shown in Figure~\ref{fig:ObservationFreqAnal}(A). The cut-off frequency is $\boldsymbol{\nu}_{cy} \approx 0.2$~Hz (-3~dB point). The observation cut-off frequency is lower than the field cut-off due to the low-pass filtering effect of the sensors. The spatial frequency response of the sensors can be seen in Figure~\ref{fig:ObservationFreqAnal}(B). Using an oversampling parameter of $\rho_{\phi}=1$, the minimum distance between the field basis functions was calculated to be 2.5~mm to satisfy Shannon's sampling criterion (from equation~\ref{eq:BasisFunctionSeparation}). The distance between basis functions was set to $\Delta_{\phi}=2.5$~mm, which is sufficient to capture the significant dynamics according to these criteria.
+Given this basis function separation, the basis function width parameter was set to $\sigma_{\phi}^2=2.5$~mm. This allowed a smooth representation of the field by the basis function decomposition up to a spatial frequency $\boldsymbol{\nu}_{c\phi} \approx 0.12$~Hz, as described by equation~\ref{eq:CutoffFromBasisFuncWidth}. The band-limiting effect is due to the spatial frequency response of the basis functions as seen in Figure~\ref{fig:ObservationFreqAnal}(C). The spatial frequency of the reconstructed field from the basis function decomposition is shown in Figure~\ref{fig:FFTTrueEstimate}(B). This figure illustrates the band-limiting effect of the basis function decomposition when compared to Figure~\ref{fig:FFTTrueEstimate}(A).
 \begin{figure*}[!ht] 
 	\begin{center}
 		\includegraphics{./Graph/SensorBasisObsFrequencyResponse.pdf}	
 	\end{center}
-	\caption{{\bf Spatial frequency analysis}. The dashed line shows the cut-off frequency (-3 dB point). (\textbf{A}) The average (over time) power in dB of the spatial frequency of the observations. (\textbf{B}) The spatial frequency response of a one-dimensional model sensor. The symmetry of the sensors and field basis functions allow for the one-dimensional representation of the spectral characteristics. (\textbf{C}) The spatial frequency response of a one-dimensional neural field basis function, illustrating a narrower band width than the sensors.} 
+	\caption{{\bf Spatial frequency analysis}. The dashed line shows the cut-off frequency (-3 dB point). (\textbf{A}) The average (over time) power in dB of the spatial frequency of the observations. (\textbf{B}) The spatial frequency response of a one-dimensional model sensor. The symmetry of the sensors and field basis functions allow for the one-dimensional representation of the spectral characteristics. (\textbf{C}) The spatial frequency response of a one-dimensional neural field basis function, illustrating a narrower band width than the sensors. \ken{This is not correct!} } 
 	\label{fig:ObservationFreqAnal}
 \end{figure*}
 \subsection*{State and Parameter Estimates} 
@@ -531,7 +536,7 @@ Generating data-driven neural field models has the potential to have significant
 
 Kernel parameter estimation may also have significant impact on the treatment of disease. For example, recent theoretical work has demonstrated that seemingly similar electrographic seizures in absence epilepsy may arise from either abnormal excitatory or inhibitory mechanisms~\cite{Marten2009}. These very different mechanisms would require very different medications for successful treatment. However, the underlying mechanisms would be hidden from the clinician in the normal clinical setting. Successful parameter estimation has the potential to reveal these hidden mechanisms allowing for improved treatment strategies. 
 
-The development of an estimation framework also has theoretical implications, where the ability to estimate parameters will allow testing of hypotheses that have been generated in computational modelling studies. This has the potential to validate neural field models, and in doing so, provide new insights that may lead to a greater understanding of macro-scale neurodynamics. For example, using the proposed model-based framework, we can reconstruct a neural field from data and estimate parameters to check if they correspond to theoretically derived values where certain solutions can exist. In addition, the parameters and the state-space can be explored during cognitive tasks and states of arousal such as sleep and anaesthesia. 
+The development of an estimation framework also has theoretical implications, where the ability to estimate parameters will allow testing of hypotheses that have been generated in computational modelling studies. This has the potential to validate neural field models, and in doing so, provide new insights that may lead to a greater understanding of macro-scale neurodynamics. For example, using the proposed model-based framework, we can reconstruct a neural field from data and estimate parameters to check if they correspond to theoretically derived values where certain solutions may exist. In addition, the parameters and the state-space can be explored during cognitive tasks and states of arousal such as sleep and anaesthesia. 
 
 \subsection*{Implications for Experiment Design}
 
