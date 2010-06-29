@@ -403,8 +403,13 @@
 
 % correct bad hyphenation here
 % \hyphenation{op-tical net-works semi-conduc-tor}
+\DeclareMathOperator{\bz}{\mathbf z}
+\DeclareMathOperator{\bs}{\mathbf s}
+\DeclareMathOperator{\br}{\mathbf r}
+\DeclareMathOperator{\be}{\mathbf e}
 
-
+\DeclareMathOperator{\bphi}{\boldsymbol \phi}
+\DeclareMathOperator{\bpsi}{\boldsymbol \psi}
 \begin{document}
 %
 % paper title
@@ -530,7 +535,7 @@ Dynamic spatio-temporal modelling, Integro-Difference Equation (IDE), ...
 % 
 % Here we have the typical use of a "T" for an initial drop letter
 % and "HIS" in caps to complete the first word.
-\IEEEPARstart{N}{on-linear} spatio-temporal behaviour  %WEINAND1972
+\IEEEPARstart{N}{on-linear} spatio-temporal behaviour...  %WEINAND1972
 
 
 
@@ -643,6 +648,68 @@ Dynamic spatio-temporal modelling, Integro-Difference Equation (IDE), ...
 
 
 \section{State space Representation of the Spatio-temporal Non-linear IDE}
+We define the $p$th order non-linear, stochastic, spatio-temporal IDE as
+ \begin{equation}\label{eq:IDEModel}
+  \rho_t(\mathbf r)=\int_{\Omega}w(\mathbf r,\mathbf r')f(v_{t-p}(\mathbf r'))d\mathbf r'+\mathbf e_{t-p}(\mathbf r)
+ \end{equation}
+where $\rho_t(\mathbf r)$ is a lag polynomial defined as
+\begin{equation}\label{eq:LagPolynomial}
+ \rho_t(\mathbf r)=(1+\sum_{i=1}^{p}\varphi_i L_i)v_{t}\left(\mathbf r\right)
+\end{equation}
+
+where $v_t(\mathbf r)$ denotes the spatial field at time $t$ and at spatial location $\mathbf r$, $f(.)$ is some nonlinear map, and $w(.)$ is the spatial kernel. The disturbance $\mathbf e_{t-p}(\mathbf r)$ is a zero-mean normally distributed noise process, spatially
+coloured but temporally independent, with covariance
+\begin{equation}
+cov\left(e_{t}\left(\mathbf{r}\right),e_{t+\tau}\left(\mathbf{r'}\right)\right)=
+\gamma\left(\mathbf{r}-\mathbf{r'}\right)\delta(t-\tau)
+\label{eq:FieldCovariance}
+\end{equation}
+where $\delta(.)$ is the Dirac-delta function.
+ The spatial field is observed by
+\begin{equation}
+    \label{eq:ObservationEquation}
+	\mathbf{y}_t =
+	\int_{\Omega}{
+	    m\left(\mathbf{r}_{n_y}-\mathbf{r}'\right)v_t\left(\mathbf{r}'\right)
+	d\mathbf{r}'} + 
+	\boldsymbol{\varepsilon}_t, 
+\end{equation}
+where the observation vector $\mathbf{y}_{t}$, compiled at $n_{y}$ spatial locations and at time $t$, is corrupted by an i.i.d normally distributed zero-mean white noise ${\boldsymbol\varepsilon}_t\sim \mathcal{N}\left(\mathbf{0},\boldsymbol\Sigma_{\varepsilon}\right)$ with $\mathbf{\Sigma}_{\boldsymbol\varepsilon}=\sigma_{\varepsilon}^2\mathbf I_{n_y} $. It is assumed here that $\boldsymbol\Sigma_{\varepsilon}$ and $\gamma\left(\mathbf r-\mathbf r' \right)$ are known. The output kernel $m(\mathbf{r}-\mathbf{r}')$ governs the sensor pick-up geometry and is defined by 
+\begin{equation}\label{eq:SensorKernel}
+	m\left(\mathbf{r}-\mathbf{r}'\right) = \exp{\left(-\frac{(\mathbf{r}-\mathbf{r}')^\top(\mathbf{r}-\mathbf{r}')}{\sigma_m^2}\right)},
+\end{equation}
+where $\sigma_m$ sets the sensor width. The superscript $\top$ denotes the transpose operator. We proceed by writing the spatio-temporal IDE model in a parameterized state space form which allows the application of standard estimation
+techniques. We use a decomposition of the filed and the spatial kernel using a set of Gaussian basis functions
+ \begin{equation}
+	\label{eq:FieldDecomp} v_t\left(\mathbf{r}\right) \approx \boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) \mathbf{x}_t
+\end{equation}
+\begin{equation}\label{eq:KernelDecomp}
+	 w\left(\mathbf{r},\mathbf{r}'\right) \approx\boldsymbol{\psi}^\top\left(\mathbf{r},\mathbf{r}'\right) \boldsymbol{\theta}
+\end{equation}
+where $\mathbf{\boldsymbol{\phi}}(\mathbf{r})$ and $\mathbf{\boldsymbol{\psi}}(\mathbf{r})$ are  vectors of Gaussian basis functions that are scaled by the state vector, $\mathbf{x}_t$ and the scaling parameter vector $\boldsymbol\theta$ respectively. Substituting \eqref{eq:LagPolynomial} in \eqref{eq:IDEModel} and using the above decomposition we have
+\begin{equation}\label{eq:DecompModel}
+\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right)(1+\sum_{i=1}^{p}\varphi_i L_i) \mathbf{x}_t=\int_{\Omega}\boldsymbol{\psi}^\top\left(\mathbf{r},\mathbf{r}'\right) f(\boldsymbol{\phi}^{\top}\left(\mathbf{r'}\right) \mathbf{x}_{t-p})d\mathbf r'\boldsymbol{\theta}+\mathbf e_{t-p}(\mathbf r)
+ \end{equation}
+multiplying \eqref{eq:DecompModel} by $\boldsymbol \phi(\mathbf r)$ and integrate over the spatial domain $\Omega$ we get
+\begin{equation}\label{eq:GammaDecompModel}
+ \boldsymbol \Gamma (1+\sum_{i=1}^{p}\varphi_i L_i) \mathbf{x}_t=\int_{\Omega}\boldsymbol \phi(\mathbf r)\int_{\Omega}\boldsymbol{\psi}^\top\left(\mathbf{r},\mathbf{r}'\right) f(\boldsymbol{\phi}^{\top}\left(\mathbf{r'}\right) \mathbf{x}_{t-p})d\mathbf r'\boldsymbol{\theta}+\int_{\Omega}\boldsymbol\phi(\mathbf r)\mathbf e_{t-p}(\mathbf r)d\mathbf r
+\end{equation}
+where 
+\begin{equation}\label{eq:DefGamma}
+	\boldsymbol{\Gamma} \triangleq \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi} ^{\top}\left(\mathbf{r}\right)d\mathbf{r}} 
+\end{equation}
+cross-multiplying \eqref{eq:GammaDecompModel} by $\boldsymbol{\Gamma}^{-1}$ gives
+\begin{equation}
+ (1+\sum_{i=1}^{p}\varphi_i L_i) \mathbf{x}_t=\boldsymbol\Gamma^{-1}\int_{\Omega}\boldsymbol \phi(\mathbf r)\int_{\Omega}\boldsymbol{\psi}^\top\left(\mathbf{r},\mathbf{r}'\right) f(\boldsymbol{\phi}^{\top}\left(\mathbf{r'}\right) \mathbf{x}_{t-p})d\mathbf r'\boldsymbol{\theta}+\boldsymbol\Gamma^{-1}\int_{\Omega}\boldsymbol\phi(\mathbf r)\mathbf e_{t-p}(\mathbf r)d\mathbf r
+\end{equation}
+
+
+
+
+Here we consider the case where $p=1$, therefore we have
+\begin{equation}
+x_t+\varphi_{1} x_{t-1}=\boldsymbol\Gamma^{-1}\int_{\Omega}\boldsymbol \phi(\mathbf r)\int_{\Omega}\boldsymbol{\psi}^\top\left(\mathbf{r},\mathbf{r}'\right) f(\boldsymbol{\phi}^{\top}\left(\mathbf{r'}\right) \mathbf{x}_{t-p})d\mathbf r'\boldsymbol{\theta}+\boldsymbol\Gamma^{-1}\int_{\Omega}\boldsymbol\phi(\mathbf r)\mathbf e_{t-p}(\mathbf r)d\mathbf r
+\end{equation}
 
 \section{Estimation of the Non-linear Spatio-temporal IDE Model}
 
