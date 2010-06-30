@@ -76,7 +76,7 @@
 % Title must be 150 characters or less
 \begin{flushleft}
 {\Large
-\textbf{A Data Driven Framework for Neural Field Modelling}
+\textbf{A Data-Driven Framework for Neural Field Modelling}
 }
 % Insert Author names, affiliations and corresponding author email.
 \\
@@ -498,7 +498,7 @@ Histograms of the parameter estimates obtained over the 100 realisations are sho
     \centering
     \includegraphics{./Graph/ParametesDistributions.pdf}
   \caption{{\bf Histograms of the parameter estimates over 100
-realisations}. The solid line shows the actual value of the parameters and the dotted line shows the mean of the estimated parameters. (\textbf{A}) The histogram of the $\xi$ estimates where $\xi=1-\zeta T_s $ and $\zeta$ is the reciprocal of the synaptic time constant. (\textbf{B}) The histogram of the central excitatory connectivity kernel basis function parameter estimates, $\theta_0$. (\textbf{C}) The histogram of the surround inhibition connectivity kernel basis function parameter estimates, $\theta_1$. (\textbf{D}) The histogram of the longer range excitatory connectivity kernel basis function parameter estimates, $\theta_2$.}
+realisations}. The solid lines show the actual values of the parameters and the dotted lines show the means of the estimated parameters. (\textbf{A}) The histogram of the $\xi$ estimates where $\xi=1-\zeta T_s $ and $\zeta$ is the reciprocal of the synaptic time constant. (\textbf{B}) The histogram of the central excitatory connectivity kernel basis function parameter estimates, $\theta_0$. (\textbf{C}) The histogram of the surround inhibition connectivity kernel basis function parameter estimates, $\theta_1$. (\textbf{D}) The histogram of the longer range excitatory connectivity kernel basis function parameter estimates, $\theta_2$.}
 \label{fig:Parameters}
 \end{figure}
 
@@ -509,7 +509,7 @@ The reconstructed connectivity kernels from the estimated parameters are shown i
 \caption{{\bf Cross-section of connectivity kernel estimate}. The actual kernel is shown by the solid line, the mean kernel estimate (over 100 realisations) is shown by the dotted line and the 95~\% confidence interval is shown by the shaded grey region.}
 \label{fig:KernelEstimates}
 \end{figure}
-The accuracy of the state estimates was evaluated by comparing the field reconstruction to the true field using the mean (over iterations) of the root mean square error (MRMSE) over space. The MRMSE of the field estimates over time for 100 realisations is shown in Figure~\ref{fig:RMSE}, with the $95~\%$ confidence interval. At each time point the error is consistently around 0.5~mV, which is approximately 7.1~\% of the field voltage range ([-3.29,3.77]~mV). The error in the reconstructed field is mostly due to the loss of high spatial frequency information from the basis function decomposition as illustrated in Figure~\ref{fig:FieldEstimate}. The figure shows a snapshot at a single time instant of the true neural field, the estimated field and the corresponding error, which is the difference between the true and estimated neural fields. It can be seen in Figure~\ref{fig:FieldEstimate}(B) that the estimated field contains the basic structure of the true field (Figure~\ref{fig:FieldEstimate}(A)), but is missing the higher-frequency detail.
+The accuracy of the state estimates was evaluated by comparing the field reconstruction to the true field using the mean (over iterations) of the root mean square error (MRMSE) over space. The MRMSE of the field estimates over time for 100 realisations is shown in Figure~\ref{fig:RMSE}, with the $95~\%$ confidence interval. At each time point, the error is consistently around 0.5~mV, which is approximately 7.1~\% of the field voltage range ([-3.29,3.77]~mV). The error in the reconstructed field is mostly due to the loss of high spatial frequency information from the basis function decomposition as illustrated in Figure~\ref{fig:FieldEstimate}. The figure shows a snapshot at a single time instant of the true neural field, the estimated field and the corresponding error, which is the difference between the true and estimated neural fields. It can be seen in Figure~\ref{fig:FieldEstimate}(B) that the estimated field contains the basic structure of the true field (shown in Figure~\ref{fig:FieldEstimate}(A)), but is missing the higher-frequency detail.
   \begin{figure}
    	\begin{center}
    		\includegraphics{./Graph/MRMSE.pdf} 
@@ -521,35 +521,27 @@ The accuracy of the state estimates was evaluated by comparing the field reconst
 \begin{figure*}
 \centering 
 \label{fig:TrueField}\includegraphics{./Graph/FieldTrueEstimationError.pdf}
-\caption{{\bf Examples of the actual and estimated neural fields and the error}. (\textbf{A}) The actual field at a single time instant from the full neural field model that was used to generate data. (\textbf{B}) The reconstructed field of the reduced model, showing the effect of the basis function decomposition on the frequency content of the estimated field. (\textbf{C}) The absolute error between the true and reconstructed fields. The error shows high frequency behaviour.}
+\caption{{\bf Examples of the actual and estimated neural fields and the error}. (\textbf{A}) The actual field at a single time instant from the full neural field model that was used to the generate data. (\textbf{B}) The reconstructed field of the reduced model, showing the effect of the basis function decomposition on the frequency content of the estimated field. (\textbf{C}) The absolute error between the true and reconstructed fields. The error shows high frequency behaviour.}
 \label{fig:FieldEstimate}
 \end{figure*}
 
 \section*{Discussion}
 \label{DiscussionSection}
 
-This paper has presented a method for creating neural field models from electrophysiological data. In so doing, we have highlighted important aspects of the experiment design process, demonstrating the relationship between sensor bandwidth and the complexity of the field that can be inferred. The mathematical formulation we have presented scales well with the number of sensors, and we have derived a finite-order state-space representation which allows us to perform inference efficiently. 
-
-\subsection*{Patient-Specific Modelling}
-
-Generating data-driven neural field models has the potential to have significant impact on several areas of neuroscientific research and clinical neurology. Specifically, the development of a data-driven state-space model will allow for the application of techniques from engineering to be applied to neuro-dynamics. For example, state tracking could be used in brain-computer interfaces or epileptic seizure prediction, where specific regions of the state-space may indicate intent of movement or imminent seizures, respectively. In addition, a patient-specific state-space model will allow application of control engineering techniques to robustly prevent the neuro-dynamics entering pathological regions of state-space using electrical stimulation, thereby possibly preventing seizure onset or abating seizure activity.
-
-Kernel parameter estimation may also have significant impact on the treatment of disease. For example, recent theoretical work has demonstrated that seemingly similar electrographic seizures in absence epilepsy may arise from either abnormal excitatory or inhibitory mechanisms~\cite{Marten2009}. These very different mechanisms would require very different medications for successful treatment. However, the underlying mechanisms would be hidden from the clinician in the normal clinical setting. Successful parameter estimation has the potential to reveal these hidden mechanisms allowing for improved treatment strategies. 
-
-The development of an estimation framework also has theoretical implications, where the ability to estimate parameters will allow testing of hypotheses that have been generated in computational modelling studies. This has the potential to validate neural field models, and in doing so, provide new insights that may lead to a greater understanding of macro-scale neurodynamics. For example, using the proposed model-based framework, we can reconstruct a neural field from data and estimate parameters to check if they correspond to theoretically derived values where certain solutions may exist. In addition, the parameters and the state-space can be explored during cognitive tasks and states of arousal such as sleep and anaesthesia. 
+This paper has presented a method for creating data-driven neural field models by deriving a method for estimating intracortical connectivity and synaptic dynamics from electrophysiological data. In so doing, we have highlighted important aspects of the experiment design process, demonstrating the relationship between sensor bandwidth and the complexity of the field that can be inferred. The mathematical formulation that we have presented scales well with the number of sensors, and we have derived a finite-order state-space representation that allows us to perform inference efficiently. 
 
 \subsection*{Implications for Experiment Design}
 
-This paper has presented a method for estimating intracortical connectivity and synaptic dynamics from electrophysiological data. As seen in Section~\ref{sec:state_and_param_results}, the results indicate accurate estimation, where the mean parameter estimates are in good agreement with the actual values. The estimates of the connectivity kernel parameters show relatively broad distributions, which can be expected considering the system's input is modelled as a random disturbance, and the observations are corrupted by noise.
+As seen in Section~\ref{sec:state_and_param_results}, the results indicate accurate estimation, where the mean parameter estimates are in good agreement with the actual values. The estimates of the connectivity kernel parameters show relatively broad distributions, which can be expected considering the system's input is modelled as a random disturbance, and the observations are corrupted by noise.
 
 To overcome the effect of noise, the use of a controlled input stimulus should be considered when applying the estimation algorithm to electrophysiological recordings. Given knowledge of the input and the appropriate model, it is expected that the variance of the parameter estimates will decrease. Even when using an input, our results imply that we should only expect to learn distributions of parameters, rather than uncover a `true' parameter set. By designing an input signal carefully and using an evoked-potential paradigm, where stimuli are repeated many times, data could be epoched into (and averaged over) a sufficient number of trials (realisations), where each trial is a response to a stimulus, such that a distribution of the parameter estimates can be formed.
 
-The frequency analysis and model selection tools presented in Section~\ref{SpectralAnalysisSection} specify the sensor arrangement that is required for capturing the dominant cortical dynamics. Importantly, these new tools can also be used to design electrophysiological recording systems to avoid spatial aliasing. In addition, the frequency analysis highlights the relationship between the spatial width of the sensors and the information in the data. This analysis is becoming increasingly relevant as recording systems are becoming more sophisticated with higher density recordings~\cite{Brinkmann2009}. 
+The frequency analysis and model selection tools presented in Section~\ref{SpectralAnalysisSection} specify the minimum sensor arrangement that is required to capture the dominant cortical dynamics. Importantly, these new tools can also be used to design electrophysiological recording systems to avoid spatial aliasing. In addition, the frequency analysis highlights the relationship between the spatial width of the sensors and the information in the data. This analysis is becoming increasingly relevant as recording systems are becoming more sophisticated with higher density recordings~\cite{Brinkmann2009}.
 
 \subsection*{Computational Complexity}
-This is the first paper to derive a continuum neural field model-based estimation framework for intracortical connectivity from electrophysiological data. The importance of the estimation framework can be illustrated by considering that the connectivity structure at this scale can not be estimated using diffusion tensor imaging due to the near isotropic diffusion of water in grey matter~\cite{Assaf2008}. The closest competitor to our `grey-box' integro-difference equation based approach is perhaps the multivariate auto-regressive (MVAR) model, which is a `black-box' approach. Examples of MVAR models for estimating functional connectivity include Granger causality~\cite{Hesse2003}, the direct transfer function~\cite{Kaminski1991} and partial directed coherence~\cite{Sameshima1999}. A distinct advantage of the integro-difference equation based technique proposed in this current study is that the number of parameters required to model the system is considerably less than a typical MVAR model. Furthermore, by using the neural field equations as a parametric form of a model, the parameters have physical meaning and, therefore, can be clinically relevant. An advantage of the MVAR-based methods is that they allow for anisotropic connectivity, which is present in the longer range cortico-cortical fibres. 
+This is the first paper to derive a continuum neural field model-based estimation framework for intracortical connectivity from electrophysiological data. The importance of the estimation framework can be illustrated by considering that the connectivity structure at this scale cannot be estimated using diffusion tensor imaging due to the near isotropic diffusion of water in grey matter~\cite{Assaf2008}. The closest competitor to our `grey-box' integro-difference equation based approach is perhaps the multivariate auto-regressive (MVAR) model, which is a `black-box' approach. Examples of MVAR models for estimating functional connectivity include Granger causality~\cite{Hesse2003}, the direct transfer function~\cite{Kaminski1991} and partial directed coherence~\cite{Sameshima1999}. A distinct advantage of the integro-difference equation based technique proposed in this current study is that the number of parameters required to model the system is considerably less than a typical MVAR model. Furthermore, by using the neural field equations as a parametric form of a model, the parameters have physical meaning and, therefore, can be clinically relevant. An advantage of the MVAR-based methods is that they allow for anisotropic connectivity, which is present in the longer range cortico-cortical fibres. 
 
-Previous work from Schiff and Sauer~\cite{schiff2008kalman} demonstrated for the first time the applicability of the unscented Kalman filter (UKF) for state estimation for discrete (in space and time) nonlinear spatio-temporal systems. Within their framework, each discrete spatial location forms an element of the state vector to be estimated with the UKF. A limitation of this framework is that an increase in spatial resolution and/or the physical size of the neural field will results in an increased state dimension. 
+Previous work from Schiff and Sauer~\cite{schiff2008kalman} demonstrated for the first time the applicability of the unscented Kalman filter (UKF) for state estimation for discrete (in space and time) nonlinear spatio-temporal systems. Within their framework, each discrete spatial location forms an element of the state vector to be estimated with the UKF. A limitation of this framework is that an increase in spatial resolution and/or the physical size of the neural field will result in an increased state dimension. 
 
 Due to the relationship between the number of states in the model and the number of model parameters, increases in dimensionality lead to increases in uncertainty of the estimates. In addition, directly linking the complexity of the underlying system to the spatial resolution of the observation process implies that the system's dynamics become increasingly more complex the closer we look, which may not be an accurate modelling assumption.
 
@@ -557,16 +549,24 @@ The current study builds on this previous work~\cite{schiff2008kalman}, where th
 
 The fact that the connectivity kernel is isotropic means that we are able to re-write the spatial mixing effect of the kernel on the firing rates as a convolution of the kernel with the membrane voltage field basis functions. This transformation greatly simplifies the computational complexity of the estimator, which is important for the estimator to run in a real-time scenario.
 
+\subsection*{Patient-Specific Modelling}
+
+Generating data-driven neural field models has the potential to have significant impact on several areas of neuroscientific research and clinical neurology. Specifically, the development of a data-driven state-space model will allow for the application of techniques from engineering to be applied to neurodynamics. For example, state tracking could be used in brain-computer interfaces or epileptic seizure prediction, where specific regions of the state-space may indicate intent of movement or imminent seizures, respectively. In addition, a patient-specific state-space model will allow application of electrical stimulation to robustly prevent the neurodynamics entering pathological regions of state-space, thereby possibly preventing seizure onset or abating seizure activity.
+
+Kernel parameter estimation may also have significant impact on the treatment of disease. For example, recent theoretical work has demonstrated that seemingly similar electrographic seizures in absence epilepsy may arise from either abnormal excitatory or inhibitory mechanisms~\cite{Marten2009}. These very different mechanisms would require very different medications for successful treatment. However, the underlying mechanisms would be hidden from the clinician in the normal clinical setting. Successful parameter estimation has the potential to reveal these hidden mechanisms allowing for improved treatment strategies. 
+
+The development of an estimation framework also has implications for theoretical neuroscience, where the ability to estimate parameters will allow testing of hypotheses that have been generated in computational modelling studies. This has the potential to validate neural field models and, in doing so, provide new insights that may lead to a greater understanding of macro-scale neurodynamics. For example, using the proposed model-based framework, we can reconstruct a neural field from data and estimate parameters to check if they correspond to theoretically derived values where certain solutions may exist. In addition, the parameters and the state-space can be explored during cognitive tasks and states of arousal such as sleep and anaesthesia. 
+
 \subsection*{Future Work}
 
-In this paper, an assumption was made that the chosen kernel basis functions can exactly represent the actual connectivity kernel. In future work, we plan to relax this assumption.
+In this study, an assumption was made that the chosen kernel basis functions can exactly represent the actual connectivity kernel. In future work, we plan to relax this assumption.
 
 In addition, we have assumed that the neural field is isotropic and homogeneous. It is generally accepted that the intracortical connectivity structure can be accurately modelled as being isotropic. However, the assumption of homogeneity is quite strong. Future work should focus on developing estimation algorithms where assumptions of homogeneity can be relaxed. Future work should also include a synaptic response kernel with finite rise and decay times, and finite distant dependant propagation times into the parametric neural field equations.
 
 
 % Do NOT remove this, even if you are not including acknowledgments
 \section*{Acknowledgments}
-Dean Freestone would like to thank Dr. Mark van Rossum for hosting him whilst visiting the University of Edinburgh where this work was undertaken. Parham Aram would also like to thank Andrew Hills for useful discussions and help with some code and the generation of figures.
+Dean Freestone would like to thank Dr. Mark van Rossum for hosting him while visiting the University of Edinburgh where this work was undertaken. Parham Aram would also like to thank Andrew Hills for useful discussions and assistance with code and the generation of figures.
 
 % This research was funded in part by the Australian Research Council (Linkage Project LP0560684). The Bionic Ear Institute acknowledges the support it receives from the Victorian State Government through the Operational Infrastructure Support Program. Dean Freestone would like to thank the University of Melbourne's Scholarships Office for the Postgraduate Overseas Research Experience Scholarship and the Harold Mitchell Foundation for a traveling scholarship and supporting this research. 
 
@@ -593,7 +593,7 @@ Dean Freestone would like to thank Dr. Mark van Rossum for hosting him whilst vi
 \renewcommand{\arraystretch}{1.7}
 \begin{table}[!ht]
 \caption{
-\bf{Steps in the Algorithm for the Unscented RTS Smoother}}
+\bf{Algorithm for the Unscented RTS Smoother}}
 \begin{tabular}{|c|}\hline
 \multicolumn{1}{|p{16cm}|}{\textbf{1.} Forward initialisation} \\ 
 $\hat{\mathbf x}_0, \mathbf P_0$ \\
@@ -657,7 +657,7 @@ $\mathbf P_{t}^{b}=\mathbf P_{t}^{f}+\mathbf S_t\left[\mathbf P_{t+1}^{b}-\mathb
 	$\sigma_{m}$ & sensor width parameter & 0.9 & mm \\
 	$\Sigma_{\varepsilon}$ & observation noise variance & $0.1 \times I_{N}$ & mm$^2$ \\
 	$\sigma_{\gamma}$& disturbance spatial covariance width & 1.3 & mm\\
-	$\sigma_{\gamma,t}$ & disturbance temporal variance & 0.1 & mV$^2$ \\
+	$\sigma_{\gamma,t}$ & disturbance temporal variance & 0.1 & mV \\
 	\hline 
 	\multicolumn{4}{|c|}{\emph{Reduced Model}}\\
 	\hline
@@ -748,20 +748,22 @@ $\mathbf P_{t}^{b}=\mathbf P_{t}^{f}+\mathbf S_t\left[\mathbf P_{t+1}^{b}-\mathb
 \label{tab:label}
 \end{table}
 
+
 \begin{table}[!ht]
 \caption{
 \bf{Estimation Results}}
-\begin{tabular}{|c|ccc|}	
-\hline\hline 
+\begin{tabular}{|p{1.5cm}|p{1.5cm}|p{2.5cm}|p{1.5cm}|}
+		
+\hline
 Parameter & Actual Value & Mean Estimate $\pm$ Std. Dev. & Bias (\%) \\
-\hline\hline
+\hline
 $\xi$ & $0.9$ & $0.925\pm 0.004$ & $2.778$ \\
 $\theta_0$ & $10$ & $10.228\pm2.794$ & $2.28$\\
 $\theta_1$ & $-8$ & $-8.495\pm1.913$ & $-6.187$\\
 $\theta_2$ & $0.5$ & $0.545\pm0.077$ & $9$\\
 \hline
 \end{tabular}
-\begin{flushleft}Actual parameter values compared to mean parameter estimates.
+\begin{flushleft}Actual parameter values compared to mean parameter estimates obtained from the 100 Monte Carlo simulations.
 \end{flushleft}
 \label{tab:Parameters estimates}
 \end{table}
