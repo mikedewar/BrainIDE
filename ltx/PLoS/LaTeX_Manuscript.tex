@@ -268,12 +268,12 @@ To make the simplification, we first define
 \begin{equation}\label{eq:DefPsi}
 	\boldsymbol{\Psi}(\mathbf{r}') \triangleq T_s\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\psi}^{\top} (\mathbf{r}'-\mathbf{r})\textrm{d}\mathbf{r}},
 \end{equation}
-which is a constant $L \times n_{\theta}$ matrix that is defined analytically (see the Supporting Information, S1, for analytic convolution of two Gaussians as given by Equation~\ref{eq:DefPsi}), where $L$ is the number of basis functions (and states) and $n_{\theta}$ is the number of connectivity basis functions. Now substituting equation~\ref{eq:DefPsi} into~\ref{eq:ReducedForm} gives
+which is a constant $L \times n_{\theta}$ matrix that is defined analytically (see the Supporting Information, S1, for analytic convolution of two Gaussians as given by Equation~\ref{eq:DefPsi}), where $L$ is the number of basis functions (and states) and $n_{\theta}$ is the number of connectivity kernel basis functions. Now substituting equation~\ref{eq:DefPsi} into~\ref{eq:ReducedForm} gives
 \begin{equation}
 	\mathbf{x}_{t+1} = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \textrm{d}\mathbf{r}' \boldsymbol{\theta} + \xi\mathbf{x}_t 
 + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})\textrm{d}\mathbf{r}}.
 \end{equation}
-This simplification has transformed the description of the spatial coupling from a convolution of the firing rates with the connectivity kernel, to a convolution of the connectivity kernel basis functions with the field basis functions. This transformation provides a dramatic increase in estimation speed, since the matrix $\Psi(\mathbf{r}')$ is constant and can be pre-defined analytically. This is of great importance considering the computational demands of the estimation algorithm. 
+This simplification has transformed the description of the spatial coupling from a convolution of the firing rates with the connectivity kernel, to a convolution of the connectivity kernel basis functions with the field basis functions. This transformation provides a dramatic increase in estimation speed, since the matrix $\boldsymbol\Psi(\mathbf{r}')$ is constant and can be pre-defined analytically. This is of great importance considering the computational demands of the estimation algorithm. 
 
 % \dean{Cheers Mike, I think it is better now.}
 % \mike{This is a bit deceptive. What you've actually done is move the convolution of the kernel basis functions with the nonlinearly transformed field to the convolution of field basis functions with the kernel basis functions. To see this, you could've done the same trick by just calling $\int \psi(r-r')f(\phi^Tx_t)dr' = A(r)$ and the saying hey! We now have the inner product $\int \phi(r) A(r) dr$. The point is that you can do the convolution $\phi * \psi$ analytically whereas you have to do the inner product $\Psi f(\phi^Tx_t)$ numerically. I wouldn't make a big deal about this except a fuss is made (rightly so) about this in the Discussion section.} 
@@ -604,12 +604,12 @@ Dean Freestone would like to thank Dr. Mark van Rossum for hosting him while vis
 	\hline
 	\multicolumn{3}{|c|}{\emph{Model}}\\
 	\hline
-    $y(\mathbf{r}_n,t)$ & observation & mV\\
+    $y_t$ & observation & mV\\
     $v(\mathbf{r},t)$ & mean membrane potential & mV \\
 	$g(\mathbf{r},t)$ & weighted firing rate function & spikes.s$^{-1}$\\
 	$f(\mathbf{r},t)$ & firing rate function & spikes.s$^{-1}$\\
 	$e(\mathbf{r},t)$ & field disturbance, with covariance function $\gamma(\mathbf r-\mathbf r')$ & mV\\
-	$\varepsilon(\mathbf{r}_n,t)$ & observation noise, with covariance matrix $\Sigma_\varepsilon$ & mV\\
+	$\varepsilon_t$ & observation noise, with covariance matrix $\Sigma_\varepsilon$ & mV\\
 	$m(\mathbf{r}_n,\mathbf{r}')$ & sensor kernel where $n$ is sensor index $n=1,..,N$ (width $\sigma_m^2$) & n.a. \\
 	$w(\mathbf{r},\mathbf{r}')$ & spatial connectivity kernel & n.a.\\
 	$h(t)$ & post-synaptic response kernel & mV\\
@@ -624,8 +624,10 @@ Dean Freestone would like to thank Dr. Mark van Rossum for hosting him while vis
    	$\boldsymbol\phi(\mathbf{r})$ & vector of $L$ Gaussian basis functions & n.a.\\
    	$\mathbf{x}_t$ & state vector at time $t$ & mV\\
    	$\boldsymbol{\psi}(\mathbf{r}-\mathbf{r}')$ & vector of connectivity kernel basis functions & n.a.\\
+	$n_{\theta}$ & number of connectivity kernel basis functions & n.a.\\
+   	$\boldsymbol{\Psi}(\mathbf{r}')$ & scaled convolution of the connectivity kernel basis functions with the field basis functions& n.a.\\
    	$\boldsymbol{\Gamma}$ & inner product of field basis functions & n.a.\\
-   	$Q()$ & state transition function &\\
+   	$Q()$ & state transition function & n.a.\\
    	$\mathbf{e}_t$ & state disturbance vector, with covariance $\Sigma_e$ & mV\\
    	$\mathbf{C}$ & observation matrix & n.a. \\
 	\hline
@@ -633,7 +635,7 @@ Dean Freestone would like to thank Dr. Mark van Rossum for hosting him while vis
 	\hline
     % $V(\nu)$ & Fourier transform of the neural field & Hz\\
 	$\boldsymbol{\nu}$, $\boldsymbol{\nu}_c$ & spatial frequency and spatial cut-off frequency & Hz \\
-	$\sigma_{\nu}^2$ & Variance of Fourier transformed Gaussian basis function & Hz$^2$\\
+	$\sigma_{\nu}^2$ & variance of Fourier transformed Gaussian basis function & Hz$^2$\\
 	\hline
 	\multicolumn{3}{|c|}{\emph{Estimation}} \\
 	\hline
@@ -720,6 +722,7 @@ $\mathbf P_{t}^{b}=\mathbf P_{t}^{f}+\mathbf S_t\left[\mathbf P_{t+1}^{b}-\mathb
 	\end{array}
 	\right]^{\top}$ & mV.spike$^{-1}$\\
 	$\sigma_{\psi_{1}}, \sigma_{\psi_{2}}, \sigma_{\psi_{3}}$ & connectivity kernel width parameters & 1.8, 2.4, 6 & mm\\
+	$N$ & number of sensors & 196 & n.a.\\ 
 	$\Delta_y$ & distance between adjacent sensors & 1.5 & mm\\
 	$\sigma_{m}$ & sensor width parameter & 0.9 & mm \\
 	$\Sigma_{\varepsilon}$ & observation noise variance & $0.1 \times I_{N}$ & mm$^2$ \\
@@ -728,19 +731,21 @@ $\mathbf P_{t}^{b}=\mathbf P_{t}^{f}+\mathbf S_t\left[\mathbf P_{t+1}^{b}-\mathb
 	\hline 
 	\multicolumn{4}{|c|}{\emph{Reduced Model}}\\
 	\hline
-	$\Delta_{\phi}$ & Distance between field basis functions & 2.5 & mm \\
+	$L$ & number of basis functions& 81 & n.a.\\
+	$\Delta_{\phi}$ & distance between field basis functions & 2.5 & mm \\
 	$\sigma^2_{\phi}$ & Spatial variance of Gaussian in spatial domain & 2.5 & mm$^2$\\
 	\hline 
 	\multicolumn{4}{|c|}{\emph{Frequency Analysis}}\\
 	\hline
-	$\rho_y$ & Sensor over-sampling parameter & 1 & n.a.\\
-	$\rho_\phi$ & Field basis function over-sampling parameter & 1 & n.a.\\
+	$\rho_y$ & sensor over-sampling parameter & 1 & n.a.\\
+	$\rho_\phi$ & field basis function over-sampling parameter & 1 & n.a.\\
 	\hline 
 	\multicolumn{4}{|c|}{\emph{Estimation}}\\
 	\hline
-	$\alpha$& Determines the spread of sigma points & 0.001 & n.a.\\
-	$\beta$& Prior knowledge of the sigma points distribution & 2 & n.a.\\
-	$\kappa$& Scaling parameter & $3-L$ & n.a.\\
+	$\alpha$& determines the spread of sigma points & 0.001 & n.a.\\
+	$\beta$& prior knowledge of the sigma points distribution & 2 & n.a.\\
+	$\kappa$& scaling parameter $(3-L)$& -78 & n.a.\\
+	$\lambda$& scaling parameter & -80.99 & n.a.\\
 	\hline
 \end{tabular}
 \begin{flushleft}Parameters for the neural field model, the model reduction, the frequency analysis and the estimation procedure.
