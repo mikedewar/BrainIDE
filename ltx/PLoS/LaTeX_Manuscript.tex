@@ -368,7 +368,7 @@ This ensures that the basis functions can represent the neural field with freque
 
 % \ken{I cannot understand the motivation being including this paragraph? I do not feel that this argument has any practical implications; can anyone enlighten me?}
 
-Alternatively, the basis function width can be set to provide a desired level of smoothness in the approximated field. Following this, the spatial cut-off frequency of the field modelled by the decomposition can be determined from spectral analysis. This is particularly useful when considering the spatially distributed basis functions, since Shannon's sampling theorem is derived for perfect point sensors. To calculate the cut-off frequency imposed by the basis functions, $\boldsymbol{\nu}_{c\phi}$, we rearrange equations~\ref{eq:WidthCutOffRelationship} and \ref{eq:WidthFrequencyRelationship} giving
+Alternatively, the basis function width can be set to provide a desired level of smoothness in the approximated field by reducing the field spatial bandwidth. This has the added advantage of allowing an approximate representation by a low order model thus reducing the computational demands of the estimation process. The spatial cut-off frequency of this smoothed field is thus a user choice and the extend of its effect can be determined from spectral analysis. To calculate the cut-off frequency imposed by the basis functions, $\boldsymbol{\nu}_{c\phi}$, we rearrange equations~\ref{eq:WidthCutOffRelationship} and \ref{eq:WidthFrequencyRelationship} giving
 \begin{equation}\label{eq:CutoffFromBasisFuncWidth}
 	\boldsymbol{\nu}_{c\phi}=\frac{1}{\pi\sigma_{\phi}}\sqrt{\frac{\ln2}{2}}.
 \end{equation} 
