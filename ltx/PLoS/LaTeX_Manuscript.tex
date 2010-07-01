@@ -220,15 +220,17 @@ The width and positioning of the basis functions can be determined by spectral a
 \end{equation}
 where $\boldsymbol{\psi}(\mathbf{r},\mathbf{r}')$ is a vector of Gaussian basis functions and $\boldsymbol{\theta}$ is a vector of scaling parameters. By assuming a Gaussian isotropic connectivity structure, the kernel basis functions can be written as $\boldsymbol{\psi}(\mathbf{r}-\mathbf{r}')$. We will assume that we know the parametric form of the connectivity basis functions, where the scaling parameters $\boldsymbol{\theta}$ are unknown. Each connectivity basis function can, individually, be considered a layer in the Wilson and Cowan model. Typically, the Mexican hat connectivity kernel is comprised of two basis functions representing local excitation and surround inhibition. To demonstrate the flexibility of the estimation framework, a third basis function is incorporated, corresponding to weaker mid-range excitation. Making substitutions of equations~\ref{DefFieldDecomp} and~\ref{DefKernelDecomp} into~\ref{DiscreteTimeModel} we get 
 \begin{equation}
-	\label{reduced continuous model}\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_{t+1}= T_s\int_\Omega{f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t )\boldsymbol{\psi}^{\top}(\mathbf{r}-\mathbf{r}')\textrm{d}\mathbf{r}'}\boldsymbol{\theta}
+	\label{reduced continuous model}
+	\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_{t+1}= T_s\int_\Omega{f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t )\boldsymbol{\psi}^{\top}(\mathbf{r}-\mathbf{r}')\textrm{d}\mathbf{r}'}\boldsymbol{\theta}
 	+ \xi\boldsymbol{\phi}^{\top}(\mathbf{r})x_t + e_t(\mathbf{r}). 
 \end{equation}
 Next we multiply equation~\ref{reduced continuous model} by $\boldsymbol{\phi}(\mathbf{r})$ and integrate over the spatial domain $\Omega$ to get 
 \begin{equation}
     \begin{split}
 	\label{StartofReduction}
-	\lefteqn{ \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) \textrm{d}\mathbf{r}} \mathbf{x}_{t+1}=} \\
- &T_s \int_\Omega {\boldsymbol{\phi} (\mathbf{r}) \int_\Omega {\boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}') \mathbf{x}_t ) \textrm{d}\mathbf{r}'}\textrm{d}\mathbf{r}}\boldsymbol{\theta}  + \xi\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\phi}^{\top}(\mathbf{r})\textrm{d}\mathbf{r}} \mathbf{x}_t+
+ 	\int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) \textrm{d}\mathbf{r}} \mathbf{x}_{t+1}= &
+ T_s \int_\Omega {\boldsymbol{\phi} (\mathbf{r}) \int_\Omega {\boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}') \mathbf{x}_t ) \textrm{d}\mathbf{r}'}\textrm{d}\mathbf{r}}\boldsymbol{\theta}  \\ 
+& + \xi\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\phi}^{\top}(\mathbf{r})\textrm{d}\mathbf{r}} \mathbf{x}_t +
 \int_\Omega{\boldsymbol{\phi} (\mathbf{r}) e_t(\mathbf{r})\textrm{d}\mathbf{r}}. 
 \end{split}
 \end{equation}
@@ -260,7 +262,7 @@ which is a constant $L \times n_{\theta}$ matrix that is defined analytically (s
 	\mathbf{x}_{t+1} = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \textrm{d}\mathbf{r}' \boldsymbol{\theta} + \xi\mathbf{x}_t 
 + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})\textrm{d}\mathbf{r}}.
 \end{equation}
-This simplification has transformed the description of the spatial coupling from a convolution of the firing rates with the connectivity kernel, to a convolution of the connectivity kernel basis functions with the field basis functions. This transformation provides a dramatic increase in estimation speed, since the matrix $\boldsymbol\Psi(\mathbf{r}')$ is constant and can be pre-defined analytically. This is of great importance considering the computational demands of the estimation algorithm. 
+This substitution exploits the isotropy of the connectivity kernel basis functions, allowing us to swap the convolution in \ref{reduced continuous model}, which is computationally demanding, with the convolution in \ref{eq:DefPsi}. This provides a dramatic increase in estimation speed, since the matrix $\boldsymbol\Psi(\mathbf{r}')$ can be calculated analytically. This is of great importance as it lowers the computational demands of the estimation algorithm. 
 
 Now we define the state disturbance as
 \begin{equation}\label{eq:Wt} 
