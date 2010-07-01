@@ -328,8 +328,7 @@ Let the spectral representation of the post-synaptic membrane voltage field at t
 \begin{equation}
 	V_t(\boldsymbol{\nu}) \approx 0 ~ \ \forall \boldsymbol{\nu} > \boldsymbol{\nu}_c,
 \end{equation}
-where $\boldsymbol{\nu}_c$ is a cutoff frequency (typically taken as the -3~dB point). %with $\boldsymbol{\nu}_c = [\nu_c ~ \nu_c]^\top$. 
-Given such a band-limited field, the distance between adjacent sensors, $\Delta_y$, must satisfy 
+where $\boldsymbol{\nu}_c$ is a cutoff frequency (typically taken as the -3~dB point). Given such a band-limited field, the distance between adjacent sensors, $\Delta_y$, must satisfy 
 \begin{equation}
 	\label{eq:MinimumSensorDistance} \Delta_y \leq \frac{1}{2\rho_y\boldsymbol{\nu}_{c}}, 
 \end{equation}
@@ -371,7 +370,7 @@ This ensures that the basis functions can represent the neural field with freque
 
 Alternatively, the basis function width can be set to provide a desired level of smoothness in the approximated field by reducing the spatial bandwidth of the approximated field. This allows an approximate representation by a lower order model (fewer basis functions), thus reducing the computational demands of the estimation process. The spatial cut-off frequency of this smoothed field becomes a user choice and can be determined using spectral analysis. To calculate the cut-off frequency imposed by the basis functions, $\boldsymbol{\nu}_{c\phi}$, we rearrange equations~\ref{eq:WidthCutOffRelationship} and \ref{eq:WidthFrequencyRelationship} giving
 \begin{equation}\label{eq:CutoffFromBasisFuncWidth}
-	\boldsymbol{\nu}_{c\phi}=\frac{1}{\pi\sigma_{\phi}}\sqrt{\frac{\ln2}{2}}.
+	\nu_{c\phi}=\frac{1}{\pi\sigma_{\phi}}\sqrt{\frac{\ln2}{2}}.
 \end{equation} 
 
 Note that for a spatially homogeneous isotropic field, the basis functions can be placed on a regular grid. Thus, the knowledge of the distance between basis functions can be used to determine the total number of basis functions required to represent a known spatial region.
