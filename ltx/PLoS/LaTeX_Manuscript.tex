@@ -151,13 +151,7 @@ where $\zeta=\tau^{-1}$, $\tau$ is the synaptic time constant and $\eta(t)$ is t
 	\label{RateBasedInteractions} g\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( v\left( \mathbf{r}',t \right) \right)\textrm{d}\mathbf{r}'}, 
 \end{equation}
 where $f(\cdot)$ is the firing rate function, $w(\cdot)$ is the spatial connectivity kernel and $\Omega$ is the spatial domain representing a cortical sheet or surface. The connectivity kernel is typically a ``Mexican hat'' function, which describes local excitation and surround inhibition. An example of the connectivity kernel is shown in Figure~\ref{fig:2d_kernel}. To demonstrate flexibility in the estimation algorithm, a third component of the kernel is introduced describing weak longer-range excitation. The exact shape of this kernel is assumed to vary across patients, and hence needs to be inferred from data.
-\begin{figure}
-   	\begin{center}
-   		\includegraphics{./Graph/Cross_section_kernel.pdf} 
-   	\end{center}
-   	\caption{{\bf Mexican-hat connectivity kernel.} The function $w(\cdot)$ is rotationally symmetric (isotropic) about zero, hence a cross-section captures the important aspect of the connectivity kernel's shape. The kernel decays asymptotically to zero.}
- 	\label{fig:2d_kernel}
-   \end{figure}
+
 The firing rate of the presynaptic neurons is related to the postsynaptic membrane potential by the sigmoidal activation function 
 \begin{equation}
 	\label{ActivationFunction} f\left( v\left( \mathbf{r}', t \right) \right) = \frac{f_{max}}{1 + \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right)}. 
@@ -219,13 +213,7 @@ Decomposition allows a continuous field to be represented by a finite-dimensiona
 	\label{DefFieldDecomp} v_t\left(\mathbf{r}\right) \approx \boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) \mathbf{x}_t, 
 \end{equation}
 where $\mathbf{\boldsymbol{\phi}}(\mathbf{r})$ is a vector of Gaussian basis functions that are scaled by the state vector, $\mathbf{x}_t$. An example of a one-dimensional field decomposition is given in Figure~\ref{fig:FieldDecomposition}.%The choice of Gaussian basis functions can be justified by the existence of the so called bump solutions for this class of model, which have a Gaussian shape~\cite{Coombes2005}.
-\begin{figure}
-   	\begin{center}
-   		\includegraphics{./Graph/FieldDecomposition.pdf} 
-   	\end{center}
-   	\caption{{\bf Example of a one-dimensional field decomposition.} A continuous, one-dimensional field decomposed by a finite number of basis functions scaled by the state vector. The dashed line depicts the field, the black solid lines shows the Gaussian basis functions and the vertical lines show the position and amplitude of the states.} 
-	\label{fig:FieldDecomposition}
-   \end{figure}
+
 The width and positioning of the basis functions can be determined by spectral analysis (explained in detail in Section~\ref{SpectralAnalysisSection}). The connectivity kernel can also be decomposed as 
 \begin{equation}\label{DefKernelDecomp}
 	 w\left(\mathbf{r},\mathbf{r}'\right) =\boldsymbol{\psi}^\top\left(\mathbf{r},\mathbf{r}'\right) \boldsymbol{\theta},
@@ -321,7 +309,6 @@ and
 \end{equation}
 
 \subsection{Spectral Analysis}\label{SpectralAnalysisSection} 
-% \ken{Guys, changed the name for this section cause it only contains spectral analysis and no real model selection. I can understand the argument that the spectral analysis leads to a model choice, but no model selection follows it. Thus I'd rather use this revised name.}
 Spectral analysis has been used to identify both the number of sensors and the number of basis functions required to reconstruct the neural field from sampled observations~\cite{Sanner1992,Scerri2009}. Based on a two-dimensional extension of Shannon's sampling theorem \cite{Peterson1962}, the spatial bandwidth of the observed field can be used to provide a lower bound on both the number of sensors and the number of basis functions required to capture the dominant spectral characteristics of the neural field.
 
 Let the spectral representation of the post-synaptic membrane voltage field at time $t$ be denoted by $V_t(\boldsymbol{\nu})$. According to Shannon's sampling theorem, the field must be spatially band-limited for an accurate reconstruction using spatially discrete observations. Nevertheless, an approximate reconstruction can be obtained if the field is approximately band-limited with 
@@ -365,8 +352,6 @@ where
  \sigma^2_{\nu_{cy}}= \frac{2\boldsymbol\nu_{cy}^\top \boldsymbol\nu_{cy}}{\ln2}.
 \end{equation}
 This ensures that the basis functions can represent the neural field with frequency content up to $\boldsymbol\nu_{cy}$. Derivations for equations~\ref{eq:GaussianFT} and \ref{eq:WidthFrequencyRelationship} are given in the Supporting Information, S1.
-
-% \ken{I cannot understand the motivation being including this paragraph? I do not feel that this argument has any practical implications; can anyone enlighten me?}
 
 Alternatively, the basis function width can be set to provide a desired level of smoothness in the approximated field by reducing the spatial bandwidth of the approximated field. This allows an approximate representation by a lower order model (fewer basis functions), thus reducing the computational demands of the estimation process. The spatial cut-off frequency of this smoothed field becomes a user choice and can be determined using spectral analysis. To calculate the cut-off frequency imposed by the basis functions, $\boldsymbol{\nu}_{c\phi}$, we rearrange equations~\ref{eq:WidthCutOffRelationship} and \ref{eq:WidthFrequencyRelationship} giving
 \begin{equation}\label{eq:CutoffFromBasisFuncWidth}
@@ -459,80 +444,28 @@ Following this, the LS parameter estimates, $ \mathcal{\hat{W}}$, are
 \section*{Results}\label{ResultsSection} In this section, we provide a demonstration of the estimation procedure using the new methods that are described above. The full neural field model described in Section~\ref{NeuralModelSection} was used to generate the data for state and parameter estimation. All parameters for the model are given in Table~\ref{tab:Parameters}. Note, the parameters for the spatial and temporal aspects of the model can be considered arbitrary when demonstrating the estimation methodology. This is due to the fact that the temporal aspects scale with the sampling rate and the length of the times series, and the spatial aspects scale with the size of the neural field and the space step used for numerical simulation. When generating the simulated data, we assumed free boundary conditions for the neural field. An example of the simulated field can be seen in Figure~\ref{fig:experimental design}(A). Figure~\ref{fig:experimental design}(B) shows an example of data from the modelled sensors and Figure~\ref{fig:experimental design}(C) shows the power spectral density (PSD) of the simulated time-series. The PSD shows the typical $1/f^2$ characteristics of intracranial EEG.
 
 The sensors were spaced on a $14 \times 14$ square grid and the sensor width was set to $\sigma^2_m = 0.81$. This provides a width of 1.5~mm at half the maximum amplitude of the sensor kernel. The distance between sensors was set to $\Delta_y = 1.5$~mm. This arrangement modelled the recording as having some cross talk, which is typical for neurophysiological recordings.
- \begin{figure}
-    	\begin{center}
-     		\includegraphics{./Graph/ExperimentalFigure.pdf}
-    	\end{center}
-    	\caption{{\bf Example of the spatio-temporal properties of the model and synthetically generated data.} \textbf{(A)} The neural field at a single time instant. (\textbf{B}) Data generated by the full neural field model from the first 5 sensors. (\textbf{C}) Power spectral density of the data generated by an observation showing the typical $1/f^2$ characteristic of intracranial EEG.} 
- \label{fig:experimental design}
- \end{figure}
+
 \subsection*{Spatial Frequency Analysis} 
 The spectral analysis described in Section~\ref{SpectralAnalysisSection} was used to confirm that the spacing and width of the sensors was adequate to capture the significant dynamics of the field. Figure~\ref{fig:FFTTrueEstimate}(A) shows the spatial frequency of the neural field. The cut-off frequency of the neural field is $\boldsymbol{\nu}_c \approx 0.24$~Hz ($-3$~dB point). From equation~\ref{eq:MinimumSensorDistance}, this yielded a minimum sensor separation of 2.05~mm. This confirms that the separation of $\Delta_{y} = 1.5$~mm was sufficient to mitigate problems associated with spatial aliasing.
-\begin{figure}
-\centering
-\label{fig:FieldFFT}\includegraphics{./Graph/FFTField.pdf}
-\caption{{\bf Spatial frequency analysis of the neural field}. (\textbf{A}) The average (over time) power in dB of the spatial frequency of the neural field. (\textbf{B}) The average (over time) power in dB of the spatial frequency of the reconstructed neural field from the basis function decomposition. The reconstructed field shows a narrower bandwidth as a result of the band limiting properties of the sensors and basis functions.}
-\label{fig:FFTTrueEstimate}
-\end{figure}
 
 The spatial frequency of the observed field is shown in Figure~\ref{fig:ObservationFreqAnal}(A). The cut-off frequency is $\boldsymbol{\nu}_{cy} \approx 0.2$~Hz (-3~dB point). The observation cut-off frequency is lower than the field cut-off due to the low-pass filtering effect of the sensors. The spatial frequency response of the sensors can be seen in Figure~\ref{fig:ObservationFreqAnal}(B). Using an oversampling parameter of $\rho_{\phi}=1$, the minimum distance between the field basis functions was calculated to be 2.5~mm to satisfy Shannon's sampling criterion (from equation~\ref{eq:BasisFunctionSeparation}). The distance between basis functions was set to $\Delta_{\phi}=2.5$~mm, which is sufficient to capture the significant dynamics according to these criteria.
+
 Given this basis function separation, the basis function width parameter was set to $\sigma_{\phi}^2=2.5$~mm. This allowed a smooth representation of the field by the basis function decomposition up to a spatial frequency $\boldsymbol{\nu}_{c\phi} \approx 0.12$~Hz, as described by equation~\ref{eq:CutoffFromBasisFuncWidth}. The band-limiting effect is due to the spatial frequency response of the basis functions as seen in Figure~\ref{fig:ObservationFreqAnal}(C). The spatial frequency of the reconstructed field from the basis function decomposition is shown in Figure~\ref{fig:FFTTrueEstimate}(B). This figure illustrates the band-limiting effect of the basis function decomposition when compared to Figure~\ref{fig:FFTTrueEstimate}(A).
-\begin{figure*}[!ht] 
-	\begin{center}
-		\includegraphics{./Graph/SensorBasisObsFrequencyResponse.pdf}	
-	\end{center}
-	\caption{{\bf Spatial frequency analysis}. The dashed line shows the cut-off frequency (-3 dB point). (\textbf{A}) The average (over time) power in dB of the spatial frequency of the observations. (\textbf{B}) The spatial frequency response of a one-dimensional model sensor. The symmetry of the sensors and field basis functions allow for the one-dimensional representation of the spectral characteristics. (\textbf{C}) The spatial frequency response of a one-dimensional neural field basis function, illustrating a narrower band width than the sensors. }
-	\label{fig:ObservationFreqAnal}
-\end{figure*}
+
 \subsection*{State and Parameter Estimates} 
 \label{sec:state_and_param_results}
 To demonstrate the performance of the state and parameter estimation algorithm, a Monte Carlo approach was employed where 100 realisations of the data were generated. Each realisation consisted of 500~ms of data (sampled at $1$~kHz) and the estimation was applied to the final 400~ms, allowing the model's initial transients to die out. The initial state and parameters were unknown to the estimator. Eleven iterations of the estimation algorithm were used to ensure the parameters  converged. Figure~\ref{fig:ParametersConvergence} shows the rate of convergence, confirming the parameters converged, with the changes in parameter errors falling to less than $10^{-4}$ after six iterations.
-\begin{figure}
-        \centering
-\includegraphics{./Graph/convergence.pdf}
-\caption{{\bf Convergence of parameters.} The mean of the absolute error between true and estimated parameters averaged over 100 runs. All parameters converge after six iterations, where the mean difference between errors in consecutive iterations falls below $10^{-4}$.}
-\label{fig:ParametersConvergence}
-\end{figure}
 
 Histograms of the parameter estimates obtained over the 100 realisations are shown in Figure~\ref{fig:Parameters}. The actual parameter values, the mean estimates, corresponding standard deviations and biases are given in Table~\ref{tab:Parameters estimates}. The biases show the percentage differences between the actual values and the mean parameter estimates. The mean estimates are in good agreement with the actual values.
-\begin{figure}
-    \centering
-    \includegraphics{./Graph/ParametesDistributions.pdf}
-  \caption{{\bf Histograms of the parameter estimates over 100
-realisations}. The solid lines show the actual values of the parameters and the dotted lines show the means of the estimated parameters. (\textbf{A}) The histogram of the $\xi$ estimates where $\xi=1-\zeta T_s $ and $\zeta$ is the reciprocal of the synaptic time constant. (\textbf{B}) The histogram of the central excitatory connectivity kernel basis function parameter estimates, $\theta_0$. (\textbf{C}) The histogram of the surround inhibition connectivity kernel basis function parameter estimates, $\theta_1$. (\textbf{D}) The histogram of the longer range excitatory connectivity kernel basis function parameter estimates, $\theta_2$.}
-\label{fig:Parameters}
-\end{figure}
 
 The reconstructed connectivity kernels from the estimated parameters are shown in Figure~\ref{fig:KernelEstimates}, where the mean over the 100 realisations is shown as a dotted line and the 95\% confidence interval is indicated by the grey shaded region. The figure verifies that the shape of the estimated connectivity kernel is in good accordance with the true kernel. The true kernel lies within the confidence interval; however, the mean estimated kernel is more negative than the actual kernel due to the small bias in the estimates of the inhibitory parameter, $\hat\theta_1$, as seen in Figure~\ref{fig:Parameters}(C).
-\begin{figure}
-    \centering
-\includegraphics{./Graph/KernelEstimate.pdf}%}
-\caption{{\bf Cross-section of connectivity kernel estimate}. The actual kernel is shown by the solid line, the mean kernel estimate (over 100 realisations) is shown by the dotted line and the 95~\% confidence interval is shown by the shaded grey region.}
-\label{fig:KernelEstimates}
-\end{figure}
+
 The accuracy of the state estimates was evaluated by comparing the field reconstruction to the true field using the mean (over iterations) of the root mean square error (MRMSE) over space. The MRMSE of the field estimates over time for 100 realisations is shown in Figure~\ref{fig:RMSE}, with the $95~\%$ confidence interval. At each time point, the error is consistently around 0.5~mV, which is approximately 7.1~\% of the field voltage range ([-3.29,3.77]~mV). The error in the reconstructed field is mostly due to the loss of high spatial frequency information from the basis function decomposition as illustrated in Figure~\ref{fig:FieldEstimate}. The figure shows a snapshot at a single time instant of the true neural field, the estimated field and the corresponding error, which is the difference between the true and estimated neural fields. It can be seen in Figure~\ref{fig:FieldEstimate}(B) that the estimated field contains the basic structure of the true field (shown in Figure~\ref{fig:FieldEstimate}(A)), but is missing the higher-frequency detail.
-  \begin{figure}
-   	\begin{center}
-   		\includegraphics{./Graph/MRMSE.pdf} 
-   	\end{center}
-   	\caption{{\bf Error in the field reconstruction}. The mean of average RMSE of the estimated field over 100 realisations (solid line) and the 95~\% confidence interval (grey region).} 
-\label{fig:RMSE}
-   \end{figure}
-  
-\begin{figure*}
-\centering 
-\label{fig:TrueField}\includegraphics{./Graph/FieldTrueEstimationError.pdf}
-\caption{{\bf Examples of the actual and estimated neural fields and the error}. (\textbf{A}) The actual field at a single time instant from the full neural field model that was used to generate the data. (\textbf{B}) The reconstructed field of the reduced model, showing the effect of the basis function decomposition on the frequency content of the estimated field. (\textbf{C}) The absolute error between the true and reconstructed fields. The error shows high frequency behaviour.}
-\label{fig:FieldEstimate}
-\end{figure*}
 
-\section*{Discussion}
-\label{DiscussionSection}
-
+\section*{Discussion}\label{DiscussionSection}
 This paper has presented a method for creating data-driven neural field models by deriving a method for estimating intracortical connectivity and synaptic dynamics from electrophysiological data. In doing so, we have highlighted important aspects of the experiment design process, demonstrating the relationship between sensor bandwidth and the complexity of the field that can be inferred. The mathematical formulation that we have presented scales well with the number of sensors, and we have derived a finite-order state-space representation that allows us to perform inference efficiently. 
 
 \subsection*{Implications for Experiment Design}
-
 As seen in Section~\ref{sec:state_and_param_results}, the results indicate accurate estimation, where the mean parameter estimates are in good agreement with the actual values. The estimates of the connectivity kernel parameters show relatively broad distributions, which can be expected considering the system's input is modelled as a random disturbance, and the observations are corrupted by noise. To overcome the effect of noise, the use of a controlled input stimulus should be considered when applying the estimation algorithm to electrophysiological recordings. Given knowledge of the input and the appropriate model, it is expected that the variance of the parameter estimates will decrease. Even when using an input, our results imply that we should only expect to learn distributions of parameters, rather than uncover a `true' parameter set. By designing an input signal carefully and using an evoked-potential paradigm, where stimuli are repeated many times, data could be epoched into (and averaged over) a sufficient number of trials (realisations), where each trial is a response to a stimulus, such that a distribution of the parameter estimates can be formed.
 
 The frequency analysis presented in Section~\ref{SpectralAnalysisSection} specify the minimum sensor arrangement that is required to capture the dominant cortical dynamics. Importantly, these new tools can also be used to design electrophysiological recording systems to avoid spatial aliasing. In addition, the frequency analysis highlights the relationship between the spatial width of the sensors and the information in the data. This analysis is becoming increasingly relevant as recording systems are becoming more sophisticated with higher density recordings~\cite{Brinkmann2009}.
@@ -585,6 +518,81 @@ Dean Freestone would like to thank Dr. Mark van Rossum for hosting him while vis
 %\label{Figure_label}
 %\end{figure}
 
+\begin{figure}
+   	\begin{center}
+   		\includegraphics{./Graph/Cross_section_kernel.pdf} 
+   	\end{center}
+   	\caption{{\bf Mexican-hat connectivity kernel.} The function $w(\cdot)$ is rotationally symmetric (isotropic) about zero, hence a cross-section captures the important aspect of the connectivity kernel's shape. The kernel decays asymptotically to zero.}
+ 	\label{fig:2d_kernel}
+   \end{figure}
+
+\begin{figure}
+   	\begin{center}
+   		\includegraphics{./Graph/FieldDecomposition.pdf} 
+   	\end{center}
+   	\caption{{\bf Example of a one-dimensional field decomposition.} A continuous, one-dimensional field decomposed by a finite number of basis functions scaled by the state vector. The dashed line depicts the field, the black solid lines shows the Gaussian basis functions and the vertical lines show the position and amplitude of the states.} 
+	\label{fig:FieldDecomposition}
+   \end{figure}
+
+ \begin{figure}
+    	\begin{center}
+     		\includegraphics{./Graph/ExperimentalFigure.pdf}
+    	\end{center}
+    	\caption{{\bf Example of the spatio-temporal properties of the model and synthetically generated data.} \textbf{(A)} The neural field at a single time instant. (\textbf{B}) Data generated by the full neural field model from the first 5 sensors. (\textbf{C}) Power spectral density of the data generated by an observation showing the typical $1/f^2$ characteristic of intracranial EEG.} 
+ \label{fig:experimental design}
+ \end{figure}
+
+\begin{figure}
+\centering
+\label{fig:FieldFFT}\includegraphics{./Graph/FFTField.pdf}
+\caption{{\bf Spatial frequency analysis of the neural field}. (\textbf{A}) The average (over time) power in dB of the spatial frequency of the neural field. (\textbf{B}) The average (over time) power in dB of the spatial frequency of the reconstructed neural field from the basis function decomposition. The reconstructed field shows a narrower bandwidth as a result of the band limiting properties of the sensors and basis functions.}
+\label{fig:FFTTrueEstimate}
+\end{figure}
+
+\begin{figure*}[!ht] 
+	\begin{center}
+		\includegraphics{./Graph/SensorBasisObsFrequencyResponse.pdf}	
+	\end{center}
+	\caption{{\bf Spatial frequency analysis}. The dashed line shows the cut-off frequency (-3 dB point). (\textbf{A}) The average (over time) power in dB of the spatial frequency of the observations. (\textbf{B}) The spatial frequency response of a one-dimensional model sensor. The symmetry of the sensors and field basis functions allow for the one-dimensional representation of the spectral characteristics. (\textbf{C}) The spatial frequency response of a one-dimensional neural field basis function, illustrating a narrower band width than the sensors. }
+	\label{fig:ObservationFreqAnal}
+\end{figure*}
+
+\begin{figure}
+        \centering
+\includegraphics{./Graph/convergence.pdf}
+\caption{{\bf Convergence of parameters.} The mean of the absolute error between true and estimated parameters averaged over 100 runs. All parameters converge after six iterations, where the mean difference between errors in consecutive iterations falls below $10^{-4}$.}
+\label{fig:ParametersConvergence}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics{./Graph/ParametesDistributions.pdf}
+  \caption{{\bf Histograms of the parameter estimates over 100
+realisations}. The solid lines show the actual values of the parameters and the dotted lines show the means of the estimated parameters. (\textbf{A}) The histogram of the $\xi$ estimates where $\xi=1-\zeta T_s $ and $\zeta$ is the reciprocal of the synaptic time constant. (\textbf{B}) The histogram of the central excitatory connectivity kernel basis function parameter estimates, $\theta_0$. (\textbf{C}) The histogram of the surround inhibition connectivity kernel basis function parameter estimates, $\theta_1$. (\textbf{D}) The histogram of the longer range excitatory connectivity kernel basis function parameter estimates, $\theta_2$.}
+\label{fig:Parameters}
+\end{figure}
+
+\begin{figure}
+    \centering
+\includegraphics{./Graph/KernelEstimate.pdf}%}
+\caption{{\bf Cross-section of connectivity kernel estimate}. The actual kernel is shown by the solid line, the mean kernel estimate (over 100 realisations) is shown by the dotted line and the 95~\% confidence interval is shown by the shaded grey region.}
+\label{fig:KernelEstimates}
+\end{figure}
+
+  \begin{figure}
+   	\begin{center}
+   		\includegraphics{./Graph/MRMSE.pdf} 
+   	\end{center}
+   	\caption{{\bf Error in the field reconstruction}. The mean of average RMSE of the estimated field over 100 realisations (solid line) and the 95~\% confidence interval (grey region).} 
+\label{fig:RMSE}
+   \end{figure}
+
+\begin{figure*}
+\centering 
+\label{fig:TrueField}\includegraphics{./Graph/FieldTrueEstimationError.pdf}
+\caption{{\bf Examples of the actual and estimated neural fields and the error}. (\textbf{A}) The actual field at a single time instant from the full neural field model that was used to generate the data. (\textbf{B}) The reconstructed field of the reduced model, showing the effect of the basis function decomposition on the frequency content of the estimated field. (\textbf{C}) The absolute error between the true and reconstructed fields. The error shows high frequency behaviour.}
+\label{fig:FieldEstimate}
+\end{figure*}
 
 \section*{Tables}
 
@@ -613,8 +621,7 @@ Dean Freestone would like to thank Dr. Mark van Rossum for hosting him while vis
 	$m(\mathbf{r}_n,\mathbf{r}')$ & sensor kernel where $n$ is sensor index $n=1,..,N$ (width $\sigma_m^2$) & n.a. \\
 	$w(\mathbf{r},\mathbf{r}')$ & spatial connectivity kernel & n.a.\\
 	$h(t)$ & post-synaptic response kernel & mV\\
-	$\zeta$ & inverse synaptic time constant & s$^{-1}$\\
-	$\xi$ & time constant parameter & n.a.\\
+	$\zeta$, $\xi$ & inverse synaptic time constant \& time constant parameter & s$^{-1}$, n.a.\\
 	$\eta(t)$ & Heaviside step function & n.a.\\
 	$\delta(t)$ & Dirac-delta function & n.a.\\
 	$D$ & temporal differential operator & n.a.\\
@@ -623,9 +630,8 @@ Dean Freestone would like to thank Dr. Mark van Rossum for hosting him while vis
 	\hline
    	$\boldsymbol\phi(\mathbf{r})$ & vector of $L$ Gaussian basis functions & n.a.\\
    	$\mathbf{x}_t$ & state vector at time $t$ & mV\\
-   	$\boldsymbol{\psi}(\mathbf{r}-\mathbf{r}')$ & vector of connectivity kernel basis functions & n.a.\\
-	$n_{\theta}$ & number of connectivity kernel basis functions & n.a.\\
-   	$\boldsymbol{\Psi}(\mathbf{r}')$ & scaled convolution of the connectivity kernel basis functions with the field basis functions& n.a.\\
+   	$\boldsymbol{\psi}(\mathbf{r}-\mathbf{r}')$ & vector of $n_{\theta}$ connectivity kernel basis functions & n.a.\\
+   	$\boldsymbol{\Psi}(\mathbf{r}')$ & decomposition connectivity matrix & n.a.\\
    	$\boldsymbol{\Gamma}$ & inner product of field basis functions & n.a.\\
    	$Q()$ & state transition function & n.a.\\
    	$\mathbf{e}_t$ & state disturbance vector, with covariance $\Sigma_e$ & mV\\
