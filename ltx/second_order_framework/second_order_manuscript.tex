@@ -1,0 +1,352 @@
+
+
+
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8x]{inputenc}
+% *** CITATION PACKAGE ***
+\usepackage{cite}
+% *** GRAPHICS RELATED PACKAGES ***
+\usepackage[pdftex]{graphicx}
+% *** MATH PACKAGES ***
+\usepackage[cmex10]{amsmath}
+\usepackage{amssymb}
+%Appendix
+\usepackage{appendix}
+\usepackage{color}
+
+%to delete
+\newcommand{\parham}[1]{\textsf{\emph{\textbf{\textcolor{green}{#1}}}}} 
+%opening
+\title{Non-linear Spatio-temporal modelling using the Integro-Difference Equation}
+\author{Parham Aram*,
+        Dean~R.~Freestone,Kenneth Scerri, Michael Dewar,\\ Andrew Zammit Mangion and Visakan Kadirkamanathan}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+
+\end{abstract}
+
+\section{Introduction}
+\section{State space Representation of the Spatio-temporal Non-linear IDE}
+We define the $p$th order non-linear, stochastic, spatio-temporal homogenous IDE as
+ \begin{equation}\label{eq:IDEModel}
+  \rho_t(\mathbf r)=\int_{\Omega}w(\mathbf r-\mathbf r')f(v_{t-p}(\mathbf r'))d\mathbf r'+\mathbf e_{t-p}(\mathbf r) 
+ \end{equation}
+where $\rho_t(\mathbf r)$ is a lag polynomial defined as
+\begin{equation}\label{eq:LagPolynomial}
+ \rho_t(\mathbf r)=(1+\sum_{i=1}^{p}\varphi_i L_i)v_{t}\left(\mathbf r\right)
+\end{equation}
+
+where $v_t(\mathbf r)$ denotes the spatial field at time $t$ and at spatial location $\mathbf r$, $f(.)$ is some nonlinear map, and $w(.)$ is the spatial kernel. The disturbance $\mathbf e_{t-p}(\mathbf r)$ is a zero-mean normally distributed noise process, spatially
+coloured but temporally independent, with covariance
+\begin{equation}
+cov\left(e_{t}\left(\mathbf{r}\right),e_{t+\tau}\left(\mathbf{r'}\right)\right)=
+\gamma\left(\mathbf{r}-\mathbf{r'}\right)\delta(t-\tau)
+\label{eq:FieldCovariance}
+\end{equation}
+where $\delta(.)$ is the Dirac-delta function.
+ The spatial field is observed by
+\begin{equation}
+    \label{eq:ObservationEquation}
+	\mathbf{y}_t =
+	\int_{\Omega}{
+	    m\left(\mathbf{r}_{n_y}-\mathbf{r}'\right)v_t\left(\mathbf{r}'\right)
+	d\mathbf{r}'} + 
+	\boldsymbol{\varepsilon}_t, 
+\end{equation}
+where the observation vector $\mathbf{y}_{t}$, compiled at $n_{y}$ spatial locations and at time $t$, is corrupted by an i.i.d normally distributed zero-mean white noise ${\boldsymbol\varepsilon}_t\sim \mathcal{N}\left(\mathbf{0},\boldsymbol\Sigma_{\varepsilon}\right)$ with $\mathbf{\Sigma}_{\boldsymbol\varepsilon}=\sigma_{\varepsilon}^2\mathbf I_{n_y} $. It is assumed here that $\boldsymbol\Sigma_{\varepsilon}$ and $\gamma\left(\mathbf r-\mathbf r' \right)$ are known. The output kernel $m(\mathbf{r}-\mathbf{r}')$ governs the sensor pick-up geometry and is defined by 
+\begin{equation}\label{eq:SensorKernel}
+	m\left(\mathbf{r}-\mathbf{r}'\right) = \exp{\left(-\frac{(\mathbf{r}-\mathbf{r}')^\top(\mathbf{r}-\mathbf{r}')}{\sigma_m^2}\right)},
+\end{equation}
+where $\sigma_m$ sets the sensor width. The superscript $\top$ denotes the transpose operator. We proceed by writing the spatio-temporal IDE model in a parameterized state space form which allows the application of standard estimation
+techniques. We use a decomposition of the filed and the spatial kernel using a set of Gaussian basis functions
+ \begin{equation}
+	\label{eq:FieldDecomp} v_t\left(\mathbf{r}\right) \approx \boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) \mathbf{x}_t
+\end{equation}
+\begin{equation}\label{eq:KernelDecomp}
+	 w\left(\mathbf{r}-\mathbf{r}'\right) \approx\boldsymbol{\psi}^\top\left(\mathbf{r}-\mathbf{r}'\right) \boldsymbol{\theta}
+\end{equation}
+where $\mathbf{\boldsymbol{\phi}}(\mathbf{r})$ and $\mathbf{\boldsymbol{\psi}}(\mathbf{r})$ are  vectors of Gaussian basis functions that are scaled by the state vector, $\mathbf{x}_t$ and the scaling parameter vector $\boldsymbol\theta$ respectively. Substituting \eqref{eq:LagPolynomial} in \eqref{eq:IDEModel} and using the above decomposition we have
+\begin{equation}\label{eq:DecompModel}
+\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right)(1+\sum_{i=1}^{p}\varphi_i L_i) \mathbf{x}_t=\int_{\Omega}\boldsymbol{\psi}^\top\left(\mathbf{r}-\mathbf{r}'\right) f(\boldsymbol{\phi}^{\top}\left(\mathbf{r'}\right) \mathbf{x}_{t-p})d\mathbf r'\boldsymbol{\theta}+\mathbf e_{t-p}(\mathbf r)
+ \end{equation}
+multiplying \eqref{eq:DecompModel} by $\boldsymbol \phi(\mathbf r)$ and integrate over the spatial domain $\Omega$ we get
+\begin{equation}\label{eq:GammaDecompModel}
+ \boldsymbol \Gamma (1+\sum_{i=1}^{p}\varphi_i L_i) \mathbf{x}_t=\int_{\Omega}\boldsymbol \phi(\mathbf r)\int_{\Omega}\boldsymbol{\psi}^\top\left(\mathbf{r}-\mathbf{r}'\right) f(\boldsymbol{\phi}^{\top}\left(\mathbf{r'}\right) \mathbf{x}_{t-p})d\mathbf r'\boldsymbol{\theta}+\int_{\Omega}\boldsymbol\phi(\mathbf r)\mathbf e_{t-p}(\mathbf r)d\mathbf r
+\end{equation}
+where 
+\begin{equation}\label{eq:DefGamma}
+	\boldsymbol{\Gamma} \triangleq \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi} ^{\top}\left(\mathbf{r}\right)d\mathbf{r}} 
+\end{equation}
+cross-multiplying \eqref{eq:GammaDecompModel} by $\boldsymbol{\Gamma}^{-1}$ gives
+\begin{equation}\label{eq:InvGammaDecompModel}
+ (1+\sum_{i=1}^{p}\varphi_i L_i) \mathbf{x}_t=\boldsymbol\Gamma^{-1}\int_{\Omega}\boldsymbol \phi(\mathbf r)\int_{\Omega}\boldsymbol{\psi}^\top\left(\mathbf{r}-\mathbf{r}'\right) f(\boldsymbol{\phi}^{\top}\left(\mathbf{r'}\right) \mathbf{x}_{t-p})d\mathbf r'\boldsymbol{\theta}+\boldsymbol\Gamma^{-1}\int_{\Omega}\boldsymbol\phi(\mathbf r)\mathbf e_{t-p}(\mathbf r)d\mathbf r
+\end{equation}
+This can be further simplified by assuming isotropic structure for the spatial kernel
+\begin{equation}
+	\boldsymbol{\psi} (\mathbf{r}-\mathbf{r}') = \boldsymbol{\psi} (2c+\mathbf{r}'-\mathbf{r}).
+\end{equation}
+where $c$ is the center of the kernel. To make the simplification, we first define
+\begin{equation}\label{eq:DefPsi}
+	\boldsymbol{\Psi}(\mathbf{r}') \triangleq T_s\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\psi}^{\top} (2c+\mathbf{r}'-\mathbf{r})\textrm{d}\mathbf{r}},
+\end{equation}
+which is a constant $n_x \times n_{\theta}$ matrix and can be computed analytically. Now substituting \eqref{eq:DefPsi} into \eqref{eq:InvGammaDecompModel} we get
+\begin{equation}
+(1+\sum_{i=1}^{p}\varphi_i L_i) \mathbf{x}_t = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \textrm{d}\mathbf{r}' \boldsymbol{\theta}
++ \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_{t-p}(\mathbf{r})\textrm{d}\mathbf{r}}.
+\end{equation}
+Now we define the state disturbance as
+\begin{equation}\label{eq:Wt} 
+	\mathbf{e}_{t-p} \triangleq \boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi} ( \mathbf{r} )e_{t-p}( \mathbf{r} )\textrm{d}\mathbf{r}},
+\end{equation}
+which is a zero mean normally distributed white noise process with covariance
+\begin{equation}
+	\boldsymbol\Sigma_e =\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega}\boldsymbol{\phi}\left(\mathbf r\right) \gamma\left(\mathbf r- \mathbf r' \right)\boldsymbol{\phi}\left(\mathbf r'\right)^{\top}d\mathbf r' d\mathbf r\mathbf{\Gamma}^{- \top}. 
+\end{equation}
+the observation equation of the reduced model is found by substituting \eqref{eq:FieldDecomp} into \eqref{eq:ObservationEquation} giving
+\begin{equation}\label{ObservationEquation} 
+	\mathbf{y}_t = \mathbf{C}\mathbf{x}_t + \boldsymbol{\varepsilon}_t,
+\end{equation}
+where the observation matrix is 
+\begin{equation}
+	\mathbf{C} = \left[
+	\begin{array}{{ccc}} 
+		c_{1,1} & \dots & c_{1,L} \\
+		\vdots & \ddots & \vdots \\
+		c_{N,1} & \dots & c_{N,L} 
+	\end{array}
+	\right] 
+\end{equation}
+and 
+\begin{equation}
+	c_{i,j} = \int_{\Omega}m(\mathbf{r}_i - \mathbf{r}')\boldsymbol{\phi}_j(\mathbf{r}')\textrm{d}\mathbf{r}'. 
+\end{equation}
+Now we have the final form of the state-space model where
+\begin{equation}\label{eq:finalformstatespacemodel}
+	(1+\sum_{i=1}^{p}\varphi_i L_i) \mathbf{x}_t = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_{t-p}) \textrm{d}\mathbf{r}' \boldsymbol{\theta}
+ +\mathbf{e}_{t-p}
+\end{equation}
+\begin{equation} 
+	\mathbf{y}_t = \mathbf{C}\mathbf{x}_t + \boldsymbol{\varepsilon}_t
+\end{equation}
+
+
+Here we consider the case where $p=1$, therefore we have
+\begin{equation}
+x_t+\varphi_{1} x_{t-1}=\boldsymbol\Gamma^{-1}\int_{\Omega}\boldsymbol \phi(\mathbf r)\int_{\Omega}\boldsymbol{\psi}^\top\left(\mathbf{r}-\mathbf{r}'\right) f(\boldsymbol{\phi}^{\top}\left(\mathbf{r'}\right) \mathbf{x}_{t-1})d\mathbf r'\boldsymbol{\theta}+\boldsymbol\Gamma^{-1}\int_{\Omega}\boldsymbol\phi(\mathbf r)\mathbf e_{t-1}(\mathbf r)d\mathbf r
+\end{equation}
+\section{Deterministic second order neural field model}
+\begin{equation}\label{SpikesToPotential}
+	v\left( {\mathbf{r},t} \right) = \int_{ - \infty }^t {h\left( {t - t'} \right)g\left( {\mathbf{r},t'} \right)dt'}
+\end{equation}
+The post-synaptic response kernel $h(t)$ is described by
+\begin{equation}\label{SynapticRespKernel}
+	h(t) = \eta(t)At\exp{\left(-\zeta t\right)}.
+\end{equation}
+where $\zeta=\tau^{-1}$ and $\tau$ is the synaptic time constant and $\eta(t)$ is the Heaviside step function. $A$ determines the maximal amplitude of the post-synaptic potentials.
+Nonlocal interactions between cortical populations are described by	
+\begin{equation}\label{RateBasedInteractions}
+	g\left( \mathbf{r},t \right) = \int_\Omega  {w\left( \mathbf{r},\mathbf{r}' \right)f\left( v\left( \mathbf{r}',t \right) \right)d\mathbf{r}'} 
+\end{equation}
+where $f(.)$ is the firing rate function, $w(.)$ is the spatial connectivity kernel, and $\Omega$ is the spatial domain.
+\subsection*{Deriving  Integro-differential Equation}
+we can write
+\begin{eqnarray}\label{SynapticRespKernelderivation}
+ \frac{dh(t)}{dt}&=&A[\delta(t)t\mathrm{exp}(-\zeta t)+\eta(t)\frac{d}{dt}(t\mathrm{exp}(-\zeta t))] \nonumber\\
+&=& A[0+\eta(t)[\mathrm{exp}(-\zeta t)-\zeta t\mathrm{exp}(-\zeta t) ]\nonumber \\
+&=&A\eta(t)\mathrm{exp}(-\zeta t)-\zeta h(t)
+\end{eqnarray}
+and taking derivative from \ref{SynapticRespKernelderivation} we have
+\begin{eqnarray}\label{SynapticRespKernelSecondderivation}
+ \frac{d^2h(t)}{dt^2}&=&A[\delta(t)\mathrm{exp}(-\zeta t)-\zeta\eta(t)\mathrm{exp}(-\zeta t)]-\zeta \frac{dh(t)}{dt} \nonumber\\
+&=& A\delta(t)-\zeta A \eta(t)\mathrm{exp}(-\zeta t)-\zeta \frac{dh(t)}{dt} \nonumber \\
+&=&A\delta(t)-2\zeta A \eta(t)\mathrm{exp}(-\zeta t)+\zeta^2h(t)
+\end{eqnarray}
+We define the operator $D$ as $D=\frac{d^2}{dt^2}+2\zeta \frac{d}{dt}+\zeta^2 $, applying $D$ on $h$ and using the result from (\ref{SynapticRespKernelSecondderivation}) it is clear that 
+\begin{equation}
+ Dh=A\delta(t)
+\end{equation}
+by applying $D$ on (\ref{SpikesToPotential}) we have
+\begin{eqnarray}
+ Dv&=&D(h*g) \nonumber \\
+&=&(Dh*g) \nonumber\\
+&=& A(\delta(t)*g)\nonumber \\
+&=&Ag
+\end{eqnarray}
+therefore we have
+\begin{equation}\label{eq:finalcontinouosmodel}
+\begin{split}
+ \frac{d^2v(\mathbf r,t)}{dt^2}+2\zeta \frac{dv(\mathbf r,t)}{dt}+\zeta^2v(\mathbf r,t)&=Ag\left( \mathbf{r},t \right)\\
+&=A\int_\Omega  {w\left( \mathbf{r},\mathbf{r}' \right)f\left( v\left( \mathbf{r}',t \right) \right)d\mathbf{r}'} \\
+\end{split}
+\end{equation}
+\subsection*{Discritization}
+The above second order differential equation can be split into two, coupled first order ODEs.\\
+\begin{equation}\label{eq:systemofode}
+\begin{cases}
+\tilde{v}=\frac{dv}{dt} \\
+\frac{d\tilde{v}}{dt}+2\zeta\tilde{v}+\zeta^2v=Ag\left( \mathbf{r},t \right)
+\end{cases}
+\end{equation}
+Now we approximate the two first-order ode by Euler's method
+\begin{equation}\label{eq:discritizedsystemofode}
+\begin{cases}
+v_{t+1}=T_s\tilde{v_t}+v_t\\
+\tilde{v}_{t+1}=(1-2\zeta T_s)\tilde{v}_t-\zeta^2T_sv_t+AT_sg_t\left( \mathbf{r}\right)
+\end{cases}
+\end{equation}
+in matrix format we have
+\begin{equation}
+ \begin{bmatrix}v_{t+1} \\ \tilde{v}_{t+1}\end{bmatrix}= \begin{bmatrix} T_s &1\\ 1-2\zeta T_s & -\zeta^2T_s\end{bmatrix}\begin{bmatrix}v_{t} \\ \tilde{v}_{t}\end{bmatrix}+AT_sg_t\left( \mathbf{r}\right)
+\end{equation}
+or alternatively we can write (\ref{eq:discritizedsystemofode}) as
+\begin{equation}\label{eq:DifferenceModel}
+ v_{t+2}-2(1-\zeta T_s)v_{t+1}+(1-2\zeta T_s+\zeta^2T_s^2)v_t=AT_s^2g_t\left( \mathbf{r}\right)
+\end{equation}
+\subsection*{From Difference equation to state space model}
+We define
+\begin{equation}\label{eq:tildev}
+v_{t+1}-v_t=T_s\tilde{v_t}
+\end{equation}
+expanding \eqref{eq:DifferenceModel} we get
+\begin{equation}\label{eq:rearrangedDifferenceModel}
+ v_{t+2}-2v_{t+1}+2\zeta T_S v_{t+1}+v_t-2\zeta T_sv_t+\zeta^2T_s^2v_t=AT_s^2g_t\left( \mathbf{r}\right)
+\end{equation}
+rearranging \eqref{eq:rearrangedDifferenceModel} we have
+\begin{equation}
+(v_{t+2}-v_{t+1})-(v_{t+1}-v_t)+2\zeta T_s(v_{t+1}-v_t)+\zeta^2T_s^2v_t=AT_s^2g_t\left( \mathbf{r}\right)
+\end{equation}
+therefore
+\begin{equation}
+(v_{t+2}-v_{t+1})-(1-2\zeta T_s)(v_{t+1}-v_t)+\zeta^2T_s^2v_t=AT_s^2g_t\left( \mathbf{r}\right)
+\end{equation}
+substituting \eqref{eq:tildev} in the above equation and multiplying by $1/T_s$ we get the state space model
+\begin{equation}\label{eq:StateSpaceModel}
+\begin{cases}
+v_{t+1}=T_s\tilde{v_t}+v_t\\
+\tilde{v}_{t+1}=(1-2\zeta T_s)\tilde{v}_t-\zeta^2T_sv_t+AT_sg_t\left( \mathbf{r}\right)
+\end{cases}
+\end{equation}
+
+\section{First order stochastic Neural Field Model}
+The model relates the average number of action potentials $g(\mathbf{r},t)$ arriving at time $t \in \mathbb R^{+}$ and at position $\mathbf{r}$ to the local post-synaptic membrane voltage $v(\mathbf{r},t)$. The post-synaptic potentials generated at a neuronal population at location $\mathbf{r}$ by action potentials arriving from all other connected populations at locations $\mathbf{r}'$ is described by 
+\begin{equation}
+	\label{eq:SpikesToPotential} v\left( {\mathbf{r},t} \right)=v(\mathbf r, 0)h(t)+\int_0^t {h\left( {t - t'} \right)g\left( {\mathbf{r},t'} \right)dt'} 
+\end{equation}
+The post-synaptic response kernel $h(t)$ is described by 
+\begin{equation}
+	\label{eq:SynapticRespKernel} h(t) = \exp{\left(-\zeta t\right)} 
+\end{equation}
+where $\zeta=\tau^{-1}$, $\tau$ is the synaptic time constant.
+Let $W(\mathbf r,t)$ be a spatio-temporal Wiener process. Then, for $\sigma \in \mathbb R^{+}$, the non-local interactions $g\left( {\mathbf{r},t} \right)$ between cortical populations can be divided into a predominantly deterministic part $g'\left( {\mathbf{r},t} \right) $ and  the random component $W(\mathbf r,t)$,
+\begin{equation}\label{eq:ActPotComponents}
+  g\left( {\mathbf{r},t} \right)dt=g'\left( {\mathbf{r},t} \right)dt+\sigma d W(r,t)
+\end{equation}
+As a result, the post-synaptic membrane voltage $v(\mathbf r, t)$ is itself a stochastic process. The deterministic part $g'(\mathbf r, t)$ is usually modelled as an integral equation with exogenous deterministic input , $ u(\mathbf r,t)$, of the form \cite{Atay2005}
+\begin{equation}
+	\label{DeterministicRateBasedInteractions} g'\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( v\left( \mathbf{r}',t \right) \right)\textrm{d}\mathbf{r}'}+u(\mathbf r,t)
+\end{equation}
+where $f(\cdot)$ is the firing rate function, $w(\cdot)$ is the spatial connectivity kernel and $\Omega$ is the spatial domain representing a cortical sheet or surface. Substituting \eqref{eq:ActPotComponents} in \eqref{eq:SpikesToPotential} we get
+\begin{equation}\label{eq:NeuralModelDeterStoch}
+v\left( {\mathbf{r},t} \right)=v_0h(t)+\int_0^t {h\left( {t - t'} \right)g'\left( {\mathbf{r},t'} \right)dt'}+ \int_0^t h\left( {t - t'} \right)\sigma d W(r,t')
+\end{equation}
+Here we assume that $v_0$ is generated by a known distribution $p_0(v)$ and is independent of the the random component $W(\mathbf r,t)$. We stress that $\sigma$ does not depend on the field $v(\mathbf r, t)$
+and hence the noise in \eqref{eq:NeuralModelDeterStoch} is strictly additive. It can be shown that the post-synaptic potential $v(\mathbf r, t)$ solves the following initial value problem (see Appendix \ref{app:InitialValueProblemProof})
+\begin{equation}
+ dv(\mathbf r, t) + \zeta v(\mathbf r, t)dt = g'(\mathbf r, t)dt + dW(\mathbf r, t) \quad t\ge0, v(\mathbf r, 0) = v_0
+\end{equation}
+applying the Euler-Maruyama method the integro-difference equation (IDE) model takes the form of
+\begin{equation}\label{eq:Euler-MaruyamaDiscrit}
+ v_{t+T_s}(\mathbf r)- v_{t}(\mathbf r)+ T_s\zeta v_t(\mathbf r)= T_sg'(\mathbf r, t) + (W_{t+T_s}(\mathbf r)-W_t(\mathbf r))
+\end{equation}
+where $T_s$ is the time step, the increments $W_{t+T_s}(\mathbf r)-W_t(\mathbf r)$ is normally distributed with mean zero and covariance function $T_s\gamma(\mathbf r-\mathbf r')$. We rewrite \eqref{eq:Euler-MaruyamaDiscrit} as
+\begin{equation}
+	\label{DiscreteTimeModel} 
+	v_{t+T_s}\left(\mathbf{r}\right) = 
+	\xi v_t\left(\mathbf{r}\right) + 
+	T_s \int_\Omega { 
+	    w\left(\mathbf{r},\mathbf{r}'\right)
+	    f\left(v_t\left(\mathbf{r}'\right)\right) 
+	\textrm{d}\mathbf{r}'}+T_su_t(\mathbf r)
+	+ e_t\left(\mathbf{r}\right), 
+\end{equation}
+ where $\xi = 1-\zeta T_s$ and $e_t(\mathbf{r})$ is an $i.i.d.$ disturbance such that $e_t(\mathbf{r})\sim\mathcal{GP}(\mathbf 0,T_s\gamma(\mathbf{r}-\mathbf{r}'))$. Here $\mathcal{GP}(\mathbf 0,T_s\gamma(\mathbf{r}-\mathbf{r}'))$ denotes a zero mean spatial Gaussian process with covariance function $T_s\gamma(\mathbf{r}-\mathbf{r}')$. To simplify the notation, the index of the future time sample, $t+T_s$, shall be referred to as $t+1$ throughout the rest of the paper. 
+\section{Second order stochastic Neural Field Model}
+The model relates the average number of action potentials $g(\mathbf{r},t)$ arriving at time $t \in \mathbb R^{+}$ and at position $\mathbf{r}$ to the local post-synaptic membrane voltage $v(\mathbf{r},t)$. The post-synaptic potentials generated at a neuronal population at location $\mathbf{r}$ by action potentials arriving from all other connected populations at locations $\mathbf{r}'$ is described by 
+\begin{equation}
+	\label{eq:SecondOrderSpikesToPotential} v\left( {\mathbf{r},t} \right)=v(\mathbf r, 0)(t+1)e^{-\zeta t}+v'(\mathbf r,0)te^{-\zeta t}+\int_0^t {h\left( {t - t'} \right)g\left( {\mathbf{r},t'} \right)dt'} 
+\end{equation}
+The post-synaptic response kernel $h(t)$ is described by 
+\begin{equation}
+	\label{eq:SecondOrderSynapticRespKernel} h(t) = At\exp{\left(-\zeta t\right)} 
+\end{equation}
+where $\zeta=\tau^{-1}$, $\tau$ is the synaptic time constant.  $A$ determines the maximal amplitude of the post-synaptic potentials.
+Let $W(\mathbf r,t)$ be a spatio-temporal Wiener process. Then, for $\sigma \in \mathbb R^{+}$, the non-local interactions $g\left( {\mathbf{r},t} \right)$ between cortical populations can be divided into a predominantly deterministic part $g'\left( {\mathbf{r},t} \right) $ and  the random component $W(\mathbf r,t)$,
+\begin{equation}\label{eq:SecondOrderActPotComponents}
+  g\left( {\mathbf{r},t} \right)dt=g'\left( {\mathbf{r},t} \right)dt+\sigma d W(r,t)
+\end{equation}
+As a result, the post-synaptic membrane voltage $v(\mathbf r, t)$ is itself a stochastic process. The deterministic part $g'(\mathbf r, t)$ is usually modelled as an integral equation with exogenous deterministic input , $ u(\mathbf r,t)$, of the form \cite{Atay2005}
+\begin{equation}
+	\label{DeterministicRateBasedInteractions} g'\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( v\left( \mathbf{r}',t \right) \right)\textrm{d}\mathbf{r}'}+u(\mathbf r,t)
+\end{equation}
+where $f(\cdot)$ is the firing rate function, $w(\cdot)$ is the spatial connectivity kernel and $\Omega$ is the spatial domain representing a cortical sheet or surface. Substituting \eqref{eq:SecondOrderActPotComponents} in \eqref{eq:SecondOrderSpikesToPotential} we get
+\begin{equation}\label{eq:SecondOrderNeuralModelDeterStoch}
+v\left( {\mathbf{r},t} \right)=v(\mathbf r, 0)(t+1)e^{-\zeta t}+v'(\mathbf r,0)te^{-\zeta t}+\int_0^t {h\left( {t - t'} \right)g'\left( {\mathbf{r},t'} \right)dt'}+ \int_0^t h\left( {t - t'} \right)\sigma d W(r,t')
+\end{equation}
+It can be shown that the post-synaptic potential $v(\mathbf r, t)$ solves the following initial value problem \parham{Andrew do you know how?}
+\begin{equation*}
+\left\lbrace \begin{array}{lc}
+dv(\mathbf r,t)=\tilde{v}(\mathbf r,t)d_t & \\
+d\tilde{v}(\mathbf r,t)+2\zeta\tilde{v}(\mathbf r,t)dt+\zeta^2v_tdt=&g'(\mathbf r,t)dt+dW(\mathbf r,t)
+\end{array}\right.
+\end{equation*}
+the linear second order SDE can be written in matrix notation as
+\begin{equation}
+ d\begin{bmatrix} v_t(\mathbf r ,t) \\ \tilde{v}_t(\mathbf r ,t)\end{bmatrix}=\begin{bmatrix}0 & 1 \\ \zeta^2 & 2\zeta \end{bmatrix}\begin{bmatrix} v_t(\mathbf r ,t) \\ \tilde{v}_t(\mathbf r ,t)\end{bmatrix}dt+\begin{bmatrix}0 \\ g'(\mathbf r, t)\end{bmatrix}dt+\begin{bmatrix}0 \\ 1 \end{bmatrix}dW(\mathbf r,t)
+\end{equation}
+
+
+\section{Estimation of the Non-linear Spatio-temporal IDE Model}
+
+\subsection{Unscented Kalman Filter}
+\subsection{Unscented RTS Smoother}
+\subsection{Parameter Estimation}
+\subsection{Computational Complexity}
+\section{Example}
+\section{Conclusion}
+
+
+
+\appendices
+\section{}\label{app:InitialValueProblemProof}
+%Appendix one text goes here.
+Here we show that the post-synaptic potential $v(\mathbf r, t)$ is a solution to the initial value problem 
+\begin{equation}
+ dv(\mathbf r, t) + \zeta v(\mathbf r, t)dt = g'(\mathbf r, t) + dW(\mathbf r, t) \quad t\ge0, v(\mathbf r, 0) = v_0
+\end{equation}
+Consider the function $\kappa(v(\mathbf r, t), t) \in C_{1,2}$ defined as
+\begin{equation}
+\kappa(v(\mathbf r, t), t) = v(\mathbf r, t)e^{\zeta t}
+\end{equation}
+ applying Ito's formula we get
+\begin{equation}\label{eq:kappafunction}
+ d\kappa = e^{\zeta t}g'(\mathbf r, t)dt + e^{\zeta t}\sigma dW(\mathbf r, t)
+\end{equation}
+Integrating \eqref{eq:kappafunction} over $[0, t]$ gives 
+\begin{equation}\label{eq:kappafunctionInteration}
+ v(\mathbf r, t)e^{\zeta t}-v_0 = \int_0^te^{\zeta t'}g'(\mathbf r, t')dt' +\int_0^te^{\zeta t'}\sigma dW(\mathbf r, t')
+\end{equation}
+and multiplying throughout by $e^{-\zeta t}$ gives 
+\begin{eqnarray}
+\begin{split}
+ v(\mathbf r, t) &=&v_0e^{-\zeta t}+ \int_0^te^{-\zeta(t-t')}g'(\mathbf r, t')dt' +\int_0^te^{-\zeta (t-t')}\sigma dW(\mathbf r, t')\\
+&=&v_0e^{-\zeta t}+ \int_0^t h(t-t')g'(\mathbf r, t')dt' +\int_0^th(t-t')\sigma dW(\mathbf r, t')
+\end{split}
+\end{eqnarray}
+% Now attach the bibliography
+\bibliographystyle{plainnat}
+\bibliography{STIDE}
+\end{document}
