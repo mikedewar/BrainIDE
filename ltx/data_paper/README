@@ -1,0 +1,9 @@
+Main Aim:
+Data-driven estimation of connectivity kernel before, during and on the onset of an epileptic fit.
+
+Deliverables:
+1. Familiarize with the data
+2. Develop methods to identify the kernel width
+3. Extend EM to estimate also the noise covariance matrices
+4. Estimate the connectivity kernel, prior, on the onset and during an epileptic fit
+5. Analyze of results obtained (Is there statistical significance in the differences between the estimated kernel?)
