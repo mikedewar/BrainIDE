@@ -3,11 +3,9 @@ clear
 close all
 
 % read in neuroport data from .mat file
-
 DataFile = '/Users/dean/Dropbox/iEEG Data Boston/MG29_Seizure22_LFP_Clip_Dean.mat';
 Data = open('/Users/dean/Dropbox/iEEG Data Boston/MG29_Seizure22_LFP_Clip_Dean.mat');
 Data = Data.whole_data';
-
 
 % map the rows of the data matrix to the channels
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -29,29 +27,29 @@ for n=1:100
         MappedData(:,n) = Data(:,DataMap(n)) - mean(Data(:,DataMap(n)));
     end
 end
-clear Data
+clear Data      % save some RAM
 
-% for n=1:100
-%     plot(MappedData(1:50000,n))
-%     title(num2str(n))
-%     drawnow
-%     pause
-% end
-
+% these are the channels that have loads of noise and will be useless
 BadChannels = [13 15 19 24 26 35 42 46 47 54 56  57 67 81 85 87];
+% get ride of the noisey guys
 for n=1:length(BadChannels)
     MappedData(:,BadChannels(n)) = zeros(size(MappedData,1),1);
 end
-    
+
+% now need to re-reference the data
+% ~~~~~~~~~~~~~~~~~~~~~
 CAR = repmat(mean(MappedData,2),1,100);
-CARData = MappedData-CAR;
+CARData = MappedData-CAR;                       % CAR = common average reference
 clear MappedData
 
+% here reshape the data so each time point is 10x10 matrix
 MatrixData = zeros(size(CARData,1),10,10);
 for n=1:size(CARData,1)
     MatrixData(n,:,:) = reshape(CARData(n,:),10,10);
 end
 
+% this bit plot the observed field
+% ~~~~~~~~~~~~~~~~~~
 climit = 80;
 for n=1:size(CARData,1)
     pcolor(squeeze(MatrixData(n,:,:) ))
@@ -60,9 +58,10 @@ for n=1:size(CARData,1)
     title(['Sample = ' num2str(n)])
     drawnow
 end
-% plot channels
-% ~~~~~~~~
-PlotOffset  = 200;
+
+% plot channels as a time series
+% ~~~~~~~~~~~~~~~~~~
+PlotOffset  = 200;                          % this just puts some space between channels
 OffsetMatrix = PlotOffset*(1:100);
 OffsetMatrix = repmat(OffsetMatrix,size(Data,1),1);
 OffsetData = OffsetMatrix+CARData;
