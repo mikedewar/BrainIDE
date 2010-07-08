@@ -63,7 +63,7 @@ end
 % ~~~~~~~~~~~~~~~~~~
 PlotOffset  = 200;                          % this just puts some space between channels
 OffsetMatrix = PlotOffset*(1:100);
-OffsetMatrix = repmat(OffsetMatrix,size(Data,1),1);
+OffsetMatrix = repmat(OffsetMatrix,size(CARData,1),1);
 OffsetData = OffsetMatrix+CARData;
 figure('units','normalized','position',[0 0 1 1])
 % WindowSize = 50000;
