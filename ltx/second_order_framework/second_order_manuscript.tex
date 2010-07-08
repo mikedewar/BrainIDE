@@ -308,11 +308,14 @@ the linear second order SDE can be written in matrix notation as
  d\begin{bmatrix} v_t(\mathbf r ,t) \\ \tilde{v}_t(\mathbf r ,t)\end{bmatrix}=\begin{bmatrix}0 & 1 \\ -\zeta^2 & -2\zeta \end{bmatrix}\begin{bmatrix} v_t(\mathbf r ,t) \\ \tilde{v}_t(\mathbf r ,t)\end{bmatrix}dt+\begin{bmatrix}0 \\ g'(\mathbf r, t)\end{bmatrix}dt+\begin{bmatrix}0 \\ 1 \end{bmatrix}dW(\mathbf r,t)
 \end{equation}
 applying the Euler-Maruyama method the integro-difference equation (IDE) model takes the form of
-\begin{equation}
+\begin{equation}\label{eq:SecondOrderEulerMaruyamaDis}
  \begin{bmatrix} v_{t+T_s}(\mathbf r)-v_t(\mathbf r) \\ \tilde{v}_{t+T_s}(\mathbf r)-\tilde{v}_t(\mathbf r)\end{bmatrix}=T_s\begin{bmatrix}0 & 1 \\ -\zeta^2 & -2\zeta \end{bmatrix}\begin{bmatrix} v_t(\mathbf r)\\ \tilde{v}_t(\mathbf r)\end{bmatrix}+T_s\begin{bmatrix}0 \\ g'(\mathbf r, t)\end{bmatrix}+\begin{bmatrix}0 \\ 1 \end{bmatrix}(W_{t+T_s}(\mathbf r)-W_t(\mathbf r))
 \end{equation}
-
-
+where $T_s$ is the time step, the increments $W_{t+T_s}(\mathbf r)-W_t(\mathbf r)$ is normally distributed with mean zero and covariance function $T_s\gamma(\mathbf r-\mathbf r')$. We rewrite \eqref{eq:SecondOrderEulerMaruyamaDis} as
+\begin{equation}
+ \begin{bmatrix} v_{t+T_s}(\mathbf r) \\ \tilde{v}_{t+T_s}(\mathbf r)\end{bmatrix}=\begin{bmatrix}1 & T_s \\ -\zeta^2 T_s & 1-2\zeta T_s \end{bmatrix}\begin{bmatrix} v_t(\mathbf r)\\ \tilde{v}_t(\mathbf r)\end{bmatrix}+T_s\begin{bmatrix}0 \\ g'(\mathbf r, t)\end{bmatrix}+\begin{bmatrix}0 \\ 1 \end{bmatrix}e_t(\mathbf r)
+\end{equation}
+ where $e_t(\mathbf{r})$ is an $i.i.d.$ disturbance such that $e_t(\mathbf{r})\sim\mathcal{GP}(\mathbf 0,T_s\gamma(\mathbf{r}-\mathbf{r}'))$. Here $\mathcal{GP}(\mathbf 0,T_s\gamma(\mathbf{r}-\mathbf{r}'))$ denotes a zero mean spatial Gaussian process with covariance function $T_s\gamma(\mathbf{r}-\mathbf{r}')$. To simplify the notation, the index of the future time sample, $t+T_s$, shall be referred to as $t+1$ throughout the rest of the paper. 
 \section{Estimation of the Non-linear Spatio-temporal IDE Model}
 
 \subsection{Unscented Kalman Filter}
