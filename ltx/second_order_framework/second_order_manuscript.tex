@@ -14,9 +14,12 @@
 \usepackage{appendix}
 \usepackage{color}
 
+\usepackage{anysize} 									%<-use this for checking equation length
+\marginsize {1.7cm}{1.5cm}{1cm}{1cm} 				%<-use this for checking equation length
+
 %to delete
 \newcommand{\parham}[1]{\textsf{\emph{\textbf{\textcolor{green}{#1}}}}} 
-\newcommand{\dean}[1]{\textsf{\emph{\textbf{\textcolor{yellow}{#1}}}}} 
+\newcommand{\dean}[1]{\textsf{\emph{\textbf{\textcolor{red}{#1}}}}} 
 
 %opening
 \title{Nonlinear Spatio-Temporal Modelling using the Integro-Difference Equation}
@@ -40,6 +43,7 @@ The aim of this paper is to
 \end{abstract}
 
 \section{Introduction}
+\dean{Hi Parham: I have added some headings. Hope they are ok. I was going to cut and paste the derivation in, but I thought I would let you do it, because it goes back and forth a little. When we get a structure (doesn't have to be how I laid it out) it will be easier for me to work on it too.}
 \begin{enumerate}
 	\item General background and motivation
 	\item Aims and hypotheses
@@ -47,6 +51,32 @@ The aim of this paper is to
 	\item Point out specific things we are doing and why they are important
 	\item Paper layout
 \end{enumerate}
+
+\section{Method}
+\subsection{Derivation of the Integro-Difference Equation Neural Field Model}
+
+\subsection{Model-Reduction: Derivation of Finite Dimensional State-Space Model}
+
+\subsection{Frequency Analysis: Determining Basis Function Width and Spacing}
+Need something about the method of placement of basis functions and sampling of the field. \dean{Are we going to go for a triangular grid of basis functions?}
+
+\subsection{Determining Connectivity Kernel Width}
+
+\subsection{Estimation: Expectation Maximization Algorithm}
+
+\section{Results}
+
+\subsection{Frequency Analysis}
+Confirmation of field sampling by sensors and show spatial frequency constraints on the approximated field.
+
+\subsection{Connectivity Kernel Width}
+
+\subsection{State and Parameters Estimation}
+Need to show the parameter distributions
+
+\section{Discussion and Conclusion}
+
+
 \section{State-Space Representation of the Spatio-temporal Nonlinear IDE}
 The $p^{th}$-order nonlinear, stochastic, spatio-temporal homogenous IDE model is defined as
  \begin{equation}\label{eq:IDEModel}
@@ -289,7 +319,7 @@ where $T_s$ is the time step, the increments $W_{t+T_s}(\mathbf r)-W_t(\mathbf r
 	+ e_t\left(\mathbf{r}\right), 
 \end{equation}
  where $\xi = 1-\zeta T_s$ and $e_t(\mathbf{r})$ is an $i.i.d.$ disturbance such that $e_t(\mathbf{r})\sim\mathcal{GP}(\mathbf 0,T_s\gamma(\mathbf{r}-\mathbf{r}'))$. Here $\mathcal{GP}(\mathbf 0,T_s\gamma(\mathbf{r}-\mathbf{r}'))$ denotes a zero mean spatial Gaussian process with covariance function $T_s\gamma(\mathbf{r}-\mathbf{r}')$. To simplify the notation, the index of the future time sample, $t+T_s$, shall be referred to as $t+1$ throughout the rest of the paper. 
-\section{Second order stochastic Neural Field Model}
+\section{Second-Order Stochastic Neural Field Model}
 The model relates the average number of action potentials $g(\mathbf{r},t)$ arriving at time $t \in \mathbb R^{+}$ and at position $\mathbf{r}$ to the local post-synaptic membrane voltage $v(\mathbf{r},t)$. The post-synaptic potentials generated at a neuronal population at location $\mathbf{r}$ by action potentials arriving from all other connected populations at locations $\mathbf{r}'$ is described by 
 \begin{equation}
 	\label{eq:SecondOrderSpikesToPotential} v\left( {\mathbf{r},t} \right)=v(\mathbf r, 0)(t+1)e^{-\zeta t}+v'(\mathbf r,0)te^{-\zeta t}+\int_0^t {h\left( {t - t'} \right)g\left( {\mathbf{r},t'} \right)dt'} 
