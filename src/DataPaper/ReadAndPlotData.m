@@ -1,10 +1,23 @@
 clc
 clear
 close all
+FS = 10;
+TwoColumnWidth = 17.35;     % PLoS figure width cm
+Fs = 30e3;          % sampling rate in Hz
+FsDec = 5e3;
+TsDec = 1/FsDec;
+DecimationFactor = Fs/FsDec;
+
+ElectrodeSpacing = 0.4;     % mm
+SpatialFreqMax = 1/ElectrodeSpacing;
+SpatialFreq = linspace(0,SpatialFreqMax,10);
+
+SzStart = 8;        % seconds
+SzEnd = 34;         % seconds
 
 % read in neuroport data from .mat file
-DataFile = '/Users/dean/Dropbox/iEEG Data Boston/MG29_Seizure22_LFP_Clip_Dean.mat';
-Data = open('/Users/dean/Dropbox/iEEG Data Boston/MG29_Seizure22_LFP_Clip_Dean.mat');
+DataFileLocation = '/Users/dean/Dropbox/iEEG Data Boston/MG29_Seizure22_LFP_Clip_Dean.mat';
+Data = open(DataFileLocation);
 Data = Data.whole_data';
 
 % map the rows of the data matrix to the channels
@@ -42,30 +55,88 @@ CAR = repmat(mean(MappedData,2),1,100);
 CARData = MappedData-CAR;                       % CAR = common average reference
 clear MappedData
 
-% here reshape the data so each time point is 10x10 matrix
-MatrixData = zeros(size(CARData,1),10,10);
-for n=1:size(CARData,1)
-    MatrixData(n,:,:) = reshape(CARData(n,:),10,10);
+% re-assign the bad channels and the corners to nans so we can interpolate
+ZeroChannels = [1 10 13 15 19 24 26 35 42 46 47 54 56  57 67 81 85 87 91 100];
+% get ride of the noisey guys
+for n=1:length(ZeroChannels)
+    CARData(:,ZeroChannels(n)) = nan(size(CARData,1),1);
 end
+
+% low-pass filter data
+Fc = 100;           % Cut-off frequency in Hz
+Wn = Fc/(Fs/2);
+FilterOrder = 2;
+[b a] = butter(FilterOrder,Wn);
+FiltData = filter(b,a,CARData);
+clear CARData
+
+% downsample to 1 kHz
+FiltData = downsample(FiltData,DecimationFactor);
+t = TsDec*(0:size(FiltData,1)-1);
+
+% here reshape the data so each time point is 10x10 matrix
+MatrixData = zeros(size(FiltData,1),10,10);
+DataFFT = zeros(size(FiltData,1),10,10);
+for n=1:size(FiltData,1)
+    MatrixDataTemp = reshape(FiltData(n,:),10,10);
+    MatrixDataTemp = inpaint_nans(MatrixDataTemp);            % interpolate missing data points
+    MeanObservation = mean(mean(MatrixDataTemp));
+    DataFFT(n,:,:) = 20*log10(abs(fft2(MatrixDataTemp-MeanObservation )));
+    MatrixData(n,:,:) = MatrixDataTemp;
+end
+
+% figure,imagesc(squeeze(mean(abs(DataFFT),1)))
+figure('units','centimeters','position',[2,2,TwoColumnWidth,6])
+ColorLims = [30, 65];
+HeightOffset = 1;
+HeigthScale = 0.5;
+subplot(131),imagesc( SpatialFreq,SpatialFreq,squeeze( mean( DataFFT(1:SzStart*FsDec,:,:),1)) )
+axis square
+set(gca,'fontsize',FS,'YDir','normal','fontname','arial')
+CB = colorbar('units','centimeters','location','northoutside');%[Pos(1) Pos(2)+Pos(4)+.1 Pos(3) 1])
+Pos = get(CB,'position');
+set(CB, 'position', [Pos(1) Pos(2)+HeightOffset Pos(3) HeigthScale*Pos(4)] )
+xlabel('Hz','fontsize',FS,'fontname','arial')
+ylabel('Hz','fontsize',FS,'fontname','arial')
+
+subplot(132),imagesc( SpatialFreq,SpatialFreq,squeeze( mean( DataFFT(SzStart*FsDec+1:SzEnd*FsDec,:,:),1)) )
+axis square
+set(gca,'fontsize',FS,'YDir','normal','fontname','arial')
+CB = colorbar('units','centimeters','location','northoutside');%[Pos(1) Pos(2)+Pos(4)+.1 Pos(3) 1])
+Pos = get(CB,'position');
+set(CB, 'position', [Pos(1) Pos(2)+HeightOffset Pos(3) HeigthScale*Pos(4)] )
+xlabel('Hz','fontsize',FS,'fontname','arial')
+ylabel('Hz','fontsize',FS,'fontname','arial')
+
+subplot(133),imagesc( SpatialFreq,SpatialFreq,squeeze( mean( DataFFT(SzEnd*FsDec+1:end,:,:),1)) )
+axis square
+set(gca,'fontsize',FS,'YDir','normal','fontname','arial')
+CB = colorbar('units','centimeters','location','northoutside');%[Pos(1) Pos(2)+Pos(4)+.1 Pos(3) 1])
+Pos = get(CB,'position');
+set(CB, 'position', [Pos(1) Pos(2)+HeightOffset Pos(3) HeigthScale*Pos(4)] )
+xlabel('Hz','fontsize',FS,'fontname','arial')
+ylabel('Hz','fontsize',FS,'fontname','arial')
 
 % this bit plot the observed field
 % ~~~~~~~~~~~~~~~~~~
-climit = 80;
-for n=1:size(CARData,1)
-    pcolor(squeeze(MatrixData(n,:,:) ))
-%     shading('interp')
-    caxis(gca,[-climit climit])
-    title(['Sample = ' num2str(n)])
-    drawnow
-end
+% climit = 80;
+% SampleStep = 1;
+% for n=1:SampleStep:size(FiltData,1)
+%     imagesc(squeeze(MatrixData(n,:,:) ),[-climit climit])
+% %     shading('interp')
+%     title(['Sample = ' num2str(n)])
+% %     colorbar
+%     drawnow
+% end
 
 % plot channels as a time series
 % ~~~~~~~~~~~~~~~~~~
 PlotOffset  = 200;                          % this just puts some space between channels
 OffsetMatrix = PlotOffset*(1:100);
-OffsetMatrix = repmat(OffsetMatrix,size(CARData,1),1);
-OffsetData = OffsetMatrix+CARData;
+OffsetMatrix = repmat(OffsetMatrix,size(FiltData,1),1);
+OffsetData = OffsetMatrix+FiltData;
 figure('units','normalized','position',[0 0 1 1])
+
 % WindowSize = 50000;
 % WindowStep = WindowSize/2;
 % for n=WindowSize+1:WindowStep:size(OffsetData,1)
@@ -73,4 +144,4 @@ figure('units','normalized','position',[0 0 1 1])
 %     drawnow
 %     pause
 % end
-plot(OffsetData)
+plot(t,OffsetData)

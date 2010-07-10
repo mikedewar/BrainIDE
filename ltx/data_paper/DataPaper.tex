@@ -37,6 +37,8 @@
 % This is now the recommended way for checking for PDFLaTeX:
 \usepackage{ifpdf}
 
+\usepackage{amsmath,amssymb,amsfonts,epsfig} % Typical maths resource packages
+
 %\newif\ifpdf
 %\ifx\pdfoutput\undefined
 %\pdffalse % we are not running PDFLaTeX
@@ -96,6 +98,14 @@
 \begin{itemize}
 	\item Create 2D FT of observations to estimate bandwidth
 \end{itemize}
+
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics{./Figures/SpatialFreq.eps}
+\end{center}
+\caption{{\bf Spatial frequency analysis of the neural field}. A. Pre-seizure observations. B. Seizure observations. C. Post-seizure observations.}
+\label{fig:SpatialFreqObservation}
+\end{figure}
 
 \subsection{Pre-processing}
 
