@@ -2,6 +2,8 @@ clc
 clear
 close all
 FS = 10;
+FS2 = 12;
+
 TwoColumnWidth = 17.35;     % PLoS figure width cm
 Fs = 30e3;          % sampling rate in Hz
 FsDec = 5e3;
@@ -98,6 +100,7 @@ Pos = get(CB,'position');
 set(CB, 'position', [Pos(1) Pos(2)+HeightOffset Pos(3) HeigthScale*Pos(4)] )
 xlabel('Hz','fontsize',FS,'fontname','arial')
 ylabel('Hz','fontsize',FS,'fontname','arial')
+title('\bf A','fontsize',FS2,'fontname','arial','position',[-0.5 2.8])
 
 subplot(132),imagesc( SpatialFreq,SpatialFreq,squeeze( mean( DataFFT(SzStart*FsDec+1:SzEnd*FsDec,:,:),1)) )
 axis square
@@ -107,6 +110,7 @@ Pos = get(CB,'position');
 set(CB, 'position', [Pos(1) Pos(2)+HeightOffset Pos(3) HeigthScale*Pos(4)] )
 xlabel('Hz','fontsize',FS,'fontname','arial')
 ylabel('Hz','fontsize',FS,'fontname','arial')
+title('\bf B','fontsize',FS2,'fontname','arial','position',[-0.5 2.8])
 
 subplot(133),imagesc( SpatialFreq,SpatialFreq,squeeze( mean( DataFFT(SzEnd*FsDec+1:end,:,:),1)) )
 axis square
@@ -116,6 +120,7 @@ Pos = get(CB,'position');
 set(CB, 'position', [Pos(1) Pos(2)+HeightOffset Pos(3) HeigthScale*Pos(4)] )
 xlabel('Hz','fontsize',FS,'fontname','arial')
 ylabel('Hz','fontsize',FS,'fontname','arial')
+title('\bf C','fontsize',FS2,'fontname','arial','position',[-0.5 2.8])
 
 % this bit plot the observed field
 % ~~~~~~~~~~~~~~~~~~
@@ -131,7 +136,7 @@ ylabel('Hz','fontsize',FS,'fontname','arial')
 
 % plot channels as a time series
 % ~~~~~~~~~~~~~~~~~~
-PlotOffset  = 200;                          % this just puts some space between channels
+PlotOffset  = 500;                          % this just puts some space between channels
 OffsetMatrix = PlotOffset*(1:100);
 OffsetMatrix = repmat(OffsetMatrix,size(FiltData,1),1);
 OffsetData = OffsetMatrix+FiltData;
@@ -144,4 +149,44 @@ figure('units','normalized','position',[0 0 1 1])
 %     drawnow
 %     pause
 % end
-plot(t,OffsetData)
+
+figure('units','centimeters','position',[2,2,TwoColumnWidth,6])
+StartChannel = 2;
+EndChannel = 6;
+plot(t,OffsetData(:,StartChannel:EndChannel),'k')
+axis tight
+axis off
+
+% draw on the scale bars
+Pos = get(gca,'position');
+TimeTotal = t(end);
+PlotWidth = Pos(3);
+LineTime = 5;        % seconds
+LineLength = PlotWidth*LineTime/TimeTotal;
+
+MaxAmp = max(OffsetData(:,EndChannel));
+MinAmp = min(OffsetData(:,StartChannel));
+AmpRange = MaxAmp - MinAmp;
+
+LineAmp = 500;
+PlotHeight = Pos(4);
+AmpLength = PlotHeight*LineAmp/AmpRange;
+
+ScaleBarXOffset = 0;
+ScaleBarYOffset = -0.05;
+annotation('line',[Pos(2) Pos(2)+LineLength]+ScaleBarXOffset,[Pos(1) Pos(1)]+ScaleBarYOffset,'linewidth',3)
+annotation('line',[Pos(2) Pos(2)]+ScaleBarXOffset,[Pos(1) Pos(1)+AmpLength]+ScaleBarYOffset,'linewidth',3)
+
+TextBoxWidth = 0.1;
+TextBoxHeight = 0.05;
+annotation('textbox',[Pos(2)+0.02 Pos(1)-0.1 TextBoxWidth TextBoxHeight],...
+    'string',[num2str(LineTime) ' s'],'fontsize',FS,'fontname','arial','linestyle','none')
+annotation('textbox',[Pos(2)-0.085 Pos(1) TextBoxWidth TextBoxHeight],...
+    'string',[num2str(LineAmp) ' \muV'],'fontsize',FS,'fontname','arial','linestyle','none')
+
+% draw on the seizure markersSzStart
+LineSzStart = PlotWidth*SzStart/TimeTotal;
+annotation('line',[LineSzStart LineSzStart],[Pos(1) Pos(3)],'linewidth',3,'color','red')
+
+xlabel('Time (s)','fontsize',FS,'fontname','arial')
+ylabel('Amplitude','fontsize',FS,'fontname','arial')

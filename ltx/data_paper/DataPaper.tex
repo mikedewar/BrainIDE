@@ -93,6 +93,13 @@
 	\item Show LFP Data (background, seizure, post-seizure)
 	\item Show spectral properties of LFPs
 \end{itemize}
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics{./Figures/LFPs.eps}
+\end{center}
+\caption{{\bf Local Field Potentials}. Data recorded from the first five channels of the array. The red dotted line indicates the seizure onset and the blue dashed line indicates the seizure end.}
+\label{fig:SpatialFreqObservation}
+\end{figure}
 
 \subsection{Frequency Analysis}
 \begin{itemize}
@@ -103,12 +110,18 @@
 \begin{center}
 \includegraphics{./Figures/SpatialFreq.eps}
 \end{center}
-\caption{{\bf Spatial frequency analysis of the neural field}. A. Pre-seizure observations. B. Seizure observations. C. Post-seizure observations.}
+\caption{{\bf Spatial frequency analysis of the observed neural field}. A. Pre-seizure observations. B. Seizure observations. C. Post-seizure observations.}
 \label{fig:SpatialFreqObservation}
 \end{figure}
 
 \subsection{Pre-processing}
-
+\begin{itemize}
+	\item Identification and removal of bad channels
+	\item Common average reference (CAR) montage 
+	\item Low-pass filter data, with cut-off at 100~Hz
+	\item Decimate data from 30~kHz to 5~kHz temporal sampling
+	\item Spatially interpolate missing data to facilitate spatial frequency analysis
+\end{itemize}
 \subsection{Estimation Algorithm}
 \begin{itemize}
 	\item Model
