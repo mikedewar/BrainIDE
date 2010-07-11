@@ -76,6 +76,52 @@ clear CARData
 FiltData = downsample(FiltData,DecimationFactor);
 t = TsDec*(0:size(FiltData,1)-1);
 
+% get indexes for good channels
+m=1;
+for n=1:size(FiltData,2)
+    if ~ismember(n,ZeroChannels)
+        GoodChannels(m) = n;
+        m=m+1;
+    end
+end
+
+NFFTPoints = 10*1024;
+YMax = 105;
+FMax = 100;
+figure('units','centimeters','position',[2,2,TwoColumnWidth,6])
+TemporalFFT1 = 20*log10(abs(fft(FiltData(1:SzStart*FsDec,GoodChannels),NFFTPoints,1)));
+TemporalFFT2 = 20*log10(abs(fft(FiltData(SzStart*FsDec+1:SzEnd*FsDec,GoodChannels),NFFTPoints,1)));
+TemporalFFT3 = 20*log10(abs(fft(FiltData(SzEnd*FsDec+1:end,GoodChannels),NFFTPoints,1)));
+
+f = linspace(0,FsDec,NFFTPoints);
+subplot(131),semilogx(f,mean(TemporalFFT1,2))
+xlim([0 FMax])
+ylim([60 YMax])
+axis square
+set(gca,'fontsize',FS,'fontname','arial')
+xlabel('Frequency (Hz)','fontsize',FS,'fontname','arial')
+ylabel('Power (dB)','fontsize',FS,'fontname','arial')
+title('\bf A','fontsize',FS2,'fontname','arial','position',[0.2 100 17])
+
+subplot(132),semilogx(f,mean(TemporalFFT2,2))
+xlim([0 FMax])
+ylim([60 YMax])
+axis square
+set(gca,'fontsize',FS,'fontname','arial')
+xlabel('Frequency (Hz)','fontsize',FS,'fontname','arial')
+ylabel('Power (dB)','fontsize',FS,'fontname','arial')
+title('\bf B','fontsize',FS2,'fontname','arial','position',[0.2 100 17])
+
+subplot(133),semilogx(f,mean(TemporalFFT3,2))
+xlim([0 FMax])
+ylim([60 YMax])
+axis square
+set(gca,'fontsize',FS,'fontname','arial')
+xlabel('Frequency (Hz)','fontsize',FS,'fontname','arial')
+ylabel('Power (dB)','fontsize',FS,'fontname','arial')
+title(gca,'\bf C','fontsize',FS2,'fontname','arial','position',[0.2 100 17])
+
+
 % here reshape the data so each time point is 10x10 matrix
 MatrixData = zeros(size(FiltData,1),10,10);
 DataFFT = zeros(size(FiltData,1),10,10);
@@ -124,15 +170,15 @@ title('\bf C','fontsize',FS2,'fontname','arial','position',[-0.5 2.8])
 
 % this bit plot the observed field
 % ~~~~~~~~~~~~~~~~~~
-% climit = 80;
-% SampleStep = 1;
-% for n=1:SampleStep:size(FiltData,1)
-%     imagesc(squeeze(MatrixData(n,:,:) ),[-climit climit])
-% %     shading('interp')
-%     title(['Sample = ' num2str(n)])
-% %     colorbar
-%     drawnow
-% end
+climit = 80;
+SampleStep = 1;
+for n=1:SampleStep:size(FiltData,1)
+    imagesc(squeeze(MatrixData(n,:,:) ),[-climit climit])
+%     shading('interp')
+    title(['Sample = ' num2str(n)])
+%     colorbar
+    drawnow
+end
 
 % plot channels as a time series
 % ~~~~~~~~~~~~~~~~~~
@@ -186,7 +232,9 @@ annotation('textbox',[Pos(2)-0.085 Pos(1) TextBoxWidth TextBoxHeight],...
 
 % draw on the seizure markersSzStart
 LineSzStart = PlotWidth*SzStart/TimeTotal;
-annotation('line',[LineSzStart LineSzStart],[Pos(1) Pos(3)],'linewidth',3,'color','red')
+LineSzEnd = PlotWidth*SzEnd/TimeTotal;
+annotation('line',[LineSzStart LineSzStart]+Pos(1),[Pos(1) Pos(1)+Pos(3)],'linewidth',1.5,'color','red','linestyle',':')
+annotation('line',[LineSzEnd LineSzEnd]+Pos(1),[Pos(1) Pos(1)+Pos(3)],'linewidth',1.5,'color','blue','linestyle','--')
 
 xlabel('Time (s)','fontsize',FS,'fontname','arial')
 ylabel('Amplitude','fontsize',FS,'fontname','arial')
