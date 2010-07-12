@@ -96,7 +96,8 @@ end
 NFFTPoints = 150*1024;
 YMax = 122;
 FMax = 100;
-figure('units','centimeters','position',[2,2,TwoColumnWidth,6])
+figure('units','centimeters','position',[2,2,TwoColumnWidth,6],...
+    'filename','/Users/dean/Projects/BrainIDE/ltx/data_paper/Figures/TemporalFreq.eps')
 TemporalFFT1 = 20*log10(abs(fft(FiltData(1:SzStart*FsDec,GoodChannels),NFFTPoints,1)));
 TemporalFFT2 = 20*log10(abs(fft(FiltData(SzStart*FsDec+1:SzEnd*FsDec,GoodChannels),NFFTPoints,1)));
 TemporalFFT3 = 20*log10(abs(fft(FiltData(SzEnd*FsDec+1:end,GoodChannels),NFFTPoints,1)));
@@ -146,7 +147,8 @@ end
 
 %%
 % figure,imagesc(squeeze(mean(abs(DataFFT),1)))
-figure('units','centimeters','position',[2,2,TwoColumnWidth,6],'renderer','opengl')
+figure('units','centimeters','position',[2,2,TwoColumnWidth,6],'renderer','painters',...
+    'filename','/Users/dean/Projects/BrainIDE/ltx/data_paper/Figures/SpatialFreq.eps')
 ColorLims = [30, 65];
 HeightOffset = 1;
 HeigthScale = 0.5;
@@ -188,7 +190,8 @@ title('\bf C','fontsize',FS2,'fontname','arial','position',[-0.5 2.8])
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~
 MinPower = 25;
 MaxPower = 65;
-figure('units','centimeters','position',[2,2,TwoColumnWidth,6])
+figure('units','centimeters','position',[2,2,TwoColumnWidth,6],...
+    'filename','/Users/dean/Projects/BrainIDE/ltx/data_paper/Figures/SpatialFreqCrossSection.eps')
 FFTCrossSect1 = diag(MeanFFT1);
 subplot(131),plot(SpatialFreq,FFTCrossSect1)
 axis square
@@ -254,7 +257,8 @@ hold off
 %     
 % end
 %%
-figure('units','centimeters','position',[2,2,TwoColumnWidth,TwoColumnWidth],'renderer','opengl')
+figure('units','centimeters','position',[2,2,TwoColumnWidth,TwoColumnWidth],'renderer','painters',...
+    'filename','/Users/dean/Projects/BrainIDE/ltx/data_paper/Figures/FieldObservations.eps')
 climit = 50;
 StartSample = floor(SzEnd*FsDec)+120;
 StartTime = SzEnd+120/FsDec
@@ -328,10 +332,11 @@ OffsetMatrix = repmat(OffsetMatrix,size(FiltData,1),1);
 OffsetData = OffsetMatrix+FiltData;
 figure('units','normalized','position',[0 0 1 1])
 
-figure('units','centimeters','position',[2,2,TwoColumnWidth,6])
+figure('units','centimeters','position',[2,2,TwoColumnWidth,6],...
+    'filename','/Users/dean/Projects/BrainIDE/ltx/data_paper/Figures/LFPs.eps')
 StartChannel = 2;
-EndChannel = 6;
-plot(t,OffsetData(:,StartChannel:EndChannel),'k')
+EndChannel = 9;
+plot(t,OffsetData(:,StartChannel:EndChannel),'k','linewidth',0.5)
 axis tight
 axis off
 
@@ -368,5 +373,5 @@ annotation('textbox',[Pos(2)-0.085 Pos(1) TextBoxWidth TextBoxHeight],...
 % ~~~~~~~~~~~~~~~~~~~~~~
 LineSzStart = PlotWidth*SzStart/TimeTotal;
 LineSzEnd = PlotWidth*SzEnd/TimeTotal;
-annotation('line',[LineSzStart LineSzStart]+Pos(1),[Pos(1) Pos(1)+Pos(3)],'linewidth',1.5,'color','red','linestyle',':')
-annotation('line',[LineSzEnd LineSzEnd]+Pos(1),[Pos(1) Pos(1)+Pos(3)],'linewidth',1.5,'color','blue','linestyle','--')
+annotation('line',[LineSzStart LineSzStart]+Pos(1),[Pos(1) Pos(1)+Pos(3)],'linewidth',2,'color','red','linestyle',':')
+annotation('line',[LineSzEnd LineSzEnd]+Pos(1),[Pos(1) Pos(1)+Pos(3)],'linewidth',2,'color','blue','linestyle','--')
