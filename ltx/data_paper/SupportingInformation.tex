@@ -68,7 +68,7 @@
 \fi
 
 \renewcommand{\theequation}{S1.\arabic{equation}}
-\section*{Product of two $n$-dimensional Gaussian functions}\label{eq:GaussianProduct} 
+\section*{Product of two $n$-dimensional Gaussian functions}\label{sec:GaussianProduct} 
 In this section, we provide a derivation for the product of two n-dimensional Gaussian basis functions.
 This derivation is used in the  calculation of $\nabla 	q$. Consider two
 Gaussian basis functions
@@ -104,6 +104,20 @@ and
 \begin{equation}
  \boldsymbol\mu=\frac{\sigma_j^2\boldsymbol\mu_i+\sigma_i^2\boldsymbol\mu_j}{\sigma_i^2+\sigma_j^2}
 \end{equation}
+\section*{Derivative of the firing rate}\label{sec:FiringrateDerivative} 
+Here we find the derivative of the activation function which is used to compute  $\nabla q$. The sigmoidal activation function which relates firing rate of the presynaptic neurons to the post-synaptic membrane potential is given by
+\begin{equation}
+	\label{ActivationFunction} f\left( v\left( \mathbf{r}', t \right) \right) = \frac{f_{max}}{1 + \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right)}. 
+\end{equation}
+Derivative of the sigmoidal activation function can be written in a simple form as
+\begin{eqnarray}
+ \frac{\sigma f}{\sigma v}&=& \frac{\varsigma f_{max}}{\left(1 + \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right)\right)^2} \times \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right) \nonumber \\
+&=&\frac{\varsigma f_{max}}{1 + \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right)} \times \left(1-\frac{1}{1 + \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right)}\right) \nonumber \\
+&=& \varsigma f\left( v\left( \mathbf{r}', t \right) \right)\left( 1-\frac{f\left( v\left( \mathbf{r}', t \right) \right)}{f_{max}}\right)
+\end{eqnarray}
+
+
+
 \bibliographystyle{plain}
 \bibliography{}
 \end{document}
