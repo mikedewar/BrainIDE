@@ -1,0 +1,123 @@
+%
+%  untitled
+%
+%  Created by Parham Aram on 2010-07-14.
+%  Copyright (c) 2010 . All rights reserved.
+%
+\documentclass[]{article}
+
+% Use utf-8 encoding for foreign characters
+\usepackage[utf8]{inputenc}
+
+% Setup for fullpage use
+\usepackage{fullpage}
+
+% Uncomment some of the following if you use the features
+%
+% Running Headers and footers
+%\usepackage{fancyhdr}
+
+% Multipart figures
+%\usepackage{subfigure}
+
+% More symbols
+\usepackage{amsmath}
+\usepackage{amssymb}
+%\usepackage{latexsym}
+
+% Surround parts of graphics with box
+\usepackage{boxedminipage}
+
+% Package for including code in the document
+\usepackage{listings}
+
+% If you want to generate a toc for each chapter (use with book)
+\usepackage{minitoc}
+
+% This is now the recommended way for checking for PDFLaTeX:
+\usepackage{ifpdf}
+
+%\newif\ifpdf
+%\ifx\pdfoutput\undefined
+%\pdffalse % we are not running PDFLaTeX
+%\else
+%\pdfoutput=1 % we are running PDFLaTeX
+%\pdftrue
+%\fi
+
+\ifpdf
+\usepackage[pdftex]{graphicx}
+\else
+\usepackage{graphicx}
+\fi
+% \title{S1: Extended Derivations for `A Data Driven Framework for Patient-Specific Neural Field Modelling'}
+% \author{Dean R. Freestone$^{1,2,3,\ast}$, 
+% Parham Aram$^{4}$, 
+% Michael Dewar$^{5}$,\\
+% Kenneth Scerri$^{6}$,
+% David B. Grayden$^{1}$,
+% Visakan Kadirkamanathan$^{4}$}
+
+
+\begin{document}
+
+\ifpdf
+\DeclareGraphicsExtensions{.pdf, .jpg, .tif}
+\else
+\DeclareGraphicsExtensions{.eps, .jpg}
+\fi
+
+\renewcommand{\theequation}{S1.\arabic{equation}}
+\section*{Product of two $n$-dimensional Gaussian functions}\label{sec:GaussianProduct} 
+In this section, we provide a derivation for the product of two n-dimensional Gaussian basis functions.
+This derivation is used in the  calculation of $\nabla 	q$. Consider two
+Gaussian basis functions
+\begin{equation}\label{eq:n_dimensional_Gaussian1}
+ \varphi_i(\mathbf r)=\mathrm{exp}\left({-\frac{1}{\sigma_i^2} (\mathbf r-\boldsymbol \mu_i)^\top(\mathbf r-\boldsymbol \mu_i})\right)
+\end{equation}
+and 
+\begin{equation}\label{eq:n_dimensional_Gaussian2}
+\varphi_j(\mathbf r)=\mathrm{exp}\left({-\frac{1}{\sigma_j^2} (\mathbf r-\boldsymbol \mu_j)^\top(\mathbf r-\boldsymbol \mu_j})\right).
+\end{equation}
+the product of two Gauusian basis functions is given by
+\begin{equation}
+ \varphi_i(\mathbf r)\varphi_j(\mathbf r)=\mathrm{exp}-\left({\frac{1}{\sigma_i^2} (\mathbf r-\boldsymbol \mu_i)^\top(\mathbf r-\boldsymbol\mu_i)+{\frac{1}{\sigma_j^2} (\mathbf r-\boldsymbol \mu_j)^\top(\mathbf r-\boldsymbol\mu_j)}}\right)
+\end{equation}
+the product is expanded to give
+\begin{equation}
+\begin{array}{ccc}
+ 
+ \varphi_i(\mathbf r)\varphi_j(\mathbf r)&=&\mathrm{exp}-\left(\frac{(\sigma_i^2+\sigma_j^2)\left[\mathbf r^\top\mathbf r-2\mathbf r^\top \frac{\sigma_j^2\boldsymbol\mu_i+\sigma_i^2\boldsymbol\mu_j}{\sigma_i^2+\sigma_j^2}+\frac{(\sigma_j^2\boldsymbol\mu_i+\sigma_i^2\boldsymbol\mu_j)^\top(\sigma_j^2\boldsymbol\mu_i+\sigma_i^2\boldsymbol\mu_j)}{(\sigma_i^2+\sigma_j^2)^2}   \right]  +\frac{\sigma_i^2\sigma_j^2}{\sigma_i^2+\sigma_j^2}(\boldsymbol \mu_i-\boldsymbol\mu_j)^\top(\boldsymbol \mu_i-\boldsymbol\mu_j) }{\sigma_i^2\sigma_j^2}\right)\\
+&=&\mathrm{exp}\left(-\frac{(\sigma_i^2+\sigma_j^2)\left[(\mathbf r-\frac{\sigma_j^2\boldsymbol\mu_i+\sigma_i^2\boldsymbol\mu_j}{\sigma_i^2+\sigma_j^2})^\top(\mathbf r-\frac{\sigma_j^2\boldsymbol\mu_i+\sigma_i^2\boldsymbol\mu_j}{\sigma_i^2+\sigma_j^2})\right]  }{\sigma_i^2\sigma_j^2}\right)
+\times\mathrm{exp}\left(-\frac{(\boldsymbol \mu_i-\boldsymbol\mu_j)^\top(\boldsymbol \mu_i-\boldsymbol\mu_j)}{\sigma_i^2+\sigma_j^2}\right)
+\end{array}
+\end{equation}
+therefore we have
+\begin{equation}
+ \varphi_i(\mathbf r)\varphi_j(\mathbf r)=c_{i,j}\times\mathrm{exp}\left({-\frac{1}{\sigma^2} (\mathbf r-\boldsymbol \mu)^\top(\mathbf r-\boldsymbol\mu)}\right)
+\end{equation}
+where
+\begin{equation}
+ c_{i,j}=\mathrm{exp}\left(-\frac{(\boldsymbol \mu_i-\boldsymbol\mu_j)^\top(\boldsymbol \mu_i-\boldsymbol\mu_j)}{\sigma_i^2+\sigma_j^2}\right) \quad \sigma^2=\frac{\sigma_i^2\sigma_j^2}{\sigma_i^2+\sigma_j^2}
+\end{equation}
+and
+\begin{equation}
+ \boldsymbol\mu=\frac{\sigma_j^2\boldsymbol\mu_i+\sigma_i^2\boldsymbol\mu_j}{\sigma_i^2+\sigma_j^2}
+\end{equation}
+\section*{Derivative of the firing rate}\label{sec:FiringrateDerivative} 
+Here we find the derivative of the activation function which is used to compute  $\nabla q$. The sigmoidal activation function which relates firing rate of the presynaptic neurons to the post-synaptic membrane potential is given by
+\begin{equation}
+	\label{ActivationFunction} f\left( v\left( \mathbf{r}', t \right) \right) = \frac{f_{max}}{1 + \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right)}. 
+\end{equation}
+Derivative of the sigmoidal activation function can be written in a simple form as
+\begin{eqnarray}
+ \frac{\sigma f}{\sigma v}&=& \frac{\varsigma f_{max}}{\left(1 + \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right)\right)^2} \times \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right) \nonumber \\
+&=&\frac{\varsigma f_{max}}{1 + \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right)} \times \left(1-\frac{1}{1 + \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right)}\right) \nonumber \\
+&=& \varsigma f\left( v\left( \mathbf{r}', t \right) \right)\left( 1-\frac{f\left( v\left( \mathbf{r}', t \right) \right)}{f_{max}}\right)
+\end{eqnarray}
+
+
+
+\bibliographystyle{plain}
+\bibliography{}
+\end{document}
