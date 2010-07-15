@@ -36,6 +36,7 @@ v(1,:,:) = Define2DGaussian(0,0, sigma_phi^2, 0,NPoints,SpaceMin,SpaceMax);
 
 % generate data
 y = zeros(T,NSensors_xy^2);         % initialise obseravation for speed
+y_matrix = zeros(T,NSensors_xy,NSensors_xy);
 for t=1:T-1
     
     f = f_max./(1+exp(varsigma*(v_0-squeeze(v(t,:,:)))));           % calc firing rate using sigmoid
@@ -46,8 +47,9 @@ for t=1:T-1
     V = fft2(squeeze(v(t+1,:,:)));                                                  % take FFT of field for conv with sensor
     m_conv_v = ifftshift(ifft2(M.*V,'symmetric'))*Delta_squared;    % conv with sensor 
     
-    y_temp = m_conv_v(sensor_indexes,sensor_indexes) ...
+    y_matrix(t+1,:,:) = m_conv_v(sensor_indexes,sensor_indexes) ...
         + reshape(varepsilon(t+1,:,:),NSensors_xy,NSensors_xy);     % take indexes of field conv with sensor for observations
+    y_temp = squeeze(y_matrix(t+1,:,:));
     y(t+1,:) = y_temp(:);                                                                 % observations as a vector
     
 end

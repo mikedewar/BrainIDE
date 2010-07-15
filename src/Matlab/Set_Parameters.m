@@ -11,7 +11,7 @@ end
 % ~~~~~~~~~~~
 Delta = 0.5;                          % space step for the spatial discretisation
 Delta_squared = Delta^2;
-SpaceMax = 10;                    % maximum space in mm
+SpaceMax = 20;                    % maximum space in mm
 SpaceMin = -SpaceMax;         % minimum space in mm
 NPoints = (SpaceMax-SpaceMin)/Delta+1;
 r = linspace(SpaceMin,SpaceMax,NPoints);      % define space
@@ -56,7 +56,7 @@ end
 
 % sensor parameters
 % ~~~~~~~~~~~~
-NSensors_xy = 9;%21;%14;
+NSensors_xy = 11;%21;%14;
 NSensors = NSensors_xy^2;
 % mu_y_xy = linspace(-15,15,NSensors_xy);
 mu_y_xy = linspace(-10,10,NSensors_xy);               % sensor centers
