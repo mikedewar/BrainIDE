@@ -235,7 +235,7 @@ where  $\beta= \sum_{t=1}^T\mathbf E_{(\theta',\xi)}[ \ln c-\mathbf x_{t+1}^\top
 \end{equation}
 Other terms can be approximated by linearising $q(\mathbf x)$ and taking the first-order truncated  Taylor-series expansion around the mean of the state at each time instant, i.e. 
 \begin{equation}\label{eq:qTaylor}
- q(\mathbf x_t)=q(\hat{\mathbf x}_t)+\nabla^\top q (\hat{\mathbf x}_t)(\mathbf x_t -\hat{\mathbf x}_t)
+ q(\mathbf x_t)\approx q(\hat{\mathbf x}_t)+\nabla^\top q (\hat{\mathbf x}_t)(\mathbf x_t -\hat{\mathbf x}_t)
 \end{equation}
 where
 \begin{equation}
@@ -243,13 +243,13 @@ where
 \end{equation}
 therefore
 \begin{equation}
- \Xi_2=\sum_{t=1}^{T}\mathbf E_{(\theta',\xi')}[q(\mathbf x_t)\mathbf x_{t+1}^\top ], \quad \mathbf E_{(\theta',\xi')}[q(\mathbf x_t)\mathbf x_{t+1}^\top ]=q(\mathbf{ \hat x}_t)\mathbf{ \hat x}_{t+1}^\top+\nabla^\top q(\mathbf{ \hat x}_t)\mathbf M_t
+ \Xi_2=\sum_{t=1}^{T}\mathbf E_{(\theta',\xi')}[q(\mathbf x_t)\mathbf x_{t+1}^\top ], \quad \mathbf E_{(\theta',\xi')}[q(\mathbf x_t)\mathbf x_{t+1}^\top ]\approx q(\mathbf{ \hat x}_t)\mathbf{ \hat x}_{t+1}^\top+\nabla^\top q(\mathbf{ \hat x}_t)\mathbf M_t
 \end{equation}
 \begin{equation}
- \Xi_3=\sum_{t=1}^{T}\mathbf E_{(\theta',\xi')}[q(\mathbf x_t)\mathbf x_{t}^\top ], \quad \mathbf E_{(\theta',\xi')}[q(\mathbf x_t)\mathbf x_{t}^\top ]=q(\mathbf{ \hat x}_t)\mathbf{ \hat x}_{t}^\top+\nabla^\top q(\mathbf{ \hat x}_t)\mathbf P_t
+ \Xi_3=\sum_{t=1}^{T}\mathbf E_{(\theta',\xi')}[q(\mathbf x_t)\mathbf x_{t}^\top ], \quad \mathbf E_{(\theta',\xi')}[q(\mathbf x_t)\mathbf x_{t}^\top ]\approx q(\mathbf{ \hat x}_t)\mathbf{ \hat x}_{t}^\top+\nabla^\top q(\mathbf{ \hat x}_t)\mathbf P_t
 \end{equation}
 \begin{equation}
- \Xi_4=\sum_{t=1}^{T}\mathbf E_{(\theta',\xi')}[q(\mathbf x_t)q^\top(\mathbf x_t) ], \quad \mathbf E_{(\theta',\xi')}[q(\mathbf x_t)q^\top(\mathbf x_t) ]=q(\mathbf{ \hat x}_t)q^\top(\mathbf{ \hat x}_t)+\nabla^\top q(\mathbf{ \hat x}_t)\mathbf P_t\nabla q(\mathbf{ \hat x}_t)
+ \Xi_4=\sum_{t=1}^{T}\mathbf E_{(\theta',\xi')}[q(\mathbf x_t)q^\top(\mathbf x_t) ], \quad \mathbf E_{(\theta',\xi')}[q(\mathbf x_t)q^\top(\mathbf x_t) ] \approx q(\mathbf{ \hat x}_t)q^\top(\mathbf{ \hat x}_t)+\nabla^\top q(\mathbf{ \hat x}_t)\mathbf P_t\nabla q(\mathbf{ \hat x}_t)
 \end{equation}
 we rewrite the $\mathcal Q$-function as
 \begin{eqnarray}\label{eq:rewrittenQ}
