@@ -239,11 +239,11 @@ Other terms can be approximated by linearising $q(\mathbf x)$ and taking the fir
 \end{equation}
 where
 \begin{equation}
-\nabla q=\begin{bmatrix}\frac{\delta q}{\delta x_1} \mid_{{\mathbf x}_t=\mathbf{\hat x}_t} &\frac{\delta q}{\delta x_2} \mid_{{\mathbf x}_t=\mathbf{\hat x}_t}& \dots &\frac{\delta q}{\delta x_n} \mid_{{\mathbf x}_t=\mathbf{\hat x}_t}\end{bmatrix}^\top
+\nabla q=\begin{bmatrix}\frac{\delta q}{\delta x_{t,1}} \mid_{{\mathbf x}_t=\mathbf{\hat x}_t} &\frac{\delta q}{\delta x_{t,2}} \mid_{{\mathbf x}_t=\mathbf{\hat x}_t}& \dots &\frac{\delta q}{\delta x_{t,n}} \mid_{{\mathbf x}_t=\mathbf{\hat x}_t}\end{bmatrix}^\top
 \end{equation}
 and
 \begin{equation}
-\frac{\delta q}{\delta x_i}= \int_\Omega \boldsymbol{\Psi}(\mathbf{r}')\phi_i(\mathbf r') f'(\phi^\top(\mathbf{r}'){x}_t) d\mathbf{r}'\\
+\frac{\delta q}{\delta x_{t,i}}= \int_\Omega \boldsymbol{\Psi}(\mathbf{r}')\phi_i(\mathbf r') f'(\phi^\top(\mathbf{r}'){x}_t) d\mathbf{r}'\\
 \end{equation}
 
 therefore
