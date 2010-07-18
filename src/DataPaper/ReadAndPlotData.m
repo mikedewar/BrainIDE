@@ -192,22 +192,28 @@ for n=1:size(FiltData,1)
 %     DataFFT(n,:,:) = 20*log10(abs(fft2(MatrixDataTemp-MeanObservation,NPoints2DFFT,NPoints2DFFT )));
 end
 
-% plot the 2D cross-correlation
+%%
+% calc and plot the 2D cross-correlation
 disp('finding cross correlations')
 CrossCor = zeros(size(MatrixData,1),2*size(MatrixData,2)-1,2*size(MatrixData,2)-1);
 for n=1:size(MatrixData,1)-1   
-    CrossCor(n,:,:) = xcorr2(squeeze(MatrixData(n+1,:,:)),squeeze(MatrixData(n,:,:)));
+    CrossCor(n,:,:) = normxcorr2(squeeze(MatrixData(n+1,:,:)),squeeze(MatrixData(n,:,:)));
 end
 CrossCorrMeanPreSeizure = squeeze(mean(CrossCor(1:SzStart*FsDec,:,:),1)); 
-CrossCorrMeanPreSeizure=CrossCorrMeanPreSeizure/max(max(CrossCorrMeanPreSeizure));
+% CrossCorrMeanPreSeizure=CrossCorrMeanPreSeizure/max(max(CrossCorrMeanPreSeizure));
 CrossCorrMeanSeizure = squeeze(mean(CrossCor(SzStart*FsDec+1:SzEnd*FsDec,:,:),1)); 
-CrossCorrMeanSeizure=CrossCorrMeanSeizure/max(max(CrossCorrMeanSeizure));
+% CrossCorrMeanSeizure=CrossCorrMeanSeizure/max(max(CrossCorrMeanSeizure));
 CrossCorrMeanPostSeizure = squeeze(mean(CrossCor(SzEnd*FsDec:end,:,:),1)); 
-CrossCorrMeanPostSeizure=CrossCorrMeanPostSeizure/max(max(CrossCorrMeanPostSeizure));
+% CrossCorrMeanPostSeizure=CrossCorrMeanPostSeizure/max(max(CrossCorrMeanPostSeizure));
 
+%% 
+% the plots for the xcorrs
 SpactialLocation = linspace(-2,2,size(CrossCorrMeanPreSeizure,1));
 HeightOffset = 1;
 HeigthScale = 0.5;
+figure('units','centimeters','position',[2,2,TwoColumnWidth,6],'renderer','painters',...
+    'filename',CrossCorrFig2D)
+subplot(131)
 imagesc(SpactialLocation,SpactialLocation,CrossCorrMeanPreSeizure)
 xlabel('Space (mm)','fontsize',FS,'fontname','arial')
 ylabel('Space (mm)','fontsize',FS,'fontname','arial')
@@ -250,71 +256,70 @@ HomoCrossCor3 = zeros(size(MatrixData,1), 2*NElectrodes-1, 2*NElectrodes-1);
 HomoCrossCor4 = zeros(size(MatrixData,1), 2*NElectrodes-1, 2*NElectrodes-1);
 
 for n=1:size(MatrixData,1)-1   
-    HomoCrossCor1(n,:,:) = xcorr2(squeeze(MatrixData(n+1,1:NElectrodes,1:NElectrodes)),...
+    HomoCrossCor1(n,:,:) = normxcorr2(squeeze(MatrixData(n+1,1:NElectrodes,1:NElectrodes)),...
         squeeze(MatrixData(n,1:NElectrodes,1:NElectrodes)));  % top left corner
-    HomoCrossCor2(n,:,:) = xcorr2(squeeze(MatrixData(n+1,end-NElectrodes+1:end,end-NElectrodes+1:end)),...
+    HomoCrossCor2(n,:,:) = normxcorr2(squeeze(MatrixData(n+1,end-NElectrodes+1:end,end-NElectrodes+1:end)),...
         squeeze(MatrixData(n,end-NElectrodes+1:end,end-NElectrodes+1:end)));   % bottom right corner
-    HomoCrossCor3(n,:,:) = xcorr2(squeeze(MatrixData(n+1,1:NElectrodes,end-NElectrodes+1:end)),...
+    HomoCrossCor3(n,:,:) = normxcorr2(squeeze(MatrixData(n+1,1:NElectrodes,end-NElectrodes+1:end)),...
         squeeze(MatrixData(n,1:NElectrodes,end-NElectrodes+1:end)));  % bottom left corner
-    HomoCrossCor4(n,:,:) = xcorr2(squeeze(MatrixData(n+1,end-NElectrodes+1:end,1:NElectrodes)),...
+    HomoCrossCor4(n,:,:) = normxcorr2(squeeze(MatrixData(n+1,end-NElectrodes+1:end,1:NElectrodes)),...
         squeeze(MatrixData(n,end-NElectrodes+1:end,1:NElectrodes)));        % top right corner
 end
 HomoCrossCorrMean1 = squeeze(mean(HomoCrossCor1,1)); 
-HomoCrossCorrMean1 = HomoCrossCorrMean1/mean(mean(HomoCrossCorrMean1));
+% HomoCrossCorrMean1 = HomoCrossCorrMean1/max(max(HomoCrossCorrMean1));
 HomoCrossCorrMean2 = squeeze(mean(HomoCrossCor2,1)); 
-HomoCrossCorrMean2 = HomoCrossCorrMean2/mean(mean(HomoCrossCorrMean2));
+% HomoCrossCorrMean2 = HomoCrossCorrMean2/max(max(HomoCrossCorrMean2));
 HomoCrossCorrMean3 = squeeze(mean(HomoCrossCor3,1)); 
-HomoCrossCorrMean3 = HomoCrossCorrMean3/mean(mean(HomoCrossCorrMean3));
+% HomoCrossCorrMean3 = HomoCrossCorrMean3/max(max(HomoCrossCorrMean3));
 HomoCrossCorrMean4 = squeeze(mean(HomoCrossCor4,1)); 
-HomoCrossCorrMean4 = HomoCrossCorrMean4/mean(mean(HomoCrossCorrMean4));
+% HomoCrossCorrMean4 = HomoCrossCorrMean4/max(max(HomoCrossCorrMean4));
 
 %%
 % make all the plots to check the homogeneity
-HeightOffset = 0.8;
-HeigthScale = 0.5;
+HeightOffset = 0.9;     % this is for the colorbar positioning
+HeigthScale = 0.6;      % so is this
 figure('units','centimeters','position',[2,2,OneColumnWidth,OneColumnWidth],...
      'filename',HomoCrossCorrFig)
 
-subplot(221)
-ElectrodeSpacing
-NElectrodes
+% index the space over which the correlation is made
 Space1 = linspace(-2,ElectrodeSpacing*(NElectrodes-1)-2,size(HomoCrossCorrMean1,2));
-
-imagesc(Space1, Space1, HomoCrossCorrMean1)
-% xlabel('Space (mm)','fontsize',FS,'fontname','arial')
-ylabel('Space (mm)','fontsize',FS,'fontname','arial')
-title('\bf A','fontsize',FS2,'fontname','arial','position',[-2.5 2.8])
-axis square
-CB = colorbar('units','centimeters','location','northoutside');
-Pos = get(CB,'position');
-set(CB, 'position', [Pos(1) Pos(2)+HeightOffset Pos(3) HeigthScale*Pos(4)] )
-set(gca,'fontsize',FS,'YDir','normal','fontname','arial')
-
 Space2 = linspace((10-NElectrodes+1)*ElectrodeSpacing-2,2,size(HomoCrossCorrMean1,2));
-subplot(222),imagesc(Space2,Space1,HomoCrossCorrMean2)
-% xlabel('Space (mm)','fontsize',FS,'fontname','arial')
-% ylabel('Space (mm)','fontsize',FS,'fontname','arial')
-title('\bf B','fontsize',FS2,'fontname','arial','position',[-2.5 2.8])
-axis square
-CB = colorbar('units','centimeters','location','northoutside');
-Pos = get(CB,'position');
-set(CB, 'position', [Pos(1) Pos(2)+HeightOffset Pos(3) HeigthScale*Pos(4)] )
-set(gca,'fontsize',FS,'YDir','normal','fontname','arial')
-
-subplot(223),imagesc(Space1,Space2,HomoCrossCorrMean3)
+ColorLims = [-0.1 0.5];
+subplot(223)
+imagesc(Space1, Space1, HomoCrossCorrMean1,ColorLims)
 xlabel('Space (mm)','fontsize',FS,'fontname','arial')
 ylabel('Space (mm)','fontsize',FS,'fontname','arial')
-title('\bf C','fontsize',FS2,'fontname','arial','position',[-2.5 2.8])
+title('\bf C','fontsize',FS2,'fontname','arial','position',[-2.5 0.25])
 axis square
 CB = colorbar('units','centimeters','location','northoutside');
 Pos = get(CB,'position');
 set(CB, 'position', [Pos(1) Pos(2)+HeightOffset Pos(3) HeigthScale*Pos(4)] )
 set(gca,'fontsize',FS,'YDir','normal','fontname','arial')
 
-subplot(224),imagesc(Space2,Space2,HomoCrossCorrMean4)
+subplot(224),imagesc(Space2,Space1,HomoCrossCorrMean2,ColorLims)
 xlabel('Space (mm)','fontsize',FS,'fontname','arial')
 % ylabel('Space (mm)','fontsize',FS,'fontname','arial')
-title('\bf D','fontsize',FS2,'fontname','arial','position',[-2.5 2.8])
+title('\bf D','fontsize',FS2,'fontname','arial','position',[-0.5 0.25])
+axis square
+CB = colorbar('units','centimeters','location','northoutside');
+Pos = get(CB,'position');
+set(CB, 'position', [Pos(1) Pos(2)+HeightOffset Pos(3) HeigthScale*Pos(4)] )
+set(gca,'fontsize',FS,'YDir','normal','fontname','arial')
+
+subplot(221),imagesc(Space1,Space2,HomoCrossCorrMean3,ColorLims)
+% xlabel('Space (mm)','fontsize',FS,'fontname','arial')
+ylabel('Space (mm)','fontsize',FS,'fontname','arial')
+title('\bf A','fontsize',FS2,'fontname','arial','position',[-2.5 2.25])
+axis square
+CB = colorbar('units','centimeters','location','northoutside');
+Pos = get(CB,'position');
+set(CB, 'position', [Pos(1) Pos(2)+HeightOffset Pos(3) HeigthScale*Pos(4)] )
+set(gca,'fontsize',FS,'YDir','normal','fontname','arial')
+
+subplot(222),imagesc(Space2,Space2,HomoCrossCorrMean4,ColorLims)
+% xlabel('Space (mm)','fontsize',FS,'fontname','arial')
+% ylabel('Space (mm)','fontsize',FS,'fontname','arial')
+title('\bf B','fontsize',FS2,'fontname','arial','position',[-0.5 2.25])
 axis square
 CB = colorbar('units','centimeters','location','northoutside');
 Pos = get(CB,'position');

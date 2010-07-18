@@ -21,8 +21,7 @@
 %\usepackage{subfigure}
 
 % More symbols
-%\usepackage{amsmath}
-%\usepackage{amssymb}
+
 %\usepackage{latexsym}
 
 % Surround parts of graphics with box
@@ -52,8 +51,12 @@
 \else
 \usepackage{graphicx}
 \fi
+\usepackage{color}
+\newcommand{\dean}[1]{\textsf{\emph{\textbf{\textcolor{red}{#1}}}}} 
+
+
 \title{Patient-Specific Neural Field Model}
-\author{Parham Aram, Dean Freestone, Kenneth Scerri, Michael Dewar,\\
+\author{In no specific order: Parham Aram, Dean Freestone, Kenneth Scerri, Michael Dewar,\\
  Jacob Donoghue, Sydney Cash, David Grayden and Visakan Kadirkamanathan  }
 
 \date{2010-07-06}
@@ -88,18 +91,34 @@
 
 \section{Method}
 
-\subsection{Data Collection}
+\subsection{Data Collection and Pre-processing}
 \begin{itemize}
 	\item Show medical imaging
 	\item Show LFP Data (background, seizure, post-seizure)
 	\item Show spectral properties of LFPs
 \end{itemize}
 
+Data was collected from a patient undergoing work-up for surgical resection of epileptic brain tissue. The standard procedure for the resective surgery involves implantation of subdural electrodes for intracranial EEG monitoring (iEEG). Data from these electrodes provide information for mapping functional and pathological tissue to define the surgical margins. In addition to standard iEEG electrodes, data was collected in parallel from a Neuroport system (Blackrock microsystems, Utah, USA) incorporating a micro-electrode array. This data was collected with informed consent from the patient under ethics approval from the MGH human research ethics committee..?? Figure~\ref{MRI_CT} shows the position of the iEEGs electrodes and the micro-electrode array. The iEEG electrode covers the temporal lobe, and the micro-electrode placement was targeted at.. The micro-electrode array consisted of square grid of 96 (10 by 10 with the corner electrodes missing). The x,y electrode spacing was 400~$\mu m$, yielding a coverage of 4 by 4~mm. Data from the Neuroport system was acquired with a sampling rate of 30~kHz, with hardware filters in the range of~\dean{??}. 
+
+During the time-course of the iEEG monitoring several seizures were recorded. This study focuses on the local field potential (LFP) data recorded with the micro-electrode during a seizure. 
+
+The pre-processing steps consisted of:
+\begin{itemize}
+	\item Identification and removal (set to nan) of severely noise corrupted channels (16 of 96 channels);
+	\item Implementation of a common average reference (CAR) montage; 
+	\item Low-pass filter data, with cut-off at 100~Hz;
+	\item Decimate data from 30~kHz to 5~kHz temporal sampling;
+	\item Spatially interpolate missing data to facilitate spatial frequency analysis.
+\end{itemize}
+
+\subsection{Spatio-temporal Analysis}
+The first 5 channels of the LFP time series from the seizure is shown in Figure~\ref{fig:TimeSeries}. For the analysis, the time series was segmented into three periods; the pre-seizure period, seizure period and post-seizure period. The seizure onset is marked by the red dotted line and the seizure end is marked by the blue dashed line. An example to illustrate the spatial aspects of the observed neural field is shown in Figure~\ref{fig:FieldObserations}. Each subplot in the figure shows the observaed field at a sample of the pre-processed data, with each plot separated in time by 2.5~ms. The figure shows spatially correlated activity.
+
 \begin{figure}[!ht]
 \begin{center}
 \includegraphics{./Figures/LFPs.eps}
 \end{center}
-\caption{{\bf Local Field Potentials}. Data recorded from the first five channels of the array. The red dotted line indicates the seizure onset and the blue dashed line indicates the seizure end.}
+\caption{{\bf Local field potentials from the micro-electrode array}. Data recorded from the first five channels of the array. The red dotted line indicates the seizure onset and the blue dashed line indicates the seizure end.}
 \label{fig:TimeSeries}
 \end{figure}
 
@@ -110,6 +129,8 @@
 \caption{{\bf Snap-shots of the spatial aspects of the observed field}. The snap-shots are ordered from A to I forming a consecutive sequence spaced 2.5~ms apart starting at 34.024s}
 \label{fig:FieldObserations}
 \end{figure}
+
+To confirm the applicability of the model spatio-temporal analysis were performed. The spectral properties of the recorded time series for each of the time segments are shown in Figure~\ref{fig:TemporalFreqObservation}.
 
 \begin{figure}[!ht]
 \begin{center}
@@ -137,26 +158,27 @@
 \includegraphics{./Figures/SpatialFreqCrossSection.eps}
 \end{center}
 \caption{{\bf Diagonal cross-section of the spatial frequency plots of the observed neural field}. A. Pre-seizure observations. B. Seizure observations. C. Post-seizure observations.}
-\label{fig:SpatialFreqObservation}
+\label{fig:DiagSpatialFreqObservation}
 \end{figure}
 
 \subsection{Estimating Support For Connectivity Kernel}
 \begin{figure}[!ht]
 \begin{center}
-\includegraphics[angle=-90]{./Figures/CrossCorr2D.eps}
+\includegraphics{./Figures/CrossCorr2D.eps}
 \end{center}
 \caption{{\bf Mean cross-correlations between consecutive observations of the neural field}. Note: The correlations are normalised such that the maximum value is one. A. Pre-seizure observation correlations. B. Seizure observation correlations. C. Post-seizure observation correlations.}
-\label{fig:SpatialFreqObservation}
+\label{fig:SpatialCrossCorrelation}
 \end{figure}
 
-\subsection{Pre-processing}
-\begin{itemize}
-	\item Identification and removal of bad channels
-	\item Common average reference (CAR) montage 
-	\item Low-pass filter data, with cut-off at 100~Hz
-	\item Decimate data from 30~kHz to 5~kHz temporal sampling
-	\item Spatially interpolate missing data to facilitate spatial frequency analysis
-\end{itemize}
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics{./Figures/HomoTestCrossCorr.eps}
+\end{center}
+\caption{{\bf Mean cross-correlations between subsets of the consecutive observations of the neural field}.}
+\label{fig:HomogeneityTest}
+\end{figure}
+
+
 \subsection{Estimation Algorithm}
 The state space model is given by
 \begin{equation}
