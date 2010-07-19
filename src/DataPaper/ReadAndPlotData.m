@@ -527,7 +527,7 @@ figure('units','centimeters','position',[0 0 2 30],'renderer','opengl')
 figure('units','centimeters','position',[2,2,TwoColumnWidth,6],...
     'filename',LFPsFig)
 StartChannel = 2;
-EndChannel = 100;
+EndChannel = 9;
 plot(t,OffsetData(:,StartChannel:EndChannel),'k','linewidth',0.5)
 axis tight
 axis off
