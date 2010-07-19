@@ -139,10 +139,10 @@ The neural field equations must be written as a discrete-time finite-dimensional
 \begin{equation}\label{EulerMethod}
 	\frac{v\left( \mathbf{r},t+T_s \right)-v\left( \mathbf{r},t \right)}{T_s} + \zeta v\left(\mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right) f\left( {v\left( \mathbf{r}',t \right)}\right)\textrm{d}\mathbf{r}'},
 \end{equation}
-where $T_s$ is the time step or sampling period. Rearranging equation~\ref{EulerMethod} gives the integro-difference equation (IDE) form
+where $T_s$ is the time step or sampling period. To simplify the notation, the sample at the the current time step shall be indexed by $t$ and the future time step by $t+1$ for the rest of the paper. Rearranging equation~\ref{EulerMethod} gives the integro-difference equation (IDE) form
 \begin{equation}
 	\label{DiscreteTimeModel} 
-	v_{t+T_s}\left(\mathbf{r}\right) = 
+	v_{t+1}\left(\mathbf{r}\right) = 
 	\xi v_t\left(\mathbf{r}\right) + 
 	T_s \int_\Omega { 
 	    w\left(\mathbf{r},\mathbf{r}'\right)
@@ -152,7 +152,7 @@ where $T_s$ is the time step or sampling period. Rearranging equation~\ref{Euler
 where $\xi = 1-T_s\zeta$. Finally, a disturbance term is added, to account for uncertainty and unmodelled inputs, to the IDE form giving
 \begin{equation}
 	\label{NoisyDiscreteTimeModel} 
-	v_{t+T_s}\left(\mathbf{r}\right) = 
+	v_{t+1}\left(\mathbf{r}\right) = 
 	\xi v_t\left(\mathbf{r}\right) + 
 	T_s \int_\Omega { 
 	    w\left(\mathbf{r},\mathbf{r}'\right)
@@ -161,11 +161,11 @@ where $\xi = 1-T_s\zeta$. Finally, a disturbance term is added, to account for u
 	+ e_t\left(\mathbf{r}\right), 
 \end{equation}
 where $e_t(\mathbf{r})$ is $i.i.d.$ such that $e_t(\mathbf{r})\sim\mathcal{GP}(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}'))$. Here $\mathcal{GP}(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}'))$ denotes a zero mean spatial Gaussian process with covariance function $\gamma(\mathbf{r}-\mathbf{r}')$~\cite{Rasmussen2005}.
-To reduce the model to a finite dimensional system the neural field is approximated by a basis function decomposition where
+To reduce the model to a finite-dimensional system the neural field is approximated by a basis function decomposition where
 \begin{equation}
-	\label{DefFieldDecomp} v_t\left(\mathbf{r}\right) \approx \boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) \mathbf{x}_t, 
+	\label{DefFieldDecomp} v_t\left(\mathbf{r}\right) \approx \boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) \mathbf{x}_t 
 \end{equation}
-where $\mathbf{x}_t$ is a state vector that weights another vector of two-dimension Gaussian basis functions, $\boldsymbol{\phi}(\mathbf{r})$, described by
+and $\mathbf{x}_t$ is a state vector that weights a vector of two-dimension Gaussian basis functions, $\boldsymbol{\phi}(\mathbf{r})$, described by
 \begin{equation}\label{eq:FieldBasisFunction}
 	\boldsymbol\phi\left(\mathbf{r}-\mathbf{r}'\right) =
 \exp{\left(-\frac{(\mathbf{r}-\mathbf{r}')^\top(\mathbf{r}-\mathbf{r}')}{\sigma_{\phi}^2}\right)}. 
@@ -173,53 +173,50 @@ where $\mathbf{x}_t$ is a state vector that weights another vector of two-dimens
 The parameter $\sigma_{\phi}$ controls the basis function width and is inferred by frequency analysis. Substituting equation~\ref{DefFieldDecomp} into~\ref{NoisyDiscreteTimeModel} gives to approximate model
 \begin{equation}
 	\label{eq:reduced continuous model}
-	\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_{t+1}= T_s\int_\Omega{f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t )w(\mathbf{r}-\mathbf{r}')\textrm{d}\mathbf{r}'}
+	\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_{t+1}= T_s\int_\Omega{f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t )w(\mathbf{r},\mathbf{r}')\textrm{d}\mathbf{r}'}
 	+ \xi\boldsymbol{\phi}^{\top}(\mathbf{r})x_t + e_t(\mathbf{r}). 
 \end{equation}
 Next we multiply equation~\ref{eq:reduced continuous model} by $\boldsymbol{\phi}(\mathbf{r})$ and integrate over the spatial domain, $\Omega$, to get 
 \begin{equation}
 	\label{StartofReduction}
- 	\int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) \textrm{d}\mathbf{r}} \mathbf{x}_{t+1} = T_s \int_\Omega {\boldsymbol{\phi} (\mathbf{r}) \int_\Omega {w(\mathbf{r}-\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}') \mathbf{x}_t ) \textrm{d}\mathbf{r}'}\textrm{d}\mathbf{r}} + \xi\int_\Omega{\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\phi}^{\top}(\mathbf{r})\textrm{d}\mathbf{r}} \mathbf{x}_t + \int_\Omega{\boldsymbol{\phi} (\mathbf{r}) e_t(\mathbf{r})\textrm{d}\mathbf{r}}. 
+ 	\int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) \textrm{d}\mathbf{r}} \mathbf{x}_{t+1} = T_s \int_\Omega {\boldsymbol{\phi} (\mathbf{r}) \int_\Omega {w(\mathbf{r},\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}') \mathbf{x}_t ) \textrm{d}\mathbf{r}'}\textrm{d}\mathbf{r}} + \xi\int_\Omega{\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\phi}^{\top}(\mathbf{r})\textrm{d}\mathbf{r}} \mathbf{x}_t + \int_\Omega{\boldsymbol{\phi} (\mathbf{r}) e_t(\mathbf{r})\textrm{d}\mathbf{r}}. 
 \end{equation}
 Now by defining the matrix
 \begin{equation}\label{eq:DefGamma}
 	\boldsymbol{\Gamma} \triangleq \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi} ^{\top}\left(\mathbf{r}\right)\textrm{d}\mathbf{r}} 
 \end{equation}
-enables the pseudo inverse of $\boldsymbol{\phi(\mathbf{r})}$ to be taken such that the state vector can is isolated on the left-hand-side as
+enables the pseudo inverse of $\boldsymbol{\phi(\mathbf{r})}$ to be taken, such that the state vector can is isolated on the left-hand-side as
 \begin{equation}\label{eq:ReducedForm}
 	 \mathbf{x}_{t+1} = T_s\boldsymbol{\Gamma}^{-1}
 	 \int_\Omega \boldsymbol{\phi}(\mathbf{r}) 
-	 \int_\Omega w(\mathbf{r}-\mathbf{r}')f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \textrm{d}\mathbf{r}' \textrm{d}\mathbf{r} 
+	 \int_\Omega w(\mathbf{r},\mathbf{r}')f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \textrm{d}\mathbf{r}' \textrm{d}\mathbf{r} 
 	 + \xi\mathbf{x}_t + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r}) e_t(\mathbf{r})\textrm{d}\mathbf{r}}.
 \end{equation}
+A property of the Gaussian basis function decomposition it that the Gaussianality of the disturbance term is maintained. The decomposition disturbance term is defined as
+\begin{equation}\label{eq:Wt} 
+	\mathbf{e}_t \triangleq \boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi} ( \mathbf{r} )e_t( \mathbf{r} )\textrm{d}\mathbf{r}},
+\end{equation}
+where $\mathbf{e}_t \sim\mathcal{N}(\mathbf 0,\boldsymbol\Sigma_e)$. The covariance matrix is defined as (see the Supporting Information, S1, for the derivation)
+\begin{equation}
+	\boldsymbol\Sigma_e \triangleq \mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega}\boldsymbol{\phi}\left(\mathbf r\right) \gamma\left(\mathbf r- \mathbf r' \right)\boldsymbol{\phi}\left(\mathbf r'\right)^{\top}d\mathbf r' d\mathbf r\mathbf{\Gamma}^{- \top}. 
+\end{equation}
+
 \subsection{Data Collection and Pre-processing}
-\begin{itemize}
-	\item Show medical imaging
-	\item Show LFP Data (background, seizure, post-seizure)
-	\item Show spectral properties of LFPs
-\end{itemize}
 
 Data was collected from a patient undergoing work-up for surgical resection of epileptic brain tissue. The standard procedure for the resective surgery involves implantation of subdural electrodes for intracranial EEG monitoring (iEEG). Data from these electrodes provide information for mapping functional and pathological tissue to define the surgical margins. In addition to standard iEEG electrodes, data was collected in parallel from a Neuroport system (Blackrock microsystems, Utah, USA) incorporating a micro-electrode array. This data was collected with informed consent from the patient under ethics approval from the MGH human research ethics committee..?? Figure~\ref{MRI_CT} shows the position of the iEEGs electrodes and the micro-electrode array. The iEEG electrode covers the temporal lobe, and the micro-electrode placement was targeted at.. The micro-electrode array consisted of square grid of 96 (10 by 10 with the corner electrodes missing). The x,y electrode spacing was 400~$\mu m$, yielding a coverage of 4 by 4~mm. Data from the Neuroport system was acquired with a sampling rate of 30~kHz, with hardware filters in the range of~\dean{??}. 
 
 During the time-course of the iEEG monitoring several seizures were recorded. This study focuses on the local field potential (LFP) data recorded with the micro-electrode during a seizure. 
 
-The pre-processing steps consisted of:
-\begin{itemize}
-	\item Identification and removal (set to nan) of severely noise corrupted channels (16 of 96 channels);
-	\item Implementation of a common average reference (CAR) montage; 
-	\item Low-pass filter data, with cut-off at 100~Hz;
-	\item Decimate data from 30~kHz to 5~kHz temporal sampling;
-	\item Spatially interpolate missing data to facilitate spatial frequency analysis.
-\end{itemize}
+The first pre-processing step was to identify channels that had very poor signal quality. These channels were set to the $nan$ data type. Following this, the data was re-referenced to a common average montage to remove common mode artifact and the effect of the reference electrode. Next the data was low-pass filtered with a cut-off frequency of 100~Hz. The data was then resampled from 30~kHz to 5~kHz. To enable spatial visualisation and spatial frequency analysis, the corrupted channels, set to $nan$, were interpolated using all neighbouring channels.
 
 \subsection{Spatiotemporal Data Analysis}
-The first 5 channels of the LFP time series from the seizure is shown in Figure~\ref{fig:TimeSeries}. For the analysis, the time series was segmented into three periods; the pre-seizure period, seizure period and post-seizure period. The seizure onset is marked by the red dotted line and the seizure end is marked by the blue dashed line. 
+The first 8 channels of the LFP time series from the seizure is shown in Figure~\ref{fig:TimeSeries}. For the analysis, the time series was segmented into three periods; the pre-seizure period, seizure period and post-seizure period. The seizure onset is marked by the red dotted line and the seizure end is marked by the blue dashed line. 
 
 \begin{figure}[!ht]
 \begin{center}
 \includegraphics{./Figures/LFPs.eps}
 \end{center}
-\caption{{\bf Local field potentials from the micro-electrode array}. Data recorded from the first five channels of the array. The red dotted line indicates the seizure onset and the blue dashed line indicates the seizure end.}
+\caption{{\bf Local field potentials from the micro-electrode array}. Data recorded from the first 8 channels of the array. The red dotted line indicates the seizure onset and the blue dashed line indicates the seizure end.}
 \label{fig:TimeSeries}
 \end{figure}
 
