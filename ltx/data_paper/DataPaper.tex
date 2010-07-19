@@ -96,11 +96,11 @@ The neural field equations used as the parametric form of the model are based on
 \begin{equation}
 	\label{SpikesToPotential} v\left( {\mathbf{r},t} \right) = \int_{ - \infty }^t {h\left( {t - t'} \right)g\left( {\mathbf{r},t'} \right)dt'}, 
 \end{equation}   
-where $h(\cdot)$ is the synaptic response kernel and $g(\cdot)$ describes the mean firing rate. The firing rate is described by spatial convolution
+where $h(\cdot)$ is the synaptic response kernel and $g(\cdot)$ describes the mean firing rate. Assuming an infinite propagation velocity for action potentials within the field, the incoming firing rate the position $\mathbf{r}$ is described by spatial convolution
 \begin{equation}
 	\label{RateBasedInteractions} g\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( v\left( \mathbf{r}',t \right) \right)\textrm{d}\mathbf{r}'}, 
 \end{equation}
-where $f(\cdot)$ relates mean post-synaptic potentials to mean firing rates, $w(\cdot)$ is the spatial connectivity kernel and $\Omega$ is the spatial domain representing the cortical sheet or surface. The firing rate function is the sigmoidal activation function described by
+where $w(\cdot)$ is the spatial connectivity kernel and $\Omega$ is the spatial domain representing the cortical sheet or surface. The function $f(\cdot)$ relates mean post-synaptic potentials to mean firing rates and follows a sigmoid described by
 \begin{equation}
 	\label{ActivationFunction} f\left( v\left( \mathbf{r}', t \right) \right) = \frac{1}{1 + \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right)}, 
 \end{equation}
@@ -113,7 +113,7 @@ where $v_0$ and $\varsigma$ describe the firing threshold the slope of the sigmo
 	f\left( v\left( \mathbf{r}',t' \right)\right)
 	\textrm{d}\mathbf{r}'dt'.
 \end{equation}
-To arrive at the general intergral-differential equation form of the model, we shall express the synaptic response kernel as a Green's function 
+To arrive at the general integral-differential equation form of the model, we shall express the synaptic response kernel as a Green's function 
 \begin{equation}
 	\label{GreensFuncDef} Dh\left( t \right) = \delta \left( t \right), 
 \end{equation}
@@ -122,6 +122,36 @@ where $D$ is a temporal differential operator and $\delta(t)$ is the Dirac-delta
 	\label{FinalFormContinuous} 
 	Dv\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)\textrm{d}\mathbf{r}'}. 
 \end{equation}
+By assuming the synaptic response kernel has the form 
+\begin{equation}
+	\label{SynapticRespKernel} h(t) = \eta(t)\exp{\left(-\zeta t\right)}, 
+\end{equation}
+where $\zeta=\tau^{-1}$, $\tau$ is the synaptic time constant and $\eta(t)$ is the Heaviside step function, the operator $D$ is
+\begin{equation}
+	D=\frac{d}{dt} + \zeta,
+\end{equation}
+yielding
+\begin{equation}
+	\label{FinalFormContinuous} 
+	\frac{dv\left( \mathbf{r},t \right)}{dt} + \zeta v\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)\textrm{d}\mathbf{r}'}. 
+\end{equation}
+The neural field equations must be written as a discrete-time finite-dimensional model in order to relate it to patient-specific data. The discrete time model is found applying the a first-order Euler method giving
+\begin{equation}\label{EulerMethod}
+	\frac{v\left( \mathbf{r},t+T_s \right)-v\left( \mathbf{r},t \right)}{T_s} + \zeta v\left(\mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right) f\left( {v\left( \mathbf{r}',t \right)}\right)\textrm{d}\mathbf{r}'},
+\end{equation}
+where $T_s$ is the time step or sampling period. Rearranging equation~\ref{EulerMethod} gives the integro-difference equation
+\begin{equation}
+	\label{DiscreteTimeModel} 
+	v_{t+T_s}\left(\mathbf{r}\right) = 
+	\xi v_t\left(\mathbf{r}\right) + 
+	T_s \int_\Omega { 
+	    w\left(\mathbf{r},\mathbf{r}'\right)
+	    f\left(v_t\left(\mathbf{r}'\right)\right) 
+	\textrm{d}\mathbf{r}'}, 
+\end{equation}
+where $\xi = 1-T_s\zeta$. 
+
+
 \subsection{Data Collection and Pre-processing}
 \begin{itemize}
 	\item Show medical imaging
