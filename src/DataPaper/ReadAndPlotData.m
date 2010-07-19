@@ -124,7 +124,7 @@ FiltData = filter(b,a,CARData);
 clear CARData
 
 %%
-% downsample to 1 kHz
+% downsample to FsDec
 FiltData = downsample(FiltData,DecimationFactor);
 t = TsDec*(0:size(FiltData,1)-1);
 

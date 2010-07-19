@@ -55,9 +55,9 @@
 \newcommand{\dean}[1]{\textsf{\emph{\textbf{\textcolor{red}{#1}}}}} 
 
 
-\title{Patient-Specific Neural Field Model}
-\author{In no specific order: Parham Aram, Dean Freestone, Kenneth Scerri, Michael Dewar,\\
- Jacob Donoghue, Sydney Cash, David Grayden and Visakan Kadirkamanathan  }
+\title{Patient-Specific Neural Field Modeling from Mirco-Electrode Data}
+\author{In no specific order: Parham Aram, Dean R. Freestone, Kenneth Scerri, Michael Dewar,\\
+ Jacob A. Donoghue, Sydney S. Cash, David B. Grayden and Visakan Kadirkamanathan  }
 
 \date{2010-07-06}
 
@@ -192,7 +192,7 @@ enables the pseudo inverse of $\boldsymbol{\phi(\mathbf{r})}$ to be taken, such 
 	 \int_\Omega w(\mathbf{r},\mathbf{r}')f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \textrm{d}\mathbf{r}' \textrm{d}\mathbf{r} 
 	 + \xi\mathbf{x}_t + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r}) e_t(\mathbf{r})\textrm{d}\mathbf{r}}.
 \end{equation}
-A property of the Gaussian basis function decomposition it that the Gaussianality of the disturbance term is maintained. The decomposition disturbance term is defined as
+A property of the basis function decomposition it the preservation of the Gaussianality of the disturbance term. The decomposition disturbance term is defined as
 \begin{equation}\label{eq:Wt} 
 	\mathbf{e}_t \triangleq \boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi} ( \mathbf{r} )e_t( \mathbf{r} )\textrm{d}\mathbf{r}},
 \end{equation}
@@ -200,6 +200,8 @@ where $\mathbf{e}_t \sim\mathcal{N}(\mathbf 0,\boldsymbol\Sigma_e)$. The covaria
 \begin{equation}
 	\boldsymbol\Sigma_e \triangleq \mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega}\boldsymbol{\phi}\left(\mathbf r\right) \gamma\left(\mathbf r- \mathbf r' \right)\boldsymbol{\phi}\left(\mathbf r'\right)^{\top}d\mathbf r' d\mathbf r\mathbf{\Gamma}^{- \top}. 
 \end{equation}
+
+\dean{I will do the connectivity kernel decomposition bit after the correlation analysis, because we can use it to say something about heterogeneity and isotropy.}
 
 \subsection{Data Collection and Pre-processing}
 
@@ -267,6 +269,8 @@ where $\rho_{\phi} \in \mathbb{R} \ge 1$ is an oversampling parameter to determi
 \end{figure}
 
 \subsection{Estimating Support For Connectivity Kernel}
+The support for the connectivity kernel can be inferred...
+
 \begin{figure}[!ht]
 \begin{center}
 \includegraphics{./Figures/CrossCorr2D.eps}
@@ -279,7 +283,7 @@ where $\rho_{\phi} \in \mathbb{R} \ge 1$ is an oversampling parameter to determi
 \begin{center}
 \includegraphics{./Figures/HomoTestCrossCorr.eps}
 \end{center}
-\caption{{\bf Mean cross-correlations between subsets of the consecutive observations of the neural field}.}
+\caption{{\bf Mean cross-correlations between consecutive samples using subsets of observations of the neural field}. Each subplot shows correlations corresponding to a subset electrodes. Indexing the electrodes in a (x,y) grid, where index ranges from 1 to 10. Subplot A shows the mean correlation between electrode indexes (1-6, 5-10), subplot B shows correlations from indexes (5-10,5-10), subplot C shows indexes (1-6, 1-6) and subplot D shows indexes (5-10, 5-10).}
 \label{fig:HomogeneityTest}
 \end{figure}
 
