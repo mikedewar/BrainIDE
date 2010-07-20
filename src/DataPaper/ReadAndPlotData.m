@@ -54,7 +54,7 @@ FS2 = 12;
 
 TwoColumnWidth = 17.35;     % PLoS figure width cm
 OneColumnWidth = 8.3; % cm
-Fs = 30e3;                              % sampling rate in Hz
+Fs = 30e3;                              % sampling rate in Hz of the raw data
 FsDec = 5e3;                          % this is the sampling rate that we will use
 TsDec = 1/FsDec;                    % the decimated sampling period
 DecimationFactor = Fs/FsDec;
@@ -86,7 +86,7 @@ for n=1:100
     if n==1 || n==10 || n==91 || n==100
         MappedData(:,n) = zeros(size(Data,1),1);
     else
-        MappedData(:,n) = Data(:,DataMap(n)) - mean(Data(:,DataMap(n)));
+        MappedData(:,n) = Data(:,DataMap(n));
     end
 end
 clear Data      % save some RAM
@@ -144,6 +144,9 @@ end
 % FMax = 100;
 % figure('units','centimeters','position',[2,2,TwoColumnWidth,6],...
 %     'filename',TemporalFreqFig)
+
+% need to remove the mean here!!!
+
 % TemporalFFT1 = 20*log10(abs(fft(FiltData(1:SzStart*FsDec,GoodChannels),NFFTPoints,1)));
 % TemporalFFT2 = 20*log10(abs(fft(FiltData(SzStart*FsDec+1:SzEnd*FsDec,GoodChannels),NFFTPoints,1)));
 % TemporalFFT3 = 20*log10(abs(fft(FiltData(SzEnd*FsDec+1:end,GoodChannels),NFFTPoints,1)));
@@ -196,8 +199,11 @@ end
 % calc and plot the 2D cross-correlation
 disp('finding cross correlations')
 CrossCor = zeros(size(MatrixData,1),2*size(MatrixData,2)-1,2*size(MatrixData,2)-1);
+v0 = 2;
+varsigma = 0.56;
 for n=1:size(MatrixData,1)-1   
-    CrossCor(n,:,:) = normxcorr2(squeeze(MatrixData(n+1,:,:)),squeeze(MatrixData(n,:,:)));
+    f = 1./(1+exp(varsigma*(v0-squeeze(MatrixData(n,:,:)))));
+    CrossCor(n,:,:) = normxcorr2(squeeze(MatrixData(n+1,:,:)),f);
 end
 CrossCorrMeanPreSeizure = squeeze(mean(CrossCor(1:SzStart*FsDec,:,:),1)); 
 % CrossCorrMeanPreSeizure=CrossCorrMeanPreSeizure/max(max(CrossCorrMeanPreSeizure));
@@ -255,15 +261,15 @@ HomoCrossCor2 = zeros(size(MatrixData,1), 2*NElectrodes-1, 2*NElectrodes-1);
 HomoCrossCor3 = zeros(size(MatrixData,1), 2*NElectrodes-1, 2*NElectrodes-1);
 HomoCrossCor4 = zeros(size(MatrixData,1), 2*NElectrodes-1, 2*NElectrodes-1);
 
-for n=1:size(MatrixData,1)-1   
-    HomoCrossCor1(n,:,:) = normxcorr2(squeeze(MatrixData(n+1,1:NElectrodes,1:NElectrodes)),...
-        squeeze(MatrixData(n,1:NElectrodes,1:NElectrodes)));  % top left corner
-    HomoCrossCor2(n,:,:) = normxcorr2(squeeze(MatrixData(n+1,end-NElectrodes+1:end,end-NElectrodes+1:end)),...
-        squeeze(MatrixData(n,end-NElectrodes+1:end,end-NElectrodes+1:end)));   % bottom right corner
-    HomoCrossCor3(n,:,:) = normxcorr2(squeeze(MatrixData(n+1,1:NElectrodes,end-NElectrodes+1:end)),...
-        squeeze(MatrixData(n,1:NElectrodes,end-NElectrodes+1:end)));  % bottom left corner
-    HomoCrossCor4(n,:,:) = normxcorr2(squeeze(MatrixData(n+1,end-NElectrodes+1:end,1:NElectrodes)),...
-        squeeze(MatrixData(n,end-NElectrodes+1:end,1:NElectrodes)));        % top right corner
+for n=1:size(MatrixData,1)-1  
+    f1 = 1./(1+exp(varsigma*(v0-squeeze(MatrixData(n,1:NElectrodes,1:NElectrodes)))));
+    f2 = 1./(1+exp(varsigma*(v0-squeeze(MatrixData(n,end-NElectrodes+1:end,end-NElectrodes+1:end)))));
+    f3 = 1./(1+exp(varsigma*(v0-squeeze(MatrixData(n,1:NElectrodes,end-NElectrodes+1:end)))));
+    f4 = 1./(1+exp(varsigma*(v0-squeeze(MatrixData(n,end-NElectrodes+1:end,1:NElectrodes)))));
+    HomoCrossCor1(n,:,:) = normxcorr2(squeeze(MatrixData(n+1,1:NElectrodes,1:NElectrodes)), f1);  % top left corner
+    HomoCrossCor2(n,:,:) = normxcorr2(squeeze(MatrixData(n+1,end-NElectrodes+1:end,end-NElectrodes+1:end)), f2);   % bottom right corner
+    HomoCrossCor3(n,:,:) = normxcorr2(squeeze(MatrixData(n+1,1:NElectrodes,end-NElectrodes+1:end)), f3);  % bottom left corner
+    HomoCrossCor4(n,:,:) = normxcorr2(squeeze(MatrixData(n+1,end-NElectrodes+1:end,1:NElectrodes)), f4);        % top right corner
 end
 HomoCrossCorrMean1 = squeeze(mean(HomoCrossCor1,1)); 
 % HomoCrossCorrMean1 = HomoCrossCorrMean1/max(max(HomoCrossCorrMean1));
@@ -514,7 +520,6 @@ PlotOffset  = 500;                          % this just puts some space between 
 OffsetMatrix = PlotOffset*(1:100);
 OffsetMatrix = repmat(OffsetMatrix,size(FiltData,1),1);
 OffsetData = OffsetMatrix+FiltData;
-figure('units','centimeters','position',[0 0 2 30],'renderer','opengl')
 
 % StartChannel = 1;
 % EndChannel = 100;
