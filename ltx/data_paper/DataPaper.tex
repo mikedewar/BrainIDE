@@ -201,6 +201,42 @@ where $\mathbf{e}_t \sim\mathcal{N}(\mathbf 0,\boldsymbol\Sigma_e)$. The covaria
 	\boldsymbol\Sigma_e \triangleq \mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega}\boldsymbol{\phi}\left(\mathbf r\right) \gamma\left(\mathbf r- \mathbf r' \right)\boldsymbol{\phi}\left(\mathbf r'\right)^{\top}d\mathbf r' d\mathbf r\mathbf{\Gamma}^{- \top}. 
 \end{equation}
 
+To relate the model to the data the electrodes are also modelled. The electrodes have a pick-up range (for LFPs) of approximately 400~$\mu$m. Therefore, we model the electrodes as a spatial convolution of a Gaussian shaped sensor kernel (using a width parameters of 400~$\mu$m) with the neural field. The observation equation is
+\begin{equation}
+    \label{eq:ObservationEquation}
+	\mathbf{y}_t =
+	\int_{\Omega}{
+	    m\left(\mathbf{r}_n-\mathbf{r}'\right)v_t\left(\mathbf{r}'\right)
+	\textrm{d}\mathbf{r}'} + 
+	\boldsymbol{\varepsilon}_t, 
+\end{equation}
+where $\mathbf{r}_n$ defines the location of the sensors in the field, $n=1,...,N$ indexes the sensors and $\boldsymbol{\varepsilon}_t \sim \mathcal{N}\left(0,\boldsymbol{\Sigma}_{\varepsilon}\right)$. $\mathcal{N}\left(0,\boldsymbol{\Sigma}_{\varepsilon}\right)$ denotes the multivariate normal distribution with mean zero and covariance matrix $\boldsymbol{\Sigma}_{\varepsilon}$. The sensor kernel, $m(\mathbf{r}-\mathbf{r}')$, is defined by 
+\begin{equation}
+	m\left(\mathbf{r}-\mathbf{r}'\right) = \exp{\left(-\frac{(\mathbf{r}-\mathbf{r}')^\top(\mathbf{r}-\mathbf{r}')}{\sigma_m^2}\right)},
+\end{equation}
+where $\sigma_m$ sets the sensor width. Under the assumption that the basis function decomposition is accurate, the observation equation of the reduced model is found by substituting equation~\ref{DefFieldDecomp} into~\ref{eq:ObservationEquation} giving
+\begin{equation}\label{eq:ReducedObservationEquation}
+	\mathbf{y}_t = \int_{\Omega}{m\left(\mathbf{r}_n-\mathbf{r}'\right)\boldsymbol{\phi}^{\top}\left(\mathbf{r'}\right) \mathbf{x}_t\textrm{d}\mathbf{r}'} + \boldsymbol{\varepsilon}_t. 
+\end{equation}
+The observation equation is linear with respect to the state and can be written in the more compact form
+\begin{equation}\label{ObservationEquation} 
+	\mathbf{y}_t = \mathbf{C}\mathbf{x}_t + \boldsymbol{\varepsilon}_t,
+\end{equation}
+where the observation matrix is 
+\begin{equation}
+	\mathbf{C} = \left[
+	\begin{array}{{ccc}} 
+		c_{1,1} & \dots & c_{1,L} \\
+		\vdots & \ddots & \vdots \\
+		c_{N,1} & \dots & c_{N,L} 
+	\end{array}
+	\right] 
+\end{equation}
+and 
+\begin{equation}
+	c_{i,j} = \int_{\Omega}m(\mathbf{r}_i - \mathbf{r}')\boldsymbol{\phi}_j(\mathbf{r}')\textrm{d}\mathbf{r}'. 
+\end{equation}
+
 \dean{I will do the connectivity kernel decomposition bit after the correlation analysis, because we can use it to say something about heterogeneity and isotropy.}
 
 \subsection{Data Collection and Pre-processing}
@@ -267,7 +303,12 @@ where $\rho_{\phi} \in \mathbb{R} \ge 1$ is an oversampling parameter to determi
 \end{figure}
 
 \subsection{Estimating Support For Connectivity Kernel}
-The support for the connectivity kernel can be inferred...
+The support for the connectivity kernel can be inferred by studying the correlation between consecutive observations of the neural field. 
+\begin{itemize}
+	\item it is difficult to tell what correlations are from the cross-talk due the the sensor kernel
+	\item it is difficult because of the nonlinear function
+	\item 
+\end{itemize}
 
 \begin{figure}[!ht]
 \begin{center}
@@ -287,8 +328,8 @@ The support for the connectivity kernel can be inferred...
 
 
 \section{Estimation Algorithm}
-\subsection{state-space model}
-The state space model is given by
+\subsection{State-Space Model}
+The state-space model is given by
 \begin{equation}
  \mathbf x_{t+1}=q(\mathbf x_t)\boldsymbol\theta+\xi \mathbf x_t+\boldsymbol e_t(\mathbf r)
 \end{equation}
