@@ -217,10 +217,11 @@ CrossCorrMeanPostSeizure = squeeze(mean(CrossCor(SzEnd*FsDec:end,:,:),1));
 SpactialLocation = linspace(-2,2,size(CrossCorrMeanPreSeizure,1));
 HeightOffset = 1;
 HeigthScale = 0.5;
+ColorbarLims = [-1 1];
 figure('units','centimeters','position',[2,2,TwoColumnWidth,6],'renderer','painters',...
     'filename',CrossCorrFig2D)
 subplot(131)
-imagesc(SpactialLocation,SpactialLocation,CrossCorrMeanPreSeizure)
+imagesc(SpactialLocation,SpactialLocation,CrossCorrMeanPreSeizure,ColorbarLims)
 xlabel('Space (mm)','fontsize',FS,'fontname','arial')
 ylabel('Space (mm)','fontsize',FS,'fontname','arial')
 title('\bf A','fontsize',FS2,'fontname','arial','position',[-2.5 2.8])
@@ -231,7 +232,7 @@ set(CB, 'position', [Pos(1) Pos(2)+HeightOffset Pos(3) HeigthScale*Pos(4)] )
 set(gca,'fontsize',FS,'YDir','normal','fontname','arial')
 
 subplot(132)
-imagesc(SpactialLocation,SpactialLocation,CrossCorrMeanSeizure)
+imagesc(SpactialLocation,SpactialLocation,CrossCorrMeanSeizure,ColorbarLims)
 xlabel('Space (mm)','fontsize',FS,'fontname','arial')
 ylabel('Space (mm)','fontsize',FS,'fontname','arial')
 title('\bf B','fontsize',FS2,'fontname','arial','position',[-2.5 2.8])
@@ -242,7 +243,7 @@ set(CB, 'position', [Pos(1) Pos(2)+HeightOffset Pos(3) HeigthScale*Pos(4)] )
 set(gca,'fontsize',FS,'YDir','normal','fontname','arial')
 
 subplot(133)
-imagesc(SpactialLocation,SpactialLocation,CrossCorrMeanPostSeizure)
+imagesc(SpactialLocation,SpactialLocation,CrossCorrMeanPostSeizure,ColorbarLims)
 xlabel('Space (mm)','fontsize',FS,'fontname','arial')
 ylabel('Space (mm)','fontsize',FS,'fontname','arial')
 title('\bf C','fontsize',FS2,'fontname','arial','position',[-2.5 2.8])

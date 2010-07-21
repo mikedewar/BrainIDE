@@ -57,7 +57,8 @@
 
 \title{Patient-Specific Neural Field Modeling from Mirco-Electrode Data}
 \author{In no specific order: Parham Aram, Dean R. Freestone, Kenneth Scerri, Michael Dewar,\\
- Jacob A. Donoghue, Sydney S. Cash, David B. Grayden and Visakan Kadirkamanathan  }
+ Jacob A. Donoghue, Sydney S. Cash, Leigh R. Hochberg,\\
+ David B. Grayden and Visakan Kadirkamanathan  }
 
 \date{2010-07-06}
 
@@ -330,29 +331,28 @@ The support for the connectivity kernel can be inferred by studying the correlat
 \section{Estimation Algorithm}
 \subsection{State-Space Model}
 The state-space model is given by
-\begin{equation}
- \mathbf x_{t+1}=q(\mathbf x_t)\boldsymbol\theta+\xi \mathbf x_t+\boldsymbol e_t(\mathbf r)
-\end{equation}
-\begin{equation}
- \mathbf y_t=\mathbf C \mathbf x_t+\boldsymbol \epsilon_t
-\end{equation}
-and the non-linear map $q(.)$ is defined as
+\begin{align}
+ \mathbf x_{t+1}&=q(\mathbf x_t)\boldsymbol\theta+\xi \mathbf x_t+\boldsymbol e_t(\mathbf r) \\
+ \mathbf y_t&=\mathbf C \mathbf x_t+\boldsymbol \epsilon_t
+\end{align}
+and the nonlinear function, $q(\cdot)$, is defined as
 \begin{equation}\label{eq:QmatrixForSigmapoints}
-	q(\mathbf{x}_t) = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) d\mathbf{r}'.
+	q(\mathbf{x}_t) = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) d\mathbf{r}',
 \end{equation}
 where
 \begin{equation}\label{eq:DefPsi}
 	\boldsymbol{\Psi}(\mathbf{r}') \triangleq T_s\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\psi}^{\top} (\mathbf{r}'-\mathbf{r})d\mathbf{r}},
 \end{equation}
 $ \boldsymbol e_t(\mathbf r)\sim \mathcal N(\mathbf 0,\boldsymbol\Sigma_e(\mathbf r,\mathbf r'))$ is temporally white and spatially colored disturbance and  $\boldsymbol\epsilon_t\sim \mathcal N(\mathbf 0,\boldsymbol\Sigma_{\epsilon})$ is a white noise process.
+
 \subsection{$\mathcal Q$-function}
-Given a joint distribution $p(\mathbf X,\mathbf Y;\boldsymbol \theta,\xi)$ over observed variables $\mathbf Y$ and hidden variables $\mathbf X$ governed by parameters $\boldsymbol \theta$ and $\xi$, the goal is to maximize the likelihood function $p(\mathbf Y;\boldsymbol \theta,\xi)$. It is often difficult to maximize the likelihood  $p(\mathbf Y;\boldsymbol \theta,\xi)$ directly, however by using the relationship between $p(\mathbf Y;\boldsymbol \theta,\xi)$ and $p(\mathbf X,\mathbf Y;\boldsymbol \theta,\xi)$ it is possible to compute 
-a sequence of parameter estimates  that converges on the maximum likelihood parameter estimate. Expanding the joint distribution $p(\mathbf X,\mathbf Y;\boldsymbol \theta,\xi)$ we have
-\begin{equation}
- p(\mathbf X,\mathbf Y;\boldsymbol \theta,\xi)=\prod_{t=1}^{T} p(\mathbf y_t|\mathbf x_t)p(\mathbf x_t|\mathbf x_{t-1};\boldsymbol \theta, \xi)p(\mathbf x_0)
-\label{eq:jointdistribution}
+The goal of the M-step is to maximize the likelihood function $p(\mathbf Y;\boldsymbol \theta,\xi)$ given the joint distribution $p(\mathbf X,\mathbf Y;\boldsymbol \theta,\xi)$ over the observed variables $\mathbf Y$ and hidden variables $\mathbf X$ that is governed by parameters $\boldsymbol \theta$ and $\xi$. Unfortunately, it is often difficult to maximize the likelihood $p(\mathbf Y;\boldsymbol \theta,\xi)$ directly. However, by using the relationship between $p(\mathbf Y;\boldsymbol \theta,\xi)$ and $p(\mathbf X,\mathbf Y;\boldsymbol \theta,\xi)$ it is possible to compute a sequence of parameter estimates that converges on the maximum likelihood parameter estimate. 
+
+Expanding the joint distribution $p(\mathbf X,\mathbf Y;\boldsymbol \theta,\xi)$ we have
+\begin{equation}\label{eq:jointdistribution}
+ p(\mathbf X,\mathbf Y;\boldsymbol \theta,\xi)=\prod_{t=1}^{T} p(\mathbf y_t|\mathbf x_t)p(\mathbf x_t|\mathbf x_{t-1};\boldsymbol \theta, \xi)p(\mathbf x_0).
 \end{equation}
-The $\mathcal Q$-function can be written in terms of joint distribution components as
+The $\mathcal Q$-function, or lower bound on the likelihood, can be written in terms of joint distribution components as
 \begin{eqnarray}
  \mathcal Q(\boldsymbol \theta,\xi,\boldsymbol\theta',\xi')&=&\mathbf E_{\boldsymbol (\theta',\xi')}[\ln p(\mathbf X,\mathbf Y;\boldsymbol \theta,\xi)]\nonumber\\
 &=&\mathbf E_{\boldsymbol (\theta',\xi')}[\sum_{t=1}^{T}\ln p(\mathbf y_t|\mathbf x_t)+\sum_{t=1}^{T}\ln p(\mathbf x_t|\mathbf x_{t-1};\boldsymbol \theta)+\sum_{t=1}^{T}\ln p(\mathbf x_0)]
