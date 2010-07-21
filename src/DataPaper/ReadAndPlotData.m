@@ -181,18 +181,18 @@ end
 
 %%
 % here reshape the data so each time point is 10x10 matrix
-NPoints2DFFT = 30;
+NPoints2DFFT = 10;
 SpatialFreq = linspace(0,SpatialFreqMax,NPoints2DFFT);
 
 MatrixData = zeros(size(FiltData,1),10,10);
-% DataFFT = zeros(size(FiltData,1),NPoints2DFFT,NPoints2DFFT);
+DataFFT = zeros(size(FiltData,1),NPoints2DFFT,NPoints2DFFT);
 for n=1:size(FiltData,1)
     MatrixDataTemp = reshape(FiltData(n,:),10,10);
     MatrixDataTemp = inpaint_nans(MatrixDataTemp);            % interpolate missing data points
     MatrixData(n,:,:) = MatrixDataTemp;
 
-%     MeanObservation = mean(mean(MatrixDataTemp));
-%     DataFFT(n,:,:) = 20*log10(abs(fft2(MatrixDataTemp-MeanObservation,NPoints2DFFT,NPoints2DFFT )));
+    MeanObservation = mean(mean(MatrixDataTemp));
+    DataFFT(n,:,:) = 20*log10(abs(fft2(MatrixDataTemp-MeanObservation,NPoints2DFFT,NPoints2DFFT )));
 end
 
 %%
@@ -335,46 +335,46 @@ set(gca,'fontsize',FS,'YDir','normal','fontname','arial')
 
 %%
 % figure,imagesc(squeeze(mean(abs(DataFFT),1)))
+% plot the results of the fft analysis
+figure('units','centimeters','position',[2,2,TwoColumnWidth,6],'renderer','painters',...
+    'filename',SpatialFreqFig)
+ColorBarLims = [30, 65];
+HeightOffset = 1;
+HeigthScale = 0.5;
+MeanFFT1 = squeeze( mean( DataFFT(1:SzStart*FsDec,:,:),1));
+subplot(131),imagesc( SpatialFreq,SpatialFreq,MeanFFT1,ColorBarLims )
+axis square
+set(gca,'fontsize',FS,'YDir','normal','fontname','arial')
+CB = colorbar('units','centimeters','location','northoutside');
+Pos = get(CB,'position');
+set(CB, 'position', [Pos(1) Pos(2)+HeightOffset Pos(3) HeigthScale*Pos(4)] )
+xlabel('Hz','fontsize',FS,'fontname','arial')
+ylabel('Hz','fontsize',FS,'fontname','arial')
+title('\bf A','fontsize',FS2,'fontname','arial','position',[-0.5 2.8])
 
-% figure('units','centimeters','position',[2,2,TwoColumnWidth,6],'renderer','painters',...
-%     'filename',SpatialFreqFig)
-% ColorLims = [30, 65];
-% HeightOffset = 1;
-% HeigthScale = 0.5;
-% MeanFFT1 = squeeze( mean( DataFFT(1:SzStart*FsDec,:,:),1));
-% subplot(131),imagesc( SpatialFreq,SpatialFreq,MeanFFT1 )
-% axis square
-% set(gca,'fontsize',FS,'YDir','normal','fontname','arial')
-% CB = colorbar('units','centimeters','location','northoutside');
-% Pos = get(CB,'position');
-% set(CB, 'position', [Pos(1) Pos(2)+HeightOffset Pos(3) HeigthScale*Pos(4)] )
-% xlabel('Hz','fontsize',FS,'fontname','arial')
-% ylabel('Hz','fontsize',FS,'fontname','arial')
-% title('\bf A','fontsize',FS2,'fontname','arial','position',[-0.5 2.8])
-% 
-% MeanFFT2 = squeeze( mean( DataFFT(SzStart*FsDec+1:SzEnd*FsDec,:,:),1));
-% subplot(132),imagesc( SpatialFreq,SpatialFreq,MeanFFT2 )
-% axis square
-% set(gca,'fontsize',FS,'YDir','normal','fontname','arial')
-% CB = colorbar('units','centimeters','location','northoutside');%[Pos(1) Pos(2)+Pos(4)+.1 Pos(3) 1])
-% Pos = get(CB,'position');
-% set(CB, 'position', [Pos(1) Pos(2)+HeightOffset Pos(3) HeigthScale*Pos(4)] )
-% xlabel('Hz','fontsize',FS,'fontname','arial')
-% ylabel('Hz','fontsize',FS,'fontname','arial')
-% title('\bf B','fontsize',FS2,'fontname','arial','position',[-0.5 2.8])
-% 
-% MeanFFT3 = squeeze( mean( DataFFT(SzEnd*FsDec+1:end,:,:),1));
-% subplot(133),imagesc( SpatialFreq,SpatialFreq,MeanFFT3 )
-% axis square
-% set(gca,'fontsize',FS,'YDir','normal','fontname','arial')
-% CB = colorbar('units','centimeters','location','northoutside');%[Pos(1) Pos(2)+Pos(4)+.1 Pos(3) 1])
-% Pos = get(CB,'position');
-% set(CB, 'position', [Pos(1) Pos(2)+HeightOffset Pos(3) HeigthScale*Pos(4)] )
-% xlabel('Hz','fontsize',FS,'fontname','arial')
-% ylabel('Hz','fontsize',FS,'fontname','arial')
-% title('\bf C','fontsize',FS2,'fontname','arial','position',[-0.5 2.8])
-% 
-% %%
+MeanFFT2 = squeeze( mean( DataFFT(SzStart*FsDec+1:SzEnd*FsDec,:,:),1));
+subplot(132),imagesc( SpatialFreq,SpatialFreq,MeanFFT2,ColorBarLims )
+axis square
+set(gca,'fontsize',FS,'YDir','normal','fontname','arial')
+CB = colorbar('units','centimeters','location','northoutside');%[Pos(1) Pos(2)+Pos(4)+.1 Pos(3) 1])
+Pos = get(CB,'position');
+set(CB, 'position', [Pos(1) Pos(2)+HeightOffset Pos(3) HeigthScale*Pos(4)] )
+xlabel('Hz','fontsize',FS,'fontname','arial')
+ylabel('Hz','fontsize',FS,'fontname','arial')
+title('\bf B','fontsize',FS2,'fontname','arial','position',[-0.5 2.8])
+
+MeanFFT3 = squeeze( mean( DataFFT(SzEnd*FsDec+1:end,:,:),1));
+subplot(133),imagesc( SpatialFreq,SpatialFreq,MeanFFT3,ColorBarLims )
+axis square
+set(gca,'fontsize',FS,'YDir','normal','fontname','arial')
+CB = colorbar('units','centimeters','location','northoutside');%[Pos(1) Pos(2)+Pos(4)+.1 Pos(3) 1])
+Pos = get(CB,'position');
+set(CB, 'position', [Pos(1) Pos(2)+HeightOffset Pos(3) HeigthScale*Pos(4)] )
+xlabel('Hz','fontsize',FS,'fontname','arial')
+ylabel('Hz','fontsize',FS,'fontname','arial')
+title('\bf C','fontsize',FS2,'fontname','arial','position',[-0.5 2.8])
+
+%%
 % % plot cross section of the spatial frequencies
 % % ~~~~~~~~~~~~~~~~~~~~~~~~~~
 % MinPower = 25;
