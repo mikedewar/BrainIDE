@@ -181,7 +181,7 @@ end
 
 %%
 % here reshape the data so each time point is 10x10 matrix
-NPoints2DFFT = 10;
+NPoints2DFFT = 30;
 SpatialFreq = linspace(0,SpatialFreqMax,NPoints2DFFT);
 
 MatrixData = zeros(size(FiltData,1),10,10);
@@ -334,8 +334,8 @@ set(CB, 'position', [Pos(1) Pos(2)+HeightOffset Pos(3) HeigthScale*Pos(4)] )
 set(gca,'fontsize',FS,'YDir','normal','fontname','arial')
 
 %%
-% figure,imagesc(squeeze(mean(abs(DataFFT),1)))
 % plot the results of the fft analysis
+
 figure('units','centimeters','position',[2,2,TwoColumnWidth,6],'renderer','painters',...
     'filename',SpatialFreqFig)
 ColorBarLims = [30, 65];
@@ -344,34 +344,34 @@ HeigthScale = 0.5;
 MeanFFT1 = squeeze( mean( DataFFT(1:SzStart*FsDec,:,:),1));
 subplot(131),imagesc( SpatialFreq,SpatialFreq,MeanFFT1,ColorBarLims )
 axis square
-set(gca,'fontsize',FS,'YDir','normal','fontname','arial')
+set(gca,'fontsize',FS,'YDir','normal','fontname','arial','xtick',[0 0.5 1 1.5 2 2.5],'ytick',[0 0.5 1 1.5 2 2.5])
 CB = colorbar('units','centimeters','location','northoutside');
 Pos = get(CB,'position');
 set(CB, 'position', [Pos(1) Pos(2)+HeightOffset Pos(3) HeigthScale*Pos(4)] )
-xlabel('Hz','fontsize',FS,'fontname','arial')
-ylabel('Hz','fontsize',FS,'fontname','arial')
+xlabel('\nu (Hz)','fontsize',FS,'fontname','arial')
+ylabel('\nu (Hz)','fontsize',FS,'fontname','arial')
 title('\bf A','fontsize',FS2,'fontname','arial','position',[-0.5 2.8])
 
 MeanFFT2 = squeeze( mean( DataFFT(SzStart*FsDec+1:SzEnd*FsDec,:,:),1));
 subplot(132),imagesc( SpatialFreq,SpatialFreq,MeanFFT2,ColorBarLims )
 axis square
-set(gca,'fontsize',FS,'YDir','normal','fontname','arial')
+set(gca,'fontsize',FS,'YDir','normal','fontname','arial','xtick',[0 0.5 1 1.5 2 2.5],'ytick',[0 0.5 1 1.5 2 2.5])
 CB = colorbar('units','centimeters','location','northoutside');%[Pos(1) Pos(2)+Pos(4)+.1 Pos(3) 1])
 Pos = get(CB,'position');
 set(CB, 'position', [Pos(1) Pos(2)+HeightOffset Pos(3) HeigthScale*Pos(4)] )
-xlabel('Hz','fontsize',FS,'fontname','arial')
-ylabel('Hz','fontsize',FS,'fontname','arial')
+xlabel('\nu (Hz)','fontsize',FS,'fontname','arial')
+ylabel('\nu (Hz)','fontsize',FS,'fontname','arial')
 title('\bf B','fontsize',FS2,'fontname','arial','position',[-0.5 2.8])
 
 MeanFFT3 = squeeze( mean( DataFFT(SzEnd*FsDec+1:end,:,:),1));
 subplot(133),imagesc( SpatialFreq,SpatialFreq,MeanFFT3,ColorBarLims )
 axis square
-set(gca,'fontsize',FS,'YDir','normal','fontname','arial')
+set(gca,'fontsize',FS,'YDir','normal','fontname','arial','xtick',[0 0.5 1 1.5 2 2.5],'ytick',[0 0.5 1 1.5 2 2.5])
 CB = colorbar('units','centimeters','location','northoutside');%[Pos(1) Pos(2)+Pos(4)+.1 Pos(3) 1])
 Pos = get(CB,'position');
 set(CB, 'position', [Pos(1) Pos(2)+HeightOffset Pos(3) HeigthScale*Pos(4)] )
-xlabel('Hz','fontsize',FS,'fontname','arial')
-ylabel('Hz','fontsize',FS,'fontname','arial')
+xlabel('\nu (Hz)','fontsize',FS,'fontname','arial')
+ylabel('\nu (Hz)','fontsize',FS,'fontname','arial')
 title('\bf C','fontsize',FS2,'fontname','arial','position',[-0.5 2.8])
 
 %%
