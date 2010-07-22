@@ -251,43 +251,11 @@ The first pre-processing step was to identify channels that had very poor signal
 \subsection{Spatiotemporal Data Analysis}
 The first 8 channels of the LFP time series from the seizure is shown in Figure~\ref{fig:TimeSeries}. For the analysis, the time series was segmented into three periods; the pre-seizure period, seizure period and post-seizure period. The seizure onset is marked by the red dotted line and the seizure end is marked by the blue dashed line. 
 
-\begin{figure}[!ht]
-\begin{center}
-\includegraphics{./Figures/LFPs.eps}
-\end{center}
-\caption{{\bf Local field potentials from the micro-electrode array}. Data recorded from the first 8 channels of the array. The red dotted line indicates the seizure onset and the blue dashed line indicates the seizure end.}
-\label{fig:TimeSeries}
-\end{figure}
-
 An example to illustrate the spatial aspects of the observed neural field is shown in Figure~\ref{fig:FieldObserations}. Each subplot in the figure shows the observed field at a sample of the pre-processed data, with each plot separated in time by 2.5~ms. The figure shows spatially correlated activity.
 
-\begin{figure}[!ht]
-\begin{center}
-\includegraphics{./Figures/FieldObservations.eps}
-\end{center}
-\caption{{\bf Snap-shots of the spatial aspects of the observed field}. The snap-shots are ordered from A to I forming a consecutive sequence spaced 2.5~ms apart starting at 34.024s}
-\label{fig:FieldObserations}
-\end{figure}
-
 The spectral properties of the recorded time series for each of the time segments are shown in Figure~\ref{fig:TemporalFreqObservation}. Each plot shows an averaged (across channels) spectrum the data. The pre-seizure period shows a decay in power at a typical $1/f^2$ rate. The seizure period has higher power at low and high ends of the spectrum. In addition, there is a peak in the power of the LFPs at ~51~Hz during the seizure. This peak would be difficult to observe in European and Asian countries due to the 50~Hz mains power frequency. The post-seizure period shows a large increase in lower frequency power...
- 
-\begin{figure}[!ht]
-\begin{center}
-\includegraphics{./Figures/TemporalFreq.eps}
-\end{center}
-\caption{{\bf Spectra from local field potential recordings}. A. Pre-seizure observations. B. Seizure observations. C. Post-seizure observations.}
-\label{fig:TemporalFreqObservation}
-\end{figure}
 
 Figure~\ref{fig:SpatialFreqObservation} shows the results of spatial frequency analysis of the observed neural field. Throughout this paper the spatial frequency shall be denoted by $\nu$. Each subplot is an average (across time) spatial frequency during either the pre-seizure, seizure or post-seizure periods. The spatial frequency of the neural field is governed by disturbances (inputs from outside the field) and the underlying connectivity structure. The symmetry in the plots provides some evidence for homogeneous and isotropic connectivity.   
-
-\begin{figure}[!ht]
-\begin{center}
-\includegraphics{./Figures/SpatialFreq.eps}
-\end{center}
-\caption{{\bf Spatial frequency analysis of the observed neural field}. A. Pre-seizure observations. B. Seizure observations. C. Post-seizure observations.}
-\label{fig:SpatialFreqObservation}
-\end{figure}
 
 Figure~\ref{fig:DiagSpatialFreqObservation} shows diagonal cross-sections of the spatial frequency plots. From this figure we can see that the spatial cut-off frequency (-3~dB point) is $\nu_c \approx 0.26$~Hz. The profile of the diagonal cross-section indicates that the field is adequately sampled from the micro-electrode array, where the power drops by approximately 25~dB at the maximum observable spatial frequency (according to Shannon's sampling theorem) indicating spatial aliasing will have an insignificant effect. The spatial cut-off frequency provides information on the complexity of the model required to represent the neural field. Considering the field is band-limited, we can represent the continuous field by a finite set of continuous basis functions. According the Shannon's sampling theorem, the minimum spacing between basis functions, $\Delta_{\phi}$, to describe the field is
 \begin{equation}\label{eq:BasisFunctionSeparation}
@@ -295,90 +263,35 @@ Figure~\ref{fig:DiagSpatialFreqObservation} shows diagonal cross-sections of the
 \end{equation}
 where $\rho_{\phi} \in \mathbb{R} \ge 1$ is an oversampling parameter to determine the basis function separation.
 
-\begin{figure}[!ht]
-\begin{center}
-\includegraphics{./Figures/SpatialFreqCrossSection.eps}
-\end{center}
-\caption{{\bf Diagonal cross-section of the spatial frequency plots of the observed neural field}. A. Pre-seizure observations. B. Seizure observations. C. Post-seizure observations.}
-\label{fig:DiagSpatialFreqObservation}
-\end{figure}
-
 \subsection{Estimating Support For Connectivity Kernel}
-The support for the connectivity kernel can be inferred by studying the correlation between consecutive observations of the neural field. 
+The support for the connectivity kernel can be inferred by studying the cross-correlation between consecutive observations of the neural field. 
 \begin{itemize}
 	\item it is difficult to tell what correlations are from the cross-talk due the the sensor kernel
 	\item it is difficult because of the nonlinear function
 	\item 
 \end{itemize}
 
-\begin{figure}[!ht]
-\begin{center}
-\includegraphics{./Figures/CrossCorr2D.eps}
-\end{center}
-\caption{{\bf Mean cross-correlations between consecutive observations of the neural field}. Note: The correlations are normalised such that the maximum value is one. A. Pre-seizure observation correlations. B. Seizure observation correlations. C. Post-seizure observation correlations.}
-\label{fig:SpatialCrossCorrelation}
-\end{figure}
-
-\begin{figure}[!ht]
-\begin{center}
-\includegraphics{./Figures/HomoTestCrossCorr.eps}
-\end{center}
-\caption{{\bf Mean cross-correlations between consecutive samples using subsets of observations of the neural field}. Each subplot shows correlations corresponding to a subset electrodes. Indexing the electrodes in a (x,y) grid, where index ranges from 1 to 10. Subplot A shows the mean correlation between electrode indexes (1-6, 5-10), subplot B shows correlations from indexes (5-10,5-10), subplot C shows indexes (1-6, 1-6) and subplot D shows indexes (5-10, 5-10).}
-\label{fig:HomogeneityTest}
-\end{figure}
-
 
 \section{Estimation Algorithm}
-\subsection{State-Space Model}
 The state-space model is given by
 \begin{align}
  \mathbf x_{t+1}&=q(\mathbf x_t)\boldsymbol\theta+\xi \mathbf x_t+\boldsymbol e_t(\mathbf r) \\
- \mathbf y_t&=\mathbf C \mathbf x_t+\boldsymbol \epsilon_t
+ \mathbf y_t&=\mathbf C \mathbf x_t+\boldsymbol \epsilon_t,
 \end{align}
-and the nonlinear function, $q(\cdot)$, is defined as
+where the nonlinear function, $q(\cdot)$, is defined as
 \begin{equation}\label{eq:QmatrixForSigmapoints}
-	q(\mathbf{x}_t) = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) d\mathbf{r}',
+	q(\mathbf{x}_t) = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) d\mathbf{r}'
 \end{equation}
-where
+and
 \begin{equation}\label{eq:DefPsi}
 	\boldsymbol{\Psi}(\mathbf{r}') \triangleq T_s\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\psi}^{\top} (\mathbf{r}'-\mathbf{r})d\mathbf{r}},
 \end{equation}
 $ \boldsymbol e_t(\mathbf r)\sim \mathcal N(\mathbf 0,\boldsymbol\Sigma_e(\mathbf r,\mathbf r'))$ is temporally white and spatially colored disturbance and  $\boldsymbol\epsilon_t\sim \mathcal N(\mathbf 0,\boldsymbol\Sigma_{\epsilon})$ is a white noise process.
 
-\subsection{$\mathcal Q$-function}
-The goal of the M-step is to maximize the likelihood function $p(\mathbf Y;\boldsymbol \theta,\xi)$ given the joint distribution $p(\mathbf X,\mathbf Y;\boldsymbol \theta,\xi)$ over the observed variables $\mathbf Y$ and hidden variables $\mathbf X$ that is governed by parameters $\boldsymbol \theta$ and $\xi$. Unfortunately, it is often difficult to maximize the likelihood $p(\mathbf Y;\boldsymbol \theta,\xi)$ directly. However, by using the relationship between $p(\mathbf Y;\boldsymbol \theta,\xi)$ and $p(\mathbf X,\mathbf Y;\boldsymbol \theta,\xi)$ it is possible to compute a sequence of parameter estimates that converges on the maximum likelihood parameter estimate. 
+\subsection{E-Step}
+The unscented Rauch-Tung-Striebel smoother (URTSS)~\cite{Sarkka2010} was used for the state estimation. The URTSS incorporates an unscented Kalman filter (UKF)~\cite{Julier1997, Merwe2003} in a forward step to estimate posterior states, $\hat{\mathbf x}_t^{f}$, followed by a backward step to compute the smoothed state estimates, $\hat{\mathbf x}_t^{b}$. The first and second order moments of the predicted state are captured by propagating the so-called sigma points through the state equation. An additional element to the URTSS algorithm was created to approximate $q(\mathbf{x}_t)$, which is required for the M-step. 
 
-Expanding the joint distribution $p(\mathbf X,\mathbf Y;\boldsymbol \theta,\xi)$ we have
-\begin{equation}\label{eq:jointdistribution}
- p(\mathbf X,\mathbf Y;\boldsymbol \theta,\xi)=\prod_{t=1}^{T} p(\mathbf y_t|\mathbf x_t)p(\mathbf x_t|\mathbf x_{t-1};\boldsymbol \theta, \xi)p(\mathbf x_0).
-\end{equation}
-The $\mathcal Q$-function, or lower bound on the likelihood, can be written in terms of joint distribution components as
-\begin{eqnarray}
- \mathcal Q(\boldsymbol \theta,\xi,\boldsymbol\theta',\xi')&=&\mathbf E_{\boldsymbol (\theta',\xi')}[\ln p(\mathbf X,\mathbf Y;\boldsymbol \theta,\xi)]\nonumber\\
-&=&\mathbf E_{\boldsymbol (\theta',\xi')}[\sum_{t=1}^{T}\ln p(\mathbf y_t|\mathbf x_t)+\sum_{t=1}^{T}\ln p(\mathbf x_t|\mathbf x_{t-1};\boldsymbol \theta)+\sum_{t=1}^{T}\ln p(\mathbf x_0)]
-\end{eqnarray}
-where $ \mathbf E_{\boldsymbol (\theta',\xi')}$ denotes expectation taken with respect to the distribution $p(\mathbf X | \mathbf Y;\boldsymbol \theta',\xi') $ where $\boldsymbol \theta'$ and $\xi'$are the current parameter estimates. It should be noted that
-$p(\mathbf y_t|\mathbf x_t)$ and $p(\mathbf x_0)$ are not functions of parameter set and therefore $\mathcal Q$-function can be rewritten as
-\begin{equation}
-\mathcal Q(\boldsymbol \theta,\xi,\boldsymbol\theta',\xi')=\mathbf E_{(\theta',\xi')}[\sum_{t=1}^{T}\ln p(\mathbf x_t|\mathbf x_{t-1};\boldsymbol \theta ,\xi)]+\mathrm{const}
-\end{equation}
-the constant term can be ignored since it is not affecting the drivative with respect to the parameters. 
-The Gaussian distribution of the disturbance, $e_t(\mathbf r)\sim \mathcal N(\mathbf 0,\boldsymbol\Sigma_e(\mathbf r,\mathbf r'))$ results into the following conditional distribution of the state at $t+1$
-\begin{equation}
- p(\mathbf x_{t+1} | \mathbf x_t;\boldsymbol\theta,\xi)=\alpha e^{-(\mathbf x_{t+1}-q(\mathbf  x_t)\boldsymbol\theta-\xi  \mathbf x_t)^\top\boldsymbol\Sigma_e^{-1}(\mathbf x_{t+1}-q( \mathbf x_t)\boldsymbol\theta-\xi \mathbf  x_t)}
-\end{equation}
-where $\alpha$ is the normalising constant. Taking $\log$ we get
-\begin{eqnarray}\label{eq:Qfunction}
-  \ln p(\mathbf x_{t+1} | \mathbf x_t;\boldsymbol\theta,\xi)&=&\ln \alpha-\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}\mathbf x_{t+1}+2\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}q( \mathbf x_t)\boldsymbol\theta+2\xi \mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}\mathbf x_t\nonumber \\
-&&-\boldsymbol\theta^\top q(\mathbf x_t)^\top\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-2\xi \mathbf x_t^\top\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-\xi^2\mathbf x_t^\top\boldsymbol\Sigma_e^{-1}\mathbf x_t
-\end{eqnarray}
-taking trace and using invariant cyclic permutations property of the trace this distribution can be written
-as
-\begin{eqnarray}\label{eq:Qfunctionintrace}
-  \ln p(\mathbf x_{t+1} | \mathbf x_t;\boldsymbol\theta,\xi)&=&\ln \alpha-\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}\mathbf x_{t+1}+2\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}q( \mathbf x_t)\boldsymbol\theta+2\xi \mathrm{tr} \left\lbrace \mathbf x_t\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}\right\rbrace \nonumber \\
-&&-\boldsymbol\theta^\top q(\mathbf x_t)^\top\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-2\xi \mathbf x_t^\top\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-\xi^2\mathrm{tr}\left\lbrace \mathbf x_t \mathbf x_t^\top\boldsymbol\Sigma_e^{-1}\right\rbrace 
-\end{eqnarray}
-we first linearise $q(\mathbf x_t)$ by taking the first-order truncated  Taylor-series expansion around the mean of the state at each time instant for the sigmoidal activation function, i.e.
+This is accomplished by taking the first-order truncated Taylor-series expansion of $q(\mathbf x_t)$ around the mean of the state at each time instant for the sigmoidal activation function, i.e.
 \begin{equation}
  f(\boldsymbol \phi^\top(\mathbf r')\mathbf x_t) \approx f(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t)+  \boldsymbol \phi^\top(\mathbf r')(\mathbf x_t - \mathbf  {\hat x}_t)f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t)
 \end{equation}
@@ -386,13 +299,58 @@ where we can approximate $q(\mathbf x_t)$ as
 \begin{equation}\label{eq:qTaylor}
  q(\mathbf x_t) \approx q(\mathbf {\hat x}_t)+\int_\Omega \boldsymbol{\Psi}(\mathbf{r}')\boldsymbol \phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t)f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'
 \end{equation}
-By substituting \eqref{eq:qTaylor} in \eqref{eq:Qfunctionintrace}  and taking the expectation leads to the following  $\mathcal Q$-function
-\begin{eqnarray}
- \mathcal Q(\boldsymbol \theta,\xi,\boldsymbol\theta',\xi')&=&\beta+2\Xi_0\boldsymbol\theta+
-2\xi tr\left\lbrace \Xi_1 \boldsymbol\Sigma_e^{-1}\right\rbrace \nonumber \\
-&-&\boldsymbol\theta^\top \Xi_2\boldsymbol\theta-2\xi \Xi_3 \boldsymbol\theta - \xi^2 tr \left\lbrace\Xi_4\boldsymbol\Sigma_e^{-1} \right\rbrace\nonumber
+
+The algorithm for the modified URTSS can be seen in Figure~\ref{tab:URTSSAlgorithm}.
+
+\subsection{M-Step}
+
+
+\subsection{$\mathcal Q$-function}
+The goal of the M-step is to maximise the likelihood function $p(\mathbf Y;\boldsymbol \theta,\xi)$ given the joint distribution $p(\mathbf X,\mathbf Y;\boldsymbol \theta,\xi)$ over the observed variables $\mathbf Y$ and hidden variables $\mathbf X$ that is governed by parameters $\boldsymbol \theta$ and $\xi$. Unfortunately, it is often not possible to maximise the likelihood $p(\mathbf Y;\boldsymbol \theta,\xi)$ directly. However, by using the relationship between $p(\mathbf Y;\boldsymbol \theta,\xi)$ and $p(\mathbf X,\mathbf Y;\boldsymbol \theta,\xi)$ it is possible to compute a sequence of parameter estimates that converges on the maximum likelihood parameter estimate. 
+
+Expanding the joint distribution $p(\mathbf X,\mathbf Y;\boldsymbol \theta,\xi)$ we have
+\begin{equation}\label{eq:jointdistribution}
+ p(\mathbf X,\mathbf Y;\boldsymbol \theta,\xi)=\prod_{t=1}^{T} p(\mathbf y_t|\mathbf x_t)p(\mathbf x_t|\mathbf x_{t-1};\boldsymbol \theta, \xi)p(\mathbf x_0).
+\end{equation}
+The $\mathcal Q$-function, or lower-bound on the likelihood, can be written in terms of joint distribution components as
+\begin{align}
+ \mathcal Q(\boldsymbol \theta,\xi,\boldsymbol\theta',\xi')&=\mathbf E_{\boldsymbol (\theta',\xi')}\left[\ln p(\mathbf X,\mathbf Y;\boldsymbol \theta,\xi)\right]\nonumber\\
+&=\mathbf E_{\boldsymbol (\theta',\xi')}\left[\sum_{t=1}^{T}\ln p(\mathbf y_t|\mathbf x_t)+\sum_{t=1}^{T}\ln p(\mathbf x_t|\mathbf x_{t-1};\boldsymbol \theta)+\sum_{t=1}^{T}\ln p(\mathbf x_0)\right],
+\end{align}
+where $ \mathbf E_{\boldsymbol (\theta',\xi')}$ denotes expectation taken with respect to the distribution $p(\mathbf X | \mathbf Y;\boldsymbol \theta',\xi') $ where $\boldsymbol \theta'$ and $\xi'$are the current parameter estimates. It should be noted that
+$p(\mathbf y_t|\mathbf x_t)$ and $p(\mathbf x_0)$ are not functions of parameter set and therefore $\mathcal Q$-function can be rewritten as
+\begin{equation}
+\mathcal Q(\boldsymbol \theta,\xi,\boldsymbol\theta',\xi')=\mathbf E_{(\theta',\xi')}\left[\sum_{t=1}^{T}\ln p(\mathbf x_t|\mathbf x_{t-1};\boldsymbol \theta ,\xi)\right]+\mathrm{const}
+\end{equation}
+the constant term can be ignored since it is not affecting the derivative with respect to the parameters. 
+The Gaussian distribution of the disturbance, $e_t(\mathbf r)\sim \mathcal N(\mathbf 0,\boldsymbol\Sigma_e(\mathbf r,\mathbf r'))$ results into the following conditional distribution of the state at $t+1$
+\begin{equation}
+ p(\mathbf x_{t+1} | \mathbf x_t;\boldsymbol\theta,\xi)=\alpha e^{-(\mathbf x_{t+1}-q(\mathbf  x_t)\boldsymbol\theta-\xi  \mathbf x_t)^\top\boldsymbol\Sigma_e^{-1}(\mathbf x_{t+1}-q( \mathbf x_t)\boldsymbol\theta-\xi \mathbf  x_t)}
+\end{equation}
+where $\alpha$ is the normalising constant. By expanding the exponent and taking $\log$ we get
+\begin{eqnarray}\label{eq:Qfunction}
+  \ln p(\mathbf x_{t+1} | \mathbf x_t;\boldsymbol\theta,\xi)&=&\ln \alpha-\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}\mathbf x_{t+1}+2\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}q( \mathbf x_t)\boldsymbol\theta+2\xi \mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}\mathbf x_t\nonumber \\
+&&-\boldsymbol\theta^\top q(\mathbf x_t)^\top\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-2\xi \mathbf x_t^\top\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-\xi^2\mathbf x_t^\top\boldsymbol\Sigma_e^{-1}\mathbf x_t.
 \end{eqnarray}
-where $\beta= \sum_{t=1}^T\mathbf E_{(\theta',\xi')}[ \ln \alpha-\mathbf x_{t+1}^\top\boldsymbol\Sigma_w^{-1}\mathbf x_{t+1}]$ is constant with respect to $\boldsymbol \theta$ and will disapear by differentiation, and
+Taking trace and rearranging, using the invariant cyclic permutations property of the trace, this distribution can be written as
+\begin{eqnarray}\label{eq:Qfunctionintrace}
+  \ln p(\mathbf x_{t+1} | \mathbf x_t;\boldsymbol\theta,\xi)&=&\ln \alpha-\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}\mathbf x_{t+1}+2\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}q( \mathbf x_t)\boldsymbol\theta+2\xi \mathrm{tr} \left\lbrace \mathbf x_t\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}\right\rbrace \nonumber \\
+&&-\boldsymbol\theta^\top q(\mathbf x_t)^\top\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-2\xi \mathbf x_t^\top\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-\xi^2\mathrm{tr}\left\lbrace \mathbf x_t \mathbf x_t^\top\boldsymbol\Sigma_e^{-1}\right\rbrace. 
+\end{eqnarray}
+Now taking the expectation of the log likelihood function gives the $\mathcal Q$-function, which is the lower-bound that needs to be maximised to gain optimal parameter estimates. The $\mathcal Q$-function is written as  
+\begin{align}
+ \mathcal Q(\boldsymbol \theta,\xi,\boldsymbol\theta',\xi')&=\beta+2\Xi_0\boldsymbol\theta+
+2\xi tr\left\lbrace \Xi_1 \boldsymbol\Sigma_e^{-1}\right\rbrace \nonumber \\
+&-\boldsymbol\theta^\top \Xi_2\boldsymbol\theta-2\xi \Xi_3 \boldsymbol\theta - \xi^2 tr \left\lbrace\Xi_4\boldsymbol\Sigma_e^{-1} \right\rbrace \tag{Voldermont}
+\end{align}
+where 
+\begin{align}
+	\beta &= \sum_{t=1}^T\mathbf E_{(\theta',\xi')}\left[ \ln \alpha-\mathbf x_{t+1}^\top\boldsymbol\Sigma_w^{-1}\mathbf x_{t+1}\right] \\
+\Xi_0&=\sum_{t=1}^T\left[ \mathbf{\hat x}_{t+1}^\top\boldsymbol\Sigma_e^{-1}q(\mathbf{\hat x}_t)+\int_\Omega\boldsymbol \phi^\top(\mathbf r') \mathbf M_t \boldsymbol\Sigma_e^{-1}  \boldsymbol{\Psi}(\mathbf{r}') f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\right] \\	
+\Xi_1&=\mathbf E[\sum_{t=1}^T\mathbf x_t\mathbf x_{t+1}^\top] \\
+\Xi_2&=\sum_{t=1}^T\Lambda_t(\mathbf r')\mathbf P_t \tilde{\Lambda}_t(\mathbf r')
+\end{align}
+is constant with respect to $\boldsymbol \theta$ and will disappear by differentiation, and
 \begin{equation}\label{eq:Xi0}
  \Xi_0=\sum_{t=1}^T\left[ \mathbf{\hat x}_{t+1}^\top\boldsymbol\Sigma_e^{-1}q(\mathbf{\hat x}_t)+\int_\Omega\boldsymbol \phi^\top(\mathbf r') \mathbf M_t \boldsymbol\Sigma_e^{-1}  \boldsymbol{\Psi}(\mathbf{r}') f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\right] 
 \end{equation}
@@ -451,6 +409,106 @@ $\Xi_2$ is positive definite and invertible and the second derivative is negativ
 \begin{itemize}
 	\item  
 \end{itemize}
+
+% all figures here
+% ~~~~~~~~~~~~~~~~
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics{./Figures/LFPs.eps}
+\end{center}
+\caption{{\bf Local field potentials from the micro-electrode array}. Data recorded from the first 8 channels of the array. The red dotted line indicates the seizure onset and the blue dashed line indicates the seizure end.}
+\label{fig:TimeSeries}
+\end{figure}
+
+
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics{./Figures/FieldObservations.eps}
+\end{center}
+\caption{{\bf Snap-shots of the spatial aspects of the observed field}. The snap-shots are ordered from A to I forming a consecutive sequence spaced 2.5~ms apart starting at 34.024s}
+\label{fig:FieldObserations}
+\end{figure}
+
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics{./Figures/TemporalFreq.eps}
+\end{center}
+\caption{{\bf Spectra from local field potential recordings}. A. Pre-seizure observations. B. Seizure observations. C. Post-seizure observations.}
+\label{fig:TemporalFreqObservation}
+\end{figure}
+
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics{./Figures/SpatialFreq.eps}
+\end{center}
+\caption{{\bf Spatial frequency analysis of the observed neural field}. A. Pre-seizure observations. B. Seizure observations. C. Post-seizure observations.}
+\label{fig:SpatialFreqObservation}
+\end{figure}
+
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics{./Figures/SpatialFreqCrossSection.eps}
+\end{center}
+\caption{{\bf Diagonal cross-section of the spatial frequency plots of the observed neural field}. A. Pre-seizure observations. B. Seizure observations. C. Post-seizure observations.}
+\label{fig:DiagSpatialFreqObservation}
+\end{figure}
+
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics{./Figures/CrossCorr2D.eps}
+\end{center}
+\caption{{\bf Mean cross-correlations between consecutive observations of the neural field}. Note: The correlations are normalised such that the maximum value is one. A. Pre-seizure observation correlations. B. Seizure observation correlations. C. Post-seizure observation correlations.}
+\label{fig:SpatialCrossCorrelation}
+\end{figure}
+
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics{./Figures/HomoTestCrossCorr.eps}
+\end{center}
+\caption{{\bf Mean cross-correlations between consecutive samples using subsets of observations of the neural field}. Each subplot shows correlations corresponding to a subset electrodes. Indexing the electrodes in a (x,y) grid, where index ranges from 1 to 10. Subplot A shows the mean correlation between electrode indexes (1-6, 5-10), subplot B shows correlations from indexes (5-10,5-10), subplot C shows indexes (1-6, 1-6) and subplot D shows indexes (5-10, 5-10).}
+\label{fig:HomogeneityTest}
+\end{figure}
+
+% tables here
+% ~~~~~~~~~~~
+\renewcommand{\arraystretch}{1.7}
+\begin{table}[!ht]
+\caption{
+\bf{Algorithm for the Unscented RTS Smoother}}
+\begin{tabular}{|c|}\hline
+\multicolumn{1}{|p{16cm}|}{\textbf{1.} Forward initialisation} \\ 
+$\hat{\mathbf x}_0, \mathbf P_0$ \\
+\hline
+\multicolumn{1}{|p{16cm}|}{\textbf{2.} Forward iteration: for $t \in \left\lbrace 0,\cdots, T\right\rbrace $, calculate the sigma points $\mathcal X_{i,t}^f$ using equations \ref{eq:sigmapoints1}-\ref{eq:sigmapoints3} and propagate through equation~\ref{eq:QmatrixForSigmapoints}} \\
+$\mathcal X_{i,t+1}^{f-}=Q(\mathcal X_{i,t}^f) \quad i=0, \dots, 2L$\\
+\multicolumn{1}{|p{16cm}|}{Calculate the predicted state and the predicted covariance matrix} \\
+$\hat{\mathbf x}_{t+1}^{f-}=\sum_{i=0}^{2L} W_i^{(m)}\mathcal X_{i,t+1}^{f-} $ \\
+$\mathbf P_{t +1}^{f-}=\sum_{i=0}^{2L} W_i^{(c)}(\mathcal X_{i,t+1}^{f-}-\hat{\mathbf x}_{t +1}^{f-})(\mathcal X_{i,t+1}^{f-}-\hat{\mathbf x}_{t +1}^{f-})^\top+\boldsymbol \Sigma_e$ \\ 
+\multicolumn{1}{|p{16cm}|}{Compute the filter gain, the filtered state and the filtered covariance matrix using the standard Kalman filter update equations} \\
+$\mathcal K_{t+1}=\mathbf P_{t +1}^{f-}\mathbf C ^\top(\mathbf C \mathbf P_{t +1}^{f-}\mathbf C ^\top+\boldsymbol \Sigma_{\varepsilon})^{-1}$\\
+$\hat{\mathbf x}_{t+1}^{f}=\hat{\mathbf x}_{t+1}^{f-}+\mathcal K_{t+1}(\mathbf y_{t+1}-\mathbf C\hat{\mathbf x}_{t +1}^{f-}) $\\
+$\mathbf P_{t+1}^f=(\mathbf I - \mathcal K_{t+1}\mathbf C)\mathbf P_{t +1}^{f-}$\\ 
+\hline
+\multicolumn{1}{|p{16cm}|}{\textbf{3.} Backward initialisation}\\
+$\mathbf P_T^b= \mathbf P_T^f, \quad \hat{\mathbf x}^b_T= \hat{\mathbf x}^f_T$ \\
+\hline
+\multicolumn{1}{|p{16cm}|}{\textbf{4.} Backward iteration: for $t \in \left\lbrace T-1, \cdots, 0 \right\rbrace $ calculate the sigma points $\mathcal X_{i,t}^b$ and propagate them through equation \ref{eq:QmatrixForSigmapoints}}\\
+$\mathcal X_{i,t+1}^{b-}=Q(\mathcal X_{i,t}^b) \quad i=0, \dots, 2L$\\
+\multicolumn{1}{|p{16cm}|}{Calculate the predicted state and the predicted covariance matrix}\\
+$\hat{\mathbf x}_{t+1}^{b-}=\sum_{i=0}^{2L} W_i^{(m)}\mathcal X_{i,t+1}^{b-}$\\
+$\mathbf P_{t +1}^{b-}=\sum_{i=0}^{2L} W_i^{(c)}(\mathcal X_{i,t+1}^{b-}-\hat{\mathbf x}_{t +1}^{b-})(\mathcal X_{i,t+1}^{b-}-\hat{\mathbf x}_{t +1}^{b-})^\top+\boldsymbol \Sigma_e $\\
+$\mathbf M_{t +1}=\sum_{i=0}^{2L} W_i^{(c)}(\mathcal X_{i,t}^{b-}-\hat{\mathbf x}_{t}^{f})(\mathcal X_{i,t+1}^{b-}-\hat{\mathbf x}_{t+1}^{b-})^\top$\\
+\multicolumn{1}{|p{16cm}|}{Compute the smoother gain, the smoothed state and the smoothed covariance matrix}\\
+$\mathbf S_t=\mathbf M_{t +1}\left[ \mathbf P_{t +1}^{b-}\right] ^{-1} $\\
+$\hat{\mathbf x}_t^b=\hat{\mathbf x}_t^f+\mathbf S_t\left[\hat{\mathbf x}_{t+1}^{b}-\hat{\mathbf x}_{t+1}^{b-}\right]$\\
+$\mathbf P_{t}^{b}=\mathbf P_{t}^{f}+\mathbf S_t\left[\mathbf P_{t+1}^{b}-\mathbf P_{t+1}^{b-} \right]\mathbf S_t^\top $\\
+\hline
+\end{tabular}
+\begin{flushleft}This table shows the steps in the unscented Rauch-Tung-Striebel smoother algorithm. The steps are iterated 11 times for our state estimation procedure. The least squares algorithm is run after each iteration to update the parameter estimates.
+\end{flushleft}
+\label{tab:UKFAlgorithm}
+\end{table}
+\renewcommand{\arraystretch}{1}
 
 \bibliographystyle{plain}
 \bibliography{BrainIDE}
