@@ -300,7 +300,7 @@ where we can approximate $q(\mathbf x_t)$ as
  q(\mathbf x_t) \approx q(\mathbf {\hat x}_t)+\int_\Omega \boldsymbol{\Psi}(\mathbf{r}')\boldsymbol \phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t)f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'
 \end{equation}
 
-The algorithm for the modified URTSS can be seen in Figure~\ref{tab:URTSSAlgorithm}.
+The algorithm for the modified URTSS can be seen in Table~\ref{tab:URTSSAlgorithm}.
 
 \subsection{M-Step}
 
@@ -314,10 +314,10 @@ Expanding the joint distribution $p(\mathbf X,\mathbf Y;\boldsymbol \theta,\xi)$
 \end{equation}
 The $\mathcal Q$-function, or lower-bound on the likelihood, can be written in terms of joint distribution components as
 \begin{align}
- \mathcal Q(\boldsymbol \theta,\xi,\boldsymbol\theta',\xi')&=\mathbf E_{\boldsymbol (\theta',\xi')}\left[\ln p(\mathbf X,\mathbf Y;\boldsymbol \theta,\xi)\right]\nonumber\\
+ \mathcal Q(\boldsymbol \theta,\xi,\boldsymbol\theta',\xi')&=\mathbf E_{\boldsymbol (\theta',\xi')}\left[\ln p(\mathbf X,\mathbf Y;\boldsymbol \theta,\xi)\right] \\
 &=\mathbf E_{\boldsymbol (\theta',\xi')}\left[\sum_{t=1}^{T}\ln p(\mathbf y_t|\mathbf x_t)+\sum_{t=1}^{T}\ln p(\mathbf x_t|\mathbf x_{t-1};\boldsymbol \theta)+\sum_{t=1}^{T}\ln p(\mathbf x_0)\right],
 \end{align}
-where $ \mathbf E_{\boldsymbol (\theta',\xi')}$ denotes expectation taken with respect to the distribution $p(\mathbf X | \mathbf Y;\boldsymbol \theta',\xi') $ where $\boldsymbol \theta'$ and $\xi'$are the current parameter estimates. It should be noted that
+\dean{there is a parameter missing here..} where $ \mathbf E_{\boldsymbol (\theta',\xi')}$ denotes expectation taken with respect to the distribution $p(\mathbf X | \mathbf Y;\boldsymbol \theta',\xi') $ where $\boldsymbol \theta'$ and $\xi'$are the current parameter estimates. It should be noted that
 $p(\mathbf y_t|\mathbf x_t)$ and $p(\mathbf x_0)$ are not functions of parameter set and therefore $\mathcal Q$-function can be rewritten as
 \begin{equation}
 \mathcal Q(\boldsymbol \theta,\xi,\boldsymbol\theta',\xi')=\mathbf E_{(\theta',\xi')}\left[\sum_{t=1}^{T}\ln p(\mathbf x_t|\mathbf x_{t-1};\boldsymbol \theta ,\xi)\right]+\mathrm{const}
@@ -338,54 +338,34 @@ Taking trace and rearranging, using the invariant cyclic permutations property o
 &&-\boldsymbol\theta^\top q(\mathbf x_t)^\top\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-2\xi \mathbf x_t^\top\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-\xi^2\mathrm{tr}\left\lbrace \mathbf x_t \mathbf x_t^\top\boldsymbol\Sigma_e^{-1}\right\rbrace. 
 \end{eqnarray}
 Now taking the expectation of the log likelihood function gives the $\mathcal Q$-function, which is the lower-bound that needs to be maximised to gain optimal parameter estimates. The $\mathcal Q$-function is written as  
-\begin{align}
+\begin{align}\label{eq:Voldermont}
  \mathcal Q(\boldsymbol \theta,\xi,\boldsymbol\theta',\xi')&=\beta+2\Xi_0\boldsymbol\theta+
 2\xi tr\left\lbrace \Xi_1 \boldsymbol\Sigma_e^{-1}\right\rbrace \nonumber \\
 &-\boldsymbol\theta^\top \Xi_2\boldsymbol\theta-2\xi \Xi_3 \boldsymbol\theta - \xi^2 tr \left\lbrace\Xi_4\boldsymbol\Sigma_e^{-1} \right\rbrace \tag{Voldermont}
 \end{align}
 where 
 \begin{align}
-	\beta &= \sum_{t=1}^T\mathbf E_{(\theta',\xi')}\left[ \ln \alpha-\mathbf x_{t+1}^\top\boldsymbol\Sigma_w^{-1}\mathbf x_{t+1}\right] \\
+	\beta &= \sum_{t=1}^T\mathbf E_{(\theta',\xi')}\left[ \ln \alpha-\mathbf x_{t+1}^\top\boldsymbol\Sigma_w^{-1}\mathbf x_{t+1}\right] \label{eq:def of beta} \\
 \Xi_0&=\sum_{t=1}^T\left[ \mathbf{\hat x}_{t+1}^\top\boldsymbol\Sigma_e^{-1}q(\mathbf{\hat x}_t)+\int_\Omega\boldsymbol \phi^\top(\mathbf r') \mathbf M_t \boldsymbol\Sigma_e^{-1}  \boldsymbol{\Psi}(\mathbf{r}') f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\right] \\	
-\Xi_1&=\mathbf E[\sum_{t=1}^T\mathbf x_t\mathbf x_{t+1}^\top] \\
-\Xi_2&=\sum_{t=1}^T\Lambda_t(\mathbf r')\mathbf P_t \tilde{\Lambda}_t(\mathbf r')
+\Xi_1&=\mathbf E\left[\sum_{t=1}^T\mathbf x_t\mathbf x_{t+1}^\top\right] \\
+\Xi_2&=\sum_{t=1}^T\Lambda_t(\mathbf r')\mathbf P_t \tilde{\Lambda}_t(\mathbf r') \\
+ \Xi_3&=\sum_{t=1}^T\left[ \mathbf{\hat x}_{t}^\top\boldsymbol\Sigma_e^{-1}q(\mathbf{\hat x}_t)+\int_\Omega\boldsymbol \phi^\top(\mathbf r') \mathbf P_t \boldsymbol\Sigma_e^{-1}  \boldsymbol{\Psi}(\mathbf{r}') f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\right] \\
+ \Xi_4&=\mathbf E\left[\sum_{t=1}^T\mathbf x_t\mathbf x_{t}^\top\right]
 \end{align}
-is constant with respect to $\boldsymbol \theta$ and will disappear by differentiation, and
-\begin{equation}\label{eq:Xi0}
- \Xi_0=\sum_{t=1}^T\left[ \mathbf{\hat x}_{t+1}^\top\boldsymbol\Sigma_e^{-1}q(\mathbf{\hat x}_t)+\int_\Omega\boldsymbol \phi^\top(\mathbf r') \mathbf M_t \boldsymbol\Sigma_e^{-1}  \boldsymbol{\Psi}(\mathbf{r}') f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\right] 
-\end{equation}
-\begin{equation}\label{eq:Xi1}
- \Xi_1=\mathbf E[\sum_{t=1}^T\mathbf x_t\mathbf x_{t+1}^\top] 
-\end{equation}
-\begin{equation}
- \Xi_2=\sum_{t=1}^T\Lambda_t(\mathbf r')\mathbf P_t\tilde{\Lambda}_t(\mathbf r')
-\end{equation}
-where
-\begin{equation}
- \Lambda(\mathbf r')=\begin{bmatrix}\boldsymbol \lambda_1(\mathbf r') & \boldsymbol \lambda_2(\mathbf r')& \dots &\boldsymbol \lambda_i(\mathbf r')\end{bmatrix} \quad \text{and} \quad \tilde{\Lambda}(\mathbf r')=\begin{bmatrix}\tilde{\boldsymbol \lambda}_1(\mathbf r') \\ \tilde{\boldsymbol \lambda}_2(\mathbf r') \\ \vdots \\ \tilde{\boldsymbol \lambda}_i(\mathbf r')\end{bmatrix}
-\end{equation}
-and where
-\begin{equation}
- \boldsymbol\lambda_i(\mathbf r')=\int \boldsymbol \Psi^\top(\mathbf r')\boldsymbol \Sigma_e^{-1}\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf x_t)d\mathbf r'
-\end{equation}
 and
-\begin{equation}
- \tilde{\boldsymbol \lambda}_i(\mathbf r')=\int \boldsymbol \Psi(\mathbf r')\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf x_t)d\mathbf r'
-\end{equation}
-and 
-\begin{equation}
- \Xi_3=\sum_{t=1}^T\left[ \mathbf{\hat x}_{t}^\top\boldsymbol\Sigma_e^{-1}q(\mathbf{\hat x}_t)+\int_\Omega\boldsymbol \phi^\top(\mathbf r') \mathbf P_t \boldsymbol\Sigma_e^{-1}  \boldsymbol{\Psi}(\mathbf{r}') f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\right] 
-\end{equation}
-\begin{equation}
- \Xi_4=\mathbf E[\sum_{t=1}^T\mathbf x_t\mathbf x_{t}^\top]
-\end{equation}
-differentiate with respect to $\boldsymbol\theta$ and $\xi$ and equating to zero we get
+\begin{align}
+	 \Lambda(\mathbf r')&=\begin{bmatrix}\boldsymbol \lambda_1(\mathbf r') & \boldsymbol \lambda_2(\mathbf r')& \dots &\boldsymbol \lambda_i(\mathbf r')\end{bmatrix} \\
+	 \boldsymbol\lambda_i(\mathbf r')&=\int \boldsymbol \Psi^\top(\mathbf r')\boldsymbol \Sigma_e^{-1}\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf x_t)d\mathbf r'\\
+	\tilde{\Lambda}(\mathbf r')&=\begin{bmatrix}\tilde{\boldsymbol \lambda}_1(\mathbf r') \\ \tilde{\boldsymbol \lambda}_2(\mathbf r') \\ \vdots \\ \tilde{\boldsymbol \lambda}_i(\mathbf r')\end{bmatrix} \\
+	 \tilde{\boldsymbol \lambda}_i(\mathbf r')&=\int \boldsymbol \Psi(\mathbf r')\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf x_t)d\mathbf r'
+\end{align}
+When taking the derivative of equation~\ref{eq:Voldermont}, the first term described in equation~\ref{eq:def of beta} will will disappear. Also, when we differentiate with respect to $\boldsymbol\theta$ and $\xi$ and equating it to zero we get
 \begin{equation}
  \boldsymbol \theta=\Xi_2^{-\top}\left(\Xi_0^\top-\xi\Xi_3^\top \right)
 \end{equation}
 and
 \begin{equation}
- \xi=\frac{tr\left\lbrace \Xi_1 \boldsymbol\Sigma_e^{-1}\right\rbrace-\Xi_3\Xi_2^{-\top}\Xi_0^\top}{tr\left\lbrace \Xi_4 \boldsymbol\Sigma_e^{-1}\right\rbrace-\Xi_3\Xi_2^{-\top}\Xi_3^\top}
+ \xi=\frac{tr\left\lbrace \Xi_1 \boldsymbol\Sigma_e^{-1}\right\rbrace-\Xi_3\Xi_2^{-\top}\Xi_0^\top}{tr\left\lbrace \Xi_4 \boldsymbol\Sigma_e^{-1}\right\rbrace-\Xi_3\Xi_2^{-\top}\Xi_3^\top}.
 \end{equation}
 \subsection{Discussion}
 The second derivative of the $\mathcal Q$-function with respect to $\xi$ is given by
