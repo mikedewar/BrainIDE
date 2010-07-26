@@ -332,12 +332,12 @@ The Gaussian distribution of the disturbance, $e_t(\mathbf r)\sim \mathcal N(\ma
 where $\alpha$ is the normalising constant. By expanding the exponent and taking $\log$ we get
 \begin{eqnarray}\label{eq:Qfunction}
   \ln p(\mathbf x_{t+1} | \mathbf x_t;\boldsymbol\theta,\xi)&=&\ln \alpha-\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}\mathbf x_{t+1}+2\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}q( \mathbf x_t)\boldsymbol\theta+2\xi \mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}\mathbf x_t\nonumber \\
-&&-\boldsymbol\theta^\top q(\mathbf x_t)^\top\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-2\xi \mathbf x_t^\top\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-\xi^2\mathbf x_t^\top\boldsymbol\Sigma_e^{-1}\mathbf x_t.
+&&-\boldsymbol\theta^\top q^\top(\mathbf x_t)\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-2\xi \mathbf x_t^\top\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-\xi^2\mathbf x_t^\top\boldsymbol\Sigma_e^{-1}\mathbf x_t.
 \end{eqnarray}
 Taking trace and rearranging, using the invariant cyclic permutations property of the trace, this distribution can be written as
 \begin{eqnarray}\label{eq:Qfunctionintrace}
   \ln p(\mathbf x_{t+1} | \mathbf x_t;\boldsymbol\theta,\xi)&=&\ln \alpha-\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}\mathbf x_{t+1}+2\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}q( \mathbf x_t)\boldsymbol\theta+2\xi \mathrm{tr} \left\lbrace \mathbf x_t\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}\right\rbrace \nonumber \\
-&&-\boldsymbol\theta^\top q(\mathbf x_t)^\top\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-2\xi \mathbf x_t^\top\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-\xi^2\mathrm{tr}\left\lbrace \mathbf x_t \mathbf x_t^\top\boldsymbol\Sigma_e^{-1}\right\rbrace. 
+&&-\boldsymbol\theta^\top q^\top(\mathbf x_t)\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-2\xi \mathbf x_t^\top\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-\xi^2\mathrm{tr}\left\lbrace \mathbf x_t \mathbf x_t^\top\boldsymbol\Sigma_e^{-1}\right\rbrace. 
 \end{eqnarray}
 Now taking the expectation of the log likelihood function gives the $\mathcal Q$-function, which is the lower-bound that needs to be maximised to gain optimal parameter estimates. The $\mathcal Q$-function is written as  
 \begin{align}\label{eq:Voldermont}
