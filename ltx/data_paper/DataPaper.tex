@@ -354,16 +354,16 @@ where
 	\beta &= \sum_{t=1}^T\mathbf E_{(\theta',\xi')}\left[ \ln \alpha-\mathbf x_{t+1}^\top\boldsymbol\Sigma_w^{-1}\mathbf x_{t+1}\right] \label{eq:def of beta} \\
 \Xi_0&=\sum_{t=1}^T\left[ \mathbf{\hat x}_{t+1}^\top\boldsymbol\Sigma_e^{-1}q(\mathbf{\hat x}_t)+\int_\Omega\boldsymbol \phi^\top(\mathbf r') \mathbf M_t \boldsymbol\Sigma_e^{-1}  \boldsymbol{\Psi}(\mathbf{r}') f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\right] \\	
 \Xi_1&=\mathbf E_{(\theta',\xi')}\left[\sum_{t=1}^T\mathbf x_t\mathbf x_{t+1}^\top\right] \\
-\Xi_2&=\sum_{t=1}^T\left[q^\top(\mathbf{\hat x}_t)\boldsymbol\Sigma_e^{-1}q(\mathbf{\hat x}_t)+\Lambda_t(\mathbf r')\mathbf P_t \tilde{\Lambda}_t(\mathbf r')\right] \\
+\Xi_2&=\sum_{t=1}^T\left[q^\top(\mathbf{\hat x}_t)\boldsymbol\Sigma_e^{-1}q(\mathbf{\hat x}_t)+\Lambda_t(\mathbf r)\mathbf P_t \tilde{\Lambda}_t(\mathbf r)\right] \\
  \Xi_3&=\sum_{t=1}^T\left[ \mathbf{\hat x}_{t}^\top\boldsymbol\Sigma_e^{-1}q(\mathbf{\hat x}_t)+\int_\Omega\boldsymbol \phi^\top(\mathbf r') \mathbf P_t \boldsymbol\Sigma_e^{-1}  \boldsymbol{\Psi}(\mathbf{r}') f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\right] \\
  \Xi_4&=\mathbf E_{(\theta',\xi')}\left[\sum_{t=1}^T\mathbf x_t\mathbf x_{t}^\top\right]
 \end{align}
 and
 \begin{align}
-	 \Lambda(\mathbf r')&=\begin{bmatrix}\boldsymbol \lambda_1(\mathbf r') & \boldsymbol \lambda_2(\mathbf r')& \dots &\boldsymbol \lambda_i(\mathbf r')\end{bmatrix} \\
-	 \boldsymbol\lambda_i(\mathbf r')&=\int \boldsymbol \Psi^\top(\mathbf r')\boldsymbol \Sigma_e^{-1}\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf x_t)d\mathbf r'\\
-	\tilde{\Lambda}(\mathbf r')&=\begin{bmatrix}\tilde{\boldsymbol \lambda}_1(\mathbf r') \\ \tilde{\boldsymbol \lambda}_2(\mathbf r') \\ \vdots \\ \tilde{\boldsymbol \lambda}_i(\mathbf r')\end{bmatrix} \\
-	 \tilde{\boldsymbol \lambda}_i(\mathbf r')&=\int \boldsymbol \Psi(\mathbf r')\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf x_t)d\mathbf r'
+	 \Lambda_t(\mathbf r)&=\begin{bmatrix}\boldsymbol \lambda_t^{(1)}(\mathbf r) & \boldsymbol \lambda_t^{(2)}(\mathbf r)& \dots &\boldsymbol \lambda_t^{(i)}(\mathbf r)\end{bmatrix} \\
+	 \boldsymbol\lambda_t^{(i)}(\mathbf r)&=\int_{\Omega} \boldsymbol \Psi^\top(\mathbf r')\boldsymbol \Sigma_e^{-1}\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf {\hat x}_t)d\mathbf r'\\
+	\tilde{\Lambda}_t(\mathbf r)&=\begin{bmatrix}\tilde{\boldsymbol \lambda}_t^{(1)}(\mathbf r) \\ \tilde{\boldsymbol \lambda}_t^{(2)}(\mathbf r) \\ \vdots \\ \tilde{\boldsymbol \lambda}_t^{(i)}(\mathbf r)\end{bmatrix} \\
+	 \tilde{\boldsymbol \lambda}_t^{(i)}(\mathbf r)&=\int_{\Omega} \boldsymbol \Psi(\mathbf r')\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf {\hat x}_t)d\mathbf r'
 \end{align}
 When taking the derivative of equation~\ref{eq:Voldermont}, the first term described in equation~\ref{eq:def of beta} will will disappear. Also, when we differentiate with respect to $\boldsymbol\theta$ and $\xi$ and equating it to zero we get
 \begin{equation}
