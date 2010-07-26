@@ -317,9 +317,9 @@ Expanding the joint distribution $p(\mathbf X,\mathbf Y;\boldsymbol \theta,\xi)$
 The $\mathcal Q$-function, or lower-bound on the likelihood, can be written in terms of joint distribution components as
 \begin{align}
  \mathcal Q(\boldsymbol \theta,\xi,\boldsymbol\theta',\xi')&=\mathbf E_{\boldsymbol (\theta',\xi')}\left[\ln p(\mathbf X,\mathbf Y;\boldsymbol \theta,\xi)\right] \\
-&=\mathbf E_{\boldsymbol (\theta',\xi')}\left[\sum_{t=1}^{T}\ln p(\mathbf y_t|\mathbf x_t)+\sum_{t=1}^{T}\ln p(\mathbf x_t|\mathbf x_{t-1};\boldsymbol \theta)+\sum_{t=1}^{T}\ln p(\mathbf x_0)\right],
+&=\mathbf E_{\boldsymbol (\theta',\xi')}\left[\sum_{t=1}^{T}\ln p(\mathbf y_t|\mathbf x_t)+\sum_{t=1}^{T}\ln p(\mathbf x_t|\mathbf x_{t-1};\boldsymbol \theta, \xi)+\sum_{t=1}^{T}\ln p(\mathbf x_0)\right],
 \end{align}
-\dean{there is a parameter missing here..} where $ \mathbf E_{\boldsymbol (\theta',\xi')}$ denotes expectation taken with respect to the distribution $p(\mathbf X | \mathbf Y;\boldsymbol \theta',\xi') $ where $\boldsymbol \theta'$ and $\xi'$are the current parameter estimates. It should be noted that
+where $ \mathbf E_{\boldsymbol (\theta',\xi')}$ denotes expectation taken with respect to the distribution $p(\mathbf X | \mathbf Y;\boldsymbol \theta',\xi') $ where $\boldsymbol \theta'$ and $\xi'$are the current parameter estimates. It should be noted that
 $p(\mathbf y_t|\mathbf x_t)$ and $p(\mathbf x_0)$ are not functions of parameter set and therefore $\mathcal Q$-function can be rewritten as
 \begin{equation}
 \mathcal Q(\boldsymbol \theta,\xi,\boldsymbol\theta',\xi')=\mathbf E_{(\theta',\xi')}\left[\sum_{t=1}^{T}\ln p(\mathbf x_t|\mathbf x_{t-1};\boldsymbol \theta ,\xi)\right]+\mathrm{const}
