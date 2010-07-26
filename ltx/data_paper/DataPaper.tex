@@ -296,10 +296,14 @@ $ \boldsymbol e_t(\mathbf r)\sim \mathcal N(\mathbf 0,\boldsymbol\Sigma_e(\mathb
 The unscented Rauch-Tung-Striebel smoother (URTSS)~\cite{Sarkka2010} was used for the state estimation. The URTSS incorporates an unscented Kalman filter (UKF)~\cite{Julier1997, Merwe2003} in a forward step to estimate posterior states, $\hat{\mathbf x}_t^{f}$, followed by a backward step to compute the smoothed state estimates, $\hat{\mathbf x}_t^{b}$. The first and second order moments of the predicted state are captured by propagating the so-called sigma points through the state equation. An additional element to the URTSS algorithm was created to approximate $q(\mathbf{x}_t)$, which is required for the M-step. 
 
 This is accomplished by taking the first-order truncated Taylor-series expansion of $q(\mathbf x_t)$ around the mean of the state at each time instant for the sigmoidal activation function, i.e.
-\begin{equation}
+\begin{equation}\label{eq:SigmoidTaylor}
  f(\boldsymbol \phi^\top(\mathbf r')\mathbf x_t) \approx f(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t)+  \boldsymbol \phi^\top(\mathbf r')(\mathbf x_t - \mathbf  {\hat x}_t)f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t)
 \end{equation}
-where we can approximate $q(\mathbf x_t)$ as
+where 
+\begin{equation}\label{eq:SigmoidDerivative}
+ f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {x}_t)=\varsigma f(\boldsymbol \phi^\top(\mathbf r')\mathbf {x}_t)\left( 1-\frac{f( \boldsymbol \phi^\top(\mathbf r')\mathbf {x}_t)}{f_{max}}\right)
+\end{equation}
+substituting \ref{eq:SigmoidTaylor} in \ref{eq:QmatrixForSigmapoints}  we get an approximation for $q(\mathbf x_t)$ as
 \begin{equation}\label{eq:qTaylor}
  q(\mathbf x_t) \approx q(\mathbf {\hat x}_t)+\int_\Omega \boldsymbol{\Psi}(\mathbf{r}')\boldsymbol \phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t)f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'
 \end{equation}
@@ -319,9 +323,9 @@ Expanding the joint distribution $p(\mathbf X,\mathbf Y;\boldsymbol \theta,\xi)$
 The $\mathcal Q$-function, or lower-bound on the likelihood, can be written in terms of joint distribution components as
 \begin{align}
  \mathcal Q(\boldsymbol \theta,\xi,\boldsymbol\theta',\xi')&=\mathbf E_{\boldsymbol (\theta',\xi')}\left[\ln p(\mathbf X,\mathbf Y;\boldsymbol \theta,\xi)\right] \\
-&=\mathbf E_{\boldsymbol (\theta',\xi')}\left[\sum_{t=1}^{T}\ln p(\mathbf y_t|\mathbf x_t)+\sum_{t=1}^{T}\ln p(\mathbf x_t|\mathbf x_{t-1};\boldsymbol \theta)+\sum_{t=1}^{T}\ln p(\mathbf x_0)\right],
+&=\mathbf E_{\boldsymbol (\theta',\xi')}\left[\sum_{t=1}^{T}\ln p(\mathbf y_t|\mathbf x_t)+\sum_{t=1}^{T}\ln p(\mathbf x_t|\mathbf x_{t-1};\boldsymbol \theta, \xi)+\sum_{t=1}^{T}\ln p(\mathbf x_0)\right],
 \end{align}
-\dean{there is a parameter missing here..} where $ \mathbf E_{\boldsymbol (\theta',\xi')}$ denotes expectation taken with respect to the distribution $p(\mathbf X | \mathbf Y;\boldsymbol \theta',\xi') $ where $\boldsymbol \theta'$ and $\xi'$are the current parameter estimates. It should be noted that
+where $ \mathbf E_{\boldsymbol (\theta',\xi')}$ denotes expectation taken with respect to the distribution $p(\mathbf X | \mathbf Y;\boldsymbol \theta',\xi') $ where $\boldsymbol \theta'$ and $\xi'$are the current parameter estimates. It should be noted that
 $p(\mathbf y_t|\mathbf x_t)$ and $p(\mathbf x_0)$ are not functions of parameter set and therefore $\mathcal Q$-function can be rewritten as
 \begin{equation}
 \mathcal Q(\boldsymbol \theta,\xi,\boldsymbol\theta',\xi')=\mathbf E_{(\theta',\xi')}\left[\sum_{t=1}^{T}\ln p(\mathbf x_t|\mathbf x_{t-1};\boldsymbol \theta ,\xi)\right]+\mathrm{const}
@@ -334,14 +338,14 @@ The Gaussian distribution of the disturbance, $e_t(\mathbf r)\sim \mathcal N(\ma
 where $\alpha$ is the normalising constant. By expanding the exponent and taking $\log$ we get
 \begin{eqnarray}\label{eq:Qfunction}
   \ln p(\mathbf x_{t+1} | \mathbf x_t;\boldsymbol\theta,\xi)&=&\ln \alpha-\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}\mathbf x_{t+1}+2\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}q( \mathbf x_t)\boldsymbol\theta+2\xi \mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}\mathbf x_t\nonumber \\
-&&-\boldsymbol\theta^\top q(\mathbf x_t)^\top\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-2\xi \mathbf x_t^\top\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-\xi^2\mathbf x_t^\top\boldsymbol\Sigma_e^{-1}\mathbf x_t.
+&&-\boldsymbol\theta^\top q^\top(\mathbf x_t)\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-2\xi \mathbf x_t^\top\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-\xi^2\mathbf x_t^\top\boldsymbol\Sigma_e^{-1}\mathbf x_t.
 \end{eqnarray}
 Taking trace and rearranging, using the invariant cyclic permutations property of the trace, this distribution can be written as
 \begin{eqnarray}\label{eq:Qfunctionintrace}
   \ln p(\mathbf x_{t+1} | \mathbf x_t;\boldsymbol\theta,\xi)&=&\ln \alpha-\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}\mathbf x_{t+1}+2\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}q( \mathbf x_t)\boldsymbol\theta+2\xi \mathrm{tr} \left\lbrace \mathbf x_t\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}\right\rbrace \nonumber \\
-&&-\boldsymbol\theta^\top q(\mathbf x_t)^\top\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-2\xi \mathbf x_t^\top\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-\xi^2\mathrm{tr}\left\lbrace \mathbf x_t \mathbf x_t^\top\boldsymbol\Sigma_e^{-1}\right\rbrace. 
+&&-\boldsymbol\theta^\top q^\top(\mathbf x_t)\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-2\xi \mathbf x_t^\top\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-\xi^2\mathrm{tr}\left\lbrace \mathbf x_t \mathbf x_t^\top\boldsymbol\Sigma_e^{-1}\right\rbrace. 
 \end{eqnarray}
-Now taking the expectation of the log likelihood function gives the $\mathcal Q$-function, which is the lower-bound that needs to be maximised to gain optimal parameter estimates. The $\mathcal Q$-function is written as  
+Now taking the expectation of the log likelihood function for all time instants gives the $\mathcal Q$-function, which is the lower-bound that needs to be maximised to gain optimal parameter estimates. The $\mathcal Q$-function is written as  
 \begin{align}\label{eq:Voldermont}
  \mathcal Q(\boldsymbol \theta,\xi,\boldsymbol\theta',\xi')&=\beta+2\Xi_0\boldsymbol\theta+
 2\xi tr\left\lbrace \Xi_1 \boldsymbol\Sigma_e^{-1}\right\rbrace \nonumber \\
@@ -351,17 +355,17 @@ where
 \begin{align}
 	\beta &= \sum_{t=1}^T\mathbf E_{(\theta',\xi')}\left[ \ln \alpha-\mathbf x_{t+1}^\top\boldsymbol\Sigma_w^{-1}\mathbf x_{t+1}\right] \label{eq:def of beta} \\
 \Xi_0&=\sum_{t=1}^T\left[ \mathbf{\hat x}_{t+1}^\top\boldsymbol\Sigma_e^{-1}q(\mathbf{\hat x}_t)+\int_\Omega\boldsymbol \phi^\top(\mathbf r') \mathbf M_t \boldsymbol\Sigma_e^{-1}  \boldsymbol{\Psi}(\mathbf{r}') f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\right] \\	
-\Xi_1&=\mathbf E\left[\sum_{t=1}^T\mathbf x_t\mathbf x_{t+1}^\top\right] \\
-\Xi_2&=\sum_{t=1}^T\left[q^\top(\mathbf{\hat x}_t)\boldsymbol\Sigma_e^{-1}q(\mathbf{\hat x}_t)+\Lambda_t(\mathbf r')\mathbf P_t \tilde{\Lambda}_t(\mathbf r')\right] \\
+\Xi_1&=\mathbf E_{(\theta',\xi')}\left[\sum_{t=1}^T\mathbf x_t\mathbf x_{t+1}^\top\right] \\
+\Xi_2&=\sum_{t=1}^T\left[q^\top(\mathbf{\hat x}_t)\boldsymbol\Sigma_e^{-1}q(\mathbf{\hat x}_t)+\Lambda_t(\mathbf r)\mathbf P_t \tilde{\Lambda}_t(\mathbf r)\right] \\
  \Xi_3&=\sum_{t=1}^T\left[ \mathbf{\hat x}_{t}^\top\boldsymbol\Sigma_e^{-1}q(\mathbf{\hat x}_t)+\int_\Omega\boldsymbol \phi^\top(\mathbf r') \mathbf P_t \boldsymbol\Sigma_e^{-1}  \boldsymbol{\Psi}(\mathbf{r}') f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\right] \\
- \Xi_4&=\mathbf E\left[\sum_{t=1}^T\mathbf x_t\mathbf x_{t}^\top\right]
+ \Xi_4&=\mathbf E_{(\theta',\xi')}\left[\sum_{t=1}^T\mathbf x_t\mathbf x_{t}^\top\right]
 \end{align}
 and
 \begin{align}
-	 \Lambda(\mathbf r')&=\begin{bmatrix}\boldsymbol \lambda_1(\mathbf r') & \boldsymbol \lambda_2(\mathbf r')& \dots &\boldsymbol \lambda_i(\mathbf r')\end{bmatrix} \\
-	 \boldsymbol\lambda_i(\mathbf r')&=\int \boldsymbol \Psi^\top(\mathbf r')\boldsymbol \Sigma_e^{-1}\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf x_t)d\mathbf r'\\
-	\tilde{\Lambda}(\mathbf r')&=\begin{bmatrix}\tilde{\boldsymbol \lambda}_1(\mathbf r') \\ \tilde{\boldsymbol \lambda}_2(\mathbf r') \\ \vdots \\ \tilde{\boldsymbol \lambda}_i(\mathbf r')\end{bmatrix} \\
-	 \tilde{\boldsymbol \lambda}_i(\mathbf r')&=\int \boldsymbol \Psi(\mathbf r')\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf x_t)d\mathbf r'
+	 \Lambda_t(\mathbf r)&=\begin{bmatrix}\boldsymbol \lambda_t^{(1)}(\mathbf r) & \boldsymbol \lambda_t^{(2)}(\mathbf r)& \dots &\boldsymbol \lambda_t^{(i)}(\mathbf r)\end{bmatrix} \\
+	 \boldsymbol\lambda_t^{(i)}(\mathbf r)&=\int_{\Omega} \boldsymbol \Psi^\top(\mathbf r')\boldsymbol \Sigma_e^{-1}\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf {\hat x}_t)d\mathbf r'\\
+	\tilde{\Lambda}_t(\mathbf r)&=\begin{bmatrix}\tilde{\boldsymbol \lambda}_t^{(1)}(\mathbf r) \\ \tilde{\boldsymbol \lambda}_t^{(2)}(\mathbf r) \\ \vdots \\ \tilde{\boldsymbol \lambda}_t^{(i)}(\mathbf r)\end{bmatrix} \\
+	 \tilde{\boldsymbol \lambda}_t^{(i)}(\mathbf r)&=\int_{\Omega} \boldsymbol \Psi(\mathbf r')\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf {\hat x}_t)d\mathbf r'
 \end{align}
 When taking the derivative of equation~\ref{eq:Voldermont}, the first term described in equation~\ref{eq:def of beta} will will disappear. Also, when we differentiate with respect to $\boldsymbol\theta$ and $\xi$ and equating it to zero we get
 \begin{equation}
