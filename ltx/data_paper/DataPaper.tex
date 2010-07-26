@@ -294,10 +294,14 @@ $ \boldsymbol e_t(\mathbf r)\sim \mathcal N(\mathbf 0,\boldsymbol\Sigma_e(\mathb
 The unscented Rauch-Tung-Striebel smoother (URTSS)~\cite{Sarkka2010} was used for the state estimation. The URTSS incorporates an unscented Kalman filter (UKF)~\cite{Julier1997, Merwe2003} in a forward step to estimate posterior states, $\hat{\mathbf x}_t^{f}$, followed by a backward step to compute the smoothed state estimates, $\hat{\mathbf x}_t^{b}$. The first and second order moments of the predicted state are captured by propagating the so-called sigma points through the state equation. An additional element to the URTSS algorithm was created to approximate $q(\mathbf{x}_t)$, which is required for the M-step. 
 
 This is accomplished by taking the first-order truncated Taylor-series expansion of $q(\mathbf x_t)$ around the mean of the state at each time instant for the sigmoidal activation function, i.e.
-\begin{equation}
+\begin{equation}\label{eq:SigmoidTaylor}
  f(\boldsymbol \phi^\top(\mathbf r')\mathbf x_t) \approx f(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t)+  \boldsymbol \phi^\top(\mathbf r')(\mathbf x_t - \mathbf  {\hat x}_t)f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t)
 \end{equation}
-where we can approximate $q(\mathbf x_t)$ as
+where 
+\begin{equation}\label{eq:SigmoidDerivative}
+ f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {x}_t)=\varsigma f(\boldsymbol \phi^\top(\mathbf r')\mathbf {x}_t)\left( 1-\frac{f( \boldsymbol \phi^\top(\mathbf r')\mathbf {x}_t)}{f_{max}}\right)
+\end{equation}
+substituting \ref{eq:SigmoidTaylor} in \ref{eq:QmatrixForSigmapoints}  we get an approximation for $q(\mathbf x_t)$ as
 \begin{equation}\label{eq:qTaylor}
  q(\mathbf x_t) \approx q(\mathbf {\hat x}_t)+\int_\Omega \boldsymbol{\Psi}(\mathbf{r}')\boldsymbol \phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t)f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'
 \end{equation}
