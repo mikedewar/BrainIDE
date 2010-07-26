@@ -353,10 +353,10 @@ where
 \begin{align}
 	\beta &= \sum_{t=1}^T\mathbf E_{(\theta',\xi')}\left[ \ln \alpha-\mathbf x_{t+1}^\top\boldsymbol\Sigma_w^{-1}\mathbf x_{t+1}\right] \label{eq:def of beta} \\
 \Xi_0&=\sum_{t=1}^T\left[ \mathbf{\hat x}_{t+1}^\top\boldsymbol\Sigma_e^{-1}q(\mathbf{\hat x}_t)+\int_\Omega\boldsymbol \phi^\top(\mathbf r') \mathbf M_t \boldsymbol\Sigma_e^{-1}  \boldsymbol{\Psi}(\mathbf{r}') f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\right] \\	
-\Xi_1&=\mathbf E_{(\theta',\xi')}\left[\sum_{t=1}^T\mathbf x_t\mathbf x_{t+1}^\top\right] \\
+\Xi_1&=\mathbf E_{(\theta',\xi')}\left[\sum_{t=1}^T\mathbf x_t\mathbf x_{t+1}^\top\right]=\sum_{t=1}^T\left(\mathbf M_t+\mathbf{\hat x}_t\mathbf{\hat x}_{t+1}^\top\right) \\
 \Xi_2&=\sum_{t=1}^T\left[q^\top(\mathbf{\hat x}_t)\boldsymbol\Sigma_e^{-1}q(\mathbf{\hat x}_t)+\Lambda_t(\mathbf r)\mathbf P_t \tilde{\Lambda}_t(\mathbf r)\right] \\
  \Xi_3&=\sum_{t=1}^T\left[ \mathbf{\hat x}_{t}^\top\boldsymbol\Sigma_e^{-1}q(\mathbf{\hat x}_t)+\int_\Omega\boldsymbol \phi^\top(\mathbf r') \mathbf P_t \boldsymbol\Sigma_e^{-1}  \boldsymbol{\Psi}(\mathbf{r}') f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\right] \\
- \Xi_4&=\mathbf E_{(\theta',\xi')}\left[\sum_{t=1}^T\mathbf x_t\mathbf x_{t}^\top\right]
+ \Xi_4&=\mathbf E_{(\theta',\xi')}\left[\sum_{t=1}^T\mathbf x_t\mathbf x_{t}^\top\right]=\sum_{t=1}^T\left(\mathbf P_t+\mathbf{\hat x}_t\mathbf{\hat x}_t^\top\right)
 \end{align}
 and
 \begin{align}
