@@ -120,7 +120,7 @@ To arrive at the general integral-differential equation form of the model, we sh
 \end{equation}
 where $D$ is a temporal differential operator and $\delta(t)$ is the Dirac-delta function giving 
 \begin{equation}
-	\label{FinalFormContinuous} 
+	\label{eq:ContinuousWithOperator} 
 	Dv\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)\textrm{d}\mathbf{r}'}. 
 \end{equation}
 By assuming the synaptic response kernel is of first order has the form of
@@ -291,12 +291,12 @@ The connectivity kernel weights can be shifted outside the integral giving
 	 + \xi\mathbf{x}_t + \mathbf{e}_t(\mathbf{r}).
 \end{equation}
 Now taking the basis function vector inside the inner integrand gives
-\begin{equation}
+\begin{equation}\label{eq:ReucedFormWithKernelDecomp}
 	 \mathbf{x}_{t+1} = T_s\boldsymbol{\Gamma}^{-1}
 	 \int_\Omega \int_\Omega \boldsymbol{\phi}(\mathbf{r})\boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}')f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \textrm{d}\mathbf{r}' \textrm{d}\mathbf{r} \boldsymbol{\theta}  
 	 + \xi\mathbf{x}_t + \mathbf{e}_t(\mathbf{r}).
 \end{equation}
-Equation~\ref{eq:ReducedForm} can be simplified by exploiting the isotropy of the kernel and, hence, the basis functions used to represent it where
+This equation can be simplified by exploiting the isotropy of the kernel and, hence, the basis functions used to represent it where
 \begin{equation}
 	\boldsymbol{\psi} (\mathbf{r}-\mathbf{r}') = \boldsymbol{\psi} (\mathbf{r}'-\mathbf{r}).
 \end{equation}
@@ -304,27 +304,23 @@ To make the simplification, we define
 \begin{equation}\label{eq:DefPsi}
 	\boldsymbol{\Psi}(\mathbf{r}') \triangleq T_s\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\psi}^{\top} (\mathbf{r}'-\mathbf{r})\textrm{d}\mathbf{r}},
 \end{equation}
-which is a constant $L \times n_{\theta}$ matrix that is defined analytically (see the Supporting Information, S1, for analytic convolution of two Gaussians), where $L$ is the number of basis functions (states) and $n_{\theta}$ is the number of connectivity kernel basis functions. Substituting equation~\ref{eq:DefPsi} into~\ref{eq:ReducedForm} gives
+which is a constant $L \times n_{\theta}$ matrix that is defined analytically, where $L$ is the number of basis functions (and states) and $n_{\theta}$ is the number of connectivity kernel basis functions. Substituting equation~\ref{eq:DefPsi} into~\ref{eq:ReucedFormWithKernelDecomp} gives
 \begin{equation}
 	\mathbf{x}_{t+1} = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \textrm{d}\mathbf{r}' \boldsymbol{\theta} + \xi\mathbf{x}_t 
 + \mathbf{e}_t(\mathbf{r}).
 \end{equation}
-This substitution exploits the isotropy of the connectivity kernel basis functions, allowing us to swap the convolution in equation~\ref{reduced continuous model}, which is computationally demanding, with the convolution in equation~\ref{eq:DefPsi}. This provides a dramatic increase in estimation speed, since the matrix $\boldsymbol\Psi(\mathbf{r}')$ can be calculated analytically. This is of great importance as it lowers the computational demands of the estimation algorithm.
-\section{Estimation Algorithm}
-The state-space model is given by
+This substitution exploits the isotropy of the connectivity kernel basis functions, allowing us to swap the convolution in equation~\ref{eq:ReucedFormWithKernelDecomp}, which is computationally demanding, with the convolution in equation~\ref{eq:DefPsi}. This provides a dramatic increase in estimation speed, since the matrix $\boldsymbol\Psi(\mathbf{r}')$ can be calculated analytically. This is of great importance as it lowers the computational demands of the estimation algorithm.
+
+As a result of the model reduction via the basis function decomposition and the decomposition of the connectivity kernel the state space model is formed
 \begin{align}
  \mathbf x_{t+1}&=q(\mathbf x_t)\boldsymbol\theta+\xi \mathbf x_t+\boldsymbol e_t(\mathbf r) \\
  \mathbf y_t&=\mathbf C \mathbf x_t+\boldsymbol \epsilon_t,
 \end{align}
 where the nonlinear function, $q(\cdot)$, is defined as
 \begin{equation}\label{eq:QmatrixForSigmapoints}
-	q(\mathbf{x}_t) = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) d\mathbf{r}'
+	q(\mathbf{x}_t) = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) d\mathbf{r}'.
 \end{equation}
-and
-\begin{equation}\label{eq:DefPsi}
-	\boldsymbol{\Psi}(\mathbf{r}') \triangleq T_s\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\psi}^{\top} (\mathbf{r}'-\mathbf{r})d\mathbf{r}},
-\end{equation}
-$ \boldsymbol e_t(\mathbf r)\sim \mathcal N(\mathbf 0,\boldsymbol\Sigma_e(\mathbf r,\mathbf r'))$ is temporally white and spatially colored disturbance and  $\boldsymbol\epsilon_t\sim \mathcal N(\mathbf 0,\boldsymbol\Sigma_{\epsilon})$ is a white noise process.
+\section{Estimation Algorithm}
 
 \subsection{E-Step}
 The unscented Rauch-Tung-Striebel smoother (URTSS)~\cite{Sarkka2010} was used for the state estimation. The URTSS incorporates an unscented Kalman filter (UKF)~\cite{Julier1997, Merwe2003} in a forward step to estimate posterior states, $\hat{\mathbf x}_t^{f}$, followed by a backward step to compute the smoothed state estimates, $\hat{\mathbf x}_t^{b}$. The first and second order moments of the predicted state are captured by propagating the so-called sigma points through the state equation. An additional element to the URTSS algorithm was created to approximate $q(\mathbf{x}_t)$, which is required for the M-step. 

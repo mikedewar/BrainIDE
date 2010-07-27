@@ -225,7 +225,7 @@ where $\boldsymbol{\psi}(\mathbf{r},\mathbf{r}')$ is a vector of Gaussian basis 
 \begin{equation}
 	\label{reduced continuous model}
 	\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_{t+1}= T_s\int_\Omega{f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t )\boldsymbol{\psi}^{\top}(\mathbf{r}-\mathbf{r}')\textrm{d}\mathbf{r}'}\boldsymbol{\theta}
-	+ \xi\boldsymbol{\phi}^{\top}(\mathbf{r})x_t + e_t(\mathbf{r}). 
+	+ \xi\boldsymbol{\phi}^{\top}(\mathbf{r})x_t + \mathbf{e}_t(\mathbf{r}). 
 \end{equation}
 Next we multiply equation~\ref{reduced continuous model} by $\boldsymbol{\phi}(\mathbf{r})$ and integrate over the spatial domain $\Omega$ to get 
 \begin{equation}
@@ -252,7 +252,6 @@ and substituting this into equation~\ref{StartofReduction} and cross-multiplying
 	 \end{split}
 \end{equation}
 The analytic derivation of the inner product of \emph{n}-dimensional Gaussians, which was used for calculating $\Gamma$, is provided in the Supporting Information, S1. Equation~\ref{eq:ReducedForm} can be simplified by exploiting the isotropy of the kernel and, hence, the basis functions used to represent it where
-
 \begin{equation}
 	\boldsymbol{\psi} (\mathbf{r}-\mathbf{r}') = \boldsymbol{\psi} (\mathbf{r}'-\mathbf{r}).
 \end{equation}
