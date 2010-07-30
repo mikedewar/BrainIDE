@@ -111,7 +111,7 @@ Here we find the derivative of the activation function which is used to compute 
 \end{equation}
 Derivative of the sigmoidal activation function can be written in a simple form as
 \begin{eqnarray}
- \frac{\sigma f}{\sigma v}&=& \frac{\varsigma f_{max}}{\left(1 + \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right)\right)^2} \times \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right) \nonumber \\
+ \frac{df}{dv}&=& \frac{\varsigma f_{max}}{\left(1 + \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right)\right)^2} \times \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right) \nonumber \\
 &=&\frac{\varsigma f_{max}}{1 + \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right)} \times \left(1-\frac{1}{1 + \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right)}\right) \nonumber \\
 &=& \varsigma f\left( v\left( \mathbf{r}', t \right) \right)\left( 1-\frac{f\left( v\left( \mathbf{r}', t \right) \right)}{f_{max}}\right)
 \end{eqnarray}
