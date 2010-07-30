@@ -107,13 +107,13 @@ and
 \section*{Derivative of the firing rate}\label{sec:FiringrateDerivative} 
 Here we find the derivative of the activation function which is used to compute  $\nabla q$. The sigmoidal activation function which relates firing rate of the presynaptic neurons to the post-synaptic membrane potential is given by
 \begin{equation}
-	\label{ActivationFunction} f\left( v\left( \mathbf{r}', t \right) \right) = \frac{f_{max}}{1 + \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right)}. 
+	\label{ActivationFunction} f\left( v\left( \mathbf{r}', t \right) \right) = \frac{1}{1 + \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right)}. 
 \end{equation}
 Derivative of the sigmoidal activation function can be written in a simple form as
 \begin{eqnarray}
- \frac{df}{dv}&=& \frac{\varsigma f_{max}}{\left(1 + \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right)\right)^2} \times \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right) \nonumber \\
-&=&\frac{\varsigma f_{max}}{1 + \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right)} \times \left(1-\frac{1}{1 + \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right)}\right) \nonumber \\
-&=& \varsigma f\left( v\left( \mathbf{r}', t \right) \right)\left( 1-\frac{f\left( v\left( \mathbf{r}', t \right) \right)}{f_{max}}\right)
+ \frac{df}{dv}&=& \frac{\varsigma}{\left(1 + \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right)\right)^2} \times \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right) \nonumber \\
+&=&\frac{\varsigma}{1 + \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right)} \times \left(1-\frac{1}{1 + \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right)}\right) \nonumber \\
+&=& \varsigma f(\boldsymbol \phi^\top(\mathbf r')\mathbf {x}_t)\left( 1-f( \boldsymbol \phi^\top(\mathbf r')\mathbf {x}_t)\right)
 \end{eqnarray}
 \section*{$\Xi$-variables}\label{sec:Xivariables} 
 In this section, we provide derivation for $\Xi$-variables, which we use in the M-step. From equation 47 of the main text we have
