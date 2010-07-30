@@ -115,8 +115,120 @@ Derivative of the sigmoidal activation function can be written in a simple form 
 &=&\frac{\varsigma f_{max}}{1 + \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right)} \times \left(1-\frac{1}{1 + \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right)}\right) \nonumber \\
 &=& \varsigma f\left( v\left( \mathbf{r}', t \right) \right)\left( 1-\frac{f\left( v\left( \mathbf{r}', t \right) \right)}{f_{max}}\right)
 \end{eqnarray}
+\section*{$\Xi$-variables}\label{sec:Xivariables} 
+In this section, we provide derivation for $\Xi$-variables, which we use in the M-step. From equation 47 of the main text we have
+\begin{eqnarray}\label{eq:Qfunction}
+  \ln p(\mathbf x_{t+1} | \mathbf x_t;\boldsymbol\theta,\xi)&=&\ln \alpha-\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}\mathbf x_{t+1}+2\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}q( \mathbf x_t)\boldsymbol\theta+2\xi \mathrm{tr} \left\lbrace \mathbf x_t\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}\right\rbrace \nonumber \\
+&&-\boldsymbol\theta^\top q^\top(\mathbf x_t)\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-2\xi \mathbf x_t^\top\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-\xi^2\mathrm{tr}\left\lbrace \mathbf x_t \mathbf x_t^\top\boldsymbol\Sigma_e^{-1}\right\rbrace. 
+\end{eqnarray}
+substituting for $q(\mathbf x_t)$ using the approximation given in equation 40 of the main text we calculate each $\Xi$-variable as following
+\subsection*{Calculating $\Xi_0$}
+\begin{eqnarray}\label{eq:Xi0Derivation1}
+ \mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}q( \mathbf x_t) &\approx&  \mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}\left[q(\mathbf {\hat x}_t)+\int_\Omega \boldsymbol{\Psi}(\mathbf{r}')\boldsymbol \phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t)f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\right] \nonumber \\
+&=&\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}q(\mathbf {\hat x}_t)+\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}\int_\Omega \boldsymbol{\Psi}(\mathbf{r}')\boldsymbol \phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t)f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'
+\end{eqnarray}
+noting that $\phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t)$ is a scalar we can write \ref{eq:Xi0Derivation1} as 
+\begin{eqnarray}\label{eq:Xi0Derivation2}
+ \mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}q( \mathbf x_t) &\approx& \mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}q(\mathbf {\hat x}_t)+\int_\Omega \boldsymbol \phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t)\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}    \boldsymbol{\Psi}(\mathbf{r}')f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'
+\end{eqnarray}
+taking expected value of \ref{eq:Xi0Derivation2} we get 
+\begin{eqnarray}\label{eq:Xi0Derivation3}
+ \mathbf E_{\boldsymbol (\theta',\xi')}\left[\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}q( \mathbf x_t)\right] &\approx& \mathbf E_{\boldsymbol (\theta',\xi')}\left[\mathbf x_{t+1}^\top\right]\boldsymbol\Sigma_e^{-1}q(\mathbf {\hat x}_t)+\int_\Omega \boldsymbol \phi^\top(\mathbf r')  \mathbf E_{\boldsymbol (\theta',\xi')}\left[(\mathbf x_t - \mathbf  {\hat x}_t)\mathbf x_{t+1}^\top\right]\boldsymbol\Sigma_e^{-1}    \boldsymbol{\Psi}(\mathbf{r}')f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}' \nonumber \\
+&=&\mathbf {\hat x}_{t+1}^\top\boldsymbol\Sigma_e^{-1}q(\mathbf {\hat x}_t)+\int_\Omega \boldsymbol \phi^\top(\mathbf r') \mathbf M_{t+1}\boldsymbol\Sigma_e^{-1}    \boldsymbol{\Psi}(\mathbf{r}')f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'
+\end{eqnarray}
+summing over $t \in \left\lbrace 0, \dots, T-1\right\rbrace $ we get
+\begin{equation}
+\Xi_0=\sum_{t=0}^{T-1}\left[ \mathbf{\hat x}_{t+1}^\top\boldsymbol\Sigma_e^{-1}q(\mathbf{\hat x}_t)+\int_\Omega\boldsymbol \phi^\top(\mathbf r') \mathbf M_{t+1} \boldsymbol\Sigma_e^{-1}  \boldsymbol{\Psi}(\mathbf{r}') f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\right] \\	
+\end{equation}
+\subsection*{Calculating $\Xi_1$}
+We have
+\begin{equation}\label{eq:Xi1}
+ \Xi_1=\mathbf E_{(\theta',\xi')}\left[\sum_{t=0}^{T-1}\mathbf x_t\mathbf x_{t+1}^\top\right]
+\end{equation}
+To find an expression for $\Xi_1$ in terms of smoother outputs we start by expanding the cross-covariance matrix as following
+\begin{eqnarray}
+ \mathbf M_{t+1}&=&\mathbf E_{(\theta',\xi')}\left[(\mathbf x_t-\mathbf{\hat x}_t)(\mathbf x_{t+1}-\mathbf{\hat x}_{t+1})^\top\right] \nonumber \\
+&=&\mathbf E_{(\theta',\xi')}\left[\mathbf x_t\mathbf x_{t+1}^\top\right]-\mathbf E_{(\theta',\xi')}\left[\mathbf x_t\mathbf{\hat x}_{t+1}^\top\right]-\mathbf E_{(\theta',\xi')}\left[\mathbf{\hat x}_t\mathbf x_{t+1}^\top\right]+\mathbf E_{(\theta',\xi')}\left[\mathbf{\hat x}_t\mathbf{\hat x}_{t+1}^\top\right] \nonumber \\
+&=&\mathbf E_{(\theta',\xi')}\left[\mathbf x_t\mathbf x_{t+1}^\top\right]-\mathbf {\hat x}_t\mathbf{\hat x}_{t+1}^\top-\mathbf {\hat x}_t\mathbf{\hat x}_{t+1}^\top+\mathbf {\hat x}_t\mathbf{\hat x}_{t+1}^\top \nonumber \\
+&=&\mathbf E_{(\theta',\xi')}\left[\mathbf x_t\mathbf x_{t+1}^\top\right]-\mathbf {\hat x}_t\mathbf{\hat x}_{t+1}^\top
+\end{eqnarray}
+therefore we can write
+\begin{equation}\label{eq:Xi1derivation1}
+ \mathbf E_{(\theta',\xi')}\left[\mathbf x_t\mathbf x_{t+1}^\top\right]=\mathbf M_{t+1}+\mathbf {\hat x}_t\mathbf{\hat x}_{t+1}^\top
+\end{equation}
+substituting \ref{eq:Xi1derivation1} in \ref{eq:Xi1} we get
+\begin{equation}
+ \Xi_1=\sum_{t=0}^{T-1}\left(\mathbf M_{t+1}+\mathbf{\hat x}_t\mathbf{\hat x}_{t+1}^\top\right)
+\end{equation}
+\subsection*{Calculating $\Xi_2$}
+\begin{eqnarray}\label{eq:Xi2derivation1}
+ q^\top(\mathbf x_t)\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)&\approx& \left[ q(\mathbf {\hat x}_t)+\int_\Omega \boldsymbol{\Psi}(\mathbf{r}')\boldsymbol \phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t)f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\right]^\top  \times \boldsymbol\Sigma_e^{-1}\nonumber \\
+&\times&\left[ q(\mathbf {\hat x}_t)+\int_\Omega \boldsymbol{\Psi}(\mathbf{r}')\boldsymbol \phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t)f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\right] \nonumber \\
+&=&q^\top(\mathbf {\hat x}_t)\boldsymbol\Sigma_e^{-1}q(\mathbf {\hat x}_t)+q^\top(\mathbf {\hat x}_t)\int_\Omega \boldsymbol{\Psi}(\mathbf{r}')\boldsymbol \phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t)f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\nonumber\\
+&+&\int_\Omega \boldsymbol{\Psi}^\top(\mathbf{r}')\boldsymbol \phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t)f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\boldsymbol\Sigma_e^{-1}q(\mathbf {\hat x}_t) \nonumber \\
+&+&\int_\Omega \boldsymbol{\Psi}^\top(\mathbf{r}')\boldsymbol \phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t)f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}' \times \boldsymbol  \Sigma_e^{-1} \times \int_\Omega \boldsymbol{\Psi}(\mathbf{r}')\boldsymbol \phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t)f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}' \nonumber \\
+&&
+\end{eqnarray}
+ The last term on the right hand side of equation \ref{eq:Xi2derivation1} can be rewritten as
+\begin{eqnarray}
+ \int_\Omega \boldsymbol{\Psi}^\top(\mathbf{r}') \boldsymbol\Sigma_e^{-1}f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) \boldsymbol \phi^\top(\mathbf r')(\mathbf x_t - \mathbf  {\hat x}_t)d\mathbf{r}' \times\int_\Omega  (\mathbf x_t - \mathbf  {\hat x}_t)^\top\boldsymbol \phi(\mathbf r') \boldsymbol{\Psi}(\mathbf{r}')f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'&& \nonumber \\
+=\begin{bmatrix} \int_{\Omega} \boldsymbol \Psi^\top(\mathbf r')\boldsymbol \Sigma_e^{-1}\phi_1(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf {\hat x}_t)d\mathbf r' &  \dots & \int_{\Omega} \boldsymbol \Psi^\top(\mathbf r')\boldsymbol \Sigma_e^{-1}\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf {\hat x}_t)d\mathbf r'\end{bmatrix}(\mathbf x_t - \mathbf  {\hat x}_t) && \nonumber \\
+\times (\mathbf x_t - \mathbf  {\hat x}_t)^\top \begin{bmatrix}\int_{\Omega} \boldsymbol \Psi(\mathbf r')\phi_1(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf {\hat x}_t)d\mathbf r' \\  \vdots \\ \int_{\Omega} \boldsymbol \Psi(\mathbf r')\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf {\hat x}_t)d\mathbf r'\end{bmatrix}&& \nonumber \\
+\end{eqnarray}
+therefore \ref{eq:Xi2derivation1} can be written as
+\begin{eqnarray}\label{eq:Xi2derivation2}
+  q^\top(\mathbf x_t)\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)&\approx&q^\top(\mathbf {\hat x}_t)\boldsymbol\Sigma_e^{-1}q(\mathbf {\hat x}_t)+\Lambda_t(\mathbf r)(\mathbf x_t - \mathbf  {\hat x}_t) (\mathbf x_t - \mathbf  {\hat x}_t)^\top\tilde{\Lambda}_t(\mathbf r)+\tilde{q}(\mathbf x_t)
+\end{eqnarray}
+where $\Lambda_t(\mathbf r)$ and $\tilde{\Lambda}_t(\mathbf r)$ are defined in equations (54-57) of the main text, and  
+\begin{eqnarray}\label{eq:qtilde}
+ \tilde{q}(\mathbf x_t)&=&q^\top(\mathbf {\hat x}_t)\int_\Omega \boldsymbol{\Psi}(\mathbf{r}')\boldsymbol \phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t)f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\nonumber\\
+&+&\int_\Omega \boldsymbol{\Psi}^\top(\mathbf{r}')\boldsymbol \phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t)f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\boldsymbol\Sigma_e^{-1}q(\mathbf {\hat x}_t)
+\end{eqnarray}
+taking expectation from \ref{eq:Xi2derivation2} we have 
+\begin{equation}\label{eq:Xi2derivation3}
+\mathbf E_{(\theta',\xi')}\left[ q^\top(\mathbf x_t)\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\right]\approx q^\top(\mathbf {\hat x}_t)\boldsymbol\Sigma_e^{-1}q(\mathbf {\hat x}_t)  +\Lambda_t(\mathbf r)\mathbf E_{(\theta',\xi')}\left[  (\mathbf x_t - \mathbf  {\hat x}_t) (\mathbf x_t - \mathbf  {\hat x}_t)^\top\right]\tilde{\Lambda}_t(\mathbf r)
+\end{equation}
 
 
+Note that the expectation of $\tilde{q}(\mathbf x_t)$ becomes zero since $\mathbf E_{(\theta',\xi')}\left[(\mathbf x_t - \mathbf  {\hat x}_t)\right]= \mathbf 0$, and hence
+\begin{equation}
+ \Xi_2= \sum_{t=0}^{T-1}\left[q^\top(\mathbf{\hat x}_t)\boldsymbol\Sigma_e^{-1}q(\mathbf{\hat x}_t)+\Lambda_t(\mathbf r)\mathbf P_t \tilde{\Lambda}_t(\mathbf r)\right]
+\end{equation}
+\subsection*{Calculating $\Xi_3$}
+\begin{eqnarray}\label{eq:Xi3derivation1}
+ \mathbf x_t^\top\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)&\approx&\mathbf x_t^\top\boldsymbol\Sigma_e^{-1}\left[q(\mathbf {\hat x}_t)+\int_\Omega \boldsymbol{\Psi}(\mathbf{r}')\boldsymbol \phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t)f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\right] \nonumber\\
+&=&\mathbf x_t^\top\boldsymbol\Sigma_e^{-1}q(\mathbf {\hat x}_t)+\mathbf x_t^\top\boldsymbol\Sigma_e^{-1}\int_\Omega \boldsymbol{\Psi}(\mathbf{r}')\boldsymbol \phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t)f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}' \nonumber \\
+&=&\mathbf x_t^\top\boldsymbol\Sigma_e^{-1}q(\mathbf {\hat x}_t)+\int_\Omega \boldsymbol \phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t)\mathbf x_t^\top\boldsymbol\Sigma_e^{-1}\boldsymbol{\Psi}(\mathbf{r}')f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'
+\end{eqnarray}
+taking expected value of \ref{eq:Xi3derivation1} we get
+\begin{eqnarray}\label{eq:Xi3derivation2}
+\mathbf E_{(\theta',\xi')}\left[\mathbf x_t^\top\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\right]&\approx&\mathbf E_{(\theta',\xi')}\left[\mathbf x_t^\top\right]\boldsymbol\Sigma_e^{-1}+\int_\Omega \boldsymbol \phi^\top(\mathbf r') \mathbf E_{(\theta',\xi')}\left[(\mathbf x_t - \mathbf  {\hat x}_t)\mathbf x_t^\top\right]\boldsymbol\Sigma_e^{-1}\boldsymbol{\Psi}(\mathbf{r}')f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}' \nonumber \\
+&=&\mathbf{ \hat x}_t^\top\boldsymbol\Sigma_e^{-1}+\int_\Omega \boldsymbol \phi^\top(\mathbf r') \mathbf P_t\boldsymbol\Sigma_e^{-1}\boldsymbol{\Psi}(\mathbf{r}')f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'
+\end{eqnarray}
+summing over $t \in \left\lbrace 0, \dots, T-1\right\rbrace $ we get
+\begin{equation}
+\Xi_3=\sum_{t=0}^{T-1}\left[\mathbf{ \hat x}_t^\top\boldsymbol\Sigma_e^{-1}+\int_\Omega \boldsymbol \phi^\top(\mathbf r') \mathbf P_t\boldsymbol\Sigma_e^{-1}\boldsymbol{\Psi}(\mathbf{r}')f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}' \right] \\	
+\end{equation}
+\subsection*{Calculating $\Xi_4$}
+We have
+\begin{equation}\label{eq:Xi4}
+ \Xi_4=\mathbf E_{(\theta',\xi')}\left[\sum_{t=0}^{T-1}\mathbf x_t\mathbf x_{t}^\top\right]
+\end{equation}
+To find an expression for $\Xi_4$ in terms of smoother outputs we start by expanding the covariance matrix as following
+\begin{eqnarray}
+ \mathbf P_{t}&=&\mathbf E_{(\theta',\xi')}\left[(\mathbf x_t-\mathbf{\hat x}_t)(\mathbf x_{t}-\mathbf{\hat x}_{t})^\top\right] \nonumber \\
+&=&\mathbf E_{(\theta',\xi')}\left[\mathbf x_t\mathbf x_{t}^\top\right]-\mathbf E_{(\theta',\xi')}\left[\mathbf x_t\mathbf{\hat x}_{t}^\top\right]-\mathbf E_{(\theta',\xi')}\left[\mathbf{\hat x}_t\mathbf x_{t}^\top\right]+\mathbf E_{(\theta',\xi')}\left[\mathbf{\hat x}_t\mathbf{\hat x}_{t}^\top\right] \nonumber \\
+&=&\mathbf E_{(\theta',\xi')}\left[\mathbf x_t\mathbf x_{t}^\top\right]-\mathbf {\hat x}_t\mathbf{\hat x}_{t}^\top-\mathbf {\hat x}_t\mathbf{\hat x}_{t}^\top+\mathbf {\hat x}_t\mathbf{\hat x}_{t}^\top \nonumber \\
+&=&\mathbf E_{(\theta',\xi')}\left[\mathbf x_t\mathbf x_{t}^\top\right]-\mathbf {\hat x}_t\mathbf{\hat x}_{t}^\top
+\end{eqnarray}
+therefore we can write
+\begin{equation}\label{eq:Xi4derivation1}
+ \mathbf E_{(\theta',\xi')}\left[\mathbf x_t\mathbf x_{t}^\top\right]=\mathbf P_{t}+\mathbf {\hat x}_t\mathbf{\hat x}_{t}^\top
+\end{equation}
+substituting \ref{eq:Xi4derivation1} in \ref{eq:Xi4} we get
+\begin{equation}
+ \Xi_4=\sum_{t=0}^{T-1}\left(\mathbf P_{t}+\mathbf{\hat x}_t\mathbf{\hat x}_{t}^\top\right)
+\end{equation}
 
 \bibliographystyle{plain}
 \bibliography{}

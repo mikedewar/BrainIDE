@@ -326,7 +326,7 @@ where the nonlinear function, $q(\cdot)$, is defined as
 \section{Estimation Algorithm}
 
 \subsection{E-Step}
-The unscented Rauch-Tung-Striebel smoother (URTSS)~\cite{Sarkka2010} was used for the state estimation. The URTSS incorporates an unscented Kalman filter (UKF)~\cite{Julier1997, Merwe2003} in a forward step to estimate posterior states, $\hat{\mathbf x}_t^{f}$, followed by a backward step to compute the smoothed state estimates, $\hat{\mathbf x}_t^{b}$. The first and second order moments of the predicted state are captured by propagating the so-called sigma points through the state equation. An additional element to the URTSS algorithm was created to approximate $q(\mathbf{x}_t)$, which is required for the M-step. 
+The unscented Rauch-Tung-Striebel smoother (URTSS)~\cite{Sarkka2010} was used for the state estimation. The URTSS incorporates an unscented Kalman filter (UKF)~\cite{Julier1997, Merwe2003} in a forward step to estimate posterior states, $\hat{\mathbf x}_t^{f}$, followed by a backward step to compute the smoothed state estimates, $\hat{\mathbf x}_t^{b}$. The first and second order moments of the predicted state are captured by propagating the so-called sigma points through the state equation. An additional step is required in the $\mathbf E$-step to calculate the cross-covariance matrix $\mathbf M_{t+1}=\textrm{cov}(\mathbf x_t,\mathbf x_{t+1})$. An additional element to the URTSS algorithm was also created to approximate $q(\mathbf{x}_t)$, which is required for the M-step. 
 
 This is accomplished by taking the first-order truncated Taylor-series expansion of $q(\mathbf x_t)$ around the mean of the state at each time instant for the sigmoidal activation function, i.e.
 \begin{equation}\label{eq:SigmoidTaylor}
@@ -378,9 +378,9 @@ Taking trace and rearranging, using the invariant cyclic permutations property o
   \ln p(\mathbf x_{t+1} | \mathbf x_t;\boldsymbol\theta,\xi)&=&\ln \alpha-\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}\mathbf x_{t+1}+2\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}q( \mathbf x_t)\boldsymbol\theta+2\xi \mathrm{tr} \left\lbrace \mathbf x_t\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}\right\rbrace \nonumber \\
 &&-\boldsymbol\theta^\top q^\top(\mathbf x_t)\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-2\xi \mathbf x_t^\top\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-\xi^2\mathrm{tr}\left\lbrace \mathbf x_t \mathbf x_t^\top\boldsymbol\Sigma_e^{-1}\right\rbrace. 
 \end{eqnarray}
-Now taking the expectation of the log likelihood function for all time instants gives the $\mathcal Q$-function, which is the lower-bound that needs to be maximised to gain optimal parameter estimates. The $\mathcal Q$-function is written as  
+Substituting \ref{eq:qTaylor} in \ref{eq:Qfunctionintrace} and taking the expectation of the log likelihood function for all time instants gives an approximate to the lower-bound that needs to be maximised to gain optimal parameter estimates. Therefore $\mathcal Q$-function can be approximated as  
 \begin{align}\label{eq:Voldermont}
- \mathcal Q(\boldsymbol \theta,\xi,\boldsymbol\theta',\xi')&=\beta+2\Xi_0\boldsymbol\theta+
+ \mathcal Q(\boldsymbol \theta,\xi,\boldsymbol\theta',\xi')&\approx\beta+2\Xi_0\boldsymbol\theta+
 2\xi tr\left\lbrace \Xi_1 \boldsymbol\Sigma_e^{-1}\right\rbrace \nonumber \\
 &-\boldsymbol\theta^\top \Xi_2\boldsymbol\theta-2\xi \Xi_3 \boldsymbol\theta - \xi^2 tr \left\lbrace\Xi_4\boldsymbol\Sigma_e^{-1} \right\rbrace \tag{Voldermont}
 \end{align}
@@ -400,23 +400,33 @@ and
 	\tilde{\Lambda}_t(\mathbf r)&=\begin{bmatrix}\tilde{\boldsymbol \lambda}_t^{(1)}(\mathbf r) \\ \tilde{\boldsymbol \lambda}_t^{(2)}(\mathbf r) \\ \vdots \\ \tilde{\boldsymbol \lambda}_t^{(i)}(\mathbf r)\end{bmatrix} \\
 	 \tilde{\boldsymbol \lambda}_t^{(i)}(\mathbf r)&=\int_{\Omega} \boldsymbol \Psi(\mathbf r')\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf {\hat x}_t)d\mathbf r'
 \end{align}
-When taking the derivative of equation~\ref{eq:Voldermont}, the first term described in equation~\ref{eq:def of beta} will will disappear. Also, when we differentiate with respect to $\boldsymbol\theta$ and $\xi$ and equating it to zero we get
-\begin{equation}
- \boldsymbol \theta=\Xi_2^{-\top}\left(\Xi_0^\top-\xi\Xi_3^\top \right)
+Given the state estimates, $\mathbf {\hat x^{b}}_t$ the state covariance $\mathbf P_t^b$ and cross-covariance $\mathbf M_t^b$ , the $\Xi$-variables can be computed directly.
+
+When taking the derivative of equation~\ref{eq:Voldermont}, the first term described in equation~\ref{eq:def of beta} will disappear. Differntiating with respect to $\boldsymbol\theta$ we have
+\begin{equation}\label{eq:Qpartialtheta}
+ \frac{\partial \mathcal Q}{\partial \boldsymbol\theta}=2\Xi_0-\boldsymbol\theta^\top(\Xi_2^\top+\Xi_2)-2\xi\Xi_3
 \end{equation}
-and
+nothing that $\Xi_2$ is symmetric and equating \ref{eq:Qpartialtheta} to the zero vector we get
+\begin{equation}\label{eq:theta}
+ \boldsymbol \theta=\Xi_2^{-1}\left(\Xi_0^\top-\xi\Xi_3^\top \right)
+\end{equation}
+similarly differentiating with respect to $\xi$ we have
+\begin{equation}\label{eq:Qpartialxi}
+ \frac{\partial \mathcal Q}{\partial \xi}=2tr\left\lbrace \Xi_1 \boldsymbol\Sigma_e^{-1}\right\rbrace -2 \Xi_3 \boldsymbol\theta - 2\xi tr \left\lbrace\Xi_4\boldsymbol\Sigma_e^{-1} \right\rbrace
+\end{equation}
+substituting \ref{eq:theta} in \ref{eq:Qpartialxi} and equating to zero we get
 \begin{equation}
- \xi=\frac{tr\left\lbrace \Xi_1 \boldsymbol\Sigma_e^{-1}\right\rbrace-\Xi_3\Xi_2^{-\top}\Xi_0^\top}{tr\left\lbrace \Xi_4 \boldsymbol\Sigma_e^{-1}\right\rbrace-\Xi_3\Xi_2^{-\top}\Xi_3^\top}.
+ \xi=\frac{tr\left\lbrace \Xi_1 \boldsymbol\Sigma_e^{-1}\right\rbrace-\Xi_3\Xi_2^{-1}\Xi_0^\top}{tr\left\lbrace \Xi_4 \boldsymbol\Sigma_e^{-1}\right\rbrace-\Xi_3\Xi_2^{-1}\Xi_3^\top}
 \end{equation}
 \subsection{Discussion}
 The second derivative of the $\mathcal Q$-function with respect to $\xi$ is given by
 \begin{equation}
- \frac{\delta^2 \mathcal Q}{\delta \xi^2}=-2 tr \left\lbrace\Xi_1\boldsymbol\Sigma_e^{-1} \right\rbrace
+ \frac{\partial^2 \mathcal Q}{\partial \xi^2}=-2 tr \left\lbrace\Xi_1\boldsymbol\Sigma_e^{-1} \right\rbrace
 \end{equation}
 $\Xi_1 $ is positive definite if the state vector is persistently excited and the covariance matrix $\boldsymbol\Sigma_e^{-1}$ is also positive definite therefore the trace of $\Xi_1\boldsymbol\Sigma_w^{-1}$ is guaranteed to be positive so the second derivative is negative and represents a maximum of $\mathcal Q$-function.\\
 The second derivative of the $\mathcal Q$-function with respect to $\boldsymbol \theta$ is given by
 \begin{equation}
- \frac{\delta^2 \mathcal Q}{\delta \boldsymbol\theta^2}=-2 \Xi_2 
+ \frac{\partial^2 \mathcal Q}{\partial \boldsymbol\theta^2}=-2 \Xi_2 
 \end{equation}
 $\Xi_2$ is positive definite and invertible and the second derivative is negative definite and represents a maximum of $\mathcal Q$- function.
 
