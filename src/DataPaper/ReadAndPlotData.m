@@ -202,7 +202,8 @@ CrossCor = zeros(size(MatrixData,1),2*size(MatrixData,2)-1,2*size(MatrixData,2)-
 v0 = 2;
 varsigma = 0.56;
 for n=1:size(MatrixData,1)-1   
-    f = 1./(1+exp(varsigma*(v0-squeeze(MatrixData(n,:,:)))));
+%     f = 1./(1+exp(varsigma*(v0-squeeze(MatrixData(n,:,:)))));
+    f = squeeze(MatrixData(n+1,:,:));
     CrossCor(n,:,:) = normxcorr2(squeeze(MatrixData(n+1,:,:)),f);
 end
 CrossCorrMeanPreSeizure = squeeze(mean(CrossCor(1:SzStart*FsDec,:,:),1)); 
@@ -266,15 +267,22 @@ HomoCrossCor2 = zeros(size(MatrixData,1), 15, 15);
 HomoCrossCor3 = zeros(size(MatrixData,1), 15,15);
 HomoCrossCor4 = zeros(size(MatrixData,1), 15,15);
 
-for n=1:2%size(MatrixData,1)-1  
-    f1 = 1./(1+exp(varsigma*(v0 - squeeze(MatrixData(n,1:NElectrodes,1:NElectrodes)))));
-    f2 = 1./(1+exp(varsigma*(v0 - squeeze(MatrixData(n,end-NElectrodes+1:end,end-NElectrodes+1:end)))));
-    f3 = 1./(1+exp(varsigma*(v0 - squeeze(MatrixData(n,1:NElectrodes,end-NElectrodes+1:end)))));
-    f4 = 1./(1+exp(varsigma*(v0 - squeeze(MatrixData(n,end-NElectrodes+1:end,1:NElectrodes)))));
+for n=1:size(MatrixData,1)-1  
+%     f1 = 1./(1+exp(varsigma*(v0 - squeeze(MatrixData(n,1:NElectrodes,1:NElectrodes)))));
+%     f2 = 1./(1+exp(varsigma*(v0 - squeeze(MatrixData(n,end-NElectrodes+1:end,end-NElectrodes+1:end)))));
+%     f3 = 1./(1+exp(varsigma*(v0 - squeeze(MatrixData(n,1:NElectrodes,end-NElectrodes+1:end)))));
+%     f4 = 1./(1+exp(varsigma*(v0 - squeeze(MatrixData(n,end-NElectrodes+1:end,1:NElectrodes)))));
+    
+    f1 = squeeze(MatrixData(n,1:NElectrodes,1:NElectrodes));
+    f2 = squeeze(MatrixData(n,end-NElectrodes+1:end,end-NElectrodes+1:end));
+    f3 = squeeze(MatrixData(n,1:NElectrodes,end-NElectrodes+1:end));
+    f4 = squeeze(MatrixData(n,end-NElectrodes+1:end,1:NElectrodes));    
+    
 %     HomoCrossCor1(n,:,:) = normxcorr2(squeeze(MatrixData(n+1,1:NElectrodes,1:NElectrodes)), f1);  % top left corner
 %     HomoCrossCor2(n,:,:) = normxcorr2(squeeze(MatrixData(n+1,end-NElectrodes+1:end,end-NElectrodes+1:end)), f2);   % bottom right corner
 %     HomoCrossCor3(n,:,:) = normxcorr2(squeeze(MatrixData(n+1,1:NElectrodes,end-NElectrodes+1:end)), f3);  % bottom left corner
 %     HomoCrossCor4(n,:,:) = normxcorr2(squeeze(MatrixData(n+1,end-NElectrodes+1:end,1:NElectrodes)), f4);        % top right corner
+%     
     HomoCrossCor1(n,:,:) = normxcorr2(f1,squeeze(MatrixData(n+1,:,:)));         % top left corner
     HomoCrossCor2(n,:,:) = normxcorr2(f2,squeeze(MatrixData(n+1,:,:)));         % bottom right corner
     HomoCrossCor3(n,:,:) = normxcorr2(f3,squeeze(MatrixData(n+1,:,:)));         % bottom left corner
@@ -311,7 +319,7 @@ Pos = get(CB,'position');
 set(CB, 'position', [Pos(1) Pos(2)+HeightOffset Pos(3) HeigthScale*Pos(4)] )
 set(gca,'fontsize',FS,'YDir','normal','fontname','arial')
 
-subplot(224),imagesc(Space2,Space1,log10(1+HomoCrossCorrMean2))%,ColorLims)
+subplot(222),imagesc(Space2,Space1,log10(1+HomoCrossCorrMean2))%,ColorLims)
 xlabel('Space (mm)','fontsize',FS,'fontname','arial')
 % ylabel('Space (mm)','fontsize',FS,'fontname','arial')
 title('\bf D','fontsize',FS2,'fontname','arial','position',[-0.5 0.25])
@@ -321,7 +329,7 @@ Pos = get(CB,'position');
 set(CB, 'position', [Pos(1) Pos(2)+HeightOffset Pos(3) HeigthScale*Pos(4)] )
 set(gca,'fontsize',FS,'YDir','normal','fontname','arial')
 
-subplot(221),imagesc(Space1,Space2,log10(1+HomoCrossCorrMean3))%,ColorLims)
+subplot(224),imagesc(Space1,Space2,log10(1+HomoCrossCorrMean3))%,ColorLims)
 % xlabel('Space (mm)','fontsize',FS,'fontname','arial')
 ylabel('Space (mm)','fontsize',FS,'fontname','arial')
 title('\bf A','fontsize',FS2,'fontname','arial','position',[-2.5 2.25])
@@ -331,7 +339,7 @@ Pos = get(CB,'position');
 set(CB, 'position', [Pos(1) Pos(2)+HeightOffset Pos(3) HeigthScale*Pos(4)] )
 set(gca,'fontsize',FS,'YDir','normal','fontname','arial')
 
-subplot(222),imagesc(Space2,Space2,HomoCrossCorrMean4)%,ColorLims)
+subplot(221),imagesc(Space2,Space2,HomoCrossCorrMean4)%,ColorLims)
 % xlabel('Space (mm)','fontsize',FS,'fontname','arial')
 % ylabel('Space (mm)','fontsize',FS,'fontname','arial')
 title('\bf B','fontsize',FS2,'fontname','arial','position',[-0.5 2.25])
