@@ -53,7 +53,8 @@
 \fi
 \usepackage{color}
 \newcommand{\dean}[1]{\textsf{\emph{\textbf{\textcolor{red}{#1}}}}} 
-
+\newcommand{\red}{\textcolor{red}}
+\newcommand{\blue}{\textcolor{blue}}
 
 \title{Patient-Specific Neural Field Modeling from Micro-Electrode Data}
 \author{In no specific order: Parham Aram, Dean R. Freestone, Kenneth Scerri, Michael Dewar,\\
@@ -96,64 +97,46 @@ Instead of extracting features we aim to extract meaningful parameters...
 \section{Method}
 
 \subsection{Neural Field Model}
-The neural field equations used as the parametric form of the model are based on the influential papers from Wilson and Cowan~\cite{Wilson1973}, and Amari~\cite{Amari1977}. This class of model describes a continuous cortical sheet or surface, relating mean firing rates of pre and post-synaptic neural populations. The neural field, $v\left( {\mathbf{r},t} \right)$, at position $\mathbf{r}$ and time $t$, is the aggregated post-synaptic potentials described by the temporal convolution 
+The neural field equations used as the parametric form of the model are based on the influential papers from Wilson and Cowan~\cite{Wilson1973}, and Amari~\cite{Amari1977}. This class of model describes a continuous cortical sheet or surface, relating mean firing rates of pre and post-synaptic neural populations. The neural field, $v\left( {\mathbf{r},t} \right)$, at position $\mathbf{r}$ and time $t$, is the aggregated post-synaptic potentials described by the \red{(temporal convolution - I'd rather say integral equation	)} integral equation 
 \begin{equation}
-	\label{SpikesToPotential} v\left( {\mathbf{r},t} \right) = \int_{ - \infty }^t {h\left( {t - t'} \right)g\left( {\mathbf{r},t'} \right)dt'}, 
+	\label{SpikesToPotential} v\left( {\mathbf{r},t} \right) = e^{-\zeta t}v\left( {\mathbf{r},0} \right) + \int_{0}^t {h\left( {t - t'} \right)g\left( {\mathbf{r},t'} \right)\textrm{d}t'}, 
 \end{equation}   
-where $h(\cdot)$ is the synaptic response kernel and $g(\cdot)$ describes the mean firing rate. Assuming an infinite propagation velocity for action potentials within the field, the incoming firing rate the position $\mathbf{r}$ is described by spatial convolution
+where $v\left( {\mathbf{r},0} \right)$ is the membrane voltage at the initial time $t = 0$, $h(\cdot)$ is the synaptic response kernel assumed to be first order and of the form 
 \begin{equation}
-	\label{RateBasedInteractions} g\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( v\left( \mathbf{r}',t \right) \right)\textrm{d}\mathbf{r}'}, 
+	\label{SynapticRespKernel} h(t) = \eta(t)\exp{\left(-\zeta t\right)}, 
+\end{equation}
+$\zeta=\tau^{-1}$, $\tau$ is the synaptic time constant and $\eta(t)$ is the Heaviside step function \blue{(you can keep it here if you wish as it doesn't change the integral equation because of the upper limit. I would remove it)}. $g(\cdot)$ describes the mean firing rate. In practice, the firing rate can rarely be considered as a purely determinstic process because \red{(can someone write down why?)}. We thus choose to introduce a spatially coloured space-time Wiener process $W(\mathbf{r},t)$ to model the flactuations in the mean firing rate and decompose $g(\cdot)$ as
+\begin{equation}\label{DecompositionOfg}
+g(\mathbf{r},t)\textrm{d}t = \tilde{g}(\mathbf{r},t)\textrm{d}t + \sigma_W \textrm{d}W(\mathbf{r},t) 
+\end{equation}
+where $\sigma_W \ge 0$ is a measure of the introduced space-time randomness. For $\sigma_W = 0$ a pure deterministic process is recovered. As a result of the random component component, for $\sigma_W > 0$, the membrane voltage $v(\mathbf{r},t)$ is itself a stochastic process. Assuming an infinite propagation velocity for action potentials within the field, the deterministic incoming firing rate is described by a spatial convolution \red{citation?}
+\begin{equation}
+	\label{RateBasedInteractions} \tilde{g}\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( v\left( \mathbf{r}',t \right) \right)\textrm{d}\mathbf{r}'}, 
 \end{equation}
 where $w(\cdot)$ is the spatial connectivity kernel and $\Omega$ is the spatial domain representing the cortical sheet or surface. The function $f(\cdot)$ relates mean post-synaptic potentials to mean firing rates and follows a sigmoid described by
 \begin{equation}
 	\label{ActivationFunction} f\left( v\left( \mathbf{r}', t \right) \right) = \frac{1}{1 + \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right)}, 
 \end{equation}
-where $v_0$ and $\varsigma$ describe the firing threshold the slope of the sigmoid respectively. By substituting equation~\ref{RateBasedInteractions} into equation~\ref{SpikesToPotential} we get the spatiotemporal model 
+where $v_0$ and $\varsigma$ describe the firing threshold the slope of the sigmoid respectively. 
+By substituting equation~\ref{DecompositionOfg} into equation~\ref{SpikesToPotential} we obtain the stochastic integral equation model 
 \begin{equation}
-	\label{FullDoubleIntModel} v\left(\mathbf{r},t\right) =
-	\int_{-\infty}^t 
-	h\left(t - t'\right) \int_\Omega
-	w\left(\mathbf{r},\mathbf{r}'\right) 
-	f\left( v\left( \mathbf{r}',t' \right)\right)
-	\textrm{d}\mathbf{r}'dt'.
+	\label{StochasticModel} v\left(\mathbf{r},t\right) = e^{-\zeta t}v\left( {\mathbf{r},0} \right) +
+	\int_{0}^t h\left(t - t'\right)\tilde{g}\left(\mathbf{r},t'\right) \textrm{d}t'+ \sigma_W\int_{0}^t h\left(t - t'\right)\textrm{d}W\left(\mathbf{r},t'\right).
 \end{equation}
-To arrive at the general integral-differential equation form of the model, we shall express the synaptic response kernel as a Green's function 
+ Here we assume that $v\left( {\mathbf{r}},0 \right)$ is independent of the disturbance on the action potentials and assumed to be generated by a known distribution. We stress that $\sigma_W$ does not depend on the field $v({\mathbf{r}},t)$ and hence the noise in equation \ref{StochasticModel} is strictly additive. The general integral-differential equation is given by 
+\begin{equation} \label{DifferentialEquationContTime}
+ \textrm{d}v(\mathbf{r},t) + \zeta v(\mathbf{r},t)\textrm{d}t = \tilde{g}(\mathbf{r},t)\textrm{d}t + \textrm{d}W(\mathbf{r},t)  ~~~~ t \ge 0, v(\mathbf{r},0) = \red{GP?}
+\end{equation}
+To show that this is indeed the case consider the function $\kappa(v(\mathbf{r},t),t) = v(\mathbf{r},t)e^{\zeta t}$. We note that $\kappa(v(\mathbf{r},t),t)$ is twice differentiable so that we can apply It\hat{o}'s formula to obtain
 \begin{equation}
-	\label{GreensFuncDef} Dh\left( t \right) = \delta \left( t \right), 
+ \textrm{d}\kappa = e^{\zeta t}g(\mathbf{r},t)\textrm{d}t + e^{\zeta t}\sigma \textrm{d}W(\mathbf{r},t)
 \end{equation}
-where $D$ is a temporal differential operator and $\delta(t)$ is the Dirac-delta function giving 
-\begin{equation}
-	\label{eq:ContinuousWithOperator} 
-	Dv\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)\textrm{d}\mathbf{r}'}. 
-\end{equation}
-By assuming the synaptic response kernel is of first order has the form of
-\begin{equation}
-	\label{SynapticRespKernel} h(t) = \eta(t)\exp{\left(-\zeta t\right)}, 
-\end{equation}
-where $\zeta=\tau^{-1}$, $\tau$ is the synaptic time constant and $\eta(t)$ is the Heaviside step function, the operator $D$ is
-\begin{equation}
-	D=\frac{d}{dt} + \zeta,
-\end{equation}
-yielding
-\begin{equation}
-	\label{FinalFormContinuous} 
-	\frac{dv\left( \mathbf{r},t \right)}{dt} + \zeta v\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)\textrm{d}\mathbf{r}'}. 
-\end{equation}
-The neural field equations must be written as a discrete-time finite-dimensional model in order to relate it to patient-specific data. The discrete-time model is found applying the a first-order Euler method giving
+\noindent Integrating over $[0,t]$ and multiplying throughout by $e^{-\zeta t}$ gives the required result.
+The neural field equations must be written as a discrete-time finite-dimensional model in order to relate it to patient-specific data. The discrete-time model is found applying the a first-order Euler-Maruyama method on equation \ref{DifferentialEquationContTime} giving
 \begin{equation}\label{EulerMethod}
-	\frac{v\left( \mathbf{r},t+T_s \right)-v\left( \mathbf{r},t \right)}{T_s} + \zeta v\left(\mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right) f\left( {v\left( \mathbf{r}',t \right)}\right)\textrm{d}\mathbf{r}'},
+	v\left( \mathbf{r},t+T_s \right)-v\left( \mathbf{r},t \right) + \zeta T_sv\left(\mathbf{r},t \right) = T_s\int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right) f\left( {v\left( \mathbf{r}',t \right)}\right)\textrm{d}\mathbf{r}'} + 	\sigma_W[W\left( \mathbf{r},t+T_s \right)-W\left( \mathbf{r},t \right)],
 \end{equation}
 where $T_s$ is the time step or sampling period. To simplify the notation, the sample at the the current time step shall be indexed by $t$ and the future time step by $t+1$ for the rest of the paper. Rearranging equation~\ref{EulerMethod} gives the integro-difference equation (IDE) form
-\begin{equation}
-	\label{DiscreteTimeModel} 
-	v_{t+1}\left(\mathbf{r}\right) = 
-	\xi v_t\left(\mathbf{r}\right) + 
-	T_s \int_\Omega { 
-	    w\left(\mathbf{r},\mathbf{r}'\right)
-	    f\left(v_t\left(\mathbf{r}'\right)\right) 
-	\textrm{d}\mathbf{r}'}, 
-\end{equation}
-where $\xi = 1-T_s\zeta$. Finally, a disturbance term is added, to account for uncertainty and unmodelled inputs, to the IDE form giving
 \begin{equation}
 	\label{NoisyDiscreteTimeModel} 
 	v_{t+1}\left(\mathbf{r}\right) = 
@@ -164,7 +147,7 @@ where $\xi = 1-T_s\zeta$. Finally, a disturbance term is added, to account for u
 	\textrm{d}\mathbf{r}'} 
 	+ e_t\left(\mathbf{r}\right), 
 \end{equation}
-where $e_t(\mathbf{r})$ is $i.i.d.$ such that $e_t(\mathbf{r})\sim\mathcal{GP}(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}'))$. Here $\mathcal{GP}(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}'))$ denotes a zero mean spatial Gaussian process with covariance function $\gamma(\mathbf{r}-\mathbf{r}')$~\cite{Rasmussen2005}.
+where $e_t(\mathbf{r}) = \sigma_W[W\left( \mathbf{r},t+T_s \right)-W\left( \mathbf{r},t \right)]$ is the increment of a space-time Wiener process, $i.i.d.$ with zero spatial mean such that $e_t(\mathbf{r})\sim\mathcal{GP}(\mathbf 0,T_s\sigma_W^2\gamma(\mathbf{r}-\mathbf{r}'))$. Here $\mathcal{GP}(\mathbf 0,T_s\sigma_W^2\gamma(\mathbf{r}-\mathbf{r}'))$ denotes a zero mean spatial Gaussian process with covariance function $\gamma(\mathbf{r}-\mathbf{r}')$~\cite{Rasmussen2005}.
 To reduce the model to a finite-dimensional system the neural field is approximated by a basis function decomposition where
 \begin{equation}
 	\label{DefFieldDecomp} v_t\left(\mathbf{r}\right) \approx \boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) \mathbf{x}_t 
@@ -202,7 +185,7 @@ A property of the basis function decomposition it the preservation of the Gaussi
 \end{equation}
 where $\mathbf{e}_t \sim\mathcal{N}(\mathbf 0,\boldsymbol\Sigma_e)$. The covariance matrix is defined as (see the Supporting Information, S1, for the derivation)
 \begin{equation}
-	\boldsymbol\Sigma_e \triangleq \mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega}\boldsymbol{\phi}\left(\mathbf r\right) \gamma\left(\mathbf r- \mathbf r' \right)\boldsymbol{\phi}\left(\mathbf r'\right)^{\top}d\mathbf r' d\mathbf r\mathbf{\Gamma}^{- \top}. 
+	\boldsymbol\Sigma_e \triangleq T_s\sigma_W^2\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega}\boldsymbol{\phi}\left(\mathbf r\right) \gamma\left(\mathbf r- \mathbf r' \right)\boldsymbol{\phi}\left(\mathbf r'\right)^{\top}d\mathbf r' d\mathbf r\mathbf{\Gamma}^{- \top}. 
 \end{equation}
 
 To relate the model to the data the electrodes are also modelled. The electrodes have a pick-up range (for LFPs) of approximately 400~$\mu$m. Therefore, we model the electrodes as a spatial convolution of a Gaussian shaped sensor kernel (using a width parameters of 400~$\mu$m) with the neural field. The observation equation is
