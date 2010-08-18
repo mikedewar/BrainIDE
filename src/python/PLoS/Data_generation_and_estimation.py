@@ -112,9 +112,9 @@ NF_model=NF(NF_Connectivity_kernel,sensor_kernel,obs_locns,observation_locs_mm,g
 IDE_model=IDE(IDE_Connectivity_kernel,IDE_field,sensor_kernel,obs_locns,gamma,gamma_weight,Sigma_varepsilon,act_fun,x0,P0,zeta,Ts,field_space,spacestep)
 #generate the Neural Field model
 NF_model.gen_ssmodel()
-V,Y=NF_model.simulate(T)
+#V,Y=NF_model.simulate(T)
 #generate the reduced model (state space model)
 IDE_model.gen_ssmodel()
 #estimate the states, the connectivity kernel parameters and the synaptic dynamics
-ps_estimate=para_state_estimation(IDE_model)
-ps_estimate.itrerative_state_parameter_estimation(Y[First_n_observations:],number_of_iterations)
+#ps_estimate=para_state_estimation(IDE_model)
+#ps_estimate.itrerative_state_parameter_estimation(Y[First_n_observations:],number_of_iterations)
