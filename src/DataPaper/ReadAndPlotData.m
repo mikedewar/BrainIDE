@@ -215,7 +215,7 @@ CrossCorrMeanPostSeizure = squeeze(mean(CrossCor(SzEnd*FsDec:end,:,:),1));
 
 %% 
 % the plots for the xcorrs
-SpactialLocation = linspace(-2,2,size(CrossCorrMeanPreSeizure,1));
+SpactialLocation = linspace(-1.8,1.8,size(CrossCorrMeanPreSeizure,1));
 HeightOffset = 1;
 HeigthScale = 0.5;
 ColorbarLims = [-0.1 0.3];
