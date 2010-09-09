@@ -1,0 +1,87 @@
+Reviewer 1:
+###########
+Major:
+------
+1- Compare with Mikes work and clarify the differences
+ Differences:
+- Non-linearity
+- Spatially coloured noise
+- Full model is used to generate the data and reduced model is used for estimation
+
+2- 
+
+i- Reference or proof for Shannon's sampling theorem 
+ii- clarify the relation with Kens work
+
+3- 
+
+i- Only simulated data is used
+ii- How the model relates to epilepsy
+
+Minor:
+------
+1- The number of basis functions for decomposition and why?
+
+2- Issues with Observation equation
+
+3- Compare the estimation Scheme with Mikes work
+ Difference: URTS-smoother instead of Standard Kalman smoother
+
+4- Issues with boundary condition 
+ 
+i- Explain the relevant physical implications of this choice
+ii- What is the class of boundary conditions that we can use
+
+5- 
+
+i- What data will we use in practice (EP, SSR)?
+ii- This sentence is not clear on Page 2: 'we derive the mathematical formula to create the model'
+
+Reviewer 2:
+###########
+Major:
+------
+1- 
+
+i- Cite other works (Kalman filtering for the estimation of neural mass models from data)
+ii- Discuss the discretization issues
+
+2- Cite other works (Forward Problem to the IDE- also check the Dynamic EM by Friston)
+
+3- Cite other works (The inverse problem for neural fields)
+
+4- Cite Stoffer and Shumway work
+
+5- Compare our decomposition with Nunez and Jirsa spherical harmonic decomposition
+
+6- Observation equation (lead field and amplifier characteristics)
+
+Reviewer 3:
+###########
+Major:
+------
+1- Use a wider parameter space or real data or reframe and clarify the objectives of the paper
+
+2- Comment on the performance of the model on real data and when the spatial kernel takes another form
+
+3- 
+
+i-Cite other works (Models and techniques for estimating neural field model parameters)
+ii-Explain why we use Gaussians instead of a single expotential basis
+
+4- Cite other works (Spatial analysis)
+5- Sigmoid parameters are not realistic
+
+Minor:
+------
+1- Observation equation
+
+2- Xi estimates are outside the distribution.
+
+3- How will it work with evoked potential paradigm?
+
+4- 1/f^2 scaling for EEG
+
+
+
+
