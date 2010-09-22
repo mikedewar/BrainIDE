@@ -282,15 +282,15 @@ Now taking the basis function vector inside the inner integrand gives
 	 \int_\Omega \int_\Omega \boldsymbol{\phi}(\mathbf{r})\boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}')f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \textrm{d}\mathbf{r}' \textrm{d}\mathbf{r} \boldsymbol{\theta}  
 	 + \xi\mathbf{x}_t + \mathbf{e}_t(\mathbf{r}).
 \end{equation}
-This equation can be simplified by exploiting the isotropy of the kernel and, hence, the basis functions used to represent it where
+This equation can be simplified by exploiting the isotropy of the basis functions used to represent the kernel, and hence,
 \begin{equation}
-	\boldsymbol{\psi} (\mathbf{r}-\mathbf{r}') = \boldsymbol{\psi} (\mathbf{r}'-\mathbf{r}).
+	\psi_i (\mathbf{r}-\mathbf{r}') = \psi_i (2c_i+\mathbf{r}'-\mathbf{r}).
 \end{equation}
-To make the simplification, we define
+where $c_i$ is the center of the $i^{th}$ basis function of the kernel decomposition. To make the simplification, we define
 \begin{equation}\label{eq:DefPsi}
-	\boldsymbol{\Psi}(\mathbf{r}') \triangleq T_s\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\psi}^{\top} (\mathbf{r}'-\mathbf{r})\textrm{d}\mathbf{r}},
+	\left[ \boldsymbol\Psi(\mathbf{r}')\right]_{:i}  \triangleq T_s\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\psi_i (2c_i+\mathbf{r}'-\mathbf{r})\textrm{d}\mathbf{r}},
 \end{equation}
-which is a constant $L \times n_{\theta}$ matrix that is defined analytically, where $L$ is the number of basis functions (and states) and $n_{\theta}$ is the number of connectivity kernel basis functions. Substituting equation~\ref{eq:DefPsi} into~\ref{eq:ReucedFormWithKernelDecomp} gives
+where $\left[ \boldsymbol\Psi(\mathbf{r}')\right]_{:i}$ denotes the $i^{th}$column of $\boldsymbol{\Psi}(\mathbf{r}')$ which is a constant $L \times n_{\theta}$ matrix that is defined analytically, where $L$ is the number of basis functions (and states) and $n_{\theta}$ is the number of connectivity kernel basis functions. Substituting equation~\ref{eq:DefPsi} into~\ref{eq:ReucedFormWithKernelDecomp} gives
 \begin{equation}
 	\mathbf{x}_{t+1} = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \textrm{d}\mathbf{r}' \boldsymbol{\theta} + \xi\mathbf{x}_t 
 + \mathbf{e}_t(\mathbf{r}).
