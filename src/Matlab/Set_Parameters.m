@@ -11,7 +11,7 @@ end
 % ~~~~~~~~~~~
 Delta = 0.5;                          % space step for the spatial discretisation
 Delta_squared = Delta^2;
-SpaceMax = 20;                    % maximum space in mm
+SpaceMax = 10;                    % maximum space in mm
 SpaceMin = -SpaceMax;         % minimum space in mm
 NPoints = (SpaceMax-SpaceMin)/Delta+1;
 r = linspace(SpaceMin,SpaceMax,NPoints);      % define space
@@ -124,3 +124,6 @@ hold on
 plot(r,k0+k1+k2,'k','linewidth',4)
 legend('continuous kernel','discrete kernel')
 drawnow
+
+figure
+plot(r_continuous,k0_continuous)

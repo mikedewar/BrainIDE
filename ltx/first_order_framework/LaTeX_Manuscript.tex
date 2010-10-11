@@ -116,7 +116,9 @@ Unfortunately, the use of these models in the clinic has been limited, since the
 
 For models to be clinically viable, they must be patient-specific. A possible approach to achieve this would be to fit a general continuum neural field model, like the Wilson and Cowan (WC)~\cite{Wilson1973} or Amari~\cite{Amari1977} models, or a neural mass model like the Jansen and Ritt model~\cite{Jansen1995}, to patient-specific data. Fitting the neural models to individuals is a highly non-trivial task. Recently, however, this taks has been approached from a number of standpoints.
 
+\dean{Need to add extra references between here}
 An estimation framework for neural mass models known as dynamical causal modelling (DCM) \cite{David2003,David2006} has been proposed for studying evoked potential dynamics. Via a Bayesian inference scheme, DCM estimates the long range (cortico-cortical) connectivity structure between the specific isolated brain regions that best explains a given data set using the Jansen and Ritt equations~\cite{Jansen1995}. Another recent approach estimates the parameters of a neural field model using an unscented Kalman filter based on modified WC neural field equations~\cite{schiff2008kalman}. This work takes a system theoretic approach to the neural estimation problem, successfully demonstrating that it is possible to perform state estimation on spatiotemporal neural fields. This marks the first step in what has the potential to revolutionise the treatment of many neurological diseases where therapeutic electrical stimulation is viable.
+\dean{and here}
 
 We present an extension to the work of Schiff and Sauer~\cite{schiff2008kalman} by establishing a framework for estimating the state of the WC equations for larger scale (more space) systems via a systematic model reduction procedure. In addition, a method is presented for estimating the connectivity structure and the synaptic dynamics. Until now, model-based estimation of local intracortical connectivity has not been reported in the literature (to the best of the authors' knowledge). Our study extends recent work which shows that it is possible to estimate local coupling of spatiotemporal systems using techniques from control systems theory and machine learning~\cite{Dewar2009}. The key development of this previous work was to represent a spatiotemporal system as a standard state-space model, with the number of states independent of the number of observations (recording electrodes in this case). In addition, the appropriate model selection tools have been developed~\cite{Scerri2009} allowing for the application of the technique to neural fields. This paper extends the linear framework of \cite{Dewar2009,Scerri2009} to the nonlinear case required by the WC model. 
 
@@ -145,7 +147,7 @@ where $\zeta=\tau^{-1}$, $\tau$ is the synaptic time constant and $\eta(t)$ is t
 \begin{equation}
 	\label{RateBasedInteractions} g\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( v\left( \mathbf{r}',t \right) \right)\textrm{d}\mathbf{r}'}, 
 \end{equation}
-where $f(\cdot)$ is the firing rate function, $w(\cdot)$ is the spatial connectivity kernel and $\Omega$ is the spatial domain representing a cortical sheet or surface. The connectivity kernel is typically a ``Mexican hat'' function, which describes local excitation and surround inhibition. An example of the connectivity kernel is shown in Figure~\ref{fig:Figure1}. To demonstrate flexibility in the estimation algorithm, a third component of the kernel is introduced describing weak longer-range excitation. The exact shape of this kernel is assumed to vary across patients, and hence needs to be inferred from data.
+where $f(\cdot)$ is the firing rate function, $w(\cdot)$ is the spatial connectivity kernel and $\Omega$ is the spatial domain representing a cortical sheet or surface. The connectivity kernel is typically a ``Mexican hat'' or ``wizard hat'' function, which describes local excitation and surround inhibition. An example of the Mexican hat connectivity kernel used in this paper is shown in Figure~\ref{fig:Figure1}. To demonstrate flexibility in the estimation algorithm, a third component of the kernel is introduced describing weak longer-range excitation. The exact shape of this kernel is assumed to vary across patients, and hence needs to be inferred from data.
 
 The firing rate of the presynaptic neurons is related to the post-synaptic membrane potential by the sigmoidal activation function 
 \begin{equation}
@@ -180,7 +182,7 @@ To arrive at the integro-difference equation (IDE) form of the model, we discret
 	\textrm{d}\mathbf{r}'} 
 	+ e_t\left(\mathbf{r}\right), 
 \end{equation}
-where $T_s$ is the time step, $\xi = 1-T_s\zeta $ and $e_t(\mathbf{r})$ is an $i.i.d.$ disturbance such that $e_t(\mathbf{r})\sim\mathcal{GP}(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}'))$. Here $\mathcal{GP}(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}'))$ denotes a zero mean spatial Gaussian process with covariance function $\gamma(\mathbf{r}-\mathbf{r}')$~\cite{Rasmussen2005}. This term is added to account for model uncertainty and unmodelled inputs. To simplify the notation, the index of the future time sample, $t+T_s$, shall be referred to as $t+1$ throughout the rest of the paper. 
+where $T_s$ is the time step, $\xi = 1-T_s\zeta $ and $e_t(\mathbf{r})$ is an $i.i.d.$ disturbance such that $e_t(\mathbf{r})\sim\mathcal{GP}(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}'))$. Here $\mathcal{GP}(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}'))$ denotes a zero mean spatial Gaussian process with covariance function $\gamma(\mathbf{r}-\mathbf{r}')$~\cite{Rasmussen2005}. The disturbance is added to account for model uncertainty and unmodelled inputs. To simplify the notation, the index of the future time sample, $t+T_s$, shall be referred to as $t+1$ throughout the rest of the paper. 
 
 The mapping between the membrane voltage and the electrophysiological data is modelled using the observation function that incorporates sensors with a spatial extent by
 \begin{equation}
@@ -195,19 +197,19 @@ where $\mathbf{r}_n$ defines the location of the sensors in the field, $n=1,...,
 \begin{equation}
 	m\left(\mathbf{r}-\mathbf{r}'\right) = \exp{\left(-\frac{(\mathbf{r}-\mathbf{r}')^\top(\mathbf{r}-\mathbf{r}')}{\sigma_m^2}\right)},
 \end{equation}
-where $\sigma_m$ sets the sensor width.
+where $\sigma_m$ sets the sensor width. 
 
 \subsection*{Derivation of Finite Dimensional State-Space Model}\label{Sect:ReducedModelDerivation}
-In order to implement standard estimation techniques, we use a decomposition of the field using a set of Gaussian basis functions that are defined by
+In order to implement standard estimation techniques, we use a decomposition of the field using a set of Gaussian basis functions. Decomposition allows a continuous field to be represented by a finite-dimensional state vector. This facilitates application of standard nonlinear state estimation methods such as the unscented Kalman filter. The field decomposition is described by 
+\begin{equation}
+	\label{DefFieldDecomp} v_t\left(\mathbf{r}\right) \approx \boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) \mathbf{x}_t, 
+\end{equation}
+where $\mathbf{x}_t$ is the state vector that scales the field basis functions $\mathbf{\boldsymbol{\phi}}(\mathbf{r})$. The field basis functions are described by
 \begin{equation}\label{eq:FieldBasisFunction}
 	\boldsymbol\phi\left(\mathbf{r}-\mathbf{r}'\right) =
 \exp{\left(-\frac{(\mathbf{r}-\mathbf{r}')^\top(\mathbf{r}-\mathbf{r}')}{\sigma_{\phi}^2}\right)}. 
 \end{equation}
-Decomposition allows a continuous field to be represented by a finite-dimensional state vector. This facilitates application of standard nonlinear state estimation methods such as the unscented Kalman filter. The field decomposition is described by 
-\begin{equation}
-	\label{DefFieldDecomp} v_t\left(\mathbf{r}\right) \approx \boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) \mathbf{x}_t, 
-\end{equation}
-where $\mathbf{\boldsymbol{\phi}}(\mathbf{r})$ is a vector of Gaussian basis functions that are scaled by the state vector, $\mathbf{x}_t$. An example of a one-dimensional field decomposition is given in Figure~\ref{fig:Figure2}.%The choice of Gaussian basis functions can be justified by the existence of the so called bump solutions for this class of model, which have a Gaussian shape~\cite{Coombes2005}.
+An example of a one-dimensional field decomposition is given in Figure~\ref{fig:Figure2}.
 
 The width and positioning of the basis functions can be determined by spectral analysis (explained in detail in the following section). The connectivity kernel can also be decomposed as 
 \begin{equation}\label{DefKernelDecomp}
