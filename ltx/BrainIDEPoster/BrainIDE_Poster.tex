@@ -13,6 +13,7 @@
 \usepackage{amsfonts}
 \usepackage{relsize}
 \usepackage{epsfig}
+
 %-----------------------------------------------------------
 % Define the column width and poster size
 % To set effective sepwid, onecolwid and twocolwid values, first choose how many columns you want and how much separation you want between columns
@@ -33,6 +34,7 @@
 \setlength{\threecolwid}{0.708\paperwidth}
 \setlength{\topmargin}{-0.5in}
 \usetheme{confposter}
+\usepackage{exscale}
 
 %-----------------------------------------------------------
 % Define colours (see beamerthemeconfposter.sty to change these colour definitions)
@@ -91,7 +93,7 @@
 		\begin{equation}
 			\label{FullDoubleIntModel} v\left(\mathbf{r},t\right) =
 			\int_{-\infty}^t 
-			h\left(t - t'\right) \int_\Omega
+			h\left(t - t'\right) \int_{\Omega}
 			w\left(\mathbf{r},\mathbf{r}'\right) 
 			f\left( v\left( \mathbf{r}',t' \right)\right)
 			\textrm{d}\mathbf{r}'dt'.
