@@ -50,12 +50,12 @@
 \title{A Data-Driven Framework for Neural Field Modelling}
 \author{Dean R. Freestone$^1$, Parham Aram$^2$, Michael Dewar$^3$, Kenneth Scerri$^4$, David B. Grayden$^1$ and Visakan Kadirkamanathan$^2$}
 
-\institute{1. Department of Electrical and Electronic Engineering, University of Melbourne, Melbourne, VIC, Australia \\
+\institute{1. Department of Electrical and Electronic Engineering, University of Melbourne, Australia \\
 % 2. The Bionic Ear Institute, East Melbourne, VIC, Australia \\
 % 3. Institute for Adaptive and Neural Computation, University of Edinburgh, Edinburgh, UK \\
-2. Department of Automatic Control and Systems Engineering, University of Sheffield, Sheffield, UK \\
-3. Department of Applied Physics and Applied Mathematics, Columbia University, New York, NY, USA \\
-4. Department of Systems and Control Engineering, University of Malta, Msida, MSD, Malta }
+2. Department of Automatic Control and Systems Engineering, University of Sheffield, UK \\
+3. Department of Applied Physics and Applied Mathematics, Columbia University, USA \\
+4. Department of Systems and Control Engineering, University of Malta, Malta }
 
 %-----------------------------------------------------------
 % Start the poster itself
@@ -86,7 +86,7 @@
 		\end{align}
 		where $g(\mathbf{r},t)$ is the input firing rate, $\zeta=\tau^{-1}$, $\tau$ is the synaptic time constant and $\eta(t)$ is the Heaviside step function. Interactions between cortical populations are described by 
 		\begin{equation}
-			\label{RateBasedInteractions} g\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( v\left( \mathbf{r}',t \right) \right)\textrm{d}\mathbf{r}'}, 
+			\label{RateBasedInteractions} g\left( \mathbf{r},t \right) = \int_\Omega {w\left( \left|\mathbf{r}-\mathbf{r}'\right| \right)f\left( v\left( \mathbf{r}',t \right) \right)\textrm{d}\mathbf{r}'}, 
 		\end{equation}
 		where $f(\cdot)$ is a sigmoidal firing rate function, $w(\cdot)$ is the spatial connectivity kernel and $\Omega$ is the spatial domain representing a cortical sheet or surface. Substituting equation~\ref{RateBasedInteractions} into equation~\ref{SpikesToPotential} gives the spatiotemporal model 
 		\begin{equation}
@@ -130,7 +130,7 @@ The mapping between the neural field and the electrophysiological data is
 
 	\begin{figure}
 	\begin{center}
-	\includegraphics[width=8in, scale = 10]{FieldModel.eps}
+	\includegraphics[width=10in, scale = 10]{FieldModel.eps}
 	\end{center}
 	\caption{{\bf Diagram of neural mass.} Pictorial representation of the rate-to-voltage and voltage-to-rate equations.} 
 	\label{fig:Figure1}
@@ -149,7 +149,7 @@ The mapping between the neural field and the electrophysiological data is
 \begin{block}{State-Space Model}
 	\begin{figure}	
 	\begin{center}
-	  \includegraphics[width=8in, scale = 10]{Figure2.eps}
+	  \includegraphics[width=9in, scale = 10]{Figure2.eps}
 	\end{center}
 	\caption{{\bf Example of a one-dimensional field decomposition.} The dashed line depicts the field, the black solid lines shows the Gaussian basis functions and the vertical lines show the position and amplitude of the states.} 
 	\label{fig:Figure2}	
@@ -211,7 +211,7 @@ The mapping between the neural field and the electrophysiological data is
       \begin{block}{Frequency Analysis}
 		\begin{figure}
 		\begin{center}
-		\includegraphics[width=8in, scale = 10]{Figure4.eps}
+		\includegraphics[width=9in, scale = 10]{Figure4.eps}
 		\end{center}
 		\caption{{\bf Spatial frequency analysis of the neural field}. (\textbf{A}) The average (over time) power in dB of the spatial frequency of the neural field. (\textbf{B}) The average (over time) power in dB of the spatial frequency of the reconstructed neural field from the basis function decomposition.}
 		\label{fig:Figure4}
@@ -255,7 +255,7 @@ The mapping between the neural field and the electrophysiological data is
       \begin{block}{Results}
 		\begin{figure}	
 		\begin{center}
-		  \includegraphics[width=8in, scale = 10]{Figure7.eps}
+		  \includegraphics[width=9in, scale = 10]{Figure7.eps}
 		\end{center}
 		\caption{{\bf Histograms of the parameter estimates over 100
 		realisations}. Solid lines show the actual parameters and the dotted lines show the means of estimated parameters. (\textbf{A}) The synaptic time constant. (\textbf{B}) The central excitatory connectivity parameter. (\textbf{C}) The surround inhibition connectivity parameter. (\textbf{D}) The longer range excitatory connectivity parameter.} 
@@ -263,7 +263,7 @@ The mapping between the neural field and the electrophysiological data is
 		\end{figure}
 		\begin{figure}
 		\begin{center}
-		\includegraphics[width=8in, scale = 10]{Figure8.eps}
+		\includegraphics[width=9in, scale = 10]{Figure8.eps}
 		\end{center}
 		\caption{{\bf Cross-section of connectivity kernel estimate}. The actual kernel is shown by the solid line, the mean kernel estimate (over 100 realisations) is shown by the dotted line and the 95~\% confidence interval is shown by the shaded grey region.}
 		\label{fig:Figure8}
@@ -273,7 +273,7 @@ The mapping between the neural field and the electrophysiological data is
 		\begin{center}
 		\includegraphics[width=10.5in, scale = 10]{FieldComparison.eps}
 		\end{center}
-		\caption{{\bf Examples of the actual and estimated neural fields and the error}. (\textbf{A}) The actual field at a single time instant from the full neural field model that was used to generate the data. (\textbf{B}) The reconstructed field of the reduced model, showing the effect of the basis function decomposition on the frequency content of the estimated field.}
+		\caption{{\bf The actual and estimated neural fields}. (\textbf{A}) The actual field at a single time instant. (\textbf{B}) The reconstructed field of the reduced model.}
 		\label{fig:Figure10}
 		\end{figure}
 		
