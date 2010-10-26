@@ -33,7 +33,7 @@
 \setlength{\threecolwid}{0.708\paperwidth}
 \setlength{\topmargin}{-0.5in}
 \usetheme{confposter}
-
+\usepackage{exscale}
 %-----------------------------------------------------------
 % Define colours (see beamerthemeconfposter.sty to change these colour definitions)
 %-----------------------------------------------------------
@@ -86,14 +86,14 @@
 		\end{align}
 		where $g(\mathbf{r},t)$ is the input firing rate, $\zeta=\tau^{-1}$, $\tau$ is the synaptic time constant and $\eta(t)$ is the Heaviside step function. Interactions between cortical populations are described by 
 		\begin{equation}
-			\label{RateBasedInteractions} g\left( \mathbf{r},t \right) = \int_\Omega {w\left( \left|\mathbf{r}-\mathbf{r}'\right| \right)f\left( v\left( \mathbf{r}',t \right) \right)\textrm{d}\mathbf{r}'}, 
+			\label{RateBasedInteractions} g\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r}-\mathbf{r}' \right)f\left( v\left( \mathbf{r}',t \right) \right)\textrm{d}\mathbf{r}'}, 
 		\end{equation}
 		where $f(\cdot)$ is a sigmoidal firing rate function, $w(\cdot)$ is the spatial connectivity kernel and $\Omega$ is the spatial domain representing a cortical sheet or surface. Substituting equation~\ref{RateBasedInteractions} into equation~\ref{SpikesToPotential} gives the spatiotemporal model 
 		\begin{equation}
 			\label{FullDoubleIntModel} v\left(\mathbf{r},t\right) =
 			\int_{-\infty}^t 
 			h\left(t - t'\right) \int_\Omega
-			w\left(\mathbf{r},\mathbf{r}'\right) 
+			w\left(\mathbf{r}-\mathbf{r}'\right) 
 			f\left( v\left( \mathbf{r}',t' \right)\right)
 			\textrm{d}\mathbf{r}'dt'.
 		\end{equation}
@@ -104,7 +104,7 @@ The discrete time integro-difference equation form of the model is
 	v_{t+1}\left(\mathbf{r}\right) = 
 	\xi v_t\left(\mathbf{r}\right) + 
 	T_s \int_\Omega { 
-	    w\left(\mathbf{r},\mathbf{r}'\right)
+	    w\left(\mathbf{r}-\mathbf{r}'\right)
 	    f\left(v_t\left(\mathbf{r}'\right)\right) 
 	\textrm{d}\mathbf{r}'} 
 	+ e_t\left(\mathbf{r}\right), 
@@ -161,9 +161,9 @@ The mapping between the neural field and the electrophysiological data is
 	where $\mathbf{x}_t$ is the state vector that scales the field basis functions $\mathbf{\boldsymbol{\phi}}(\mathbf{r})$. 
 	The connectivity kernel can also be decomposed as 
 	\begin{equation}\label{DefKernelDecomp}
-		 w\left(\mathbf{r},\mathbf{r}'\right) =\boldsymbol{\psi}^\top\left(\mathbf{r},\mathbf{r}'\right) \boldsymbol{\theta},
+		 w\left(\mathbf{r}-\mathbf{r}'\right) =\boldsymbol{\psi}^\top\left(\mathbf{r}-\mathbf{r}'\right) \boldsymbol{\theta},
 	\end{equation}
-	where $\boldsymbol{\psi}(\mathbf{r},\mathbf{r}')$ is a vector of Gaussian basis functions and $\boldsymbol{\theta}$ is a vector of scaling parameters. Now defining the matrices
+	where $\boldsymbol{\psi}(\mathbf{r}-\mathbf{r}')$ is a vector of Gaussian basis functions and $\boldsymbol{\theta}$ is a vector of scaling parameters. Now defining the matrices
 	\begin{align}
 		\boldsymbol{\Gamma} &\triangleq \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi} ^{\top}\left(\mathbf{r}\right)\textrm{d}\mathbf{r}} \label{eq:DefGamma} \\ 
 		\boldsymbol{\Psi}(\mathbf{r}') &\triangleq T_s\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\psi}^{\top}\label{eq:DefPsi} (\mathbf{r}'-\mathbf{r})\textrm{d}\mathbf{r}},
@@ -184,19 +184,15 @@ The mapping between the neural field and the electrophysiological data is
 		\end{align} 	
 	\end{alertblock}
 	where the observation matrix is 
-	\begin{equation}
-			\mathbf{C} = \left[
-			\begin{array}{{ccc}} 
-				c_{1,1} & \dots & c_{1,L} \\
-				\vdots & \ddots & \vdots \\
-				c_{N,1} & \dots & c_{N,L} 
-			\end{array}
-			\right] 
-		\end{equation}
-		and 
-		\begin{equation}
-			c_{i,j} = \int_{\Omega}m(\mathbf{r}_i - \mathbf{r}')\boldsymbol{\phi}_j(\mathbf{r}')\textrm{d}\mathbf{r}'. 
-		\end{equation}
+	\begin{align}
+		\mathbf{C} &= \left[
+		\begin{array}{{ccc}} 
+			c_{1,1} & \dots & c_{1,L} \\
+			\vdots & \ddots & \vdots \\
+			c_{N,1} & \dots & c_{N,L} 
+		\end{array}
+		\right], \ \	c_{i,j} = \int_{\Omega}m(\mathbf{r}_i - \mathbf{r}')\boldsymbol{\phi}_j(\mathbf{r}')\textrm{d}\mathbf{r}'. 
+		\end{align}
 	}
 \end{block}
 
@@ -216,7 +212,7 @@ The mapping between the neural field and the electrophysiological data is
 		\caption{{\bf Spatial frequency analysis of the neural field}. (\textbf{A}) The average (over time) power in dB of the spatial frequency of the neural field. (\textbf{B}) The average (over time) power in dB of the spatial frequency of the reconstructed neural field from the basis function decomposition.}
 		\label{fig:Figure4}
 		\end{figure}
-		\rmfamily{Given a band-limited field, the distance between adjacent sensors, $\Delta_y$, must satisfy 
+		\rmfamily{Given a band-limited field, the distance between electrodes, $\Delta_y$, must satisfy 
 		\begin{equation}
 			\label{eq:MinimumSensorDistance} \Delta_y \leq \frac{1}{2\rho_y\boldsymbol{\nu}_{c}}, 
 		\end{equation}
@@ -228,13 +224,10 @@ The mapping between the neural field and the electrophysiological data is
 		\end{equation}
 		where $\rho_{\phi} \in \mathbb{R} \ge 1$ is an oversampling parameter to determine the basis function separation and $\boldsymbol{\nu}_{cy}$ is the cut-off frequency of the observed field.
 		The field basis function widths can also be inferred using spectral considerations~\cite{Scerri2009}. The basis function width, $\sigma^2_{\phi}$, should be chosen to be
-		\begin{equation}\label{eq:WidthCutOffRelationship}
-		 \sigma^2_{\phi}= \frac{1}{\pi^2\sigma_{\nu_{cy}}^2},
-		\end{equation}
-		where
-		\begin{equation}\label{eq:WidthFrequencyRelationship}
-		 \sigma^2_{\nu_{cy}}= \frac{2\boldsymbol\nu_{cy}^\top \boldsymbol\nu_{cy}}{\ln2}.
-		\end{equation}}
+		\begin{align}\label{eq:WidthCutOffRelationship}
+		 \sigma^2_{\phi} &= \frac{1}{\pi^2\sigma_{\nu_{cy}}^2} \\
+		 \sigma^2_{\nu_{cy}} &= \frac{2\boldsymbol\nu_{cy}^\top \boldsymbol\nu_{cy}}{\ln2}.
+		\end{align}}
 	\end{block}
 	% \vskip2ex
 	\begin{block}{Estimation}
