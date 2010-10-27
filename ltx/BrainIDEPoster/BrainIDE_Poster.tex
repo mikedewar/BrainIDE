@@ -68,6 +68,8 @@
 \begin{document}
 \begin{frame}[t]
   \begin{columns}[t]												% the [t] option aligns the column's content at the top
+	  \setbeamercolor{block title}{fg=red,bg=white}%frame color
+    
     \begin{column}{\sepwid}\end{column}			% empty spacer column
     \begin{column}{\onecolwid}
       \begin{block}{Introduction}
@@ -100,7 +102,8 @@
 			\textrm{d}\mathbf{r}'dt'.
 		\end{equation}
 The discrete time integro-difference equation form of the model is
-\begin{alertblock}{Neural Field IDE}
+\vskip2ex
+\begin{alertblock}{Neural Field IDE \\}
 \begin{equation}
 	\label{DiscreteTimeModel} 
 	v_{t+1}\left(\mathbf{r}\right) = 
@@ -112,7 +115,10 @@ The discrete time integro-difference equation form of the model is
 	+ e_t\left(\mathbf{r}\right), 
 \end{equation}
 \end{alertblock}
+\vskip2ex
 where $T_s$ is the time step, $\xi = 1-T_s\zeta $ and $e_t(\mathbf{r})\sim\mathcal{GP}(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}'))$.
+
+\vskip2ex
 
 The mapping between the neural field and the electrophysiological data is
 	\begin{equation}
@@ -129,7 +135,7 @@ The mapping between the neural field and the electrophysiological data is
 	\end{equation}
 	where $\sigma_m$ sets the sensor width.}
     \end{block}
-
+\vskip2ex
 	\begin{figure}
 	\begin{center}
 	\includegraphics[width=10in, scale = 10]{FieldModel.eps}
@@ -161,6 +167,7 @@ The mapping between the neural field and the electrophysiological data is
 		\label{DefFieldDecomp} v_t\left(\mathbf{r}\right) \approx \boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) \mathbf{x}_t, 
 	\end{equation}
 	where $\mathbf{x}_t$ is the state vector that scales the field basis functions $\mathbf{\boldsymbol{\phi}}(\mathbf{r})$. 
+	
 	The connectivity kernel can also be decomposed as 
 	\begin{equation}\label{DefKernelDecomp}
 		 w\left(\mathbf{r}-\mathbf{r}'\right) =\boldsymbol{\psi}^\top\left(\mathbf{r}-\mathbf{r}'\right) \boldsymbol{\theta},
@@ -178,13 +185,16 @@ The mapping between the neural field and the electrophysiological data is
 	\begin{equation}
 		\boldsymbol\Sigma_e =\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega}\boldsymbol{\phi}\left(\mathbf r\right) \gamma\left(\mathbf r- \mathbf r' \right)\boldsymbol{\phi}\left(\mathbf r'\right)^{\top}d\mathbf r' d\mathbf r\mathbf{\Gamma}^{- \top}. 
 	\end{equation}
-	By rearranging Eq.~\ref{DiscreteTimeModel} and substituting in Eqs. \ref{DefFieldDecomp}, \ref{eq:FieldBasisFunction}, \ref{eq:DefGamma}, \ref{eq:DefPsi} and \ref{eq:Wt} we get the following state-space model
-	\begin{alertblock}{State-Space Model}
+	\vskip2ex
+	By rearranging Eq.~\ref{DiscreteTimeModel} and substituting in Eqs. \ref{DefFieldDecomp}, \ref{DefKernelDecomp}, \ref{eq:DefGamma}, \ref{eq:DefPsi} and \ref{eq:Wt} we get the following state-space model
+	\vskip2ex
+	\begin{alertblock}{State-Space Model \\}
 	\begin{align}
 		\mathbf{x}_{t+1} &= \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \textrm{d}\mathbf{r}' \boldsymbol{\theta} + \xi\mathbf{x}_t + \mathbf{e}_t \\
 		\mathbf{y}_t &= \mathbf{C}\mathbf{x}_t + \boldsymbol{\varepsilon}_t.
 		\end{align} 	
 	\end{alertblock}
+	% \vskip2ex
 	where the observation matrix is 
 	\begin{align}
 		\mathbf{C} &= \left[
@@ -193,7 +203,8 @@ The mapping between the neural field and the electrophysiological data is
 			\vdots & \ddots & \vdots \\
 			c_{N,1} & \dots & c_{N,L} 
 		\end{array}
-		\right], \ \	c_{i,j} = \int_{\Omega}m(\mathbf{r}_i - \mathbf{r}')\boldsymbol{\phi}_j(\mathbf{r}')\textrm{d}\mathbf{r}'. 
+		\right], \\	
+		c_{i,j} &= \int_{\Omega}m(\mathbf{r}_i - \mathbf{r}')\boldsymbol{\phi}_j(\mathbf{r}')\textrm{d}\mathbf{r}'. 
 		\end{align}
 	}
 \end{block}
@@ -211,7 +222,7 @@ The mapping between the neural field and the electrophysiological data is
 		\begin{center}
 		\includegraphics[width=9in, scale = 10]{Figure4.eps}
 		\end{center}
-		\caption{{\bf Spatial frequency analysis of the neural field}. (\textbf{A}) The average (over time) power in dB of the spatial frequency of the neural field. (\textbf{B}) The average (over time) power in dB of the spatial frequency of the reconstructed neural field from the basis function decomposition.}
+		\caption{{\bf Spatial frequency analysis of the neural field}. Both plots show an average (over time) power in dB of the spatial frequency. (\textbf{A}) The actual field. (\textbf{B}) The reconstructed field from the basis function decomposition.}
 		\label{fig:Figure4}
 		\end{figure}
 		\rmfamily{Given a band-limited field, the distance between electrodes, $\Delta_y$, must satisfy 
@@ -220,7 +231,7 @@ The mapping between the neural field and the electrophysiological data is
 		\end{equation}
 		where $\rho_y \in \mathbb{R} \ge 1$ is an oversampling parameter and $\boldsymbol{\nu}_c$ is a cutoff frequency (typically taken as the -3~dB point). This condition must be satisfied to avoid spatial spectral aliasing effects when reconstructing the hidden dynamic field, $v_t(\mathbf{r})$, using the sampled observations, $\mathbf{y}_t$.
 		
-		In the same manner the minimum distance between basis functions must satisfy 
+		The minimum distance between basis functions must also satisfy 
 		\begin{equation}\label{eq:BasisFunctionSeparation}
 			\Delta_{\phi} \leq \frac{1}{2\rho_{\phi}\boldsymbol{\nu}_{cy}}
 		\end{equation}
@@ -233,13 +244,20 @@ The mapping between the neural field and the electrophysiological data is
 	\end{block}
 	% \vskip2ex
 	\begin{block}{Estimation}
-		\rmfamily{The estimation procedure consists of a two-stage iterative algorithm incorporating the unscented Rauch-Tung-Striebel smoother for state estimation and a least squares algorithm for parameter estimation.} 
+		\rmfamily{The estimation procedure consists of a two-stage iterative algorithm incorporating the unscented Rauch-Tung-Striebel smoother (URTSS) for state estimation and a least squares (LS) algorithm for parameter estimation.}
+		\begin{figure}	
+		\begin{center}
+		  \includegraphics[width=10in, scale = 10]{EstimationAlgorithm.eps}
+		\end{center}
+		\caption{{\bf Estimation algorithm}. Flow chart describing steps in algorithm.} 
+		\label{fig:Estimation Algorithm}	
+		\end{figure} 
 	\end{block}	
 	\begin{block}{References}
         \small{\rmfamily{\begin{thebibliography}{99}
-\bibitem{Deco2008} G. Deco, V. Jirsa, P. Robinson, M. Breakspear, K. Friston. PLoS Computational Biology. \textbf{4} (2008).
-\bibitem{Dewar2009} M. Dewar, K. Scerri, V. Kadirkamanathan. IEEE Transactions on Signal Processing. \textbf{57} (2009) 83-91.
-\bibitem{Scerri2009} K. Scerri, M. Dewar, V. Kadirkamanathan. IEEE Trans. on Signal Processing. \textbf{57} (2009) 482-492.
+\bibitem{Deco2008} G. Deco, et al. PLoS Computational Biology. \textbf{4} (2008).
+\bibitem{Dewar2009} M. Dewar, et al. IEEE Trans. on Signal Processing. \textbf{57} (2009) 83-91.
+\bibitem{Scerri2009} K. Scerri, et al. IEEE Trans. on Signal Processing. \textbf{57} (2009) 482-492.
         \end{thebibliography}}}	\end{block}
 \end{column}
 
@@ -262,11 +280,10 @@ The mapping between the neural field and the electrophysiological data is
 		\end{center}
 		\caption{{\bf Cross-section of connectivity kernel estimate}. The actual kernel is shown by the solid line, the mean kernel estimate (over 100 realisations) is shown by the dotted line and the 95~\% confidence interval is shown by the shaded grey region.}
 		\label{fig:Figure8}
-		\end{figure}
-				
+		\end{figure}				
 		\begin{figure}
 		\begin{center}
-		\includegraphics[width=10.5in, scale = 10]{FieldComparison.eps}
+		\includegraphics[width=11in, scale = 10]{FieldComparison.eps}
 		\end{center}
 		\caption{{\bf The actual and estimated neural fields}. (\textbf{A}) The actual field at a single time instant. (\textbf{B}) The reconstructed field of the reduced model.}
 		\label{fig:Figure10}
