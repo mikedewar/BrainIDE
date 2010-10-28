@@ -37,7 +37,7 @@
 %\doublespacing
 
 %Set the section counter to one
-\setcounter{section}{1}
+% \setcounter{section}{1}
 
 % Text layout
 \topmargin 0.0cm
@@ -62,7 +62,7 @@
 % Leave date blank
 % \date{}
 
-\pagestyle{myheadings}
+% \pagestyle{myheadings}
 %% ** EDIT HERE **
 
 
@@ -75,20 +75,16 @@
 
 \begin{document}
 % Title must be 150 characters or less
-\begin{flushleft}
-{\Large
-\textbf{A Data-Driven Framework for Neural Field Modelling}
-}
-% Insert Author names, affiliations and corresponding author email.
-\\
-Dean R. Freestone$^{1,2,3,\ast}$, 
+\title[A Data-Driven Framework for Neural Field Modelling]{A Data-Driven Framework for Neural Field Modelling}
+
+\author{Dean R. Freestone$^{1,2,3}$, 
 Parham Aram$^{4}$, 
 Michael Dewar$^{3,5}$,
 Kenneth Scerri$^{6}$,
 David B. Grayden$^{1,2}$,
-Visakan Kadirkamanathan$^{4}$
-\\
-\bf{1} Department of Electrical and Electronic Engineering, University of Melbourne, Melbourne, VIC, Australia
+Visakan Kadirkamanathan$^{4}$}
+
+\address{\bf{1} Department of Electrical and Electronic Engineering, University of Melbourne, Melbourne, VIC, Australia
 \\
 \bf{2} The Bionic Ear Institute, East Melbourne, VIC, Australia
 \\
@@ -98,17 +94,18 @@ Visakan Kadirkamanathan$^{4}$
 \\
 \bf{5} Department of Applied Physics and Applied Mathematics, Columbia University, New York, NY, USA
 \\
-\bf{6} Department of Systems and Control Engineering, University of Malta, Msida, MSD, Malta
-\\
-$\ast$ E-mail: dfreestone@bionicear.org
-\end{flushleft}
+\bf{6} Department of Systems and Control Engineering, University of Malta, Msida, MSD, Malta}
 
-% Please keep the abstract between 250 and 300 words
-\section*{Abstract}
+\ead{dfreestone@bionicear.org}
 
+
+\begin{abstract}
 This paper presents a framework for creating neural field models from electrophysiological data. The Wilson and Cowan or Amari style neural field equations are used to form a parametric model, where the parameters are estimated from data. To illustrate the estimation framework, data is generated using the neural field equations incorporating modelled sensors, so a comparison can be made between estimated and true parameters. To facilitate state and parameter estimation, we introduce a method to reduce the continuum neural field model, using a basis function decomposition, to form a finite-dimensional state-space model. Spatial frequency analysis methods are introduced that systematically specify the basis function configuration required to capture the dominant characteristics of the neural field. The estimation procedure consists of a two-stage iterative algorithm incorporating the unscented Rauch-Tung-Striebel smoother for state estimation and a least squares algorithm for parameter estimation. The results show that it is theoretically possible to reconstruct the neural field and estimate intracortical connectivity and synaptic dynamics with the proposed framework. The results also illustrate a systematic loss of high spatial frequency information as the cost incurred by the model reduction procedure. 
+\end{abstract}
 
-\section*{Introduction}
+\maketitle
+
+\section{Introduction}
 Generating physiologically plausible neural field models is of great importance for studying brain dynamics at the mesoscopic and macroscopic scales. While our understanding of the function of neurons is well developed, the overall behaviour of the brain's mesoscopic and macroscopic scale dynamics remains largely theoretical. Understanding the brain at this level is extremely important since it is at this scale that pathologies such as epilepsy, Parkinson's disease and schizophrenia are manifested. 
 
 Mathematical neural field models provide insights into the underlying physics and dynamics of electroencephalography (EEG) and magnetoencephalography (MEG) (see~\cite{Deco2008,David2003} for recent reviews). These models have demonstrated possible mechanisms for the genesis of neural rhythms (such as the alpha and gamma rhythms) \cite{Liley1999,RENNIE2000}, epileptic seizure generation \cite{DaSilva2003,Suffczynski2004,Wendling2005} and insights into other pathologies \cite{Moran2008,Schiff2009} that would be difficult to gain from experimental data alone. 
@@ -131,12 +128,12 @@ In this paper, we demonstrate for the first time how intracortical connectivity 
 % You may title this section "Methods" or "Models". 
 % "Models" is not a valid title for PLoS ONE authors. However, PLoS ONE
 % authors may use "Analysis" 
-\section*{Methods}
+\section{Methods}
 
-\subsection*{Neural Field Model}\label{NeuralModelSection} 
+\subsection{Neural Field Model}\label{NeuralModelSection} 
 Neural field models relate mean firing rates of pre-synaptic neural populations to mean post-synaptic membrane potentials. They are popular as they are parsimonious yet have a strong link with the underlying physiology. Each neural population represents a functional cortical processing unit, such as a column. The columnar organisation of the cortex is continuous, where pyramidal cells are members of many columns. In general, cortical structure can be modelled in a physiologically plausible manner as being locally homogeneous (in short range intracortical connectivity) and heterogeneous (in long range cortico-cortical and corticothalamic connectivity)~\cite{Jirsa2009,Qubbaj2007}. In certain regions of the cortex, each column is thought to be connected locally via symmetric short range local excitation with surround inhibition \cite{Braitenberg1998}. For example, this structural organisation is most studied in the visual system, where the surrounding inhibition effectively tunes a cortical column to a particular receptive visual field~\cite{Sullivan2006}. Neural field models are descriptive of a range of neurodynamics of the cortex such as evoked potentials, visual hallucinations and epileptic behaviour~\cite{David2003,Bressloff2001,Breakspear2006}. Field models are also capable of generating complex spatial patterns of activity such as Turing patterns, spirals and travelling oscillations~\cite{Amari1977,Coombes2005,Coombes2007}.
 
-\subsection*{Derivation of the Integro-Difference Equation Representation}
+\subsection{Derivation of the Integro-Difference Equation Representation}
 The model relates the average number of action potentials $g(\mathbf{r},t)$ arriving at position $\mathbf{r}$ to the local post-synaptic membrane voltage $v(\mathbf{r},t)$. Table~\ref{tab:Notation} provides a description of the notation used in this study. The post-synaptic potentials generated at a neuronal population at location $\mathbf{r}$ by action potentials arriving from all other connected populations at locations $\mathbf{r}'$ is described by 
 \begin{equation}
 	\label{SpikesToPotential} v\left( {\mathbf{r},t} \right) = \int_{ - \infty }^t {h\left( {t - t'} \right)g\left( {\mathbf{r},t'} \right)dt'}. 
@@ -201,7 +198,7 @@ where $\mathbf{r}_n$ defines the location of the sensors in the field, $n=1,...,
 \end{equation}
 where $\sigma_m$ sets the sensor width. 
 
-\subsection*{Derivation of Finite Dimensional State-Space Model}\label{Sect:ReducedModelDerivation}
+\subsection{Derivation of Finite Dimensional State-Space Model}\label{Sect:ReducedModelDerivation}
 In order to implement standard estimation techniques, we use a decomposition of the field using a set of Gaussian basis functions. Decomposition allows a continuous field to be represented by a finite-dimensional state vector. This facilitates application of standard nonlinear state estimation methods such as the unscented Kalman filter. The field decomposition is described by 
 \begin{equation}
 	\label{DefFieldDecomp} v_t\left(\mathbf{r}\right) \approx \boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) \mathbf{x}_t, 
@@ -304,7 +301,7 @@ and
 	Q(\mathbf{x}_t) = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \textrm{d}\mathbf{r}' \boldsymbol{\theta} + \xi\mathbf{x}_t.
 \end{equation}
 
-\subsection*{Spectral Analysis}\label{SpectralAnalysisSection} 
+\subsection{Spectral Analysis}\label{SpectralAnalysisSection} 
 Spectral analysis has been used to identify both the number of sensors and the number of basis functions required to reconstruct the neural field from sampled observations~\cite{Sanner1992,Scerri2009}. Based on a two-dimensional extension of Shannon's sampling theorem \cite{Peterson1962}, the spatial bandwidth of the observed field can be used to provide a lower bound on both the number of sensors and the number of basis functions required to capture the dominant spectral characteristics of the neural field.
 
 Let the spectral representation of the post-synaptic membrane voltage field at time $t$ be denoted by $V_t(\boldsymbol{\nu})$. According to Shannon's sampling theorem, the field must be spatially band-limited for an accurate reconstruction using spatially discrete observations. Nevertheless, an approximate reconstruction can be obtained if the field is approximately band-limited with 
@@ -356,7 +353,7 @@ Alternatively, the basis function width can be set to provide a desired level of
 
 Note that for a spatially homogeneous isotropic field, the basis functions can be placed on a regular grid. Thus, the knowledge of the distance between basis functions can be used to determine the total number of basis functions required to represent a known spatial region.
 
-\subsection*{State and Parameter Estimation}\label{StateAndParameterEstimationSection} In this section, we describe the procedure for estimating the states, $\mathbf{x}_t$, the connectivity kernel parameters, $\boldsymbol \theta$, and the synaptic dynamics, $\xi$. The estimation process is a two part iterative algorithm, consisting of a state estimation step followed by a parameter estimation step. At each iteration, the sequence of estimated state vectors is used to update the parameter set. The resulting parameters are then used when estimating the new state vector sequence for the next iteration. The procedure stops when the parameters converge. The algorithm is initialised using a bounded random state vector sequence, guaranteeing that the initial estimated parameter set forms a stable kernel.
+\subsection{State and Parameter Estimation}\label{StateAndParameterEstimationSection} In this section, we describe the procedure for estimating the states, $\mathbf{x}_t$, the connectivity kernel parameters, $\boldsymbol \theta$, and the synaptic dynamics, $\xi$. The estimation process is a two part iterative algorithm, consisting of a state estimation step followed by a parameter estimation step. At each iteration, the sequence of estimated state vectors is used to update the parameter set. The resulting parameters are then used when estimating the new state vector sequence for the next iteration. The procedure stops when the parameters converge. The algorithm is initialised using a bounded random state vector sequence, guaranteeing that the initial estimated parameter set forms a stable kernel.
 
 The unscented Rauch-Tung-Striebel smoother (URTSS)~\cite{Sarkka2010} is used for the state estimation. The URTSS incorporates an unscented Kalman filter (UKF)~\cite{Julier1997, Merwe2003} in a forward step to estimate posterior states, $\hat{\mathbf x}_t^{f}$, followed by a backward step to compute the smoothed state estimates, $\hat{\mathbf x}_t^{b}$. The first and second order moments of the predicted state are captured by propagating the so-called sigma points through the state equation. The sigma points, $\mathcal X_i$, are calculated using the unscented transform as follows:
 \begin{eqnarray}\label{eq:sigmapoints1}
@@ -437,18 +434,18 @@ Following this, the LS parameter estimates, $ \mathcal{\hat{W}}$, are
 \end{equation}
 
 % Results and Discussion can be combined.
-\section*{Results}\label{ResultsSection} In this section, we provide a demonstration of the estimation procedure using the new methods that are described above. The full neural field model was used to generate the data for state and parameter estimation. All parameters for the model are given in Table~\ref{tab:Parameters}. Note, the parameters for the spatial and temporal aspects of the model can be considered arbitrary when demonstrating the estimation methodology. This is due to the fact that the temporal aspects scale with the sampling rate and the length of the times series, and the spatial aspects scale with the size of the neural field and the space step used for numerical simulation. When generating the simulated data, we assumed free boundary conditions for the neural field. An example of the simulated field can be seen in Figure~\ref{fig:Figure3}(A). Figure~\ref{fig:Figure3}(B) shows an example of data from the modelled sensors and Figure~\ref{fig:Figure3}(C) shows the power spectral density (PSD) of the simulated time-series. The PSD shows the typical $1/f^2$ characteristics of intracranial EEG.
+\section{Results}\label{ResultsSection} In this section, we provide a demonstration of the estimation procedure using the new methods that are described above. The full neural field model was used to generate the data for state and parameter estimation. All parameters for the model are given in Table~\ref{tab:Parameters}. Note, the parameters for the spatial and temporal aspects of the model can be considered arbitrary when demonstrating the estimation methodology. This is due to the fact that the temporal aspects scale with the sampling rate and the length of the times series, and the spatial aspects scale with the size of the neural field and the space step used for numerical simulation. When generating the simulated data, we assumed free boundary conditions for the neural field. An example of the simulated field can be seen in Figure~\ref{fig:Figure3}(A). Figure~\ref{fig:Figure3}(B) shows an example of data from the modelled sensors and Figure~\ref{fig:Figure3}(C) shows the power spectral density (PSD) of the simulated time-series. The PSD shows the typical $1/f^2$ characteristics of intracranial EEG.
 
 The sensors were spaced on a $14 \times 14$ square grid and the sensor width was set to $\sigma^2_m = 0.81$. This provides a width of 1.5~mm at half the maximum amplitude of the sensor kernel. The distance between sensors was set to $\Delta_y = 1.5$~mm. This arrangement modelled the recording as having some cross talk, which is typical for neurophysiological recordings.
 
-\subsection*{Spatial Frequency Analysis} 
+\subsection{Spatial Frequency Analysis} 
 The spectral analysis was used to confirm that the spacing and width of the sensors was adequate to capture the significant dynamics of the field. Figure~\ref{fig:Figure4}(A) shows the spatial frequency of the neural field and Figure~\ref{fig:Figure4}(B) shows the spatial frequency of the reconstruct neural field from the basis function decomposition. The cut-off frequency of the neural field is $\boldsymbol{\nu}_c \approx 0.24$~Hz ($-3$~dB point). From equation~\ref{eq:MinimumSensorDistance}, this yielded a minimum sensor separation of 2.08~mm. This confirms that the separation of $\Delta_{y} = 1.5$~mm was sufficient to mitigate problems associated with spatial aliasing.
 
 The spatial frequency of the observed field is shown in Figure~\ref{fig:Figure5}(A). The cut-off frequency is $\boldsymbol{\nu}_{cy} \approx 0.2$~Hz (-3~dB point). The observation cut-off frequency is lower than the field cut-off due to the low-pass filtering effect of the sensors. The spatial frequency response of the sensors can be seen in Figure~\ref{fig:Figure5}(B). Using an oversampling parameter of $\rho_{\phi}=1$, the minimum distance between the field basis functions was calculated to be 2.5~mm to satisfy Shannon's sampling criterion (from equation~\ref{eq:BasisFunctionSeparation}). The distance between basis functions was set to $\Delta_{\phi}=2.5$~mm, which is sufficient to capture the significant dynamics according to these criteria.
 
 Given this basis function separation, the basis function width parameter was set to $\sigma_{\phi}^2=2.5$~mm. This allowed a smooth representation of the field by the basis function decomposition up to a spatial frequency $\boldsymbol{\nu}_{c\phi} \approx 0.12$~Hz, as described by equation~\ref{eq:CutoffFromBasisFuncWidth}. The band-limiting effect is due to the spatial frequency response of the basis functions as seen in Figure~\ref{fig:Figure5}(C). The band-limiting effect of the basis function decomposition can be seen when comparing Figure~\ref{fig:Figure4}(A) to Figure~\ref{fig:Figure4}(B).
 
-\subsection*{State and Parameter Estimates} 
+\subsection{State and Parameter Estimates} 
 \label{sec:state_and_param_results}
 To demonstrate the performance of the state and parameter estimation algorithm, a Monte Carlo approach was employed where 100 realisations of the data were generated. Each realisation consisted of 500~ms of data (sampled at $1$~kHz) and the estimation was applied to the final 400~ms, allowing the model's initial transients to die out. The initial state and parameters were unknown to the estimator. Eleven iterations of the estimation algorithm were used to ensure the parameters  converged. Figure~\ref{fig:Figure6} shows the rate of convergence, confirming the parameters converged, with the changes in the parameter errors falling to less than $10^{-4}$ after six iterations.
 
@@ -458,15 +455,15 @@ The reconstructed connectivity kernels from the estimated parameters are shown i
 
 The accuracy of the state estimates was evaluated by comparing the field reconstruction to the true field using the mean (over iterations) of the root mean square error (MRMSE) over space. The MRMSE of the field estimates over time for 100 realisations is shown in Figure~\ref{fig:Figure9}, with the $95~\%$ confidence interval. At each time point, the error is consistently around 0.5~mV, which is approximately 7.1~\% of the field voltage range ([-3.29,3.77]~mV). The error in the reconstructed field is mostly due to the loss of high spatial frequency information from the basis function decomposition as illustrated in Figure~\ref{fig:Figure10}. The figure shows a snapshot at a single time instant of the true neural field, the estimated field and the corresponding error, which is the difference between the true and estimated neural fields. It can be seen in Figure~\ref{fig:Figure10}(B) that the estimated field contains the basic structure of the true field (shown in Figure~\ref{fig:Figure10}(A)), but is missing the higher-frequency detail.
 
-\section*{Discussion}\label{DiscussionSection}
+\section{Discussion}\label{DiscussionSection}
 This paper has presented a framework for creating data-driven neural field models by deriving a method for estimating intracortical connectivity and synaptic dynamics from electrophysiological data. In doing so, we have highlighted important aspects of the experiment design process, demonstrating the relationship between sensor bandwidth and the complexity of the field that can be inferred. The mathematical formulation that we have presented scales well with the number of sensors, and we have derived a finite-order state-space representation that allows us to perform inference efficiently. 
 
-\subsection*{Implications for Experiment Design}
+\subsection{Implications for Experiment Design}
 As seen in Figure~\ref{fig:Figure7}, the results indicate accurate estimation, where the mean parameter estimates are in good agreement with the actual values. The estimates of the connectivity kernel parameters show relatively broad distributions, which can be expected considering the system's input is modelled as a random disturbance, and the observations are corrupted by noise. To overcome the effect of noise, the use of a controlled input stimulus should be considered when applying the estimation algorithm to electrophysiological recordings. Given knowledge of the input and the appropriate model, it is expected that the variance of the parameter estimates will decrease. Even when using an input, our results imply that we should only expect to learn distributions of parameters, rather than uncover a `true' parameter set. By designing an input signal carefully and using an evoked-potential paradigm, where stimuli are repeated many times, data could be epoched into (and averaged over) a sufficient number of trials (realisations), where each trial is a response to a stimulus, such that a distribution of the parameter estimates can be formed.
 
 The frequency analysis specify the minimum sensor arrangement that is required to capture the dominant cortical dynamics. Importantly, these new tools can also be used to design electrophysiological recording systems to avoid spatial aliasing. In addition, the frequency analysis highlights the relationship between the spatial width of the sensors and the information in the data. This analysis is becoming increasingly relevant as recording systems are becoming more sophisticated with higher density electrodes~\cite{Brinkmann2009}.
 
-\subsection*{Computational Complexity}
+\subsection{Computational Complexity}
 The closest competitor to our `grey-box' integro-difference equation based approach is perhaps the multivariate auto-regressive (MVAR) model, which is a `black-box' approach. Examples of MVAR models for estimating functional connectivity include Granger causality~\cite{Hesse2003}, the direct transfer function~\cite{Kaminski1991} and partial directed coherence~\cite{Sameshima1999}. A distinct advantage of the integro-difference equation based technique proposed in this current study is that the number of parameters required to model the system is considerably less than a typical MVAR model. Furthermore, by using the neural field equations as a parametric form of a model, the parameters have physical meaning and, therefore, can be clinically relevant. An advantage of the MVAR-based methods is that they allow for anisotropic connectivity, which is present in the longer range cortico-cortical fibres. 
 
 Previous work from Schiff and Sauer~\cite{schiff2008kalman} demonstrated for the first time the applicability of the unscented Kalman filter (UKF) for state estimation of discrete (in space and time) nonlinear spatiotemporal systems. Within their framework, each discrete spatial location forms an element of the state vector to be estimated with the UKF. A limitation of this framework is that an increase in spatial resolution and/or the physical size of the neural field will result in an increased state dimension. 
@@ -478,9 +475,9 @@ The current study builds on Schiff and Sauer's approach ~\cite{schiff2008kalman}
 That the connectivity kernel is isotropic means the mixing effect of the kernel on the firing rates can be written as a convolution of the kernel with the membrane voltage field basis functions. This transformation greatly simplifies the computational complexity of the estimator, which is important for the estimator to run in a real-time scenario.
 
 
-\section*{Future Work}
+\section{Future Work}
 
-\subsection*{Patient-Specific Modelling}
+\subsection{Patient-Specific Modelling}
 
 Generating data-driven neural field models has the potential to have significant impact on several areas of neuroscientific research and clinical neurology. Specifically, these subject-specific neural field models will provide new avenues for the application of engineering techniques to neural systems. For example, state tracking could be used in brain-computer interfaces or epileptic seizure prediction, where specific regions of the state-space may indicate intent of movement or imminent seizures, respectively. In addition, a patient-specific state-space model will allow application of electrical stimulation to robustly prevent the neurodynamics entering pathological regions of state-space, thereby possibly preventing seizure onset or abating seizure activity.
 
@@ -488,12 +485,12 @@ Connectivity kernel parameter estimation may also have significant impact on the
 
 The development of an estimation framework also has implications for theoretical neuroscience, where the ability to estimate parameters will allow testing of hypotheses that have been generated in computational modelling studies. This has the potential to validate neural field models and, in doing so, provide new insights that may lead to a greater understanding of mesoscopic and macroscopic neurodynamics. For example, using the proposed model-based framework, we can reconstruct a neural field from data and estimate parameters to check if they correspond to theoretically derived values where certain solutions may exist. In addition, the parameters and the state-space can be explored during cognitive tasks and states of arousal such as sleep and anaesthesia. 
 
-\subsection*{Extensions to the framework}
+\subsection{Extensions to the framework}
 
 In this study, an assumption was made that the chosen kernel basis functions can exactly represent the actual connectivity kernel. In future work, we plan to relax this assumption. In addition, we have assumed that the neural field is isotropic and homogeneous. It is generally accepted that the intracortical connectivity structure can be accurately modelled as being isotropic. However, the assumption of homogeneity is quite strong as the size of the neural field becomes larger. Future work should focus on developing estimation algorithms where assumptions of homogeneity can be relaxed. In addition, natural extensions of this framework are the inclusion of a post-synaptic response kernel with a finite rise and decay time, and a finite distant-dependant action potential propagation velocity into the parametric neural field equations.
 
 % Do NOT remove this, even if you are not including acknowledgments
-\section*{Acknowledgments}
+\section{Acknowledgments}
 Dean Freestone would like to thank Dr. Mark van Rossum for hosting him while visiting the University of Edinburgh where this work was undertaken and Dr. Matthias Hennig for useful discussions and feedback. Parham Aram would also like to thank Andrew Hills for useful discussions and assistance with code and the generation of figures.
 
 % This research was funded in part by the Australian Research Council (Linkage Project LP0560684). The Bionic Ear Institute acknowledges the support it receives from the Victorian State Government through the Operational Infrastructure Support Program. Dean Freestone would like to thank the University of Melbourne's Scholarships Office for the Postgraduate Overseas Research Experience Scholarship and the Harold Mitchell Foundation for a traveling scholarship and supporting this research. 
