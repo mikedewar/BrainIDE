@@ -7,17 +7,17 @@
 \newcommand{\ken}[1]{\textsf{\emph{\textbf{\textcolor{magenta}{#1}}}}} 
 
 
-\documentclass[12pt]{iopart} 
-\usepackage{iopams}
+% \documentclass[12pt]{iopart} 
+% \usepackage{iopams}
 
-% % for checking equation size
-% % ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-% \documentclass[a4paper,10pt,twocolumn]{article} 
-% \usepackage{amsmath}
-% \usepackage{anysize} %<-use this for checking equation length
-% \marginsize {1.7cm}{1.5cm}{0.3cm}{0.8cm} %<-use this for checking equation length
-% \setlength{\columnsep}{0.5cm} %<-use this for checking equation length
-% % ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+% for checking equation size
+% ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+\documentclass[a4paper,10pt,twocolumn]{article} 
+\usepackage{amsmath}
+\usepackage{anysize} %<-use this for checking equation length
+\marginsize {1.6cm}{1.6cm}{1.0cm}{1.8cm} %<-use this for checking equation length
+\setlength{\columnsep}{0.5cm} %<-use this for checking equation length
+% ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 \usepackage{amssymb}
 \usepackage{graphicx}
@@ -167,11 +167,11 @@ The width and positioning of the basis functions can be determined by spectral a
 	 w\left(\mathbf{r},\mathbf{r}'\right) =\boldsymbol{\psi}^\top\left(\mathbf{r},\mathbf{r}'\right) \boldsymbol{\theta},
 \end{equation}
 where $\boldsymbol{\psi}(\mathbf{r},\mathbf{r}')$ is a vector of Gaussian basis functions and $\boldsymbol{\theta}$ is a vector of scaling parameters. By assuming a Gaussian isotropic connectivity structure, the kernel basis functions can be written as $\boldsymbol{\psi}(\mathbf{r}-\mathbf{r}')$. We will assume that we know the parametric form of the connectivity basis functions, where the scaling parameters $\boldsymbol{\theta}$ are unknown. Each connectivity basis function can, individually, be considered a layer in the Wilson and Cowan model. Typically, the Mexican hat connectivity kernel is comprised of two basis functions representing local excitation and surround inhibition. To demonstrate the flexibility of the estimation framework, a third basis function is incorporated, corresponding to weaker mid-range excitation. Making substitutions of equations~\ref{DefFieldDecomp} and~\ref{DefKernelDecomp} into~\ref{DiscreteTimeModel} we get 
-\begin{equation}
+\begin{eqnarray}
 	\label{reduced continuous model}
-	\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_{t+1}= T_s\int_\Omega{f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t )\boldsymbol{\psi}^{\top}(\mathbf{r}-\mathbf{r}')\textrm{d}\mathbf{r}'}\boldsymbol{\theta}
-	+ \xi\boldsymbol{\phi}^{\top}(\mathbf{r})x_t + \mathbf{e}_t(\mathbf{r}). 
-\end{equation}
+	\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_{t+1}= T_s\int_\Omega{f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t )\boldsymbol{\psi}^{\top}(\mathbf{r}-\mathbf{r}')\textrm{d}\mathbf{r}'}\boldsymbol{\theta} \nonumber \\
+	&+& \xi\boldsymbol{\phi}^{\top}(\mathbf{r})x_t + \mathbf{e}_t(\mathbf{r}). 
+\end{eqnarray}
 Next we multiply equation~\ref{reduced continuous model} by $\boldsymbol{\phi}(\mathbf{r})$ and integrate over the spatial domain $\Omega$ to get 
 \begin{eqnarray}
 	\label{StartofReduction}
