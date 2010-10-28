@@ -102,9 +102,9 @@ where $f(\cdot)$ is the firing rate function, $w(\cdot)$ is the spatial connecti
 
 The firing rate of the presynaptic neurons is related to the post-synaptic membrane potential by the sigmoidal activation function 
 \begin{equation}
-	\label{ActivationFunction} f\left( v\left( \mathbf{r}', t \right) \right) = \frac{f_{max}}{1 + \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right)}. 
+	\label{ActivationFunction} f\left( v\left( \mathbf{r}', t \right) \right) = \frac{1}{1 + \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right)}. 
 \end{equation}
-The parameters $f_{max}$ and $v_0$ describe the maximum firing rate and firing threshold of the neural populations respectively. The parameter $\varsigma$ governs the slope of the sigmoid. By substituting equation~\ref{RateBasedInteractions} into equation~\ref{SpikesToPotential} we get the spatiotemporal model 
+The parameter $v_0$ describes the  firing threshold of the neural populations. The parameter $\varsigma$ governs the slope of the sigmoid. By substituting equation~\ref{RateBasedInteractions} into equation~\ref{SpikesToPotential} we get the spatiotemporal model 
 \begin{equation}
 	\label{FullDoubleIntModel} v\left(\mathbf{r},t\right) =
 	\int_{-\infty}^t 
@@ -516,14 +516,14 @@ Dean Freestone would like to thank Dr. Mark van Rossum for hosting him while vis
 \begin{center}
 \includegraphics{./Graph/pdf/Figure7.pdf}
 \end{center}
-\caption{{\bf Histograms of the parameter estimates over 100
-realisations}. The solid lines show the actual values of the parameters and the dotted lines show the means of the estimated parameters. (\textbf{A}) The histogram of the $\xi$ estimates where $\xi=1-\zeta T_s $ and $\zeta$ is the reciprocal of the synaptic time constant. (\textbf{B}) The histogram of the central excitatory connectivity kernel basis function parameter estimates, $\theta_0$. (\textbf{C}) The histogram of the surround inhibition connectivity kernel basis function parameter estimates, $\theta_1$. (\textbf{D}) The histogram of the longer range excitatory connectivity kernel basis function parameter estimates, $\theta_2$.}
+\caption{{\bf Histograms of the parameter estimates over 150
+realisations}. The solid lines show the actual values of the parameters and the dotted lines show the means of the estimated parameters. (\textbf{a}) The histogram of the $\xi$ estimates where $\xi=1-\zeta T_s $ and $\zeta$ is the reciprocal of the synaptic time constant. (\textbf{b}) The histogram of the central excitatory connectivity kernel basis function parameter estimates, $\theta_0$. (\textbf{c}) The histogram of the surround inhibition connectivity kernel basis function parameter estimates, $\theta_1$. (\textbf{d}) The histogram of the longer range excitatory connectivity kernel basis function parameter estimates, $\theta_2$.}
 \label{fig:Figure7}
 \end{figure}
 
 \begin{figure}[!ht]
 \begin{center}
-\includegraphics{./Graph/pdf/Figure8.pdf}
+\includegraphics{./Graph/pdf/Figure8_1.pdf}
 \end{center}
 \caption{{\bf Cross-section of connectivity kernel estimate}. The actual kernel is shown by the solid line, the mean kernel estimate (over 100 realisations) is shown by the dotted line and the 95~\% confidence interval is shown by the shaded grey region.}
 \label{fig:Figure8}
@@ -686,7 +686,7 @@ $\mathbf P_{t}^{b}=\mathbf P_{t}^{f}+\mathbf S_t\left[\mathbf P_{t+1}^{b}-\mathb
 \multicolumn{4}{|c|}{\emph{Model}}\\
 	\hline
 	$\tau$ & synaptic time constant & 0.01 & s$^{-1}$ \\
-	$f_{max}$ & maximal firing rate & 10 & spikes.s$^{-1}$\\
+% 	$f_{max}$ & maximal firing rate & 10 & spikes.s$^{-1}$\\
 	$\varsigma$ & slope of sigmoidal activation function & 0.8 & mV$^{-1}$\\
 	$v_0$ & firing threshold & 2 & mV \\
 	$\boldsymbol{\theta}$ & vector of connectivity kernel parameters & $\left[\begin{array}{ccc}
