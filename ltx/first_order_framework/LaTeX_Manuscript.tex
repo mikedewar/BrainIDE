@@ -102,9 +102,9 @@ where $f(\cdot)$ is the firing rate function, $w(\cdot)$ is the spatial connecti
 
 The firing rate of the presynaptic neurons is related to the post-synaptic membrane potential by the sigmoidal activation function 
 \begin{equation}
-	\label{ActivationFunction} f\left( v\left( \mathbf{r}', t \right) \right) = \frac{f_{max}}{1 + \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right)}. 
+	\label{ActivationFunction} f\left( v\left( \mathbf{r}', t \right) \right) = \frac{1}{1 + \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right)}. 
 \end{equation}
-The parameters $f_{max}$ and $v_0$ describe the maximum firing rate and firing threshold of the neural populations respectively. The parameter $\varsigma$ governs the slope of the sigmoid. By substituting equation~\ref{RateBasedInteractions} into equation~\ref{SpikesToPotential} we get the spatiotemporal model 
+The parameter $v_0$ describes the  firing threshold of the neural populations. The parameter $\varsigma$ governs the slope of the sigmoid. By substituting equation~\ref{RateBasedInteractions} into equation~\ref{SpikesToPotential} we get the spatiotemporal model 
 \begin{equation}
 	\label{FullDoubleIntModel} v\left(\mathbf{r},t\right) =
 	\int_{-\infty}^t 
@@ -686,7 +686,7 @@ $\mathbf P_{t}^{b}=\mathbf P_{t}^{f}+\mathbf S_t\left[\mathbf P_{t+1}^{b}-\mathb
 \multicolumn{4}{|c|}{\emph{Model}}\\
 	\hline
 	$\tau$ & synaptic time constant & 0.01 & s$^{-1}$ \\
-	$f_{max}$ & maximal firing rate & 10 & spikes.s$^{-1}$\\
+% 	$f_{max}$ & maximal firing rate & 10 & spikes.s$^{-1}$\\
 	$\varsigma$ & slope of sigmoidal activation function & 0.8 & mV$^{-1}$\\
 	$v_0$ & firing threshold & 2 & mV \\
 	$\boldsymbol{\theta}$ & vector of connectivity kernel parameters & $\left[\begin{array}{ccc}
