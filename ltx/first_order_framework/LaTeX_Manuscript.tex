@@ -1,12 +1,4 @@
-% Template for PLoS
-% Version 1.0 January 2009
-%
-% To compile to pdf, run:
-% latex plos.template
-% bibtex plos.template
-% latex plos.template
-% latex plos.template
-% dvipdf plos.template
+
 
 % TO DELETE
 \newcommand{\mike}[1]{\textsf{\emph{\textbf{\textcolor{red}{#1}}}}} 
@@ -14,64 +6,27 @@
 \newcommand{\parham}[1]{\textsf{\emph{\textbf{\textcolor{blue}{#1}}}}} 
 \newcommand{\ken}[1]{\textsf{\emph{\textbf{\textcolor{magenta}{#1}}}}} 
 
- % \documentclass[twocolumn,10pt]{article}						%<-use this for checking equation length
- % \documentclass{article}
+
 \documentclass[12pt]{iopart} 
 \usepackage{iopams}
-% amsmath package, useful for mathematical formulas
+
+% % for checking equation size
+% % ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+% \documentclass[a4paper,10pt,twocolumn]{article} 
 % \usepackage{amsmath}
-% amssymb package, useful for mathematical symbols
+% \usepackage{anysize} %<-use this for checking equation length
+% \marginsize {1.7cm}{1.5cm}{0.3cm}{0.8cm} %<-use this for checking equation length
+% \setlength{\columnsep}{0.5cm} %<-use this for checking equation length
+% % ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 \usepackage{amssymb}
-
-% graphicx package, useful for including eps and pdf graphics
-% include graphics with the command \includegraphics
 \usepackage{graphicx}
-
-% cite package, to clean up citations in the main text. Do not remove.
-\usepackage{cite}
-
+% \usepackage{cite}
 \usepackage{color} 
 
-% Use doublespacing - comment out for single spacing
-%\usepackage{setspace} 
-%\doublespacing
-
-%Set the section counter to one
-% \setcounter{section}{1}
-
-% Text layout
-\topmargin 0.0cm
-\oddsidemargin 0.5cm
-\evensidemargin 0.5cm
-\textwidth 16cm 
-\textheight 21cm
-
-% Bold the 'Figure #' in the caption and separate it with a period
-% Captions will be left justified
-\usepackage[labelfont=bf,labelsep=period,justification=raggedright]{caption}
-
-% Use the PLoS provided bibtex style
-\bibliographystyle{plos2009}
-
-% Remove brackets from numbering in List of References
-\makeatletter
-\renewcommand{\@biblabel}[1]{\quad#1.}
-\makeatother
 
 
-% Leave date blank
-% \date{}
 
-% \pagestyle{myheadings}
-%% ** EDIT HERE **
-
-
-%% ** EDIT HERE **
-%% PLEASE INCLUDE ALL MACROS BELOW
-% \usepackage{anysize} 									%<-use this for checking equation length
-% \marginsize {1.7cm}{1.5cm}{0.3cm}{0.8cm} 				%<-use this for checking equation length
-% \setlength{\columnsep}{0.5cm}							%<-use this for checking equation length
-%% END MACROS SECTION
 
 \begin{document}
 % Title must be 150 characters or less
@@ -84,19 +39,19 @@ Kenneth Scerri$^{6}$,
 David B. Grayden$^{1,2}$,
 Visakan Kadirkamanathan$^{4}$}
 
-\address{\bf{1} Department of Electrical and Electronic Engineering, University of Melbourne, Melbourne, VIC, Australia
-\\
-\bf{2} The Bionic Ear Institute, East Melbourne, VIC, Australia
-\\
-\bf{3} Institute for Adaptive and Neural Computation, University of Edinburgh, Edinburgh, UK
-\\
-\bf{4} Department of Automatic Control and Systems Engineering, University of Sheffield, Sheffield, UK
-\\
-\bf{5} Department of Applied Physics and Applied Mathematics, Columbia University, New York, NY, USA
-\\
-\bf{6} Department of Systems and Control Engineering, University of Malta, Msida, MSD, Malta}
-
-\ead{dfreestone@bionicear.org}
+% \address{\bf{1} Department of Electrical and Electronic Engineering, University of Melbourne, Melbourne, VIC, Australia
+% \\
+% \bf{2} The Bionic Ear Institute, East Melbourne, VIC, Australia
+% \\
+% \bf{3} Institute for Adaptive and Neural Computation, University of Edinburgh, Edinburgh, UK
+% \\
+% \bf{4} Department of Automatic Control and Systems Engineering, University of Sheffield, Sheffield, UK
+% \\
+% \bf{5} Department of Applied Physics and Applied Mathematics, Columbia University, New York, NY, USA
+% \\
+% \bf{6} Department of Systems and Control Engineering, University of Malta, Msida, MSD, Malta}
+% 
+% \ead{dfreestone@bionicear.org}
 
 
 \begin{abstract}
@@ -114,10 +69,10 @@ Unfortunately, the use of these models in the clinic has been limited, since the
 
 For models to be clinically viable, they must be patient-specific. A possible approach to achieve this would be to fit a general continuum neural field model, like the Wilson and Cowan (WC)~\cite{Wilson1973} or Amari~\cite{Amari1977} models, or a neural mass model like the Jansen and Ritt model~\cite{Jansen1995}, to patient-specific data. Fitting the neural models to individuals is a highly non-trivial task. Recently, however, this task has been approached from a number of standpoints.
 
-% \dean{Need to add extra references between here}
+\dean{Need to add extra references between here}
 
 An estimation framework for neural mass models known as dynamical causal modelling (DCM) \cite{David2003,David2006} has been proposed for studying evoked potential dynamics. Via a Bayesian inference scheme, DCM estimates the long range (cortico-cortical) connectivity structure between the specific isolated brain regions that best explains a given data set using the Jansen and Ritt equations~\cite{Jansen1995}. Another recent approach estimates the parameters of a neural field model using an unscented Kalman filter based on modified WC neural field equations~\cite{schiff2008kalman}. This work takes a system theoretic approach to the neural estimation problem, successfully demonstrating that it is possible to perform state estimation on spatiotemporal neural fields. This marks the first step in what has the potential to revolutionise the treatment of many neurological diseases where therapeutic electrical stimulation is viable.
-% \dean{and here}
+\dean{and here}
 
 We present an extension to the work of Schiff and Sauer~\cite{schiff2008kalman} by establishing a framework for estimating the state of the WC equations for larger scale (more space) systems via a systematic model reduction procedure. In addition, a method is presented for estimating the connectivity structure and the synaptic dynamics. Until now, model-based estimation of local intracortical connectivity has not been reported in the literature (to the best of the authors' knowledge). Our study extends recent work which shows that it is possible to estimate local coupling of spatiotemporal systems using techniques from control systems theory and machine learning~\cite{Dewar2009}. The key development of this previous work was to represent a spatiotemporal system as a standard state-space model, with the number of states independent of the number of observations (recording electrodes in this case). In addition, the appropriate model selection tools have been developed~\cite{Scerri2009} allowing for the application of the technique to neural fields. This paper extends the linear framework of \cite{Dewar2009,Scerri2009} to the nonlinear case required by the WC model. 
 
@@ -125,9 +80,6 @@ Modelling the neural dynamics within this framework has a distinct advantage ove
 
 In this paper, we demonstrate for the first time how intracortical connectivity can be inferred from data, based on a variant of the WC neural field model~\cite{Wilson1973}. This work provides a fundamental link between the theoretical advances in neural field modelling and electrophysiological data. The paper proceeds by first deriving the continuum neural field equations. Then a finite-dimensional neural field model is derived. The model is reduced by approximating the neural field using a set of continuous basis functions, weighted by a finite dimensional state vector. The next section establishes conditions using spatial frequency analysis for both sensor and basis function spacing and width, such that the dominant dynamics of the neural field can be represented by the reduced model. The state and parameter estimation procedure is described in the following section. The results for the spatial frequency analysis and parameter estimation are then presented. Finally, the implications and limitations of this framework are discussed along with planned future developments.
 
-% You may title this section "Methods" or "Models". 
-% "Models" is not a valid title for PLoS ONE authors. However, PLoS ONE
-% authors may use "Analysis" 
 \section{Methods}
 
 \subsection{Neural Field Model}\label{NeuralModelSection} 
@@ -153,22 +105,22 @@ The firing rate of the presynaptic neurons is related to the post-synaptic membr
 	\label{ActivationFunction} f\left( v\left( \mathbf{r}', t \right) \right) = \frac{f_{max}}{1 + \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right)}. 
 \end{equation}
 The parameters $f_{max}$ and $v_0$ describe the maximum firing rate and firing threshold of the neural populations respectively. The parameter $\varsigma$ governs the slope of the sigmoid. By substituting equation~\ref{RateBasedInteractions} into equation~\ref{SpikesToPotential} we get the spatiotemporal model 
-% \begin{equation}
-% 	\label{FullDoubleIntModel} v\left(\mathbf{r},t\right) =
-% 	\int_{-\infty}^t 
-% 	h\left(t - t'\right) \int_\Omega
-% 	w\left(\mathbf{r},\mathbf{r}'\right) 
-% 	f\left( v\left( \mathbf{r}',t' \right)\right)
-% 	\textrm{d}\mathbf{r}'dt'.
-% \end{equation}
+\begin{equation}
+	\label{FullDoubleIntModel} v\left(\mathbf{r},t\right) =
+	\int_{-\infty}^t 
+	h\left(t - t'\right) \int_\Omega
+	w\left(\mathbf{r},\mathbf{r}'\right) 
+	f\left( v\left( \mathbf{r}',t' \right)\right)
+	\textrm{d}\mathbf{r}'\textrm{d}t'.
+\end{equation}
 To arrive at the final form of the model, we shall express the synaptic response kernel as a Green's function 
 \begin{equation}
-	\label{GreensFuncDef} Dh\left( t \right) = \delta \left( t \right), 
+	\label{GreensFuncDef} \textrm{D}h\left( t \right) = \delta \left( t \right), 
 \end{equation}
-where $D=\frac{d}{dt} + \zeta$ is a temporal differential operator and $\delta(t)$ is the Dirac-delta function giving 
+where $\textrm{d}=\frac{d}{\textrm{d}t} + \zeta$ is a temporal differential operator and $\delta(t)$ is the Dirac-delta function giving 
 \begin{equation}
 	\label{FinalFormContinuous} 
-	\frac{dv\left( \mathbf{r},t \right)}{dt} + \zeta v\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)\textnormal{d}\mathbf{r}'}. 
+	\frac{\textrm{d}v\left( \mathbf{r},t \right)}{\textrm{d}t} + \zeta v\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)\textrm{d}\mathbf{r}'}. 
 \end{equation}
 To arrive at the integro-difference equation (IDE) form of the model, we discretise time using a first-order Euler method (see the S1 for derivation) giving 
 \begin{equation}
