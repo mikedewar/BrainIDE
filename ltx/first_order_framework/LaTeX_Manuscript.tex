@@ -7,17 +7,17 @@
 \newcommand{\ken}[1]{\textsf{\emph{\textbf{\textcolor{magenta}{#1}}}}} 
 
 
-% \documentclass[12pt]{iopart} 
-% \usepackage{iopams}
+\documentclass[12pt]{iopart} 
+\usepackage{iopams}
 
-% for checking equation size
-% ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-\documentclass[a4paper,10pt,twocolumn]{article} 
-\usepackage{amsmath}
-\usepackage{anysize} %<-use this for checking equation length
-\marginsize {1.6cm}{1.6cm}{1.0cm}{1.8cm} %<-use this for checking equation length
-\setlength{\columnsep}{0.5cm} %<-use this for checking equation length
-% ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+% % for checking equation size
+% % ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+% \documentclass[a4paper,10pt,twocolumn]{article} 
+% \usepackage{amsmath}
+% \usepackage{anysize} %<-use this for checking equation length
+% \marginsize {1.6cm}{1.6cm}{1.0cm}{1.8cm} %<-use this for checking equation length
+% \setlength{\columnsep}{0.5cm} %<-use this for checking equation length
+% % ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 \usepackage{amssymb}
 \usepackage{graphicx}
@@ -39,19 +39,19 @@ Kenneth Scerri$^{6}$,
 David B. Grayden$^{1,2}$,
 Visakan Kadirkamanathan$^{4}$}
 
-% \address{\bf{1} Department of Electrical and Electronic Engineering, University of Melbourne, Melbourne, VIC, Australia
-% \\
-% \bf{2} The Bionic Ear Institute, East Melbourne, VIC, Australia
-% \\
-% \bf{3} Institute for Adaptive and Neural Computation, University of Edinburgh, Edinburgh, UK
-% \\
-% \bf{4} Department of Automatic Control and Systems Engineering, University of Sheffield, Sheffield, UK
-% \\
-% \bf{5} Department of Applied Physics and Applied Mathematics, Columbia University, New York, NY, USA
-% \\
-% \bf{6} Department of Systems and Control Engineering, University of Malta, Msida, MSD, Malta}
-% 
-% \ead{dfreestone@bionicear.org}
+\address{$^1$ Department of Electrical and Electronic Engineering, University of Melbourne, Melbourne, VIC, Australia
+\\
+$^2$ The Bionic Ear Institute, East Melbourne, VIC, Australia
+\\
+$^3$ Institute for Adaptive and Neural Computation, University of Edinburgh, Edinburgh, UK
+\\
+$^4$ Department of Automatic Control and Systems Engineering, University of Sheffield, Sheffield, UK
+\\
+$^5$ Department of Applied Physics and Applied Mathematics, Columbia University, New York, NY, USA
+\\
+$^6$ Department of Systems and Control Engineering, University of Malta, Msida, MSD, Malta}
+
+\ead{dfreestone@bionicear.org}
 
 
 \begin{abstract}
@@ -144,11 +144,13 @@ The mapping between the membrane voltage and $\textrm{d}$ the electrophysiologic
 	\textrm{d}\mathbf{r}'} + 
 	\boldsymbol{\varepsilon}_t, 
 \end{equation}
-where $\mathbf{r}_n$ defines the location of the sensors in the field, $n=1,...,N$ indexes the sensors and $\boldsymbol{\varepsilon}_t \sim \mathcal{N}\left(0,\boldsymbol{\Sigma}_{\varepsilon}\right)$. $\mathcal{N}\left(0,\boldsymbol{\Sigma}_{\varepsilon}\right)$ denotes the multivariate normal distribution with mean zero and covariance matrix $\boldsymbol{\Sigma}_{\varepsilon}$. The output kernel $m(\mathbf{r}-\mathbf{r}')$ governs the sensor pick-up geometry and is defined by 
+where $\mathbf{r}_n$ defines the location of the sensors in the field, $n=1,...,N$ indexes the sensors and $\boldsymbol{\varepsilon}_t \sim \mathcal{N}\left(0,\boldsymbol{\Sigma}_{\varepsilon}\right)$ denoting the multivariate normal distribution with mean zero and covariance matrix $\boldsymbol{\Sigma}_{\varepsilon}$. 
+
+When considering the measurement of a point source in a homogeneous field measured by a point sensor the observation kernel will theoretically follow a Laplacian distribution, with an exponential decay in amplitude with increasing distance between the source and sensor \dean{(ref)}. However, when considering a source or sensor with a spatial extent the peak of the observation kernel becomes flattened and is more likened to a Gaussian shape. Therefore, the observation kernel $m(\mathbf{r}-\mathbf{r}')$ that governs the sensor pick-up geometry and is defined by 
 \begin{equation}
 	m\left(\mathbf{r}-\mathbf{r}'\right) = \exp{\left(-\frac{(\mathbf{r}-\mathbf{r}')^\top(\mathbf{r}-\mathbf{r}')}{\sigma_m^2}\right)},
 \end{equation}
-where $\sigma_m$ sets the sensor width. 
+where $\sigma_m$ sets the kernel width. An example of measured 
 
 \subsection{Derivation of Finite Dimensional State-Space Model}\label{Sect:ReducedModelDerivation}
 In order to implement standard estimation techniques, we use a decomposition of the field using a set of Gaussian basis functions. Decomposition allows a continuous field to be represented by a finite-dimensional state vector. This facilitates application of standard nonlinear state estimation methods such as the unscented Kalman filter. The field decomposition is described by 
@@ -169,7 +171,7 @@ The width and positioning of the basis functions can be determined by spectral a
 where $\boldsymbol{\psi}(\mathbf{r},\mathbf{r}')$ is a vector of Gaussian basis functions and $\boldsymbol{\theta}$ is a vector of scaling parameters. By assuming a Gaussian isotropic connectivity structure, the kernel basis functions can be written as $\boldsymbol{\psi}(\mathbf{r}-\mathbf{r}')$. We will assume that we know the parametric form of the connectivity basis functions, where the scaling parameters $\boldsymbol{\theta}$ are unknown. Each connectivity basis function can, individually, be considered a layer in the Wilson and Cowan model. Typically, the Mexican hat connectivity kernel is comprised of two basis functions representing local excitation and surround inhibition. To demonstrate the flexibility of the estimation framework, a third basis function is incorporated, corresponding to weaker mid-range excitation. Making substitutions of equations~\ref{DefFieldDecomp} and~\ref{DefKernelDecomp} into~\ref{DiscreteTimeModel} we get 
 \begin{eqnarray}
 	\label{reduced continuous model}
-	\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_{t+1}= T_s\int_\Omega{f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t )\boldsymbol{\psi}^{\top}(\mathbf{r}-\mathbf{r}')\textrm{d}\mathbf{r}'}\boldsymbol{\theta} \nonumber \\
+	\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_{t+1} &=& T_s\int_\Omega{f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t )\boldsymbol{\psi}^{\top}(\mathbf{r}-\mathbf{r}')\textrm{d}\mathbf{r}'}\boldsymbol{\theta} \nonumber \\
 	&+& \xi\boldsymbol{\phi}^{\top}(\mathbf{r})x_t + \mathbf{e}_t(\mathbf{r}). 
 \end{eqnarray}
 Next we multiply equation~\ref{reduced continuous model} by $\boldsymbol{\phi}(\mathbf{r})$ and integrate over the spatial domain $\Omega$ to get 
@@ -205,10 +207,10 @@ To make the simplification, we define
 	\boldsymbol{\Psi}(\mathbf{r}') \triangleq T_s\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\psi}^{\top} (\mathbf{r}'-\mathbf{r})\textrm{d}\mathbf{r}},
 \end{equation}
 which is a constant $L \times n_{\theta}$ matrix that is defined analytically (see the Supporting Information, S1, for analytic convolution of two Gaussians), where $L$ is the number of basis functions (states) and $n_{\theta}$ is the number of connectivity kernel basis functions. Substituting equation~\ref{eq:DefPsi} into~\ref{eq:ReducedForm} gives
-\begin{equation}
-	\mathbf{x}_{t+1} = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \textrm{d}\mathbf{r}' \boldsymbol{\theta} + \xi\mathbf{x}_t 
+\begin{eqnarray}
+	\mathbf{x}_{t+1} &=& \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \textrm{d}\mathbf{r}' \boldsymbol{\theta} \nonumber \\ &+& \xi\mathbf{x}_t 
 + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})\textrm{d}\mathbf{r}}.
-\end{equation}
+\end{eqnarray}
 This substitution exploits the isotropy of the connectivity kernel basis functions, allowing us to swap the convolution in equation~\ref{reduced continuous model}, which is computationally demanding, with the convolution in equation~\ref{eq:DefPsi}. This provides a dramatic increase in estimation speed, since the matrix $\boldsymbol\Psi(\mathbf{r}')$ can be calculated analytically. This is of great importance as it lowers the computational demands of the estimation algorithm. 
 
 Now we define the state disturbance as
@@ -447,8 +449,8 @@ Dean Freestone would like to thank Dr. Mark van Rossum for hosting him while vis
 
 % This research was funded in part by the Australian Research Council (Linkage Project LP0560684). The Bionic Ear Institute acknowledges the support it receives from the Victorian State Government through the Operational Infrastructure Support Program. Dean Freestone would like to thank the University of Melbourne's Scholarships Office for the Postgraduate Overseas Research Experience Scholarship and the Harold Mitchell Foundation for a traveling scholarship and supporting this research. 
 
-% \section*{References}
-% The bibtex filename
+\section*{References}
+\bibliographystyle{unsrt} 
 \bibliography{BrainIDE}
 
 \section*{Figure Legends}
@@ -645,8 +647,8 @@ $\mathcal X_{i,t+1}^{f-}=Q(\mathcal X_{i,t}^f) \quad i=0, \dots, 2L$\\
 $\hat{\mathbf x}_{t+1}^{f-}=\sum_{i=0}^{2L} W_i^{(m)}\mathcal X_{i,t+1}^{f-} $ \\
 $\mathbf P_{t +1}^{f-}=\sum_{i=0}^{2L} W_i^{(c)}(\mathcal X_{i,t+1}^{f-}-\hat{\mathbf x}_{t +1}^{f-})(\mathcal X_{i,t+1}^{f-}-\hat{\mathbf x}_{t +1}^{f-})^\top+\boldsymbol \Sigma_e$ \\ 
 \multicolumn{1}{|p{16cm}|}{Compute the filter gain, the filtered state and the filtered covariance matrix using the standard Kalman filter update equations} \\
-$\mathcal K_{t+1}=\mathbf P_{t +1}^{f-}\mathbf C ^\top(\mathbf C \mathbf P_{t +1}^{f-}\mathbf C ^\top+\boldsymbol \Sigma_{\varepsilon})^{-1}$\\
-$\hat{\mathbf x}_{t+1}^{f}=\hat{\mathbf x}_{t+1}^{f-}+\mathcal K_{t+1}(\mathbf y_{t+1}-\mathbf C\hat{\mathbf x}_{t +1}^{f-}) $\\
+$\mathcal K_{t+1}=\mathbf P_{t +1}^{f-}\mathbf C ^\top(\mathbf C \mathbf P_{t +1}^{f-}\mathbf C ^\top+\boldsymbol \Sigma_{\varepsilon})^{-1}$ \\
+$\hat{\mathbf x}_{t+1}^{f}=\hat{\mathbf x}_{t+1}^{f-}+\mathcal K_{t+1}(\mathbf y_{t+1}-\mathbf C\hat{\mathbf x}_{t +1}^{f-})$ \\
 $\mathbf P_{t+1}^f=(\mathbf I - \mathcal K_{t+1}\mathbf C)\mathbf P_{t +1}^{f-}$\\ 
 \hline
 \multicolumn{1}{|p{16cm}|}{\textbf{3.} Backward initialisation}\\
