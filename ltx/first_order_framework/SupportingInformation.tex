@@ -241,11 +241,12 @@ The Gaussian shape of the observation kernel was verified experimentally by movi
 	\label{fig:SensorAndSource}
 \end{figure}
 
-The stimulation for the current source consisted of a 40~Hz sine wave with a duration of 1~s. The recording from the central electrode was used construct the sensor kernel. To extract the amplitude the signal the data was first band-pass filtered with a centre frequency of 40~Hz. The the envelope of the signal was found by
+The stimulation waveform for the current source consisted of a 40~Hz sine wave with a duration of 1~s. The recording from the central electrode was used construct the sensor kernel. To extract the amplitude the signal the data was first band-pass filtered with a centre frequency of 40~Hz. The envelope of the signal was found by computing the mean instantaneous amplitude computed by
 \begin{equation}
 	a = \frac{1}{N}\sum_n{\sqrt{(x(n)-\mathcal{H}x(n))^2}}
 \end{equation}
-where
+where $\mathcal{H}$ denotes the Hilbert transform operator, $n$ indexes samples and $N$ is the total number of samples in the time series.
+
 \begin{figure}[h]
 	\begin{center}
 	\includegraphics[scale=1]{./Graph/eps/channel3fig.eps}
