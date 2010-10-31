@@ -401,7 +401,7 @@ Given this basis function separation, the basis function width parameter was set
 
 \subsection{State and Parameter Estimates} 
 \label{sec:state_and_param_results}
-To demonstrate the performance of the state and parameter estimation algorithm, a Monte Carlo approach was employed where 100 realisations of the data were generated. Each realisation consisted of 500~ms of data (sampled at $1$~kHz) and the estimation was applied to the final 400~ms, allowing the model's initial transients to die out. The initial state and parameters were unknown to the estimator. Eleven iterations of the estimation algorithm were used to ensure the parameters  converged. Figure~\ref{fig:Figure6} shows the rate of convergence, confirming the parameters converged, with the changes in the parameter errors falling to less than $10^{-4}$ after six iterations.
+To demonstrate the performance of the state and parameter estimation algorithm, a Monte Carlo approach was employed where 150 realisations of the data were generated. Each realisation consisted of 500~ms of data (sampled at $1$~kHz) and the estimation was applied to the final 400~ms, allowing the model's initial transients to die out. The initial state and parameters were unknown to the estimator. Ten iterations of the estimation algorithm were used to ensure the parameters  converged. Figure~\ref{fig:Figure6} shows the rate of convergence, confirming the parameters converged, with the changes in the parameter errors falling to less than $10^{-4}$ after six iterations.
 
 Histograms of the parameter estimates obtained over the 100 realisations are shown in Figure~\ref{fig:Figure7}. The actual parameter values, the mean estimates, corresponding standard deviations and biases are given in Table~\ref{tab:Parameters estimates}. The biases show the percentage differences between the actual values and the mean parameter estimates. The mean estimates are in good agreement with the actual values.
 
@@ -696,8 +696,8 @@ $\mathbf P_{t}^{b}=\mathbf P_{t}^{f}+\mathbf S_t\left[\mathbf P_{t+1}^{b}-\mathb
 	\hline
 	$\tau$ & synaptic time constant & 0.01 & s$^{-1}$ \\
 % 	$f_{max}$ & maximal firing rate & 10 & spikes.s$^{-1}$\\
-	$\varsigma$ & slope of sigmoidal activation function & 0.8 & mV$^{-1}$\\
-	$v_0$ & firing threshold & 2 & mV \\
+	$\varsigma$ & slope of sigmoidal activation function & 0.56 & mV$^{-1}$\\
+	$v_0$ & firing threshold & 1.8 & mV \\
 	$\boldsymbol{\theta}$ & vector of connectivity kernel parameters & $\left[\begin{array}{ccc}
 	10 &-8 &0.5
 	\end{array}
