@@ -231,21 +231,21 @@ Using the derivation of the convolution of two Gaussians given in the previous s
 This completes the derivation.
 
 \section*{Observation Kernel}
-The Gaussian shape of the observation kernel was verified experimentally by moving a current dipole source across a recording electrode submerged in saline. A photograph of the experimental setup can be seen in Figure~\ref{fig:SensorAndSource}. The measurement electrode was a $5\times5$ Utah array (Blackrock Microsystems) with electrode spacing of 400~$\mu$m. The current source was a twisted wire electrode (Plastics One Inc.) with tip-tip spacing of 60~$\mu$m and tip diameter of 200~$\mu$m. The twisted wire electrode was manipulated in the saline solution using a 3 dimensional manipulator (Sutter Instrument Company, MPC-100) in increments of 200~$\mu$m. The twisted wire electrode and the Utah array were co-registered by visual inspection using a microscope. 
+The Gaussian shape of the observation kernel was verified experimentally by moving a dipole  across a recording electrode submerged in saline. A photograph of the submerged electrodes can be seen in Figure~\ref{fig:SensorAndSource}. The measurement electrode was a $5\times5$ Utah array (Blackrock Microsystems) with electrode spacing of 400~$\mu$m. The current source was a twisted wire electrode (Plastics One Inc.) with tip-tip spacing of 60~$\mu$m and tip diameter of 200~$\mu$m. The twisted wire electrode was moved in the saline solution using a 3 dimensional manipulator (Sutter Instrument Company, MPC-100) in increments of 200~$\mu$m. The twisted wire electrode and the Utah array were co-registered by visual inspection using a microscope. 
 \begin{figure}[ht]		
 	\begin{center}
 		%trim option's parameter order: left bottom right top
 	\includegraphics[scale=.1, trim = .5mm .5mm .00005mm .00005mm, clip ] {./Graph/eps/SensorAndSource.eps}
 \end{center}
-	\caption{Sensor and source. The electrode used for recording was the center electrode of the Utah array, and the source is the twisted wired electrode.}
+	\caption{Photograph through a microscope of the Utah recording array and the twisted bipolar current source.}
 	\label{fig:SensorAndSource}
 \end{figure}
 
-The stimulation waveform for the current source consisted of a 40~Hz sine wave with a duration of 1~s. The recording from the central electrode was used construct the sensor kernel. To extract the amplitude the signal the data was first band-pass filtered with a centre frequency of 40~Hz. The envelope of the signal was found by computing the mean instantaneous amplitude computed by
+The stimulation waveform for the current source consisted of a 40~Hz sine wave with a duration of 1~s. The recording from the central electrode in the array was used estimate the shape of the sensor kernel. To extract the amplitude the signal the data was first band-pass filtered with a centre frequency of 40~Hz. The envelope of the signal was found by computing the mean instantaneous amplitude over the 1~s stimulation duration by
 \begin{equation}
 	a = \frac{1}{N}\sum_n{\sqrt{(x(n)-\mathcal{H}x(n))^2}}
 \end{equation}
-where $\mathcal{H}$ denotes the Hilbert transform operator, $n$ indexes samples and $N$ is the total number of samples in the time series.
+where $\mathcal{H}$ denotes the Hilbert transform operator, $n$ indexes samples and $N$ is the total number of samples in the time series. Figure~\ref{fig:Ch3} shows the mean amplitude of the recorded envelope versus to distance between the twisted wire electrode and the recording electrode.  
 
 \begin{figure}[h]
 	\begin{center}
