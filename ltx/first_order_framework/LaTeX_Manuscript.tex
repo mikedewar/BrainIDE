@@ -403,11 +403,13 @@ Given this basis function separation, the basis function width parameter was set
 \label{sec:state_and_param_results}
 To demonstrate the performance of the state and parameter estimation algorithm, a Monte Carlo approach was employed where 150 realisations of the data were generated. Each realisation consisted of 500~ms of data (sampled at $1$~kHz) and the estimation was applied to the final 400~ms, allowing the model's initial transients to die out. The initial state and parameters were unknown to the estimator. Ten iterations of the estimation algorithm were used to ensure the parameters  converged. Figure~\ref{fig:Figure6} shows the rate of convergence, confirming the parameters converged, with the changes in the parameter errors falling to less than $10^{-4}$ after six iterations.
 
-Histograms of the parameter estimates obtained over the 100 realisations are shown in Figure~\ref{fig:Figure7}. The actual parameter values, the mean estimates, corresponding standard deviations and biases are given in Table~\ref{tab:Parameters estimates}. The biases show the percentage differences between the actual values and the mean parameter estimates. The mean estimates are in good agreement with the actual values.
+Histograms of the parameter estimates obtained over the 100 realisations are shown in Figure~\ref{fig:Figure7}. The actual parameter values, the mean estimates, corresponding standard deviations and biases are given in Table~\ref{tab:Parameters estimates}. The biases show the percentage differences between the actual values and the mean parameter estimates. \parham{The mean estimates are in good agreement with the actual values of the connectivity kernel parameters, however $\xi$ is outside the estimate distribution.}
 
-The reconstructed connectivity kernels from the estimated parameters are shown in Figure~\ref{fig:Figure8}, where the mean over the 100 realisations is shown as a dotted line and the 95\% confidence interval is indicated by the grey shaded region. The figure verifies that the shape of the estimated connectivity kernel is in good accordance with the true kernel. The true kernel lies within the confidence interval; however, the mean estimated kernel is more negative than the actual kernel due to the small bias in the estimates of the inhibitory parameter, $\hat\theta_1$, as seen in Figure~\ref{fig:Figure7}(C).
+The accuracy of the state estimates was evaluated by comparing the field reconstruction to the true field using the mean (over iterations) of the root mean square error (MRMSE) over space. The MRMSE of the field estimates over time for 150 realisations is shown in Figure~\ref{fig:Figure9}, with the $95~\%$ confidence interval. At each time point, the error is consistently around 0.5~mV, which is approximately 7.1~\% of the field voltage range ([-3.29,3.77]~mV). The error in the reconstructed field is mostly due to the loss of high spatial frequency information from the basis function decomposition as illustrated in Figure~\ref{fig:Figure10}. The figure shows a snapshot at a single time instant of the true neural field, the estimated field and the corresponding error, which is the difference between the true and estimated neural fields. It can be seen in Figure~\ref{fig:Figure10}(B) that the estimated field contains the basic structure of the true field (shown in Figure~\ref{fig:Figure10}(A)), but is missing the higher-frequency detail.
 
-The accuracy of the state estimates was evaluated by comparing the field reconstruction to the true field using the mean (over iterations) of the root mean square error (MRMSE) over space. The MRMSE of the field estimates over time for 100 realisations is shown in Figure~\ref{fig:Figure9}, with the $95~\%$ confidence interval. At each time point, the error is consistently around 0.5~mV, which is approximately 7.1~\% of the field voltage range ([-3.29,3.77]~mV). The error in the reconstructed field is mostly due to the loss of high spatial frequency information from the basis function decomposition as illustrated in Figure~\ref{fig:Figure10}. The figure shows a snapshot at a single time instant of the true neural field, the estimated field and the corresponding error, which is the difference between the true and estimated neural fields. It can be seen in Figure~\ref{fig:Figure10}(B) that the estimated field contains the basic structure of the true field (shown in Figure~\ref{fig:Figure10}(A)), but is missing the higher-frequency detail.
+\parham{To further study the ability of the proposed technique we used differents sets of connectivity basis functions parameters. The reconstructed connectivity kernels from the estimated parameters are shown in Figure~\ref{fig:Figure8}, where for each subset the mean over the 50 realisations is shown as a dotted line and the 95\% confidence interval is indicated by the grey shaded region.} \parham{this bit should change as well:} The figure verifies that the shape of the estimated connectivity kernel is in good accordance with the true kernel. The true kernel lies within the confidence interval; however, the mean estimated kernel is more negative than the actual kernel due to the small bias in the estimates of the inhibitory parameter, $\hat\theta_1$, as seen in Figure~\ref{fig:Figure7}(C).
+
+
 
 \section{Discussion}\label{DiscussionSection}
 This paper has presented a framework for creating data-driven neural field models by deriving a method for estimating intracortical connectivity and synaptic dynamics from electrophysiological data. In doing so, we have highlighted important aspects of the experiment design process, demonstrating the relationship between sensor bandwidth and the complexity of the field that can be inferred. The mathematical formulation that we have presented scales well with the number of sensors, and we have derived a finite-order state-space representation that allows us to perform inference efficiently. 
@@ -525,14 +527,6 @@ realisations}. The solid lines show the actual values of the parameters and the 
 
 \begin{figure}[!ht]
 \begin{center}
-\includegraphics{./Graph/pdf/Figure8_1.pdf}
-\end{center}
-\caption{{\bf Cross-section of connectivity kernel estimate}. The actual kernel is shown by the solid line, the mean kernel estimate (over 100 realisations) is shown by the dotted line and the 95~\% confidence interval is shown by the shaded grey region.}
-\label{fig:Figure8}
-\end{figure}
-
-\begin{figure}[!ht]
-\begin{center}
 \includegraphics{./Graph/pdf/Figure9.pdf} 
 \end{center}
 \caption{{\bf Error in the field reconstruction}. The mean of average RMSE of the estimated field over 150 realisations (solid line) and the 95~\% confidence interval (grey region).} 
@@ -546,6 +540,16 @@ realisations}. The solid lines show the actual values of the parameters and the 
 \caption{{\bf Examples of the actual and estimated neural fields and the error}. (\textbf{a}) The actual field at a single time instant from the full neural field model that was used to generate the data. (\textbf{b}) The reconstructed field of the reduced model, showing the effect of the basis function decomposition on the frequency content of the estimated field. (\textbf{c}) The absolute error between the true and reconstructed fields. The error shows high frequency behaviour.}
 \label{fig:Figure10}
 \end{figure*}
+
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics{./Graph/pdf/Figure8_1.pdf}
+\end{center}
+\caption{{\bf Cross-section of connectivity kernel estimate}. The actual kernel is shown by the solid line, the mean kernel estimate (over 100 realisations) is shown by the dotted line and the 95~\% confidence interval is shown by the shaded grey region.}
+\label{fig:Figure8}
+\end{figure}
+
+
 
 \begin{figure*}[!ht]
 \begin{center}
