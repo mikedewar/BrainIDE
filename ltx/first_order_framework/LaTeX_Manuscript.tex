@@ -168,7 +168,7 @@ The width and positioning of the basis functions can be determined by spectral a
 \begin{equation}\label{DefKernelDecomp}
 	 w\left(\mathbf{r},\mathbf{r}'\right) =\boldsymbol{\psi}^\top\left(\mathbf{r},\mathbf{r}'\right) \boldsymbol{\theta},
 \end{equation}
-where $\boldsymbol{\psi}(\mathbf{r},\mathbf{r}')$ is a vector of Gaussian basis functions and $\boldsymbol{\theta}$ is a vector of scaling parameters. By assuming a Gaussian isotropic connectivity structure, the kernel basis functions can be written as $\boldsymbol{\psi}(\mathbf{r}-\mathbf{r}')$. We will assume that we know the parametric form of the connectivity basis functions, where the scaling parameters $\boldsymbol{\theta}$ are unknown. Each connectivity basis function can, individually, be considered a layer in the Wilson and Cowan model. Typically, the Mexican hat connectivity kernel is comprised of two basis functions representing local excitation and surround inhibition. To demonstrate the flexibility of the estimation framework, a third basis function is incorporated, corresponding to weaker mid-range excitation. Making substitutions of equations~\ref{DefFieldDecomp} and~\ref{DefKernelDecomp} into~\ref{DiscreteTimeModel} we get 
+where $\boldsymbol{\psi}(\mathbf{r},\mathbf{r}')$ is a vector of Gaussian basis functions and $\boldsymbol{\theta}$ is a vector of scaling parameters. By assuming a Gaussian isotropic connectivity structure, the kernel basis functions can be written as $\boldsymbol{\psi}(\mathbf{r}-\mathbf{r}')$. We will assume that we know the parametric form of the connectivity basis functions, where the scaling parameters $\boldsymbol{\theta}$ are unknown. Each connectivity basis function can, individually, be considered a layer in the Wilson and Cowan model. Typically, the Mexican hat connectivity kernel is comprised of two basis functions representing local excitation and surround inhibition. To demonstrate the flexibility of the estimation framework, a third basis function is incorporated, corresponding to weaker mid-range excitation. Rearranging the order of the spatial convolution in~\ref{DiscreteTimeModel} and substituting in equations~\ref{DefFieldDecomp} and~\ref{DefKernelDecomp} we get 
 \begin{eqnarray}
 	\label{reduced continuous model}
 	\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_{t+1} &=& T_s\int_\Omega{f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t )\boldsymbol{\psi}^{\top}(\mathbf{r}-\mathbf{r}')\textrm{d}\mathbf{r}'}\boldsymbol{\theta} \nonumber \\
@@ -187,7 +187,7 @@ Now defining the matrix
 \begin{equation}\label{eq:DefGamma}
 	\boldsymbol{\Gamma} \triangleq \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi} ^{\top}\left(\mathbf{r}\right)\textrm{d}\mathbf{r}}, 
 \end{equation}
-and substituting this into equation~\ref{StartofReduction} and cross-multiplying by $\boldsymbol{\Gamma}^{-1}$ gives \dean{here}
+and substituting this into equation~\ref{StartofReduction} and cross-multiplying by $\boldsymbol{\Gamma}^{-1}$ gives
 \begin{eqnarray}
     \label{eq:ReducedForm}
     % \begin{split}
@@ -198,7 +198,7 @@ and substituting this into equation~\ref{StartofReduction} and cross-multiplying
 	 + \xi\mathbf{x}_t + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r}) e_t(\mathbf{r})\textrm{d}\mathbf{r}}.
 	 % \end{split}
 \end{eqnarray}
-The analytic derivation of the inner product of \emph{n}-dimensional Gaussians, which was used for calculating $\Gamma$, is provided in the Supporting Information, S1. Equation~\ref{eq:ReducedForm} can be simplified by exploiting the isotropy of the kernel and, hence, the basis functions used to represent it where
+The analytic derivation of the inner product of \emph{n}-dimensional Gaussians, which was used for calculating $\Gamma$, is provided in the supplementary material. Equation~\ref{eq:ReducedForm} can be simplified by exploiting the isotropy of the kernel and, hence, the basis functions used to represent it where
 \begin{equation}
 	\boldsymbol{\psi} (\mathbf{r}-\mathbf{r}') = \boldsymbol{\psi} (\mathbf{r}'-\mathbf{r}).
 \end{equation}
@@ -206,18 +206,18 @@ To make the simplification, we define
 \begin{equation}\label{eq:DefPsi}
 	\boldsymbol{\Psi}(\mathbf{r}') \triangleq T_s\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\psi}^{\top} (\mathbf{r}'-\mathbf{r})\textrm{d}\mathbf{r}},
 \end{equation}
-which is a constant $L \times n_{\theta}$ matrix that is defined analytically (see the Supporting Information, S1, for analytic convolution of two Gaussians), where $L$ is the number of basis functions (states) and $n_{\theta}$ is the number of connectivity kernel basis functions. Substituting equation~\ref{eq:DefPsi} into~\ref{eq:ReducedForm} gives
+which is a constant $L \times n_{\theta}$ matrix that is defined analytically (see the supplementary material for analytic convolution of two Gaussians), where $L$ is the number of basis functions (states) and $n_{\theta}$ is the number of connectivity kernel basis functions. Substituting equation~\ref{eq:DefPsi} into~\ref{eq:ReducedForm} gives
 \begin{eqnarray}
 	\mathbf{x}_{t+1} &=& \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \textrm{d}\mathbf{r}' \boldsymbol{\theta} \nonumber \\ &+& \xi\mathbf{x}_t 
 + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})\textrm{d}\mathbf{r}}.
 \end{eqnarray}
-This substitution exploits the isotropy of the connectivity kernel basis functions, allowing us to swap the convolution in equation~\ref{reduced continuous model}, which is computationally demanding, with the convolution in equation~\ref{eq:DefPsi}. This provides a dramatic increase in estimation speed, since the matrix $\boldsymbol\Psi(\mathbf{r}')$ can be calculated analytically. This is of great importance as it lowers the computational demands of the estimation algorithm. 
+This substitution exploits the isotropy of the connectivity kernel basis functions, allowing us to swap the convolution in equation~\ref{reduced continuous model}, which would be computationally demanding, with the convolution in equation~\ref{eq:DefPsi}, which can be calculated analytically. This is of great importance as it lowers the computational demands of the estimation algorithm and provides a dramatic increase in estimation speed. 
 
 Now we define the state disturbance as
 \begin{equation}\label{eq:Wt} 
 	\mathbf{e}_t \triangleq \boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi} ( \mathbf{r} )e_t( \mathbf{r} )\textrm{d}\mathbf{r}},
 \end{equation}
-which is a zero mean normally distributed white noise process with covariance (see the Supporting Information, S1, for the derivation)
+which is a zero mean normally distributed white noise process with covariance (see the supplementary material for the derivation)
 \begin{equation}
 	\boldsymbol\Sigma_e =\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega}\boldsymbol{\phi}\left(\mathbf r\right) \gamma\left(\mathbf r- \mathbf r' \right)\boldsymbol{\phi}\left(\mathbf r'\right)^{\top}d\mathbf r' d\mathbf r\mathbf{\Gamma}^{- \top}. 
 \end{equation}
@@ -256,7 +256,7 @@ and
 \end{equation}
 
 \subsection{Spectral Analysis}\label{SpectralAnalysisSection} 
-Spectral analysis has been used to identify both the number of sensors and the number of basis functions required to reconstruct the neural field from sampled observations~\cite{Sanner1992,Scerri2009}. Based on a two-dimensional extension of Shannon's sampling theorem \cite{Peterson1962}, the spatial bandwidth of the observed field can be used to provide a lower bound on both the number of sensors and the number of basis functions required to capture the dominant spectral characteristics of the neural field.
+Spectral analysis has been used to identify both the number of sensors and the number of basis functions required to reconstruct the neural field from sampled observations~\cite{Sanner1992,Scerri2009}. Based on a two-dimensional extension of Shannon's sampling theorem~\cite{Peterson1962}, the spatial bandwidth of the observed field can be used to provide a lower bound on both the number of sensors and the number of basis functions required to capture the dominant spatial spectral characteristics of the neural field.
 
 Let the spectral representation of the post-synaptic membrane voltage field at time $t$ be denoted by $V_t(\boldsymbol{\nu})$. According to Shannon's sampling theorem, the field must be spatially band-limited for an accurate reconstruction using spatially discrete observations. Nevertheless, an approximate reconstruction can be obtained if the field is approximately band-limited with 
 \begin{equation}
@@ -298,7 +298,7 @@ where
 \begin{equation}\label{eq:WidthFrequencyRelationship}
  \sigma^2_{\nu_{cy}}= \frac{2\boldsymbol\nu_{cy}^\top \boldsymbol\nu_{cy}}{\ln2}.
 \end{equation}
-This ensures that the basis functions can represent the neural field with frequency content up to $\boldsymbol\nu_{cy}$. Derivations for equations~\ref{eq:GaussianFT} and \ref{eq:WidthFrequencyRelationship} are given in the Supporting Information, S1.
+This ensures that the basis functions can represent the neural field with frequency content up to $\boldsymbol\nu_{cy}$. Derivations for equations~\ref{eq:GaussianFT} and \ref{eq:WidthFrequencyRelationship} are given in the supplementary material.
 
 Alternatively, the basis function width can be set to provide a desired level of smoothness in the approximated field by reducing the spatial bandwidth. This allows for an approximate representation by a lower order model (fewer basis functions), thus reducing the computational demands of the estimation process. The spatial cut-off frequency of this smoothed field becomes a design choice. To calculate the cut-off frequency imposed by the basis function width, we rearrange equations~\ref{eq:WidthCutOffRelationship} and \ref{eq:WidthFrequencyRelationship} giving
 \begin{equation}\label{eq:CutoffFromBasisFuncWidth}
@@ -307,7 +307,7 @@ Alternatively, the basis function width can be set to provide a desired level of
 
 Note that for a spatially homogeneous isotropic field, the basis functions can be placed on a regular grid. Thus, the knowledge of the distance between basis functions can be used to determine the total number of basis functions required to represent a known spatial region.
 
-\subsection{State and Parameter Estimation}\label{StateAndParameterEstimationSection} In this section, we describe the procedure for estimating the states, $\mathbf{x}_t$, the connectivity kernel parameters, $\boldsymbol \theta$, and the synaptic dynamics, $\xi$. The estimation process is a two part iterative algorithm, consisting of a state estimation step followed by a parameter estimation step. At each iteration, the sequence of estimated state vectors is used to update the parameter set. The resulting parameters are then used when estimating the new state vector sequence for the next iteration. The procedure stops when the parameters converge. The algorithm is initialised using a bounded random state vector sequence, guaranteeing that the initial estimated parameter set forms a stable kernel.
+\subsection{State and Parameter Estimation}\label{StateAndParameterEstimationSection} In this section, we describe the procedure for estimating the states, $\mathbf{x}_t$, the connectivity kernel parameters, $\boldsymbol \theta$, and the synaptic dynamics, $\xi$. The estimation process is a two part iterative algorithm, consisting of a state estimation step followed by a parameter estimation step. Once initialised, at each iteration the sequence of estimated state vectors is used to update the parameter set. The resulting parameters are then used when estimating the new state vector sequence for the next iteration. The procedure stops when the parameters converge. The algorithm is initialised using a bounded random state vector sequence, guaranteeing that the initial estimated parameter set forms a stable kernel.
 
 The unscented Rauch-Tung-Striebel smoother (URTSS)~\cite{Sarkka2010} is used for the state estimation. The URTSS incorporates an unscented Kalman filter (UKF)~\cite{Julier1997, Merwe2003} in a forward step to estimate posterior states, $\hat{\mathbf x}_t^{f}$, followed by a backward step to compute the smoothed state estimates, $\hat{\mathbf x}_t^{b}$. The first and second order moments of the predicted state are captured by propagating the so-called sigma points through the state equation. The sigma points, $\mathcal X_i$, are calculated using the unscented transform as follows:
 \begin{eqnarray}\label{eq:sigmapoints1}
@@ -382,15 +382,15 @@ and
 	\right].
 \end{equation*}
 \end{small}
-Following this, the LS parameter estimates, $ \mathcal{\hat{W}}$, are
+Following this, the LS parameter estimates, $ \hat{\mathcal{W}}$, are
 \begin{equation}
-	\mathcal{\hat{W}}=(\mathbf X^\top\mathbf X)^{-1}\mathbf X^\top\mathbf Z. 
+	\hat{\mathcal{W}}=(\mathbf X^\top\mathbf X)^{-1}\mathbf X^\top\mathbf Z. 
 \end{equation}
 
 % Results and Discussion can be combined.
-\section{Results}\label{ResultsSection} In this section, we provide a demonstration of the estimation procedure using the new methods that are described above. The full neural field model was used to generate the data for state and parameter estimation. All parameters for the model are given in Table~\ref{tab:Parameters}. Note, the parameters for the spatial and temporal aspects of the model can be considered arbitrary when demonstrating the estimation methodology. This is due to the fact that the temporal aspects scale with the sampling rate and the length of the times series, and the spatial aspects scale with the size of the neural field and the space step used for numerical simulation. When generating the simulated data, we assumed free boundary conditions for the neural field. An example of the simulated field can be seen in Figure~\ref{fig:Figure3}(A). Figure~\ref{fig:Figure3}(B) shows an example of data from the modelled sensors and Figure~\ref{fig:Figure3}(C) shows the power spectral density (PSD) of the simulated time-series. The PSD shows the typical $1/f^2$ characteristics of intracranial EEG.
+\section{Results}\label{ResultsSection} In this section, we provide a demonstration of the estimation procedure using the new methods that are described above. The full neural field model was used to generate the data for state and parameter estimation. All parameters for the model are given in Table~\ref{tab:Parameters}. Note, the parameters for the spatial and temporal aspects of the model can be considered arbitrary when demonstrating the estimation methodology. This is due to the fact that the temporal aspects scale with the sampling rate and the length of the times series, and the spatial aspects scale with the size of the neural field and the space step used for numerical simulation. When generating the simulated data, we assumed free boundary conditions for the neural field. An example of the simulated field can be seen in Figure~\ref{fig:Figure3}(A). Figure~\ref{fig:Figure3}(B) shows an example of data from the modelled sensors and Figure~\ref{fig:Figure3}(C) shows the power spectral density (PSD) of the simulated time-series. %The PSD shows the typical $1/f^2$ characteristics of intracranial EEG.
 
-The sensors were spaced on a $14 \times 14$ square grid and the sensor width was set to $\sigma^2_m = 0.81$. This provides a width of 1.5~mm at half the maximum amplitude of the sensor kernel. The distance between sensors was set to $\Delta_y = 1.5$~mm. This arrangement modelled the recording as having some cross talk, which is typical for neurophysiological recordings.
+The sensors were spaced on a $14 \times 14$ square grid and the sensor width was set to $\sigma^2_m = 0.81$. This provides a width of 1.5~mm at half the maximum amplitude of the sensor kernel. The distance between sensors was set to $\Delta_y = 1.5$~mm. This arrangement modelled the recording as having some cross talk (from volume conduction), which is typical for neurophysiological recordings.
 
 \subsection{Spatial Frequency Analysis} 
 The spectral analysis was used to confirm that the spacing and width of the sensors was adequate to capture the significant dynamics of the field. Figure~\ref{fig:Figure4}(A) shows the spatial frequency of the neural field and Figure~\ref{fig:Figure4}(B) shows the spatial frequency of the reconstruct neural field from the basis function decomposition. The cut-off frequency of the neural field is $\boldsymbol{\nu}_c \approx 0.24$~Hz ($-3$~dB point). From equation~\ref{eq:MinimumSensorDistance}, this yielded a minimum sensor separation of 2.08~mm. This confirms that the separation of $\Delta_{y} = 1.5$~mm was sufficient to mitigate problems associated with spatial aliasing.
@@ -401,17 +401,26 @@ Given this basis function separation, the basis function width parameter was set
 
 \subsection{State and Parameter Estimates} 
 \label{sec:state_and_param_results}
-To demonstrate the performance of the state and parameter estimation algorithm, a Monte Carlo approach was employed where 150 realisations of the data were generated. Each realisation consisted of 500~ms of data (sampled at $1$~kHz) and the estimation was applied to the final 400~ms, allowing the model's initial transients to die out. The initial state and parameters were unknown to the estimator. Ten iterations of the estimation algorithm were used to ensure the parameters  converged. Figure~\ref{fig:Figure6} shows the rate of convergence, confirming the parameters converged, with the changes in the parameter errors falling to less than $10^{-4}$ after six iterations.
+To demonstrate the performance of the state and parameter estimation algorithm several experiments were performed. The results of the first experiment demonstrates the estimation performance using a Monte Carlo approach for a single set of parameters. The second experiment demonstrates the performance with a selection of different connectivity kernel parameters. The third experiment shows the dependance of the estimation accuracy on the parameters of the sigmoidal nonlinearity. The final experiment shows the effect of the width of the sensor kernel on the estimation performance.
 
-Histograms of the parameter estimates obtained over the 100 realisations are shown in Figure~\ref{fig:Figure7}. The actual parameter values, the mean estimates, corresponding standard deviations and biases are given in Table~\ref{tab:Parameters estimates}. The biases show the percentage differences between the actual values and the mean parameter estimates. \parham{The mean estimates are in good agreement with the actual values of the connectivity kernel parameters, however $\xi$ is outside the estimate distribution.}
+\subsubsection{Monte Carlo Simulation with Fixed Parameters}
+A Monte Carlo approach was employed where \dean{150} realisations of the data were generated. Each realisation consisted of 500~ms of data (sampled at $1$~kHz) and the estimation was applied to the final 400~ms, allowing the model's initial transients to die out. The initial state and parameters were unknown to the estimator. Ten iterations of the estimation algorithm were used to ensure the parameters  converged. Figure~\ref{fig:Figure6} shows the rate of convergence, confirming the parameters converged, with the changes in the parameter errors falling to less than $10^{-4}$ after six iterations.
 
-The accuracy of the state estimates was evaluated by comparing the field reconstruction to the true field using the mean (over iterations) of the root mean square error (MRMSE) over space. The MRMSE of the field estimates over time for 150 realisations is shown in Figure~\ref{fig:Figure9}, with the $95~\%$ confidence interval. At each time point, the error is consistently around 0.5~mV, which is approximately 7.1~\% of the field voltage range ([-3.29,3.77]~mV). The error in the reconstructed field is mostly due to the loss of high spatial frequency information from the basis function decomposition as illustrated in Figure~\ref{fig:Figure10}. The figure shows a snapshot at a single time instant of the true neural field, the estimated field and the corresponding error, which is the difference between the true and estimated neural fields. It can be seen in Figure~\ref{fig:Figure10}(B) that the estimated field contains the basic structure of the true field (shown in Figure~\ref{fig:Figure10}(A)), but is missing the higher-frequency detail.
+Histograms of the parameter estimates obtained over the \dean{150} realisations are shown in Figure~\ref{fig:Figure7}. The actual parameter values, the mean estimates, corresponding standard deviations and biases are given in Table~\ref{tab:Parameters estimates}. The biases show the percentage differences between the actual values and the mean parameter estimates. The mean estimates are in good agreement with the actual values of the connectivity kernel parameters, however the time constant parameter, $\xi$, is outside the estimate distribution (with bias of 2.78\%).
 
-\parham{To further study the ability of the proposed technique we used different sets of connectivity basis functions parameters. The reconstructed connectivity kernels from the estimated parameters are shown in Figure~\ref{fig:Figure8}, where for each subset the mean over the 50 realisations is shown as a dotted line and the 95\% confidence interval is indicated by the grey shaded region.} \parham{this bit should change as well:} The figure verifies that the shape of the estimated connectivity kernel is in good accordance with the true kernel. The true kernel lies within the confidence interval; however, the mean estimated kernel is more negative than the actual kernel due to the small bias in the estimates of the inhibitory parameter, $\hat\theta_1$, as seen in Figure~\ref{fig:Figure7}(C).
+The accuracy of the state estimates was evaluated by comparing the field reconstruction to the true field using the mean (over iterations) of the root mean square error (MRMSE) over space. The MRMSE of the field estimates over time for \dean{150} realisations is shown in Figure~\ref{fig:Figure9}, with the $95~\%$ confidence interval. At each time point, the error is consistently around 0.5~mV, which is approximately 7.1~\% of the field voltage range ([-3.29,3.77]~mV). The error in the reconstructed field is mostly due to the loss of high spatial frequency information from the basis function decomposition as illustrated in Figure~\ref{fig:Figure10}. The figure shows a snapshot at a single time instant of the true neural field, the estimated field and the corresponding error, which is the difference between the true and estimated neural fields. It can be seen in Figure~\ref{fig:Figure10}(B) that the estimated field contains the basic structure of the true field (shown in Figure~\ref{fig:Figure10}(A)), but is missing the higher-frequency detail.
 
-\parham{variations in thereshold and slope}
+\subsubsection{Results for Different Connectivity Kernel Parameters}
 
-\parham{variations in sensor width}
+To further study the performance of the proposed framework we used different sets of connectivity basis functions parameters. The reconstructed connectivity kernels from the estimated parameters are shown in Figure~\ref{fig:Figure8}. For each subset of parameters the mean of the reconstructed kernel over \dean{50} realisations is shown as a dotted line and the 95\% confidence interval is indicated by the grey shaded region. 
+
+Parts a), b) and c) of Figure~\ref{fig:Figure8} show results from the Mexican hat kernel parameters were varied. For Part a), the kernel estimates are not in good accordance with the true kernel, as the true kernel falls outside of the confidence intervals in some areas. \dean{This is because???} 
+\parham{this bit should change as well:} 
+The figure verifies that the shape of the estimated connectivity kernel is in good accordance with the true kernel. The true kernel lies within the confidence interval; however, the mean estimated kernel is more negative than the actual kernel due to the small bias in the estimates of the inhibitory parameter, $\hat\theta_1$, as seen in Figure~\ref{fig:Figure7}(C).
+
+\subsubsection{Results for Varying the Parameters of the Sigmoidal Activation Function}
+
+\subsubsection{Results for Varying the Sensor Kernel Width}
 
 
 
@@ -516,7 +525,7 @@ Dean Freestone would like to thank Dr. Mark van Rossum for hosting him while vis
 \begin{center}
 \includegraphics{./Graph/pdf/Figure6.pdf}
 \end{center}
-\caption{{\bf Convergence of parameters.} The mean of the absolute error between true and estimated parameters averaged over 150 runs. All parameters converge after six iterations, where the mean difference between errors in consecutive iterations falls below $10^{-4}$.}
+\caption{{\bf Convergence of parameters.} The mean of the absolute error between true and estimated parameters averaged over \dean{150} realisations. All parameters converge after six iterations, where the mean difference between errors in consecutive iterations falls below $10^{-4}$.}
 \label{fig:Figure6}
 \end{figure}
 
@@ -524,7 +533,7 @@ Dean Freestone would like to thank Dr. Mark van Rossum for hosting him while vis
 \begin{center}
 \includegraphics{./Graph/pdf/Figure7.pdf}
 \end{center}
-\caption{{\bf Histograms of the parameter estimates over 150
+\caption{{\bf Histograms of the parameter estimates over \dean{150}
 realisations}. The solid lines show the actual values of the parameters and the dotted lines show the means of the estimated parameters. (\textbf{a}) The histogram of the $\xi$ estimates where $\xi=1-\zeta T_s $ and $\zeta$ is the reciprocal of the synaptic time constant. (\textbf{b}) The histogram of the central excitatory connectivity kernel basis function parameter estimates, $\theta_0$. (\textbf{c}) The histogram of the surround inhibition connectivity kernel basis function parameter estimates, $\theta_1$. (\textbf{d}) The histogram of the longer range excitatory connectivity kernel basis function parameter estimates, $\theta_2$.}
 \label{fig:Figure7}
 \end{figure}
@@ -533,7 +542,7 @@ realisations}. The solid lines show the actual values of the parameters and the 
 \begin{center}
 \includegraphics{./Graph/pdf/Figure9.pdf} 
 \end{center}
-\caption{{\bf Error in the field reconstruction}. The mean of average RMSE of the estimated field over 150 realisations (solid line) and the 95~\% confidence interval (grey region).} 
+\caption{{\bf Error in the field reconstruction}. The mean of average RMSE of the estimated field over \dean{150} realisations (solid line) and the 95~\% confidence interval (grey region).} 
 \label{fig:Figure9}
 \end{figure}
 
@@ -549,7 +558,7 @@ realisations}. The solid lines show the actual values of the parameters and the 
 \begin{center}
 \includegraphics{./Graph/pdf/Figure8_1.pdf}
 \end{center}
-\caption{{\bf Cross-section of connectivity kernel estimate}. The actual kernel is shown by the solid line, the mean kernel estimate (over 100 realisations) is shown by the dotted line and the 95~\% confidence interval is shown by the shaded grey region.}
+\caption{{\bf Cross-section of connectivity kernel estimate}. The actual kernel is shown by the solid line, the mean kernel estimate (over \dean{50} realisations) is shown by the dotted line and the 95~\% confidence interval is shown by the shaded grey region.}
 \label{fig:Figure8}
 \end{figure}
 
