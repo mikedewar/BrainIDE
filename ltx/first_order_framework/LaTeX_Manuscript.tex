@@ -420,8 +420,10 @@ Parts a), b) and c) of Figure~\ref{fig:Figure8} show results from the Mexican ha
 For parts b) and c) the figure verifies that the shape of the estimated connectivity kernel is in good accordance with the true kernel. The true kernel lies within the confidence interval; however, the mean estimated kernel is more negative than the actual kernel due to the small bias in the estimates of the inhibitory parameter, $\hat\theta_1$, as seen in Figure~\ref{fig:Figure7}(c).
 
 \subsubsection{Results for Varying the Parameters of the Sigmoidal Activation Function}
+
 Figure~\ref{fig:Figure11} shows a Hinton diagram demonstrating the estimation accuracy (or RMSE) of the connectivity kernel for various parameters of the sigmoid varying the slope, $\varsigma$, and the threshold, $v_0$, whilst the other parameters remain fixed. The kernel and time constant parameters used in this experiment were the one that gave the best results from the previous experiment. The size of the squares in the figure show the magnitude of the log of the error. The squares are black if the log of the error is negative (the RMSE is $<1$) and the squares are white if the log of the error is positive (the RMSE is $>1$). The largest black squares indicate the best performance and the largest white squares indicate the worst performance for the parameter combinations. From the figure it can be seen that the estimation accuracy depends on the characteristics of the sigmoid function. When the threshold is negative or the slope is very gentle, all of the activity is being passed through the sigmoid function. However as the slope is increased or the cut-off is increased, more information is being cut off by the activation function. This is illustrated in figure~\ref{fig:sigmoidfunctions}, where the sigmoids from the the bottom left corner through to near top right corner of Figure~\ref{fig:Figure11} are plotted. This appears to have a detrimental effect on the estimation accuracy.
    
+
 \subsubsection{Results for Varying the Sensor Kernel Width}
 
 
