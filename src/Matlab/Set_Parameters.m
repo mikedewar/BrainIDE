@@ -27,7 +27,7 @@ theta(1) = 10.0;     % local kernel amplitude
 theta(2) = -8;     % surround kernel amplitude
 theta(3) = 0.5;       % lateral kernel amplitude
 
-sigma_psi(1) = 1.5;     % local kernel width
+sigma_psi(1) = 1.8;     % local kernel width
 sigma_psi(2) = 2.4;     % surround kernel width
 sigma_psi(3) = 6;       % lateral kernel width
 
@@ -40,7 +40,7 @@ Ts_W = W*Ts;                        % FFT of kernel times the time step
 
 % field basis function parameters
 % ~~~~~~~~~~~~~~~~~~~
-NBasisFunctions_xy = 11;
+NBasisFunctions_xy = 9;
 L = NBasisFunctions_xy^2;                   % number of states and the number of basis functions
 mu_phi_xy = linspace(-10,10,NBasisFunctions_xy);
 sigma_phi = sqrt(2);
@@ -62,7 +62,7 @@ NSensors = NSensors_xy^2;
 mu_y_xy = linspace(-10,10,NSensors_xy);               % sensor centers
 
 sensor_indexes = (mu_y_xy+SpaceMax)/Delta +1;             % so we can easily get the observations from the filed filtered by the sensors
-sigma_y = 0.7;                                                         % sensor width
+sigma_y = 0.9;                                                         % sensor width
 m = Define2DGaussian(0,0, sigma_y^2, 0,NPoints,SpaceMin,SpaceMax);
 M = fft2(m);                                            % fft of sensor kernel to get observations quickly
 % define all sensor centers
@@ -77,14 +77,14 @@ end
 
 % observation noise characteristics
 % ~~~~~~~~~~~~~~~~~~~~
-sigma_varepsilon = 0.001;                                  
+sigma_varepsilon = 0.1;                                  
 Sigma_varepsilon = sigma_varepsilon*eye(NSensors);        % observation covariance matrix
 
 % sigmoid parameters
 % ~~~~~~~~~~~~
 f_max = 10;             % maximum firing rate
-varsigma = 0.8;         % sigmoid slope
-v_0 = 2;                    % firing threshold
+varsigma = 0.56;         % sigmoid slope
+v_0 = 1.8;                    % firing threshold
 
 % synaptic kernel parameter
 % ~~~~~~~~~~~~~~~~

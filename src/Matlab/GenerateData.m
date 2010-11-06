@@ -76,3 +76,7 @@ if exist('RunningBatch') == 1
         'mu_phi_xy','NSensors_xy','mu_y_xy','sigma_y','sigma_varepsilon',...
         'f_max','varsigma','v_0','zeta','sigma_gamma','gamma_weight')
 end 
+max1 = squeeze(max(v,[],2));
+max_v_t = mean(max(max1,[],2));
+min1 = squeeze(min(v,[],2));
+min_v_t = mean(min(min1,[],2));
