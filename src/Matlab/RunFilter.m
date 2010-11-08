@@ -40,7 +40,7 @@ Wc = [(lambda/(L+lambda)) + (1-alpha^2+beta) ; 1/(2*(L+lambda))*ones(2*L,1)];
 sqrt_L_plus_lambda = sqrt(L+lambda);
 
 tic
-NIterations = 5;
+NIterations = 10;
 for Iteration = 1:NIterations
     
     disp('running the forward iteration (filtering)')
@@ -68,27 +68,27 @@ for Iteration = 1:NIterations
     P_b = P_f;
     
     % run the smoother
-    disp('running the backward iteration (smoothing)')
-    for n=1:T-1
-        
-        X_b_minus_t = GetSigmaMatrix(x_b(:,T-n),P_b(:,:,T-n),sqrt_L_plus_lambda);
-        
-        X_b_minus_t_plus_1 = Q(X_b_minus_t, phi_unwrapped, ...
-            Ts_invGamma_theta_phi_psi, Delta_squared, f_max,varsigma, v_0, xi);
-        
-         [x_b_minus_t_plus_1 P_b_minus_t_plus_1] = PredictStateAndCovariance(Wm, Wc, X_b_minus_t_plus_1, Sigma_e);
-         
-         % calculate cross covariance matrix
-         M_t_plus_1 = CalcCrossCovariance(Wc,X_b_minus_t, x_f(:,T-n), X_b_minus_t_plus_1, x_b_minus_t_plus_1);
-        
-         % get smoothed state and smoothed covaraince
-         [P_b(:,:,T-n) x_b(:,T-n)] = GetSmoothedStateAndCovariance(M_t_plus_1, P_b_minus_t_plus_1, ...
-             x_f(:,T-n), x_b(:,(T-n)+1), x_b_minus_t_plus_1, P_b(:,:,(T-n)+1), P_f(:,:,T-n));
-        
-    end
+%     disp('running the backward iteration (smoothing)')
+%     for n=1:T-1
+%         
+%         X_b_minus_t = GetSigmaMatrix(x_b(:,T-n),P_b(:,:,T-n),sqrt_L_plus_lambda);
+%         
+%         X_b_minus_t_plus_1 = Q(X_b_minus_t, phi_unwrapped, ...
+%             Ts_invGamma_theta_phi_psi, Delta_squared, f_max,varsigma, v_0, xi);
+%         
+%          [x_b_minus_t_plus_1 P_b_minus_t_plus_1] = PredictStateAndCovariance(Wm, Wc, X_b_minus_t_plus_1, Sigma_e);
+%          
+%          % calculate cross covariance matrix
+%          M_t_plus_1 = CalcCrossCovariance(Wc,X_b_minus_t, x_f(:,T-n), X_b_minus_t_plus_1, x_b_minus_t_plus_1);
+%         
+%          % get smoothed state and smoothed covaraince
+%          [P_b(:,:,T-n) x_b(:,T-n)] = GetSmoothedStateAndCovariance(M_t_plus_1, P_b_minus_t_plus_1, ...
+%              x_f(:,T-n), x_b(:,(T-n)+1), x_b_minus_t_plus_1, P_b(:,:,(T-n)+1), P_f(:,:,T-n));
+%         
+%     end
         
     % use state sequence to estimate parameters
-    disp('Running LS parameter estimation')
+    disp('running LS parameter estimation')
     [theta xi] = LSEstimator(x_b,phi_unwrapped,Delta,varsigma,f_max,v_0,Ts_invGamma_phi_psi);
     disp(['Iteration ' num2str(Iteration) ', theta = ' num2str(theta) ', xi = ' num2str(xi)])
     

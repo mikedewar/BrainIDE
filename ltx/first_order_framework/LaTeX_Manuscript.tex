@@ -412,7 +412,12 @@ The accuracy of the state estimates was evaluated by comparing the field reconst
 
 \subsubsection{Results for Different Connectivity Kernel Parameters}
 
-To study the robustness of the estimation algorithm, the performance was studied for various connectivity kernels. The reconstructed connectivity kernels from the estimated parameters are shown in Figure~\ref{fig:Figure8}. By changing the weights of the connectivity kernel we are effectively changing gain of the system and the range of the field amplitudes. Since the sigmoidal nonlinearity is remaining static, we are changing the operating region on the sigmoid. Therefore, we expect our estimation accuracy to vary. For each subset of parameters the mean of the reconstructed kernel over 50 realisations is shown as a dotted line and the 95\% confidence interval is indicated by the grey shaded region. Parts a), b) and c) of Figure~\ref{fig:Figure8} show results from the Mexican hat kernel parameters were varied. In all cases the actual kernel fell within the confidence interval of the estimated kernel. The kernel in Part a) has the least amount of excitation and the most amount of inhibition. Therefore of the three Mexican hat kernels shown, this one will have the least amount of activation. The result is an overestimate of the central excitatory region of the kernel. Conversely, in Part c) of the figure the actual kernel has the most amount of excitation and the least amount of inhibition. Therefore 
+To study the robustness of the estimation algorithm, the performance was studied for various connectivity kernel parameters. The reconstructed connectivity kernels from the estimated parameters are shown in Figure~\ref{fig:Figure8}. By changing the weights of the connectivity kernel we are effectively changing gain of the system and the range of the field amplitudes. Since the sigmoidal nonlinearity is remaining static, we are changing the operating region on the sigmoid. Therefore, we expect our estimation accuracy to vary. 
+
+Losing higher frequency peaks
+Losing higher frequency troughs
+
+For each subset of parameters the mean of the reconstructed kernel over 50 realisations is shown as a dotted line and the 95\% confidence interval is indicated by the grey shaded region. Parts a), b) and c) of Figure~\ref{fig:Figure8} show results from the Mexican hat kernel parameters were varied. In all cases the actual kernel fell within the confidence interval of the estimated kernel. The kernel in Part a) has the least amount of excitation and the most amount of inhibition. Therefore of the three Mexican hat kernels shown, this one will have the least amount of activation. The result is an overestimate of the central excitatory region of the kernel. Conversely, in Part c) of the figure the actual kernel has the most amount of excitation and the least amount of inhibition. Therefore 
 
 The mean kernel estimate for Part b) shows very good accordance with the actual kernel. In the other Parts a) and c) there is an over estimate and an underestimate of the kernel, respectively. These bias are a result 
 
@@ -564,7 +569,13 @@ Dean Freestone would like to thank Dr. Mark van Rossum for hosting him while vis
 \label{fig:Figure8}
 \end{figure}
 
-
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics{./Graph/pdf/OperatingRegions.pdf}
+\end{center}
+\caption{{\bf Operating Regions along the sigmoid}. The top graph is from the full model and the lower is from the reduced model.}
+\label{fig:OperatingRegions}
+\end{figure}
 
 \begin{figure*}[!ht]
 \begin{center}

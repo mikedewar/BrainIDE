@@ -6,7 +6,7 @@ close all
 Set_Parameters
 
 RunningBatch = 1;               % this is a flag for the scripts
-NRealisations = 50;
+NRealisations = 3;
 for Realisation=1:NRealisations
     tic
     disp(['Running realisation: ' num2str(Realisation) ' of ' num2str(NRealisations)])
