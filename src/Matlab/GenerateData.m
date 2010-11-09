@@ -24,8 +24,10 @@ for ppp=1:1
     % if exist(DisturbanceFileName) == 2
     %     load(DisturbanceFileName)
     % else
+    
     disp('generating disturbance signal')
     e = mvnrnd(zeros(1,NPoints^2),Sigma_gamma,T);
+    
     %     save(DisturbanceFileName,'e')
     % end
 
@@ -40,8 +42,12 @@ for ppp=1:1
     for t=1:T-1
 
         f = f_max./(1+exp(varsigma*(v_0-squeeze(v(t,:,:)))));           % calc firing rate using sigmoid
-        F = fft2(f);                                                                                % take FFT of firing for conv with kernel
-        g = ifftshift(ifft2(F.*Ts_W,'symmetric'))*Delta_squared;            % conv kernel with firing rate 
+        
+        % conv firing rate with spatial kernel
+        g = Ts*conv2(f,w,'same')*Delta_squared;
+%         F = fft2(f);                                                                                % take FFT of firing for conv with kernel
+%         g = ifftshift(ifft2(F.*Ts_W,'symmetric'))*Delta_squared;            % conv kernel with firing rate 
+        
         v(t+1,:,:) = g + xi*squeeze(v(t,:,:)) + reshape(e(t,:,:),NPoints,NPoints);  % update field
 
         V = fft2(squeeze(v(t+1,:,:)));                                                  % take FFT of field for conv with sensor

@@ -16,6 +16,9 @@ SpaceMin = -SpaceMax;         % minimum space in mm
 NPoints = (SpaceMax-SpaceMin)/Delta+1;
 r = linspace(SpaceMin,SpaceMax,NPoints);      % define space
 
+EstimationSpaceMax = 10;
+EstimationSpaceMin = -10;
+
 % temporal parameters
 % ~~~~~~~~~~~~~
 Ts = 1e-3;          % sampling period (s)
@@ -39,56 +42,55 @@ W = fft2(w);                                                                    
 Ts_W = W*Ts;                        % FFT of kernel times the time step
 
 % ~~~~~~~~~~~~~~~~~~~~~~
+
 % ~~~~~~~~~~~~~~~~~~~~~~
-% field basis function parameters
+% triangle field basis function parameters
 % ~~~~~~~~~~~~~~~~~~~
-EstimationSpaceMax = 10;
-EstimationSpaceMin = -10;
-phi_x_spacing = 2.0;
-angle = 60;
-phi_y_spacing = phi_x_spacing*sin((angle/360)*2*pi);
-
-mu_phi_y = EstimationSpaceMin:phi_y_spacing:EstimationSpaceMax;
-mu_phi_y = mu_phi_y + (EstimationSpaceMax - mu_phi_y(end))/2;
-
-mu_phi_x1 = EstimationSpaceMin:phi_x_spacing:EstimationSpaceMax;
-mu_phi_x1 = mu_phi_x1 + (EstimationSpaceMax - mu_phi_x1(end))/2;
-mu_phi_x2 = mu_phi_x1(1:end-1) + phi_x_spacing/2;
-
-sigma_phi = sqrt(1.8);
-
-m = 1;
-for n=1:2:length(mu_phi_y)      % start with the first row
-    for nn = 1:length(mu_phi_x1)
-        mu_phi(:,m) = [mu_phi_x1(nn) ; mu_phi_y(n)];
-        m=m+1;
-    end
-end
-for n=2:2:length(mu_phi_y)      % start with the second row
-    for nn = 1:length(mu_phi_x2)
-        mu_phi(:,m) = [mu_phi_x2(nn) ; mu_phi_y(n)];
-        m=m+1;
-    end
-end
-L = m-1;
+% phi_x_spacing = 2.5;
+% angle = 60;
+% phi_y_spacing = phi_x_spacing*sin((angle/360)*2*pi);
+% 
+% mu_phi_y = EstimationSpaceMin:phi_y_spacing:EstimationSpaceMax;
+% mu_phi_y = mu_phi_y + (EstimationSpaceMax - mu_phi_y(end))/2;
+% 
+% mu_phi_x1 = EstimationSpaceMin:phi_x_spacing:EstimationSpaceMax;
+% mu_phi_x1 = mu_phi_x1 + (EstimationSpaceMax - mu_phi_x1(end))/2;
+% mu_phi_x2 = mu_phi_x1(1:end-1) + phi_x_spacing/2;
+% 
+% sigma_phi = sqrt(2.5);
+% 
+% m = 1;
+% for n=1:2:length(mu_phi_y)      % start with the first row
+%     for nn = 1:length(mu_phi_x1)
+%         mu_phi(:,m) = [mu_phi_x1(nn) ; mu_phi_y(n)];
+%         m=m+1;
+%     end
+% end
+% for n=2:2:length(mu_phi_y)      % start with the second row
+%     for nn = 1:length(mu_phi_x2)
+%         mu_phi(:,m) = [mu_phi_x2(nn) ; mu_phi_y(n)];
+%         m=m+1;
+%     end
+% end
+% L = m-1;
 % ~~~~~~~~~~~~~~~~~~~~~~
 
 
 % square basis function arrangement
 % ~~~~~~~~~~~~~~~~~~~~~
-% NBasisFunctions_xy = 9;
-% L = NBasisFunctions_xy^2;                   % number of states and the number of basis functions
-% mu_phi_xy = linspace(EstimationSpaceMin,EstimationSpaceMax,NBasisFunctions_xy);
-% sigma_phi = sqrt(2);
-% 
-% mu_phi = zeros(2,L);     % initialize for speed
-% m=1;
-% for n=1:NBasisFunctions_xy
-%     for nn=1:NBasisFunctions_xy
-%         mu_phi(:,m) = [mu_phi_xy(n) ; mu_phi_xy(nn)];
-%         m=m+1;
-%     end
-% end
+NBasisFunctions_xy = 9;
+L = NBasisFunctions_xy^2;                   % number of states and the number of basis functions
+mu_phi_xy = linspace(-EstimationSpaceMax,EstimationSpaceMax,NBasisFunctions_xy);
+sigma_phi = sqrt(2.5);
+
+mu_phi = zeros(2,L);     % initialize for speed
+m=1;
+for n=1:NBasisFunctions_xy
+    for nn=1:NBasisFunctions_xy
+        mu_phi(:,m) = [mu_phi_xy(n) ; mu_phi_xy(nn)];
+        m=m+1;
+    end
+end
 % ~~~~~~~~~~~~~
 % ~~~~~~~~~~~~~
 
