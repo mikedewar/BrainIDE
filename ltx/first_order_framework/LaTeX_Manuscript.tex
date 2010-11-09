@@ -88,7 +88,7 @@ Neural field models relate mean firing rates of pre-synaptic neural populations 
 \subsection{Derivation of the Integro-Difference Equation Representation}
 The model relates the average number of action potentials $g(\mathbf{r},t)$ arriving at position $\mathbf{r}$ to the local post-synaptic membrane voltage $v(\mathbf{r},t)$. Table~\ref{tab:Notation} provides a description of the notation used in this study. The post-synaptic potentials generated at a neuronal population at location $\mathbf{r}$ by action potentials arriving from all other connected populations at locations $\mathbf{r}'$ is described by 
 \begin{equation}
-	\label{SpikesToPotential} v\left( {\mathbf{r},t} \right) = \int_{ - \infty }^t {h\left( {t - t'} \right)g\left( {\mathbf{r},t'} \right)dt'}. 
+	\label{SpikesToPotential} v\left( {\mathbf{r},t} \right) = \int_{ - \infty }^t {h\left( {t - t'} \right)g\left( {\mathbf{r},t'} \right) \, \mathrm{d}t'}. 
 \end{equation}
 The post-synaptic response kernel $h(t)$ is described by 
 \begin{equation}
@@ -96,7 +96,7 @@ The post-synaptic response kernel $h(t)$ is described by
 \end{equation}
 where $\zeta=\tau^{-1}$, $\tau$ is the synaptic time constant and $\eta(t)$ is the Heaviside step function. Non-local interactions between cortical populations are described by 
 \begin{equation}
-	\label{RateBasedInteractions} g\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( v\left( \mathbf{r}',t \right) \right)d\mathbf{r}'}, 
+	\label{RateBasedInteractions} g\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( v\left( \mathbf{r}',t \right) \right)\, \mathrm{d}\mathbf{r}'}, 
 \end{equation}
 where $f(\cdot)$ is the firing rate function, $w(\cdot)$ is the spatial connectivity kernel and $\Omega$ is the spatial domain representing a cortical sheet or surface. The connectivity kernel is typically a ``Mexican hat'' or ``wizard hat'' function, which describes local excitation and surround inhibition. An example of the Mexican hat connectivity kernel used in this paper is shown in Figure~\ref{fig:Figure1}. To demonstrate flexibility in the estimation algorithm, a third component of the kernel is introduced describing weak longer-range excitation. The exact shape of this kernel is assumed to vary across patients, and hence needs to be inferred from data.
 
@@ -111,7 +111,7 @@ The parameter $v_0$ describes the  firing threshold of the neural populations. T
 	h\left(t - t'\right) \int_\Omega
 	w\left(\mathbf{r},\mathbf{r}'\right) 
 	f\left( v\left( \mathbf{r}',t' \right)\right)
-	d\mathbf{r}'dt'.
+	\, \mathrm{d} \mathbf{r}' \mathrm{d}t'.
 \end{equation}
 To arrive at the final form of the model, we shall express the synaptic response kernel as a Green's function 
 \begin{equation}
@@ -120,7 +120,7 @@ To arrive at the final form of the model, we shall express the synaptic response
 where $\textrm{D}=\frac{d}{dt} + \zeta$ is a temporal differential operator and $\delta(t)$ is the Dirac-delta function giving 
 \begin{equation}
 	\label{FinalFormContinuous} 
-	\frac{dv\left( \mathbf{r},t \right)}{dt} + \zeta v\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)d\mathbf{r}'}. 
+	\frac{dv\left( \mathbf{r},t \right)}{dt} + \zeta v\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)\, \mathrm{d}\mathbf{r}'}. 
 \end{equation}
 To arrive at the integro-difference equation (IDE) form of the model, we discretise time using a first-order Euler method (see the supplementary material for derivation) giving 
 \begin{equation}
@@ -130,7 +130,7 @@ To arrive at the integro-difference equation (IDE) form of the model, we discret
 	T_s \int_\Omega { 
 	    w\left(\mathbf{r},\mathbf{r}'\right)
 	    f\left(v_t\left(\mathbf{r}'\right)\right) 
-	d\mathbf{r}'} 
+	\, \mathrm{d}\mathbf{r}'} 
 	+ e_t\left(\mathbf{r}\right), 
 \end{equation}
 where $T_s$ is the time step, $\xi = 1-T_s\zeta $ and $e_t(\mathbf{r})$ is an $i.i.d.$ disturbance such that $e_t(\mathbf{r})\sim\mathcal{GP}(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}'))$. Here $\mathcal{GP}(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}'))$ denotes a zero mean spatial Gaussian process with covariance function $\gamma(\mathbf{r}-\mathbf{r}')$~\cite{Rasmussen2005}. The disturbance is added to account for model uncertainty and unmodelled inputs. To simplify the notation, the index of the future time sample, $t+T_s$, shall be referred to as $t+1$ throughout the rest of the paper. 
@@ -141,7 +141,7 @@ The mapping between the membrane voltage and the electrophysiological data is mo
 	\mathbf{y}_t =
 	\int_{\Omega}{
 	    m\left(\mathbf{r}_n-\mathbf{r}'\right)v_t\left(\mathbf{r}'\right)
-	d\mathbf{r}'} + 
+	\, \mathrm{d}\mathbf{r}'} + 
 	\boldsymbol{\varepsilon}_t, 
 \end{equation}
 where $m\left(\mathbf{r}_n-\mathbf{r}'\right)$ is the observation kernel, $\mathbf{r}_n$ defines the location of the electrodes in the field, $n=1,...,N$ indexes the electrodes and $\boldsymbol{\varepsilon}_t \sim \mathcal{N}\left(0,\boldsymbol{\Sigma}_{\varepsilon}\right)$ denoting the multivariate normal distribution with mean zero and covariance matrix $\boldsymbol{\Sigma}_{\varepsilon}$. 
@@ -171,7 +171,7 @@ The width and positioning of the basis functions can be determined by spectral a
 where $\boldsymbol{\psi}(\mathbf{r},\mathbf{r}')$ is a vector of Gaussian basis functions and $\boldsymbol{\theta}$ is a vector of scaling parameters. By assuming a Gaussian isotropic connectivity structure, the kernel basis functions can be written as $\boldsymbol{\psi}(\mathbf{r}-\mathbf{r}')$. We will assume that we know the parametric form of the connectivity basis functions, where the scaling parameters $\boldsymbol{\theta}$ are unknown. Each connectivity basis function can, individually, be considered a layer in the Wilson and Cowan model. Typically, the Mexican hat connectivity kernel is comprised of two basis functions representing local excitation and surround inhibition. To demonstrate the flexibility of the estimation framework, a third basis function is incorporated, corresponding to weaker mid-range excitation. Rearranging the order of the spatial convolution in~\ref{DiscreteTimeModel} and substituting in equations~\ref{DefFieldDecomp} and~\ref{DefKernelDecomp} we get 
 \begin{eqnarray}
 	\label{reduced continuous model}
-	\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_{t+1} &=& T_s\int_\Omega{f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t )\boldsymbol{\psi}^{\top}(\mathbf{r}-\mathbf{r}')\textrm{d}\mathbf{r}'}\boldsymbol{\theta} \nonumber \\
+	\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_{t+1} &=& T_s\int_\Omega{f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t )\boldsymbol{\psi}^{\top}(\mathbf{r}-\mathbf{r}') \, \textrm{d}\mathbf{r}'}\boldsymbol{\theta} \nonumber \\
 	&+& \xi\boldsymbol{\phi}^{\top}(\mathbf{r})x_t + \mathbf{e}_t(\mathbf{r}). 
 \end{eqnarray}
 Next we multiply equation~\ref{reduced continuous model} by $\boldsymbol{\phi}(\mathbf{r})$ and integrate over the spatial domain $\Omega$ to get 
@@ -179,13 +179,13 @@ Next we multiply equation~\ref{reduced continuous model} by $\boldsymbol{\phi}(\
 	\label{StartofReduction}
  	\int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) \textrm{d}\mathbf{r}} \mathbf{x}_{t+1} &=&
  T_s \int_\Omega \boldsymbol{\phi} (\mathbf{r}) \int_\Omega \boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}') \nonumber \\
-&\times& { f(\boldsymbol{\phi}^{\top}(\mathbf{r}') \mathbf{x}_t ) \textrm{d}\mathbf{r}'\textrm{d}\mathbf{r}}\boldsymbol{\theta} \nonumber \\ 
+&\times& { f(\boldsymbol{\phi}^{\top}(\mathbf{r}') \mathbf{x}_t ) \, \textrm{d}\mathbf{r}'\textrm{d}\mathbf{r}}\boldsymbol{\theta} \nonumber \\ 
 &+& \xi\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\phi}^{\top}(\mathbf{r})\textrm{d}\mathbf{r}} \mathbf{x}_t \nonumber \\ &+& 
-\int_\Omega{\boldsymbol{\phi} (\mathbf{r}) e_t(\mathbf{r})\textrm{d}\mathbf{r}}. 
+\int_\Omega{\boldsymbol{\phi} (\mathbf{r}) e_t(\mathbf{r}) \, \textrm{d}\mathbf{r}}. 
 \end{eqnarray}
 Now defining the matrix
 \begin{equation}\label{eq:DefGamma}
-	\boldsymbol{\Gamma} \triangleq \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi} ^{\top}\left(\mathbf{r}\right)\textrm{d}\mathbf{r}}, 
+	\boldsymbol{\Gamma} \triangleq \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi} ^{\top}\left(\mathbf{r}\right) \, \textrm{d}\mathbf{r}}, 
 \end{equation}
 and substituting this into equation~\ref{StartofReduction} and cross-multiplying by $\boldsymbol{\Gamma}^{-1}$ gives
 \begin{eqnarray}
@@ -195,7 +195,7 @@ and substituting this into equation~\ref{StartofReduction} and cross-multiplying
 	 \int_\Omega \boldsymbol{\phi}(\mathbf{r}) 
 	 \int_\Omega \boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}')f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \nonumber \\
 	&\times& \textrm{d}\mathbf{r}' \textrm{d}\mathbf{r} \boldsymbol{\theta}  
-	 + \xi\mathbf{x}_t + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r}) e_t(\mathbf{r})\textrm{d}\mathbf{r}}.
+	 + \xi\mathbf{x}_t + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r}) e_t(\mathbf{r}) \, \textrm{d}\mathbf{r}}.
 	 % \end{split}
 \end{eqnarray}
 The analytic derivation of the inner product of \emph{n}-dimensional Gaussians, which was used for calculating $\Gamma$, is provided in the supplementary material. Equation~\ref{eq:ReducedForm} can be simplified by exploiting the isotropy of the kernel and, hence, the basis functions used to represent it where
@@ -204,26 +204,26 @@ The analytic derivation of the inner product of \emph{n}-dimensional Gaussians, 
 \end{equation}
 To make the simplification, we define
 \begin{equation}\label{eq:DefPsi}
-	\boldsymbol{\Psi}(\mathbf{r}') \triangleq T_s\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\psi}^{\top} (\mathbf{r}'-\mathbf{r})\textrm{d}\mathbf{r}},
+	\boldsymbol{\Psi}(\mathbf{r}') \triangleq T_s\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\psi}^{\top} (\mathbf{r}'-\mathbf{r}) \, \textrm{d}\mathbf{r}},
 \end{equation}
 which is a constant $L \times n_{\theta}$ matrix that is defined analytically (see the supplementary material for analytic convolution of two Gaussians), where $L$ is the number of basis functions (states) and $n_{\theta}$ is the number of connectivity kernel basis functions. Substituting equation~\ref{eq:DefPsi} into~\ref{eq:ReducedForm} gives
 \begin{eqnarray}
-	\mathbf{x}_{t+1} &=& \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \textrm{d}\mathbf{r}' \boldsymbol{\theta} \nonumber \\ &+& \xi\mathbf{x}_t 
-+ \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})\textrm{d}\mathbf{r}}.
+	\mathbf{x}_{t+1} &=& \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \, \textrm{d}\mathbf{r}' \boldsymbol{\theta} \nonumber \\ &+& \xi\mathbf{x}_t 
++ \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r}) \, \textrm{d}\mathbf{r}}.
 \end{eqnarray}
 This substitution exploits the isotropy of the connectivity kernel basis functions, allowing us to swap the convolution in equation~\ref{reduced continuous model}, which would be computationally demanding, with the convolution in equation~\ref{eq:DefPsi}, which can be calculated analytically. This is of great importance as it lowers the computational demands of the estimation algorithm and provides a dramatic increase in estimation speed. 
 
 Now we define the state disturbance as
 \begin{equation}\label{eq:Wt} 
-	\mathbf{e}_t \triangleq \boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi} ( \mathbf{r} )e_t( \mathbf{r} )\textrm{d}\mathbf{r}},
+	\mathbf{e}_t \triangleq \boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi} ( \mathbf{r} )e_t( \mathbf{r} ) \, \textrm{d}\mathbf{r}},
 \end{equation}
 which is a zero mean normally distributed white noise process with covariance (see the supplementary material for the derivation)
 \begin{equation}
-	\boldsymbol\Sigma_e =\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega}\boldsymbol{\phi}\left(\mathbf r\right) \gamma\left(\mathbf r- \mathbf r' \right)\boldsymbol{\phi}\left(\mathbf r'\right)^{\top}d\mathbf r' d\mathbf r\mathbf{\Gamma}^{- \top}. 
+	\boldsymbol\Sigma_e =\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega}\boldsymbol{\phi}\left(\mathbf r\right) \gamma\left(\mathbf r- \mathbf r' \right)\boldsymbol{\phi}\left(\mathbf r'\right)^{\top} \, \mathrm{d}\mathbf r' \mathrm{d}\mathbf r\mathbf{\Gamma}^{- \top}. 
 \end{equation}
 Under the assumption that the basis function decomposition is accurate, the observation equation of the reduced model is found by substituting equation~\ref{DefFieldDecomp} into~\ref{eq:ObservationEquation} giving
 \begin{equation}\label{eq:ReducedObservationEquation}
-	\mathbf{y}_t = \int_{\Omega}{m\left(\mathbf{r}_n-\mathbf{r}'\right)\boldsymbol{\phi}^{\top}\left(\mathbf{r'}\right) \mathbf{x}_t\textrm{d}\mathbf{r}'} + \boldsymbol{\varepsilon}_t. 
+	\mathbf{y}_t = \int_{\Omega}{m\left(\mathbf{r}_n-\mathbf{r}'\right)\boldsymbol{\phi}^{\top}\left(\mathbf{r'}\right) \mathbf{x}_t\, \textrm{d}\mathbf{r}'} + \boldsymbol{\varepsilon}_t. 
 \end{equation}
 The observation equation is linear and can be written in the more compact form
 \begin{equation}\label{ObservationEquation} 
@@ -241,7 +241,7 @@ where the observation matrix is
 \end{equation}
 and 
 \begin{equation}
-	c_{i,j} = \int_{\Omega}m(\mathbf{r}_i - \mathbf{r}')\boldsymbol{\phi}_j(\mathbf{r}')\textrm{d}\mathbf{r}'. 
+	c_{i,j} = \int_{\Omega}m(\mathbf{r}_i - \mathbf{r}')\boldsymbol{\phi}_j(\mathbf{r}') \, \textrm{d}\mathbf{r}'. 
 \end{equation}
 Now we have the final form of the state-space model where
 \begin{equation}\label{eq:finalformstatespacemodel}
@@ -252,7 +252,7 @@ Now we have the final form of the state-space model where
 \end{equation}
 and 
 \begin{equation}\label{eq:QmatrixForSigmapoints}
-	Q(\mathbf{x}_t) = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \textrm{d}\mathbf{r}' \boldsymbol{\theta} + \xi\mathbf{x}_t.
+	Q(\mathbf{x}_t) = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \, \textrm{d}\mathbf{r}' \boldsymbol{\theta} + \xi\mathbf{x}_t.
 \end{equation}
 
 \subsection{Spectral Analysis}\label{SpectralAnalysisSection} 
@@ -331,7 +331,7 @@ where the superscripts $m$ and $c$ denote mean and covariance. Since the observa
 
 Although the system is nonlinear, the parameters of the system are linear with respect to the state. This is exploited by our procedure where the parameter estimation uses a least squares (LS) method that minimises the sum of the squared errors (of a predicted state update) with each new estimate of the state vector sequence. To create the least squares parameter estimator, we first define the $L \times n_{\theta}$ matrix
 \begin{equation}
-	\mathbf{q}(\mathbf{x}_t) = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \textrm{d}\mathbf{r}'.
+	\mathbf{q}(\mathbf{x}_t) = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \,\textrm{d}\mathbf{r}'.
 \end{equation}
 Now given a state estimate sequence from the initialisation or an iteration of the URTSS, we can write
 \begin{eqnarray*}
@@ -738,7 +738,7 @@ $\mathbf P_{t}^{b}=\mathbf P_{t}^{f}+\mathbf S_t\left[\mathbf P_{t+1}^{b}-\mathb
 	$\varsigma$ & slope of sigmoidal activation function & 0.56 & mV$^{-1}$\\
 	$v_0$ & firing threshold & 1.8 & mV \\
 	$\boldsymbol{\theta}$ & vector of connectivity kernel parameters & $\left[\begin{array}{ccc}
-	10 &-8 &0.5
+	100 &-80 &5
 	\end{array}
 	\right]^{\top}$ & mV.spike$^{-1}$\\
 	$\sigma_{\psi_{1}}, \sigma_{\psi_{2}}, \sigma_{\psi_{3}}$ & connectivity kernel width parameters & 1.8, 2.4, 6 & mm\\
@@ -806,24 +806,24 @@ $\mathbf P_{t}^{b}=\mathbf P_{t}^{f}+\mathbf S_t\left[\mathbf P_{t+1}^{b}-\mathb
 % \hline
 % \end{tabular}}
 
-\small{\begin{tabular}{lccccccccc}
-Experiment&\multicolumn{3}{c}{I}&\multicolumn{3}{c}{II}&\multicolumn{3}{c}{III}\\
- Parameters&$\theta_0$&$\theta_1$&$\theta_2$&$\theta_0$&$\theta_1$&$\theta_2$&$\theta_0$&$\theta_1$&$\theta_2$\\
+\tiny{\begin{tabular}{lcccccccccccc}
+Experiment&\multicolumn{4}{c}{I}&\multicolumn{4}{c}{II}&\multicolumn{4}{c}{III}\\
+ Parameters&$\theta_0$&$\theta_1$&$\theta_2$&$\xi$&$\theta_0$&$\theta_1$&$\theta_2$&$\xi$&$\theta_0$&$\theta_1$&$\theta_2$&$\xi$\\
 \hline\hline
-Actual Value&$90$&$-80$&$5$&$100$&$-80$&$5$&$110$&$-80$&$5$\\
-Mean Estimate&$103.86$&$-89.05$&$5.23$&$101.75$&$-81.00$&$4.76$&$98.90 $&$-73.13$&$4.37$\\
-Std. Dev.&$23.14$&$16.57$&$0.74$&$21.30$&$14.82$&$0.65$&$16.48$& $11.72$&$0.54$\\
-Bias (\%)& $15.4$&$11.31$&$4.6$&$1.75$&$1.25$&$4.8$&$10.1$&$ 8.58$&$12.6$  \\
+Actual Value&$90$&$-80$&$5$&$0.9$&$100$&$-80$&$5$&$0.9$&$110$&$-80$&$5$&$0.9$\\
+Mean Estimate&$103.86$&$-89.05$&$5.23$&$0.923$&$101.75$&$-81.00$&$4.76$&$0.924$&$98.90 $&$-73.13$&$4.37$&$0.925$\\
+Std. Dev.&$23.14$&$16.57$&$0.74$&$0.003$&$21.30$&$14.82$&$0.65$&$0.003$&$16.48$& $11.72$&$0.54$&$0.003$\\
+Bias (\%)& $15.4$&$11.31$&$4.6$&$2.56$&$1.75$&$1.25$&$4.8$&$2.67$&$10.1$&$ 8.58$&$12.6$&$2.78$  \\
 \end{tabular}}
 
-\small{\begin{tabular}{lccccccccc}
-Experiment&\multicolumn{3}{c}{IV}&\multicolumn{3}{c}{V}&\multicolumn{3}{c}{VI}\\
- Parameters&$\theta_0$&$\theta_1$&$\theta_2$&$\theta_0$&$\theta_1$&$\theta_2$&$\theta_0$&$\theta_1$&$\theta_2$\\
+\tiny{\begin{tabular}{lcccccccccccc}
+Experiment&\multicolumn{4}{c}{IV}&\multicolumn{4}{c}{V}&\multicolumn{4}{c}{VI}\\
+ Parameters&$\theta_0$&$\theta_1$&$\theta_2$&$\xi$&$\theta_0$&$\theta_1$&$\theta_2$&$\xi$&$\theta_0$&$\theta_1$&$\theta_2$&$\xi$\\
 \hline\hline
 Actual Value&$15$&$0$&$0$&$30$&$0$&$0$&$50$&$0$&$0$\\
-Mean Estimate&$35.68$&$-18.16$&$0.81$&$40.43$&$-12.01$&$ 0.35$&$61.46$&$-15.03$&$0.27$\\
-Std. Dev.&$16.72$&$11.77$&$0.53$&$11.47$&$7.8$&$0.36$&$11.51$&$7.56$&$0.29$\\
-Bias (\%)&$137.87$&$-$&$-$&$34.77$&$-$&$-$&$22.92$&$-$&$-$\\
+Mean Estimate&$35.68$&$-18.16$&$0.81$&$0.923$&$40.43$&$-12.01$&$ 0.35$&$0.924$&$61.46$&$-15.03$&$0.27$&$0.924$\\
+Std. Dev.&$16.72$&$11.77$&$0.53$&$0.002$&$11.47$&$7.8$&$0.36$&$0.003$&$11.51$&$7.56$&$0.29$&$0.003$\\
+Bias (\%)&$137.87$&$-$&$-$&$2.56$&$34.77$&$-$&$-$&$2.67$&$22.92$&$-$&$-$&$2.67$\\
 \end{tabular}}
 
 \end{document}
