@@ -40,16 +40,17 @@ for ppp=1:1
     y = zeros(T,NSensors_xy^2);         % initialise obseravation for speed
     y_matrix = zeros(T,NSensors_xy,NSensors_xy);
     for t=1:T-1
-
+        
         f = f_max./(1+exp(varsigma*(v_0-squeeze(v(t,:,:)))));           % calc firing rate using sigmoid
+        f = padarray(f,size(f),'circular');
         
         % conv firing rate with spatial kernel
-        g = Ts*conv2(f,w,'same')*Delta_squared;
+        g = Ts*conv2(w,f,'same')*Delta_squared;
+        
 %         F = fft2(f);                                                                                % take FFT of firing for conv with kernel
 %         g = ifftshift(ifft2(F.*Ts_W,'symmetric'))*Delta_squared;            % conv kernel with firing rate 
         
         v(t+1,:,:) = g + xi*squeeze(v(t,:,:)) + reshape(e(t,:,:),NPoints,NPoints);  % update field
-
         V = fft2(squeeze(v(t+1,:,:)));                                                  % take FFT of field for conv with sensor
         
         m_conv_v = ifftshift(ifft2(M.*V,'symmetric'))*Delta_squared;    % conv with sensor 
@@ -65,6 +66,9 @@ for ppp=1:1
         disp('plotting data')
         figure
         for t=1:T
+%             temp1 = squeeze(v(t,:,:));
+%             temp2 = padarray(temp1,size(temp1),'circular');
+%             imagesc(temp2);
             imagesc(r,r,squeeze(v(t,:,:)))                          % plot field to check things are working
             title(['Time = ' num2str(t) ' ms'])
             axis xy

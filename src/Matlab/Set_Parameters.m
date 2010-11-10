@@ -26,9 +26,9 @@ T = 500;            % maximum time (ms)
 
 % kernel parameters
 % ~~~~~~~~~~~
-theta(1) = 100.0;     % local kernel amplitude
-theta(2) = -80;     % surround kernel amplitude
-theta(3) = 5;       % lateral kernel amplitude
+theta(1) = 100.0;           % local kernel amplitude
+theta(2) = -80;             % surround kernel amplitude
+theta(3) = 5;               % lateral kernel amplitude
 
 sigma_psi(1) = 1.8;     % local kernel width
 sigma_psi(2) = 2.4;     % surround kernel width
@@ -135,16 +135,16 @@ xi = 1-Ts*zeta;           % coefficient for the discrete time model
 % ~~~~~~~~~~~~~
 sigma_gamma = 1.3;          % parameter for covariance of disturbance
 gamma_weight = 0.1;            % variance of disturbance
-
-m=1;
-Sigma_gamma = zeros(NPoints^2,NPoints^2);   % create disturbance covariance matrix
-for n=1:NPoints
-    for nn=1:NPoints
-        temp = gamma_weight*Define2DGaussian(r(n),r(nn), sigma_gamma^2, 0,NPoints,SpaceMin,SpaceMax);
-        Sigma_gamma(:,m) = temp(:);
-        m=m+1;
-    end
-end
+SphericalBoundary
+% m=1;
+% Sigma_gamma = zeros(NPoints^2,NPoints^2);   % create disturbance covariance matrix
+% for n=1:NPoints
+%     for nn=1:NPoints
+%         temp = gamma_weight*Define2DGaussian(r(n),r(nn), sigma_gamma^2, 0,NPoints,SpaceMin,SpaceMax);
+%         Sigma_gamma(:,m) = temp(:);
+%         m=m+1;
+%     end
+% end
     
 % plot the true kernel for comparison
 % ~~~~~~~~~~~~~~~~~~~~~
