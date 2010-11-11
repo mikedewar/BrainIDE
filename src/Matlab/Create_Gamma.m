@@ -10,9 +10,9 @@ b = 1/(2*sigma_phi^2);
 
 Gamma = zeros(L,L);       % initialize for speed
 for n=1:L
-    for m=1:L
-        mu_n_minus_mu_m = mu_phi(:,n)-mu_phi(:,m);
-        Gamma(n,m) = a*exp(-b*(mu_n_minus_mu_m)'*mu_n_minus_mu_m);
+    for nn=1:L
+        mu_n_minus_mu_m = mu_phi(:,n)-mu_phi(:,nn);
+        Gamma(n,nn) = a*exp(-b*(mu_n_minus_mu_m)'*mu_n_minus_mu_m);
     end
 end
 inv_Gamma = inv(Gamma);

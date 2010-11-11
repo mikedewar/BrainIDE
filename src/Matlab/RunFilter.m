@@ -16,7 +16,9 @@ Create_Sigma_e
 
 % initialize state sequence
 P_f = zeros(L,L,T);
-x_f = 20*mvnrnd(zeros(1,L),Sigma_e,T)';
+
+x_f = cholcov(20*Sigma_e)*rand(L,T);
+% x_f = 20*mvnrnd(zeros(1,L),Sigma_e,T)';
 P_f(:,:,1)  = cov(x_f');
 
 % use initial state sequence to get parameter estimate
@@ -40,7 +42,7 @@ Wc = [(lambda/(L+lambda)) + (1-alpha^2+beta) ; 1/(2*(L+lambda))*ones(2*L,1)];
 sqrt_L_plus_lambda = sqrt(L+lambda);
 
 tic
-NIterations = 10;
+NIterations = 5;
 for Iteration = 1:NIterations
     
     disp('running the forward iteration (filtering)')
