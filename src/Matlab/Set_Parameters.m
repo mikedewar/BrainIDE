@@ -22,13 +22,13 @@ EstimationSpaceMin = -10;
 % temporal parameters
 % ~~~~~~~~~~~~~
 Ts = 1e-3;          % sampling period (s)
-T = 500;            % maximum time (ms)
+T = 1000;            % maximum time (ms)
 
 % kernel parameters
 % ~~~~~~~~~~~
-theta(1) = 100.0;           % local kernel amplitude
-theta(2) = -80;             % surround kernel amplitude
-theta(3) = 5;               % lateral kernel amplitude
+theta(1) = 10.0;           % local kernel amplitude
+theta(2) = -8;             % surround kernel amplitude
+theta(3) = .5;               % lateral kernel amplitude
 
 sigma_psi(1) = 1.8;     % local kernel width
 sigma_psi(2) = 2.4;     % surround kernel width
@@ -40,7 +40,6 @@ psi_2 = Define2DGaussian(0,0, sigma_psi(3)^2, 0,NPoints,SpaceMin,SpaceMax);
 w = theta(1)*psi_0 + theta(2)*psi_1 + theta(3)*psi_2;       % the kernel
 W = fft2(w);                                                                       % the fft of the kernel
 Ts_W = W*Ts;                        % FFT of kernel times the time step
-
 % ~~~~~~~~~~~~~~~~~~~~~~
 
 % ~~~~~~~~~~~~~~~~~~~~~~
@@ -84,11 +83,11 @@ mu_phi_xy = linspace(-EstimationSpaceMax,EstimationSpaceMax,NBasisFunctions_xy);
 sigma_phi = sqrt(2.5);
 
 mu_phi = zeros(2,L);     % initialize for speed
-m=1;
+mm=1;
 for n=1:NBasisFunctions_xy
     for nn=1:NBasisFunctions_xy
-        mu_phi(:,m) = [mu_phi_xy(n) ; mu_phi_xy(nn)];
-        m=m+1;
+        mu_phi(:,mm) = [mu_phi_xy(n) ; mu_phi_xy(nn)];
+        mm=mm+1;
     end
 end
 % ~~~~~~~~~~~~~
@@ -96,23 +95,25 @@ end
 
 % sensor parameters
 % ~~~~~~~~~~~~
-NSensors_xy = 11;%21;%14;
+NSensors_xy = 14;%21;%14;
 NSensors = NSensors_xy^2;
-mu_y_xy = linspace(EstimationSpaceMin,EstimationSpaceMax,NSensors_xy);               % sensor centers
+mu_m_xy = linspace(EstimationSpaceMin+0.25,EstimationSpaceMax-0.25,NSensors_xy);               % sensor centers
 
-sensor_indexes = (mu_y_xy+EstimationSpaceMax)/Delta +1;             % so we can easily get the observations from the filed filtered by the sensors
-sigma_y = 0.9;                                                         % sensor width
-m = Define2DGaussian(0,0, sigma_y^2, 0,NPoints,SpaceMin,SpaceMax);
-M = fft2(m);                                            % fft of sensor kernel to get observations quickly
+% sensor_indexes = (mu_y_xy+EstimationSpaceMax)/Delta +1;             % so we can easily get the observations from the filed filtered by the sensors
+sigma_m = 0.9;                                                         % sensor width
+% m = Define2DGaussian(0,0, sigma_m^2, 0,NPoints,SpaceMin,SpaceMax);
+% M = fft2(m);                                            % fft of sensor kernel to get observations quickly
 % define all sensor centers
-mu_y = zeros(2,NSensors);     % initialize for speed
-m=1;
+mu_m = zeros(2,NSensors);     % initialize for speed
+mm=1;
 for n=1:NSensors_xy
     for nn=1:NSensors_xy
-        mu_y(:,m) = [mu_y_xy(n) ; mu_y_xy(nn)];
-        m=m+1;
+        mu_m(:,mm) = [mu_m_xy(n) ; mu_m_xy(nn)];
+        mm=mm+1;
     end
 end
+Create_m
+
 
 % observation noise characteristics
 % ~~~~~~~~~~~~~~~~~~~~
@@ -121,7 +122,7 @@ Sigma_varepsilon = sigma_varepsilon*eye(NSensors);        % observation covarian
 
 % sigmoid parameters
 % ~~~~~~~~~~~~
-f_max = 1;             % maximum firing rate
+f_max = 10;             % maximum firing rate
 varsigma = 0.56;         % sigmoid slope
 v_0 = 1.8;                    % firing threshold
 
@@ -136,6 +137,7 @@ xi = 1-Ts*zeta;           % coefficient for the discrete time model
 sigma_gamma = 1.3;          % parameter for covariance of disturbance
 gamma_weight = 0.1;            % variance of disturbance
 SphericalBoundary
+
 % m=1;
 % Sigma_gamma = zeros(NPoints^2,NPoints^2);   % create disturbance covariance matrix
 % for n=1:NPoints
@@ -169,27 +171,30 @@ k2_continuous  = theta(3)*exp(-sigma_psi(3)^-2 *(r_continuous.*r_continuous));
 % figure
 % plot(r_continuous,k0_continuous)
 
-figure
-MS = 4;
-LW = 0.5;
-plot_phi=linspace(0,2*pi,1000);
-for n=1:L
-        plot(mu_phi(1,n),mu_phi(2,n),'+k','markersize',MS)        % plot sensor center and widths        
-        hold on
-        x = sigma_phi*cos(plot_phi)+mu_phi(1,n);
-        y = sigma_phi*sin(plot_phi)+mu_phi(2,n);
-        plot(x,y,'k','linewidth',LW)
-        xlim([-SpaceMax,SpaceMax])
-        ylim([-SpaceMax SpaceMax])
-end
-axis square
 
-for n=1:NSensors
-    plot(mu_y(1,n),mu_y(2,n),'xr','markersize',MS)        % plot sensor center and widths        
-    hold on
-    x = sigma_y*cos(plot_phi)+mu_y(1,n);
-    y = sigma_y*sin(plot_phi)+mu_y(2,n);
-    plot(x,y,'r','linewidth',LW)
-    xlim([-SpaceMax,SpaceMax])
-    ylim([-SpaceMax SpaceMax])
-end
+% plot the sensors and the basis functions
+% ~~~~~~~~~~~~~~~~~~~~~~~~
+% figure
+% MS = 4;
+% LW = 0.5;
+% plot_phi=linspace(0,2*pi,1000);
+% for n=1:L
+%         plot(mu_phi(1,n),mu_phi(2,n),'+k','markersize',MS)        % plot sensor center and widths        
+%         hold on
+%         x = sigma_phi*cos(plot_phi)+mu_phi(1,n);
+%         y = sigma_phi*sin(plot_phi)+mu_phi(2,n);
+%         plot(x,y,'k','linewidth',LW)
+%         xlim([-SpaceMax,SpaceMax])
+%         ylim([-SpaceMax SpaceMax])
+% end
+% axis square
+% 
+% for n=1:NSensors
+%     plot(mu_m(1,n),mu_m(2,n),'xr','markersize',MS)        % plot sensor center and widths        
+%     hold on
+%     x = sigma_m*cos(plot_phi)+mu_m(1,n);
+%     y = sigma_m*sin(plot_phi)+mu_m(2,n);
+%     plot(x,y,'r','linewidth',LW)
+%     xlim([-SpaceMax,SpaceMax])
+%     ylim([-SpaceMax SpaceMax])
+% end

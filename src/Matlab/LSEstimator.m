@@ -26,24 +26,27 @@ end
 % form the block matrices to find LS solution
 X = [];
 Z = [];
-% for t=1:T-1
-%     X = [X ; [squeeze(q(:,t,:)) squeeze(x(:,t))]];
-%     Z = [Z ; squeeze(x(:,t+1))]; 
-% end
+for t=1:T-1
+    X = [X ; [squeeze(q(:,t,:)) squeeze(x(:,t))]];
+    Z = [Z ; squeeze(x(:,t+1))]; 
+end
 
 % this is used if we don't estimate xi
 % ~~~~~~~~~~~~~~~~~~~~~
-xi = 0.9;
-for t=1:T-1
-    X = [X ; squeeze(q(:,t,:)) ];
-    Z = [Z ; squeeze(x(:,t+1)) - xi * squeeze(x(:,t))]; 
-end
-xi_est = [];
+% ~~~~~~~~~~~~~~~~~~~~~
+% xi = 0.9;
+% for t=1:T-1
+%     X = [X ; squeeze(q(:,t,:)) ];
+%     Z = [Z ; squeeze(x(:,t+1)) - xi * squeeze(x(:,t))]; 
+% end
+% xi_est = [];
+% ~~~~~~~~~~~~~~~~~~~~~
+% ~~~~~~~~~~~~~~~~~~~~~
 
 % get parameter estimate
 parameters_est = (X'*X)\X'*Z;
 theta_est(1) = parameters_est(1);
 theta_est(2) = parameters_est(2);
 theta_est(3) = parameters_est(3);
-% xi_est = parameters_est(4);
+xi_est = parameters_est(4);
 % zeta_est = -(parameters_est(4)-1)/Ts

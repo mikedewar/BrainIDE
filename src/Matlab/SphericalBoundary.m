@@ -28,7 +28,7 @@ gamma_weight = 0.1;            % variance of disturbance
 FirstThirdEnd = (NPointsInPeriodicField-1)/3;
 SecondThirdEnd = 2*FirstThirdEnd+1;
 
-m=1;
+mm=1;
 Sigma_gamma = zeros(NPointsInField^2,NPointsInField^2);   % create disturbance covariance matrix
 figure
 template = zeros(NPointsInField,NPointsInField);
@@ -50,12 +50,12 @@ for n=1:NPointsInField
         
         temp2 = middle + topleft + top + topright + left + right + bottom + bottomleft + bottomright;
         
-        Sigma_gamma(:,m) = temp2(:);
-        m=m+1;
+        Sigma_gamma(:,mm) = temp2(:);
+        mm=mm+1;
         
 %         clim = [-200 -1];         % for log
 %         clim = [0 0.08];
-% 
+% % 
 %         subplot(3,3,1),imagesc(topleft,clim)
 %         subplot(3,3,2),imagesc(top,clim)
 %         subplot(3,3,3),imagesc(topright,clim)
@@ -68,7 +68,7 @@ for n=1:NPointsInField
 %         subplot(3,3,8),imagesc(bottom,clim)
 %         subplot(3,3,9),imagesc(bottomright,clim)
 % % 
-%         imagesc(log10(temp2))
+% %         imagesc(log10(temp2))
 %         drawnow
     end
 end
