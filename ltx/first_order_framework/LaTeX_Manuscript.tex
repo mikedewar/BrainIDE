@@ -392,7 +392,7 @@ Following this, the LS parameter estimates, $ \hat{\mathcal{W}}$, are
 
 The sensors were spaced on a $14 \times 14$ square grid and the sensor width was set to $\sigma^2_m = 0.81$. This provides a width of 1.5~mm at half the maximum amplitude of the sensor kernel. The distance between sensors was set to $\Delta_y = 1.5$~mm. This arrangement modelled the recording as having some cross talk (from volume conduction), which is typical for neurophysiological recordings.
 
-\subsection{Spatial Frequency Analysis} 
+\subsection{Spatial Frequency Analysis}
 The spectral analysis was used to confirm that the spacing and width of the sensors was adequate to capture the significant dynamics of the field. Figure~\ref{fig:Figure4}(a) shows the spatial frequency of the neural field and Figure~\ref{fig:Figure4}(b) shows the spatial frequency of the reconstruct neural field from the basis function decomposition. The cut-off frequency of the neural field is $\boldsymbol{\nu}_c \approx 0.24$~Hz ($-3$~dB point). From equation~\ref{eq:MinimumSensorDistance}, this yielded a minimum sensor separation of 2.08~mm. This confirms that the separation of $\Delta_{y} = 1.5$~mm was sufficient to mitigate problems associated with spatial aliasing.
 
 The spatial frequency of the observed field is shown in Figure~\ref{fig:Figure5}(a). The cut-off frequency is $\boldsymbol{\nu}_{cy} \approx 0.2$~Hz (-3~dB point). The observation cut-off frequency is lower than the field cut-off due to the low-pass filtering effect of the sensors. The spatial frequency response of the sensors can be seen in Figure~\ref{fig:Figure5}(b). Using an oversampling parameter of $\rho_{\phi}=1$, the minimum distance between the field basis functions was calculated to be 2.5~mm to satisfy Shannon's sampling criterion (from equation~\ref{eq:BasisFunctionSeparation}). The distance between basis functions was set to $\Delta_{\phi}=2.5$~mm, which is sufficient to capture the significant dynamics according to these criteria.
@@ -412,22 +412,24 @@ The accuracy of the state estimates was evaluated by comparing the field reconst
 
 \subsubsection{Results for Different Connectivity Kernel Parameters}
 
-To study the robustness of the estimation algorithm, the performance was studied for various connectivity kernel parameters. The reconstructed connectivity kernels from the estimated parameters are shown in Figure~\ref{fig:Figure8}. For Parts a), b) and c) a Mexican hat connectivity kernel was used. For each subset of parameters the mean of the reconstructed kernel over 50 realisations is shown as a dotted line and the 95~\% confidence interval is indicated by the grey shaded region. In each case the actual kernel was within the 95~\% confidence of kernel estimate. The statistics for the kernel parameters estimates for each of the parameter sets are shown in Table~\ref{tab:Parameters estimates}.
+To study the robustness of the estimation algorithm, the performance was studied for various connectivity kernel parameters. The reconstructed connectivity kernels from the estimated parameters are shown in Figure~\ref{fig:Figure8}. For Parts a), b) and c) of the figure a Mexican hat connectivity kernel was used. For each subset of parameters the mean of the reconstructed kernel over 50 realisations is shown as a dotted line and the 95~\% confidence interval is indicated by the grey shaded region. In each case the actual kernel was within the 95~\% confidence of kernel estimate. The statistics for the kernel parameters estimates for each of the parameter sets are shown in Table~\ref{tab:Parameters estimates}.
 
-For each of the Mexican hat connectivities, the support of the kernel was assumed to be known. Parts d), e) and f) of Figure~\ref{fig:Figure8} show results when the kernel support in the estimator differed from the actual data. In these cases the data was generated using a single positive (excitatory) Gaussian kernel. The estimation algorithm was constructed allowing for the Mexican hat connectivity of the previous examples. Each plot shows that the actual kernel lies within the confidence intervals of the reconstructed estimates, for the majority of the kernel space until the amplitude is relatively low. Table~\ref{tab:GaussianKernelResults} shows the statistics of the parameter estimates. Importantly, although the reconstructed kernel estimate is in good accord with the actual kernel, the individual kernel basis function weights are not in agreement with the actual parameters. This result demonstrates that unless the support of the kernel basis functions are precisely known, the exact meaning of the parameters in isolation is not clear and the net reconstructed kernel should be considered in a practical setting.
+For each of the Mexican hat connectivities, the support of the kernel was assumed to be known. Parts d), e) and f) of Figure~\ref{fig:Figure8} show results when the kernel support in the estimator differed from the actual data. In these cases the data was generated using a single positive (excitatory) Gaussian kernel, as seen by the solid line in the figure. The estimation algorithm was constructed allowing for the Mexican hat connectivity of the previous examples. Each plot shows that the actual kernel lies within the confidence intervals of the reconstructed estimates, for the majority of the kernel space until the amplitude is relatively low. Table~\ref{tab:GaussianKernelResults} shows the statistics of the parameter estimates. Importantly, although the reconstructed kernel estimate is in good accord with the actual kernel, the individual kernel basis function weights are not in agreement with the actual parameters. This result demonstrates that unless the support of the kernel basis functions are precisely known, the exact meaning of the parameters in isolation is not clear and the net reconstructed kernel should be considered in a practical setting.
 
 \subsubsection{Results for Varying the Parameters of the Sigmoidal Activation Function}
 
-Figure~\ref{fig:Figure11} shows a Hinton diagram demonstrating the affect of the sigmoid parameters on the parameter estimation accuracy. The RMSE of the reconstructed connectivity kernel was calculated for various parameters of the sigmoid by varying the slope, $\varsigma$, and the threshold, $v_0$. The kernel and time constant parameters used in this experiment were the one that gave the best results from the previous experiment. The size of the squares in the figure show the magnitude of the log of the error. The squares are black if the log of the error is negative (the RMSE is $<1$) and the squares are white if the log of the error is positive (the RMSE is $>1$). The largest black squares indicate the best performance and the largest white squares indicate the worst performance for the parameter combinations (\dean{need some thing more quantitative}). From the figure it can be seen that the estimation accuracy depends on the characteristics of the sigmoid function. When the threshold is negative or the slope is very gentle, all of the activity is being passed through the sigmoid function. However, as the slope is increased or the threshold is increased, more information is being cut off or attenuated by the activation function. This is illustrated in figure~\ref{fig:sigmoidfunctions}, where the sigmoids from the bottom left corner through to near top right corner of Figure~\ref{fig:Figure11} are plotted. This appears to have a detrimental effect on the estimation accuracy.
+Figure~\ref{fig:Figure11} demonstrates the affect of the sigmoid parameters on the estimation accuracy. The RMSE of the reconstructed connectivity kernel was calculated for various parameters of the sigmoid by varying the slope, $\varsigma$, and the threshold, $v_0$. The kernel and time constant parameters used in this experiment were the one that gave the best results from the previous experiment. 
+% The size of the squares in the figure show the magnitude of the log of the error. The squares are black if the log of the error is negative (the RMSE is $<1$) and the squares are white if the log of the error is positive (the RMSE is $>1$). The largest black squares indicate the best performance and the largest white squares indicate the worst performance for the parameter combinations (\dean{need some thing more quantitative}). 
+From the figure it can be seen that the estimation accuracy depends on the characteristics of the sigmoid function. When the threshold is negative or the slope is very gentle, all of the activity is being passed through the sigmoid function. However, as the slope is increased or the threshold is increased, more information is being cut off or attenuated by the activation function. This is illustrated in Figure~\ref{fig:sigmoidfunctions}, where the sigmoids from the bottom left corner through to near top right corner of Figure~\ref{fig:Figure11} are plotted. This appears to have a detrimental effect on the estimation accuracy.
 
 \subsubsection{Results for Varying the Sensor Kernel Width}
-The accuracy of the estimation algorithm was tested for observation kernels of different width. To test the affect of the electrode kernel parameter on the estimation 
+The accuracy of the estimation algorithm was tested for observation kernels by varying the width parameter. Figure~\ref{fig:Figure12} shows the RMSE of the connectivity kernel estimates for the various connectivity kernel widths. The figure shows that there is error a desirable connectivity kernel width range. As the the theory presented earlier in Section~\ref{SpectralAnalysisSection} suggests, the observation kernel acts as a spatial filter. When the observation kernel is to narrow, a small amount of aliasing appears to be increasing the estimation error. When the observation kernel width is initially increased the error drops. As expected when the observation kernel becomes too large, important spatial frequency information is lost and the error becomes larger.  
 
 \section{Discussion}\label{DiscussionSection}
 This paper has presented a framework for creating data-driven neural field models by deriving a method for estimating intracortical connectivity and synaptic dynamics from electrophysiological data. In doing so, we have highlighted important aspects of the experiment design process, demonstrating the relationship between sensor bandwidth and the complexity of the field that can be inferred. The mathematical formulation that we have presented scales well with the number of sensors, and we have derived a finite-order state-space representation that allows us to perform inference efficiently. 
 
 \subsection{Implications for Experiment Design}
-As seen in Figure~\ref{fig:Figure7}, the results indicate accurate estimation \parham{for the connectivity kernel parameters}, where the mean parameter estimates are in good agreement with the actual values. The estimates of the connectivity kernel parameters show relatively broad distributions, which can be expected considering the system's input is modelled as a random disturbance, and the observations are corrupted by noise. To overcome the effect of noise, the use of a controlled input stimulus should be considered when applying the estimation algorithm to electrophysiological recordings. Given knowledge of the input and the appropriate model, it is expected that the variance of the parameter estimates will decrease. Even when using an input, our results imply that we should only expect to learn distributions of parameters, rather than uncover a `true' parameter set. By designing an input signal carefully and using an evoked-potential paradigm, where stimuli are repeated many times, data could be epoched into (and averaged over) a sufficient number of trials (realisations), where each trial is a response to a stimulus, such that a distribution of the parameter estimates can be formed.
+As seen in Figures~\ref{fig:Figure7} and~\ref{fig:Figure10}, the results indicate accurate estimation for the connectivity kernel parameters, where the mean parameter estimates are in good agreement with the actual values and the true kernel lies within the 95~\% confidence intervals of the estimates. The estimates of the connectivity kernel parameters show relatively broad distributions, which can be expected considering the system's input is modelled as a random disturbance, and the observations are corrupted by noise. To overcome the effect of noise, the use of a controlled input stimulus should be considered when applying the estimation algorithm to electrophysiological recordings. Given knowledge of the input and the appropriate model, it is expected that the variance of the parameter estimates will decrease. Even when using an input, our results imply that we should only expect to learn distributions of parameters, rather than uncover a `true' parameter set. By designing an input signal carefully and using an evoked-potential paradigm, where stimuli are repeated many times, data could be epoched into (and averaged over) a sufficient number of trials (realisations), where each trial is a response to a stimulus, such that a distribution of the parameter estimates can be formed.
 
 The frequency analysis specify the minimum sensor arrangement that is required to capture the dominant cortical dynamics. Importantly, these new tools can also be used to design electrophysiological recording systems to avoid spatial aliasing. In addition, the frequency analysis highlights the relationship between the spatial width of the sensors and the information in the data. This analysis is becoming increasingly relevant as recording systems are becoming more sophisticated with higher density electrodes~\cite{Brinkmann2009}.
 
@@ -438,7 +440,7 @@ Previous work from Schiff and Sauer~\cite{schiff2008kalman} demonstrated for the
 
 This, in turn, will lead to increases in uncertainty of the estimates. In addition, directly linking the complexity of the underlying system to the spatial resolution of the observation process implies that the system's dynamics become increasingly more complex the closer we look, which may not be an accurate modelling assumption.
 
-The current study builds on Schiff and Sauer's approach ~\cite{schiff2008kalman} by estimating a continuous field whose complexity is independent of the resolution of the observation process and spatial resolution of the model. Instead, the dimensionality is governed by the expected complexity of the underlying field, which we measure using the frequency analysis presented in Methods section. These methods provide a rigorous framework for determining the dimensionality of the system using inherent spatial properties of the field. This enables estimation of a larger field with a lower dimensional state vector than would be otherwise possible. 
+The current study builds on Schiff and Sauer's approach~\cite{schiff2008kalman} by estimating a continuous field whose complexity is independent of the resolution of the observation process and spatial resolution of the model. Instead, the dimensionality is governed by the expected complexity of the underlying field, which we measure using the frequency analysis presented in Methods section. These methods provide a rigorous framework for determining the dimensionality of the system using inherent spatial properties of the field. This enables estimation of a larger field with a lower dimensional state vector than would be otherwise possible. 
 
 That the connectivity kernel is isotropic means the mixing effect of the kernel on the firing rates can be written as a convolution of the kernel with the membrane voltage field basis functions. This transformation greatly simplifies the computational complexity of the estimator, which is important for the estimator to run in a real-time scenario.
 
@@ -560,35 +562,27 @@ Dean Freestone would like to thank Dr. Mark van Rossum for hosting him while vis
 \label{fig:Figure8}
 \end{figure}
 
-\begin{figure}[!ht]
-\begin{center}
-\includegraphics{./Graph/pdf/OperatingRegions.pdf}
-\end{center}
-\caption{{\bf Operating Regions along the sigmoid}. The top graph is from the full model and the lower is from the reduced model.}
-\label{fig:OperatingRegions}
-\end{figure}
-
-\begin{figure*}[!ht]
-\begin{center}
-\includegraphics{./Graph/pdf/Figure11.pdf}
-\end{center}
-\caption{{\bf Hinton diagram of the RMSE of the kernel estimates}. Log of the RMSE of the kernel for different values of $\nu_{cm}$ and $\Delta_y$. Mean kernel estimates are obtained over 50 realisations in each case.}
-\label{fig:Figure11}
-\end{figure*}
+% \begin{figure}[!ht]
+% \begin{center}
+% \includegraphics{./Graph/pdf/OperatingRegions.pdf}
+% \end{center}
+% \caption{{\bf Operating Regions along the sigmoid}. The top graph is from the full model and the lower is from the reduced model.}
+% \label{fig:OperatingRegions}
+% \end{figure}
 
 % \begin{figure*}[!ht]
 % \begin{center}
-% \includegraphics{./Graph/pdf/RMSESigmoidParameters.pdf}
+% \includegraphics{./Graph/pdf/Figure11.pdf}
 % \end{center}
-% \caption{{\bf Shit}. shit}
-% \label{fig:Figure12b}
+% \caption{{\bf Hinton diagram of the RMSE of the kernel estimates}. Log of the RMSE of the kernel for different values of $\nu_{cm}$ and $\Delta_y$. Mean kernel estimates are obtained over 50 realisations in each case.}
+% \label{fig:Figure11}
 % \end{figure*}
 
 \begin{figure*}[!ht]
 \begin{center}
 \includegraphics{./Graph/pdf/RMSESigmoidParameters.pdf}
 \end{center}
-\caption{{\bf Hinton diagram of the RMSE of the kernel estimates}. Log of the RMSE of the kernel for different values of firing threshold, $v_0$ and the slope of the sigmoid, $\varsigma$. Mean kernel estimates are obtained over 50 realisations in each case. red crosses indicate cases where the kernel can not be estimated due to numerical issues.}
+\caption{{\bf RMSE of different kernel estimates}. Log of the RMSE of the kernel for different values of firing threshold, $v_0$ and the slope of the sigmoid, $\varsigma$. Mean kernel estimates are obtained over 50 realisations in each case. White spaces indicate cases where the kernel can not be estimated due to numerical problems.}
 \label{fig:Figure12}
 \end{figure*}
 
@@ -604,7 +598,7 @@ Dean Freestone would like to thank Dr. Mark van Rossum for hosting him while vis
 % \begin{center}
 % \includegraphics{./Graph/pdf/Figure13.pdf}
 % \end{center}
-% \caption{{\bf RMSE of the kernel estimates}. RMSE of the kernel for different values of sensor width, $\sigma^2_y$, distance between adjacent sensors is $\Delta_y=1.5$. Mean kernel estimates are obtained over 50 realisations in each case.}
+% \caption{{\bf RMSE of the kernel estimates}. RMSE of the kernel for different values of sensor width, $\sigma^2_m$, distance between adjacent sensors is $\Delta_y=1.5$. Mean kernel estimates are obtained over 50 realisations in each case.}
 % \label{fig:Figure13}
 % \end{figure*}
 
@@ -612,7 +606,7 @@ Dean Freestone would like to thank Dr. Mark van Rossum for hosting him while vis
 \begin{center}
 \includegraphics{./Graph/pdf/RMSESensor.pdf}
 \end{center}
-\caption{{\bf RMSE of the kernel estimates}. RMSE of the kernel for different values of sensor width, $\sigma^2_y$, distance between adjacent sensors is $\Delta_y=1.5$. Mean kernel estimates are obtained over 50 realisations in each case.}
+\caption{{\bf RMSE of the kernel estimates}. RMSE of the kernel for different values of sensor width, $\sigma^2_m$, distance between adjacent sensors is $\Delta_y=1.5$. Mean kernel estimates are obtained over 50 realisations in each case.}
 \label{fig:Figure13}
 \end{figure*}
 \section*{Tables}
