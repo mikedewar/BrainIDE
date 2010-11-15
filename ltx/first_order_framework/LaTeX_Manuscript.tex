@@ -67,14 +67,11 @@ Mathematical neural field models provide insights into the underlying physics an
 
 Unfortunately, the use of these models in the clinic has been limited, since they are constructed for ``general'' brain dynamics whereas pathologies almost always have unique underlying patient-specific causes. Patient-specific data from electrophysiological recordings is readily available in the clinical setting, particularly from epilepsy surgery patients, suggesting an opportunity to make the patient-specific link to models of cortical dynamics. Furthermore, recent technological advances have driven an increased level of sophistication in recording techniques, with dramatic increases in spatial and temporal sampling~\cite{Brinkmann2009}. However, the mesoscopic and macroscopic neural dynamic state is not directly observable in neurophysiological data, making predictions of the underlying physiology inherently difficult.
 
-For models to be clinically viable, they must be patient-specific. A possible approach to achieve this would be to fit a general continuum neural field model, like the Wilson and Cowan (WC)~\cite{Wilson1973} or Amari~\cite{Amari1977} models, or a neural mass model like the Jansen and Ritt model~\cite{Jansen1995}, to patient-specific data. Fitting the neural models to individuals is a highly non-trivial task. Recently, however, this task has been approached from a number of standpoints. 
+For models to be clinically viable, they must be patient-specific. A possible approach to achieve this would be to fit a general continuum neural field model, like the Wilson and Cowan (WC)~\cite{Wilson1973} or Amari~\cite{Amari1977} models, or a neural mass model like the Jansen and Ritt model~\cite{Jansen1995}, to patient-specific data. Fitting the neural models to individuals is a highly non-trivial task. Recently, however, this task has been approached from a number of standpoints~\cite{Nunez2000,Jirsa2002,Robinson2004,Daunizeau2009}.
 
-\dean{Need to add extra references between here}
+Perhaps the most accepted estimation framework for neural mass models known as dynamical causal modelling (DCM) \cite{David2003,David2006}, which has been proposed for studying evoked potential dynamics. Via a Bayesian inference scheme, DCM estimates the long range (cortico-cortical) connectivity structure between the specific isolated brain regions that best explains a given data set using the Jansen and Ritt equations~\cite{Jansen1995}. Another recent approach estimates the parameters of a neural field model using an unscented Kalman filter based on modified WC neural field equations~\cite{schiff2008kalman}. This work takes a system theoretic approach to the neural estimation problem, successfully demonstrating that it is possible to perform state estimation and control on spatiotemporal neural fields. This marks the first step in what has the potential to revolutionise the treatment of many neurological diseases where therapeutic electrical stimulation is viable.
 
-An estimation framework for neural mass models known as dynamical causal modelling (DCM) \cite{David2003,David2006} has been proposed for studying evoked potential dynamics. Via a Bayesian inference scheme, DCM estimates the long range (cortico-cortical) connectivity structure between the specific isolated brain regions that best explains a given data set using the Jansen and Ritt equations~\cite{Jansen1995}. Another recent approach estimates the parameters of a neural field model using an unscented Kalman filter based on modified WC neural field equations~\cite{schiff2008kalman}. This work takes a system theoretic approach to the neural estimation problem, successfully demonstrating that it is possible to perform state estimation and control on spatiotemporal neural fields. This marks the first step in what has the potential to revolutionise the treatment of many neurological diseases where therapeutic electrical stimulation is viable.
-\dean{and here}
-
-We present an extension to the work of Schiff and Sauer~\cite{schiff2008kalman} by establishing a framework for estimating the state of the WC equations for larger scale (more space) systems via a systematic model reduction procedure. In addition, a method is presented for estimating the connectivity structure and the synaptic dynamics. Until now, model-based estimation of local intracortical connectivity has not been reported in the literature (to the best of the authors' knowledge). Our study extends recent work which shows that it is possible to estimate local coupling of spatiotemporal systems using techniques from control systems theory and machine learning~\cite{Dewar2009}. The key development of this previous work was to represent a spatiotemporal system as a standard state-space model, with the number of states independent of the number of observations (recording electrodes in this case). In addition, the appropriate model selection tools have been developed~\cite{Scerri2009} allowing for the application of the technique to neural fields. This paper extends the linear framework of~\cite{Dewar2009,Scerri2009} to the nonlinear case required by the WC model. 
+We present an extension to the work of Schiff and Sauer~\cite{schiff2008kalman} by establishing a framework for estimating the state of the WC equations for larger scale (more space) systems via a systematic model reduction procedure. In addition, a method is presented for estimating the connectivity structure and the synaptic dynamics. Until now, model-based estimation of local intracortical connectivity has not been reported in the literature (to the best of the authors' knowledge). Our study extends recent work which shows that it is possible to estimate local coupling of spatiotemporal systems using techniques from control systems theory and machine learning~\cite{Dewar2009}. The key development of this previous work was to represent a spatiotemporal system as a standard state-space model, with the number of states independent of the number of observations (recording electrodes in this case). In addition, the appropriate model selection tools have been developed~\cite{Scerri2009} allowing for the application of the technique to neural fields. This paper extends the linear framework of~\cite{Dewar2009,Scerri2009} to the nonlinear case required for the WC or Amari model. 
 
 Modelling the neural dynamics within this framework has a distinct advantage over the more standard multivariate auto-regressive (MVAR) models: the number of parameters to define the spatial connectivity is considerably smaller than the number of AR coefficients typically required to achieve the required model complexity. 
 
@@ -88,7 +85,7 @@ Neural field models relate mean firing rates of pre-synaptic neural populations 
 \subsection{Derivation of the Integro-Difference Equation Representation}
 The model relates the average number of action potentials $g(\mathbf{r},t)$ arriving at position $\mathbf{r}$ to the local post-synaptic membrane voltage $v(\mathbf{r},t)$. Table~\ref{tab:Notation} provides a description of the notation used in this study. The post-synaptic potentials generated at a neuronal population at location $\mathbf{r}$ by action potentials arriving from all other connected populations at locations $\mathbf{r}'$ is described by 
 \begin{equation}
-	\label{SpikesToPotential} v\left( {\mathbf{r},t} \right) = \int_{ - \infty }^t {h\left( {t - t'} \right)g\left( {\mathbf{r},t'} \right) \, \mathrm{d}t'}. 
+	\label{SpikesToPotential} v\left( {\mathbf{r},t} \right) = \int_{ - \infty }^t {h\left( {t - t'} \right)g\left( {\mathbf{r},t'} \right) \, dt'}. 
 \end{equation}
 The post-synaptic response kernel $h(t)$ is described by 
 \begin{equation}
@@ -96,7 +93,7 @@ The post-synaptic response kernel $h(t)$ is described by
 \end{equation}
 where $\zeta=\tau^{-1}$, $\tau$ is the synaptic time constant and $\eta(t)$ is the Heaviside step function. Non-local interactions between cortical populations are described by 
 \begin{equation}
-	\label{RateBasedInteractions} g\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( v\left( \mathbf{r}',t \right) \right)\, \mathrm{d}\mathbf{r}'}, 
+	\label{RateBasedInteractions} g\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( v\left( \mathbf{r}',t \right) \right)\, d\mathbf{r}'}, 
 \end{equation}
 where $f(\cdot)$ is the firing rate function, $w(\cdot)$ is the spatial connectivity kernel and $\Omega$ is the spatial domain representing a cortical sheet or surface. The connectivity kernel is typically a ``Mexican hat'' or ``wizard hat'' function, which describes local excitation and surround inhibition. An example of the Mexican hat connectivity kernel used in this paper is shown in Figure~\ref{fig:Figure1}. To demonstrate flexibility in the estimation algorithm, a third component of the kernel is introduced describing weak longer-range excitation. The exact shape of this kernel is assumed to vary across patients, and hence needs to be inferred from data.
 
@@ -111,7 +108,7 @@ The parameter $v_0$ describes the  firing threshold of the neural populations. T
 	h\left(t - t'\right) \int_\Omega
 	w\left(\mathbf{r},\mathbf{r}'\right) 
 	f\left( v\left( \mathbf{r}',t' \right)\right)
-	\, \mathrm{d} \mathbf{r}' \mathrm{d}t'.
+	\, d\mathbf{r}'dt'.
 \end{equation}
 To arrive at the final form of the model, we shall express the synaptic response kernel as a Green's function 
 \begin{equation}
@@ -120,7 +117,7 @@ To arrive at the final form of the model, we shall express the synaptic response
 where $\textrm{D}=\frac{d}{dt} + \zeta$ is a temporal differential operator and $\delta(t)$ is the Dirac-delta function giving 
 \begin{equation}
 	\label{FinalFormContinuous} 
-	\frac{dv\left( \mathbf{r},t \right)}{dt} + \zeta v\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)\, \mathrm{d}\mathbf{r}'}. 
+	\frac{dv\left( \mathbf{r},t \right)}{dt} + \zeta v\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)\, d\mathbf{r}'}. 
 \end{equation}
 To arrive at the integro-difference equation (IDE) form of the model, we discretise time using a first-order Euler method (see the supplementary material for derivation) giving 
 \begin{equation}
@@ -130,7 +127,7 @@ To arrive at the integro-difference equation (IDE) form of the model, we discret
 	T_s \int_\Omega { 
 	    w\left(\mathbf{r},\mathbf{r}'\right)
 	    f\left(v_t\left(\mathbf{r}'\right)\right) 
-	\, \mathrm{d}\mathbf{r}'} 
+	\, d\mathbf{r}'} 
 	+ e_t\left(\mathbf{r}\right), 
 \end{equation}
 where $T_s$ is the time step, $\xi = 1-T_s\zeta $ and $e_t(\mathbf{r})$ is an $i.i.d.$ disturbance such that $e_t(\mathbf{r})\sim\mathcal{GP}(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}'))$. Here $\mathcal{GP}(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}'))$ denotes a zero mean spatial Gaussian process with covariance function $\gamma(\mathbf{r}-\mathbf{r}')$~\cite{Rasmussen2005}. The disturbance is added to account for model uncertainty and unmodelled inputs. To simplify the notation, the index of the future time sample, $t+T_s$, shall be referred to as $t+1$ throughout the rest of the paper. 
@@ -141,12 +138,12 @@ The mapping between the membrane voltage and the electrophysiological data is mo
 	\mathbf{y}_t =
 	\int_{\Omega}{
 	    m\left(\mathbf{r}_n-\mathbf{r}'\right)v_t\left(\mathbf{r}'\right)
-	\, \mathrm{d}\mathbf{r}'} + 
+	\, d\mathbf{r}'} + 
 	\boldsymbol{\varepsilon}_t, 
 \end{equation}
 where $m\left(\mathbf{r}_n-\mathbf{r}'\right)$ is the observation kernel, $\mathbf{r}_n$ defines the location of the electrodes in the field, $n=1,...,N$ indexes the electrodes and $\boldsymbol{\varepsilon}_t \sim \mathcal{N}\left(0,\boldsymbol{\Sigma}_{\varepsilon}\right)$ denoting the multivariate normal distribution with mean zero and covariance matrix $\boldsymbol{\Sigma}_{\varepsilon}$. 
 
-When considering the measurement of a point source in a homogeneous field measured by a point sensor the observation kernel will theoretically follow a Laplacian like distribution, with an exponential decay in amplitude with increasing distance between the source and sensor~\cite{Jackson1999}. However, when considering a source or sensor with a spatial extent the peak of the observation kernel becomes smoothed and is more likened to a Gaussian shape~\cite{Jackson1999}. Therefore, the observation kernel $m(\mathbf{r}-\mathbf{r}')$ that governs the sensor pick-up geometry and is defined by 
+When considering the measurement of a point source in a homogeneous field measured by a point sensor the observation kernel will theoretically follow a Laplacian like distribution, with an exponential decay in amplitude with increasing distance between the source and sensor~\cite{Jackson1999}. However, when considering a source or sensor with a spatial extent the peak of the observation kernel becomes smoothed and is more likened to a Gaussian shape~\cite{Jackson1999}. Therefore, in this study the observation kernel $m(\mathbf{r}-\mathbf{r}')$ that governs the sensor pick-up geometry and is defined by 
 \begin{equation}
 	m\left(\mathbf{r}-\mathbf{r}'\right) = \exp{\left(-\frac{(\mathbf{r}-\mathbf{r}')^\top(\mathbf{r}-\mathbf{r}')}{\sigma_m^2}\right)},
 \end{equation}
@@ -168,24 +165,24 @@ The width and positioning of the basis functions can be determined by spectral a
 \begin{equation}\label{DefKernelDecomp}
 	 w\left(\mathbf{r},\mathbf{r}'\right) =\boldsymbol{\psi}^\top\left(\mathbf{r},\mathbf{r}'\right) \boldsymbol{\theta},
 \end{equation}
-where $\boldsymbol{\psi}(\mathbf{r},\mathbf{r}')$ is a vector of Gaussian basis functions and $\boldsymbol{\theta}$ is a vector of scaling parameters. By assuming a Gaussian isotropic connectivity structure, the kernel basis functions can be written as $\boldsymbol{\psi}(\mathbf{r}-\mathbf{r}')$. We will assume that we know the parametric form of the connectivity basis functions, where the scaling parameters $\boldsymbol{\theta}$ are unknown. Each connectivity basis function can, individually, be considered a layer in the Wilson and Cowan model. Typically, the Mexican hat connectivity kernel is comprised of two basis functions representing local excitation and surround inhibition. To demonstrate the flexibility of the estimation framework, a third basis function is incorporated, corresponding to weaker mid-range excitation. Rearranging the order of the spatial convolution in~\ref{DiscreteTimeModel} and substituting in equations~\ref{DefFieldDecomp} and~\ref{DefKernelDecomp} we get 
+where $\boldsymbol{\psi}(\mathbf{r},\mathbf{r}')$ is a vector of Gaussian basis functions and $\boldsymbol{\theta}$ is a vector of scaling parameters. By assuming a Gaussian isotropic connectivity structure, the kernel basis functions can be written as $\boldsymbol{\psi}(\mathbf{r}-\mathbf{r}')$. We will assume that we know the parametric form of the connectivity basis functions, where the scaling parameters $\boldsymbol{\theta}$ are unknown. Each connectivity basis function can, individually, be considered a layer in the Wilson and Cowan model. Typically, the Mexican hat connectivity kernel is comprised of two basis functions representing local excitation and surround inhibition. To demonstrate the flexibility of the estimation framework, a third basis function is incorporated, corresponding to weaker mid-range excitation. Rearranging the order of the spatial convolution in equation~\ref{DiscreteTimeModel} and substituting in equations~\ref{DefFieldDecomp} and~\ref{DefKernelDecomp} we get 
 \begin{eqnarray}
 	\label{reduced continuous model}
-	\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_{t+1} &=& T_s\int_\Omega{f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t )\boldsymbol{\psi}^{\top}(\mathbf{r}-\mathbf{r}') \, \textrm{d}\mathbf{r}'}\boldsymbol{\theta} \nonumber \\
+	\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_{t+1} &=& T_s\int_\Omega{f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t )\boldsymbol{\psi}^{\top}(\mathbf{r}-\mathbf{r}') \, d\mathbf{r}'}\boldsymbol{\theta} \nonumber \\
 	&+& \xi\boldsymbol{\phi}^{\top}(\mathbf{r})x_t + \mathbf{e}_t(\mathbf{r}). 
 \end{eqnarray}
 Next we multiply equation~\ref{reduced continuous model} by $\boldsymbol{\phi}(\mathbf{r})$ and integrate over the spatial domain $\Omega$ to get 
 \begin{eqnarray}
 	\label{StartofReduction}
- 	\int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) \textrm{d}\mathbf{r}} \mathbf{x}_{t+1} &=&
+ 	\int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) d\mathbf{r}} \mathbf{x}_{t+1} &=&
  T_s \int_\Omega \boldsymbol{\phi} (\mathbf{r}) \int_\Omega \boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}') \nonumber \\
-&\times& { f(\boldsymbol{\phi}^{\top}(\mathbf{r}') \mathbf{x}_t ) \, \textrm{d}\mathbf{r}'\textrm{d}\mathbf{r}}\boldsymbol{\theta} \nonumber \\ 
-&+& \xi\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\phi}^{\top}(\mathbf{r})\textrm{d}\mathbf{r}} \mathbf{x}_t \nonumber \\ &+& 
-\int_\Omega{\boldsymbol{\phi} (\mathbf{r}) e_t(\mathbf{r}) \, \textrm{d}\mathbf{r}}. 
+&\times& { f(\boldsymbol{\phi}^{\top}(\mathbf{r}') \mathbf{x}_t ) \, d\mathbf{r}'d\mathbf{r}}\boldsymbol{\theta} \nonumber \\ 
+&+& \xi\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\phi}^{\top}(\mathbf{r})d\mathbf{r}} \mathbf{x}_t \nonumber \\ &+& 
+\int_\Omega{\boldsymbol{\phi} (\mathbf{r}) e_t(\mathbf{r}) \, d\mathbf{r}}. 
 \end{eqnarray}
 Now defining the matrix
 \begin{equation}\label{eq:DefGamma}
-	\boldsymbol{\Gamma} \triangleq \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi} ^{\top}\left(\mathbf{r}\right) \, \textrm{d}\mathbf{r}}, 
+	\boldsymbol{\Gamma} \triangleq \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi} ^{\top}\left(\mathbf{r}\right) \, d\mathbf{r}}, 
 \end{equation}
 and substituting this into equation~\ref{StartofReduction} and cross-multiplying by $\boldsymbol{\Gamma}^{-1}$ gives
 \begin{eqnarray}
@@ -194,36 +191,36 @@ and substituting this into equation~\ref{StartofReduction} and cross-multiplying
 	 \mathbf{x}_{t+1} &=& T_s\boldsymbol{\Gamma}^{-1}
 	 \int_\Omega \boldsymbol{\phi}(\mathbf{r}) 
 	 \int_\Omega \boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}')f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \nonumber \\
-	&\times& \textrm{d}\mathbf{r}' \textrm{d}\mathbf{r} \boldsymbol{\theta}  
-	 + \xi\mathbf{x}_t + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r}) e_t(\mathbf{r}) \, \textrm{d}\mathbf{r}}.
+	&\times& d\mathbf{r}' d\mathbf{r} \boldsymbol{\theta}  
+	 + \xi\mathbf{x}_t + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r}) e_t(\mathbf{r}) \, d\mathbf{r}}.
 	 % \end{split}
 \end{eqnarray}
-The analytic derivation of the inner product of \emph{n}-dimensional Gaussians, which was used for calculating $\Gamma$, is provided in the supplementary material. Equation~\ref{eq:ReducedForm} can be simplified by exploiting the isotropy of the kernel and, hence, the basis functions used to represent it where
+The analytic derivation of the inner product of \emph{n}-dimensional Gaussians, which was used for calculating $\mathbf\Gamma$, is provided in the supplementary material. Equation~\ref{eq:ReducedForm} can be simplified by exploiting the isotropy of the kernel and, hence, the basis functions used to represent it where
 \begin{equation}
 	\boldsymbol{\psi} (\mathbf{r}-\mathbf{r}') = \boldsymbol{\psi} (\mathbf{r}'-\mathbf{r}).
 \end{equation}
 To make the simplification, we define
 \begin{equation}\label{eq:DefPsi}
-	\boldsymbol{\Psi}(\mathbf{r}') \triangleq T_s\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\psi}^{\top} (\mathbf{r}'-\mathbf{r}) \, \textrm{d}\mathbf{r}},
+	\boldsymbol{\Psi}(\mathbf{r}') \triangleq T_s\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\psi}^{\top} (\mathbf{r}'-\mathbf{r}) \, d\mathbf{r}},
 \end{equation}
-which is a constant $L \times n_{\theta}$ matrix that is defined analytically (see the supplementary material for analytic convolution of two Gaussians), where $L$ is the number of basis functions (states) and $n_{\theta}$ is the number of connectivity kernel basis functions. Substituting equation~\ref{eq:DefPsi} into~\ref{eq:ReducedForm} gives
+which is a constant $L \times n_{\theta}$ matrix that is defined analytically (see the supplementary material for analytic convolution of two Gaussians), where $L$ is the number of basis functions (states) and $n_{\theta}$ is the number of connectivity kernel basis functions. Substituting equation~\ref{eq:DefPsi} into equation~\ref{eq:ReducedForm} gives
 \begin{eqnarray}
-	\mathbf{x}_{t+1} &=& \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \, \textrm{d}\mathbf{r}' \boldsymbol{\theta} \nonumber \\ &+& \xi\mathbf{x}_t 
-+ \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r}) \, \textrm{d}\mathbf{r}}.
+	\mathbf{x}_{t+1} &=& \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \, d\mathbf{r}' \boldsymbol{\theta} \nonumber \\ &+& \xi\mathbf{x}_t 
++ \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r}) \, d\mathbf{r}}.
 \end{eqnarray}
 This substitution exploits the isotropy of the connectivity kernel basis functions, allowing us to swap the convolution in equation~\ref{reduced continuous model}, which would be computationally demanding, with the convolution in equation~\ref{eq:DefPsi}, which can be calculated analytically. This is of great importance as it lowers the computational demands of the estimation algorithm and provides a dramatic increase in estimation speed. 
 
 Now we define the state disturbance as
 \begin{equation}\label{eq:Wt} 
-	\mathbf{e}_t \triangleq \boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi} ( \mathbf{r} )e_t( \mathbf{r} ) \, \textrm{d}\mathbf{r}},
+	\mathbf{e}_t \triangleq \boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi} ( \mathbf{r} )e_t( \mathbf{r} ) \, d\mathbf{r}},
 \end{equation}
 which is a zero mean normally distributed white noise process with covariance (see the supplementary material for the derivation)
 \begin{equation}
-	\boldsymbol\Sigma_e =\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega}\boldsymbol{\phi}\left(\mathbf r\right) \gamma\left(\mathbf r- \mathbf r' \right)\boldsymbol{\phi}\left(\mathbf r'\right)^{\top} \, \mathrm{d}\mathbf r' \mathrm{d}\mathbf r\mathbf{\Gamma}^{- \top}. 
+	\boldsymbol\Sigma_e =\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega}\boldsymbol{\phi}\left(\mathbf r\right) \gamma\left(\mathbf r- \mathbf r' \right)\boldsymbol{\phi}\left(\mathbf r'\right)^{\top} \, d\mathbf r' d\mathbf r\mathbf{\Gamma}^{- \top}. 
 \end{equation}
-Under the assumption that the basis function decomposition is accurate, the observation equation of the reduced model is found by substituting equation~\ref{DefFieldDecomp} into~\ref{eq:ObservationEquation} giving
+Under the assumption that the basis function decomposition is accurate, the observation equation of the reduced model is found by substituting equation~\ref{DefFieldDecomp} into equation~\ref{eq:ObservationEquation} giving
 \begin{equation}\label{eq:ReducedObservationEquation}
-	\mathbf{y}_t = \int_{\Omega}{m\left(\mathbf{r}_n-\mathbf{r}'\right)\boldsymbol{\phi}^{\top}\left(\mathbf{r'}\right) \mathbf{x}_t\, \textrm{d}\mathbf{r}'} + \boldsymbol{\varepsilon}_t. 
+	\mathbf{y}_t = \int_{\Omega}{m\left(\mathbf{r}_n-\mathbf{r}'\right)\boldsymbol{\phi}^{\top}\left(\mathbf{r'}\right) \mathbf{x}_t\, d\mathbf{r}'} + \boldsymbol{\varepsilon}_t. 
 \end{equation}
 The observation equation is linear and can be written in the more compact form
 \begin{equation}\label{ObservationEquation} 
@@ -241,7 +238,7 @@ where the observation matrix is
 \end{equation}
 and 
 \begin{equation}
-	c_{i,j} = \int_{\Omega}m(\mathbf{r}_i - \mathbf{r}')\boldsymbol{\phi}_j(\mathbf{r}') \, \textrm{d}\mathbf{r}'. 
+	c_{i,j} = \int_{\Omega}m(\mathbf{r}_i - \mathbf{r}')\boldsymbol{\phi}_j(\mathbf{r}') \, d\mathbf{r}'. 
 \end{equation}
 Now we have the final form of the state-space model where
 \begin{equation}\label{eq:finalformstatespacemodel}
@@ -252,7 +249,7 @@ Now we have the final form of the state-space model where
 \end{equation}
 and 
 \begin{equation}\label{eq:QmatrixForSigmapoints}
-	Q(\mathbf{x}_t) = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \, \textrm{d}\mathbf{r}' \boldsymbol{\theta} + \xi\mathbf{x}_t.
+	Q(\mathbf{x}_t) = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \, d\mathbf{r}' \boldsymbol{\theta} + \xi\mathbf{x}_t.
 \end{equation}
 
 \subsection{Spectral Analysis}\label{SpectralAnalysisSection} 
