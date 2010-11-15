@@ -816,11 +816,11 @@ $\mathbf P_{t}^{b}=\mathbf P_{t}^{f}+\mathbf S_t\left[\mathbf P_{t+1}^{b}-\mathb
 
 \begin{table}[!ht]
 	\caption{
-	\bf{Results from varying the connectivity kernel parameters}}
+	\bf{Results from varying the Mexican hat connectivity kernel parameters}}
 \begin{tabular}{c|ccccc}
 	Experiment & Parameter & Actual & Mean Est. & Std. Dev. & Bias (\%) \\ \hline
 	I &	$\theta_0$ & $90$ & 103.86 & 23.14 & 15.4 \\
-	& $\theta_1$ & -80 & -89.05 & 16.57 & -11.31 \\
+	& $\theta_1$ & -80 & -89.05 & 16.57 & 11.31 \\
 	& $\theta_2$ & 5 & 5.23 & 0.74 & 4.6 \\
 	& $\xi$ & 0.9 & 0.923 & 0.003 & 2.56 \\ \hline	
 	
@@ -836,15 +836,37 @@ $\mathbf P_{t}^{b}=\mathbf P_{t}^{f}+\mathbf S_t\left[\mathbf P_{t+1}^{b}-\mathb
 \end{tabular}\label{tab:MexicanHatKernelResults}
 \end{table}
 
-\tiny{\begin{tabular}{lcccccccccccc}
-Experiment&\multicolumn{4}{c}{IV}&\multicolumn{4}{c}{V}&\multicolumn{4}{c}{VI}\\
- Parameters&$\theta_0$&$\theta_1$&$\theta_2$&$\xi$&$\theta_0$&$\theta_1$&$\theta_2$&$\xi$&$\theta_0$&$\theta_1$&$\theta_2$&$\xi$\\
-\hline\hline
-Actual Value&$15$&$0$&$0$&$30$&$0$&$0$&$50$&$0$&$0$\\
-Mean Estimate&$35.68$&$-18.16$&$0.81$&$0.923$&$40.43$&$-12.01$&$ 0.35$&$0.924$&$61.46$&$-15.03$&$0.27$&$0.924$\\
-Std. Dev.&$16.72$&$11.77$&$0.53$&$0.002$&$11.47$&$7.8$&$0.36$&$0.003$&$11.51$&$7.56$&$0.29$&$0.003$\\
-Bias (\%)&$137.87$&$-$&$-$&$2.56$&$34.77$&$-$&$-$&$2.67$&$22.92$&$-$&$-$&$2.67$\\
-\end{tabular}\label{tab:GaussianKernelResults}}
+% \tiny{\begin{tabular}{lcccccccccccc}
+% Experiment&\multicolumn{4}{c}{IV}&\multicolumn{4}{c}{V}&\multicolumn{4}{c}{VI}\\
+%  Parameters&$\theta_0$&$\theta_1$&$\theta_2$&$\xi$&$\theta_0$&$\theta_1$&$\theta_2$&$\xi$&$\theta_0$&$\theta_1$&$\theta_2$&$\xi$\\
+% \hline\hline
+% Actual Value&$15$&$0$&$0$&$30$&$0$&$0$&$50$&$0$&$0$\\
+% Mean Estimate&$35.68$&$-18.16$&$0.81$&$0.923$&   $40.43$&$-12.01$&$ 0.35$&$0.924$&        $61.46$&$-15.03$&$0.27$&$0.924$\\
+% Std. Dev.&$16.72$&$11.77$&$0.53$&$0.002$&		$11.47$&$7.8$&$0.36$&$0.003$&	$11.51$&$7.56$&$0.29$&$0.003$\\
+% Bias (\%)&$137.87$&$-$&$-$&$2.56$&$34.77$&$-$&$-$&$2.67$&$22.92$&$-$&$-$&$2.67$\\
+% \end{tabular}\label{tab:GaussianKernelResults}}
+
+\begin{table}[!ht]
+	\caption{
+	\bf{Results from varying the Gaussian connectivity kernel parameter}}
+\begin{tabular}{c|ccccc}
+	Experiment & Parameter & Actual & Mean Est. & Std. Dev. & Bias (\%) \\ \hline
+	IV &$\theta_0$ & $15$ & $35.68$ & $16.72$ & $137.87$ \\
+	& $\theta_1$ & 0 & $-18.16$ & $11.77$ & - \\
+	& $\theta_2$ & 0 & $0.81$ & $0.53$ & - \\
+	& $\xi$ & 0.9 & 0.923 & $0.002$ & 2.56 \\ \hline	
+	
+	V & $\theta_0$ & $30$ & $40.43$ & $11.47$ & $34.77$ \\
+	& $\theta_1$ & 0 & $-12.01$ & $7.8$ & - \\
+	& $\theta_2$ & 0 & 0.35 & $0.36$ & - \\
+	& $\xi$ & 0.9 & $0.924$ & $0.003$ & $2.67$ \\ \hline
+	
+	VI & $\theta_0$ & $50$ & $61.46$ & $11.51$ & $22.92$ \\
+	& $\theta_1$ & 0 & $-15.03$ & $7.56$ & - \\
+	& $\theta_2$ & 0 & $0.27$ & $0.29$ & - \\
+	& $\xi$ & 0.9 & $0.924$ & $0.003$ & $2.67$ \\ \hline
+\end{tabular}\label{tab:GaussianKernelResults}
+\end{table}
 
 \end{document}
 
