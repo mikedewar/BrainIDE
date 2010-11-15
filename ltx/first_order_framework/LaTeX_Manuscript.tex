@@ -269,7 +269,7 @@ In practice, it is difficult to estimate the bandwidth of the cortex using tradi
 
 Although such sensors avoid errors due to aliasing, they attenuate the high spatial frequency variations in the observations. Therefore, any procedure applied to estimate the original field or the underlying connectivity structure from these band-limited observations has the potential to underestimate the high spatial frequency components of both the field and the connectivity kernel. This motivates the use of sensors with wider bandwidths (narrower in space). Nevertheless, this choice would require more sensors in order to satisfy Shannon's sampling theorem for a given spatial region. Therefore, a compromise needs to be found between the bandwidth of the sensor response, the accuracy of the estimation results, the number of sensors and the computational demands of the estimation procedure when designing experiments.
 
-Similar considerations need to be made regarding the representation of the dynamic field, $v_t(\mathbf{r})$, using the basis function decomposition. Again applying Shannon's sampling theorem, the minimum distance between basis functions must satisfy 
+Similar considerations need to be made regarding the representation of the dynamic field, $v_t(\mathbf{r})$, using the basis function decomposition. Again, applying Shannon's sampling theorem, the minimum distance between basis functions must satisfy 
 \begin{equation}\label{eq:BasisFunctionSeparation}
 	\Delta_{\phi} \leq \frac{1}{2\rho_{\phi}\boldsymbol{\nu}_{cy}}
 \end{equation}
@@ -385,23 +385,23 @@ Following this, the LS parameter estimates, $ \hat{\mathcal{W}}$, are
 \end{equation}
 
 % Results and Discussion can be combined.
-\section{Results}\label{ResultsSection} In this section, we provide a demonstration of the estimation procedure using the new methods that are described above. The full neural field model was used to generate the data for state and parameter estimation. All parameters for the model are given in Table~\ref{tab:Parameters}. Note, the parameters for the spatial and temporal aspects of the model can be considered arbitrary when demonstrating the estimation methodology. This is due to the fact that the temporal aspects scale with the sampling rate and the length of the times series, and the spatial aspects scale with the size of the neural field and the space step used for numerical simulation. When generating the simulated data, we assumed free boundary conditions for the neural field. An example of the simulated field can be seen in Figure~\ref{fig:Figure3}(a). Figure~\ref{fig:Figure3}(b) shows an example of data from the modelled sensors and Figure~\ref{fig:Figure3}(c) shows the power spectral density (PSD) of the simulated time-series. %The PSD shows the typical $1/f^2$ characteristics of intracranial EEG.
+\section{Results}\label{ResultsSection} In this section, we provide demonstrations of the estimation procedure using the new methods that are described above. The full neural field model was used to generate the data for state and parameter estimation. All parameters for the model are given in Table~\ref{tab:Parameters}, unless otherwise explicitly stated for particular experiments. Note, the parameters for the spatial and temporal aspects of the model can be considered arbitrary when demonstrating the estimation methodology. This is due to the fact that the temporal aspects scale with the sampling rate and the length of the times series, and the spatial aspects scale with the size of the neural field and the space step used for numerical simulation. When generating the simulated data, we assumed free boundary conditions for the neural field. An example of the simulated field can be seen in Figure~\ref{fig:Figure3}(a). Figure~\ref{fig:Figure3}(b) shows an example of data from the modelled sensors and Figure~\ref{fig:Figure3}(c) shows the power spectral density (PSD) of the simulated time-series. %The PSD shows the typical $1/f^2$ characteristics of intracranial EEG.
 
 The sensors were spaced on a $14 \times 14$ square grid and the sensor width was set to $\sigma^2_m = 0.81$. This provides a width of 1.5~mm at half the maximum amplitude of the sensor kernel. The distance between sensors was set to $\Delta_y = 1.5$~mm. This arrangement modelled the recording as having some cross talk (from volume conduction), which is typical for neurophysiological recordings.
 
 \subsection{Spatial Frequency Analysis}
-The spectral analysis was used to confirm that the spacing and width of the sensors was adequate to capture the significant dynamics of the field. Figure~\ref{fig:Figure4}(a) shows the spatial frequency of the neural field and Figure~\ref{fig:Figure4}(b) shows the spatial frequency of the reconstruct neural field from the basis function decomposition. The cut-off frequency of the neural field is $\boldsymbol{\nu}_c \approx 0.24$~Hz ($-3$~dB point). From equation~\ref{eq:MinimumSensorDistance}, this yielded a minimum sensor separation of 2.08~mm. This confirms that the separation of $\Delta_{y} = 1.5$~mm was sufficient to mitigate problems associated with spatial aliasing.
+The spectral analysis was used to confirm that the spacing and width of the sensors was adequate to capture the significant dynamics of the field. Figure~\ref{fig:Figure4}(a) shows the spatial frequency of the neural field and Figure~\ref{fig:Figure4}(b) shows the spatial frequency of the reconstruct neural field from the basis function decomposition. The cut-off frequency of the neural field is $\boldsymbol{\nu}_c \approx 0.24$~Hz ($-3$~dB point). From equation~\ref{eq:MinimumSensorDistance}, this yielded a minimum sensor separation of 2.08~mm. This confirms that the separation of $\Delta_{y} = 1.5$~mm was sufficient to mitigate problems associated with spatial aliasing of the dominant dynamics.
 
 The spatial frequency of the observed field is shown in Figure~\ref{fig:Figure5}(a). The cut-off frequency is $\boldsymbol{\nu}_{cy} \approx 0.2$~Hz (-3~dB point). The observation cut-off frequency is lower than the field cut-off due to the low-pass filtering effect of the sensors. The spatial frequency response of the sensors can be seen in Figure~\ref{fig:Figure5}(b). Using an oversampling parameter of $\rho_{\phi}=1$, the minimum distance between the field basis functions was calculated to be 2.5~mm to satisfy Shannon's sampling criterion (from equation~\ref{eq:BasisFunctionSeparation}). The distance between basis functions was set to $\Delta_{\phi}=2.5$~mm, which is sufficient to capture the significant dynamics according to these criteria.
 
-Given this basis function separation, the basis function width parameter was set to $\sigma_{\phi}^2=2.5$~mm. This allowed a smooth representation of the field by the basis function decomposition up to a spatial frequency $\boldsymbol{\nu}_{c\phi} \approx 0.12$~Hz, as described by equation~\ref{eq:CutoffFromBasisFuncWidth}. The band-limiting effect is due to the spatial frequency response of the basis functions as seen in Figure~\ref{fig:Figure5}(c). The band-limiting effect of the basis function decomposition can be seen when comparing Figure~\ref{fig:Figure4}(a) to Figure~\ref{fig:Figure4}(b).
+Given this basis function separation, the basis function width parameter was set to $\sigma_{\phi}^2=2.5$~mm. This allowed a smooth representation of the field by the basis function decomposition up to a spatial frequency $\boldsymbol{\nu}_{c\phi} \approx 0.12$~Hz, as described by equation~\ref{eq:CutoffFromBasisFuncWidth}. The band-limiting effect is due to the spatial frequency response of the basis functions as seen in Figure~\ref{fig:Figure5}(c). This band-limiting effect of the basis function decomposition can be observed when comparing Figure~\ref{fig:Figure4}(a) to Figure~\ref{fig:Figure4}(b).
 
 \subsection{State and Parameter Estimates} 
 \label{sec:state_and_param_results}
 Experiments were performed to demonstrate the performance of the state and parameter estimation algorithm. The first experiment evaluates the estimation performance using a Monte Carlo approach for a single set of parameters. Using this experiment we demonstrate convergence of the algorithm, show the distribution of estimated parameters and the accuracy of the state estimates for a single set of parameters. The second experiment evaluates the performance with a selection of different connectivity kernel parameters. In addition, results are shown where the support of the connectivity kernels differs between actual data and the estimator. The third experiment shows the how the estimation accuracy varies depending on the parameters of the sigmoidal nonlinearity. The final experiment shows the effect of the width of the sensor kernel on the estimation performance.
 
 \subsubsection{Monte Carlo Simulation with Fixed Parameters}
-A Monte Carlo approach was employed where 150 realisations of the data were generated. Each realisation consisted of 500~ms of data (sampled at $1$~kHz) and the estimation was applied to the final 400~ms, allowing the model's initial transients to die out. The initial state and parameters were unknown to the estimator. Ten iterations of the estimation algorithm were used to ensure the parameters converged. Figure~\ref{fig:Figure6} shows the rate of convergence, confirming the parameters converged, with the changes in the parameter errors falling to less than $10^{-4}$ after six iterations.
+A Monte Carlo approach was employed where 150 realisations of the data were generated. Each realisation consisted of 500~ms of data (sampled at $1$~kHz) and the estimation was applied to the final 400~ms, allowing the model's initial transients to die out. The initial state and parameters were unknown to the estimator. Ten iterations of the estimation algorithm were used to ensure the parameters converged. Figure~\ref{fig:Figure6} shows the rate of convergence, confirming the parameters converged, with the changes in the parameter errors falling to less than $10^{-4}$ after 6 iterations.
 
 Histograms of the parameter estimates obtained over the 150 realisations are shown in Figure~\ref{fig:Figure7}. The actual parameter values, the mean estimates, corresponding standard deviations and biases are given with the results from the next Section in Table~\ref{tab:MexicanHatKernelResults}. The biases show the percentage differences between the actual values and the mean parameter estimates. The mean estimates are in good agreement with the actual values of the connectivity kernel parameters, however the time constant parameter, $\xi$, is outside the estimate distribution (with bias of 2.78\%), with a small variance in parameter estimates.
 
@@ -804,15 +804,37 @@ $\mathbf P_{t}^{b}=\mathbf P_{t}^{f}+\mathbf S_t\left[\mathbf P_{t+1}^{b}-\mathb
 % \hline
 % \end{tabular}}
 
-\tiny{\begin{tabular}{lcccccccccccc}
-Experiment&\multicolumn{4}{c}{I}&\multicolumn{4}{c}{II}&\multicolumn{4}{c}{III}\\
- Parameters&$\theta_0$&$\theta_1$&$\theta_2$&$\xi$&$\theta_0$&$\theta_1$&$\theta_2$&$\xi$&$\theta_0$&$\theta_1$&$\theta_2$&$\xi$\\
-\hline\hline
-Actual Value&$90$&$-80$&$5$&$0.9$&$100$&$-80$&$5$&$0.9$&$110$&$-80$&$5$&$0.9$\\
-Mean Estimate&$103.86$&$-89.05$&$5.23$&$0.923$&$101.75$&$-81.00$&$4.76$&$0.924$&$98.90 $&$-73.13$&$4.37$&$0.925$\\
-Std. Dev.&$23.14$&$16.57$&$0.74$&$0.003$&$21.30$&$14.82$&$0.65$&$0.003$&$16.48$& $11.72$&$0.54$&$0.003$\\
-Bias (\%)& $15.4$&$11.31$&$4.6$&$2.56$&$1.75$&$1.25$&$4.8$&$2.67$&$10.1$&$ 8.58$&$12.6$&$2.78$  \\
-\end{tabular}\label{tab:MexicanHatKernelResults}}
+% \tiny{\begin{tabular}{lcccccccccccc}
+% Experiment&\multicolumn{4}{c}{I}&\multicolumn{4}{c}{II}&\multicolumn{4}{c}{III}\\
+%  Parameters&$\theta_0$&$\theta_1$&$\theta_2$&$\xi$&$\theta_0$&$\theta_1$&$\theta_2$&$\xi$&$\theta_0$&$\theta_1$&$\theta_2$&$\xi$\\
+% \hline\hline
+% Actual Value&$90$&$-80$&$5$&$0.9$&$100$&$-80$&$5$&$0.9$&$110$&$-80$&$5$&$0.9$\\
+% Mean Estimate&$103.86$&$-89.05$&$5.23$&$0.923$& $101.75$&$-81.00$&$4.76$&$0.924$&$98.90 $&$-73.13$&$4.37$&$0.925$\\
+% Std. Dev.&$23.14$&$16.57$&$0.74$&$0.003$ & $21.30$&$14.82$&$0.65$&$0.003$&$16.48$& $11.72$&$0.54$&$0.003$\\
+% Bias (\%)& $15.4$&$11.31$&$4.6$ &$2.56$ &$1.75$&$1.25$&$4.8$&$2.67$&$10.1$&$ 8.58$&$12.6$&$2.78$  \\
+% \end{tabular}\label{tab:MexicanHatKernelResults}}
+
+\begin{table}[!ht]
+	\caption{
+	\bf{Results from varying the connectivity kernel parameters}}
+\begin{tabular}{c|ccccc}
+	Experiment & Parameter & Actual & Mean Est. & Std. Dev. & Bias (\%) \\ \hline
+	I &	$\theta_0$ & $90$ & 103.86 & 23.14 & 15.4 \\
+	& $\theta_1$ & -80 & -89.05 & 16.57 & -11.31 \\
+	& $\theta_2$ & 5 & 5.23 & 0.74 & 4.6 \\
+	& $\xi$ & 0.9 & 0.923 & 0.003 & 2.56 \\ \hline	
+	
+	II & $\theta_0$ & $100$ & 101.75 & $21.30$ & $1.75$ \\
+	& $\theta_1$ & -80 & -81.00 & $14.82$ & $1.25$ \\
+	& $\theta_2$ & 5 & $4.76$ & $0.65$ & $4.8$ \\
+	& $\xi$ & 0.9 & $0.924$ & $0.003$ & $2.67$ \\ \hline
+	
+	III & $\theta_0$ & $110$ & $98.90$ & $16.48$ & $10.1$ \\
+	& $\theta_1$ & -80 & $-73.13$ & $11.72$ & $ 8.58$ \\
+	& $\theta_2$ & 5 & $4.37$ & $0.54$ & $12.6$ \\
+	& $\xi$ & 0.9 & $0.925$ & $0.003$ & $2.78$ \\ \hline
+\end{tabular}\label{tab:MexicanHatKernelResults}
+\end{table}
 
 \tiny{\begin{tabular}{lcccccccccccc}
 Experiment&\multicolumn{4}{c}{IV}&\multicolumn{4}{c}{V}&\multicolumn{4}{c}{VI}\\
