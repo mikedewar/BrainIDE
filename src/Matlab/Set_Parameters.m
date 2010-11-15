@@ -26,9 +26,9 @@ T = 1000;            % maximum time (ms)
 
 % kernel parameters
 % ~~~~~~~~~~~
-theta(1) = 10.0;           % local kernel amplitude
-theta(2) = -8;             % surround kernel amplitude
-theta(3) = .5;               % lateral kernel amplitude
+theta(1) = 100.0;           % local kernel amplitude
+theta(2) = -80;             % surround kernel amplitude
+theta(3) = 5;               % lateral kernel amplitude
 
 sigma_psi(1) = 1.8;     % local kernel width
 sigma_psi(2) = 2.4;     % surround kernel width
@@ -38,6 +38,7 @@ psi_0 = Define2DGaussian(0,0, sigma_psi(1)^2, 0,NPoints,SpaceMin,SpaceMax);
 psi_1 = Define2DGaussian(0,0, sigma_psi(2)^2, 0,NPoints,SpaceMin,SpaceMax);
 psi_2 = Define2DGaussian(0,0, sigma_psi(3)^2, 0,NPoints,SpaceMin,SpaceMax);
 w = theta(1)*psi_0 + theta(2)*psi_1 + theta(3)*psi_2;       % the kernel
+
 W = fft2(w);                                                                       % the fft of the kernel
 Ts_W = W*Ts;                        % FFT of kernel times the time step
 % ~~~~~~~~~~~~~~~~~~~~~~
@@ -122,7 +123,7 @@ Sigma_varepsilon = sigma_varepsilon*eye(NSensors);        % observation covarian
 
 % sigmoid parameters
 % ~~~~~~~~~~~~
-f_max = 10;             % maximum firing rate
+f_max = 1;             % maximum firing rate
 varsigma = 0.56;         % sigmoid slope
 v_0 = 1.8;                    % firing threshold
 
