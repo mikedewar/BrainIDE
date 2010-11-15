@@ -54,7 +54,11 @@ for n=1:NPointsInField
         mm=mm+1;
         
 %         clim = [-200 -1];         % for log
+<<<<<<< HEAD
 % %<<<<<<< HEAD
+=======
+% <<<<<<< HEAD
+>>>>>>> 77a47d259f23fdd63d76d9be5524cd4b75d66048
 %         clim = [0 0.08];
 % 
 %         subplot(3,3,1),imagesc(topleft,clim)
@@ -89,8 +93,13 @@ for n=1:NPointsInField
 % % %         imagesc(log10(temp2))
 % %         drawnow
 % >>>>>>> 8cec59265d4c54159cbc4765871cd56ee7b9e942
+<<<<<<< HEAD
      end
  end
+=======
+    end
+end
+>>>>>>> 77a47d259f23fdd63d76d9be5524cd4b75d66048
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
