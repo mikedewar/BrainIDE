@@ -55,7 +55,7 @@ $^6$ Department of Systems and Control Engineering, University of Malta, Msida, 
 
 
 \begin{abstract}
-This paper presents a framework for creating neural field models from electrophysiological data. The Wilson and Cowan or Amari style neural field equations are used to form a parametric model, where the parameters are estimated from data. To illustrate the estimation framework, data is generated using the neural field equations incorporating modelled sensors, so a comparison can be made between estimated and true parameters. To facilitate state and parameter estimation, we introduce a method to reduce the continuum neural field model, using a basis function decomposition, to form a finite-dimensional state-space model. Spatial frequency analysis methods are introduced that systematically specify the basis function configuration required to capture the dominant characteristics of the neural field. The estimation procedure consists of a two-stage iterative algorithm incorporating the unscented Rauch-Tung-Striebel smoother for state estimation and a least squares algorithm for parameter estimation. The results show that it is theoretically possible to reconstruct the neural field and estimate intracortical connectivity and synaptic dynamics with the proposed framework. The results also illustrate a systematic loss of high spatial frequency information as the cost incurred by the model reduction procedure. 
+This paper presents a framework for creating neural field models from electrophysiological data. The Wilson and Cowan or Amari style neural field equations are used to form a parametric model, where the parameters are estimated from data. To illustrate the estimation framework, data is generated using the neural field equations incorporating modelled sensors so a comparison can be made between estimated and true parameters. To facilitate state and parameter estimation, we introduce a method to reduce the continuum neural field model using a basis function decomposition to form a finite-dimensional state-space model. Spatial frequency analysis methods are introduced that systematically specify the basis function configuration required to capture the dominant characteristics of the neural field. The estimation procedure consists of a two-stage iterative algorithm incorporating the unscented Rauch-Tung-Striebel smoother for state estimation and a least squares algorithm for parameter estimation. The results show that it is theoretically possible to reconstruct the neural field and estimate intracortical connectivity and synaptic dynamics with the proposed framework. The results also illustrate a systematic loss of high spatial frequency information as the cost incurred by the model reduction procedure. 
 \end{abstract}
 
 \maketitle
@@ -75,7 +75,7 @@ We present an extension to the work of Schiff and Sauer~\cite{schiff2008kalman} 
 
 Modelling the neural dynamics within this framework has a distinct advantage over the more standard multivariate auto-regressive (MVAR) models: the number of parameters to define the spatial connectivity is considerably smaller than the number of AR coefficients typically required to achieve the required model complexity. 
 
-In this paper, we demonstrate for the first time how intracortical connectivity can be inferred from data, based on a variant of the WC neural field model~\cite{Wilson1973}. This work provides a fundamental link between the theoretical advances in neural field modelling and electrophysiological data. The paper proceeds by first deriving the continuum neural field equations. Then a finite-dimensional neural field model is derived. The model is reduced by approximating the neural field using a set of continuous basis functions, weighted by a finite dimensional state vector. The next section establishes conditions using spatial frequency analysis for both sensor and basis function spacing and width, such that the dominant dynamics of the neural field can be represented by the reduced model. The state and parameter estimation procedure is described in the following section. The results for the spatial frequency analysis and parameter estimation are then presented. Finally, the implications and limitations of this framework are discussed along with planned future developments.
+In this paper, we demonstrate for the first time how intracortical connectivity can be inferred from data, based on a variant of the WC neural field model~\cite{Wilson1973}. This work provides a fundamental link between the theoretical advances in neural field modelling and electrophysiological data. The paper proceeds by first describing the continuum neural field equations that are used as the cortical model. Then a finite-dimensional neural field model is derived. The model is reduced by approximating the neural field using a set of continuous basis functions, weighted by a finite dimensional state vector. The next section establishes conditions using spatial frequency analysis for both sensor and basis function spacing and width, such that the dominant dynamics of the neural field can be represented by the reduced model. The state and parameter estimation procedure is described in the following section. The results for the spatial frequency analysis and parameter estimation are then presented. Finally, the implications and limitations of this framework are discussed along with planned future developments.
 
 \section{Methods}
 
@@ -114,7 +114,7 @@ To arrive at the final form of the model, we shall express the synaptic response
 \begin{equation}
 	\label{GreensFuncDef} \textrm{D}h\left( t \right) = \delta \left( t \right), 
 \end{equation}
-where $\textrm{D}=\frac{d}{dt} + \zeta$ is a temporal differential operator and $\delta(t)$ is the Dirac-delta function giving 
+where $\textrm{D}=d/dt + \zeta$ is a temporal differential operator and $\delta(t)$ is the Dirac-delta function giving 
 \begin{equation}
 	\label{FinalFormContinuous} 
 	\frac{dv\left( \mathbf{r},t \right)}{dt} + \zeta v\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)\, d\mathbf{r}'}. 
@@ -141,13 +141,13 @@ The mapping between the membrane voltage and the electrophysiological data is mo
 	\, d\mathbf{r}'} + 
 	\boldsymbol{\varepsilon}_t, 
 \end{equation}
-where $m\left(\mathbf{r}_n-\mathbf{r}'\right)$ is the observation kernel, $\mathbf{r}_n$ defines the location of the electrodes in the field, $n=1,...,N$ indexes the electrodes and $\boldsymbol{\varepsilon}_t \sim \mathcal{N}\left(0,\boldsymbol{\Sigma}_{\varepsilon}\right)$ denoting the multivariate normal distribution with mean zero and covariance matrix $\boldsymbol{\Sigma}_{\varepsilon}$. 
+where $m\left(\mathbf{r}_n-\mathbf{r}'\right)$ is the observation kernel, $\mathbf{r}_n$ defines the location of the electrodes in the field, $n=1,...,N$ indexes the electrodes and $\boldsymbol{\varepsilon}_t \sim \mathcal{N}\left(0,\boldsymbol{\Sigma}_{\varepsilon}\right)$ denotes a multivariate normal distribution with mean zero and covariance matrix $\boldsymbol{\Sigma}_{\varepsilon}$. 
 
-When considering the measurement of a point source in a homogeneous field measured by a point sensor the observation kernel will theoretically follow a Laplacian like distribution, with an exponential decay in amplitude with increasing distance between the source and sensor~\cite{Jackson1999}. However, when considering a source or sensor with a spatial extent the peak of the observation kernel becomes smoothed and is more likened to a Gaussian shape~\cite{Jackson1999}. Therefore, in this study the observation kernel $m(\mathbf{r}-\mathbf{r}')$ that governs the sensor pick-up geometry and is defined by 
+When considering the measurement of a point source in a homogeneous field measured by a point sensor, the observation kernel will theoretically follow a Laplacian like distribution, with an exponential decay in amplitude with increasing distance between the source and sensor~\cite{Jackson1999}. However, when considering a source or sensor with a spatial extent the peak of the observation kernel becomes smoothed and is more likened to a Gaussian shape~\cite{Jackson1999}. Therefore, in this study the observation kernel $m(\mathbf{r}-\mathbf{r}')$ that governs the sensor pick-up geometry and is defined by 
 \begin{equation}
 	m\left(\mathbf{r}-\mathbf{r}'\right) = \exp{\left(-\frac{(\mathbf{r}-\mathbf{r}')^\top(\mathbf{r}-\mathbf{r}')}{\sigma_m^2}\right)},
 \end{equation}
-where $\sigma_m$ sets the kernel width. An example of measured observation kernel is shown in the supplementary material.
+where $\sigma_m$ sets the kernel width. An example of an experimentally measured observation kernel is shown in the supplementary material.
 
 \subsection{Derivation of Finite Dimensional State-Space Model}\label{Sect:ReducedModelDerivation}
 In order to implement standard estimation techniques, we use a decomposition of the field using a set of Gaussian basis functions. Decomposition allows a continuous field to be represented by a finite-dimensional state vector. This facilitates application of standard nonlinear state estimation methods such as the unscented Kalman filter. The field decomposition is described by 
@@ -171,7 +171,7 @@ where $\boldsymbol{\psi}(\mathbf{r},\mathbf{r}')$ is a vector of Gaussian basis 
 	\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_{t+1} &=& T_s\int_\Omega{f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t )\boldsymbol{\psi}^{\top}(\mathbf{r}-\mathbf{r}') \, d\mathbf{r}'}\boldsymbol{\theta} \nonumber \\
 	&+& \xi\boldsymbol{\phi}^{\top}(\mathbf{r})x_t + \mathbf{e}_t(\mathbf{r}). 
 \end{eqnarray}
-Next we multiply equation~\ref{reduced continuous model} by $\boldsymbol{\phi}(\mathbf{r})$ and integrate over the spatial domain $\Omega$ to get 
+Next we multiply equation~\ref{reduced continuous model} by $\boldsymbol{\phi}(\mathbf{r})$ and integrate over the spatial domain, $\Omega$, to get 
 \begin{eqnarray}
 	\label{StartofReduction}
  	\int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) d\mathbf{r}} \mathbf{x}_{t+1} &=&
@@ -195,7 +195,7 @@ and substituting this into equation~\ref{StartofReduction} and cross-multiplying
 	 + \xi\mathbf{x}_t + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r}) e_t(\mathbf{r}) \, d\mathbf{r}}.
 	 % \end{split}
 \end{eqnarray}
-The analytic derivation of the inner product of \emph{n}-dimensional Gaussians, which was used for calculating $\mathbf\Gamma$, is provided in the supplementary material. Equation~\ref{eq:ReducedForm} can be simplified by exploiting the isotropy of the kernel and, hence, the basis functions used to represent it where
+The analytic derivation of the inner product of \emph{n}-dimensional Gaussians, which was used for calculating $\mathbf\Gamma$ is provided in the supplementary material. Equation~\ref{eq:ReducedForm} can be simplified by exploiting the isotropy of the kernel and, hence, the basis functions used to represent it where
 \begin{equation}
 	\boldsymbol{\psi} (\mathbf{r}-\mathbf{r}') = \boldsymbol{\psi} (\mathbf{r}'-\mathbf{r}).
 \end{equation}
@@ -385,7 +385,7 @@ Following this, the LS parameter estimates, $ \hat{\mathcal{W}}$, are
 \end{equation}
 
 % Results and Discussion can be combined.
-\section{Results}\label{ResultsSection} In this section, we provide demonstrations of the estimation procedure using the new methods that are described above. The full neural field model was used to generate the data for state and parameter estimation. All parameters for the model are given in Table~\ref{tab:Parameters}, unless otherwise explicitly stated for particular experiments. Note, the parameters for the spatial and temporal aspects of the model can be considered arbitrary when demonstrating the estimation methodology. This is due to the fact that the temporal aspects scale with the sampling rate and the length of the times series, and the spatial aspects scale with the size of the neural field and the space step used for numerical simulation. When generating the simulated data, we assumed free boundary conditions for the neural field. An example of the simulated field can be seen in Figure~\ref{fig:Figure3}(A). Figure~\ref{fig:Figure3}(B) shows an example of data from the modelled sensors and Figure~\ref{fig:Figure3}(C) shows the power spectral density (PSD) of the simulated time-series. %The PSD shows the typical $1/f^2$ characteristics of intracranial EEG.
+\section{Results}\label{ResultsSection} We now provide demonstrations of the estimation procedure using the new methods that are described above. The full neural field model was used to generate the data for state and parameter estimation. All parameters for the model are given in Table~\ref{tab:Parameters}, unless otherwise explicitly stated for particular experiments. Note that the parameters for the spatial and temporal aspects of the model can be considered arbitrary when demonstrating the estimation methodology. This is because the temporal aspects scale with the sampling rate and the length of the times series, and the spatial aspects scale with the size of the neural field and the spatial step size used for numerical simulation. When generating the simulated data, we assumed free boundary conditions for the neural field. An example of the simulated field can be seen in Figure~\ref{fig:Figure3}(A). Figure~\ref{fig:Figure3}(B) shows an example of data from the modelled sensors and Figure~\ref{fig:Figure3}(C) shows the power spectral density (PSD) of the simulated time-series. %The PSD shows the typical $1/f^2$ characteristics of intracranial EEG.
 
 The sensors were spaced on a $14 \times 14$ square grid and the sensor width was set to $\sigma^2_m = 0.81$. This provides a width of 1.5~mm at half the maximum amplitude of the sensor kernel. The distance between sensors was set to $\Delta_y = 1.5$~mm. This arrangement modelled the recording as having some cross talk (from volume conduction), which is typical for neurophysiological recordings.
 
