@@ -427,7 +427,7 @@ For each of the Mexican hat connectivities, the support of the kernel was assume
 
 \subsubsection{Experiment III: Results for Varying the Parameters of the Sigmoidal Activation Function}
 
-Figure~\ref{fig:Figure12} demonstrates the effect of the sigmoid parameters on the estimation accuracy. The RMSE of the reconstructed connectivity kernel was calculated for various parameters of the sigmoid by varying the slope, $\varsigma$, and the threshold, $v_0$. The other model parameters remained fixed and were set according the Table~\ref{tab:Parameters}.
+Figure~\ref{fig:Figure12} demonstrates the effect of the sigmoid parameters on the estimation accuracy. The RMSE of the reconstructed connectivity kernel was calculated for various parameters of the sigmoid by varying the slope, $\varsigma$, and the threshold, $v_0$. The other model parameters remained fixed and were set according to the Table~\ref{tab:Parameters}.
 
 % The size of the squares in the figure show the magnitude of the log of the error. The squares are black if the log of the error is negative (the RMSE is $<1$) and the squares are white if the log of the error is positive (the RMSE is $>1$). The largest black squares indicate the best performance and the largest white squares indicate the worst performance for the parameter combinations (\dean{need some thing more quantitative}). 
 From Figure~\ref{fig:Figure12} it can be seen that the estimation accuracy depends on the parameters of the sigmoid function. \dean{This next bit is CRAP (please help):} When the threshold is negative or the slope is very gentle, all of the activity is being passed through the sigmoid function. However, as the slope is increased or the threshold is increased, more of the field is within the saturating region of the activation function. This is illustrated in Figure~\ref{fig:sigmoidfunctions}, where the sigmoids from the bottom left corner through to near top right corner of Figure~\ref{fig:sigmoidfunctions} are plotted. This appears to have a detrimental effect on the estimation accuracy.
@@ -450,7 +450,7 @@ Previous work by Schiff and Sauer~\cite{schiff2008kalman} demonstrated for the f
 
 The current study builds on Schiff and Sauer's approach~\cite{schiff2008kalman} by estimating a continuous field whose complexity is independent of the resolution of the observation process and spatial resolution of the model. Instead, the dimensionality is governed by the expected complexity of the underlying field, which we measure using the frequency analysis presented in the Methods section. These methods provide a rigorous framework for determining the dimensionality of the system using inherent spatial properties of the field. This enables estimation of a larger field with a lower dimensional state vector than would be otherwise possible. 
 
-The isotropy of the connectivity kernel means that the mixing effect of the kernel on the firing rates can be written as a convolution of the kernel with the membrane voltage field basis functions. This transformation greatly simplifies the computational complexity of the estimator, which is important for the estimator to run in a real-time scenario.
+The isotropy of the connectivity kernel basis functions means that the mixing effect of the kernel on the firing rates can be written as a convolution of the kernel with the membrane voltage field basis functions. This transformation greatly simplifies the computational complexity of the estimator, which is important for the estimator to run in a real-time scenario.
 
 \subsection{Patient-Specific Modelling}
 
@@ -557,7 +557,7 @@ Dean Freestone would like to thank Dr. Mark van Rossum for hosting him while vis
 \begin{center}
 \includegraphics{./Graph/pdf/Figure10.pdf}
 \end{center}
-\caption{{\bf Examples of the actual and estimated neural fields and the error}. (\textbf{A}) The actual field at a single time instant from the full neural field model that was used to generate the data. (\textbf{B}) The reconstructed field of the reduced model, showing the effect of the basis function decomposition on the frequency content of the estimated field. (\textbf{C}) The absolute error between the true and reconstructed fields. The error shows high frequency behaviour.}
+\caption{{\bf Examples of the actual and estimated neural fields and the error}. (\textbf{A}) The actual field at a single time instant from the full neural field model that was used to generate the data. (\textbf{B}) The reconstructed field of the reduced model, showing the effect of the basis function decomposition on the frequency content of the estimated field. (\textbf{C}) The error between the true and reconstructed fields. The error shows high frequency behaviour.}
 \label{fig:Figure10}
 \end{figure*}
 
