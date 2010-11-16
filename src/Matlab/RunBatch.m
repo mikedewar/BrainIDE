@@ -6,7 +6,7 @@ close all
 Set_Parameters
 
 RunningBatch = 1;               % this is a flag for the scripts
-NRealisations = 50;
+NRealisations = 3;
 for Realisation=1:NRealisations
     tic
     disp(['Running realisation: ' num2str(Realisation) ' of ' num2str(NRealisations)])
@@ -20,7 +20,7 @@ end
 
 save('ResultsForAllRealisations.mat','theta_save','xi_save',...
     'Delta','SpaceMax','Ts','T','sigma_psi','sigma_phi','NBasisFunctions_xy',...
-    'mu_phi_xy','NSensors_xy','mu_y_xy','sigma_y','sigma_varepsilon',...
+    'mu_phi_xy','NSensors_xy','mu_m_xy','sigma_m','sigma_varepsilon',...
     'f_max','varsigma','v_0','zeta','sigma_gamma','gamma_weight')
 
 % plot the final distributions

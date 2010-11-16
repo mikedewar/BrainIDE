@@ -31,6 +31,18 @@ for t=1:T-1
     Z = [Z ; squeeze(x(:,t+1))]; 
 end
 
+% this is used if we don't estimate xi
+% ~~~~~~~~~~~~~~~~~~~~~
+% ~~~~~~~~~~~~~~~~~~~~~
+% xi = 0.9;
+% for t=1:T-1
+%     X = [X ; squeeze(q(:,t,:)) ];
+%     Z = [Z ; squeeze(x(:,t+1)) - xi * squeeze(x(:,t))]; 
+% end
+% xi_est = [];
+% ~~~~~~~~~~~~~~~~~~~~~
+% ~~~~~~~~~~~~~~~~~~~~~
+
 % get parameter estimate
 parameters_est = (X'*X)\X'*Z;
 theta_est(1) = parameters_est(1);

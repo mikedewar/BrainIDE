@@ -10,9 +10,9 @@ a = pi / ( (phi_gamma_conv_var + sigma_phi^2) / (phi_gamma_conv_var * sigma_phi^
 b = 1 / (sigma_phi^2+phi_gamma_conv_var);
 inner_prod = zeros(L,L);       % initialize for speed
 for n=1:L
-    for m=1:L
-        mu_n_minus_mu_m = mu_phi(:,n)-mu_phi(:,m);
-        inner_prod(n,m) = gamma_weight*phi_gamma_coefficient*a*exp(-b*(mu_n_minus_mu_m)'*mu_n_minus_mu_m);
+    for nn=1:L
+        mu_n_minus_mu_m = mu_phi(:,n)-mu_phi(:,nn);
+        inner_prod(n,nn) = gamma_weight*phi_gamma_coefficient*a*exp(-b*(mu_n_minus_mu_m)'*mu_n_minus_mu_m);
     end
 end
 
