@@ -336,10 +336,10 @@ Although the system is nonlinear, the parameters of the system are linear with r
 \end{equation}
 Now given a state estimate sequence from the initialisation or an iteration of the URTSS, we can write
 \begin{eqnarray*}
-	\mathbf x_{1} &=& \mathbf{q}(\mathbf x_0) \boldsymbol{\theta}+\xi\mathbf x_0+\mathbf e_0 \\
-	\mathbf x_{2} &=& \mathbf{q}(\mathbf x_1) \boldsymbol{\theta}+\xi\mathbf x_1+\mathbf e_1  \\
+	 \hat{\mathbf x}^b_{1} &=& \mathbf{q}(\hat{\mathbf x}^b_0) \boldsymbol{\theta}+\xi\hat{\mathbf x}^b_0+\mathbf e_0 \\
+	\hat{\mathbf x}^b_{2} &=& \mathbf{q}(\hat{\mathbf x}^b_1) \boldsymbol{\theta}+\xi\hat{\mathbf x}^b_1+\mathbf e_1  \\
 	&\vdots& \\
-	\mathbf x_{T}&=& \mathbf{q}(\mathbf x_{T-1}) \boldsymbol{\theta}+\xi\mathbf x_{T-1}+\mathbf e_{T-1}. 
+	\hat{\mathbf x}^b_{T}&=& \mathbf{q}(\hat{\mathbf x}^b_{T-1}) \boldsymbol{\theta}+\xi\hat{\mathbf x}^b_{T-1}+\mathbf e_{T-1}. 
 \end{eqnarray*}
 This can be written in the compact form
 \begin{equation}
@@ -350,17 +350,17 @@ where
 \begin{equation*}
 	\mathbf Z=\left[
 	\begin{array}{cccc}
-		\mathbf x_{1}\\
-		\mathbf x_{2}\\
+		\hat{\mathbf x}^b_{1}\\
+		\hat{\mathbf x}^b_{2}\\
 		\vdots\\
-		\mathbf x_{T}
+		\hat{\mathbf x}^b_{T}
 	\end{array}
 	\right],\quad \mathbf X=\left[
 	\begin{array}{cccc}
-		\mathbf q(\mathbf x_0)& \mathbf x_{0}\\
-		\mathbf q(\mathbf x_1)& \mathbf x_{1}\\
+		\mathbf q(\hat{\mathbf x}^b_0)& \hat{\mathbf x}^b_{0}\\
+		\mathbf q(\hat{\mathbf x}^b_1)& \hat{\mathbf x}^b_{1}\\
 		\vdots & \vdots\\
-		\mathbf q(\mathbf x_{T-1})& \mathbf x_{T-1}
+		\mathbf q(\hat{\mathbf x}^b_{T-1})& \hat{\mathbf x}^b_{T-1}
 	\end{array}
 	\right] 
 \end{equation*}
