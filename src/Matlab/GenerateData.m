@@ -108,10 +108,10 @@
 
     end 
 
-%     max1 = squeeze(max(v,[],2));
-%     max_v_t(ppp) = mean(max(max1,[],2));
-%     min1 = squeeze(min(v,[],2));
-%     min_v_t(ppp) = mean(min(min1,[],2));
+    max1 = squeeze(max(v,[],2));
+    max_v_t(ppp) = mean(max(max1,[],2));
+    min1 = squeeze(min(v,[],2));
+    min_v_t(ppp) = mean(min(min1,[],2));
     
 % end
 
