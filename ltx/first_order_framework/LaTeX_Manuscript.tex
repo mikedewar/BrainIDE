@@ -159,7 +159,7 @@ where $\mathbf{x}_t$ is the state vector that scales the field basis functions $
 	\boldsymbol\phi\left(\mathbf{r}-\mathbf{r}'\right) =
 \exp{\left(-\frac{(\mathbf{r}-\mathbf{r}')^\top(\mathbf{r}-\mathbf{r}')}{\sigma_{\phi}^2}\right)}, 
 \end{equation}
-where $\sigma_{phi}$ is the basis function width parameter. An example of a one-dimensional field decomposition is given in Figure~\ref{fig:Figure2}.
+where $\sigma_{\phi}$ is the basis function width parameter. An example of a one-dimensional field decomposition is given in Figure~\ref{fig:Figure2}.
 
 The width and positioning of the basis functions can be determined by spectral analysis (explained in detail in the following section). The connectivity kernel can also be decomposed as 
 \begin{equation}\label{DefKernelDecomp}
@@ -196,7 +196,7 @@ and substituting this into equation~\ref{StartofReduction} and cross-multiplying
 	 + \xi\mathbf{x}_t + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r}) e_t(\mathbf{r}) \, d\mathbf{r}}.
 	 % \end{split}
 \end{eqnarray}
-The analytic derivation of the inner product of \emph{n}-dimensional Gaussians, which was used for calculating $\mathbf\Gamma$ is provided in the supplementary material. Equation~\ref{eq:ReducedForm} can be simplified by exploiting the isotropy of the connectivity kernel basis functions where
+The analytic derivation of the inner product of \emph{n}-dimensional Gaussians, which was used for calculating $\mathbf\Gamma$ is provided in the (\dean{Appendix}) supplementary material. Equation~\ref{eq:ReducedForm} can be simplified by exploiting the isotropy of the connectivity kernel basis functions where
 \begin{equation}
 	\psi_i (\mathbf{r}-\mathbf{r}') = \psi_i (2c_i+\mathbf{r}'-\mathbf{r})
 \end{equation}
@@ -204,7 +204,7 @@ and $c_i$ is the center of the $i^{th}$ basis function of the kernel decompositi
 \begin{equation}\label{eq:DefPsi}
 	\left[ \boldsymbol\Psi(\mathbf{r}')\right]_{:i}  \triangleq T_s\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\psi_i (2c_i+\mathbf{r}'-\mathbf{r})\textrm{d}\mathbf{r}},
 \end{equation}
-where $\left[ \boldsymbol\Psi(\mathbf{r}')\right]_{:i}$ denotes the $i^{th}$ column of $\boldsymbol{\Psi}(\mathbf{r}')$ which is a constant $L \times n_{\theta}$ matrix, where $L$ is the number of basis functions (and states) and $n_{\theta}$ is the number of connectivity kernel basis functions. This matrix is defined analytically (see the supplementary (\dean{Appendix}) material for analytic convolution of two Gaussians). Substituting equation~\ref{eq:DefPsi} into equation~\ref{eq:ReducedForm} gives
+where $\left[ \boldsymbol\Psi(\mathbf{r}')\right]_{:i}$ denotes the $i^{th}$ column of $\boldsymbol{\Psi}(\mathbf{r}')$ which is a $L \times n_{\theta}$ matrix, where $L$ is the number of basis functions (and states) and $n_{\theta}$ is the number of connectivity kernel basis functions. This matrix is defined analytically (see the supplementary (\dean{Appendix}) material for analytic convolution of two Gaussians), since it is constant with respect to the states and the unknown parameters. Substituting equation~\ref{eq:DefPsi} into equation~\ref{eq:ReducedForm} gives
 \begin{eqnarray}
 	\mathbf{x}_{t+1} &=& \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \, d\mathbf{r}' \boldsymbol{\theta} \nonumber \\ &+& \xi\mathbf{x}_t 
 + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r}) \, d\mathbf{r}}.
@@ -227,20 +227,23 @@ The observation equation is linear and can be written in the more compact form
 \begin{equation}\label{ObservationEquation} 
 	\mathbf{y}_t = \mathbf{C}\mathbf{x}_t + \boldsymbol{\varepsilon}_t,
 \end{equation}
-where the observation matrix is 
+where each element of the observation matrix is 
 \begin{equation}
-	\mathbf{C} = \left[
-	\begin{array}{{ccc}} 
-		c_{1,1} & \dots & c_{1,L} \\
-		\vdots & \ddots & \vdots \\
-		c_{N,1} & \dots & c_{N,L} 
-	\end{array}
-	\right] 
+	\mathbf{C}_{ij} = \int_{\Omega}m(\mathbf{r}_i - \mathbf{r}')\boldsymbol{\phi}_j(\mathbf{r}') \, d\mathbf{r}'.
 \end{equation}
-and 
-\begin{equation}
-	c_{i,j} = \int_{\Omega}m(\mathbf{r}_i - \mathbf{r}')\boldsymbol{\phi}_j(\mathbf{r}') \, d\mathbf{r}'. 
-\end{equation}
+% \begin{equation}
+% 	\mathbf{C} = \left[
+% 	\begin{array}{{ccc}} 
+% 		c_{1,1} & \dots & c_{1,L} \\
+% 		\vdots & \ddots & \vdots \\
+% 		c_{N,1} & \dots & c_{N,L} 
+% 	\end{array}
+% 	\right] 
+% \end{equation}
+% and 
+% \begin{equation}
+% 	c_{i,j} = \int_{\Omega}m(\mathbf{r}_i - \mathbf{r}')\boldsymbol{\phi}_j(\mathbf{r}') \, d\mathbf{r}'. 
+% \end{equation}
 Now we have the final form of the state-space model where
 \begin{equation}\label{eq:finalformstatespacemodel}
 	\mathbf{x}_{t+1} = Q(\mathbf{x}_t) +\mathbf{e}_t
@@ -327,7 +330,7 @@ The sigma vectors are propagated through the system equations and weighted to fo
 \end{eqnarray}
 where the superscripts $m$ and $c$ denote mean and covariance. Since the observation equation is linear (equation~\ref{ObservationEquation}), the standard Kalman Filter update equations are used to correct the predicted states. The state estimates from forward filtering are used to form a new set of sigma points for the smoother, as described above. The cross-covariance matrix of the states, $\mathbf M$, is also required for computing the smoother gain. A summary of the steps in the URTSS algorithm is given in Table~\ref{tab:UKFAlgorithm}. It should be noted that the disturbance, $\mathbf{e}_t$, and the measurement noise, $\boldsymbol{\varepsilon}_t$, are additive. Therefore, the additive form of the URTSS is used. This has a significant computational advantage over using the alternative multiplicative form of the filter. 
 
-Although the system is nonlinear, the parameters of the system are linear with respect to the state. This is exploited by our procedure where the parameter estimation uses a Least Squares (LS) method that minimises the sum of the squared errors (of a predicted state update) with each new estimate of the state vector sequence. To create the least squares parameter estimator, we first define the $L \times n_{\theta}$ matrix
+Although the system is nonlinear, the parameters of the system are linear with respect to the state. This is exploited by our procedure where the parameter estimation uses a Least Squares (LS) method that minimises the sum of the squared errors (of a predicted state update) with each new estimate of the state vector sequence \dean{(this should be mean (not sum) of the squared error for stochastic LS right?)}. To create the least squares parameter estimator, we first define the $L \times n_{\theta}$ matrix
 \begin{equation}
 	\mathbf{q}(\mathbf{x}_t) = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \,\textrm{d}\mathbf{r}'.
 \end{equation}
