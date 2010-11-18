@@ -507,7 +507,7 @@ Dean Freestone would like to thank Dr. Mark van Rossum for hosting him while vis
 
 \appendix
 \section{Time Discretisation of Neural Field Model}
-\label{App:Time Discretization} To form the integro-difference equation neural field model, a time discretisation must be performed. To do this, we used a one-step Euler method, where equation~\ref{FinalFormContinuous} of the main text can be approximated by 
+\label{App:Time Discretization} To form the integro-difference equation neural field model, a time discretisation must be performed. To do this, we used a one-step Euler method, where equation~\ref{FinalFormContinuous} can be approximated by 
 \begin{align}
 	\label{Euler Approximation}\frac{v\left( \mathbf{r},t+T_s \right) - v\left( \mathbf{r},t\right)}{T_s} &=-\zeta v\left( \mathbf{r},t \right) \nonumber \\ 
 &+ \int_\Omega {w\left( \mathbf{r}-\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)d\mathbf{r}'}. 
@@ -523,7 +523,7 @@ Now making simplifications, the discrete time form of the model is
 where $\xi = 1 - T_s \zeta$.
 
 \section{Mean and Covariance of the State Disturbance }\label{App:ColoredNoise} 
-In this section, we show that the state disturbance vector is $\mathbf{e}_t\sim\mathcal{N}(\mathbf 0,\boldsymbol\Sigma_e)$ if $e_t(\mathbf{r})\sim\mathcal{GP}\left(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}')\right)$. We begin the derivation by acknowledging the state disturbance vector is a linear function of $e_t(\mathbf r)$. Therefore, $\mathbf{e}_t$ is also normally distributed. From equation~21 of the main text, the state disturbance vector is defined as
+In this section, we show that the state disturbance vector is $\mathbf{e}_t\sim\mathcal{N}(\mathbf 0,\boldsymbol\Sigma_e)$ if $e_t(\mathbf{r})\sim\mathcal{GP}\left(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}')\right)$. We begin the derivation by acknowledging the state disturbance vector is a linear function of $e_t(\mathbf r)$. Therefore, $\mathbf{e}_t$ is also normally distributed. From equation~\ref{eq:Wt}, the state disturbance vector is defined as
 \begin{equation}
 	\mathbf{e}_t \triangleq \boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi} ( \mathbf{r} )e_t( \mathbf{r} )d\mathbf{r}}.
 \end{equation}
@@ -540,7 +540,7 @@ The covariance of $\mathbf{e}_t$ is
 \end{align}
 
 \section{Spatial Cut-off Frequency of Field Basis Functions}\label{App:FrequencyAnalysis}
-This section gives the derivation for the width of the Fourier transform of  the field basis function in terms of its spatial cut-off frequency (equations~34 and~37 in the main text). We define an \textit{n}-dimensional Gaussian  centred at the origin as 
+This section gives the derivation for the width of the Fourier transform of the field basis function in terms of its spatial cut-off frequency (equations~\ref{eq:GaussianFT} and~\ref{eq:WidthFrequencyRelationship}). We define an \textit{n}-dimensional Gaussian  centred at the origin as 
 \begin{equation}
  \phi(\mathbf r)=\mathrm{exp}\left(-\frac{1}{\sigma_{\phi}^2}\mathbf r^\top\mathbf r\right).
 \end{equation}
@@ -566,7 +566,7 @@ For $3$~dB attenuation ($1/2$ to peak power) at the cut-off frequency, $\boldsym
 \begin{equation}
  \left|\boldsymbol\Phi(\boldsymbol\nu_{c})\right|^2=\frac{1}{2}\left|\boldsymbol\Phi(\mathbf 0)\right|^2,
 \end{equation}
-since the maximum of the Gaussian described in equation~S1.10 is at the origin. Solving for $\sigma_{\nu}^2$, we get
+since the maximum of the Gaussian described in equation~\ref{eq:FTofGaussian} is at the origin. Solving for $\sigma_{\nu}^2$, we get
 \begin{equation}
  \sigma_{\nu}^2=\frac{2\boldsymbol\nu_{c}^\top \boldsymbol\nu_{c}}{\ln 2 }.
 \end{equation}
@@ -580,7 +580,7 @@ and
 \begin{equation}\label{eq:n_dimensional_Gaussian2}
 \varphi_j(\mathbf r)=\mathrm{exp}\left({-\frac{1}{\sigma_j^2} (\mathbf r-\boldsymbol \mu_j)^\top(\mathbf r-\boldsymbol \mu_j})\right).
 \end{equation}
-The derivation proceeds by assuming the Gaussian basis functions are positioned at the origin ($\boldsymbol\mu_i=\boldsymbol\mu_j=\mathbf 0$). The convolution theorem states that the Fourier transform of the convolution of two functions is the product of their Fourier transforms. Using the derivation of the Fourier transform of a \emph{n}-dimensional Gaussian from equation~S1.10 of the previous section, we have
+The derivation proceeds by assuming the Gaussian basis functions are positioned at the origin ($\boldsymbol\mu_i=\boldsymbol\mu_j=\mathbf 0$). The convolution theorem states that the Fourier transform of the convolution of two functions is the product of their Fourier transforms. Using the derivation of the Fourier transform of a \emph{n}-dimensional Gaussian from equation~\ref{eq:FTofGaussian} of the previous section, we have
 \begin{equation}\label{eq:FTTwoGaussianMultiplication}
 \mathcal{F}\left(\varphi_i*\varphi_j\right)(\mathbf{r}) = \left(\pi^2\sigma_i^2\sigma_j^2\right)^{\frac{n}{2}}\mathrm{exp}\left(-(\sigma_i^2+\sigma_j^2)\pi^2\boldsymbol\nu^\top\boldsymbol\nu\right),
 \end{equation}
@@ -601,7 +601,7 @@ In the case where $\boldsymbol\mu_i\neq\boldsymbol\mu_j\neq\mathbf 0$, equation~
 where $\boldsymbol\mu=\boldsymbol\mu_i+\boldsymbol\mu_j$.
 
 \section{Inner Product of Two \emph{n}-Dimensional Gaussians}\label{App:InnerProdOfGaussians}
-The derivation in this section was used for calculating the matrix $\Gamma$ from equation~16 in the main text. The inner product of the two \emph{n}-dimensional Gaussians (from equations~\ref{eq:n_dimensional_Gaussian1} and~\ref{eq:n_dimensional_Gaussian2}) is defined as
+The derivation in this section was used for calculating the matrix $\Gamma$ from equation~\ref{eq:DefGamma}. The inner product of the two \emph{n}-dimensional Gaussians (from equations~\ref{eq:n_dimensional_Gaussian1} and~\ref{eq:n_dimensional_Gaussian2}) is defined as
 \begin{equation}\label{eq:InofGaussianDefinition}
 \varphi_i\otimes\varphi_j=\int_{\mathbb{R}^n}\varphi_i(\mathbf r)\varphi_j(\mathbf r)d\mathbf{r}.
 \end{equation}
