@@ -458,7 +458,16 @@ For example, when the sigmoid slope is very gentle, most of the neural activity 
 ..\dean{This next bit is CRAP (please help):} When the threshold is negative or the slope is very gentle, all of the activity is being passed through the sigmoid function. However, as the slope is increased or the threshold is increased, more of the field is within the saturating region of the activation function. This is illustrated in Figure~\ref{fig:sigmoidfunctions}, where the sigmoids from the bottom left corner through to near top right corner of Figure~\ref{fig:sigmoidfunctions} are plotted. This appears to have a detrimental effect on the estimation accuracy.
 
 \subsubsection{Experiment IV: Results for Varying the Sensor Kernel Width}
-The accuracy of the estimation algorithm was tested for different observation kernels by varying the width parameter, $\sigma_m$. Figure~\ref{fig:Figure13} shows the RMSE of the connectivity kernel estimates for the various observation kernel widths. As the theory presented earlier in Section~\ref{SpectralAnalysisSection} suggests, the observation kernel acts as a spatial filter. When the observation kernel is too narrow, a small amount of high spatial frequency information is still present but not adequately sampled by the observation function, since the field is not exactly band-limited. Therefore, a small amount of aliasing occurs which results in the estimation error. When the observation kernel width is increased, the high spatial frequency information that is not adequately sampled is filtered more strongly by the observation kernel and the error decreases. However, as expected when the observation kernel becomes too large, important spatial frequency information is lost and the error becomes larger.  
+The accuracy of the estimation algorithm was tested for different observation kernels by varying the width parameter, $\sigma_m$. Figure~\ref{fig:Figure13} shows the RMSE of the connectivity kernel estimates for the various observation kernel widths. As the theory presented earlier in Section~\ref{SpectralAnalysisSection} suggests, the observation kernel acts as a spatial filter. 
+
+\ken{tried to make it a little more straight forward}
+
+When the observation kernel is too narrow, high frequency components in the neural field are sampled. These high frequency components result in aliasing errors in the estimated field thus affecting the kernel estimation accuracy. On the other hand, for the very wide kernels considered, important neural dynamics are not pick up by the estimated field due to the filtering out of the high frequency components by the sensors, resulting in poor accuracy in the kernel estimate. Thus, as indicated in Figure~\ref{fig:Figure13}, the best results are obtained when the sensor width is chosen to minimize both sources of errors.
+
+\ken{that ok?}
+
+
+When the observation kernel is too narrow, a small amount of high spatial frequency information is still present but not adequately sampled by the observation function, since the field is not exactly band-limited. Therefore, a small amount of aliasing occurs which results in the estimation error. When the observation kernel width is increased, the high spatial frequency information that is not adequately sampled is filtered more strongly by the observation kernel and the error decreases. However, as expected when the observation kernel becomes too large, important spatial frequency information is lost and the error becomes larger.  
 
 \section{Discussion}\label{DiscussionSection}
 
