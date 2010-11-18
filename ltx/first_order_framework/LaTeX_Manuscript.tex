@@ -505,6 +505,370 @@ In this study, an assumption was made that the chosen kernel basis functions can
 \section{Acknowledgments}
 Dean Freestone would like to thank Dr. Mark van Rossum for hosting him while visiting the University of Edinburgh where this work was undertaken and Dr. Matthias Hennig for useful discussions and feedback. This research was funded in part by the Australian Research Council (Linkage Project LP0560684). The Bionic Ear Institute acknowledges the support it receives from the Victorian State Government through the Operational Infrastructure Support Program. Dean Freestone would like to thank the University of Melbourne's Scholarships Office for the Postgraduate Overseas Research Experience Scholarship and the Harold Mitchell Foundation for a traveling scholarship for supporting this research. Parham Aram would also like to thank Andrew Hills for useful discussions and assistance with code and the generation of figures. The authors would also like to thank Dr. John Terry for insightful discussions and feedback.
 
+
+
+
+\bibliographystyle{unsrt} 
+\bibliography{BrainIDE}
+
+
+\section*{Tables}
+
+\begin{table*}[!ht]
+\caption{
+\bf{Notation}}
+\begin{tabular}{|l|l|l|}
+	\hline
+	\textbf{Symbol} & \textbf{Quantity} & \textbf{Units}\\
+	\hline
+	\multicolumn{3}{|c|}{\emph{Domain and indices}}\\
+	\hline
+	$\Omega$ & spatial domain & n.a.\\
+	$\mathbf{r}$ & spatial location & [mm, mm]\\
+	$t$ & time & s\\
+	\hline
+	\multicolumn{3}{|c|}{\emph{Model}}\\
+	\hline
+    $y_t$ & observation & mV\\
+    $v(\mathbf{r},t)$ & mean membrane potential & mV \\
+	$g(\mathbf{r},t)$ & weighted firing rate function & spikes.s$^{-1}$\\
+	$f(\mathbf{r},t)$ & firing rate function & spikes.s$^{-1}$\\
+	$e(\mathbf{r},t)$ & field disturbance, with covariance function $\gamma(\mathbf r-\mathbf r')$ & mV\\
+	$\boldsymbol\varepsilon_t$ & observation noise, with covariance matrix $\Sigma_\varepsilon$ & mV\\
+	$m(\mathbf{r}_n,\mathbf{r}')$ & sensor kernel where $n$ is sensor index $n=1,..,n_y$ (width $\sigma_m^2$) & n.a. \\
+	$w(\mathbf{r},\mathbf{r}')$ & spatial connectivity kernel & n.a.\\
+	$h(t)$ & post-synaptic response kernel & mV\\
+	$\zeta$, $\xi$ & inverse synaptic time constant \& time constant parameter & s$^{-1}$, n.a.\\
+	$\eta(t)$ & Heaviside step function & n.a.\\
+	$\delta(t)$ & Dirac-delta function & n.a.\\
+	$D$ & temporal differential operator & n.a.\\
+	\hline
+	\multicolumn{3}{|c|}{\emph{Reduced Model}} \\
+	\hline
+   	$\boldsymbol\phi(\mathbf{r})$ & vector of $n_x$ Gaussian basis functions & n.a.\\
+   	$\mathbf{x}_t$ & state vector at time $t$ & mV\\
+   	$\boldsymbol{\psi}(\mathbf{r}-\mathbf{r}')$ & vector of $n_{\theta}$ connectivity kernel basis functions & n.a.\\
+   	$\boldsymbol{\Psi}(\mathbf{r}')$ & decomposition connectivity matrix & n.a.\\
+   	$\boldsymbol{\Gamma}$ & inner product of field basis functions & n.a.\\
+   	$Q()$ & state transition function & n.a.\\
+   	$\mathbf{e}_t$ & state disturbance vector, with covariance $\Sigma_e$ & mV\\
+   	$\mathbf{C}$ & observation matrix & n.a. \\
+	\hline
+	\multicolumn{3}{|c|}{\emph{Frequency Analysis}} \\
+	\hline
+    % $V(\nu)$ & Fourier transform of the neural field & Hz\\
+	$\boldsymbol{\nu}$, $\boldsymbol{\nu}_c$ & spatial frequency and spatial cutoff frequency & Hz \\
+	$\sigma_{\nu}^2$ & variance of Fourier transformed Gaussian basis function & Hz$^2$\\
+	\hline
+	\multicolumn{3}{|c|}{\emph{Estimation}} \\
+	\hline
+	$\mathcal{X}$ & matrix of sigma vectors & mV\\
+	$W$ & matrix of sigma vector weights (scaling parameter $\lambda$) & n.a.\\
+   	$\hat{\mathbf{x}}_t^{f-}$, $\hat{\mathbf{x}}_t^f$ & forward prior and posterior state estimates & mV\\
+   	$\hat{\mathbf{x}}_t^{b-}$, $\hat{\mathbf{x}}_t^{b}$ & backward prior and posterior state estimates & mV\\
+ 	$P^{f-}_t$, $P^f_t$  & forward prior and posterior covariance matrices & mV$^2$\\
+   	$P^{b-}_t$, $P^b_t$ & backward prior and posterior covariance matrices & mV$^2$\\
+	$M_t$& cross-covariance matrix & mV$^2$\\
+	$\mathcal K_{t} $ & filter gain & n.a.\\
+	$S_t$ & smoother gain & n.a.\\
+	$q()$ & nonlinear state function (used in LS estimator) & n.a.\\
+   	$\mathcal{\hat{W}}$& vector of parameter estimates (used in LS estimator) & n.a.\\	
+	\hline
+\end{tabular}
+\begin{flushleft}The first column of the table gives the symbols for all the notation used in the paper. The second column provides a brief description of the quantity, and the third column provides the SI units where relevant.
+\end{flushleft}
+\label{tab:Notation}
+\end{table*}
+\clearpage
+\newpage
+\renewcommand{\arraystretch}{1.7}
+\begin{table*}[!ht]
+\caption{
+\bf{Algorithm for the Unscented RTS Smoother}}
+\begin{tabular}{|c|}\hline
+\multicolumn{1}{|p{16cm}|}{\textbf{1.} Forward initialisation} \\ 
+$\hat{\mathbf x}_0, \mathbf P_0$ \\
+\hline
+\multicolumn{1}{|p{16cm}|}{\textbf{2.} Forward iteration: for $t \in \left\lbrace 0,\cdots, T\right\rbrace $, calculate the sigma points $\mathcal X_{i,t}^f$ using equations \ref{eq:sigmapoints1}-\ref{eq:sigmapoints3} and propagate through equation~\ref{eq:QmatrixForSigmapoints}} \\
+$\mathcal X_{i,t+1}^{f-}=Q(\mathcal X_{i,t}^f) \quad i=0, \dots, 2n_x$\\
+\multicolumn{1}{|p{16cm}|}{Calculate the predicted state and the predicted covariance matrix} \\
+$\hat{\mathbf x}_{t+1}^{f-}=\sum_{i=0}^{2n_x} W_i^{(m)}\mathcal X_{i,t+1}^{f-} $ \\
+$\mathbf P_{t +1}^{f-}=\sum_{i=0}^{2n_x} W_i^{(c)}(\mathcal X_{i,t+1}^{f-}-\hat{\mathbf x}_{t +1}^{f-})(\mathcal X_{i,t+1}^{f-}-\hat{\mathbf x}_{t +1}^{f-})^\top+\boldsymbol \Sigma_e$ \\ 
+\multicolumn{1}{|p{16cm}|}{Compute the filter gain, the filtered state and the filtered covariance matrix using the standard Kalman filter update equations} \\
+$\mathcal K_{t+1}=\mathbf P_{t +1}^{f-}\mathbf C ^\top(\mathbf C \mathbf P_{t +1}^{f-}\mathbf C ^\top+\boldsymbol \Sigma_{\varepsilon})^{-1}$ \\
+$\hat{\mathbf x}_{t+1}^{f}=\hat{\mathbf x}_{t+1}^{f-}+\mathcal K_{t+1}(\mathbf y_{t+1}-\mathbf C\hat{\mathbf x}_{t +1}^{f-})$ \\
+$\mathbf P_{t+1}^f=(\mathbf I - \mathcal K_{t+1}\mathbf C)\mathbf P_{t +1}^{f-}$\\ 
+\hline
+\multicolumn{1}{|p{16cm}|}{\textbf{3.} Backward initialisation}\\
+$\mathbf P_T^b= \mathbf P_T^f, \quad \hat{\mathbf x}^b_T= \hat{\mathbf x}^f_T$ \\
+\hline
+\multicolumn{1}{|p{16cm}|}{\textbf{4.} Backward iteration: for $t \in \left\lbrace T-1, \cdots, 0 \right\rbrace $ calculate the sigma points $\mathcal X_{i,t}^b$ and propagate them through equation \ref{eq:QmatrixForSigmapoints}}\\
+$\mathcal X_{i,t+1}^{b-}=Q(\mathcal X_{i,t}^b) \quad i=0, \dots, 2n_x$\\
+\multicolumn{1}{|p{16cm}|}{Calculate the predicted state and the predicted covariance matrix}\\
+$\hat{\mathbf x}_{t+1}^{b-}=\sum_{i=0}^{2n_x} W_i^{(m)}\mathcal X_{i,t+1}^{b-}$\\
+$\mathbf P_{t +1}^{b-}=\sum_{i=0}^{2n_x} W_i^{(c)}(\mathcal X_{i,t+1}^{b-}-\hat{\mathbf x}_{t +1}^{b-})(\mathcal X_{i,t+1}^{b-}-\hat{\mathbf x}_{t +1}^{b-})^\top+\boldsymbol \Sigma_e $\\
+$\mathbf M_{t +1}=\sum_{i=0}^{2n_x} W_i^{(c)}(\mathcal X_{i,t}^{b-}-\hat{\mathbf x}_{t}^{f})(\mathcal X_{i,t+1}^{b-}-\hat{\mathbf x}_{t+1}^{b-})^\top$\\
+\multicolumn{1}{|p{16cm}|}{Compute the smoother gain, the smoothed state and the smoothed covariance matrix}\\
+$\mathbf S_t=\mathbf M_{t +1}\left[ \mathbf P_{t +1}^{b-}\right] ^{-1} $\\
+$\hat{\mathbf x}_t^b=\hat{\mathbf x}_t^f+\mathbf S_t\left[\hat{\mathbf x}_{t+1}^{b}-\hat{\mathbf x}_{t+1}^{b-}\right]$\\
+$\mathbf P_{t}^{b}=\mathbf P_{t}^{f}+\mathbf S_t\left[\mathbf P_{t+1}^{b}-\mathbf P_{t+1}^{b-} \right]\mathbf S_t^\top $\\
+\hline
+\end{tabular}
+\begin{flushleft}This table shows the steps in the unscented Rauch-Tung-Striebel smoother algorithm. The steps are iterated 11 times for our state estimation procedure. The least squares algorithm is run after each iteration to update the parameter estimates.
+\end{flushleft}
+\label{tab:UKFAlgorithm}
+\end{table*}
+\clearpage
+\newpage
+\renewcommand{\arraystretch}{1}
+\begin{table*}[!ht]
+\caption{
+\bf{Parameters}}
+\begin{tabular}{|c|l|c|l|}
+	\hline
+	\textbf{Symbol} & \textbf{Quantity} & \textbf{Value} & \textbf{Units}\\
+	\hline
+	\multicolumn{4}{|c|}{\emph{Domain and indices}}\\
+	\hline
+	$\Delta$ & spatial discretisation step & 0.5 & mm \\
+	$T_s$ & time step & $0.001$ & s\\
+	$T$ & number of time steps used in estimation & 400 & n.a.\\
+	\hline 
+\multicolumn{4}{|c|}{\emph{Model}}\\
+	\hline
+	$\tau$ & synaptic time constant & 0.01 & s$^{-1}$ \\
+% 	$f_{max}$ & maximal firing rate & 10 & spikes.s$^{-1}$\\
+	$\varsigma$ & slope of sigmoidal activation function & 0.56 \cite{Wendling2005} & mV$^{-1}$\\
+	$v_0$ & firing threshold & 1.8 \cite{Marreiros2008}& mV  \\
+	$\boldsymbol{\theta}$ & vector of connectivity kernel parameters & $\left[\begin{array}{ccc}
+	100 &-80 &5
+	\end{array}
+	\right]^{\top}$ & mV.spike$^{-1}$\\
+	$\sigma_{\psi_{1}}, \sigma_{\psi_{2}}, \sigma_{\psi_{3}}$ & connectivity kernel width parameters & 1.8, 2.4, 6 & mm\\
+	$n_y$ & number of sensors & 196 & n.a.\\ 
+	$\Delta_y$ & distance between adjacent sensors & 1.5 & mm\\
+	$\sigma_{m}$ & sensor width parameter & 0.9 & mm \\
+	$\Sigma_{\varepsilon}$ & observation noise variance & $0.1 \times I_{n_y}$ & mm$^2$ \\
+	$\sigma_{\gamma}$& disturbance spatial covariance width & 1.3 & mm\\
+	$\sigma_{d}$ & disturbance variance & 0.1 & mV \\
+	\hline 
+	\multicolumn{4}{|c|}{\emph{Reduced Model}}\\
+	\hline
+	$n_x$ & number of basis functions& 81 & n.a.\\
+	$\Delta_{\phi}$ & distance between field basis functions & 2.5 & mm \\
+	$\sigma^2_{\phi}$ & Spatial variance of Gaussian in spatial domain & 2.5 & mm$^2$\\
+	\hline 
+	\multicolumn{4}{|c|}{\emph{Frequency Analysis}}\\
+	\hline
+	$\rho_y$ & sensor over-sampling parameter & 1 & n.a.\\
+	$\rho_\phi$ & field basis function over-sampling parameter & 1 & n.a.\\
+	\hline 
+	\multicolumn{4}{|c|}{\emph{Estimation}}\\
+	\hline
+	$\alpha$& determines the spread of sigma points & 0.001 & n.a.\\
+	$\beta$& prior knowledge of the sigma points distribution & 2 & n.a.\\
+	$\kappa$& scaling parameter $(3-n_x)$& -78 & n.a.\\
+	$\lambda$& scaling parameter & -80.99 & n.a.\\
+	\hline
+\end{tabular}
+\begin{flushleft}Parameters for the neural field model, the model reduction, the frequency analysis and the estimation procedure.
+\end{flushleft}
+\label{tab:Parameters}
+\end{table*}
+\clearpage
+\newpage
+\begin{table*}[!ht]
+	\caption{
+	\bf{Results from varying the Mexican hat connectivity kernel parameters}}
+\begin{tabular}{c|ccccc}
+	Experiment & Parameter & Actual & Mean Est. & Std. Dev. & Bias (\%) \\ \hline
+	I and II-A &	$\theta_0$ & $90$ & 103.86 & 23.14 & 15.4 \\
+	& $\theta_1$ & -80 & -89.05 & 16.57 & 11.31 \\
+	& $\theta_2$ & 5 & 5.23 & 0.74 & 4.6 \\
+	& $\xi$ & 0.9 & 0.923 & 0.003 & 2.56 \\ \hline	
+	
+	II-B & $\theta_0$ & $100$ & 101.75 & $21.30$ & $1.75$ \\
+	& $\theta_1$ & -80 & -81.00 & $14.82$ & $1.25$ \\
+	& $\theta_2$ & 5 & $4.76$ & $0.65$ & $4.8$ \\
+	& $\xi$ & 0.9 & $0.924$ & $0.003$ & $2.67$ \\ \hline
+	
+	II-C & $\theta_0$ & $110$ & $98.90$ & $16.48$ & $10.1$ \\
+	& $\theta_1$ & -80 & $-73.13$ & $11.72$ & $ 8.58$ \\
+	& $\theta_2$ & 5 & $4.37$ & $0.54$ & $12.6$ \\
+	& $\xi$ & 0.9 & $0.925$ & $0.003$ & $2.78$ \\ \hline
+\end{tabular}\label{tab:MexicanHatKernelResults}
+\end{table*}
+\clearpage
+\newpage
+\begin{table*}[!ht]
+	\caption{
+	\bf{Results from varying the Gaussian connectivity kernel parameter}}
+\begin{tabular}{c|ccccc}
+	Experiment & Parameter & Actual & Mean Est. & Std. Dev. & Bias (\%) \\ \hline
+	II-D &$\theta_0$ & $15$ & $35.68$ & $16.72$ & $137.87$ \\
+	& $\theta_1$ & 0 & $-18.16$ & $11.77$ & - \\
+	& $\theta_2$ & 0 & $0.81$ & $0.53$ & - \\
+	& $\xi$ & 0.9 & 0.923 & $0.002$ & 2.56 \\ \hline	
+	
+ 	II-E& $\theta_0$ & $30$ & $40.43$ & $11.47$ & $34.77$ \\
+	& $\theta_1$ & 0 & $-12.01$ & $7.8$ & - \\
+	& $\theta_2$ & 0 & 0.35 & $0.36$ & - \\
+	& $\xi$ & 0.9 & $0.924$ & $0.003$ & $2.67$ \\ \hline
+	
+	II-F & $\theta_0$ & $50$ & $61.46$ & $11.51$ & $22.92$ \\
+	& $\theta_1$ & 0 & $-15.03$ & $7.56$ & - \\
+	& $\theta_2$ & 0 & $0.27$ & $0.29$ & - \\
+	& $\xi$ & 0.9 & $0.924$ & $0.003$ & $2.67$ \\ \hline
+\end{tabular}\label{tab:GaussianKernelResults}
+\end{table*}
+
+\newpage
+\clearpage
+\section*{Figure Legends}
+{\bf Figure 1. Mexican-hat connectivity kernel.} The function $w(\cdot)$ is rotationally symmetric (isotropic) about zero, hence a cross-section captures the important aspect of the connectivity kernel's shape. The kernel decays asymptotically to zero.
+
+{\bf Figure 2. Example of a one-dimensional field decomposition.} A continuous, one-dimensional field decomposed by a finite number of basis functions scaled by the state vector. The dashed line depicts the field, the black solid lines shows the Gaussian basis functions and the vertical lines show the position and amplitude of the states.
+
+{\bf Figure 3. Example of the spatiotemporal properties of the model and synthetically generated data.} \textbf{(A)} The neural field at a single time instant. (\textbf{B}) Data generated by the full neural field model from the first 5 sensors. (\textbf{C}) Power spectral density of the data generated by an observation showing the typical $1/f^2$ characteristic of intracranial EEG.
+
+{\bf Figure 4. Spatial frequency analysis of the neural field}. (\textbf{A}) The average (over time) power in dB of the spatial frequency of the neural field. (\textbf{B}) The average (over time) power in dB of the spatial frequency of the reconstructed neural field from the basis function decomposition. The reconstructed field shows a narrower bandwidth as a result of the band limiting properties of the sensors and basis functions.
+
+{\bf Figure 5. Spatial frequency analysis}. The dashed line shows the cutoff frequency (-3 dB point). (\textbf{A}) The average (over time) power in dB of the spatial frequency of the observations. (\textbf{B}) The spatial frequency response of a one-dimensional model sensor. The symmetry of the sensors and field basis functions allow for the one-dimensional representation of the spectral characteristics. (\textbf{C}) The spatial frequency response of a one-dimensional neural field basis function, illustrating a narrower band width than the sensors.
+
+{\bf Figure 6. Convergence of parameters.} The mean of the absolute error between true and estimated parameters averaged over 150 realisations. All parameters converge after six iterations, where the mean difference between errors in consecutive iterations falls below $10^{-4}$.
+
+{\bf Figure 7. Histograms of the parameter estimates over 150 realisations}. The solid lines show the actual values of the parameters and the dotted lines show the means of the estimated parameters. (\textbf{A}) The histogram of the central excitatory connectivity kernel basis function parameter estimates, $\theta_0$. (\textbf{B}) The histogram of the surround inhibition connectivity kernel basis function parameter estimates, $\theta_1$. (\textbf{C}) The histogram of the longer range excitatory connectivity kernel basis function parameter estimates, $\theta_2$. (\textbf{D}) The histogram of the $\xi$ estimates where $\xi=1-\zeta T_s $ and $\zeta$ is the reciprocal of the synaptic time constant.
+
+{\bf Figure 8. Error in the field reconstruction}. The mean of average RMSE of the estimated field over 150 realisations (solid line) and the 95~\% confidence interval (grey region).
+
+{\bf Figure 9. Examples of the actual and estimated neural fields and the error}. (\textbf{A}) The actual field at a single time instant from the full neural field model that was used to generate the data. (\textbf{B}) The reconstructed field of the reduced model, showing the effect of the basis function decomposition on the frequency content of the estimated field. (\textbf{C}) The error between the true and reconstructed fields. The error shows high frequency behaviour.
+
+{\bf Figure 10. Cross-section of connectivity kernel estimate}. The actual kernel is shown by the solid line, the mean kernel estimate (over 50 realisations) is shown by the dotted line and the 95~\% confidence interval is shown by the shaded grey region.
+
+{\bf Figure 11. RMSE of different kernel estimates}. Log of the RMSE of the kernel for different values of firing threshold, $v_0$, and the slope of the sigmoid, $\varsigma$. Mean kernel estimates are obtained over 50 realisations in each case. White spaces indicate cases where the kernel can not be estimated due to numerical problems.
+
+{\bf Figure 12. Sigmoid functions}. From bottom left corner to the right of the second second row of the previous figure.
+
+{\bf Figure 13. RMSE of the kernel estimates}. RMSE of the kernel for different values of sensor width, $\sigma_m$, distance between adjacent sensors is $\Delta_y=1.5$. Mean kernel estimates are obtained over 50 realisations in each case.
+\clearpage
+\newpage
+\begin{figure*}[!ht]
+\begin{center}
+\includegraphics{./Graph/pdf/Figure1.pdf} 
+\end{center}
+\caption{{\bf Fig. 1}}
+\label{fig:Figure1}
+\end{figure*}
+\clearpage
+\newpage
+\begin{figure*}[!ht]
+\begin{center}
+\includegraphics{./Graph/pdf/Figure2.pdf} 
+\end{center}
+\caption{{\bf Fig. 2}}
+\label{fig:Figure2}
+\end{figure*}
+\clearpage
+\newpage
+\begin{figure*}[!ht]
+\begin{center}
+\includegraphics{./Graph/pdf/Figure3.pdf}
+\end{center}
+\caption{{\bf Fig. 3}} 
+\label{fig:Figure3}
+\end{figure*}
+\clearpage
+\newpage
+\begin{figure*}[!ht]
+\begin{center}
+\includegraphics{./Graph/pdf/Figure4.pdf}
+\end{center}
+\caption{{\bf Fig. 4}}
+\label{fig:Figure4}
+\end{figure*}
+\clearpage
+\newpage
+\begin{figure*}[!ht] 
+\begin{center}
+\includegraphics{./Graph/pdf/Figure5.pdf}	
+\end{center}
+\caption{{\bf Fig. 5}}
+\label{fig:Figure5}
+\end{figure*}
+\clearpage
+\newpage
+\begin{figure*}[!ht]
+\begin{center}
+\includegraphics{./Graph/pdf/Figure6.pdf}
+\end{center}
+\caption{{\bf Fig. 6}}
+\label{fig:Figure6}
+\end{figure*}
+\clearpage
+\newpage
+\begin{figure*}[!ht]
+\begin{center}
+\includegraphics{./Graph/pdf/Figure7.pdf}
+\end{center}
+\caption{{\bf Fig. 7}} 
+\label{fig:Figure7}
+\end{figure*}
+\clearpage
+\newpage
+\begin{figure*}[!ht]
+\begin{center}
+\includegraphics{./Graph/pdf/Figure9.pdf} 
+\end{center}
+\caption{{\bf Fig. 8}} 
+\label{fig:Figure9}
+\end{figure*}
+\clearpage
+\newpage
+\begin{figure*}[!ht]
+\begin{center}
+\includegraphics{./Graph/pdf/Figure10.pdf}
+\end{center}
+\caption{{\bf Fig. 9}}
+\label{fig:Figure10}
+\end{figure*}
+\clearpage
+\newpage
+\begin{figure*}[!ht]
+\begin{center}
+\includegraphics{./Graph/pdf/Figure8_1.pdf}
+\end{center}
+\caption{{\bf Fig. 10}}
+\label{fig:Figure8}
+\end{figure*}
+\clearpage
+\newpage
+\begin{figure*}[!ht]
+\begin{center}
+\includegraphics{./Graph/pdf/RMSESigmoidParameters.pdf}
+\end{center}
+\caption{{\bf Fig. 11}}
+\label{fig:Figure12}
+\end{figure*}
+\clearpage
+\newpage
+\begin{figure*}[!ht]
+\begin{center}
+\includegraphics{./Graph/pdf/sigmoidfunctions.pdf}
+\end{center}
+\caption{{\bf Fig. 12}}
+\label{fig:sigmoidfunctions}
+\end{figure*}
+\clearpage
+\newpage
+\begin{figure*}[!ht]
+\begin{center}
+\includegraphics{./Graph/pdf/Figure13.pdf}
+\end{center}
+\caption{{\bf Fig. 12}}
+\label{fig:Figure13}
+\end{figure*}
+\clearpage
+\newpage
 \appendix
 \section{Time Discretisation of Neural Field Model}
 \label{App:Time Discretization} To form the integro-difference equation neural field model, a time discretisation must be performed. To do this, we used a one-step Euler method, where equation~\ref{FinalFormContinuous} can be approximated by 
@@ -627,431 +991,11 @@ Using the derivation of the convolution of two Gaussians given in the previous s
 This completes the derivation.
 
 \section{Observation Kernel}
-The Gaussian shape of the observation kernel was verified experimentally. This was achieved by moving a dipole across a recording electrode submerged in saline. A photograph through a microscope of the submerged electrodes can be seen in Figure~\ref{fig:SensorAndSource}. The measurement sensor was the most central electrode of a $5\times5$ Utah array (Blackrock Microsystems) which had electrode spacing of 400~$\mu$m. The current source was a twisted wire electrode (Plastics One Inc.) with tip-tip spacing of 60~$\mu$m and tip diameter of 200~$\mu$m. The twisted wire electrode was moved in the saline solution using a 3 dimensional manipulator (Sutter Instrument Company, MPC-100) in increments of 200~$\mu$m. The twisted wire electrode and the Utah array were co-registered visually using the microscope. 
-% \begin{figure}[ht]		
-% 	\begin{center}
-% 		%trim option's parameter order: left bottom right top
-% 	\includegraphics[scale=.1, trim = .5mm .5mm .00005mm .00005mm, clip ] {./Graph/eps/SensorAndSource.eps}
-% \end{center}
-% 	\caption{Photograph through a microscope of the Utah recording array and the twisted bipolar current source.}
-% 	\label{fig:SensorAndSource}
-% \end{figure}
+The Gaussian shape of the observation kernel was verified experimentally. This was achieved by moving a dipole across a recording electrode submerged in saline. A photograph through a microscope of the submerged electrodes can be seen in Figure~\ref{fig:SensorAndSource}. The measurement sensor was the most central electrode of a $5\times5$ Utah array (Blackrock Microsystems) which had electrode spacing of 400~$\mu$m. The current source was a twisted wire electrode (Plastics One Inc.) with tip-tip spacing of 60~$\mu$m and tip diameter of 200~$\mu$m. The twisted wire electrode was moved in the saline solution using a 3 dimensional manipulator (Sutter Instrument Company, MPC-100) in increments of 200~$\mu$m. The twisted wire electrode and the Utah array were co-registered visually using the microscope.
 The stimulation waveform for the current source consisted of a 40~Hz sine wave with a duration of 1~s. The recording from the central electrode in the array was used to estimate the shape of the sensor kernel. To extract the amplitude of the signal, the data was first band-pass filtered with a centre frequency of 40~Hz. The envelope of the signal was found by computing the mean instantaneous amplitude over the 1~s stimulation duration by
 \begin{equation}
 	a = \frac{1}{N}\sum_n{\sqrt{(x(n)-\mathcal{H}x(n))^2}}
 \end{equation}
 where $\mathcal{H}$ denotes the Hilbert transform operator, $n$ indexes samples and $N$ is the total number of samples in the time series. Figure~\ref{fig:Ch3} shows the mean amplitude of the recorded envelope versus the distance between the twisted wire electrode and the recording electrode. A Gaussian fitted to the amplitudes is also shown. The figure shows that a Gaussian is indeed a good model for the sensor kernel in the homogeneous solution. 
-% \begin{figure}[h]
-% 	\begin{center}
-% 	\includegraphics[scale=1]{./Graph/eps/channel3fig.eps}
-% 	\end{center}
-% 	\caption{Amplitude of the envelope of the signal recorded from an electrode at the origin as the source was moved.}
-% 	\label{fig:Ch3}
-% \end{figure}
-
-\bibliographystyle{unsrt} 
-\bibliography{BrainIDE}
-
-\section*{Figure Legends}
-%\begin{figure}[!ht]
-%\begin{center}
-%%\includegraphics[width=4in]{figure_name.2.eps}
-%\end{center}
-%\caption{
-%{\bf Bold the first sentence.}  Rest of figure 2  caption.  Caption 
-%should be left justified, as specified by the options to the caption 
-%package.
-%}
-%\label{Figure_label}
-%\end{figure}
-
-\begin{figure}[!ht]
-\begin{center}
-\includegraphics{./Graph/pdf/Figure1.pdf} 
-\end{center}
-\caption{{\bf Mexican-hat connectivity kernel.} The function $w(\cdot)$ is rotationally symmetric (isotropic) about zero, hence a cross-section captures the important aspect of the connectivity kernel's shape. The kernel decays asymptotically to zero.}
-\label{fig:Figure1}
-\end{figure}
-
-\begin{figure}[!ht]
-\begin{center}
-\includegraphics{./Graph/pdf/Figure2.pdf} 
-\end{center}
-\caption{{\bf Example of a one-dimensional field decomposition.} A continuous, one-dimensional field decomposed by a finite number of basis functions scaled by the state vector. The dashed line depicts the field, the black solid lines shows the Gaussian basis functions and the vertical lines show the position and amplitude of the states.} 
-\label{fig:Figure2}
-\end{figure}
-
-\begin{figure}[!ht]
-\begin{center}
-\includegraphics{./Graph/pdf/Figure3.pdf}
-\end{center}
-\caption{{\bf Example of the spatiotemporal properties of the model and synthetically generated data.} \textbf{(A)} The neural field at a single time instant. (\textbf{B}) Data generated by the full neural field model from the first 5 sensors. (\textbf{C}) Power spectral density of the data generated by an observation showing the typical $1/f^2$ characteristic of intracranial EEG.} 
-\label{fig:Figure3}
-\end{figure}
-
-\begin{figure}[!ht]
-\begin{center}
-\includegraphics{./Graph/pdf/Figure4.pdf}
-\end{center}
-\caption{{\bf Spatial frequency analysis of the neural field}. (\textbf{A}) The average (over time) power in dB of the spatial frequency of the neural field. (\textbf{B}) The average (over time) power in dB of the spatial frequency of the reconstructed neural field from the basis function decomposition. The reconstructed field shows a narrower bandwidth as a result of the band limiting properties of the sensors and basis functions.}
-\label{fig:Figure4}
-\end{figure}
-
-\begin{figure*}[!ht] 
-\begin{center}
-\includegraphics{./Graph/pdf/Figure5.pdf}	
-\end{center}
-\caption{{\bf Spatial frequency analysis}. The dashed line shows the cutoff frequency (-3 dB point). (\textbf{A}) The average (over time) power in dB of the spatial frequency of the observations. (\textbf{B}) The spatial frequency response of a one-dimensional model sensor. The symmetry of the sensors and field basis functions allow for the one-dimensional representation of the spectral characteristics. (\textbf{C}) The spatial frequency response of a one-dimensional neural field basis function, illustrating a narrower band width than the sensors. }
-\label{fig:Figure5}
-\end{figure*}
-
-\begin{figure}[!ht]
-\begin{center}
-\includegraphics{./Graph/pdf/Figure6.pdf}
-\end{center}
-\caption{{\bf Convergence of parameters.} The mean of the absolute error between true and estimated parameters averaged over 150 realisations. All parameters converge after six iterations, where the mean difference between errors in consecutive iterations falls below $10^{-4}$.}
-\label{fig:Figure6}
-\end{figure}
-
-\begin{figure}[!ht]
-\begin{center}
-\includegraphics{./Graph/pdf/Figure7.pdf}
-\end{center}
-\caption{{\bf Histograms of the parameter estimates over 150 realisations}. The solid lines show the actual values of the parameters and the dotted lines show the means of the estimated parameters. (\textbf{A}) The histogram of the central excitatory connectivity kernel basis function parameter estimates, $\theta_0$. (\textbf{B}) The histogram of the surround inhibition connectivity kernel basis function parameter estimates, $\theta_1$. (\textbf{C}) The histogram of the longer range excitatory connectivity kernel basis function parameter estimates, $\theta_2$. (\textbf{D}) The histogram of the $\xi$ estimates where $\xi=1-\zeta T_s $ and $\zeta$ is the reciprocal of the synaptic time constant.} 
-\label{fig:Figure7}
-\end{figure}
-
-\begin{figure}[!ht]
-\begin{center}
-\includegraphics{./Graph/pdf/Figure9.pdf} 
-\end{center}
-\caption{{\bf Error in the field reconstruction}. The mean of average RMSE of the estimated field over 150 realisations (solid line) and the 95~\% confidence interval (grey region).} 
-\label{fig:Figure9}
-\end{figure}
-
-\begin{figure*}[!ht]
-\begin{center}
-\includegraphics{./Graph/pdf/Figure10.pdf}
-\end{center}
-\caption{{\bf Examples of the actual and estimated neural fields and the error}. (\textbf{A}) The actual field at a single time instant from the full neural field model that was used to generate the data. (\textbf{B}) The reconstructed field of the reduced model, showing the effect of the basis function decomposition on the frequency content of the estimated field. (\textbf{C}) The error between the true and reconstructed fields. The error shows high frequency behaviour.}
-\label{fig:Figure10}
-\end{figure*}
-
-\begin{figure}[!ht]
-\begin{center}
-\includegraphics{./Graph/pdf/Figure8_1.pdf}
-\end{center}
-\caption{{\bf Cross-section of connectivity kernel estimate}. The actual kernel is shown by the solid line, the mean kernel estimate (over 50 realisations) is shown by the dotted line and the 95~\% confidence interval is shown by the shaded grey region.}
-\label{fig:Figure8}
-\end{figure}
-
-% \begin{figure}[!ht]
-% \begin{center}
-% \includegraphics{./Graph/pdf/OperatingRegions.pdf}
-% \end{center}
-% \caption{{\bf Operating Regions along the sigmoid}. The top graph is from the full model and the lower is from the reduced model.}
-% \label{fig:OperatingRegions}
-% \end{figure}
-
-% \begin{figure*}[!ht]
-% \begin{center}
-% \includegraphics{./Graph/pdf/Figure11.pdf}
-% \end{center}
-% \caption{{\bf Hinton diagram of the RMSE of the kernel estimates}. Log of the RMSE of the kernel for different values of $\nu_{cm}$ and $\Delta_y$. Mean kernel estimates are obtained over 50 realisations in each case.}
-% \label{fig:Figure11}
-% \end{figure*}
-
-\begin{figure*}[!ht]
-\begin{center}
-\includegraphics{./Graph/pdf/RMSESigmoidParameters.pdf}
-\end{center}
-\caption{{\bf RMSE of different kernel estimates}. Log of the RMSE of the kernel for different values of firing threshold, $v_0$, and the slope of the sigmoid, $\varsigma$. Mean kernel estimates are obtained over 50 realisations in each case. White spaces indicate cases where the kernel can not be estimated due to numerical problems.}
-\label{fig:Figure12}
-\end{figure*}
-
-\begin{figure*}[!ht]
-\begin{center}
-\includegraphics{./Graph/pdf/sigmoidfunctions.pdf}
-\end{center}
-\caption{{\bf Sigmoid functions}. From bottom left corner to the right of the second second row of the previous figure.}
-\label{fig:sigmoidfunctions}
-\end{figure*}
-
-% \begin{figure*}[!ht]
-% \begin{center}
-% \includegraphics{./Graph/pdf/Figure13.pdf}
-% \end{center}
-% \caption{{\bf RMSE of the kernel estimates}. RMSE of the kernel for different values of sensor width, $\sigma^2_m$, distance between adjacent sensors is $\Delta_y=1.5$. Mean kernel estimates are obtained over 50 realisations in each case.}
-% \label{fig:Figure13}
-% \end{figure*}
-
-\begin{figure*}[!ht]
-\begin{center}
-\includegraphics{./Graph/pdf/Figure13.pdf}
-\end{center}
-\caption{{\bf RMSE of the kernel estimates}. RMSE of the kernel for different values of sensor width, $\sigma_m$, distance between adjacent sensors is $\Delta_y=1.5$. Mean kernel estimates are obtained over 50 realisations in each case.}
-\label{fig:Figure13}
-\end{figure*}
-\section*{Tables}
-
-\begin{table}[!ht]
-\caption{
-\bf{Notation}}
-\begin{tabular}{|l|l|l|}
-	\hline
-	\textbf{Symbol} & \textbf{Quantity} & \textbf{Units}\\
-	\hline
-	\multicolumn{3}{|c|}{\emph{Domain and indices}}\\
-	\hline
-	$\Omega$ & spatial domain & n.a.\\
-	$\mathbf{r}$ & spatial location & [mm, mm]\\
-	$t$ & time & s\\
-	\hline
-	\multicolumn{3}{|c|}{\emph{Model}}\\
-	\hline
-    $y_t$ & observation & mV\\
-    $v(\mathbf{r},t)$ & mean membrane potential & mV \\
-	$g(\mathbf{r},t)$ & weighted firing rate function & spikes.s$^{-1}$\\
-	$f(\mathbf{r},t)$ & firing rate function & spikes.s$^{-1}$\\
-	$e(\mathbf{r},t)$ & field disturbance, with covariance function $\gamma(\mathbf r-\mathbf r')$ & mV\\
-	$\boldsymbol\varepsilon_t$ & observation noise, with covariance matrix $\Sigma_\varepsilon$ & mV\\
-	$m(\mathbf{r}_n,\mathbf{r}')$ & sensor kernel where $n$ is sensor index $n=1,..,n_y$ (width $\sigma_m^2$) & n.a. \\
-	$w(\mathbf{r},\mathbf{r}')$ & spatial connectivity kernel & n.a.\\
-	$h(t)$ & post-synaptic response kernel & mV\\
-	$\zeta$, $\xi$ & inverse synaptic time constant \& time constant parameter & s$^{-1}$, n.a.\\
-	$\eta(t)$ & Heaviside step function & n.a.\\
-	$\delta(t)$ & Dirac-delta function & n.a.\\
-	$D$ & temporal differential operator & n.a.\\
-	\hline
-	\multicolumn{3}{|c|}{\emph{Reduced Model}} \\
-	\hline
-   	$\boldsymbol\phi(\mathbf{r})$ & vector of $n_x$ Gaussian basis functions & n.a.\\
-   	$\mathbf{x}_t$ & state vector at time $t$ & mV\\
-   	$\boldsymbol{\psi}(\mathbf{r}-\mathbf{r}')$ & vector of $n_{\theta}$ connectivity kernel basis functions & n.a.\\
-   	$\boldsymbol{\Psi}(\mathbf{r}')$ & decomposition connectivity matrix & n.a.\\
-   	$\boldsymbol{\Gamma}$ & inner product of field basis functions & n.a.\\
-   	$Q()$ & state transition function & n.a.\\
-   	$\mathbf{e}_t$ & state disturbance vector, with covariance $\Sigma_e$ & mV\\
-   	$\mathbf{C}$ & observation matrix & n.a. \\
-	\hline
-	\multicolumn{3}{|c|}{\emph{Frequency Analysis}} \\
-	\hline
-    % $V(\nu)$ & Fourier transform of the neural field & Hz\\
-	$\boldsymbol{\nu}$, $\boldsymbol{\nu}_c$ & spatial frequency and spatial cutoff frequency & Hz \\
-	$\sigma_{\nu}^2$ & variance of Fourier transformed Gaussian basis function & Hz$^2$\\
-	\hline
-	\multicolumn{3}{|c|}{\emph{Estimation}} \\
-	\hline
-	$\mathcal{X}$ & matrix of sigma vectors & mV\\
-	$W$ & matrix of sigma vector weights (scaling parameter $\lambda$) & n.a.\\
-   	$\hat{\mathbf{x}}_t^{f-}$, $\hat{\mathbf{x}}_t^f$ & forward prior and posterior state estimates & mV\\
-   	$\hat{\mathbf{x}}_t^{b-}$, $\hat{\mathbf{x}}_t^{b}$ & backward prior and posterior state estimates & mV\\
- 	$P^{f-}_t$, $P^f_t$  & forward prior and posterior covariance matrices & mV$^2$\\
-   	$P^{b-}_t$, $P^b_t$ & backward prior and posterior covariance matrices & mV$^2$\\
-	$M_t$& cross-covariance matrix & mV$^2$\\
-	$\mathcal K_{t} $ & filter gain & n.a.\\
-	$S_t$ & smoother gain & n.a.\\
-	$q()$ & nonlinear state function (used in LS estimator) & n.a.\\
-   	$\mathcal{\hat{W}}$& vector of parameter estimates (used in LS estimator) & n.a.\\	
-	\hline
-\end{tabular}
-\begin{flushleft}The first column of the table gives the symbols for all the notation used in the paper. The second column provides a brief description of the quantity, and the third column provides the SI units where relevant.
-\end{flushleft}
-\label{tab:Notation}
-\end{table}
-
-
-
-\renewcommand{\arraystretch}{1.7}
-\begin{table}[!ht]
-\caption{
-\bf{Algorithm for the Unscented RTS Smoother}}
-\begin{tabular}{|c|}\hline
-\multicolumn{1}{|p{16cm}|}{\textbf{1.} Forward initialisation} \\ 
-$\hat{\mathbf x}_0, \mathbf P_0$ \\
-\hline
-\multicolumn{1}{|p{16cm}|}{\textbf{2.} Forward iteration: for $t \in \left\lbrace 0,\cdots, T\right\rbrace $, calculate the sigma points $\mathcal X_{i,t}^f$ using equations \ref{eq:sigmapoints1}-\ref{eq:sigmapoints3} and propagate through equation~\ref{eq:QmatrixForSigmapoints}} \\
-$\mathcal X_{i,t+1}^{f-}=Q(\mathcal X_{i,t}^f) \quad i=0, \dots, 2n_x$\\
-\multicolumn{1}{|p{16cm}|}{Calculate the predicted state and the predicted covariance matrix} \\
-$\hat{\mathbf x}_{t+1}^{f-}=\sum_{i=0}^{2n_x} W_i^{(m)}\mathcal X_{i,t+1}^{f-} $ \\
-$\mathbf P_{t +1}^{f-}=\sum_{i=0}^{2n_x} W_i^{(c)}(\mathcal X_{i,t+1}^{f-}-\hat{\mathbf x}_{t +1}^{f-})(\mathcal X_{i,t+1}^{f-}-\hat{\mathbf x}_{t +1}^{f-})^\top+\boldsymbol \Sigma_e$ \\ 
-\multicolumn{1}{|p{16cm}|}{Compute the filter gain, the filtered state and the filtered covariance matrix using the standard Kalman filter update equations} \\
-$\mathcal K_{t+1}=\mathbf P_{t +1}^{f-}\mathbf C ^\top(\mathbf C \mathbf P_{t +1}^{f-}\mathbf C ^\top+\boldsymbol \Sigma_{\varepsilon})^{-1}$ \\
-$\hat{\mathbf x}_{t+1}^{f}=\hat{\mathbf x}_{t+1}^{f-}+\mathcal K_{t+1}(\mathbf y_{t+1}-\mathbf C\hat{\mathbf x}_{t +1}^{f-})$ \\
-$\mathbf P_{t+1}^f=(\mathbf I - \mathcal K_{t+1}\mathbf C)\mathbf P_{t +1}^{f-}$\\ 
-\hline
-\multicolumn{1}{|p{16cm}|}{\textbf{3.} Backward initialisation}\\
-$\mathbf P_T^b= \mathbf P_T^f, \quad \hat{\mathbf x}^b_T= \hat{\mathbf x}^f_T$ \\
-\hline
-\multicolumn{1}{|p{16cm}|}{\textbf{4.} Backward iteration: for $t \in \left\lbrace T-1, \cdots, 0 \right\rbrace $ calculate the sigma points $\mathcal X_{i,t}^b$ and propagate them through equation \ref{eq:QmatrixForSigmapoints}}\\
-$\mathcal X_{i,t+1}^{b-}=Q(\mathcal X_{i,t}^b) \quad i=0, \dots, 2n_x$\\
-\multicolumn{1}{|p{16cm}|}{Calculate the predicted state and the predicted covariance matrix}\\
-$\hat{\mathbf x}_{t+1}^{b-}=\sum_{i=0}^{2n_x} W_i^{(m)}\mathcal X_{i,t+1}^{b-}$\\
-$\mathbf P_{t +1}^{b-}=\sum_{i=0}^{2n_x} W_i^{(c)}(\mathcal X_{i,t+1}^{b-}-\hat{\mathbf x}_{t +1}^{b-})(\mathcal X_{i,t+1}^{b-}-\hat{\mathbf x}_{t +1}^{b-})^\top+\boldsymbol \Sigma_e $\\
-$\mathbf M_{t +1}=\sum_{i=0}^{2n_x} W_i^{(c)}(\mathcal X_{i,t}^{b-}-\hat{\mathbf x}_{t}^{f})(\mathcal X_{i,t+1}^{b-}-\hat{\mathbf x}_{t+1}^{b-})^\top$\\
-\multicolumn{1}{|p{16cm}|}{Compute the smoother gain, the smoothed state and the smoothed covariance matrix}\\
-$\mathbf S_t=\mathbf M_{t +1}\left[ \mathbf P_{t +1}^{b-}\right] ^{-1} $\\
-$\hat{\mathbf x}_t^b=\hat{\mathbf x}_t^f+\mathbf S_t\left[\hat{\mathbf x}_{t+1}^{b}-\hat{\mathbf x}_{t+1}^{b-}\right]$\\
-$\mathbf P_{t}^{b}=\mathbf P_{t}^{f}+\mathbf S_t\left[\mathbf P_{t+1}^{b}-\mathbf P_{t+1}^{b-} \right]\mathbf S_t^\top $\\
-\hline
-\end{tabular}
-\begin{flushleft}This table shows the steps in the unscented Rauch-Tung-Striebel smoother algorithm. The steps are iterated 11 times for our state estimation procedure. The least squares algorithm is run after each iteration to update the parameter estimates.
-\end{flushleft}
-\label{tab:UKFAlgorithm}
-\end{table}
-\renewcommand{\arraystretch}{1}
-
-\begin{table}[!ht]
-\caption{
-\bf{Parameters}}
-\begin{tabular}{|c|l|c|l|}
-	\hline
-	\textbf{Symbol} & \textbf{Quantity} & \textbf{Value} & \textbf{Units}\\
-	\hline
-	\multicolumn{4}{|c|}{\emph{Domain and indices}}\\
-	\hline
-	$\Delta$ & spatial discretisation step & 0.5 & mm \\
-	$T_s$ & time step & $0.001$ & s\\
-	$T$ & number of time steps used in estimation & 400 & n.a.\\
-	\hline 
-\multicolumn{4}{|c|}{\emph{Model}}\\
-	\hline
-	$\tau$ & synaptic time constant & 0.01 & s$^{-1}$ \\
-% 	$f_{max}$ & maximal firing rate & 10 & spikes.s$^{-1}$\\
-	$\varsigma$ & slope of sigmoidal activation function & 0.56 \cite{Wendling2005} & mV$^{-1}$\\
-	$v_0$ & firing threshold & 1.8 \cite{Marreiros2008}& mV  \\
-	$\boldsymbol{\theta}$ & vector of connectivity kernel parameters & $\left[\begin{array}{ccc}
-	100 &-80 &5
-	\end{array}
-	\right]^{\top}$ & mV.spike$^{-1}$\\
-	$\sigma_{\psi_{1}}, \sigma_{\psi_{2}}, \sigma_{\psi_{3}}$ & connectivity kernel width parameters & 1.8, 2.4, 6 & mm\\
-	$n_y$ & number of sensors & 196 & n.a.\\ 
-	$\Delta_y$ & distance between adjacent sensors & 1.5 & mm\\
-	$\sigma_{m}$ & sensor width parameter & 0.9 & mm \\
-	$\Sigma_{\varepsilon}$ & observation noise variance & $0.1 \times I_{n_y}$ & mm$^2$ \\
-	$\sigma_{\gamma}$& disturbance spatial covariance width & 1.3 & mm\\
-	$\sigma_{d}$ & disturbance variance & 0.1 & mV \\
-	\hline 
-	\multicolumn{4}{|c|}{\emph{Reduced Model}}\\
-	\hline
-	$n_x$ & number of basis functions& 81 & n.a.\\
-	$\Delta_{\phi}$ & distance between field basis functions & 2.5 & mm \\
-	$\sigma^2_{\phi}$ & Spatial variance of Gaussian in spatial domain & 2.5 & mm$^2$\\
-	\hline 
-	\multicolumn{4}{|c|}{\emph{Frequency Analysis}}\\
-	\hline
-	$\rho_y$ & sensor over-sampling parameter & 1 & n.a.\\
-	$\rho_\phi$ & field basis function over-sampling parameter & 1 & n.a.\\
-	\hline 
-	\multicolumn{4}{|c|}{\emph{Estimation}}\\
-	\hline
-	$\alpha$& determines the spread of sigma points & 0.001 & n.a.\\
-	$\beta$& prior knowledge of the sigma points distribution & 2 & n.a.\\
-	$\kappa$& scaling parameter $(3-n_x)$& -78 & n.a.\\
-	$\lambda$& scaling parameter & -80.99 & n.a.\\
-	\hline
-\end{tabular}
-\begin{flushleft}Parameters for the neural field model, the model reduction, the frequency analysis and the estimation procedure.
-\end{flushleft}
-\label{tab:Parameters}
-\end{table}
-	
-
-% \begin{table}[!ht]
-% \centering
-% \caption{\bf{Estimation Results}}
-% % \begin{tabular}{|p{1.5cm}|p{1.5cm}|p{2.5cm}|p{1.5cm}|}
-% \begin{tabular}{|c|c|c|c|}	
-% \hline
-% Parameter & Actual Value & Mean Estimate $\pm$ Std. Dev. & Bias (\%) \\
-% \hline
-% % $\xi$ & $0.9$ & $0.925\pm 0.004$ & $2.778$ \\
-% $\theta_0$ & $10$ & $10.228\pm2.794$ & $2.28$\\
-% $\theta_1$ & $-8$ & $-8.495\pm1.913$ & $-6.187$\\
-% $\theta_2$ & $0.5$ & $0.545\pm0.077$ & $9$\\
-% \hline
-% \end{tabular}
-% \begin{flushleft}Actual parameter values compared to mean parameter estimates obtained from the 100 Monte Carlo simulations.
-% \end{flushleft}
-% \label{tab:Parameters estimates}
-% \end{table}
-
-% \tiny{\begin{tabular}{lllllllllllllllllll}
-% \hline
-% & \multicolumn{6}{c|}{$\theta_0$}&\multicolumn{6}{c|}{$\theta_1$}&\multicolumn{6}{c|}{$\theta_2$}\\
-% \cline{2-19}
-%  &I&II&III&IV&V&VI&I&II&III&IV&V&VI&I&II&III&IV&V&VI\\
-% \hline\hline
-% Actual Value&$90$&$100$&$110$&$15$&$30$&$50$&$-80$&$-80$&$-80$&$0$&$0$&$0$&$5$&$5$&$5$&$0$&$0$&$0$\\
-% Mean Estimate&$103.86$&$101.75$&$98.9$&$35.67$&$40.43$&$61.43$&$-89.05$&$-81.00$&$-73.13$&$-18.16$&$-12.01$&$-15.03$&$5.23$&$4.75$&$4.37$&$0.81$&$0.35$&$0.27$\\
-% Std. Dev.&$23.14$&$21.29$&$16.57$&$14.82$&$0.73$&$0.65$\\
-% Bias (\%) &at her&\textbf{aici}& & \\
-% \hline
-% \end{tabular}}
-
-% \tiny{\begin{tabular}{lcccccccccccc}
-% Experiment&\multicolumn{4}{c}{I}&\multicolumn{4}{c}{II}&\multicolumn{4}{c}{III}\\
-%  Parameters&$\theta_0$&$\theta_1$&$\theta_2$&$\xi$&$\theta_0$&$\theta_1$&$\theta_2$&$\xi$&$\theta_0$&$\theta_1$&$\theta_2$&$\xi$\\
-% \hline\hline
-% Actual Value&$90$&$-80$&$5$&$0.9$&$100$&$-80$&$5$&$0.9$&$110$&$-80$&$5$&$0.9$\\
-% Mean Estimate&$103.86$&$-89.05$&$5.23$&$0.923$& $101.75$&$-81.00$&$4.76$&$0.924$&$98.90 $&$-73.13$&$4.37$&$0.925$\\
-% Std. Dev.&$23.14$&$16.57$&$0.74$&$0.003$ & $21.30$&$14.82$&$0.65$&$0.003$&$16.48$& $11.72$&$0.54$&$0.003$\\
-% Bias (\%)& $15.4$&$11.31$&$4.6$ &$2.56$ &$1.75$&$1.25$&$4.8$&$2.67$&$10.1$&$ 8.58$&$12.6$&$2.78$  \\
-% \end{tabular}\label{tab:MexicanHatKernelResults}}
-
-\begin{table}[!ht]
-	\caption{
-	\bf{Results from varying the Mexican hat connectivity kernel parameters}}
-\begin{tabular}{c|ccccc}
-	Experiment & Parameter & Actual & Mean Est. & Std. Dev. & Bias (\%) \\ \hline
-	I and II-A &	$\theta_0$ & $90$ & 103.86 & 23.14 & 15.4 \\
-	& $\theta_1$ & -80 & -89.05 & 16.57 & 11.31 \\
-	& $\theta_2$ & 5 & 5.23 & 0.74 & 4.6 \\
-	& $\xi$ & 0.9 & 0.923 & 0.003 & 2.56 \\ \hline	
-	
-	II-B & $\theta_0$ & $100$ & 101.75 & $21.30$ & $1.75$ \\
-	& $\theta_1$ & -80 & -81.00 & $14.82$ & $1.25$ \\
-	& $\theta_2$ & 5 & $4.76$ & $0.65$ & $4.8$ \\
-	& $\xi$ & 0.9 & $0.924$ & $0.003$ & $2.67$ \\ \hline
-	
-	II-C & $\theta_0$ & $110$ & $98.90$ & $16.48$ & $10.1$ \\
-	& $\theta_1$ & -80 & $-73.13$ & $11.72$ & $ 8.58$ \\
-	& $\theta_2$ & 5 & $4.37$ & $0.54$ & $12.6$ \\
-	& $\xi$ & 0.9 & $0.925$ & $0.003$ & $2.78$ \\ \hline
-\end{tabular}\label{tab:MexicanHatKernelResults}
-\end{table}
-
-% \tiny{\begin{tabular}{lcccccccccccc}
-% Experiment&\multicolumn{4}{c}{IV}&\multicolumn{4}{c}{V}&\multicolumn{4}{c}{VI}\\
-%  Parameters&$\theta_0$&$\theta_1$&$\theta_2$&$\xi$&$\theta_0$&$\theta_1$&$\theta_2$&$\xi$&$\theta_0$&$\theta_1$&$\theta_2$&$\xi$\\
-% \hline\hline
-% Actual Value&$15$&$0$&$0$&$30$&$0$&$0$&$50$&$0$&$0$\\
-% Mean Estimate&$35.68$&$-18.16$&$0.81$&$0.923$&   $40.43$&$-12.01$&$ 0.35$&$0.924$&        $61.46$&$-15.03$&$0.27$&$0.924$\\
-% Std. Dev.&$16.72$&$11.77$&$0.53$&$0.002$&		$11.47$&$7.8$&$0.36$&$0.003$&	$11.51$&$7.56$&$0.29$&$0.003$\\
-% Bias (\%)&$137.87$&$-$&$-$&$2.56$&$34.77$&$-$&$-$&$2.67$&$22.92$&$-$&$-$&$2.67$\\
-% \end{tabular}\label{tab:GaussianKernelResults}}
-
-\begin{table}[!ht]
-	\caption{
-	\bf{Results from varying the Gaussian connectivity kernel parameter}}
-\begin{tabular}{c|ccccc}
-	Experiment & Parameter & Actual & Mean Est. & Std. Dev. & Bias (\%) \\ \hline
-	II-D &$\theta_0$ & $15$ & $35.68$ & $16.72$ & $137.87$ \\
-	& $\theta_1$ & 0 & $-18.16$ & $11.77$ & - \\
-	& $\theta_2$ & 0 & $0.81$ & $0.53$ & - \\
-	& $\xi$ & 0.9 & 0.923 & $0.002$ & 2.56 \\ \hline	
-	
- 	II-E& $\theta_0$ & $30$ & $40.43$ & $11.47$ & $34.77$ \\
-	& $\theta_1$ & 0 & $-12.01$ & $7.8$ & - \\
-	& $\theta_2$ & 0 & 0.35 & $0.36$ & - \\
-	& $\xi$ & 0.9 & $0.924$ & $0.003$ & $2.67$ \\ \hline
-	
-	II-F & $\theta_0$ & $50$ & $61.46$ & $11.51$ & $22.92$ \\
-	& $\theta_1$ & 0 & $-15.03$ & $7.56$ & - \\
-	& $\theta_2$ & 0 & $0.27$ & $0.29$ & - \\
-	& $\xi$ & 0.9 & $0.924$ & $0.003$ & $2.67$ \\ \hline
-\end{tabular}\label{tab:GaussianKernelResults}
-\end{table}
-
 \end{document}
 
