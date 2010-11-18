@@ -173,7 +173,7 @@ For $3$~dB attenuation ($1/2$ to peak power) at the cut-off frequency, $\boldsym
 \begin{equation}
  \left|\boldsymbol\Phi(\boldsymbol\nu_{c})\right|^2=\frac{1}{2}\left|\boldsymbol\Phi(\mathbf 0)\right|^2,
 \end{equation}
-since the maximum of Gaussian described in equation~S1.10 is at the origin. Now solving for $\sigma_{\nu}^2$ we get
+since the maximum of the Gaussian described in equation~S1.10 is at the origin. Solving for $\sigma_{\nu}^2$, we get
 \begin{equation}
  \sigma_{\nu}^2=\frac{2\boldsymbol\nu_{c}^\top \boldsymbol\nu_{c}}{\ln 2 }.
 \end{equation}
@@ -189,9 +189,9 @@ and
 \end{equation}
 The derivation proceeds by assuming the Gaussian basis functions are positioned at the origin ($\boldsymbol\mu_i=\boldsymbol\mu_j=\mathbf 0$). The convolution theorem states that the Fourier transform of the convolution of two functions is the product of their Fourier transforms. Using the derivation of the Fourier transform of a \emph{n}-dimensional Gaussian from equation~S1.10 of the previous section, we have
 \begin{equation}\label{eq:FTTwoGaussianMultiplication}
-\mathcal{F}\left(\varphi_i*\varphi_j\right)(\mathbf{r}) = \left(\pi^2\sigma_i^2\sigma_j^2\right)^{\frac{n}{2}}\mathrm{exp}\left(-(\sigma_i^2+\sigma_j^2)\pi^2\boldsymbol\nu^\top\boldsymbol\nu\right).
+\mathcal{F}\left(\varphi_i*\varphi_j\right)(\mathbf{r}) = \left(\pi^2\sigma_i^2\sigma_j^2\right)^{\frac{n}{2}}\mathrm{exp}\left(-(\sigma_i^2+\sigma_j^2)\pi^2\boldsymbol\nu^\top\boldsymbol\nu\right),
 \end{equation}
-where $\mathcal{F}$ denotes the Fourier transform. Multiplying and dividing by $\left(\pi\left(\sigma_i^2+\sigma_j^2\right)\right)^{\frac{n}{2}}$ equation~\ref{eq:FTTwoGaussianMultiplication} can be written as 
+where $\mathcal{F}$ denotes the Fourier transform. Multiplying and dividing by $\left(\pi\left(\sigma_i^2+\sigma_j^2\right)\right)^{\frac{n}{2}}$, equation~\ref{eq:FTTwoGaussianMultiplication} can be written as 
 \begin{equation}
 \mathcal{F}\left(\varphi_i*\varphi_j\right)(\mathbf{r}) = \left(\pi\sigma_i^2\sigma_j^2\right)^{\frac{n}{2}}\left(\frac{1}{\sigma_i^2+\sigma_j^2}\right)^{\frac{n}{2}} (\pi(\sigma_i^2+\sigma_j^2))^{\frac{n}{2}}\mathrm{exp}\left(-(\sigma_i^2+\sigma_j^2)\pi^2\boldsymbol\nu^\top\boldsymbol\nu\right).
 \end{equation}
@@ -231,7 +231,7 @@ Using the derivation of the convolution of two Gaussians given in the previous s
 This completes the derivation.
 
 \section*{Observation Kernel}
-The Gaussian shape of the observation kernel was verified experimentally. This was achieved by moving a dipole across a recording electrode submerged in saline. A photograph through a microscope of the submerged electrodes can be seen in Figure~\ref{fig:SensorAndSource}. The measurement sensor was the most central electrode of a $5\times5$ Utah array (Blackrock Microsystems) which had electrode spacing of 400~$\mu$m. The current source was a twisted wire electrode (Plastics One Inc.) with tip-tip spacing of 60~$\mu$m and tip diameter of 200~$\mu$m. The twisted wire electrode was moved in the saline solution using a 3 dimensional manipulator (Sutter Instrument Company, MPC-100) in increments of 200~$\mu$m. The twisted wire electrode and the Utah array were co-registered by visually using the microscope. 
+The Gaussian shape of the observation kernel was verified experimentally. This was achieved by moving a dipole across a recording electrode submerged in saline. A photograph through a microscope of the submerged electrodes can be seen in Figure~\ref{fig:SensorAndSource}. The measurement sensor was the most central electrode of a $5\times5$ Utah array (Blackrock Microsystems) which had electrode spacing of 400~$\mu$m. The current source was a twisted wire electrode (Plastics One Inc.) with tip-tip spacing of 60~$\mu$m and tip diameter of 200~$\mu$m. The twisted wire electrode was moved in the saline solution using a 3 dimensional manipulator (Sutter Instrument Company, MPC-100) in increments of 200~$\mu$m. The twisted wire electrode and the Utah array were co-registered visually using the microscope. 
 \begin{figure}[ht]		
 	\begin{center}
 		%trim option's parameter order: left bottom right top
@@ -241,11 +241,11 @@ The Gaussian shape of the observation kernel was verified experimentally. This w
 	\label{fig:SensorAndSource}
 \end{figure}
 
-The stimulation waveform for the current source consisted of a 40~Hz sine wave with a duration of 1~s. The recording from the central electrode in the array was used estimate the shape of the sensor kernel. To extract the amplitude the signal the data was first band-pass filtered with a centre frequency of 40~Hz. The envelope of the signal was found by computing the mean instantaneous amplitude over the 1~s stimulation duration by
+The stimulation waveform for the current source consisted of a 40~Hz sine wave with a duration of 1~s. The recording from the central electrode in the array was used to estimate the shape of the sensor kernel. To extract the amplitude of the signal, the data was first band-pass filtered with a centre frequency of 40~Hz. The envelope of the signal was found by computing the mean instantaneous amplitude over the 1~s stimulation duration by
 \begin{equation}
 	a = \frac{1}{N}\sum_n{\sqrt{(x(n)-\mathcal{H}x(n))^2}}
 \end{equation}
-where $\mathcal{H}$ denotes the Hilbert transform operator, $n$ indexes samples and $N$ is the total number of samples in the time series. Figure~\ref{fig:Ch3} shows the mean amplitude of the recorded envelope versus to distance between the twisted wire electrode and the recording electrode. A Gaussian fitted to the amplitudes is also shown. The figure shows that a Gaussian is indeed a good model for the sensor kernel in the homogeneous solution. 
+where $\mathcal{H}$ denotes the Hilbert transform operator, $n$ indexes samples and $N$ is the total number of samples in the time series. Figure~\ref{fig:Ch3} shows the mean amplitude of the recorded envelope versus the distance between the twisted wire electrode and the recording electrode. A Gaussian fitted to the amplitudes is also shown. The figure shows that a Gaussian is indeed a good model for the sensor kernel in the homogeneous solution. 
 \begin{figure}[h]
 	\begin{center}
 	\includegraphics[scale=1]{./Graph/eps/channel3fig.eps}
