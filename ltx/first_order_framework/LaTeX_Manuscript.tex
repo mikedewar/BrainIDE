@@ -95,7 +95,7 @@ where $\zeta=\tau^{-1}$, $\tau$ is the synaptic time constant and $\eta(t)$ is t
 \begin{equation}
 	\label{RateBasedInteractions} g\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( v\left( \mathbf{r}',t \right) \right)\, d\mathbf{r}'}, 
 \end{equation}
-where $f(\cdot)$ is the firing rate function, $w(\cdot)$ is the spatial connectivity kernel and $\Omega$ is the spatial domain representing a cortical sheet or surface. The connectivity kernel is typically a ``Mexican hat'' or ``wizard hat'' function, which describes local excitation and surround inhibition. An example of the Mexican hat connectivity kernel used in this paper is shown in Figure~\ref{fig:Figure1}. In an attempt model longer range connectivity, To demonstrate flexibility in the estimation algorithm and to model larger cortical regions, a third component of the kernel is introduced describing weak longer-range excitation. The exact shape of this kernel is assumed to vary across subjects, and hence needs to be inferred from subject-specific data.
+where $f(\cdot)$ is the firing rate function, $w(\cdot)$ is the spatial connectivity kernel and $\Omega$ is the spatial domain representing a cortical sheet or surface. The connectivity kernel is typically a ``Mexican hat'' or ``wizard hat'' function, which describes local excitation and surround inhibition. An example of the Mexican hat connectivity kernel used in this paper is shown in Figure~\ref{fig:Figure1}. To demonstrate flexibility in the estimation algorithm and to model larger cortical regions, a third component of the kernel is introduced describing weak longer-range excitation. The exact shape of this kernel is assumed to vary across subjects, and hence needs to be inferred from subject-specific data.
 
 The firing rate of the presynaptic neurons is related to the post-synaptic membrane potential by the sigmoidal activation function 
 \begin{equation}
@@ -110,11 +110,11 @@ The parameter $v_0$ describes the firing threshold of the neural populations and
 	f\left( v\left( \mathbf{r}',t' \right)\right)
 	\, d\mathbf{r}'dt'.
 \end{equation}
-To arrive at the final form of the model, we shall express the synaptic response kernel as a Green's function 
+Now we shall express the synaptic response kernel as a Green's function 
 \begin{equation}
 	\label{GreensFuncDef} \textrm{D}h\left( t \right) = \delta \left( t \right), 
 \end{equation}
-where $\textrm{D}=d/dt + \zeta$ is a temporal differential operator and $\delta(t)$ is the Dirac-delta function giving 
+where $\textrm{D}=d/dt + \zeta$ is a temporal differential operator and $\delta(t)$ is the Dirac-delta function. This gives the standard form of the model
 \begin{equation}
 	\label{FinalFormContinuous} 
 	\frac{dv\left( \mathbf{r},t \right)}{dt} + \zeta v\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)\, d\mathbf{r}'}. 
@@ -143,7 +143,7 @@ The mapping between the membrane voltage and the electrophysiological data, deno
 \end{equation}
 where $m\left(\mathbf{r}_n-\mathbf{r}'\right)$ is the observation kernel, $\mathbf{r}_n$ defines the location of the electrodes in the field, $n=1,...,n_y$ indexes the sensors and $\boldsymbol{\varepsilon}_t \sim \mathcal{N}\left(0,\boldsymbol{\Sigma}_{\varepsilon}\right)$ denotes a multivariate normal distribution with mean zero and covariance matrix $\boldsymbol{\Sigma}_{\varepsilon}$. 
 
-When considering the measurement of a point source in a conductive homogeneous field measured by a point sensor, the observation kernel will theoretically follow a Laplacian like shape, with an exponential decay in the amplitude of a measurement with an increasing distance between the source and sensor~\cite{Jackson1999}. However, when considering a source or sensor with a spatial extent, the peak of the observation kernel becomes smoothed and is more similar to a Gaussian shape~\cite{Jackson1999}. An experiment supporting this was performed and the results are shown in \dean{Appendix?}. Therefore, in this study the observation kernel, $m(\mathbf{r}-\mathbf{r}')$, that governs the sensor pick-up geometry and is defined by 
+When considering the measurement of a point source in a conductive homogeneous field measured by a point sensor, the observation kernel will theoretically follow a Laplacian like shape, with an exponential decay in the amplitude of a measurement with an increasing distance between the source and sensor~\cite{Jackson1999}. However, when considering a source or sensor with a spatial extent, the peak of the observation kernel becomes smoothed and is more similar to a Gaussian shape~\cite{Jackson1999}. An experiment supporting this was performed and the results are shown in \dean{Appendix?}. Therefore, in this study the observation kernel, $m(\mathbf{r}-\mathbf{r}')$, that governs the sensor pick-up geometry is defined by 
 \begin{equation}
 	m\left(\mathbf{r}-\mathbf{r}'\right) = \exp{\left(-\frac{(\mathbf{r}-\mathbf{r}')^\top(\mathbf{r}-\mathbf{r}')}{\sigma_m^2}\right)},
 \end{equation}
