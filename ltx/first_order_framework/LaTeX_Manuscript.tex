@@ -199,9 +199,8 @@ and substituting this into equation~\ref{StartofReduction} and cross-multiplying
     \label{eq:ReducedForm}
 	 \mathbf{x}_{t+1} &= T_s\boldsymbol{\Gamma}^{-1}
 	 \int_\Omega \boldsymbol{\phi}(\mathbf{r}) 
-	 \int_\Omega \boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}')f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \nonumber \\
-	&\times d\mathbf{r}' d\mathbf{r} \boldsymbol{\theta}  
-	 + \xi\mathbf{x}_t + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r}) e_t(\mathbf{r}) \, d\mathbf{r}}.
+	 \int_\Omega \boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}')f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t)d\mathbf{r}' d\mathbf{r} \boldsymbol{\theta}  \nonumber \\
+	& + \xi\mathbf{x}_t + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r}) e_t(\mathbf{r}) \, d\mathbf{r}}.
 \end{align}
 The analytic derivation of the inner product of \emph{n}-dimensional Gaussians, which was used for calculating $\mathbf\Gamma$, is provided in the (\dean{Appendix}) supplementary material. Equation~\ref{eq:ReducedForm} can be simplified by exploiting the isotropy of the connectivity kernel basis functions where
 \begin{equation}
@@ -499,12 +498,12 @@ Dean Freestone would like to thank Dr. Mark van Rossum for hosting him while vis
 
 \appendix
 \section{Time Discretisation of Neural Field Model}
-\label{App:Time Discretization} To form the integro-difference equation neural field model, a time discretisation must be performed. To do this, we used a one-step Euler method, where equation~7 of the main text can be approximated by 
+\label{App:Time Discretization} To form the integro-difference equation neural field model, a time discretisation must be performed. To do this, we used a one-step Euler method, where equation~\ref{FinalFormContinuous} of the main text can be approximated by 
 \begin{align}
 	\label{Euler Approximation}\frac{v\left( \mathbf{r},t+T_s \right) - v\left( \mathbf{r},t\right)}{T_s} &=-\zeta v\left( \mathbf{r},t \right) \nonumber \\ 
 &+ \int_\Omega {w\left( \mathbf{r}-\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)d\mathbf{r}'}. 
 \end{align}
-For clarity, we shall index time points in the discrete time form of the model using the subscript $t$ and the next time point as $t+1$. Rearranging equation~S1.1, we get 
+For clarity, we shall index time points in the discrete time form of the model using the subscript $t$ and the next time point as $t+1$. Rearranging equation~\ref{Euler Approximation}, we get 
 \begin{equation}
 	\label{Euler Approximation2} v_{t+1}\left( \mathbf{r}\right) = v_t\left( \mathbf{r}\right) -T_s \zeta v_t\left( \mathbf{r}\right) + T_s \int_\Omega {w\left( \mathbf{r}-\mathbf{r}' \right)f\left( {v_t\left( \mathbf{r}'\right)} \right)d\mathbf{r}'}. 
 \end{equation}
