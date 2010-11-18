@@ -141,7 +141,7 @@ The mapping between the membrane voltage and the electrophysiological data, deno
 	\, d\mathbf{r}'} + 
 	\boldsymbol{\varepsilon}_t, 
 \end{equation}
-where $m\left(\mathbf{r}_n-\mathbf{r}'\right)$ is the observation kernel, $\mathbf{r}_n$ defines the location of the electrodes in the field, $n=1,...,N$ indexes the electrodes and $\boldsymbol{\varepsilon}_t \sim \mathcal{N}\left(0,\boldsymbol{\Sigma}_{\varepsilon}\right)$ denotes a multivariate normal distribution with mean zero and covariance matrix $\boldsymbol{\Sigma}_{\varepsilon}$. 
+where $m\left(\mathbf{r}_n-\mathbf{r}'\right)$ is the observation kernel, $\mathbf{r}_n$ defines the location of the electrodes in the field, $n=1,...,n_y$ indexes the sensors and $\boldsymbol{\varepsilon}_t \sim \mathcal{N}\left(0,\boldsymbol{\Sigma}_{\varepsilon}\right)$ denotes a multivariate normal distribution with mean zero and covariance matrix $\boldsymbol{\Sigma}_{\varepsilon}$. 
 
 When considering the measurement of a point source in a conductive homogeneous field measured by a point sensor, the observation kernel will theoretically follow a Laplacian like distribution, with an exponential decay in the amplitude of a measurement with an increasing distance between the source and sensor~\cite{Jackson1999}. However, when considering a source or sensor with a spatial extent the peak of the observation kernel becomes smoothed and is more similar to a Gaussian shape~\cite{Jackson1999}. An experiment supporting this was performed and the results are shown in \dean{Appendix?}. Therefore, in this study the observation kernel $m(\mathbf{r}-\mathbf{r}')$ that governs the sensor pick-up geometry and is defined by 
 \begin{equation}
@@ -204,7 +204,7 @@ and $c_i$ is the center of the $i^{th}$ basis function of the kernel decompositi
 \begin{equation}\label{eq:DefPsi}
 	\left[ \boldsymbol\Psi(\mathbf{r}')\right]_{:i}  \triangleq T_s\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\psi_i (2c_i+\mathbf{r}'-\mathbf{r})\textrm{d}\mathbf{r}},
 \end{equation}
-where $\left[ \boldsymbol\Psi(\mathbf{r}')\right]_{:i}$ denotes the $i^{th}$ column of $\boldsymbol{\Psi}(\mathbf{r}')$ which is a $L \times n_{\theta}$ matrix, where $L$ is the number of basis functions (and states) and $n_{\theta}$ is the number of connectivity kernel basis functions. This matrix is defined analytically (see the supplementary (\dean{Appendix}) material for analytic convolution of two Gaussians), since it is constant with respect to the states and the unknown parameters. Substituting equation~\ref{eq:DefPsi} into equation~\ref{eq:ReducedForm} gives
+where $\left[ \boldsymbol\Psi(\mathbf{r}')\right]_{:i}$ denotes the $i^{th}$ column of $\boldsymbol{\Psi}(\mathbf{r}')$ which is a $n_x \times n_{\theta}$ matrix, where $n_x$ is the number of basis functions (and states) and $n_{\theta}$ is the number of connectivity kernel basis functions. This matrix is defined analytically (see the supplementary (\dean{Appendix}) material for analytic convolution of two Gaussians), since it is constant with respect to the states and the unknown parameters. Substituting equation~\ref{eq:DefPsi} into equation~\ref{eq:ReducedForm} gives
 \begin{eqnarray}
 	\mathbf{x}_{t+1} &=& \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \, d\mathbf{r}' \boldsymbol{\theta} \nonumber \\ &+& \xi\mathbf{x}_t 
 + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r}) \, d\mathbf{r}}.
@@ -234,9 +234,9 @@ where each element of the observation matrix is
 % \begin{equation}
 % 	\mathbf{C} = \left[
 % 	\begin{array}{{ccc}} 
-% 		c_{1,1} & \dots & c_{1,L} \\
+% 		c_{1,1} & \dots & c_{1,n_x} \\
 % 		\vdots & \ddots & \vdots \\
-% 		c_{N,1} & \dots & c_{N,L} 
+% 		c_{n_y,1} & \dots & c_{n_y,n_x} 
 % 	\end{array}
 % 	\right] 
 % \end{equation}
@@ -259,7 +259,7 @@ and
 \subsection{Spectral Analysis}\label{SpectralAnalysisSection} 
 Spectral analysis has been used to identify both the number of sensors and the number of basis functions required to reconstruct the neural field from sampled observations~\cite{Sanner1992,Scerri2009}. Based on a two-dimensional extension of Shannon's sampling theorem~\cite{Peterson1962}, the spatial bandwidth of the observed field can be used to provide a lower bound on both the number of sensors and the number of basis functions required to capture the dominant spatial spectral characteristics of the neural field.
 
-Let the spectral representation of the post-synaptic membrane voltage field at time $t$ \parham{and at spatial frequency $\boldsymbol\nu$} be denoted by $V_t(\boldsymbol{\nu})$. According to Shannon's sampling theorem, the field must be spatially band-limited for an accurate reconstruction using spatially discrete observations. Nevertheless, an approximate reconstruction can be obtained if the field is approximately band-limited with 
+Let the spectral representation of the post-synaptic membrane voltage field at time $t$ be denoted by $V_t(\boldsymbol{\nu})$, where $\boldsymbol\nu$ is the spatial frequency. According to Shannon's sampling theorem, the field must be spatially band-limited for an accurate reconstruction using spatially discrete observations. However, an approximate reconstruction can be obtained if the field is approximately band-limited with 
 \begin{equation}
 	V_t(\boldsymbol{\nu}) \approx 0 ~ \ \forall \boldsymbol{\nu} > \boldsymbol{\nu}_c,
 \end{equation}
@@ -269,9 +269,9 @@ where $\boldsymbol{\nu}_c$ is a cutoff frequency (typically taken as the -3~dB p
 \end{equation}
 where $\rho_y \in \mathbb{R} \ge 1$ is an oversampling parameter. This condition must be satisfied to avoid spatial spectral aliasing effects when reconstructing the hidden dynamic field, $v_t(\mathbf{r})$, using the sampled observations, $\mathbf{y}_t$.
 
-In practice, it is difficult to estimate the bandwidth of the cortex using traditional electrophysiological measurements, possibly preventing placement of sensors in accordance to equation~\ref{eq:MinimumSensorDistance}. However, we envisage it may be possible to estimate the spatial bandwidth using other modalities with higher spatial resolution such as fMRI, NIRS or other optical imaging techniques~\cite{Issa2000}. Nevertheless, spectral aliasing can still be avoided by a proper choice of the spatial sampling distance given the sensors' spectral characteristics. The spatial extent of the sensors results in a spectral low-pass action, thus providing spatial anti-aliasing filtering. Such sensors limit the spatial bandwidth of the observation to a value  denoted by $\boldsymbol{\nu}_{cy}$. Aliasing can then be avoided by positioning the sensors according to equation~\ref{eq:MinimumSensorDistance}, replacing $\boldsymbol{\nu}_c$ with $\boldsymbol{\nu}_{cy}$.
+In practice, it is difficult to estimate the bandwidth of the cortex using traditional electrophysiological measurements, possibly preventing placement of sensors in accordance to equation~\ref{eq:MinimumSensorDistance}. However, we envisage it may be possible to estimate the spatial bandwidth using other modalities with higher spatial resolution such as fMRI, NIRS or other optical imaging techniques~\cite{Issa2000}. Spectral aliasing can be avoided by a proper choice of the spatial sampling distance given the sensors' spectral characteristics. The spatial extent of the sensors results in a spectral low-pass action, thus providing spatial anti-aliasing filtering. Such sensors limit the spatial bandwidth of the observation to a value denoted by $\boldsymbol{\nu}_{cy}$. Aliasing can then be avoided by positioning the sensors according to equation~\ref{eq:MinimumSensorDistance}, replacing $\boldsymbol{\nu}_c$ with $\boldsymbol{\nu}_{cy}$.
 
-Although such sensors avoid errors due to aliasing, they attenuate the high spatial frequency variations in the observations. Therefore, any procedure applied to estimate the original field or the underlying connectivity structure from these band-limited observations has the potential to underestimate the high spatial frequency components of both the field and the connectivity kernel. This motivates the use of sensors with wider bandwidths (narrower in space). Nevertheless, this choice would require more sensors in order to satisfy Shannon's sampling theorem for a given spatial region. Therefore, a compromise needs to be found between the bandwidth of the sensor response, the accuracy of the estimation results, the number of sensors and the computational demands of the estimation procedure when designing experiments.
+Although such sensors avoid errors due to aliasing, they attenuate the high spatial frequency variations in the observations. Therefore, any procedure applied to estimate the original field or the underlying connectivity structure from these band-limited observations has the potential to underestimate the high spatial frequency components of both the field and the connectivity kernel. This motivates the use of sensors with wider bandwidths (narrower in space). This choice would require more sensors in order to satisfy Shannon's sampling theorem for a given spatial region. Therefore, a compromise needs to be found between the bandwidth of the sensor response, the accuracy of the estimation results, the number of sensors and the computational demands of the estimation procedure when designing experiments.
 
 Similar considerations need to be made regarding the representation of the dynamic field, $v_t(\mathbf{r})$, using the basis function decomposition. Again, applying Shannon's sampling theorem, the minimum distance between basis functions must satisfy 
 \begin{equation}\label{eq:BasisFunctionSeparation}
@@ -313,24 +313,24 @@ Note that for a spatially homogeneous isotropic field, the basis functions can b
 The unscented Rauch-Tung-Striebel smoother (URTSS)~\cite{Sarkka2010} is used for the state estimation. The URTSS incorporates an unscented Kalman filter (UKF)~\cite{Julier1997, Merwe2003} in a forward step to estimate posterior states, $\hat{\mathbf x}_t^{f}$, followed by a backward step to compute the smoothed state estimates, $\hat{\mathbf x}_t^{b}$. The first and second order moments of the predicted state are captured by propagating the so-called sigma points through the state equation. The sigma points, $\mathcal X_i$, are calculated using the unscented transform as follows:
 \begin{eqnarray}\label{eq:sigmapoints1}
 	\mathcal X_{0}&=&\bar x \\
-	\mathcal X_{i}&=&\bar x+\left(\sqrt{( L + \lambda)\mathbf P_x}\right)_i, \quad i=1, \dots, L \\
-	\mathcal X_{i}&=&\bar x-\left(\sqrt{( L + \lambda)\mathbf P_x}\right)_{i- L}, \quad i= L+1, \dots, 2L 
+	\mathcal X_{i}&=&\bar x+\left(\sqrt{( n_x + \lambda)\mathbf P_x}\right)_i, \quad i=1, \dots, n_x \\
+	\mathcal X_{i}&=&\bar x-\left(\sqrt{( n_x + \lambda)\mathbf P_x}\right)_{i- n_x}, \quad i= n_x+1, \dots, 2n_x 
 \end{eqnarray}
-where $\bar x$ represents either $\hat{\mathbf x}_t^{f}$ or $\hat{\mathbf x}_t^{b}$, $\mathbf{P}_x$ is the corresponding covariance matrix for filtering or smoothing, $\left(\sqrt{( L + \lambda)\mathbf P_x}\right)_i$ is the $i^{th}$ column of the scaled matrix square root of $\mathbf P_x$ and $L$ is the dimension of the state space. The total number of sigma points is $2L+1$. The scaling parameter, $\lambda$, is defined as 
+where $\bar x$ represents either $\hat{\mathbf x}_t^{f}$ or $\hat{\mathbf x}_t^{b}$, $\mathbf{P}_x$ is the corresponding covariance matrix for filtering or smoothing, $\left(\sqrt{( n_x + \lambda)\mathbf P_x}\right)_i$ is the $i^{th}$ column of the scaled matrix square root of $\mathbf P_x$ and $n_x$ is the dimension of the state space. The total number of sigma points is $2n_x+1$. The scaling parameter, $\lambda$, is defined as 
 \begin{equation}\label{eq:sigmapoints3}
-	\lambda=\alpha^2( L+\kappa) - L, 
+	\lambda=\alpha^2( n_x+\kappa) - n_x, 
 \end{equation}
 where the constant $\alpha$ determines the spread of the sigma points and $\kappa$ is an additional scaling parameter (see~\cite{Haykin2001} for more details). 
 
 The sigma vectors are propagated through the system equations and weighted to form the predicted mean and covariance. The weights are calculated by 
 \begin{eqnarray}
-	\mathbf W_0^{(m)}&=&\frac{\lambda}{ L+\lambda} \\
-	\mathbf W_0^{(c)}&=&\frac{\lambda}{ L+\lambda}+(1-\alpha^2+\beta) \\
-	\mathbf W_i^{(m)}&=&\mathbf W_i^{(c)}=\frac{1}{2( L+\lambda)} \quad i=1, \dots, 2L, 
+	\mathbf W_0^{(m)}&=&\frac{\lambda}{ n_x+\lambda} \\
+	\mathbf W_0^{(c)}&=&\frac{\lambda}{ n_x+\lambda}+(1-\alpha^2+\beta) \\
+	\mathbf W_i^{(m)}&=&\mathbf W_i^{(c)}=\frac{1}{2( n_x+\lambda)} \quad i=1, \dots, 2n_x, 
 \end{eqnarray}
-where the superscripts $m$ and $c$ denote mean and covariance and $\beta$ incorporates prior knowledge of the distribution of $\mathbf{x}$. Since the observation equation is linear (equation~\ref{ObservationEquation}), the standard Kalman Filter update equations are used to correct the predicted states. The state estimates from forward filtering are used to form a new set of sigma points for the smoother, as described above. The cross-covariance matrix of the states, $\mathbf M$, is also required for computing the smoother gain. A summary of the steps in the URTSS algorithm is given in Table~\ref{tab:UKFAlgorithm}. It should be noted that the disturbance, $\mathbf{e}_t$, and the measurement noise, $\boldsymbol{\varepsilon}_t$, are additive. Therefore, the additive form of the URTSS is used. 
+where the superscripts $m$ and $c$ denote mean and covariance and $\beta$ incorporates prior knowledge of the distribution of $\mathbf{x}$. Since the observation equation is linear (equation~\ref{ObservationEquation}), the standard Kalman Filter update equations are used to correct the predicted states. The state estimates from forward filtering are used to form a new set of sigma points for the smoother, as described above. The cross-covariance matrix of the states, $\mathbf M$, is also required for computing the smoother gain, as described in the summary of the steps in the URTSS algorithm is given in Table~\ref{tab:UKFAlgorithm}. It should be noted that the disturbance, $\mathbf{e}_t$, and the measurement noise, $\boldsymbol{\varepsilon}_t$, are additive. Therefore, the additive form of the URTSS is used. 
 
-Although the system is nonlinear, the parameters of the system are linear with respect to the state. This is exploited by our procedure where the parameter estimation uses a Least Squares (LS) method that minimises the sum of the squared errors (of a predicted state update) with each new estimate of the state vector sequence. To create the least squares parameter estimator, we first define the $L \times n_{\theta}$ matrix
+Although the system is nonlinear, the parameters of the system are linear with respect to the state. This is exploited by our procedure where the parameter estimation uses a Least Squares (LS) method that minimises the sum of the squared errors (of a predicted state update) with each new estimate of the state vector sequence. To create the least squares parameter estimator, we first define the $n_x \times n_{\theta}$ matrix
 \begin{equation}
 	\mathbf{q}(\mathbf{x}_t) = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \,\textrm{d}\mathbf{r}'.
 \end{equation}
@@ -389,7 +389,7 @@ Following this, the LS parameter estimates~\cite{Kailath2000}, $ \hat{\mathcal{W
 \end{equation}
 
 % Results and Discussion can be combined.
-\section{Results}\label{ResultsSection} We now provide demonstrations of the estimation procedure using the new methods that are described above. The full neural field model was used to generate the data for state and parameter estimation. All parameters for the model are given in Table~\ref{tab:Parameters}, unless otherwise explicitly stated for particular experiments. Note that the parameters for the spatial and temporal aspects of the model can be considered arbitrary when demonstrating the estimation methodology. This is because the temporal aspects scale with the sampling rate and the length of the times series, and the spatial aspects scale with the size of the neural field and the spatial step size used for numerical simulation. When generating the simulated data, we assumed free boundary conditions for the neural field. An example of the simulated field at a single point in time can be seen in Figure~\ref{fig:Figure3}(A). Figure~\ref{fig:Figure3}(B) shows an example of data from the modelled sensors and Figure~\ref{fig:Figure3}(C) shows the power spectral density (PSD) of the simulated time-series. %The PSD shows the typical $1/f^2$ characteristics of intracranial EEG.
+\section{Results}\label{ResultsSection} We now provide demonstrations of the estimation procedure using the new methods that are described above. Data was generated using the neural field model, described in Section~\ref{NeuralModelSection}, to demonstrate the state and parameter estimation framework. All parameters for the model are given in Table~\ref{tab:Parameters}, unless otherwise explicitly stated for particular experiments. Note that the parameters for the spatial and temporal aspects of the model can be considered arbitrary when demonstrating the estimation methodology. This is because the temporal aspects scale with the sampling rate and the length of the times series, and the spatial aspects scale with the size of the neural field and the spatial step size used for numerical simulation. When generating the simulated data, we assumed free boundary conditions for the neural field. An example of the simulated field at a single point in time can be seen in Figure~\ref{fig:Figure3}(A). Figure~\ref{fig:Figure3}(B) shows an example of data from the modelled sensors and Figure~\ref{fig:Figure3}(C) shows the power spectral density (PSD) of the simulated time-series. %The PSD shows the typical $1/f^2$ characteristics of intracranial EEG.
 
 The sensors were spaced on a $14 \times 14$ square grid and the sensor width was set to $\sigma^2_m = 0.81$. This provides a width of 1.5~mm at half the maximum amplitude of the sensor kernel. The distance between sensors was set to $\Delta_y = 1.5$~mm. This arrangement modelled the recording as having some cross talk (from volume conduction), which is typical for neurophysiological recordings.
 
@@ -648,7 +648,7 @@ Dean Freestone would like to thank Dr. Mark van Rossum for hosting him while vis
 	$f(\mathbf{r},t)$ & firing rate function & spikes.s$^{-1}$\\
 	$e(\mathbf{r},t)$ & field disturbance, with covariance function $\gamma(\mathbf r-\mathbf r')$ & mV\\
 	$\boldsymbol\varepsilon_t$ & observation noise, with covariance matrix $\Sigma_\varepsilon$ & mV\\
-	$m(\mathbf{r}_n,\mathbf{r}')$ & sensor kernel where $n$ is sensor index $n=1,..,N$ (width $\sigma_m^2$) & n.a. \\
+	$m(\mathbf{r}_n,\mathbf{r}')$ & sensor kernel where $n$ is sensor index $n=1,..,n_y$ (width $\sigma_m^2$) & n.a. \\
 	$w(\mathbf{r},\mathbf{r}')$ & spatial connectivity kernel & n.a.\\
 	$h(t)$ & post-synaptic response kernel & mV\\
 	$\zeta$, $\xi$ & inverse synaptic time constant \& time constant parameter & s$^{-1}$, n.a.\\
@@ -658,7 +658,7 @@ Dean Freestone would like to thank Dr. Mark van Rossum for hosting him while vis
 	\hline
 	\multicolumn{3}{|c|}{\emph{Reduced Model}} \\
 	\hline
-   	$\boldsymbol\phi(\mathbf{r})$ & vector of $L$ Gaussian basis functions & n.a.\\
+   	$\boldsymbol\phi(\mathbf{r})$ & vector of $n_x$ Gaussian basis functions & n.a.\\
    	$\mathbf{x}_t$ & state vector at time $t$ & mV\\
    	$\boldsymbol{\psi}(\mathbf{r}-\mathbf{r}')$ & vector of $n_{\theta}$ connectivity kernel basis functions & n.a.\\
    	$\boldsymbol{\Psi}(\mathbf{r}')$ & decomposition connectivity matrix & n.a.\\
@@ -704,10 +704,10 @@ Dean Freestone would like to thank Dr. Mark van Rossum for hosting him while vis
 $\hat{\mathbf x}_0, \mathbf P_0$ \\
 \hline
 \multicolumn{1}{|p{16cm}|}{\textbf{2.} Forward iteration: for $t \in \left\lbrace 0,\cdots, T\right\rbrace $, calculate the sigma points $\mathcal X_{i,t}^f$ using equations \ref{eq:sigmapoints1}-\ref{eq:sigmapoints3} and propagate through equation~\ref{eq:QmatrixForSigmapoints}} \\
-$\mathcal X_{i,t+1}^{f-}=Q(\mathcal X_{i,t}^f) \quad i=0, \dots, 2L$\\
+$\mathcal X_{i,t+1}^{f-}=Q(\mathcal X_{i,t}^f) \quad i=0, \dots, 2n_x$\\
 \multicolumn{1}{|p{16cm}|}{Calculate the predicted state and the predicted covariance matrix} \\
-$\hat{\mathbf x}_{t+1}^{f-}=\sum_{i=0}^{2L} W_i^{(m)}\mathcal X_{i,t+1}^{f-} $ \\
-$\mathbf P_{t +1}^{f-}=\sum_{i=0}^{2L} W_i^{(c)}(\mathcal X_{i,t+1}^{f-}-\hat{\mathbf x}_{t +1}^{f-})(\mathcal X_{i,t+1}^{f-}-\hat{\mathbf x}_{t +1}^{f-})^\top+\boldsymbol \Sigma_e$ \\ 
+$\hat{\mathbf x}_{t+1}^{f-}=\sum_{i=0}^{2n_x} W_i^{(m)}\mathcal X_{i,t+1}^{f-} $ \\
+$\mathbf P_{t +1}^{f-}=\sum_{i=0}^{2n_x} W_i^{(c)}(\mathcal X_{i,t+1}^{f-}-\hat{\mathbf x}_{t +1}^{f-})(\mathcal X_{i,t+1}^{f-}-\hat{\mathbf x}_{t +1}^{f-})^\top+\boldsymbol \Sigma_e$ \\ 
 \multicolumn{1}{|p{16cm}|}{Compute the filter gain, the filtered state and the filtered covariance matrix using the standard Kalman filter update equations} \\
 $\mathcal K_{t+1}=\mathbf P_{t +1}^{f-}\mathbf C ^\top(\mathbf C \mathbf P_{t +1}^{f-}\mathbf C ^\top+\boldsymbol \Sigma_{\varepsilon})^{-1}$ \\
 $\hat{\mathbf x}_{t+1}^{f}=\hat{\mathbf x}_{t+1}^{f-}+\mathcal K_{t+1}(\mathbf y_{t+1}-\mathbf C\hat{\mathbf x}_{t +1}^{f-})$ \\
@@ -717,11 +717,11 @@ $\mathbf P_{t+1}^f=(\mathbf I - \mathcal K_{t+1}\mathbf C)\mathbf P_{t +1}^{f-}$
 $\mathbf P_T^b= \mathbf P_T^f, \quad \hat{\mathbf x}^b_T= \hat{\mathbf x}^f_T$ \\
 \hline
 \multicolumn{1}{|p{16cm}|}{\textbf{4.} Backward iteration: for $t \in \left\lbrace T-1, \cdots, 0 \right\rbrace $ calculate the sigma points $\mathcal X_{i,t}^b$ and propagate them through equation \ref{eq:QmatrixForSigmapoints}}\\
-$\mathcal X_{i,t+1}^{b-}=Q(\mathcal X_{i,t}^b) \quad i=0, \dots, 2L$\\
+$\mathcal X_{i,t+1}^{b-}=Q(\mathcal X_{i,t}^b) \quad i=0, \dots, 2n_x$\\
 \multicolumn{1}{|p{16cm}|}{Calculate the predicted state and the predicted covariance matrix}\\
-$\hat{\mathbf x}_{t+1}^{b-}=\sum_{i=0}^{2L} W_i^{(m)}\mathcal X_{i,t+1}^{b-}$\\
-$\mathbf P_{t +1}^{b-}=\sum_{i=0}^{2L} W_i^{(c)}(\mathcal X_{i,t+1}^{b-}-\hat{\mathbf x}_{t +1}^{b-})(\mathcal X_{i,t+1}^{b-}-\hat{\mathbf x}_{t +1}^{b-})^\top+\boldsymbol \Sigma_e $\\
-$\mathbf M_{t +1}=\sum_{i=0}^{2L} W_i^{(c)}(\mathcal X_{i,t}^{b-}-\hat{\mathbf x}_{t}^{f})(\mathcal X_{i,t+1}^{b-}-\hat{\mathbf x}_{t+1}^{b-})^\top$\\
+$\hat{\mathbf x}_{t+1}^{b-}=\sum_{i=0}^{2n_x} W_i^{(m)}\mathcal X_{i,t+1}^{b-}$\\
+$\mathbf P_{t +1}^{b-}=\sum_{i=0}^{2n_x} W_i^{(c)}(\mathcal X_{i,t+1}^{b-}-\hat{\mathbf x}_{t +1}^{b-})(\mathcal X_{i,t+1}^{b-}-\hat{\mathbf x}_{t +1}^{b-})^\top+\boldsymbol \Sigma_e $\\
+$\mathbf M_{t +1}=\sum_{i=0}^{2n_x} W_i^{(c)}(\mathcal X_{i,t}^{b-}-\hat{\mathbf x}_{t}^{f})(\mathcal X_{i,t+1}^{b-}-\hat{\mathbf x}_{t+1}^{b-})^\top$\\
 \multicolumn{1}{|p{16cm}|}{Compute the smoother gain, the smoothed state and the smoothed covariance matrix}\\
 $\mathbf S_t=\mathbf M_{t +1}\left[ \mathbf P_{t +1}^{b-}\right] ^{-1} $\\
 $\hat{\mathbf x}_t^b=\hat{\mathbf x}_t^f+\mathbf S_t\left[\hat{\mathbf x}_{t+1}^{b}-\hat{\mathbf x}_{t+1}^{b-}\right]$\\
@@ -758,16 +758,16 @@ $\mathbf P_{t}^{b}=\mathbf P_{t}^{f}+\mathbf S_t\left[\mathbf P_{t+1}^{b}-\mathb
 	\end{array}
 	\right]^{\top}$ & mV.spike$^{-1}$\\
 	$\sigma_{\psi_{1}}, \sigma_{\psi_{2}}, \sigma_{\psi_{3}}$ & connectivity kernel width parameters & 1.8, 2.4, 6 & mm\\
-	$N$ & number of sensors & 196 & n.a.\\ 
+	$n_y$ & number of sensors & 196 & n.a.\\ 
 	$\Delta_y$ & distance between adjacent sensors & 1.5 & mm\\
 	$\sigma_{m}$ & sensor width parameter & 0.9 & mm \\
-	$\Sigma_{\varepsilon}$ & observation noise variance & $0.1 \times I_{N}$ & mm$^2$ \\
+	$\Sigma_{\varepsilon}$ & observation noise variance & $0.1 \times I_{n_y}$ & mm$^2$ \\
 	$\sigma_{\gamma}$& disturbance spatial covariance width & 1.3 & mm\\
 	$\sigma_{d}$ & disturbance variance & 0.1 & mV \\
 	\hline 
 	\multicolumn{4}{|c|}{\emph{Reduced Model}}\\
 	\hline
-	$L$ & number of basis functions& 81 & n.a.\\
+	$n_x$ & number of basis functions& 81 & n.a.\\
 	$\Delta_{\phi}$ & distance between field basis functions & 2.5 & mm \\
 	$\sigma^2_{\phi}$ & Spatial variance of Gaussian in spatial domain & 2.5 & mm$^2$\\
 	\hline 
@@ -780,7 +780,7 @@ $\mathbf P_{t}^{b}=\mathbf P_{t}^{f}+\mathbf S_t\left[\mathbf P_{t+1}^{b}-\mathb
 	\hline
 	$\alpha$& determines the spread of sigma points & 0.001 & n.a.\\
 	$\beta$& prior knowledge of the sigma points distribution & 2 & n.a.\\
-	$\kappa$& scaling parameter $(3-L)$& -78 & n.a.\\
+	$\kappa$& scaling parameter $(3-n_x)$& -78 & n.a.\\
 	$\lambda$& scaling parameter & -80.99 & n.a.\\
 	\hline
 \end{tabular}
