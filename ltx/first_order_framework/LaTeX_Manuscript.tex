@@ -6,7 +6,7 @@
 \newcommand{\parham}[1]{\textsf{\emph{\textbf{\textcolor{blue}{#1}}}}} 
 \newcommand{\ken}[1]{\textsf{\emph{\textbf{\textcolor{magenta}{#1}}}}} 
 
-\documentclass[5p]{elsarticle}
+\documentclass[5p,authoryear]{elsarticle}
 % \documentclass[12pt]{iopart} 
 % \usepackage{iopams}
 
@@ -316,7 +316,7 @@ Note that for a spatially homogeneous and isotropic field, the basis functions c
 
 \subsection{State and Parameter Estimation}\label{StateAndParameterEstimationSection} In this section, we describe the procedure for estimating the states, $\mathbf{x}_t$, the connectivity kernel parameters, $\boldsymbol \theta$, and the synaptic dynamics, $\xi$. The estimation process is a two part iterative algorithm, consisting of a state estimation step followed by a parameter estimation step. Once initialised, at each iteration the sequence of estimated state vectors is used to update the parameter set. The resulting parameters are then used when estimating the new state vector sequence for the next iteration. The procedure stops when the parameters converge. The algorithm is initialised using a bounded random state vector sequence, guaranteeing that the initial estimated parameter set forms a stable kernel.
 
-\parham{The additive form of the unscented Rauch-Tung-Striebel smoother} (URTSS)~\cite{Sarkka2010} is used for the state estimation. The URTSS incorporates an unscented Kalman filter (UKF)~\cite{Julier1997, Merwe2003} in a forward step to estimate posterior states, $\hat{\mathbf x}_t^{f}$, followed by a backward step to compute the smoothed state estimates, $\hat{\mathbf x}_t^{b}$. The first and second order moments of the predicted state are captured by propagating the so-called sigma points through the state equation. The sigma points, $\mathcal X_i$, are calculated using the unscented transform as follows:
+The additive form of the unscented Rauch-Tung-Striebel smoother (URTSS)~\cite{Sarkka2010} was used for the state estimation. The URTSS incorporates an unscented Kalman filter (UKF)~\cite{Julier1997, Merwe2003} in a forward step to estimate posterior states, $\hat{\mathbf x}_t^{f}$, followed by a backward step to compute the smoothed state estimates, $\hat{\mathbf x}_t^{b}$. The first and second order moments of the predicted state are captured by propagating the so-called sigma points through the state equation. The sigma points, $\mathcal X_i$, are calculated using the unscented transform as follows:
 \begin{align}\label{eq:sigmapoints1}
 	\mathcal X_{0}&=\bar x \\
 	\mathcal X_{i}&=\bar x+\left(\sqrt{( n_x + \lambda)\mathbf P_x}\right)_i, \quad i=1, \dots, n_x \\
@@ -404,25 +404,9 @@ The spectral analysis was used to confirm that the spacing and width of the sens
 
 The spatial frequency of the observed field is shown in Fig.~\ref{fig:Figure5}(A). The cutoff frequency is $\boldsymbol{\nu}_{cy} \approx 0.2$~Hz ($-3$~dB point). The observation cutoff frequency is lower than the field cutoff due to the low-pass filtering effect of the sensors. The spatial frequency response of the sensors can be seen in Fig.~\ref{fig:Figure5}(B). 
 
-\ken{revised new bit}
+As described in Section~\ref{SpectralAnalysisSection}, the basis function configuration can be systematically chosen the account for the full spatial bandwidth from the observations, or alternatively, the configuration can be chosen to represent the neural field up to a specified bandwidth to limit the computational complexity of the estimation procedure. In the examples provided in this paper, the later option was chosen, where the neural field cutoff frequency was further reduced to $\boldsymbol{\nu}_{c\phi} = 0.12$~Hz. The result of the band-limiting effect in the field reconstruction can be seen by comparing Fig.~\ref{fig:Figure4}(A) to Fig.~\ref{fig:Figure4}(B). This effect is due to the spatial frequency response of the basis functions as seen in Fig.~\ref{fig:Figure5}(C). Due to the slow frequency roll-off of Gaussian basis functions an oversampling parameter of $\rho_{\phi} = 1.67$ was chosen. Given the spectral response of the basis functions, the over-sampling parameter, and the spatial domain, an equally spaced grid of $9\times9$ basis functions was used to decompose the field, which resulted in $81$ states. %The other parameter of the basis functions, $\sigma_{\phi}^2$, was set based on equation \ref{eq:CutoffFromBasisFuncWidth} and the chosen neural field bandwidth $\boldsymbol{\nu}_{c\phi}$, to give $\sigma_{\phi}^2=2.5$.
 
-To reduce the computational demand of the estimation procedure, the neural field cutoff frequency was further reduced to $\boldsymbol{\nu}_{c\phi} = 0.12$~Hz. Due to the slow frequency roll-off of Gaussian basis functions an oversampling parameter of $\rho_{\phi} = 1.67$ was chosen. Therefore for an equally spaced grid of basis functions over the full spatial domain being considered, a $9\times9$ grid was required to decompose the field, which resulted in $81$ states. The other parameter of the basis functions, $\sigma_{\phi}^2$, is set based on equation \ref{eq:CutoffFromBasisFuncWidth} and the chosen neural field bandwidth $\boldsymbol{\nu}_{c\phi}$, to give $\sigma_{\phi}^2=2.5$.
 
-\ken{how's that?}
-
-\dean{-------new bit start ------------}
-
-Due to the limitations imposed by the computationally demanding estimation procedure we chose to use a $9\times9$ grid of Gaussian basis functions to decompose the field, which resulted in $81$ states.  Given the spatial domain, this yielded a basis function separation of $\Delta_{\phi}=2.5$~mm. The basis function width parameter was chosen such that a smooth representation of the field could be achieved with this arrangement, where $\sigma_{\phi}^2=2.5$. Given the basis function width, the decomposition is able to represent the field up to the spatial cutoff frequency of $\boldsymbol{\nu}_{c\phi} \approx 0.12$~Hz, as described by equation~\ref{eq:CutoffFromBasisFuncWidth}. The band-limiting effect is due to the spatial frequency response of the basis functions as seen in Fig.~\ref{fig:Figure5}(C). The result of the band-limiting effect in the field reconstruction can be observed when comparing Fig.~\ref{fig:Figure4}(A) to Fig.~\ref{fig:Figure4}(B). Given the spatial cutoff frequency of the basis functions and the basis function separation the oversampling parameter is $\rho_{\phi}\approx 1.67$.
-
-\dean{-------new bit end ------------}
-
-\dean{-------olde bit start ------------}
-
-Using an oversampling parameter of $\rho_{\phi}=1$, the maximum distance between the field basis functions was calculated to be 2.5~mm to satisfy Shannon's sampling criterion (from equation~\ref{eq:BasisFunctionSeparation}). The distance between basis functions was set to $\Delta_{\phi}=2.5$~mm, which is sufficient to capture the significant dynamics according to these criteria.
-
-Given this basis function separation, the basis function width parameter was set to $\sigma_{\phi}^2=2.5$. This allowed a smooth representation of the field by the basis function decomposition up to a spatial frequency $\boldsymbol{\nu}_{c\phi} \approx 0.12$~Hz, as described by equation~\ref{eq:CutoffFromBasisFuncWidth}. The band-limiting effect is due to the spatial frequency response of the basis functions as seen in Fig.~\ref{fig:Figure5}(C). This band-limiting effect of the basis function decomposition can be observed when comparing Fig.~\ref{fig:Figure4}(A) to Fig.~\ref{fig:Figure4}(B).
-
-\dean{-------olde bit end ------------}
 
 \subsection{State and Parameter Estimates} 
 \label{sec:state_and_param_results}
@@ -505,7 +489,7 @@ In this study, an assumption was made that the chosen kernel basis functions can
 \section{Acknowledgments}
 Dean Freestone would like to thank Dr. Mark van Rossum for hosting him while visiting the University of Edinburgh where this work was undertaken and Dr. Matthias Hennig for useful discussions and feedback. This research was funded in part by the Australian Research Council (Linkage Project LP0560684). The Bionic Ear Institute acknowledges the support it receives from the Victorian State Government through the Operational Infrastructure Support Program. Dean Freestone would like to thank the University of Melbourne's Scholarships Office for the Postgraduate Overseas Research Experience Scholarship and the Harold Mitchell Foundation for a traveling scholarship for supporting this research. Parham Aram would also like to thank Andrew Hills for useful discussions and assistance with code and the generation of figures. The authors would also like to thank Dr. John Terry for insightful discussions and feedback.
 
-\bibliographystyle{unsrt} 
+\bibliographystyle{elsarticle-harv} 
 \bibliography{BrainIDE}
 \section*{Tables}
 \begin{table*}[!ht]
