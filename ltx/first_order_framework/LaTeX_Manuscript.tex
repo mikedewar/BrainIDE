@@ -55,7 +55,7 @@
 
 
 \begin{abstract}
-This paper presents a framework for creating neural field models from electrophysiological data. The Wilson and Cowan or Amari style neural field equations are used to form a parametric model, where the parameters are estimated from data. To illustrate the estimation framework, data is generated using the neural field equations incorporating modelled sensors so a comparison can be made between estimated and true parameters. To facilitate state and parameter estimation, we introduce a method to reduce the continuum neural field model using a basis function decomposition to form a finite-dimensional state-space model. Spatial frequency analysis methods are introduced that systematically specify the basis function configuration required to capture the dominant characteristics of the neural field. The estimation procedure consists of a two-stage iterative algorithm incorporating the unscented Rauch-Tung-Striebel smoother for state estimation and a least squares algorithm for parameter estimation. The results show that it is theoretically possible to reconstruct the neural field and estimate intracortical connectivity structure and synaptic dynamics with the proposed framework. %The results also illustrate a systematic loss of high spatial frequency information as the cost incurred by the model reduction procedure. 
+This paper presents a framework for creating neural field models from electrophysiological data. The Wilson and Cowan or Amari style neural field equations are used to form a parametric model, where the parameters are estimated from data. To illustrate the estimation framework, data is generated using the neural field equations incorporating modelled sensors enabling a comparison between the estimated and true parameters. To facilitate state and parameter estimation, we introduce a method to reduce the continuum neural field model using a basis function decomposition to form a finite-dimensional state-space model. Spatial frequency analysis methods are introduced that systematically specify the basis function configuration required to capture the dominant characteristics of the neural field. The estimation procedure consists of a two-stage iterative algorithm incorporating the unscented Rauch-Tung-Striebel smoother for state estimation and a least squares algorithm for parameter estimation. The results show that it is theoretically possible to reconstruct the neural field and estimate intracortical connectivity structure and synaptic dynamics with the proposed framework. %The results also illustrate a systematic loss of high spatial frequency information as the cost incurred by the model reduction procedure. 
 \end{abstract}
 
 \begin{keyword}
@@ -128,7 +128,7 @@ where $\textrm{D}=d/dt + \zeta$ is a temporal differential operator and $\delta(
 	\label{FinalFormContinuous} 
 	\frac{dv\left( \mathbf{r},t \right)}{dt} + \zeta v\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)\, d\mathbf{r}'}. 
 \end{equation}
-To arrive at the integro-difference equation (IDE) form of the model, we discretise time using a first-order Euler method (see the supplementary (\dean{Appendix}) material for derivation) giving 
+To arrive at the integro-difference equation (IDE) form of the model, we discretise time using a first-order Euler method (see \ref{App:Time Discretization} for derivation) giving 
 \begin{equation}
 	\label{DiscreteTimeModel} 
 	v_{t+T_s}\left(\mathbf{r}\right) = 
@@ -139,7 +139,7 @@ To arrive at the integro-difference equation (IDE) form of the model, we discret
 	\, d\mathbf{r}'} 
 	+ e_t\left(\mathbf{r}\right), 
 \end{equation}
-where $T_s$ is the time step, $\xi = 1-T_s\zeta $ and $e_t(\mathbf{r})$ is an $i.i.d.$ disturbance such that $e_t(\mathbf{r})\sim\mathcal{GP}(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}'))$. Here $\mathcal{GP}(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}'))$ denotes a zero mean spatial Gaussian process with covariance function $\gamma(\mathbf{r}-\mathbf{r}')$~\cite{Rasmussen2005}. The disturbance is added to account for model uncertainty and unmodelled inputs. To simplify the notation, the index of the future time sample, $t+T_s$, shall be referred to as $t+1$ throughout the rest of the paper. 
+where $T_s$ is the time step, $\xi = 1-T_s\zeta $ and $e_t(\mathbf{r})$ is an $i.i.d.$ disturbance such that $e_t(\mathbf{r})\sim\mathcal{GP}(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}'))$. Here $\mathcal{GP}(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}'))$ denotes a zero mean Gaussian process with spatial covariance function $\gamma(\mathbf{r}-\mathbf{r}')$~\cite{Rasmussen2005}. The disturbance is added to account for model uncertainty and unmodelled inputs. To simplify the notation, the index of the future time sample, $t+T_s$, shall be referred to as $t+1$ throughout the rest of the paper. 
 
 The mapping between the membrane voltage and the electrophysiological data, denoted by $\mathbf y_t$, is modelled using the observation function that incorporates sensors with a spatial extent by
 \begin{equation}
@@ -152,7 +152,7 @@ The mapping between the membrane voltage and the electrophysiological data, deno
 \end{equation}
 where $m\left(\mathbf{r}_n-\mathbf{r}'\right)$ is the observation kernel, $\mathbf{r}_n$ defines the location of the electrodes in the field, $n=1,...,n_y$ indexes the sensors and $\boldsymbol{\varepsilon}_t \sim \mathcal{N}\left(0,\boldsymbol{\Sigma}_{\varepsilon}\right)$ denotes a multivariate normal distribution with mean zero and covariance matrix $\boldsymbol{\Sigma}_{\varepsilon}$. 
 
-When considering the measurement of a point source in a conductive homogeneous field measured by a point sensor, the observation kernel will theoretically follow a Laplacian like shape, with an exponential decay in the amplitude of a measurement with an increasing distance between the source and sensor~\cite{Jackson1999}. However, when considering a source or sensor with a spatial extent, the peak of the observation kernel becomes smoothed and is more similar to a Gaussian shape~\cite{Jackson1999}. An experiment supporting this was performed and the results are shown in \dean{Appendix?}. Therefore, in this study the observation kernel, $m(\mathbf{r}-\mathbf{r}')$, that governs the sensor pick-up geometry is defined by 
+When considering the measurement of a point source in a conductive homogeneous field measured by a point sensor, the observation kernel will theoretically follow a Laplacian like shape, with an exponential decay in the amplitude of a measurement with an increasing distance between the source and sensor~\cite{Jackson1999}. However, when considering a source or sensor with a spatial extent, the peak of the observation kernel becomes smoothed and is more similar to a Gaussian shape~\cite{Jackson1999}. An experiment supporting this was performed and the results are shown in \ref{App:ObsKernelExperiment}. Therefore, in this study the observation kernel, $m(\mathbf{r}-\mathbf{r}')$, that governs the sensor pick-up geometry is defined by the Gaussian
 \begin{equation}
 	m\left(\mathbf{r}-\mathbf{r}'\right) = \exp{\left(-\frac{(\mathbf{r}-\mathbf{r}')^\top(\mathbf{r}-\mathbf{r}')}{\sigma_m^2}\right)},
 \end{equation}
@@ -202,7 +202,7 @@ and substituting this into equation~\ref{StartofReduction} and cross-multiplying
 	 \int_\Omega \boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}')f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t)d\mathbf{r}' d\mathbf{r} \boldsymbol{\theta}  \nonumber \\
 	& + \xi\mathbf{x}_t + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r}) e_t(\mathbf{r}) \, d\mathbf{r}}.
 \end{align}
-The analytic derivation of the inner product of \emph{n}-dimensional Gaussians, which was used for calculating $\mathbf\Gamma$, is provided in the (\dean{Appendix}) supplementary material. Equation~\ref{eq:ReducedForm} can be simplified by exploiting the isotropy of the connectivity kernel basis functions where
+The analytic derivation of the inner product of \emph{n}-dimensional Gaussians, which was used for calculating $\mathbf\Gamma$, is provided in \ref{App:InnerProdOfGaussians}. Equation~\ref{eq:ReducedForm} can be simplified by exploiting the isotropy of the connectivity kernel basis functions where
 \begin{equation}
 	\psi_i (\mathbf{r}-\mathbf{r}') = \psi_i (2\mathbf{c}_i+\mathbf{r}'-\mathbf{r})
 \end{equation}
@@ -210,7 +210,7 @@ and $\mathbf{c}_i$ is the center of the $i^{th}$ basis function of the kernel de
 \begin{equation}\label{eq:DefPsi}
 	\left[ \boldsymbol\Psi(\mathbf{r}')\right]_{:i}  \triangleq T_s\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\psi_i (2\mathbf{c}_i+\mathbf{r}'-\mathbf{r})\textrm{d}\mathbf{r}},
 \end{equation}
-where $\left[ \boldsymbol\Psi(\mathbf{r}')\right]_{:i}$ denotes the $i^{th}$ column of $\boldsymbol{\Psi}(\mathbf{r}')$ which is a $n_x \times n_{\theta}$ matrix, where $n_x$ is the number of basis functions (and states) and $n_{\theta}$ is the number of connectivity kernel basis functions. This matrix is defined analytically (see the supplementary (\dean{Appendix}) material for analytic convolution of two Gaussians), since it is constant with respect to the states and the unknown parameters. Substituting equation~\ref{eq:DefPsi} into equation~\ref{eq:ReducedForm} gives
+where $\left[ \boldsymbol\Psi(\mathbf{r}')\right]_{:i}$ denotes the $i^{th}$ column of $\boldsymbol{\Psi}(\mathbf{r}')$ which is a $n_x \times n_{\theta}$ matrix, where $n_x$ is the number of basis functions (and states) and $n_{\theta}$ is the number of connectivity kernel basis functions. This matrix is defined analytically (see \ref{ap:ConvOfGaussians} for analytic convolution of two Gaussians), since it is constant with respect to the states and the unknown parameters. Substituting equation~\ref{eq:DefPsi} into equation~\ref{eq:ReducedForm} gives
 \begin{align}
 	\mathbf{x}_{t+1} &= \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \, d\mathbf{r}' \boldsymbol{\theta} \nonumber \\ &+ \xi\mathbf{x}_t 
 + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r}) \, d\mathbf{r}}.
@@ -221,7 +221,7 @@ Now we define the state disturbance as
 \begin{equation}\label{eq:Wt} 
 	\mathbf{e}_t \triangleq \boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi} ( \mathbf{r} )e_t( \mathbf{r} ) \, d\mathbf{r}},
 \end{equation}
-which is a zero mean normally distributed white noise process with covariance (see the supplementary material \dean{(Appendix)} for the derivation)
+which is a zero mean normally distributed white noise process with covariance (see \ref{App:ColoredNoise} for the derivation)
 \begin{equation}
 	\boldsymbol\Sigma_e =\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega}\boldsymbol{\phi}\left(\mathbf r\right) \gamma\left(\mathbf r- \mathbf r' \right)\boldsymbol{\phi}\left(\mathbf r'\right)^{\top} \, d\mathbf r' d\mathbf r\mathbf{\Gamma}^{- \top}. 
 \end{equation}
@@ -279,7 +279,7 @@ In practice, it is difficult to estimate the bandwidth of the cortex using tradi
 
 Although such sensors avoid errors due to aliasing, they attenuate the high spatial frequency variations in the observations. Therefore, any procedure applied to estimate the original field or the underlying connectivity structure from these band-limited observations has the potential to underestimate the high spatial frequency components of both the field and the connectivity kernel. This motivates the use of sensors with wider bandwidths (narrower in space). This choice would require more sensors in order to satisfy Shannon's sampling theorem for a given spatial region. Therefore, a compromise should be found between the bandwidth of the sensor response, the accuracy of the estimation results, the number of sensors and the computational demands of the estimation procedure when designing experiments.
 
-Similar considerations need to be made regarding the representation of the dynamic field, $v_t(\mathbf{r})$, using the basis function decomposition. Again, applying Shannon's sampling theorem, the minimum distance between basis functions must satisfy 
+Similar considerations need to be made regarding the representation of the dynamic field, $v_t(\mathbf{r})$, using the basis function decomposition. Again, applying Shannon's sampling theorem, the minimum distance between basis functions to accurately reconstruct the neural field must satisfy 
 \begin{equation}\label{eq:BasisFunctionSeparation}
 	\Delta_{\phi} \leq \frac{1}{2\rho_{\phi}\boldsymbol{\nu}_{cy}}
 \end{equation}
@@ -305,7 +305,7 @@ where
 \begin{equation}\label{eq:WidthFrequencyRelationship}
  \sigma^2_{\nu_{cy}}= \frac{2\boldsymbol\nu_{cy}^\top \boldsymbol\nu_{cy}}{\ln2}.
 \end{equation}
-This ensures that the basis functions can represent the neural field with frequency content up to $\boldsymbol\nu_{cy}$. Derivations for equations~\ref{eq:GaussianFT} and \ref{eq:WidthFrequencyRelationship} are given in the supplementary material (\dean{Appendix}).
+This ensures that the basis functions can represent the neural field with frequency content up to $\boldsymbol\nu_{cy}$. Derivations for equations~\ref{eq:GaussianFT} and \ref{eq:WidthFrequencyRelationship} are given in \ref{App:FrequencyAnalysis}.
 
 Alternatively, the basis function width can be set to provide a desired level of smoothness in the approximated field by reducing the spatial bandwidth. This allows for an approximate representation by a lower order model (fewer basis functions), thus reducing the computational demands of the estimation process. The spatial cutoff frequency of this smoothed field becomes a design choice. To calculate the cutoff frequency imposed by the basis function width, we rearrange equations~\ref{eq:WidthCutOffRelationship} and \ref{eq:WidthFrequencyRelationship} giving
 \begin{equation}\label{eq:CutoffFromBasisFuncWidth}
@@ -864,6 +864,69 @@ Now making simplifications, the discrete time form of the model is
 \end{equation}
 where $\xi = 1 - T_s \zeta$.
 
+\section{Observation Kernel}\label{App:ObsKernelExperiment}
+The Gaussian shape of the observation kernel was verified experimentally. This was achieved by moving a dipole across a recording electrode submerged in saline. A photograph through a microscope of the submerged electrodes can be seen in Fig.~\ref{fig:SensorAndSource}. The measurement sensor was the most central electrode of a $5\times5$ Utah array (Blackrock Microsystems) which had electrode spacing of 400~$\mu$m. The current source was a twisted wire electrode (Plastics One Inc.) with tip-tip spacing of 60~$\mu$m and tip diameter of 200~$\mu$m. The twisted wire electrode was moved in the saline solution using a 3 dimensional manipulator (Sutter Instrument Company, MPC-100) in increments of 200~$\mu$m. The twisted wire electrode and the Utah array were co-registered visually using the microscope.
+The stimulation waveform for the current source consisted of a 40~Hz sine wave with a duration of 1~s. The recording from the central electrode in the array was used to estimate the shape of the sensor kernel. To extract the amplitude of the signal, the data was first band-pass filtered with a centre frequency of 40~Hz. The envelope of the signal was found by computing the mean instantaneous amplitude over the 1~s stimulation duration by
+\begin{equation}
+	a = \frac{1}{N}\sum_n{\sqrt{(x(n)-\mathcal{H}x(n))^2}}
+\end{equation}
+where $\mathcal{H}$ denotes the Hilbert transform operator, $n$ indexes samples and $N$ is the total number of samples in the time series. Fig.~\ref{fig:Ch3} shows the mean amplitude of the recorded envelope versus the distance between the twisted wire electrode and the recording electrode. A Gaussian fitted to the amplitudes is also shown. The figure shows that a Gaussian is indeed a good model for the sensor kernel in the homogeneous solution.
+
+\section{Inner Product of Two \emph{n}-Dimensional Gaussians}\label{App:InnerProdOfGaussians}
+The derivation in this section was used for calculating the matrix $\Gamma$ from equation~\ref{eq:DefGamma}. The inner product of the two \emph{n}-dimensional Gaussians (from equations~\ref{eq:n_dimensional_Gaussian1} and~\ref{eq:n_dimensional_Gaussian2}) is defined as
+\begin{equation}\label{eq:InofGaussianDefinition}
+\varphi_i\otimes\varphi_j=\int_{\mathbb{R}^n}\varphi_i(\mathbf r)\varphi_j(\mathbf r)d\mathbf{r}.
+\end{equation}
+A Gaussian basis function is symmetric with respect to its centre so
+\begin{equation}\label{eq:GaussianSymmetry}
+ \varphi_i(\boldsymbol \mu_i+\mathbf r)= \varphi_i(\boldsymbol \mu_i-\mathbf r).
+\end{equation}
+Letting $\mathbf{r}= \mathbf{r}-\boldsymbol{\mu}_i$, equation~\ref{eq:GaussianSymmetry} becomes
+\begin{equation}\label{eq:ConsequenceofGaussianSymmetry}
+ \varphi_i(\mathbf r)= \varphi_i(2\boldsymbol \mu_i-\mathbf r).
+\end{equation}
+Now substituting equation~\ref{eq:ConsequenceofGaussianSymmetry} into equation~\ref{eq:InofGaussianDefinition} gives 
+\begin{align}
+\varphi_i\otimes\varphi_j&=\int_{\mathbb{R}^n}\varphi_i(\mathbf r)\varphi_j(\mathbf r)d\mathbf r \nonumber\\
+&=\int_{\mathbb{R}^n}\varphi_i(2\boldsymbol \mu_i-\mathbf r)\varphi_j(\mathbf r)d\mathbf r \nonumber\\
+&=(\varphi_i*\varphi_j)(2\boldsymbol \mu_i).
+\end{align}
+Using the derivation of the convolution of two Gaussians given in the previous section and evaluating it at $\mathbf r=2\boldsymbol\mu_i $ gives
+\begin{align}
+ \varphi_i\otimes\varphi_j&=\left(\frac{\pi\sigma_i^2\sigma_j^2}{\sigma_i^2+\sigma_j^2}\right)^{\frac{n}{2}} \nonumber \\
+&\times\mathrm{exp}\left({-\frac{1}{\sigma_i^2+\sigma_j^2} (\boldsymbol\mu_i-\boldsymbol\mu_j)^\top(\boldsymbol\mu_i-\boldsymbol\mu_j)}\right).
+\end{align}
+This completes the derivation.
+
+\section{Convolution of Two $n$-Dimensional Gaussians}\label{ap:ConvOfGaussians}
+In this section, we provide a derivation for the convolution of two $n$-dimensional Gaussian basis functions. This derivation is used in the analytic calculation of $\boldsymbol\Psi(\mathbf{r})$ and the observation matrix, $\mathbf C$. Consider two Gaussian basis functions
+\begin{equation}\label{eq:n_dimensional_Gaussian1}
+ \varphi_i(\mathbf r)=\mathrm{exp}\left({-\frac{1}{\sigma_i^2} (\mathbf r-\boldsymbol \mu_i)^\top(\mathbf r-\boldsymbol \mu_i})\right)
+\end{equation}
+and 
+\begin{equation}\label{eq:n_dimensional_Gaussian2}
+\varphi_j(\mathbf r)=\mathrm{exp}\left({-\frac{1}{\sigma_j^2} (\mathbf r-\boldsymbol \mu_j)^\top(\mathbf r-\boldsymbol \mu_j})\right).
+\end{equation}
+The derivation proceeds by assuming the Gaussian basis functions are positioned at the origin ($\boldsymbol\mu_i=\boldsymbol\mu_j=\mathbf 0$). The convolution theorem states that the Fourier transform of the convolution of two functions is the product of their Fourier transforms. Using the derivation of the Fourier transform of a \emph{n}-dimensional Gaussian from equation~\ref{eq:FTofGaussian} of the previous section, we have
+\begin{equation}\label{eq:FTTwoGaussianMultiplication}
+\mathcal{F}\left(\varphi_i*\varphi_j\right)(\mathbf{r}) = \left(\pi^2\sigma_i^2\sigma_j^2\right)^{\frac{n}{2}}\mathrm{exp}\left(-(\sigma_i^2+\sigma_j^2)\pi^2\boldsymbol\nu^\top\boldsymbol\nu\right),
+\end{equation}
+where $\mathcal{F}$ denotes the Fourier transform. Multiplying and dividing by $\left(\pi\left(\sigma_i^2+\sigma_j^2\right)\right)^{\frac{n}{2}}$, equation~\ref{eq:FTTwoGaussianMultiplication} can be written as 
+\begin{align}
+\mathcal{F}\left(\varphi_i*\varphi_j\right)(\mathbf{r})&=\left(\pi\sigma_i^2\sigma_j^2\right)^{\frac{n}{2}}\left(\frac{1}{\sigma_i^2+\sigma_j^2}\right)^{\frac{n}{2}} (\pi(\sigma_i^2+\sigma_j^2))^{\frac{n}{2}} \nonumber \\
+ &\times\mathrm{exp}\left(-(\sigma_i^2+\sigma_j^2)\pi^2\boldsymbol\nu^\top\boldsymbol\nu\right).
+\end{align}
+Taking the inverse Fourier transform, the convolution becomes
+\begin{equation}\label{eq:ConvoftwoGaussian}
+ \left(\varphi_i*\varphi_j\right)(\mathbf{r}) = \left(\frac{\pi\sigma_i^2\sigma_j^2}{\sigma_i^2+\sigma_j^2}\right)^{\frac{n}{2}}\mathrm{exp}\left({-\frac{1}{\sigma_i^2+\sigma_j^2} \mathbf r^\top\mathbf r}\right).
+\end{equation}
+In the case where $\boldsymbol\mu_i\neq\boldsymbol\mu_j\neq\mathbf 0$, equation~\ref{eq:ConvoftwoGaussian} becomes
+\begin{align}\label{eq:ConvoftwoGaussianNonzeroMean}
+ \left(\varphi_i*\varphi_j\right)(\mathbf{r}) =& \left( \frac{\pi\sigma_i^2\sigma_j^2} {\sigma_i^2+\sigma_j^2}\right)^{\frac{n}{2}}\nonumber \\
+\times & \mathrm{exp}\left({-\frac{1}{\sigma_i^2+\sigma_j^2} (\mathbf r-\boldsymbol\mu)^\top(\mathbf r-\boldsymbol\mu)}\right),
+\end{align}
+where $\boldsymbol\mu=\boldsymbol\mu_i+\boldsymbol\mu_j$.
+
 \section{Mean and Covariance of the State Disturbance }\label{App:ColoredNoise} 
 In this section, we show that the state disturbance vector is $\mathbf{e}_t\sim\mathcal{N}(\mathbf 0,\boldsymbol\Sigma_e)$ if $e_t(\mathbf{r})\sim\mathcal{GP}\left(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}')\right)$. We begin the derivation by acknowledging the state disturbance vector is a linear function of $e_t(\mathbf r)$. Therefore, $\mathbf{e}_t$ is also normally distributed. From equation~\ref{eq:Wt}, the state disturbance vector is defined as
 \begin{equation}
@@ -913,67 +976,10 @@ since the maximum of the Gaussian described in equation~\ref{eq:FTofGaussian} is
  \sigma_{\nu}^2=\frac{2\boldsymbol\nu_{c}^\top \boldsymbol\nu_{c}}{\ln 2 }.
 \end{equation}
 
-\section{Convolution of Two $n$-Dimensional Gaussians}\label{ap:ConvOfGaussians}
-In this section, we provide a derivation for the convolution of two $n$-dimensional Gaussian basis functions. This derivation is used in the analytic calculation of $\boldsymbol\Psi(\mathbf{r})$ and the observation matrix, $\mathbf C$. Consider two Gaussian basis functions
-\begin{equation}\label{eq:n_dimensional_Gaussian1}
- \varphi_i(\mathbf r)=\mathrm{exp}\left({-\frac{1}{\sigma_i^2} (\mathbf r-\boldsymbol \mu_i)^\top(\mathbf r-\boldsymbol \mu_i})\right)
-\end{equation}
-and 
-\begin{equation}\label{eq:n_dimensional_Gaussian2}
-\varphi_j(\mathbf r)=\mathrm{exp}\left({-\frac{1}{\sigma_j^2} (\mathbf r-\boldsymbol \mu_j)^\top(\mathbf r-\boldsymbol \mu_j})\right).
-\end{equation}
-The derivation proceeds by assuming the Gaussian basis functions are positioned at the origin ($\boldsymbol\mu_i=\boldsymbol\mu_j=\mathbf 0$). The convolution theorem states that the Fourier transform of the convolution of two functions is the product of their Fourier transforms. Using the derivation of the Fourier transform of a \emph{n}-dimensional Gaussian from equation~\ref{eq:FTofGaussian} of the previous section, we have
-\begin{equation}\label{eq:FTTwoGaussianMultiplication}
-\mathcal{F}\left(\varphi_i*\varphi_j\right)(\mathbf{r}) = \left(\pi^2\sigma_i^2\sigma_j^2\right)^{\frac{n}{2}}\mathrm{exp}\left(-(\sigma_i^2+\sigma_j^2)\pi^2\boldsymbol\nu^\top\boldsymbol\nu\right),
-\end{equation}
-where $\mathcal{F}$ denotes the Fourier transform. Multiplying and dividing by $\left(\pi\left(\sigma_i^2+\sigma_j^2\right)\right)^{\frac{n}{2}}$, equation~\ref{eq:FTTwoGaussianMultiplication} can be written as 
-\begin{align}
-\mathcal{F}\left(\varphi_i*\varphi_j\right)(\mathbf{r})&=\left(\pi\sigma_i^2\sigma_j^2\right)^{\frac{n}{2}}\left(\frac{1}{\sigma_i^2+\sigma_j^2}\right)^{\frac{n}{2}} (\pi(\sigma_i^2+\sigma_j^2))^{\frac{n}{2}} \nonumber \\
- &\times\mathrm{exp}\left(-(\sigma_i^2+\sigma_j^2)\pi^2\boldsymbol\nu^\top\boldsymbol\nu\right).
-\end{align}
-Taking the inverse Fourier transform, the convolution becomes
-\begin{equation}\label{eq:ConvoftwoGaussian}
- \left(\varphi_i*\varphi_j\right)(\mathbf{r}) = \left(\frac{\pi\sigma_i^2\sigma_j^2}{\sigma_i^2+\sigma_j^2}\right)^{\frac{n}{2}}\mathrm{exp}\left({-\frac{1}{\sigma_i^2+\sigma_j^2} \mathbf r^\top\mathbf r}\right).
-\end{equation}
-In the case where $\boldsymbol\mu_i\neq\boldsymbol\mu_j\neq\mathbf 0$, equation~\ref{eq:ConvoftwoGaussian} becomes
-\begin{align}\label{eq:ConvoftwoGaussianNonzeroMean}
- \left(\varphi_i*\varphi_j\right)(\mathbf{r}) =& \left( \frac{\pi\sigma_i^2\sigma_j^2} {\sigma_i^2+\sigma_j^2}\right)^{\frac{n}{2}}\nonumber \\
-\times & \mathrm{exp}\left({-\frac{1}{\sigma_i^2+\sigma_j^2} (\mathbf r-\boldsymbol\mu)^\top(\mathbf r-\boldsymbol\mu)}\right),
-\end{align}
-where $\boldsymbol\mu=\boldsymbol\mu_i+\boldsymbol\mu_j$.
 
-\section{Inner Product of Two \emph{n}-Dimensional Gaussians}\label{App:InnerProdOfGaussians}
-The derivation in this section was used for calculating the matrix $\Gamma$ from equation~\ref{eq:DefGamma}. The inner product of the two \emph{n}-dimensional Gaussians (from equations~\ref{eq:n_dimensional_Gaussian1} and~\ref{eq:n_dimensional_Gaussian2}) is defined as
-\begin{equation}\label{eq:InofGaussianDefinition}
-\varphi_i\otimes\varphi_j=\int_{\mathbb{R}^n}\varphi_i(\mathbf r)\varphi_j(\mathbf r)d\mathbf{r}.
-\end{equation}
-A Gaussian basis function is symmetric with respect to its centre so
-\begin{equation}\label{eq:GaussianSymmetry}
- \varphi_i(\boldsymbol \mu_i+\mathbf r)= \varphi_i(\boldsymbol \mu_i-\mathbf r).
-\end{equation}
-Letting $\mathbf{r}= \mathbf{r}-\boldsymbol{\mu}_i$, equation~\ref{eq:GaussianSymmetry} becomes
-\begin{equation}\label{eq:ConsequenceofGaussianSymmetry}
- \varphi_i(\mathbf r)= \varphi_i(2\boldsymbol \mu_i-\mathbf r).
-\end{equation}
-Now substituting equation~\ref{eq:ConsequenceofGaussianSymmetry} into equation~\ref{eq:InofGaussianDefinition} gives 
-\begin{align}
-\varphi_i\otimes\varphi_j&=\int_{\mathbb{R}^n}\varphi_i(\mathbf r)\varphi_j(\mathbf r)d\mathbf r \nonumber\\
-&=\int_{\mathbb{R}^n}\varphi_i(2\boldsymbol \mu_i-\mathbf r)\varphi_j(\mathbf r)d\mathbf r \nonumber\\
-&=(\varphi_i*\varphi_j)(2\boldsymbol \mu_i).
-\end{align}
-Using the derivation of the convolution of two Gaussians given in the previous section and evaluating it at $\mathbf r=2\boldsymbol\mu_i $ gives
-\begin{align}
- \varphi_i\otimes\varphi_j&=\left(\frac{\pi\sigma_i^2\sigma_j^2}{\sigma_i^2+\sigma_j^2}\right)^{\frac{n}{2}} \nonumber \\
-&\times\mathrm{exp}\left({-\frac{1}{\sigma_i^2+\sigma_j^2} (\boldsymbol\mu_i-\boldsymbol\mu_j)^\top(\boldsymbol\mu_i-\boldsymbol\mu_j)}\right).
-\end{align}
-This completes the derivation.
 
-\section{Observation Kernel}
-The Gaussian shape of the observation kernel was verified experimentally. This was achieved by moving a dipole across a recording electrode submerged in saline. A photograph through a microscope of the submerged electrodes can be seen in Fig.~\ref{fig:SensorAndSource}. The measurement sensor was the most central electrode of a $5\times5$ Utah array (Blackrock Microsystems) which had electrode spacing of 400~$\mu$m. The current source was a twisted wire electrode (Plastics One Inc.) with tip-tip spacing of 60~$\mu$m and tip diameter of 200~$\mu$m. The twisted wire electrode was moved in the saline solution using a 3 dimensional manipulator (Sutter Instrument Company, MPC-100) in increments of 200~$\mu$m. The twisted wire electrode and the Utah array were co-registered visually using the microscope.
-The stimulation waveform for the current source consisted of a 40~Hz sine wave with a duration of 1~s. The recording from the central electrode in the array was used to estimate the shape of the sensor kernel. To extract the amplitude of the signal, the data was first band-pass filtered with a centre frequency of 40~Hz. The envelope of the signal was found by computing the mean instantaneous amplitude over the 1~s stimulation duration by
-\begin{equation}
-	a = \frac{1}{N}\sum_n{\sqrt{(x(n)-\mathcal{H}x(n))^2}}
-\end{equation}
-where $\mathcal{H}$ denotes the Hilbert transform operator, $n$ indexes samples and $N$ is the total number of samples in the time series. Fig.~\ref{fig:Ch3} shows the mean amplitude of the recorded envelope versus the distance between the twisted wire electrode and the recording electrode. A Gaussian fitted to the amplitudes is also shown. The figure shows that a Gaussian is indeed a good model for the sensor kernel in the homogeneous solution. 
+
+
+
 \end{document}
 
