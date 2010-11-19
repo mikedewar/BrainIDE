@@ -6,7 +6,7 @@
 \newcommand{\parham}[1]{\textsf{\emph{\textbf{\textcolor{blue}{#1}}}}} 
 \newcommand{\ken}[1]{\textsf{\emph{\textbf{\textcolor{magenta}{#1}}}}} 
 
-\documentclass[5p,authoryear]{elsarticle}
+\documentclass[5p]{elsarticle}
 % \documentclass[12pt]{iopart} 
 % \usepackage{iopams}
 
@@ -410,12 +410,12 @@ As described in Section~\ref{SpectralAnalysisSection}, the basis function config
 
 \subsection{State and Parameter Estimates} 
 \label{sec:state_and_param_results}
-Several experiments were performed to demonstrate the performance of the state and parameter estimation algorithm. The first experiment evaluated the estimation performance using a Monte Carlo approach for a single set of parameters. Using this experiment we demonstrate convergence of the algorithm, show the distribution of estimated parameters and the accuracy of the state estimates for a single set of parameters. The second experiment evaluated the performance with a selection of different connectivity kernel parameters. In addition, results are shown where the support of the connectivity kernels differs between actual data and the estimator. The third experiment shows how the estimation accuracy depends on the parameters of the sigmoidal nonlinearity. The final experiment shows the effect of the width of the observation kernel on the estimation performance.
+Several experiments were performed to demonstrate the performance of the state and parameter estimation algorithm. The first experiment evaluated the estimation performance using a Monte Carlo approach for a single set of parameters. In this experiment we demonstrate convergence of the algorithm, show the distribution of estimated parameters and the accuracy of the state estimates for a single set of parameters. The second experiment evaluated the performance with a selection of different connectivity kernel parameters. In addition, results are shown where the support of the connectivity kernels differs between actual data and the estimator. The third experiment shows how the estimation accuracy depends on the parameters of the sigmoidal nonlinearity. The final experiment shows the effect of the width of the observation kernel on the estimation performance.
 
 \subsubsection{Experiment I: Monte Carlo Simulation with Fixed Parameters}
 A Monte Carlo approach was employed where 150 realisations of the data were generated, such that distributions of the parameters estimates could be formed. Each realisation consisted of 500~ms of data (sampled at $1$~kHz) and the estimation was applied to the final 400~ms, allowing the model's initial transients to die out. The initial state and parameters were unknown to the estimator. Ten iterations of the estimation algorithm were used to ensure that the parameter estimates converged. Fig.~\ref{fig:Figure6} shows the rate of convergence, confirming that the algorithm converged to steady parameter values, with the changes in the parameter errors (between consecutive iterations) falling to less than $10^{-4}$ after 6 iterations.
 
-Histograms of the parameter estimates obtained over the 150 realisations are shown in Fig.~\ref{fig:Figure7}. In each of the subplots of the figure the true parameter value is shown by the solid line and the mean parameter estimate is shown by the dashed line. The actual parameter values, the mean parameter estimates, standard deviations, and biases for this parameter combination are given as the first entry in Table~\ref{tab:MexicanHatKernelResults}, where other entries in the table show results from Experiment II. The biases show the percentage differences between the actual values and the mean parameter estimates. For this parameter combination the mean estimates are in good agreement (within 1 standard deviation) with the actual values of the connectivity kernel parameters. However, the time constant parameter, $\xi$, is outside the estimate distribution (with bias of $2.56\%$), with a small variance in parameter estimates. We attribute this small bias to the loss of the high frequency components in the smoother estimated field with respect to the actual field. These results thus indicate that choosing to limit the frequency content of the reconstructed neural field has only minor effects on the accuracy of the estimated kernel while allowing for significant gains in the computational demand.
+Histograms of the parameter estimates obtained over the 150 realisations are shown in Fig.~\ref{fig:Figure7}. In each of the subplots of the figure the true parameter value is shown by the solid line and the mean parameter estimate is shown by the dashed line. The actual parameter values, the mean parameter estimates, standard deviations, and biases for this parameter combination are given as the first entry in Table~\ref{tab:MexicanHatKernelResults}, where other entries in the table show results from Experiment II. The biases show the percentage differences between the actual values and the mean parameter estimates. For this parameter combination the mean estimates are in good agreement (within 1 standard deviation) with the actual values of the connectivity kernel parameters. However, the time constant parameter, $\xi$, is outside the estimated distribution (with bias of $2.56\%$), with a small variance in parameter estimates. We attribute this small bias to the loss of the high frequency components in the smoother estimated field with respect to the actual field. These results indicate that choosing to limit the frequency content of the reconstructed neural field has only minor effects on the accuracy of the estimated kernel while allowing for significant gains in the computational demand.
 
 The accuracy of the state estimates was evaluated by comparing the field reconstruction to the true field using the mean (over iterations) of the root mean square error (MRMSE) over space. The MRMSE of the field estimates over time for 150 realisations is shown in Fig.~\ref{fig:Figure9} with the $95~\%$ confidence interval. At each time point, the error is consistently around $0.5$~mV, which is approximately $10.73~\%$ of the field voltage range ([-2.20, 2.46]~mV). The error in the reconstructed field is again mostly due to the loss of high spatial frequency information from the basis function decomposition as illustrated in Fig.~\ref{fig:Figure10}. The figure shows a snapshot at a single time instant of the true neural field, the estimated field, and the corresponding error, which is the difference between the true and estimated neural fields. It can be seen in Fig.~\ref{fig:Figure10}(B) that the estimated field contains the basic structure of the true field, shown in Fig.~\ref{fig:Figure10}(A), but is missing the higher-frequency detail, which can be see in the error shown in Fig.~\ref{fig:Figure10}(C).
 
@@ -430,28 +430,12 @@ For each of the Mexican hat connectivities, the support of the kernel was assume
 Fig.~\ref{fig:Figure12} demonstrates the effect of the sigmoid parameters on the estimation accuracy. The RMSE of the reconstructed connectivity kernel was calculated for various parameters of the sigmoid by varying the slope, $\varsigma$, and the threshold, $v_0$. The other model parameters remained fixed and were set according to the Table~\ref{tab:Parameters}.
 
 % The size of the squares in the figure show the magnitude of the log of the error. The squares are black if the log of the error is negative (the RMSE is $<1$) and the squares are white if the log of the error is positive (the RMSE is $>1$). The largest black squares indicate the best performance and the largest white squares indicate the worst performance for the parameter combinations (\dean{need some thing more quantitative}). 
-From Fig.~\ref{fig:Figure12} it can be seen that the estimation accuracy depends on the parameters of the sigmoid function. This is expected since by altering the parameters we are changing the nonlinearity and the saturation region of the sigmoid.
-
-\ken{what I would write}
-
-For example, when the sigmoid slope is very gentle, most of the neural activity falls in the central, nearly linear region of the sigmoid, thus having minor effects on the estimation procedure. On the other hand, sharp slopes result in most of the activity falling in the saturation region of the sigmoid with adverse effects on the estimation. Similar arguments can be made for variations to the sigmoid threshold.
-
-\ken{what do you think?}
-
-\dean{PLEASE HELP TO FILL THIS SECTION IN. ANYTHING WILL DO.}
-..\dean{This next bit is CRAP (please help):} When the threshold is negative or the slope is very gentle, all of the activity is being passed through the sigmoid function. However, as the slope is increased or the threshold is increased, more of the field is within the saturating region of the activation function. This is illustrated in Fig.~\ref{fig:sigmoidfunctions}, where the sigmoids from the bottom left corner through to near top right corner of Fig.~\ref{fig:sigmoidfunctions} are plotted. This appears to have a detrimental effect on the estimation accuracy.
+From Fig.~\ref{fig:Figure12} it can be seen that the estimation accuracy depends on the parameters of the sigmoid function. This is expected since by altering the parameters we are changing the nonlinearity and the saturation region of the sigmoid. For example, when the sigmoid slope is very gentle, most of the neural activity falls in the central, nearly linear region of the sigmoid, thus having minor effects on the estimation procedure. On the other hand, sharp slopes result in most of the activity falling in the saturation region of the sigmoid with adverse effects on the estimation. Similar arguments can be made for variations to the sigmoid threshold.
 
 \subsubsection{Experiment IV: Results for Varying the Sensor Kernel Width}
-The accuracy of the estimation algorithm was tested for different observation kernels by varying the width parameter, $\sigma_m$. Fig.~\ref{fig:Figure13} shows the RMSE of the connectivity kernel estimates for the various observation kernel widths. As the theory presented earlier in Section~\ref{SpectralAnalysisSection} suggests, the observation kernel acts as a spatial filter. 
+The accuracy of the estimation algorithm was tested for different observation kernels by varying the width parameter, $\sigma_m$. Fig.~\ref{fig:Figure13} shows the RMSE of the connectivity kernel estimates for the various observation kernel widths. As the theory presented earlier in Section~\ref{SpectralAnalysisSection} states, the observation kernel acts as a spatial filter. 
 
-\ken{tried to make it a little more straight forward}
-
-When the observation kernel is too narrow, high frequency components in the neural field are sampled. These high frequency components result in aliasing errors in the estimated field thus affecting the kernel estimation accuracy. On the other hand, for the very wide kernels considered, important neural dynamics are not pick up by the estimated field due to the filtering out of the high frequency components by the sensors, resulting in poor accuracy in the kernel estimate. Thus, as indicated in Fig.~\ref{fig:Figure13}, the best results are obtained when the sensor width is chosen to minimize both sources of errors.
-
-\ken{that ok?}
-
-
-When the observation kernel is too narrow, a small amount of high spatial frequency information is still present but not adequately sampled by the observation function, since the field is not exactly band-limited. Therefore, a small amount of aliasing occurs which results in the estimation error. When the observation kernel width is increased, the high spatial frequency information that is not adequately sampled is filtered more strongly by the observation kernel and the error decreases. However, as expected when the observation kernel becomes too large, important spatial frequency information is lost and the error becomes larger.  
+When the observation kernel is too narrow, high frequency components in the neural field are present but under sampled. These high frequency components result in aliasing errors in the estimated field, thus affecting the kernel estimation accuracy. On the other hand, for the very wide observation kernels considered, important neural dynamics are not pick up by the estimated field due to the filtering out of the important frequency components by the sensors, resulting in poor accuracy in the kernel estimate. As indicated in Fig.~\ref{fig:Figure13}, the best results are obtained when the sensor width is chosen to minimize both sources of errors.
 
 \section{Discussion}\label{DiscussionSection}
 
@@ -491,6 +475,7 @@ Dean Freestone would like to thank Dr. Mark van Rossum for hosting him while vis
 
 \bibliographystyle{elsarticle-harv} 
 \bibliography{BrainIDE}
+
 \section*{Tables}
 \begin{table*}[!ht]
 \caption{
@@ -660,15 +645,16 @@ $\mathbf P_{t}^{b}=\mathbf P_{t}^{f}+\mathbf S_t\left[\mathbf P_{t+1}^{b}-\mathb
 	\bf{Results from varying the Mexican hat connectivity kernel parameters}}
 \begin{tabular}{c|ccccc}
 	Experiment & Parameter & Actual & Mean Est. & Std. Dev. & Bias (\%) \\ \hline
-	I and II-A &	$\theta_0$ & $90$ & 103.86 & 23.14 & 15.4 \\
-	& $\theta_1$ & -80 & -89.05 & 16.57 & 11.31 \\
-	& $\theta_2$ & 5 & 5.23 & 0.74 & 4.6 \\
-	& $\xi$ & 0.9 & 0.923 & 0.003 & 2.56 \\ \hline	
 	
-	II-B & $\theta_0$ & $100$ & 101.75 & $21.30$ & $1.75$ \\
+	I and II-A & $\theta_0$ & $100$ & 101.75 & $21.30$ & $1.75$ \\
 	& $\theta_1$ & -80 & -81.00 & $14.82$ & $1.25$ \\
 	& $\theta_2$ & 5 & $4.76$ & $0.65$ & $4.8$ \\
 	& $\xi$ & 0.9 & $0.924$ & $0.003$ & $2.67$ \\ \hline
+	
+	II-B &	$\theta_0$ & $90$ & 103.86 & 23.14 & 15.4 \\
+	& $\theta_1$ & -80 & -89.05 & 16.57 & 11.31 \\
+	& $\theta_2$ & 5 & 5.23 & 0.74 & 4.6 \\
+	& $\xi$ & 0.9 & 0.923 & 0.003 & 2.56 \\ \hline	
 	
 	II-C & $\theta_0$ & $110$ & $98.90$ & $16.48$ & $10.1$ \\
 	& $\theta_1$ & -80 & $-73.13$ & $11.72$ & $ 8.58$ \\
