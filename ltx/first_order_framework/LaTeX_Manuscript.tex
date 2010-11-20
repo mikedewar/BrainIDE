@@ -404,7 +404,7 @@ The spectral analysis was used to confirm that the spacing and width of the sens
 
 The spatial frequency of the observed field is shown in Fig.~\ref{fig:Figure5}(A). The cutoff frequency is $\boldsymbol{\nu}_{cy} \approx 0.2$~Hz ($-3$~dB point). The observation cutoff frequency is lower than the field cutoff due to the low-pass filtering effect of the sensors. The spatial frequency response of the sensors can be seen in Fig.~\ref{fig:Figure5}(B). 
 
-As described in Section~\ref{SpectralAnalysisSection}, the basis function configuration can be systematically chosen the account for the full spatial bandwidth from the observations, or alternatively, the configuration can be chosen to represent the neural field up to a specified bandwidth to limit the computational complexity of the estimation procedure. In the examples provided in this paper, the later option was chosen, where the neural field cutoff frequency was further reduced to $\boldsymbol{\nu}_{c\phi} = 0.12$~Hz. The band-limiting effect on the field reconstruction can be seen by comparing Fig.~\ref{fig:Figure4}(A) to Fig.~\ref{fig:Figure4}(B). This effect is due to the spatial frequency response of the basis functions, which is shown in Fig.~\ref{fig:Figure5}(C). Due to the slow roll-off in the frequency response of Gaussian basis functions an oversampling parameter of $\rho_{\phi} = 1.67$ was chosen. Given the spectral response of the basis functions, the over-sampling parameter, and the spatial domain an equally spaced grid of $9\times9$ basis functions was used to decompose the field, which resulted in $81$ states. %The other parameter of the basis functions, $\sigma_{\phi}^2$, was set based on equation \ref{eq:CutoffFromBasisFuncWidth} and the chosen neural field bandwidth $\boldsymbol{\nu}_{c\phi}$, to give $\sigma_{\phi}^2=2.5$.
+As described in Section~\ref{SpectralAnalysisSection}, the basis function configuration can be systematically chosen to account for the full spatial bandwidth from the observations, or alternatively, the configuration can be chosen to represent the neural field up to a specified bandwidth to limit the computational complexity of the estimation procedure. In the examples provided in this paper, the later option was chosen, where the neural field cutoff frequency was further reduced to $\boldsymbol{\nu}_{c\phi} = 0.12$~Hz. The band-limiting effect on the field reconstruction can be seen by comparing Fig.~\ref{fig:Figure4}(A) to Fig.~\ref{fig:Figure4}(B). This effect is due to the spatial frequency response of the basis functions, which is shown in Fig.~\ref{fig:Figure5}(C). Due to the slow roll-off in the frequency response of Gaussian basis functions an oversampling parameter of $\rho_{\phi} = 1.67$ was chosen. Given the spectral response of the basis functions, the over-sampling parameter, and the spatial domain an equally spaced grid of $9\times9$ basis functions was used to decompose the field, which resulted in $81$ states. %The other parameter of the basis functions, $\sigma_{\phi}^2$, was set based on equation \ref{eq:CutoffFromBasisFuncWidth} and the chosen neural field bandwidth $\boldsymbol{\nu}_{c\phi}$, to give $\sigma_{\phi}^2=2.5$.
 
 
 
@@ -415,15 +415,15 @@ Several experiments were performed to demonstrate the performance of the state a
 \subsubsection{Experiment I: Monte Carlo Simulation with Fixed Parameters}
 A Monte Carlo approach was employed where 150 realisations of the data were generated, such that distributions of the parameters estimates could be formed. Each realisation consisted of 500~ms of data (sampled at $1$~kHz) and the estimation was applied to the final 400~ms, allowing the model's initial transients to die out. The initial state and parameters were unknown to the estimator. Ten iterations of the estimation algorithm were used to ensure that the parameter estimates converged. Fig.~\ref{fig:Figure6} shows the rate of convergence, confirming that the algorithm converged to steady parameter values, with the changes in the parameter errors (between consecutive iterations) falling to less than $10^{-4}$ after 6 iterations.
 
-Histograms of the parameter estimates obtained over the 150 realisations are shown in Fig.~\ref{fig:Figure7}. In each of the subplots of the figure the true parameter value is shown by the solid line and the mean parameter estimate is shown by the dashed line. The actual parameter values, the mean parameter estimates, standard deviations, and biases for this parameter combination are given as the first entry in Table~\ref{tab:MexicanHatKernelResults}, where other entries in the table show results from Experiment II. The biases show the percentage differences between the actual values and the mean parameter estimates. For this parameter combination the mean estimates are in good agreement (within 1 standard deviation) with the actual values of the connectivity kernel parameters. However, the time constant parameter, $\xi$, is outside the estimated distribution (with bias of $2.56\%$), with a small variance in parameter estimates. We attribute this small bias to the loss of the high frequency components in the smoother estimated field with respect to the actual field. These results indicate that choosing to limit the frequency content of the reconstructed neural field has only minor effects on the accuracy of the estimated kernel while allowing for significant gains in the computational demand.
+Histograms of the parameter estimates obtained over the 150 realisations are shown in Fig.~\ref{fig:Figure7}. In each of the subplots of the figure the true parameter value is shown by the solid line and the mean parameter estimate is shown by the dashed line. The actual parameter values, the mean parameter estimates, standard deviations, and biases for this parameter combination are given as the first entry in Table~\ref{tab:MexicanHatKernelResults}, where other entries in the table show results from Experiment II. The biases show the percentage differences between the actual values and the mean parameter estimates. For this parameter combination the mean estimates are in good agreement (within 1 standard deviation) with the actual values of the connectivity kernel parameters. However, the time constant parameter, $\xi$, is outside the estimated distribution (with bias of $2.67\%$), with a small variance in parameter estimates. We attribute this small bias to the loss of the high frequency components in the smoother estimated field with respect to the actual field. These results indicate that choosing to limit the frequency content of the reconstructed neural field has only minor effects on the accuracy of the estimated kernel while allowing for significant gains in the computational demand.
 
-The accuracy of the state estimates was evaluated by comparing the field reconstruction to the true field using the mean (over iterations) of the root mean square error (MRMSE) over space. The MRMSE of the field estimates over time for 150 realisations is shown in Fig.~\ref{fig:Figure10} with the $95~\%$ confidence interval. At each time point, the error is consistently around $0.5$~mV, which is approximately $10.73~\%$ of the field voltage range ([-2.20, 2.46]~mV). The error in the reconstructed field is again mostly due to the loss of high spatial frequency information from the basis function decomposition as illustrated in Fig.~\ref{fig:Figure9}. The figure shows a snapshot at a single time instant of the true neural field, the estimated field, and the corresponding error, which is the difference between the true and estimated neural fields. It can be seen in Fig.~\ref{fig:Figure9}(B) that the estimated field contains the basic structure of the true field, shown in Fig.~\ref{fig:Figure9}(A), but is missing the higher-frequency detail, which can be see in the error shown in Fig.~\ref{fig:Figure9}(C).
+The accuracy of the state estimates was evaluated by comparing the field reconstruction to the true field using the mean (over iterations) of the root mean square error (MRMSE) over space. The MRMSE of the field estimates over time for 150 realisations is shown in Fig.~\ref{fig:Figure8} with the $95~\%$ confidence interval. At each time point, the error is consistently around $0.5$~mV, which is approximately $10.73~\%$ of the field voltage range ([-2.20, 2.46]~mV). The error in the reconstructed field is again mostly due to the loss of high spatial frequency information from the basis function decomposition as illustrated in Fig.~\ref{fig:Figure9}. The figure shows a snapshot at a single time instant of the true neural field, the estimated field, and the corresponding error, which is the difference between the true and estimated neural fields. It can be seen in Fig.~\ref{fig:Figure9}(B) that the estimated field contains the basic structure of the true field, shown in Fig.~\ref{fig:Figure9}(A), but is missing the higher-frequency detail, which can be see in the error shown in Fig.~\ref{fig:Figure9}(C).
 
 \subsubsection{Experiment II: Results for Different Connectivity Kernel Parameters}
 
 To study the robustness of the estimation algorithm, the performance was evaluated for various connectivity kernel parameters. The reconstructed connectivity kernels from the estimated parameters are shown in Fig.~\ref{fig:Figure10}. For Fig.~\ref{fig:Figure10}(A-C) the Mexican hat connectivity kernels were used. For each subset of parameters, the mean of the reconstructed kernel over 50 realisations is shown as a dotted line and the 95~\% confidence interval is indicated by the grey shaded region. In each case, the actual kernel was within the 95~\% confidence interval of the kernel estimate. The statistics for the kernel parameter estimates for each of the parameter sets are shown in Table~\ref{tab:MexicanHatKernelResults}.
 
-For each of the Mexican hat connectivities, the support of the kernel was assumed to be known. However, in Fig.~\ref{fig:Figure10}(D-F) the kernel support in the estimator differed from the actual data. In these cases the data sets were generated using a single positive (excitatory) Gaussian kernel, as seen by the solid line in each of the subplots of the figure. The estimation algorithm was constructed allowing for the Mexican hat connectivity of the previous examples. Each plot shows that the actual kernel lies within the confidence intervals of the reconstructed estimates for the majority of the kernel space, until the amplitude is relatively low. Table~\ref{tab:GaussianKernelResults} shows the statistics of the parameter estimates. Although the net reconstructed kernel estimates are in good accord with the actual kernels, the individual kernel basis function weights are not in agreement with the actual parameters. This result demonstrates that unless the widths of the Gaussians forming the kernel are precisely known, the interpretation of the results should be based on the net shape of the estimated connectivity kernel and not on the estimated parameter values individually.  
+For each of the Mexican hat connectivities, the support of the kernel was assumed to be known. However, in Fig.~\ref{fig:Figure10}(D-F) the kernel support in the estimator differed from the actual data. In these cases the data sets were generated using a single positive (excitatory) Gaussian kernel, as seen by the solid line in each of the subplots of the figure. The estimation algorithm was constructed allowing for the Mexican hat connectivity of the previous examples. Each plot shows that the actual kernel lies within the confidence intervals of the reconstructed estimates for the majority of the kernel space, until the amplitude is relatively low. Table~\ref{tab:GaussianKernelResults} shows the statistics of the parameter estimates. Although the net reconstructed kernel estimates are in good accordance with the actual kernels, the individual kernel basis function weights are not in agreement with the actual parameters. This result demonstrates that unless the widths of the Gaussians forming the kernel are precisely known, the interpretation of the results should be based on the net shape of the estimated connectivity kernel and not on the estimated parameter values individually.  
 
 \subsubsection{Experiment III: Results for Varying the Parameters of the Sigmoidal Activation Function}
 
@@ -624,7 +624,7 @@ $\mathbf P_{t}^{b}=\mathbf P_{t}^{f}+\mathbf S_t\left[\mathbf P_{t+1}^{b}-\mathb
 	\multicolumn{4}{|c|}{\emph{Frequency Analysis}}\\
 	\hline
 	$\rho_y$ & sensor over-sampling parameter & 1 & n.a.\\
-	$\rho_\phi$ & field basis function over-sampling parameter & 1 & n.a.\\
+	$\rho_\phi$ & field basis function over-sampling parameter & 1.67 & n.a.\\
 	\hline 
 	\multicolumn{4}{|c|}{\emph{Estimation}}\\
 	\hline
@@ -842,85 +842,12 @@ Now making simplifications, the discrete time form of the model is
 where $\xi = 1 - T_s \zeta$.
 
 \section{Observation Kernel}\label{App:ObsKernelExperiment}
-The Gaussian shape of the observation kernel was verified experimentally. This was achieved by moving a dipole across a recording electrode submerged in saline. A photograph through a microscope of the submerged electrodes can be seen in Fig.~\ref{fig:SensorAndSource}. The measurement sensor was the most central electrode of a $5\times5$ Utah array (Blackrock Microsystems) which had electrode spacing of 400~$\mu$m. The current source was a twisted wire electrode (Plastics One Inc.) with tip-tip spacing of 60~$\mu$m and tip diameter of 200~$\mu$m. The twisted wire electrode was moved in the saline solution using a 3 dimensional manipulator (Sutter Instrument Company, MPC-100) in increments of 200~$\mu$m. The twisted wire electrode and the Utah array were co-registered visually using the microscope.
+The Gaussian shape of the observation kernel was verified experimentally. This was achieved by moving a dipole across a recording electrode submerged in saline. A photograph through a microscope of the submerged electrodes can be seen in \parham{Fig.~\ref{fig:SensorAndSource}}. The measurement sensor was the most central electrode of a $5\times5$ Utah array (Blackrock Microsystems) which had electrode spacing of 400~$\mu$m. The current source was a twisted wire electrode (Plastics One Inc.) with tip-tip spacing of 60~$\mu$m and tip diameter of 200~$\mu$m. The twisted wire electrode was moved in the saline solution using a 3 dimensional manipulator (Sutter Instrument Company, MPC-100) in increments of 200~$\mu$m. The twisted wire electrode and the Utah array were co-registered visually using the microscope.
 The stimulation waveform for the current source consisted of a 40~Hz sine wave with a duration of 1~s. The recording from the central electrode in the array was used to estimate the shape of the sensor kernel. To extract the amplitude of the signal, the data was first band-pass filtered with a centre frequency of 40~Hz. The envelope of the signal was found by computing the mean instantaneous amplitude over the 1~s stimulation duration by
 \begin{equation}
 	a = \frac{1}{T}\sum_n{\sqrt{(y_t-\mathcal{H}y_t^2}}
 \end{equation}
-where $\mathcal{H}$ denotes the Hilbert transform operator, $t$ indexes samples and $T$ is the total number of samples in the time series. Fig.~\ref{fig:Ch3} shows the mean amplitude of the recorded envelope versus the distance between the twisted wire electrode and the recording electrode. A Gaussian fitted to the amplitudes is also shown. The figure shows that a Gaussian is indeed a good model for the sensor kernel in the homogeneous solution.
-
-\section{Inner Product of Two \emph{n}-Dimensional Gaussians}\label{App:InnerProdOfGaussians}
-The derivation in this section was used for calculating the matrix $\Gamma$ from equation~\ref{eq:DefGamma}. The inner product of the two \emph{n}-dimensional Gaussians (from equations~\ref{eq:n_dimensional_Gaussian1} and~\ref{eq:n_dimensional_Gaussian2}) is defined as
-\begin{equation}\label{eq:InofGaussianDefinition}
-\varphi_i\otimes\varphi_j=\int_{\mathbb{R}^n}\varphi_i(\mathbf r)\varphi_j(\mathbf r)d\mathbf{r}.
-\end{equation}
-A Gaussian basis function is symmetric with respect to its centre so
-\begin{equation}\label{eq:GaussianSymmetry}
- \varphi_i(\boldsymbol \mu_i+\mathbf r)= \varphi_i(\boldsymbol \mu_i-\mathbf r).
-\end{equation}
-Letting $\mathbf{r}= \mathbf{r}-\boldsymbol{\mu}_i$, equation~\ref{eq:GaussianSymmetry} becomes
-\begin{equation}\label{eq:ConsequenceofGaussianSymmetry}
- \varphi_i(\mathbf r)= \varphi_i(2\boldsymbol \mu_i-\mathbf r).
-\end{equation}
-Now substituting equation~\ref{eq:ConsequenceofGaussianSymmetry} into equation~\ref{eq:InofGaussianDefinition} gives 
-\begin{align}
-\varphi_i\otimes\varphi_j&=\int_{\mathbb{R}^n}\varphi_i(\mathbf r)\varphi_j(\mathbf r)d\mathbf r \nonumber\\
-&=\int_{\mathbb{R}^n}\varphi_i(2\boldsymbol \mu_i-\mathbf r)\varphi_j(\mathbf r)d\mathbf r \nonumber\\
-&=(\varphi_i*\varphi_j)(2\boldsymbol \mu_i).
-\end{align}
-Using the derivation of the convolution of two Gaussians given in the previous section and evaluating it at $\mathbf r=2\boldsymbol\mu_i $ gives
-\begin{align}
- \varphi_i\otimes\varphi_j&=\left(\frac{\pi\sigma_i^2\sigma_j^2}{\sigma_i^2+\sigma_j^2}\right)^{\frac{n}{2}} \nonumber \\
-&\times\mathrm{exp}\left({-\frac{1}{\sigma_i^2+\sigma_j^2} (\boldsymbol\mu_i-\boldsymbol\mu_j)^\top(\boldsymbol\mu_i-\boldsymbol\mu_j)}\right).
-\end{align}
-This completes the derivation.
-
-\section{Convolution of Two $n$-Dimensional Gaussians}\label{ap:ConvOfGaussians}
-In this section, we provide a derivation for the convolution of two $n$-dimensional Gaussian basis functions. This derivation is used in the analytic calculation of $\boldsymbol\Psi(\mathbf{r})$ and the observation matrix, $\mathbf C$. Consider two Gaussian basis functions
-\begin{equation}\label{eq:n_dimensional_Gaussian1}
- \varphi_i(\mathbf r)=\mathrm{exp}\left({-\frac{1}{\sigma_i^2} (\mathbf r-\boldsymbol \mu_i)^\top(\mathbf r-\boldsymbol \mu_i})\right)
-\end{equation}
-and 
-\begin{equation}\label{eq:n_dimensional_Gaussian2}
-\varphi_j(\mathbf r)=\mathrm{exp}\left({-\frac{1}{\sigma_j^2} (\mathbf r-\boldsymbol \mu_j)^\top(\mathbf r-\boldsymbol \mu_j})\right).
-\end{equation}
-The derivation proceeds by assuming the Gaussian basis functions are positioned at the origin ($\boldsymbol\mu_i=\boldsymbol\mu_j=\mathbf 0$). The convolution theorem states that the Fourier transform of the convolution of two functions is the product of their Fourier transforms. Using the derivation of the Fourier transform of a \emph{n}-dimensional Gaussian from equation~\ref{eq:FTofGaussian} of the previous section, we have
-\begin{equation}\label{eq:FTTwoGaussianMultiplication}
-\mathcal{F}\left(\varphi_i*\varphi_j\right)(\mathbf{r}) = \left(\pi^2\sigma_i^2\sigma_j^2\right)^{\frac{n}{2}}\mathrm{exp}\left(-(\sigma_i^2+\sigma_j^2)\pi^2\boldsymbol\nu^\top\boldsymbol\nu\right),
-\end{equation}
-where $\mathcal{F}$ denotes the Fourier transform. Multiplying and dividing by $\left(\pi\left(\sigma_i^2+\sigma_j^2\right)\right)^{\frac{n}{2}}$, equation~\ref{eq:FTTwoGaussianMultiplication} can be written as 
-\begin{align}
-\mathcal{F}\left(\varphi_i*\varphi_j\right)(\mathbf{r})&=\left(\pi\sigma_i^2\sigma_j^2\right)^{\frac{n}{2}}\left(\frac{1}{\sigma_i^2+\sigma_j^2}\right)^{\frac{n}{2}} (\pi(\sigma_i^2+\sigma_j^2))^{\frac{n}{2}} \nonumber \\
- &\times\mathrm{exp}\left(-(\sigma_i^2+\sigma_j^2)\pi^2\boldsymbol\nu^\top\boldsymbol\nu\right).
-\end{align}
-Taking the inverse Fourier transform, the convolution becomes
-\begin{equation}\label{eq:ConvoftwoGaussian}
- \left(\varphi_i*\varphi_j\right)(\mathbf{r}) = \left(\frac{\pi\sigma_i^2\sigma_j^2}{\sigma_i^2+\sigma_j^2}\right)^{\frac{n}{2}}\mathrm{exp}\left({-\frac{1}{\sigma_i^2+\sigma_j^2} \mathbf r^\top\mathbf r}\right).
-\end{equation}
-In the case where $\boldsymbol\mu_i\neq\boldsymbol\mu_j\neq\mathbf 0$, equation~\ref{eq:ConvoftwoGaussian} becomes
-\begin{align}\label{eq:ConvoftwoGaussianNonzeroMean}
- \left(\varphi_i*\varphi_j\right)(\mathbf{r}) =& \left( \frac{\pi\sigma_i^2\sigma_j^2} {\sigma_i^2+\sigma_j^2}\right)^{\frac{n}{2}}\nonumber \\
-\times & \mathrm{exp}\left({-\frac{1}{\sigma_i^2+\sigma_j^2} (\mathbf r-\boldsymbol\mu)^\top(\mathbf r-\boldsymbol\mu)}\right),
-\end{align}
-where $\boldsymbol\mu=\boldsymbol\mu_i+\boldsymbol\mu_j$.
-
-\section{Mean and Covariance of the State Disturbance }\label{App:ColoredNoise} 
-In this section, we show that the state disturbance vector is $\mathbf{e}_t\sim\mathcal{N}(\mathbf 0,\boldsymbol\Sigma_e)$ if $e_t(\mathbf{r})\sim\mathcal{GP}\left(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}')\right)$. We begin the derivation by acknowledging the state disturbance vector is a linear function of $e_t(\mathbf r)$. Therefore, $\mathbf{e}_t$ is also normally distributed. From equation~\ref{eq:Wt}, the state disturbance vector is defined as
-\begin{equation}
-	\mathbf{e}_t \triangleq \boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi} ( \mathbf{r} )e_t( \mathbf{r} )d\mathbf{r}}.
-\end{equation}
-The expected value of $\mathbf e_t$ is given by 
-\begin{equation}
-	\mathbf E\left[ \mathbf e_t\right]= \mathbf{\Gamma}^{-1}\int_{\Omega}\boldsymbol\phi\left(\mathbf{r}\right)\mathbf E\left[e_t\left(\mathbf{r}\right)\right] d\mathbf{r}=\mathbf 0.
-\end{equation}
-The covariance of $\mathbf{e}_t$ is 
-\begin{align}
-	\boldsymbol\Sigma_e &=\lefteqn{\mathbf E\left[ \mathbf e_t\mathbf e_t^\top\right]} \nonumber \\ 
-&=\mathbf{\Gamma}^{-1}\mathbf E[\int_{\Omega}\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})d\mathbf{r} \int_{\Omega}\boldsymbol{\phi}^{\top}(\mathbf{r}') e_t(\mathbf{r}')d\mathbf{r}']\mathbf{\Gamma}^{- \top} \nonumber \\
-	&=\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega} \boldsymbol{\phi}(\mathbf{r}) \mathbf E[e_t(\mathbf{r})e_t(\mathbf{r}')]\boldsymbol{\phi}^{\top}(\mathbf{r}')d\mathbf{r}' d\mathbf r\mathbf{\Gamma}^{- \top} \nonumber\\
-	&=\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega}\boldsymbol{\phi}(\mathbf r) \gamma(\mathbf r- \mathbf r' )\boldsymbol{\phi}^{\top}(\mathbf r')d\mathbf r' d\mathbf r\mathbf{\Gamma}^{-\top}.
-\end{align}
-
+where $\mathcal{H}$ denotes the Hilbert transform operator, $t$ indexes samples and $T$ is the total number of samples in the time series. \parham{Fig.~\ref{fig:Ch3}} shows the mean amplitude of the recorded envelope versus the distance between the twisted wire electrode and the recording electrode. A Gaussian fitted to the amplitudes is also shown. The figure shows that a Gaussian is indeed a good model for the sensor kernel in the homogeneous solution.
 \section{Spatial Cut-off Frequency of Field Basis Functions}\label{App:FrequencyAnalysis}
 This section gives the derivation for the width of the Fourier transform of the field basis function in terms of its spatial cut-off frequency (equations~\ref{eq:GaussianFT} and~\ref{eq:WidthFrequencyRelationship}). We define an \textit{n}-dimensional Gaussian  centred at the origin as 
 \begin{equation}
@@ -952,6 +879,80 @@ since the maximum of the Gaussian described in equation~\ref{eq:FTofGaussian} is
 \begin{equation}
  \sigma_{\nu}^2=\frac{2\boldsymbol\nu_{c}^\top \boldsymbol\nu_{c}}{\ln 2 }.
 \end{equation}
+\section{Convolution of Two $n$-Dimensional Gaussians}\label{ap:ConvOfGaussians}
+In this section, we provide a derivation for the convolution of two $n$-dimensional Gaussian basis functions. This derivation is used in the analytic calculation of $\boldsymbol\Psi(\mathbf{r})$ and the observation matrix, $\mathbf C$. Consider two Gaussian basis functions
+\begin{equation}\label{eq:n_dimensional_Gaussian1}
+ \varphi_i(\mathbf r)=\mathrm{exp}\left({-\frac{1}{\sigma_i^2} (\mathbf r-\boldsymbol \mu_i)^\top(\mathbf r-\boldsymbol \mu_i})\right)
+\end{equation}
+and 
+\begin{equation}\label{eq:n_dimensional_Gaussian2}
+\varphi_j(\mathbf r)=\mathrm{exp}\left({-\frac{1}{\sigma_j^2} (\mathbf r-\boldsymbol \mu_j)^\top(\mathbf r-\boldsymbol \mu_j})\right).
+\end{equation}
+The derivation proceeds by assuming the Gaussian basis functions are positioned at the origin ($\boldsymbol\mu_i=\boldsymbol\mu_j=\mathbf 0$). The convolution theorem states that the Fourier transform of the convolution of two functions is the product of their Fourier transforms. Using the derivation of the Fourier transform of a \emph{n}-dimensional Gaussian from equation~\ref{eq:FTofGaussian} of the previous section, we have
+\begin{equation}\label{eq:FTTwoGaussianMultiplication}
+\mathcal{F}\left(\varphi_i*\varphi_j\right)(\mathbf{r}) = \left(\pi^2\sigma_i^2\sigma_j^2\right)^{\frac{n}{2}}\mathrm{exp}\left(-(\sigma_i^2+\sigma_j^2)\pi^2\boldsymbol\nu^\top\boldsymbol\nu\right),
+\end{equation}
+where $\mathcal{F}$ denotes the Fourier transform. Multiplying and dividing by $\left(\pi\left(\sigma_i^2+\sigma_j^2\right)\right)^{\frac{n}{2}}$, equation~\ref{eq:FTTwoGaussianMultiplication} can be written as 
+\begin{align}
+\mathcal{F}\left(\varphi_i*\varphi_j\right)(\mathbf{r})&=\left(\pi\sigma_i^2\sigma_j^2\right)^{\frac{n}{2}}\left(\frac{1}{\sigma_i^2+\sigma_j^2}\right)^{\frac{n}{2}} (\pi(\sigma_i^2+\sigma_j^2))^{\frac{n}{2}} \nonumber \\
+ &\times\mathrm{exp}\left(-(\sigma_i^2+\sigma_j^2)\pi^2\boldsymbol\nu^\top\boldsymbol\nu\right).
+\end{align}
+Taking the inverse Fourier transform, the convolution becomes
+\begin{equation}\label{eq:ConvoftwoGaussian}
+ \left(\varphi_i*\varphi_j\right)(\mathbf{r}) = \left(\frac{\pi\sigma_i^2\sigma_j^2}{\sigma_i^2+\sigma_j^2}\right)^{\frac{n}{2}}\mathrm{exp}\left({-\frac{1}{\sigma_i^2+\sigma_j^2} \mathbf r^\top\mathbf r}\right).
+\end{equation}
+In the case where $\boldsymbol\mu_i\neq\boldsymbol\mu_j\neq\mathbf 0$, equation~\ref{eq:ConvoftwoGaussian} becomes
+\begin{align}\label{eq:ConvoftwoGaussianNonzeroMean}
+ \left(\varphi_i*\varphi_j\right)(\mathbf{r}) =& \left( \frac{\pi\sigma_i^2\sigma_j^2} {\sigma_i^2+\sigma_j^2}\right)^{\frac{n}{2}}\nonumber \\
+\times & \mathrm{exp}\left({-\frac{1}{\sigma_i^2+\sigma_j^2} (\mathbf r-\boldsymbol\mu)^\top(\mathbf r-\boldsymbol\mu)}\right),
+\end{align}
+where $\boldsymbol\mu=\boldsymbol\mu_i+\boldsymbol\mu_j$.
+\section{Inner Product of Two \emph{n}-Dimensional Gaussians}\label{App:InnerProdOfGaussians}
+The derivation in this section was used for calculating the matrix $\Gamma$ from equation~\ref{eq:DefGamma}. The inner product of the two \emph{n}-dimensional Gaussians (from equations~\ref{eq:n_dimensional_Gaussian1} and~\ref{eq:n_dimensional_Gaussian2}) is defined as
+\begin{equation}\label{eq:InofGaussianDefinition}
+\varphi_i\otimes\varphi_j=\int_{\mathbb{R}^n}\varphi_i(\mathbf r)\varphi_j(\mathbf r)d\mathbf{r}.
+\end{equation}
+A Gaussian basis function is symmetric with respect to its centre so
+\begin{equation}\label{eq:GaussianSymmetry}
+ \varphi_i(\boldsymbol \mu_i+\mathbf r)= \varphi_i(\boldsymbol \mu_i-\mathbf r).
+\end{equation}
+Letting $\mathbf{r}= \mathbf{r}-\boldsymbol{\mu}_i$, equation~\ref{eq:GaussianSymmetry} becomes
+\begin{equation}\label{eq:ConsequenceofGaussianSymmetry}
+ \varphi_i(\mathbf r)= \varphi_i(2\boldsymbol \mu_i-\mathbf r).
+\end{equation}
+Now substituting equation~\ref{eq:ConsequenceofGaussianSymmetry} into equation~\ref{eq:InofGaussianDefinition} gives 
+\begin{align}
+\varphi_i\otimes\varphi_j&=\int_{\mathbb{R}^n}\varphi_i(\mathbf r)\varphi_j(\mathbf r)d\mathbf r \nonumber\\
+&=\int_{\mathbb{R}^n}\varphi_i(2\boldsymbol \mu_i-\mathbf r)\varphi_j(\mathbf r)d\mathbf r \nonumber\\
+&=(\varphi_i*\varphi_j)(2\boldsymbol \mu_i).
+\end{align}
+Using the derivation of the convolution of two Gaussians given in the previous section and evaluating it at $\mathbf r=2\boldsymbol\mu_i $ gives
+\begin{align}
+ \varphi_i\otimes\varphi_j&=\left(\frac{\pi\sigma_i^2\sigma_j^2}{\sigma_i^2+\sigma_j^2}\right)^{\frac{n}{2}} \nonumber \\
+&\times\mathrm{exp}\left({-\frac{1}{\sigma_i^2+\sigma_j^2} (\boldsymbol\mu_i-\boldsymbol\mu_j)^\top(\boldsymbol\mu_i-\boldsymbol\mu_j)}\right).
+\end{align}
+This completes the derivation.
+
+
+
+\section{Mean and Covariance of the State Disturbance }\label{App:ColoredNoise} 
+In this section, we show that the state disturbance vector is $\mathbf{e}_t\sim\mathcal{N}(\mathbf 0,\boldsymbol\Sigma_e)$ if $e_t(\mathbf{r})\sim\mathcal{GP}\left(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}')\right)$. We begin the derivation by acknowledging the state disturbance vector is a linear function of $e_t(\mathbf r)$. Therefore, $\mathbf{e}_t$ is also normally distributed. From equation~\ref{eq:Wt}, the state disturbance vector is defined as
+\begin{equation}
+	\mathbf{e}_t \triangleq \boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi} ( \mathbf{r} )e_t( \mathbf{r} )d\mathbf{r}}.
+\end{equation}
+The expected value of $\mathbf e_t$ is given by 
+\begin{equation}
+	\mathbf E\left[ \mathbf e_t\right]= \mathbf{\Gamma}^{-1}\int_{\Omega}\boldsymbol\phi\left(\mathbf{r}\right)\mathbf E\left[e_t\left(\mathbf{r}\right)\right] d\mathbf{r}=\mathbf 0.
+\end{equation}
+The covariance of $\mathbf{e}_t$ is 
+\begin{align}
+	\boldsymbol\Sigma_e &=\lefteqn{\mathbf E\left[ \mathbf e_t\mathbf e_t^\top\right]} \nonumber \\ 
+&=\mathbf{\Gamma}^{-1}\mathbf E[\int_{\Omega}\boldsymbol{\phi}(\mathbf{r})e_t(\mathbf{r})d\mathbf{r} \int_{\Omega}\boldsymbol{\phi}^{\top}(\mathbf{r}') e_t(\mathbf{r}')d\mathbf{r}']\mathbf{\Gamma}^{- \top} \nonumber \\
+	&=\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega} \boldsymbol{\phi}(\mathbf{r}) \mathbf E[e_t(\mathbf{r})e_t(\mathbf{r}')]\boldsymbol{\phi}^{\top}(\mathbf{r}')d\mathbf{r}' d\mathbf r\mathbf{\Gamma}^{- \top} \nonumber\\
+	&=\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega}\boldsymbol{\phi}(\mathbf r) \gamma(\mathbf r- \mathbf r' )\boldsymbol{\phi}^{\top}(\mathbf r')d\mathbf r' d\mathbf r\mathbf{\Gamma}^{-\top}.
+\end{align}
+
+
 
 
 
