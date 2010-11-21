@@ -467,8 +467,6 @@ Dean Freestone would like to thank Dr. Mark van Rossum for hosting him while vis
 
 \section*{Tables}
 \begin{table*}[!ht]
-\caption{
-\bf{Notation}}
 \begin{tabular}{|l|l|l|}
 	\hline
 	\textbf{Symbol} & \textbf{Quantity} & \textbf{Units}\\
@@ -527,16 +525,13 @@ Dean Freestone would like to thank Dr. Mark van Rossum for hosting him while vis
    	$\mathcal{\hat{W}}$& vector of parameter estimates (used in LS estimator) & n.a.\\	
 	\hline
 \end{tabular}
-\begin{flushleft}The first column of the table gives the symbols for all the notation used in the paper. The second column provides a brief description of the quantity, and the third column provides the SI units where relevant.
-\end{flushleft}
+\caption{\textbf{Notation.} The first column of the table gives the symbols for all the notation used in the paper. The second column provides a brief description of the quantity, and the third column provides the SI units where relevant.}
 \label{tab:Notation}
 \end{table*}
 \clearpage
 \newpage
 \renewcommand{\arraystretch}{1.7}
 \begin{table*}[!ht]
-\caption{
-\bf{Algorithm for the Unscented RTS Smoother}}
 \begin{tabular}{|c|}\hline
 \multicolumn{1}{|p{16cm}|}{\textbf{1.} Forward initialization} \\ 
 $\hat{\mathbf x}_0, \mathbf P_0$ \\
@@ -566,16 +561,13 @@ $\hat{\mathbf x}_t^b=\hat{\mathbf x}_t^f+\mathbf S_t\left[\hat{\mathbf x}_{t+1}^
 $\mathbf P_{t}^{b}=\mathbf P_{t}^{f}+\mathbf S_t\left[\mathbf P_{t+1}^{b}-\mathbf P_{t+1}^{b-} \right]\mathbf S_t^\top $\\
 \hline
 \end{tabular}
-\begin{flushleft}This table shows the steps in the unscented Rauch-Tung-Striebel smoother algorithm. The steps are iterated 10 times for our state estimation procedure. The least squares algorithm is run after each iteration to update the parameter estimates.
-\end{flushleft}
+\caption{\textbf{Algorithm for the Unscented RTS Smoother.} This table shows the steps in the unscented Rauch-Tung-Striebel smoother algorithm. The steps are iterated 10 times for our state estimation procedure. The least squares algorithm is run after each iteration to update the parameter estimates.}
 \label{tab:UKFAlgorithm}
 \end{table*}
 \clearpage
 \newpage
 \renewcommand{\arraystretch}{1}
 \begin{table*}[!ht]
-\caption{
-\bf{Parameters}}
 \begin{tabular}{|c|l|c|l|}
 	\hline
 	\textbf{Symbol} & \textbf{Quantity} & \textbf{Value} & \textbf{Units}\\
@@ -623,15 +615,12 @@ $\mathbf P_{t}^{b}=\mathbf P_{t}^{f}+\mathbf S_t\left[\mathbf P_{t+1}^{b}-\mathb
 	$\lambda$& scaling parameter & -80.99 & n.a.\\
 	\hline
 \end{tabular}
-\begin{flushleft}Parameters for the neural field model, the model reduction, the frequency analysis and the estimation procedure.
-\end{flushleft}
+\caption{\textbf{Parameters.} Parameters for the neural field model, the reduced model, the frequency analysis and the estimation procedure.}
 \label{tab:Parameters}
 \end{table*}
 \clearpage
 \newpage
 \begin{table*}[!ht]
-	\caption{
-	\bf{Results from varying the Mexican hat connectivity kernel parameters}}
 \begin{tabular}{c|ccccc}
 	Experiment & Parameter & Actual & Mean Est. & Std. Dev. & Bias (\%) \\ \hline
 	
@@ -650,12 +639,11 @@ $\mathbf P_{t}^{b}=\mathbf P_{t}^{f}+\mathbf S_t\left[\mathbf P_{t+1}^{b}-\mathb
 	& $\theta_2$ & 5 & $4.37$ & $0.54$ & $12.6$ \\
 	& $\xi$ & 0.9 & $0.925$ & $0.003$ & $2.78$ \\ \hline
 \end{tabular}\label{tab:MexicanHatKernelResults}
+\caption{\textbf{Results from varying the Mexican hat connectivity kernel parameters}}
 \end{table*}
 \clearpage
 \newpage
 \begin{table*}[!ht]
-	\caption{
-	\bf{Results from varying the Gaussian connectivity kernel parameter}}
 \begin{tabular}{c|ccccc}
 	Experiment & Parameter & Actual & Mean Est. & Std. Dev. & Bias (\%) \\ \hline
 	II-D &$\theta_0$ & $15$ & $35.68$ & $16.72$ & $137.87$ \\
@@ -673,6 +661,7 @@ $\mathbf P_{t}^{b}=\mathbf P_{t}^{f}+\mathbf S_t\left[\mathbf P_{t+1}^{b}-\mathb
 	& $\theta_2$ & 0 & $0.27$ & $0.29$ & - \\
 	& $\xi$ & 0.9 & $0.924$ & $0.003$ & $2.67$ \\ \hline
 \end{tabular}\label{tab:GaussianKernelResults}
+\caption{\textbf{Results from varying the Gaussian connectivity kernel parameter}}
 \end{table*}
 
 \newpage
@@ -701,6 +690,10 @@ $\mathbf P_{t}^{b}=\mathbf P_{t}^{f}+\mathbf S_t\left[\mathbf P_{t+1}^{b}-\mathb
 {\bf Figure 11. RMSE of connectivity kernel estimates with various sigmoid parameters}. Log of the RMSE of the connectivity kernel for different values of firing threshold, $v_0$, and the slope of the sigmoid, $\varsigma$. Mean kernel estimates are obtained over 50 realizations in each case. White spaces indicate cases where the kernel can not be estimated due to numerical problems.
 
 {\bf Figure 12. RMSE of connectivity kernel estimates with various observation kernel widths}. RMSE of the connectivity kernel for different values of observation width, $\sigma_m$. Mean kernel estimates are obtained over 50 realizations in each case.
+
+{\bf Figure 13. Observation kernel experimental setup}. Photograph through a microscope of the Utah recording array and the twisted bipolar current source.
+
+{\bf Figure 14. Observation kernel experimental results}. Amplitude of the envelope of the signal recorded from the electrode at the center of the array vs. the source position.
 
 \clearpage
 \newpage
@@ -817,11 +810,19 @@ $\mathbf P_{t}^{b}=\mathbf P_{t}^{f}+\mathbf S_t\left[\mathbf P_{t+1}^{b}-\mathb
 \includegraphics{./Graph/pdf/fig13.pdf}
 \end{center}
 \caption{}
-\label{fig:Figure12}
+\label{fig:SensorAndSource}
 \end{figure*}
 \clearpage
 \newpage
-
+\begin{figure*}[!ht]
+\begin{center}
+\includegraphics{./Graph/pdf/fig14.pdf}
+\end{center}
+\caption{}
+\label{fig:Ch3}
+\end{figure*}
+\clearpage
+\newpage
 \appendix
 \section{Time Discretization of the Neural Field Model}
 \label{App:Time Discretization} To form the integro-difference equation neural field model, a time discretization must be performed. To do this, we used a one-step Euler method, where equation~\ref{FinalFormContinuous} can be approximated by 
@@ -840,12 +841,12 @@ Now making simplifications, the discrete time form of the model is
 where $\xi = 1 - T_s \zeta$.
 
 \section{Observation Kernel}\label{App:ObsKernelExperiment}
-The Gaussian shape of the observation kernel was verified experimentally. This was achieved by moving a dipole across a recording electrode submerged in saline. A photograph through a microscope of the submerged electrodes can be seen in \parham{Fig.~\ref{fig:SensorAndSource}}. The measurement sensor was the most central electrode of a $5\times5$ Utah array (Blackrock Microsystems) which had electrode spacing of 400~$\mu$m. The current source was a twisted wire electrode (Plastics One Inc.) with tip-tip spacing of 60~$\mu$m and tip diameter of 200~$\mu$m. The twisted wire electrode was moved in the saline solution using a 3 dimensional manipulator (Sutter Instrument Company, MPC-100) in increments of 200~$\mu$m. The twisted wire electrode and the Utah array were co-registered visually using the microscope.
+The Gaussian shape of the observation kernel was verified experimentally. This was achieved by moving a dipole across a recording electrode submerged in saline. A photograph through a microscope of the submerged electrodes can be seen in Fig.~\ref{fig:SensorAndSource}. The measurement sensor was the most central electrode of a $5\times5$ Utah array (Blackrock Microsystems) which had electrode spacing of 400~$\mu$m. The current source was a twisted wire electrode (Plastics One Inc.) with tip-tip spacing of 60~$\mu$m and tip diameter of 200~$\mu$m. The twisted wire electrode was moved in the saline solution using a 3 dimensional manipulator (Sutter Instrument Company, MPC-100) in increments of 200~$\mu$m. The twisted wire electrode and the Utah array were co-registered visually using the microscope.
 The stimulation waveform for the current source consisted of a 40~Hz sine wave with a duration of 1~s. The recording from the central electrode in the array was used to estimate the shape of the sensor kernel. To extract the amplitude of the signal, the data was first band-pass filtered with a center frequency of 40~Hz. The envelope of the signal was found by computing the mean instantaneous amplitude over the 1~s stimulation duration by
 \begin{equation}
 	a = \frac{1}{T}\sum_n{\sqrt{(y_t-\mathcal{H}y_t^2}}
 \end{equation}
-where $\mathcal{H}$ denotes the Hilbert transform operator, $t$ indexes samples and $T$ is the total number of samples in the time series. \parham{Fig.~\ref{fig:Ch3}} shows the mean amplitude of the recorded envelope versus the distance between the twisted wire electrode and the recording electrode. A Gaussian fitted to the amplitudes is also shown. The figure shows that a Gaussian is indeed a good model for the sensor kernel in the homogeneous solution.
+where $\mathcal{H}$ denotes the Hilbert transform operator, $t$ indexes samples and $T$ is the total number of samples in the time series. Fig.~\ref{fig:Ch3} shows the mean amplitude of the recorded envelope versus the distance between the twisted wire electrode and the recording electrode. A Gaussian fitted to the amplitudes is also shown. The figure shows that a Gaussian is indeed a good model for the sensor kernel in the homogeneous solution.
 \section{Inner Product of Two \emph{n}-Dimensional Gaussians}\label{App:InnerProdOfGaussians}
 The derivation in this section was used for calculating the matrix $\mathbf \Gamma$ from equation~\ref{eq:DefGamma}. Consider two Gaussian basis functions
 \begin{equation}\label{eq:n_dimensional_Gaussian1}
