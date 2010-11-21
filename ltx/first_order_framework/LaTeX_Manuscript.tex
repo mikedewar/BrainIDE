@@ -268,7 +268,7 @@ In practice, it is difficult to estimate the bandwidth of the cortex using tradi
 
 Although such sensors avoid errors due to aliasing, they attenuate the high spatial frequency variations in the observations. Therefore, any procedure applied to estimate the original field or the underlying connectivity structure from these band-limited observations has the potential to underestimate the high spatial frequency components of both the field and the connectivity kernel. This motivates the use of sensors with wider bandwidths (narrower in space). This choice would require more sensors in order to satisfy Shannon's sampling theorem for a given spatial region. Therefore, a compromise should be found between the bandwidth of the sensor response, the accuracy of the estimation results, the number of sensors and the computational demands of the estimation procedure when designing experiments.
 
-Similar considerations need to be made regarding the representation of the dynamic field, $v_t(\mathbf{r})$, using the basis function decomposition. Again, applying Shannon's sampling theorem, the minimum distance between basis functions to accurately reconstruct the neural field must satisfy 
+Similar considerations need to be made regarding the representation of the dynamic field, $v_t(\mathbf{r})$, using the basis function decomposition. Again, applying Shannon's sampling theorem, the maximum distance between basis functions to accurately reconstruct the neural field must satisfy 
 \begin{equation}\label{eq:BasisFunctionSeparation}
 	\Delta_{\phi} \leq \frac{1}{2\rho_{\phi}\boldsymbol{\nu}_{cy}}
 \end{equation}
