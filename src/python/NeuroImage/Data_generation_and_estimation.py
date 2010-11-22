@@ -1,6 +1,6 @@
 #Author Parham Aram
 #Date 21-11-2010
-'''This module simulates the full neural model and uses the data
+'''This module simulates the  neural model and uses the data
 in the state space model to estimate the states, 
 the connectivity kernel parameters and the synaptic dynamics'''
 

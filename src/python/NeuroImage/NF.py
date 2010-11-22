@@ -1,7 +1,7 @@
 #Author Parham Aram
 #Date 28-06-2010
 """
-This module provides the full neural field class, which describes a non-linear
+This module provides the neural field class, which describes a non-linear
 integro-difference equation model and methods to simulate
 the model
 """
