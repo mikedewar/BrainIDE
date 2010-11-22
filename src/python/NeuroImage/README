@@ -1,0 +1,42 @@
+The provided code is tested using
+
+Python 2.6.5
+scipy 0.7.0
+numpy 1.3.0
+Pylab 1.3.0
+
+List of files:
+
+Modelling:
+##########
+ActivationFunction.py : Defines the sigmoidal activation function.
+
+Bases2D.py: Defines Gaussian basis functions with convolution and inner product methods.
+
+IDEComponents.py: Defines Integro-Difference Equation neural field model components, Connectivity kernel and the decomposed neural field. 
+
+NF.py: Defines the neural field model. 
+
+IDEModel.py: Defines decomposed neural field model, imports UKF and Ls modules for two-stage iterative estimation algorithm.
+
+Estimation:
+###########
+LS.py: Defines least squares method for the connectivity kernel parameters and synaptic dynamics estimations 
+
+UKF.py: Defines the additive Unscented Kalman filter and the additive  unscented Rauch-Tung-Striebel
+smoother for non-linear state estimation
+
+
+Generate data and implement estimation:
+##################################
+Data_generation_and_estimation.py: Defines all the parameters and components needed to generate the neural field model and the reduced (state-space) model. It uses the data generated from NF.py to estimate the connectivity kernel parameters and synaptic dynamics estimations in IDEModel.py.
+
+This module imports Bases2D, ActivationFunction, IDEComponents, NF and IDEModel.
+
+
+To run the simulation:
+
+python Data_generation_and_estimation.py 
+
+
+
