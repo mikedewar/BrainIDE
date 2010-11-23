@@ -54,11 +54,11 @@ for n=1:NPointsInField
         mm=mm+1;
         
 %         clim = [-200 -1];         % for log
-<<<<<<< HEAD
-% %<<<<<<< HEAD
-=======
 % <<<<<<< HEAD
->>>>>>> 77a47d259f23fdd63d76d9be5524cd4b75d66048
+% %<<<<<<< HEAD
+% =======
+% <<<<<<< HEAD
+% >>>>>>> 77a47d259f23fdd63d76d9be5524cd4b75d66048
 %         clim = [0 0.08];
 % 
 %         subplot(3,3,1),imagesc(topleft,clim)
@@ -93,13 +93,13 @@ for n=1:NPointsInField
 % % %         imagesc(log10(temp2))
 % %         drawnow
 % >>>>>>> 8cec59265d4c54159cbc4765871cd56ee7b9e942
-<<<<<<< HEAD
-     end
- end
-=======
+% <<<<<<< HEAD
+%      end
+%  end
+% =======
     end
 end
->>>>>>> 77a47d259f23fdd63d76d9be5524cd4b75d66048
+% >>>>>>> 77a47d259f23fdd63d76d9be5524cd4b75d66048
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -125,13 +125,14 @@ end
 % % surf(Sigma_gamma-Sigma_gamma','edgecolor','none'),axis square
 % % max(max(Sigma_gamma-Sigma_gamma',[],1))
 % % [T,P] = cholcov(Sigma_gamma);
-% e = mvnrnd(zeros(1,NPointsInField^2),Sigma_gamma,T);
-% for t=1:T-1
-%     e_square = reshape(e(t,:,:),NPointsInField,NPointsInField);
-%     imagesc(e_square)
-%     axis square
-%     drawnow
-%     pause
-%     
-% end
+e = mvnrnd(zeros(1,NPointsInField^2),Sigma_gamma,T);
+for t=1:T-1
+    e_square = reshape(e(t,:,:),NPointsInField,NPointsInField);
+    e_pad = padarray(e_square,size(e_square),'circular');
+    imagesc(e_pad)
+    axis square
+    drawnow
+    pause
+    
+end
     
