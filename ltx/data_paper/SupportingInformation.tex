@@ -229,7 +229,91 @@ substituting \ref{eq:Xi4derivation1} in \ref{eq:Xi4} we get
 \begin{equation}
  \Xi_4=\sum_{t=0}^{T-1}\left(\mathbf P_{t}+\mathbf{\hat x}_t\mathbf{\hat x}_{t}^\top\right)
 \end{equation}
+\section*{$\sigma_e^2$ Estimation}\label{sec:sigmaeEstimation} 
+we have
+\begin{equation}\label{eq:qTaylor}
+ q(\mathbf x_t) \approx q(\mathbf {\hat x}_t)+\int_\Omega \boldsymbol{\Psi}(\mathbf{r}')\boldsymbol \phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t)f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'
+\end{equation}
+\begin{eqnarray}
+ p(\mathbf x_{t+1}, \mathbf y_{t+1};\boldsymbol\Theta)&=& \mid\boldsymbol\Sigma_{\epsilon}\mid^{-\frac{1}{2}} \times  e^{-\frac{1}{2}(\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1})^\top\boldsymbol\Sigma_{\epsilon}^{-1}(\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1}) } \nonumber \\
+&+&  \mid\boldsymbol\Sigma_e\mid^{-\frac{1}{2}} \times e^{-\frac{1}{2}(\mathbf x_{t+1}-q(\mathbf  x_t)\boldsymbol\theta-\xi  \mathbf x_t)^\top\boldsymbol\Sigma_e^{-1}(\mathbf x_{t+1}-q( \mathbf x_t)\boldsymbol\theta-\xi \mathbf  x_t)}
+\end{eqnarray}
+by expanding the exponent and taking $2\log$ we get
+\begin{eqnarray}\label{eq:Qfunction}
+2\ln p(\mathbf x_{t+1} , \mathbf y_{t+1};\boldsymbol\Theta)&=&-\ln \mid\boldsymbol\Sigma_{\epsilon}\mid- (\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1})^\top\boldsymbol\Sigma_{\epsilon}^{-1}(\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1})\nonumber \\
+&-&\ln \mid\boldsymbol\Sigma_e\mid-\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}\mathbf x_{t+1}+2\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}q( \mathbf x_t)\boldsymbol\theta+2\xi \mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}\mathbf x_t\nonumber \\
+&-&\boldsymbol\theta^\top q^\top(\mathbf x_t)\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-2\xi \mathbf x_t^\top\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-\xi^2\mathbf x_t^\top\boldsymbol\Sigma_e^{-1}\mathbf x_t.
+\end{eqnarray}
+Taking trace and rearranging, using the invariant cyclic permutations property of the trace, this distribution can be written as
+\begin{eqnarray}\label{eq:Qfunctionintrace}
+  \ln p(\mathbf x_{t+1}, \mathbf y_{t+1};\boldsymbol\Theta)&=& -\ln \mid\boldsymbol\Sigma_{\epsilon}\mid-\mathrm{tr}\left\lbrace\boldsymbol\Sigma_{\epsilon}^{-1}(\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1})^\top\right\rbrace   \nonumber \\
+&-&\ln \mid\boldsymbol\Sigma_e\mid-\mathrm{tr}\left\lbrace\mathbf x_{t+1}\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}\right\rbrace+2\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}q( \mathbf x_t)\boldsymbol\theta+2\xi \mathrm{tr} \left\lbrace \mathbf x_t\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}\right\rbrace \nonumber \\
+&&-\boldsymbol\theta^\top q^\top(\mathbf x_t)\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-2\xi \mathbf x_t^\top\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-\xi^2\mathrm{tr}\left\lbrace \mathbf x_t \mathbf x_t^\top\boldsymbol\Sigma_e^{-1}\right\rbrace. 
+\end{eqnarray}
+Substituting \ref{eq:qTaylor} in \ref{eq:Qfunctionintrace} and taking the expectation of the log likelihood function for all time instants gives an approximate to the lower-bound that needs to be maximised to gain optimal parameter estimates. We define $\boldsymbol\Sigma_e=\sigma_e^2\tilde{\boldsymbol\Sigma}_e$. Therefore $\mathcal Q$-function can be approximated as  
+\begin{eqnarray}\label{eq:Voldermont}
+ \mathcal Q(\boldsymbol \Theta,\boldsymbol\Theta')&\approx& -(T-1)\ln \mid\boldsymbol\Sigma_{\epsilon}\mid-\mathrm{tr}\left\lbrace\boldsymbol\Sigma_{\epsilon}^{-1}\sum_{t=0}^{T-1}\left[ (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top\right] \right\rbrace\nonumber \\
+&-&(T-1)\ln \mid\sigma_e^2\tilde{\boldsymbol\Sigma}_e\mid-\frac{1}{\sigma_e^2}\mathrm{tr}\left\lbrace \Xi'_0 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace +2\frac{1}{\sigma_e^2}\Xi_0\boldsymbol\theta+
+\frac{2\xi}{\sigma_e^2} \mathrm{tr}\left\lbrace \Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace \nonumber \\
+&-&\frac{1}{\sigma_e^2}\boldsymbol\theta^\top \Xi_2\boldsymbol\theta-\frac{2\xi}{\sigma_e^2} \Xi_3 \boldsymbol\theta -  \frac{\xi^2}{\sigma_e^2}\mathrm{tr} \left\lbrace\Xi_4\tilde{\boldsymbol\Sigma}_e^{-1} \right\rbrace 
+\end{eqnarray}
+where 
+\begin{align}
+	\Xi'_0&=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_{t+1}\mathbf x_{t+1}^\top\right]=\sum_{t=0}^{T-1}\left(\mathbf P_{t+1}+\mathbf{\hat x}_{t+1}\mathbf{\hat x}_{t+1}^\top\right)\label{eq:def of Xi'0} \\
+\Xi_0&=\sum_{t=0}^{T-1}\left[ \mathbf{\hat x}_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf{\hat x}_t)+\int_\Omega\boldsymbol \phi^\top(\mathbf r') \mathbf M_{t+1} \tilde{\boldsymbol\Sigma}_e^{-1} \boldsymbol{\Psi}(\mathbf{r}') f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\right] \\	
+\Xi_1&=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_t\mathbf x_{t+1}^\top\right]=\sum_{t=0}^{T-1}\left(\mathbf M_{t+1}+\mathbf{\hat x}_t\mathbf{\hat x}_{t+1}^\top\right) \\
+\Xi_2&=\sum_{t=0}^{T-1}\left[q^\top(\mathbf{\hat x}_t)\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf{\hat x}_t)+\Lambda_t(\mathbf r)\mathbf P_t \tilde{\Lambda}_t(\mathbf r)\right] \\
+ \Xi_3&=\sum_{t=0}^{T-1}\left[ \mathbf{\hat x}_{t}^\top\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf{\hat x}_t)+\int_\Omega\boldsymbol \phi^\top(\mathbf r') \mathbf P_t \tilde{\boldsymbol\Sigma}_e^{-1}  \boldsymbol{\Psi}(\mathbf{r}') f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\right] \\
+ \Xi_4&=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_t\mathbf x_{t}^\top\right]=\sum_{t=0}^{T-1}\left(\mathbf P_t+\mathbf{\hat x}_t\mathbf{\hat x}_t^\top\right)
+\end{align}
+and
+\begin{align}
+	 \Lambda_t(\mathbf r)&=\begin{bmatrix}\boldsymbol \lambda_t^{(1)}(\mathbf r) & \boldsymbol \lambda_t^{(2)}(\mathbf r)& \dots &\boldsymbol \lambda_t^{(i)}(\mathbf r)\end{bmatrix} \\
+	 \boldsymbol\lambda_t^{(i)}(\mathbf r)&=\int_{\Omega} \boldsymbol \Psi^\top(\mathbf r')\tilde{\boldsymbol\Sigma}_e^{-1}\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf {\hat x}_t)d\mathbf r'\\
+	\tilde{\Lambda}_t(\mathbf r)&=\begin{bmatrix}\tilde{\boldsymbol \lambda}_t^{(1)}(\mathbf r) \\ \tilde{\boldsymbol \lambda}_t^{(2)}(\mathbf r) \\ \vdots \\ \tilde{\boldsymbol \lambda}_t^{(i)}(\mathbf r)\end{bmatrix} \\
+	 \tilde{\boldsymbol \lambda}_t^{(i)}(\mathbf r)&=\int_{\Omega} \boldsymbol \Psi(\mathbf r')\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf {\hat x}_t)d\mathbf r'
+\end{align}
+It should be noted that the second term in equation \ref{eq:Voldermont} is obtained by adding and subtracting $\mathbf C \mathbf{\hat{x}}_t \mathbf{\hat{x}}_t^\top \mathbf C^\top$ to the expectation, $\mathbf E_{\boldsymbol\Theta'}\left[ .\right] $. Given the state estimates, $\mathbf {\hat x^{b}}_t$ the state covariance $\mathbf P_t^b$ and cross-covariance $\mathbf M_t^b$ , the $\Xi$-variables can be computed directly.
 
+When taking the derivative of equation~\ref{eq:Voldermont}, the constant $\beta$ described in equation~\ref{eq:def of beta} will disappear. Differntiating with respect to $\boldsymbol\theta$ we have
+\begin{equation}\label{eq:Qpartialtheta}
+ \frac{\partial \mathcal Q}{\partial \boldsymbol\theta}=2\Xi_0-\boldsymbol\theta^\top(\Xi_2^\top+\Xi_2)-2\xi\Xi_3
+\end{equation}
+noting that $\Xi_2$ is symmetric and equating \ref{eq:Qpartialtheta} to the zero vector we get
+\begin{equation}\label{eq:theta}
+ \boldsymbol \theta=\Xi_2^{-1}\left(\Xi_0^\top-\xi\Xi_3^\top \right)
+\end{equation}
+similarly differentiating with respect to $\xi$ we have
+\begin{equation}\label{eq:Qpartialxi}
+ \frac{\partial \mathcal Q}{\partial \xi}=2tr\left\lbrace \Xi_1 \boldsymbol\Sigma_e^{-1}\right\rbrace -2 \Xi_3 \boldsymbol\theta - 2\xi tr \left\lbrace\Xi_4\boldsymbol\Sigma_e^{-1} \right\rbrace
+\end{equation}
+substituting \ref{eq:theta} in \ref{eq:Qpartialxi} and equating to zero we get
+\begin{equation}
+ \xi=\frac{tr\left\lbrace \Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-\Xi_3\Xi_2^{-1}\Xi_0^\top}{tr\left\lbrace \Xi_4 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-\Xi_3\Xi_2^{-1}\Xi_3^\top}
+\end{equation}
+Rewrite equation~\ref{eq:Voldermont} as
+\begin{equation}
+ \mathcal Q(\boldsymbol \Theta,\boldsymbol\Theta')\propto-(T-1)n_y\ln\sigma^2_{\epsilon}-\frac{1}{\sigma_{\epsilon}^2}\mathrm{tr}\left\lbrace\sum_{t=0}^{T-1}\left[ (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top\right] \right\rbrace
+\end{equation}
+differentiating with respect to $\sigma_{\epsilon}^2$
+\begin{equation}
+  \frac{\partial \mathcal Q}{\partial \sigma_{\epsilon}^2}=-(T-1)n_y\frac{1}{\sigma_{\epsilon}^2}+\frac{1}{\sigma_{\epsilon}^4}\mathrm{tr}\left\lbrace\sum_{t=0}^{T-1}\left[ (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top\right] \right\rbrace
+\end{equation}
+setting above to zero and solving for $\sigma_{\epsilon}^2$ we have
+\begin{equation}
+ \sigma_{\epsilon}^2=\frac{1}{(T-1)n_y}\sum_{t=0}^{T-1}\mathrm{tr}\left\lbrace (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top \right\rbrace
+\end{equation}
+differentiating ~\ref{eq:Voldermont} with respect to $\sigma_e^2$ we have
+\begin{eqnarray}
+ \frac{\partial \mathcal Q}{\partial \sigma_e^2}&=& -(T-1)n_x\frac{1}{\sigma_e^2}+\frac{1}{\sigma_e^4}\mathrm{tr}\left\lbrace \Xi'_0 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace -2\frac{1}{\sigma_e^4}\Xi_0\boldsymbol\theta-
+\frac{2\xi}{\sigma_e^4} \mathrm{tr}\left\lbrace \Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace \nonumber \\
+&+&\frac{1}{\sigma_e^4}\boldsymbol\theta^\top \Xi_2\boldsymbol\theta+\frac{2\xi}{\sigma_e^4} \Xi_3 \boldsymbol\theta +\frac{\xi^2}{\sigma_e^4}\mathrm{tr} \left\lbrace\Xi_4\tilde{\boldsymbol\Sigma}_e^{-1} \right\rbrace 
+\end{eqnarray}
+setting above to zero and solving for $\sigma_e^2$ we have
+\begin{eqnarray}
+\sigma_e^2=\frac{1}{(T-1)n_x}\left[ \mathrm{tr}\left\lbrace \Xi'_0 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace -2\Xi_0\boldsymbol\theta-
+2\xi\mathrm{tr}\left\lbrace \Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace+\boldsymbol\theta^\top \Xi_2\boldsymbol\theta+2\xi\Xi_3 \boldsymbol\theta +\xi^2\mathrm{tr} \left\lbrace\Xi_4\tilde{\boldsymbol\Sigma}_e^{-1} \right\rbrace \right] 
+\end{eqnarray}
 \bibliographystyle{plain}
 \bibliography{}
 \end{document}
