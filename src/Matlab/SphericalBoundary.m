@@ -5,7 +5,7 @@
 
 % spatial parameters
 % ~~~~~~~~~~~
-Delta = 0.5;                          % space step for the spatial discretisation
+% Delta = 0.5;                          % space step for the spatial discretisation
 Delta_squared = Delta^2;
 SpaceMaxPeriodicField = 30;                    % maximum space in mm
 SpaceMinPeriodicField = -30;         % minimum space in mm
@@ -15,13 +15,13 @@ r = linspace(SpaceMinPeriodicField/3,SpaceMaxPeriodicField/3,NPointsInField);   
 
 % temporal parameters
 % ~~~~~~~~~~~~~
-Ts = 1e-3;          % sampling period (s)
-T = 500;            % maximum time (ms)
+% Ts = 1e-3;          % sampling period (s)
+% T = 500;            % maximum time (ms)
 
 % disturbance paramters
 % ~~~~~~~~~~~~~
-sigma_gamma = 1.3;          % parameter for covariance of disturbance
-gamma_weight = 0.1;            % variance of disturbance
+% sigma_gamma = 1.3;          % parameter for covariance of disturbance
+% gamma_weight = 0.1;            % variance of disturbance
 
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -125,14 +125,17 @@ end
 % % surf(Sigma_gamma-Sigma_gamma','edgecolor','none'),axis square
 % % max(max(Sigma_gamma-Sigma_gamma',[],1))
 % % [T,P] = cholcov(Sigma_gamma);
-e = mvnrnd(zeros(1,NPointsInField^2),Sigma_gamma,T);
-for t=1:T-1
-    e_square = reshape(e(t,:,:),NPointsInField,NPointsInField);
-    e_pad = padarray(e_square,size(e_square),'circular');
-    imagesc(e_pad)
-    axis square
-    drawnow
-    pause
-    
-end
+
+
+
+% e = mvnrnd(zeros(1,NPointsInField^2),Sigma_gamma,T);
+% for t=1:T-1
+%     e_square = reshape(e(t,:,:),NPointsInField,NPointsInField);
+%     e_pad = padarray(e_square,size(e_square),'circular');
+%     imagesc(e_pad)
+%     axis square
+%     drawnow
+%     pause
+%     
+% end
     
