@@ -18,7 +18,9 @@
         \item Do not use real data for the validation of their approach
         \item Assume that a few kernel basis functions accurately represent the actual connectivity kernel, which might not be the case when using real data;
         \item Do not consider the EEG/MEG lead field when constructing their mapping between the membrane voltage and the electrophysiological data (observation function)
-	\emph{We interested in intracranial EEG, and maybe we can say the framework can be altered in the case of scalp EEG by considering the lead field in the mapping between the membrane voltage and the electrophysiological data, resulting in different observation equation (if  non-linear we need unscented transform on observation and if not the state estimation remains unchanged.)}
+	\emph{We interested in intracranial EEG, and maybe we can say the framework can be altered in the case of scalp EEG by considering the lead field in the mapping between the membrane voltage and the electrophysiological data, resulting in different observation equation (if  non-linear we need unscented transform on observation and if not the state estimation remains unchanged.) This is from PLoS review which might be useful: In much of the previous papers cited the EEG/MEG lead field is
+considered. This is different of course for scalp electrodes than for intracranial electrodes but should be explicitly spelled out because this factor cannot be ignored. In fact the observation model is not
+quite realistic, without lead field and without amplifier characteristics.}
     \end{enumerate}
     
     \subsection{Additional Comments}
