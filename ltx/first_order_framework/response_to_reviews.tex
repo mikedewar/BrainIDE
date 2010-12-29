@@ -1,5 +1,7 @@
 \documentclass{article}
-
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
 \title{Response To Reviews - A Data-Driven Framework for Neural Field Modeling}
 \author{D. Freestone, P. Aram, M. Dewar, K. Scerri, D. Grayden, V. Kadirkamanathan}
 
@@ -46,7 +48,16 @@
 
 
 
-\item I understand that the Mexican Hat bases are in this paper often a composite of $\theta_0$, $\theta_1$, and $\theta_2$, representing short range excitation, short range inhibition, and long range excitation. But many will be confused by this subtlety, and at times in the text the Mexican Hat basis is described as if it were a single function. I would show how the theta's sum to create the general spatial basis shape of the hat in figure 1, and go through the paper in order to clarify this issue.
+\item I understand that the Mexican Hat bases are in this paper often a composite of $\theta_0$, $\theta_1$, and $\theta_2$, representing short range excitation, short range inhibition, and long range excitation. But many will be confused by this subtlety, and at times in the text the Mexican Hat basis is described as if it were a single function. I would show how the theta's sum to create the general spatial basis shape of the hat in figure 1, and go through the paper in order to clarify this issue.\\
+\emph{I think we need to show each kernel basis function in Figure 1}
+ \begin{figure*}[!ht]
+ \begin{center}
+ \includegraphics{./Graph/pdf/fig1_revised.pdf} 
+ \end{center}
+ \caption{}
+ \label{fig:Figure1}
+ \end{figure*}
+
 \item A few comments on how to adapt the smoother for real time implementation would be helpful. I presume that one would perform the smoothing during a training phase. But one would also wish to adapt in real time as observation or control scenarios progressed. A few words of perspective would be invaluable to help others translate the author's wisdom on this method to other applications.
 \item Figure 4. Should the axes be indicated as spatial frequency rather than just Hz?
 \item Page 45, Appendix D, Par 1, line 6: should `transform of a n-' should be `transform of an n-' ? I am grammatically challenged perhaps.
