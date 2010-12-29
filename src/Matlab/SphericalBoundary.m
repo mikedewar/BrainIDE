@@ -5,7 +5,7 @@
 
 % spatial parameters
 % ~~~~~~~~~~~
-Delta = 0.5;                          % space step for the spatial discretisation
+% Delta = 0.5;                          % space step for the spatial discretisation
 Delta_squared = Delta^2;
 SpaceMaxPeriodicField = 30;                    % maximum space in mm
 SpaceMinPeriodicField = -30;         % minimum space in mm
@@ -15,13 +15,13 @@ r = linspace(SpaceMinPeriodicField/3,SpaceMaxPeriodicField/3,NPointsInField);   
 
 % temporal parameters
 % ~~~~~~~~~~~~~
-Ts = 1e-3;          % sampling period (s)
-T = 500;            % maximum time (ms)
+% Ts = 1e-3;          % sampling period (s)
+% T = 500;            % maximum time (ms)
 
 % disturbance paramters
 % ~~~~~~~~~~~~~
-sigma_gamma = 1.3;          % parameter for covariance of disturbance
-gamma_weight = 0.1;            % variance of disturbance
+% sigma_gamma = 1.3;          % parameter for covariance of disturbance
+% gamma_weight = 0.1;            % variance of disturbance
 
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -36,7 +36,7 @@ for n=1:NPointsInField
     for nn=1:NPointsInField
         temp = gamma_weight*Define2DGaussian(r(n),r(nn), sigma_gamma^2, 0, NPointsInPeriodicField, SpaceMinPeriodicField,SpaceMaxPeriodicField);
         
-        topleft = [zeros(1,FirstThirdEnd+1) ; [zeros(FirstThirdEnd,1) temp(1:FirstThirdEnd,1:FirstThirdEnd)]];         
+        topleft =[zeros(1,FirstThirdEnd+1) ; [zeros(FirstThirdEnd,1) temp(1:FirstThirdEnd,1:FirstThirdEnd)]];         
         top = [zeros(1,FirstThirdEnd+1) ;temp(1:FirstThirdEnd,FirstThirdEnd+1:SecondThirdEnd)];
         topright = [zeros(1,FirstThirdEnd+1) ; [temp(1:FirstThirdEnd,SecondThirdEnd+1:end) zeros(FirstThirdEnd,1)]]; 
         
@@ -53,58 +53,45 @@ for n=1:NPointsInField
         Sigma_gamma(:,mm) = temp2(:);
         mm=mm+1;
         
-%         clim = [-200 -1];         % for log
-% <<<<<<< HEAD
-% %<<<<<<< HEAD
-% =======
-% <<<<<<< HEAD
-% >>>>>>> 77a47d259f23fdd63d76d9be5524cd4b75d66048
-%         clim = [0 0.08];
-% 
-%         subplot(3,3,1),imagesc(topleft,clim)
-%         subplot(3,3,2),imagesc(top,clim)
-%         subplot(3,3,3),imagesc(topright,clim)
-%         
-%         subplot(3,3,4),imagesc(left,clim)
-%         subplot(3,3,5),imagesc(middle,clim)
-%         subplot(3,3,6),imagesc(right,clim)
-%         
-%         subplot(3,3,7),imagesc(bottomleft,clim)
-%         subplot(3,3,8),imagesc(bottom,clim)
-%         subplot(3,3,9),imagesc(bottomright,clim)
-% % 
-%  %       imagesc(log10(temp2))
-%         drawnow
-% =======
-% %         clim = [0 0.08];
-% % % 
-% %         subplot(3,3,1),imagesc(topleft,clim)
-% %         subplot(3,3,2),imagesc(top,clim)
-% %         subplot(3,3,3),imagesc(topright,clim)
-% %         
-% %         subplot(3,3,4),imagesc(left,clim)
-% %         subplot(3,3,5),imagesc(middle,clim)
-% %         subplot(3,3,6),imagesc(right,clim)
-% %         
-% %         subplot(3,3,7),imagesc(bottomleft,clim)
-% %         subplot(3,3,8),imagesc(bottom,clim)
-% %         subplot(3,3,9),imagesc(bottomright,clim)
-% % % 
-% % %         imagesc(log10(temp2))
-% %         drawnow
-% >>>>>>> 8cec59265d4c54159cbc4765871cd56ee7b9e942
-% <<<<<<< HEAD
-%      end
-%  end
-% =======
-    end
-end
-% >>>>>>> 77a47d259f23fdd63d76d9be5524cd4b75d66048
-% ~~~~~~~~~~~~~~~~~~~~~~~~~~
-% ~~~~~~~~~~~~~~~~~~~~~~~~~~
+        clim = [-200 -1];         % for log
+        clim = [0 0.08];
 
-% ~~~~~~~~~~~~~~~~~~~~~~~~~~
-% ~~~~~~~~~~~~~~~~~~~~~~~~~~
+        subplot(3,3,1),imagesc(topleft,clim)
+        subplot(3,3,2),imagesc(top,clim)
+        subplot(3,3,3),imagesc(topright,clim)
+        
+        subplot(3,3,4),imagesc(left,clim)
+        subplot(3,3,5),imagesc(middle,clim)
+        subplot(3,3,6),imagesc(right,clim)
+        
+        subplot(3,3,7),imagesc(bottomleft,clim)
+        subplot(3,3,8),imagesc(bottom,clim)
+        subplot(3,3,9),imagesc(bottomright,clim)
+% 
+ %       imagesc(log10(temp2))
+        drawnow
+        clim = [0 0.08];
+% 
+        subplot(3,3,1),imagesc(topleft,clim)
+        subplot(3,3,2),imagesc(top,clim)
+        subplot(3,3,3),imagesc(topright,clim)
+        
+        subplot(3,3,4),imagesc(left,clim)
+        subplot(3,3,5),imagesc(middle,clim)
+        subplot(3,3,6),imagesc(right,clim)
+        
+        subplot(3,3,7),imagesc(bottomleft,clim)
+        subplot(3,3,8),imagesc(bottom,clim)
+        subplot(3,3,9),imagesc(bottomright,clim)
+% 
+%         imagesc(log10(temp2))
+        drawnow
+     end
+ end
+
+    %end
+%end
+
 % m=1;
 % Sigma_gamma = zeros(NPointsInPeriodicField^2,NPointsInPeriodicField^2);   % create disturbance covariance matrix
 % for n=1:NPointsInPeriodicField
@@ -125,14 +112,16 @@ end
 % % surf(Sigma_gamma-Sigma_gamma','edgecolor','none'),axis square
 % % max(max(Sigma_gamma-Sigma_gamma',[],1))
 % % [T,P] = cholcov(Sigma_gamma);
-e = mvnrnd(zeros(1,NPointsInField^2),Sigma_gamma,T);
-for t=1:T-1
-    e_square = reshape(e(t,:,:),NPointsInField,NPointsInField);
-    e_pad = padarray(e_square,size(e_square),'circular');
-    imagesc(e_pad)
-    axis square
-    drawnow
-    pause
-    
-end
+
+%#######################################
+% e = mvnrnd(zeros(1,NPointsInField^2),Sigma_gamma,T);
+% for t=1:T-1
+%     e_square = reshape(e(t,:,:),NPointsInField,NPointsInField);
+%     e_pad = padarray(e_square,size(e_square),'circular');
+%     imagesc(e_pad)
+%     axis square
+%     drawnow
+%     pause
+%     
+% end
     

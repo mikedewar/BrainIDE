@@ -3,9 +3,9 @@
 
     % if we are running a batch than we dont want to clear things
     if exist('RunningBatch') == 0
-        clear
-        close all
-        clc
+%         clear
+%         close all
+%         clc
 
         % run the script that sets all the parameters
         Set_Parameters
@@ -72,7 +72,7 @@
 %         y(t+1,:) = y_temp(:);                                                                 % observations as a vector
 
     end
-
+plotdata = 0;
     if plotdata == 1
         disp('plotting data')
         figure
@@ -108,10 +108,10 @@
 
     end 
 
-    max1 = squeeze(max(v,[],2));
-    max_v_t(ppp) = mean(max(max1,[],2));
-    min1 = squeeze(min(v,[],2));
-    min_v_t(ppp) = mean(min(min1,[],2));
+%     max1 = squeeze(max(v,[],2));
+%     max_v_t(ppp) = mean(max(max1,[],2));
+%     min1 = squeeze(min(v,[],2));
+%     min_v_t(ppp) = mean(min(min1,[],2));
     
 % end
 
