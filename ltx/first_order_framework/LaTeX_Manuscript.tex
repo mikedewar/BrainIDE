@@ -132,7 +132,7 @@ The mapping between the membrane voltage and the electrophysiological data, deno
 	\varepsilon_t(\mathbf{r}_n), 
 \end{equation}
 \dean{(dean: I added $(\mathbf{r}_n)$ to index the observations)}
-where $m\left(\mathbf{r}_n-\mathbf{r}'\right)$ is the observation kernel, $\mathbf{r}_n$ defines the location of the electrodes in the field, $n=1,...,n_y$ indexes the sensors and $\varepsilon_t(\mathbf{r}_n) \sim \mathcal{N}\left(0,\boldsymbol{\Sigma}_{\varepsilon}\right)$ denotes a multivariate normal distribution with mean zero and covariance matrix $\boldsymbol{\Sigma}_{\varepsilon}$. 
+where $m\left(\mathbf{r}_n-\mathbf{r}'\right)$ is the observation kernel, $\mathbf{r}_n$ defines the location of the electrodes in the field, $n=1,...,n_y$ indexes the sensors and $\varepsilon_t(\mathbf{r}_n) \sim \mathcal{N}\left(0,\boldsymbol{\Sigma}_{\varepsilon}\right)$ denotes a multivariate normal distribution with mean zero and covariance matrix $\boldsymbol{\Sigma}_{\varepsilon}$\dean{ = $\sigma_{\varepsilon}\mathbf{I}$}. 
 
 When considering the measurement of a point source in a conductive homogeneous field measured by a point sensor, the observation kernel will theoretically follow a Laplacian like shape, with an exponential decay in the amplitude of a measurement with an increasing distance between the source and sensor \citep{Jackson1999}. However, when considering a source or sensor with a spatial extent, the peak of the observation kernel becomes smoothed and is more similar to a Gaussian shape \citep{Jackson1999}. An experiment supporting this was performed and the results are shown in \ref{App:ObsKernelExperiment}. Therefore, in this study the observation kernel, $m(\mathbf{r}-\mathbf{r}')$, that governs the sensor pick-up geometry is defined by the Gaussian
 \begin{equation}
@@ -287,14 +287,34 @@ Evaluating the middle term for the saturation regions. If $v_t(\mathbf{r}') \le 
 where $a_1$ is the integral of the connectivity kernel and $a_2$ is the integral of the observation kernel.
 
 Under the assumption that the field is in the linear region of the sigmoid for the majority of time then
-\begin{equation}
+\begin{equation}\label{eq:approx_xcorr}
 	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) \approx \xi R_{  \bar{y}_{t},\bar{y}_{t} } (\boldsymbol{\tau}) + T_s\varsigma\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ w\left(\mathbf{r}_n,\mathbf{r}'\right) \bar{y}_t\left( \mathbf{r}' \right)\, d\mathbf{r}'}\right].
 \end{equation}
 The autocorrelation of the noisy observations is
-\begin{equation}
-	R_{y_{t},y_{t}}(\boldsymbol{\tau}) = R_{\bar{y}_{t},\bar{y}_{t} } (\boldsymbol{\tau}) + \delta(\boldsymbol{\tau})\sigma_{\varepsilon}^2
+\begin{equation}\label{eq:autocorrelation_of_y}
+	R_{y_{t},y_{t}}(\boldsymbol{\tau}) = R_{\bar{y}_{t},\bar{y}_{t} } (\boldsymbol{\tau}) + \delta(\boldsymbol{\tau})\sigma_{\varepsilon}^2,
 \end{equation}
-
+where $\delta(\cdot)$ is the Kronecker delta function. Rearranging equation~\ref{eq:autocorrelation_of_y} and substituting it into equation~\ref{eq:approx_xcorr} gives
+\begin{equation}
+	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) \approx \xi (R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \delta(\boldsymbol{\tau}) \sigma_{\varepsilon}^2) + T_s\varsigma\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ w\left(\mathbf{r}_n,\mathbf{r}'\right) \bar{y}_t\left( \mathbf{r}' \right)\, d\mathbf{r}'}\right].	
+\end{equation}
+and
+\begin{equation}\label{eq:support_estimator}
+	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) - \xi (R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \delta(\boldsymbol{\tau}) \sigma_{\varepsilon}^2) \approx T_s\varsigma\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ w\left(\mathbf{r}_n,\mathbf{r}'\right) \bar{y}_t\left( \mathbf{r}' \right)\, d\mathbf{r}'}\right].	
+\end{equation}
+The right hand side of equation~\ref{eq:support_estimator} will have the structure of the connectivity kernel. My intuition tells me that we should be able to simplify the RHS to
+\begin{equation}
+	T_s\varsigma \mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ w\left(\mathbf{r}_n,\mathbf{r}'\right) \bar{y}_t\left( \mathbf{r}' \right)\, d\mathbf{r}'}\right] = T_s \varsigma \sigma_d \int_{\Omega}{ w\left(\mathbf{r}_n,\mathbf{r}'\right) \int_{\Omega}{ m(\mathbf{r}'-\mathbf{r}'') \gamma(\mathbf{r}'-\mathbf{r}'') d\mathbf{r}''}d\mathbf{r}'}.
+\end{equation}
+Following this, I also think that
+\begin{equation}
+	R_{\bar{y}_{t},\bar{y}_{t} } (\boldsymbol{\tau}) = \sigma_d \int_{\Omega}{ m(\mathbf{r}_n-\mathbf{r}') \gamma(\mathbf{r}-\mathbf{r}') d\mathbf{r}'}.
+\end{equation}
+This would mean that
+\begin{equation}
+	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) - \xi \sigma_d \int_{\Omega}{ m(\mathbf{r}_n-\mathbf{r}') \gamma(\mathbf{r}-\mathbf{r}')d\mathbf{r}'} = T_s \varsigma \sigma_d \int_{\Omega}{ w\left(\mathbf{r}_n,\mathbf{r}'\right) \int_{\Omega}{ m(\mathbf{r}'-\mathbf{r}'') \gamma(\mathbf{r}'-\mathbf{r}'') d\mathbf{r}''} d\mathbf{r}'},
+\end{equation}
+which is nice.
 % Therefore we can write
 % \begin{equation}
 % 	R_{v_{t},v_{t+1}}(\mathbf{\tau}) = \xi R_{v_{t},v_{t}}(\mathbf{\tau}) + T_s R_{v_{t},g_{t}}(\mathbf{\tau})
