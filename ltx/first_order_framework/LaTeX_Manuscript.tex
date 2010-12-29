@@ -274,15 +274,19 @@ Evaluating the middle term for the case where the field is in the linear region 
 	middle term &= T_s\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ m\left(\mathbf{r}_n-\mathbf{r}'\right)\int_\Omega { w\left(\mathbf{r}',\mathbf{r}''\right) f\left(v_t\left(\mathbf{r}''\right)\right)\, d\mathbf{r}''}\, d\mathbf{r}'}\right]  \\
 	&=T_s\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ m\left(\mathbf{r}_n-\mathbf{r}'\right)\int_\Omega { w\left(\mathbf{r}',\mathbf{r}''\right) \varsigma v_t\left(\mathbf{r}''\right)\, d\mathbf{r}''}\, d\mathbf{r}'}\right] \label{eq:preswap}  \\
 	&= T_s\varsigma\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ w\left(\mathbf{r}_n,\mathbf{r}'\right) \int_\Omega {  m\left(\mathbf{r}'-\mathbf{r}''\right) v_t\left(\mathbf{r}''\right)\, d\mathbf{r}''}\, d\mathbf{r}'}\right]  \label{eq:postswap} \\
-	&= T_s\varsigma\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ w\left(\mathbf{r}_n,\mathbf{r}'\right) \bar{y}_t\left( \mathbf{r}' \right)\, d\mathbf{r}'}\right],	
+	&= T_s\varsigma\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ w\left(\mathbf{r}_n,\mathbf{r}'\right) y_t\left(\mathbf{r}'\right)\, d\mathbf{r}'}\right] \\
+	&= ???? T_s\varsigma \int_{\Omega}{ w\left(\mathbf{r}_n,\mathbf{r}'\right) \mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right)\bar{y}_t\left( \mathbf{r}' \right)\right]\, d\mathbf{r}'},	
 \end{align}
 where the associativity and commutativity algebraic properties of the spatial convolution where used to move from equation~\ref{eq:preswap} to equation~\ref{eq:postswap}.
 
 Evaluating the middle term for the saturation regions. If $v_t(\mathbf{r}') \le v_1$ then the middle term will equate to zero. If $v_t(\mathbf{r}') \ge v_2$ then we get
 \begin{align}
-	middle term &= T_s\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ m\left(\mathbf{r}_n-\mathbf{r}'\right)\int_\Omega { w\left(\mathbf{r},\mathbf{r}''\right)\, d\mathbf{r}''}\, d\mathbf{r}'}\right] \\
-	&= T_s a_1 \mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ m\left(\mathbf{r}_n - \mathbf{r}'\right)\, d\mathbf{r}'}\right] \\
-	&= T_s a_1 a_2 \mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \right],
+	middle term &= T_s \mathbf{E} \left[ \bar{y}_t\left(\mathbf{r}_n+\boldsymbol{\tau}\right) \int_{\Omega} { m\left(\mathbf{r}_n-\mathbf{r}'\right) \int_\Omega { w\left(\mathbf{r},\mathbf{r}''\right) \, d\mathbf{r}''} \, d\mathbf{r}'} \right] \\
+	&= T_s a_1 \mathbf{E}\left[ \bar{y}_t \left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ m\left(\mathbf{r}_n - \mathbf{r}'\right)\, d\mathbf{r}'} \right] \\
+	&= T_s a_1 a_2 \mathbf{E}\left[ \bar{y}_t \left( \mathbf{r}_n + \boldsymbol{\tau} \right) \right] \\
+	&= T_s a_1 a_2 \int_{\Omega}{ m\left( \mathbf{r}_n - \mathbf{r}'\right) \mathbf{E}\left[ v_t\left( \mathbf{r}\right) \right] d\mathbf{r}'} \\
+	&= T_s a_1 a_2 \int_{\Omega}{ m\left( \mathbf{r}_n - \mathbf{r}'\right) d\mathbf{r}'} \\
+	&= T_s a_1 a_2^2 ,
 \end{align}
 where $a_1$ is the integral of the connectivity kernel and $a_2$ is the integral of the observation kernel.
 
