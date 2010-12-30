@@ -320,7 +320,7 @@ setting above to zero and solving for $\sigma_e^2$ we have
 	&= \mathbf{E}\left[\left(\int_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} + \boldsymbol{\varepsilon}_t\left(\mathbf{r}_n+\boldsymbol{\tau}\right)\right) \left(\int_{\Omega}{ m\left(\mathbf{r}_n - \mathbf{r}''\right) v_{t}\left(\mathbf{r}''\right) \, d\mathbf{r}''} + \boldsymbol{\varepsilon}_{t}\left(\mathbf{r}_n\right)\right) \right]\\
 	&=\mathbf{E}\left[\int_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} \int_{\Omega}{ m\left(\mathbf{r}_n - \mathbf{r}''\right) v_{t}\left(\mathbf{r}''\right) \, d\mathbf{r}''}\right]\\
 	&=\iint_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) m\left(\mathbf{r}_n - \mathbf{r}''\right) \mathbf{E}\left[v_t\left(\mathbf{r}'\right) v_{t}\left(\mathbf{r}''\right)\right]\, d\mathbf{r}'}{ \, d\mathbf{r}''}\\
-	&=\iint_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) m\left(\mathbf{r}_n - \mathbf{r}''\right)\gamma(\mathbf{r}'-\mathbf{r}'') \, d\mathbf{r}'}{ \, d\mathbf{r}''}\label{eq:ObsCorr}
+	&=\sigma_d\iint_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) m\left(\mathbf{r}_n - \mathbf{r}''\right)\gamma(\mathbf{r}'-\mathbf{r}'') \, d\mathbf{r}'}{ \, d\mathbf{r}''}\label{eq:ObsCorr}
 \end{align}
 \section*{Estimation of Connectivity Kernel Support}
 The support of the connectivity kernel can be inferred using spatial correlation analysis. The method presented in this paper is based on a similar published method, where the kernel support was estimated using correlation analysis for a linear system described by an IDE~\cite{Scerri2009}. To demonstrate the method for the neural field model, we first define the spatial cross-correlation function between consecutive observations as 
@@ -404,7 +404,7 @@ the proof of the above\\
 	&= \mathbf{E}\left[\left(\int_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} + \boldsymbol{\varepsilon}_t\left(\mathbf{r}_n+\boldsymbol{\tau}\right)\right) \left(\int_{\Omega}{ m\left(\mathbf{r}_n - \mathbf{r}''\right) v_{t}\left(\mathbf{r}''\right) \, d\mathbf{r}''} + \boldsymbol{\varepsilon}_{t}\left(\mathbf{r}_n\right)\right) \right]\\
 	&=\mathbf{E}\left[\int_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} \int_{\Omega}{ m\left(\mathbf{r}_n - \mathbf{r}''\right) v_{t}\left(\mathbf{r}''\right) \, d\mathbf{r}''}\right]\\
 	&=\iint_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) m\left(\mathbf{r}_n - \mathbf{r}''\right) \mathbf{E}\left[v_t\left(\mathbf{r}'\right) v_{t}\left(\mathbf{r}''\right)\right]\, d\mathbf{r}'}{ \, d\mathbf{r}''}\\
-	&=\iint_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) m\left(\mathbf{r}_n - \mathbf{r}''\right)\gamma(\mathbf{r}'-\mathbf{r}'') \, d\mathbf{r}'}{ \, d\mathbf{r}''}\label{eq:ObsCorr}
+	&=\sigma_d\iint_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) m\left(\mathbf{r}_n - \mathbf{r}''\right)\gamma(\mathbf{r}'-\mathbf{r}'') \, d\mathbf{r}'}{ \, d\mathbf{r}''}\label{eq:ObsCorr}
 \end{align}
 
 % Therefore we can write
