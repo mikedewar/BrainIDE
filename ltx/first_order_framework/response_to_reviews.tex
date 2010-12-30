@@ -2,6 +2,11 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{graphicx}
+\usepackage{anysize} %<-for setting margins
+\marginsize {1.6cm}{1.6cm}{2.0cm}{2cm}
+\usepackage{color}
+\newcommand{\dean}[1]{\textsf{\emph{\textbf{\textcolor{red}{#1}}}}}
+
 \title{Response To Reviews - A Data-Driven Framework for Neural Field Modeling}
 \author{D. Freestone, P. Aram, M. Dewar, K. Scerri, D. Grayden, V. Kadirkamanathan}
 
@@ -10,13 +15,19 @@
     
     \section{Reviewer 1}
     
-        We first adress the reviewer's main concerns, followed by the reviewer's additional comments.
+        We first address the reviewer's main concerns, followed by the reviewer's additional comments.
         
     \subsection{Main Concerns}
     
     \begin{enumerate}
         \item Do not use real data for the validation of their approach
+
+	\emph{The authors appreciate that the only way to truly validate the proposed framework is with real data. However, before validating the method on real data we believe that it is important to first validate the method artificial data, where the true and estimated parameters can be compared. Given the space limitations on the article, it is not feasible to show examples using real data in this paper. Another paper demonstrating the application of the method with data recorded from a Utah array implanted in an epilepsy surgical patient is currently in preparation. In an effort to make the method employed in the paper more explicit, we have added ``To illustrate the estimation framework, data is generated using the neural field equations incorporating modeled sensors enabling a comparison between the estimated and true parameters'' to the introduction.}
+	
         \item Assume that a few kernel basis functions accurately represent the actual connectivity kernel, which might not be the case when using real data;
+
+	\emph{The examples presented in the paper use the Mexican hat connectivity kernel. The framework is also valid for other connectivity kernels provided they are homogeneous and that they can be approximated by a set of isotropic basis functions, parametrized by a coefficient vector $\mathbf{\theta}$. The mathematical formulation does not restrict the shape of the kernel, where anisotropic (we assume isotropy of the kernel basis functions to make the simplification in equation~18) arbitrary shapes can be represented. Furthermore, the kernel basis functions need not be a Gaussian shape, but can be, for example, Laplacian to describe the ``wizard hat'' connectivity or B-spline functions to describe a kernel with a more compact support. For more complex basis functions some of the analytic derivations described in the appendix may have to be performed numerically. We have added the above statements to the methods section to be more explicit in the subtleties of the method.}
+
         \item Do not consider the EEG/MEG lead field when constructing their mapping between the membrane voltage and the electrophysiological data (observation function)
 	\emph{We interested in intracranial EEG, and maybe we can say the framework can be altered in the case of scalp EEG by considering the lead field in the mapping between the membrane voltage and the electrophysiological data, resulting in different observation equation (if  non-linear we need unscented transform on observation and if not the state estimation remains unchanged.) This is from PLoS review which might be useful: In much of the previous papers cited the EEG/MEG lead field is
 considered. This is different of course for scalp electrodes than for intracranial electrodes but should be explicitly spelled out because this factor cannot be ignored. In fact the observation model is not
@@ -26,7 +37,7 @@ quite realistic, without lead field and without amplifier characteristics.}
     \subsection{Additional Comments}
     
     \begin{enumerate}
-        \item The discrepancy of the results in Experiment II where the weights of the basis functions are not in agreement with the actual parameters while the recontructed kernels seem satisfying.
+        \item The discrepancy of the results in Experiment II where the weights of the basis functions are not in agreement with the actual parameters while the reconstructed kernels seem satisfying.
         \item The use of Euler discretisation and how this affects the system's behavior.
         \item The derivation of Equations (30) and (31) [spacing and width of basis functions] and make them more transparent for the general audience.
         \item The existing literature on inversion schemes for similar models of brain activity.
@@ -44,7 +55,7 @@ quite realistic, without lead field and without amplifier characteristics.}
 \item This is NeuroImage, not the Physical Review. Although most of this framework involves mathematics that is reasonable to follow for typical readers of this journal, I would suggest that the authors explain and expand a bit on the introduction of Green's functions where introduced in equation 6.
 \item What is the relation of the substitution of the temporal and spatial basis functions as employed in this paper to Galerkin's projection? How do the two techniques differ? If this is close, the non-local case for a Galerkin projection (typically used in diffusive processes) has not, to my knowledge, been done. Certainly not in a way that is obvious for neural field theory. Perhaps this is my ignorance. This seems important to clarify for the rest of us.
 \item In the isotropic and translationally invariant case examined here, would a Fourier basis for temporal and spatial structure have been a formally correct alternative?\\
-\emph{Gaussians has semi-compact support but Fourier basis functions are global functions. Gaussian can be easily extended to higher dimension (dont know about the Fourier basis functions), any orthonormal basis functions like Fourier basis functions simplify our equations, $\Gamma$ becomes identity matrix, but using Gaussian basis functions equations are in their generic form.}
+\emph{Gaussians has semi-compact support but Fourier basis functions are global functions. Gaussian can be easily extended to higher dimension (don't know about the Fourier basis functions), any orthonormal basis functions like Fourier basis functions simplify our equations, $\Gamma$ becomes identity matrix, but using Gaussian basis functions equations are in their generic form.}
 \item In equation 29, what would a reasonable $v_c$ be for a real neuronal system (mammalian) given the number of neurons and scale of electrodes? I am concerned that it might be much higher than any of us wish to consider. One would perhaps be saved by the filter characteristics of brain (e.g. Phys. Rev. E 73, 051911 (2006)).
 \item The two covariance inflation parameters in equation 41 make me cringe. How are we best to adjust these fudge factors?
 \emph{The positive constant $\alpha$ determines the spread of the sigma points around $\mathbf{\bar x}$ which can be made arbitrary small (e.g. $0<\alpha\le 10^{-4} $) to minimise higher order effect (cite Julier (The Scaled Unscented Transformation) and  Haykin (Kalman filtering and neural network) , and  $\kappa$ is an additional scaling parameter which is usually set to $3-n_x$. cite Julier A New Approach for Filtering Nonlinear Systems}
