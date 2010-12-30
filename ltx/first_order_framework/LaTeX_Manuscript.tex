@@ -156,7 +156,10 @@ The connectivity kernel can also be decomposed as
 	 w\left(\mathbf{r},\mathbf{r}'\right) =\boldsymbol{\psi}^\top\left(\mathbf{r},\mathbf{r}'\right) \boldsymbol{\theta},
 \end{equation}
 where $\boldsymbol{\psi}(\mathbf{r},\mathbf{r}')$ is a vector of Gaussian basis functions and $\boldsymbol{\theta}$ is a vector of scaling parameters. By exploiting the isotropy of the connectivity basis functions, they can be written as  
-$\boldsymbol{\psi}(\mathbf{r}-\mathbf{r}')$. We will assume that we know the parametric form of the connectivity basis functions, where the scaling parameters $\boldsymbol{\theta}$ are unknown. Each connectivity basis function can, individually, be considered a layer in the Wilson and Cowan model. Rearranging the order of the spatial convolution in equation~\ref{DiscreteTimeModel} and substituting in equations~\ref{DefFieldDecomp} and~\ref{DefKernelDecomp} we get 
+$\boldsymbol{\psi}(\mathbf{r}-\mathbf{r}')$. We will assume that we know the parametric form of the connectivity basis functions, where the scaling parameters $\boldsymbol{\theta}$ are unknown. 
+\dean{(for reviewer 1 point 2:) Note, that although the examples presented in this paper use the Mexican hat connectivity kernel, the framework is also valid for other connectivity kernels provided they are homogeneous and that they can be approximated by a set of isotropic basis functions parametrized by a coefficient vector $\mathbf{\theta}$. The mathematical formulation does not restrict the shape of the kernel, where anisotropic arbitrary shapes can be represented. Furthermore, the kernel basis functions need not be a Gaussian shape, but can be, for example, Laplacian to describe the ``wizard hat'' connectivity or B-spline functions to describe a kernel with a more compact support.}
+
+Each connectivity basis function of the Mexican hat can, individually, be considered a layer in the Wilson and Cowan model. Rearranging the order of the spatial convolution in equation~\ref{DiscreteTimeModel} and substituting in equations~\ref{DefFieldDecomp} and~\ref{DefKernelDecomp} we get 
 \begin{align}
 	\label{reduced continuous model}
 	\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_{t+1} &= T_s\int_\Omega{f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t )\boldsymbol{\psi}^{\top}(\mathbf{r}-\mathbf{r}') \, d\mathbf{r}'}\boldsymbol{\theta} \nonumber \\
