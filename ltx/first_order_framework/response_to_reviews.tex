@@ -41,8 +41,20 @@ considered. This is different of course for scalp electrodes than for intracrani
     
     \begin{enumerate}
         \item The discrepancy of the results in Experiment II where the weights of the basis functions are not in agreement with the actual parameters while the reconstructed kernels seem satisfying.
+
         \item The use of Euler discretisation and how this affects the system's behavior.
-        \item The derivation of Equations (30) and (31) [spacing of basis functions] and make them more transparent for the general audience.\\ \\
+
+		\emph{This point was made by a reviewer from our PLoS attempt. The reviewer stated: ``1. The authors might want to reference prior work in using Kalman
+		Filtering for the estimation of neural mass models from data [1-3],
+		[13]. In fact from those papers stressed the importance of carrying out
+		a high order discretization of the differential equations, which should
+		be in fact treated as stochastic. In equation (S1.1) of the extended
+		derivation, it is shown that an Euler approximation is taken which may
+		even change the dynamical properties of the system. The authors should
+		discuss this issue.''}
+		
+        \item The derivation of Equations (30) and (31) [spacing of basis functions] and make them more transparent for the general audience.
+
 \emph{Consider a regular lattice in $\mathbb R^n$, with lattice points $\left\lbrace \Delta J; J\in \mathbb Z^n\right\rbrace$ and where $\Delta$ is the distance between adjacent points. The continuous field $v(\mathbf r)$ can be sampled using a field of Dirac-delta functions, $\delta(\mathbf r)$ located at the lattice points as
 \begin{equation}
  v_s(\Delta J)=\sum_{J \in \mathbb Z^n}\delta(\mathbf r-\Delta J)v(\mathbf r)
