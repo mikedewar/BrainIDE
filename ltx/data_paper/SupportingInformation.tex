@@ -425,6 +425,36 @@ the proof of the above\\
 % \end{equation}
 % which corresponds to local excitation, then we can guess $\xi$ by incrementally increasing it from zero and evaluating equation~\ref{eq:xcorr_firing_and_field} until $T_s R_{v_{t},g_{t}}(\mathbf{0}) < 0$. The value of $\xi$ before $T_s R_{v_{t},g_{t}}(\mathbf{0}) < 0$ will provide the approximation.
 
+\subsection*{shannon}
+Consider a regular lattice in $\mathbb R^n$, with lattice points $\left\lbrace \Delta J; J\in \mathbb Z^n\right\rbrace$ and where $\Delta$ is the distance between adjacent points. The continuous field $v(\mathbf r)$ can be sampled using a field of Dirac-delta functions, $\delta(\mathbf r)$ located at the lattice points as
+\begin{equation}
+ v_s(\Delta J)=\sum_{J \in \mathbb Z^n}\delta(\mathbf r-\Delta J)v(\mathbf r)
+\end{equation}
+taking Fourier transfom of the sampled field $v_s(\Delta J)$ we have
+\begin{align}
+ V_s(\boldsymbol{\nu})&=\frac{1}{\Delta^n}\sum_{J\in\mathbb Z^n}\delta(\boldsymbol{\nu}-\frac{J}{\Delta})\ast V(\boldsymbol\nu)\\
+&=\frac{1}{\Delta^n}V(\boldsymbol\nu)+\frac{1}{\Delta^n}\sum_{J\in\mathbb Z^n\setminus \mathbf \{0\}}V(\boldsymbol{\nu}-\frac{J}{\Delta})
+\end{align}
+hence,$V_s(\boldsymbol{\nu})$ contains $V(\boldsymbol\nu)$ plus infinitely many copies (aliases) of  $V(\boldsymbol\nu)$ repeated on the regular lattice $\left\lbrace \frac{J}{\Delta}; J\in \mathbb Z^n\right\rbrace$. Given the dynamic field is band-limited with a cut-off frequency $\boldsymbol\nu_c$ in order for $V(\boldsymbol\nu)$ to be disjointed with its aliases the amount of shift $\frac{1}{\Delta}$ must be at least $2\nu_c$, therefore
+\begin{equation}\label{ap:Shannon}
+ \Delta\le\frac{1}{2\rho\nu_c}
+\end{equation}
+where $\rho \in \mathbb{R} \ge 1$ is an oversampling parameter. To recover the continuous field, we first introduce a low-pass filter \begin{equation}
+F(\boldsymbol \nu)=\begin{cases}
+  \Delta^n & |\boldsymbol\nu|\le \boldsymbol\nu_c \\
+  0 & \text{otherwise}
+\end{cases} 
+\end{equation}
+if the sampling rule \eqref{ap:Shannon} is satisfied, the original spectrum can be recovered using
+\begin{equation}
+ V(\boldsymbol\nu)=F(\boldsymbol \nu)V_s(\boldsymbol\nu)
+\end{equation}
+taking inverse Fourier transform we have
+\begin{align}
+v(\mathbf s)&=f(\mathbf s)\ast v_s(\Delta J) \\
+&=\sum_{J \in \mathbb Z^n}f(\mathbf s-\Delta J) v_s(\Delta J)
+\end{align}
+However many other basis functions can be potentially used for reconstruction, and a continuous field can be reconstructed from the sampled field by the summ of weighted, spatially translated, continuous  basis functions.
 \bibliographystyle{plain}
 \bibliography{}
 \end{document}
