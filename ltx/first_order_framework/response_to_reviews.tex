@@ -85,9 +85,9 @@ taking inverse Fourier transform we have
 \end{align}
 However many other basis functions can be potentially used for reconstruction, and a continuous field can be reconstructed from the sampled field by the sum of weighted, spatially translated, continuous  basis functions.}
 
-Parham: I made a copy for my edits so that we don't get conflicts.
+Parham: I made a copy for my edits so that we don't get conflicts. 
 
-\emph{Consider the cortical sheet defined on the surface $\Omega$ with the sensors placed on a regular grid at positions $\mathbf{r}_n$ (where $n=0,...,n_y-1$ indexes the sensors) that are separated by the distance $\Delta_y$. The observations can be considered samples from a continuous field that is filtered (convolved) with the observation kernel described by
+\emph{This appendix provides a derivation for equations ?? and ??. The derivation is adapted from (Sanner et al., 1992, and Scerri et al., 2009). Consider the cortical sheet defined on the surface $\Omega$ with the sensors placed on a regular grid at positions $\mathbf{r}_n$ (where $n=0,...,n_y-1$ indexes the sensors) that are separated by the distance $\Delta_y$. The observations can be considered samples from a continuous field that is filtered (convolved) with the observation kernel described by
 \begin{equation}
 	y(\mathbf{r}_n)=\sum_{n=0}^{n_y-1}\delta(\mathbf r - \mathbf{r}_n ) v_m(\mathbf{r}),
 \end{equation} 
@@ -123,6 +123,9 @@ where $\rho \in \mathbb{R} \ge 1$. }
 
     \emph{talk about model order}
 
+	\emph{Indeed there will always be a mismatch between the a mathematical model and the natural phenomena it is attempting to describe. The model proposed in our paper is modest in terms of the temporal dynamics, where the state transition is assumed to be first-order. However, the development of the framework for this simple model is a significant development that can be expanded to include longer range time dependencies. A major benefit in using a mean field model is the freedom to lump detailed parameters, such as specific ion concentrations, into other parameters such as the connectivity kernel coefficients. An extension to our framework that is currently in development is to allow for time-varying kernel parameters.  }
+	
+	
 \item Although we all know the 1970s version of Wilson and Cowan's field equations, there was an intriguing stochasticization of these equations by Benayoun et al PloS Comp Biol 2010. I and others will value the authors' thoughts of how a more palatable stochasticization of these field equations might influence the future development of the data-assimilation framework presented in this paper.
 \item This is NeuroImage, not the Physical Review. Although most of this framework involves mathematics that is reasonable to follow for typical readers of this journal, I would suggest that the authors explain and expand a bit on the introduction of Green's functions where introduced in equation 6.
 \item What is the relation of the substitution of the temporal and spatial basis functions as employed in this paper to Galerkin's projection? How do the two techniques differ? If this is close, the non-local case for a Galerkin projection (typically used in diffusive processes) has not, to my knowledge, been done. Certainly not in a way that is obvious for neural field theory. Perhaps this is my ignorance. This seems important to clarify for the rest of us.
