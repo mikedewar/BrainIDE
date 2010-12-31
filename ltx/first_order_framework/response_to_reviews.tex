@@ -23,7 +23,7 @@
     \begin{enumerate}
         \item Do not use real data for the validation of their approach
 
-	\emph{The authors appreciate that the only way to truly validate the proposed framework is with real data. However, before validating the method on real data we believe that it is important to first validate the method artificial data, where the true and estimated parameters can be compared. Given the space limitations on the article, it is not feasible to show examples using real data in this paper. Another paper demonstrating the application of the method with data recorded from a Utah array implanted in an epilepsy surgical patient is currently in preparation. In an effort to make the method employed in the paper more explicit, we have added ``To illustrate the estimation framework, data is generated using the neural field equations incorporating modeled sensors enabling a comparison between the estimated and true parameters'' to the introduction.}
+	\emph{The authors appreciate that the only way to truly validate the proposed framework is with real data. However, before validating the method on real data we believe that it is important to first validate the method on artificial data, where the true and estimated parameters can be compared. Given the space limitations on the article, it is not feasible to show examples using real data in this paper. Another paper demonstrating the application of the method with data recorded from a Utah array implanted in an epilepsy surgical patient is currently in preparation. In an effort to make the method employed in the paper more explicit, we have added ``To illustrate the estimation framework, data is generated using the neural field equations incorporating modeled sensors enabling a comparison between the estimated and true parameters'' to the introduction.}
 	
         \item Assume that a few kernel basis functions accurately represent the actual connectivity kernel, which might not be the case when using real data;
 
@@ -120,8 +120,8 @@ where $\ast$ denotes convolution operator. This gives the standard form of the m
 \emph{Gaussians has semi-compact support but Fourier basis functions are global functions. Gaussian can be easily extended to higher dimension (don't know about the Fourier basis functions), any orthonormal basis functions like Fourier basis functions simplify our equations, $\Gamma$ becomes identity matrix, but using Gaussian basis functions equations are in their generic form.}
 
 \item In equation 29, what would a reasonable $v_c$ be for a real neuronal system (mammalian) given the number of neurons and scale of electrodes? I am concerned that it might be much higher than any of us wish to consider. One would perhaps be saved by the filter characteristics of brain (e.g. Phys. Rev. E 73, 051911 (2006)).
-\item The two covariance inflation parameters in equation 41 make me cringe. How are we best to adjust these fudge factors?
-\emph{The positive constant $\alpha$ determines the spread of the sigma points around $\mathbf{\bar x}$ which can be made arbitrary small (e.g. $0<\alpha\le 10^{-4} $) to minimise higher order effect (cite Julier (The Scaled Unscented Transformation) and  Haykin (Kalman filtering and neural network) , and  $\kappa$ is an additional scaling parameter which is usually set to $3-n_x$. cite Julier A New Approach for Filtering Nonlinear Systems}
+\item The two covariance inflation parameters in equation 41 make me cringe. How are we best to adjust these fudge factors?\\
+\emph{The positive constant $\alpha$ determines the spread of the sigma points around $\mathbf{\bar x}$ which can be made arbitrary small (e.g. $0<\alpha\le 10^{-4} $) to minimise higher order effect (Julier et al., 2002, and Haykin, 2001) , and  $\kappa$ is an additional scaling parameter which is usually set to $3-n_x$ (Julier et al., 1995).}
 
 
 
