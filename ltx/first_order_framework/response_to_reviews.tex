@@ -59,32 +59,56 @@ considered. This is different of course for scalp electrodes than for intracrani
 \begin{equation}
  v_s(\Delta J)=\sum_{J \in \mathbb Z^n}\delta(\mathbf r-\Delta J)v(\mathbf r)
 \end{equation}
-taking Fourier transfom of the sampled field $v_s(\Delta J)$ we have
+taking Fourier transform of the sampled field $v_s(\Delta J)$ we have
 \begin{align}
  V_s(\boldsymbol{\nu})&=\frac{1}{\Delta^n}\sum_{J\in\mathbb Z^n}\delta(\boldsymbol{\nu}-\frac{J}{\Delta})\ast V(\boldsymbol\nu)\\
 &=\frac{1}{\Delta^n}V(\boldsymbol\nu)+\frac{1}{\Delta^n}\sum_{J\in\mathbb Z^n\setminus \mathbf \{0\}}V(\boldsymbol{\nu}-\frac{J}{\Delta})
 \end{align}
 hence,$V_s(\boldsymbol{\nu})$ contains $V(\boldsymbol\nu)$ plus infinitely many copies (aliases) of  $V(\boldsymbol\nu)$ repeated on the regular lattice $\left\lbrace \frac{J}{\Delta}; J\in \mathbb Z^n\right\rbrace$. Given the dynamic field is band-limited with a cut-off frequency $\boldsymbol\nu_c$ in order for $V(\boldsymbol\nu)$ to be disjointed with its aliases the amount of shift $\frac{1}{\Delta}$ must be at least $2\nu_c$, therefore
 \begin{equation}\label{ap:Shannon}
- \Delta\le\frac{1}{2\rho\nu_c}
+	\Delta\le\frac{1}{2\rho\nu_c}
 \end{equation}
 where $\rho \in \mathbb{R} \ge 1$ is an oversampling parameter. To recover the continuous field, we first introduce a low-pass filter \begin{equation}
 F(\boldsymbol \nu)=\begin{cases}
   \Delta^n & |\boldsymbol\nu|\le \boldsymbol\nu_c \\
-  0 & \text{otherwise}
+0 & \text{otherwise}
 \end{cases} 
 \end{equation}
 if the sampling rule \eqref{ap:Shannon} is satisfied, the original spectrum, $V(\boldsymbol\nu)$ can be recovered using
 \begin{equation}
- V(\boldsymbol\nu)=F(\boldsymbol \nu)V_s(\boldsymbol\nu)
+	V(\boldsymbol\nu)=F(\boldsymbol \nu)V_s(\boldsymbol\nu)
 \end{equation}
 taking inverse Fourier transform we have
 \begin{align}
-v(\mathbf s)&=f(\mathbf s)\ast v_s(\Delta J) \\
-&=\sum_{J \in \mathbb Z^n}f(\mathbf s-\Delta J) v_s(\Delta J)
+	v(\mathbf s)&=f(\mathbf s)\ast v_s(\Delta J) \\
+	&= \sum_{J \in \mathbb Z^n}f(\mathbf s-\Delta J) v_s(\Delta J)
 \end{align}
 However many other basis functions can be potentially used for reconstruction, and a continuous field can be reconstructed from the sampled field by the sum of weighted, spatially translated, continuous  basis functions.}
 
+Parham: I made a copy for my edits so that we don't get conflicts.
+
+\emph{Consider the cortical sheet defined on the surface $\Omega$ with the sensors placed on a regular grid at positions $\mathbf{r}_n$ (where $n=0,...,n_y-1$ indexes the sensors) that are separated by the distance $\Delta_y$. The observations can be considered samples from a continuous field that is filtered (convolved) by the observation kernel as
+\begin{equation}
+	y(\mathbf{r}_n)=\sum_{n=0}^{n_y-1}\delta(\mathbf r - \mathbf{r}_n ) v_m(\mathbf{r}),
+\end{equation} 
+where $v_m(\mathbf{r}) = v_t(\mathbf{r})\ast m(\mathbf{r})$. The Fourier transform of $y(\mathbf{r}_n)$ is
+\begin{align}
+ Y(\boldsymbol{\nu}) &= \frac{1}{\Delta_y^2}\sum_{n=0}^{n_y-1} \delta\left(\boldsymbol{\nu}-\frac{n}{\Delta_y}\right) \ast V_m(\boldsymbol \nu) \\
+	&= \frac{1}{\Delta_y^2}V_m(\boldsymbol\nu)+\frac{1}{\Delta_y^2}\sum_{n=1}^{n_y-1} V_m\left(\boldsymbol{\nu}-\frac{n}{\Delta_y}\right).
+\end{align} 
+It should be clear that $Y(\boldsymbol{\nu})$ contains $V_m(\boldsymbol\nu)$ plus $n_y-2$ copies (aliases) of $V_m(\boldsymbol\nu)$ repeated on the regular lattice with spacing $\frac{1}{\Delta_y}$. Due to the lowpass action of the observation kernel, the filtered dynamic field is band-limited with a cutoff frequency $\boldsymbol\nu_{cy}$. In order for $V_m(\boldsymbol\nu)$ to be disjointed from its aliases, the amount of shift $\frac{1}{\Delta_y}$ must be at least $2\boldsymbol\nu_{cy}$ (since each alias has a spectral range of
+\begin{equation}
+	\boldsymbol\nu = \left[\frac{n}{\Delta_y}-\boldsymbol{\nu}_{cy},\frac{n}{\Delta_y}+\boldsymbol{\nu}_{cy}\right].
+\end{equation}
+Therefore, to avoid aliasing the distance between observations must satisfy
+\begin{equation}\label{eq:SamplingCriteria}
+	\frac{1}{\Delta_y} \ge 2\nu_{cy}.
+\end{equation}
+Since the observation kernel is not an ideal filter an oversampling parameter should be included to further separate the aliases. Rearranging equation~\ref{eq:SamplingCriteria} and adding the oversampling parameter, $\rho$, gives
+\begin{equation}\label{ap:Shannon}
+	\Delta_y\le\frac{1}{2\rho\nu_{cy}},
+\end{equation}
+where $\rho \in \mathbb{R} \ge 1$. }
 
         \item The existing literature on inversion schemes for similar models of brain activity.
         \item In section 3, Table 6 is mentioned however there is no such table in the ms.
