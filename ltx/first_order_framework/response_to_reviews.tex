@@ -55,38 +55,6 @@ considered. This is different of course for scalp electrodes than for intracrani
 		
         \item The derivation of Equations (30) and (31) [spacing of basis functions] and make them more transparent for the general audience.
 
-\emph{Consider a regular lattice in $\mathbb R^n$, with lattice points $\left\lbrace \Delta J; J\in \mathbb Z^n\right\rbrace$ and where $\Delta$ is the distance between adjacent points. The continuous field $v(\mathbf r)$ can be sampled using a field of Dirac-delta functions, $\delta(\mathbf r)$ located at the lattice points as
-\begin{equation}
- v_s(\Delta J)=\sum_{J \in \mathbb Z^n}\delta(\mathbf r-\Delta J)v(\mathbf r)
-\end{equation}
-taking Fourier transform of the sampled field $v_s(\Delta J)$ we have
-\begin{align}
- V_s(\boldsymbol{\nu})&=\frac{1}{\Delta^n}\sum_{J\in\mathbb Z^n}\delta(\boldsymbol{\nu}-\frac{J}{\Delta})\ast V(\boldsymbol\nu)\\
-&=\frac{1}{\Delta^n}V(\boldsymbol\nu)+\frac{1}{\Delta^n}\sum_{J\in\mathbb Z^n\setminus \mathbf \{0\}}V(\boldsymbol{\nu}-\frac{J}{\Delta})
-\end{align}
-hence,$V_s(\boldsymbol{\nu})$ contains $V(\boldsymbol\nu)$ plus infinitely many copies (aliases) of  $V(\boldsymbol\nu)$ repeated on the regular lattice $\left\lbrace \frac{J}{\Delta}; J\in \mathbb Z^n\right\rbrace$. Given the dynamic field is band-limited with a cut-off frequency $\boldsymbol\nu_c$ in order for $V(\boldsymbol\nu)$ to be disjointed with its aliases the amount of shift $\frac{1}{\Delta}$ must be at least $2\nu_c$, therefore
-\begin{equation}\label{ap:Shannon}
-	\Delta\le\frac{1}{2\rho\nu_c}
-\end{equation}
-where $\rho \in \mathbb{R} \ge 1$ is an oversampling parameter. To recover the continuous field, we first introduce a low-pass filter \begin{equation}
-F(\boldsymbol \nu)=\begin{cases}
-  \Delta^n & |\boldsymbol\nu|\le \boldsymbol\nu_c \\
-0 & \text{otherwise}
-\end{cases} 
-\end{equation}
-if the sampling rule \eqref{ap:Shannon} is satisfied, the original spectrum, $V(\boldsymbol\nu)$ can be recovered using
-\begin{equation}
-	V(\boldsymbol\nu)=F(\boldsymbol \nu)V_s(\boldsymbol\nu)
-\end{equation}
-taking inverse Fourier transform we have
-\begin{align}
-	v(\mathbf s)&=f(\mathbf s)\ast v_s(\Delta J) \\
-	&= \sum_{J \in \mathbb Z^n}f(\mathbf s-\Delta J) v_s(\Delta J)
-\end{align}
-However many other basis functions can be potentially used for reconstruction, and a continuous field can be reconstructed from the sampled field by the sum of weighted, spatially translated, continuous  basis functions.}
-
-Parham: I made a copy for my edits so that we don't get conflicts. 
-
 \emph{This appendix provides a derivation for equations ?? and ??. The derivation is adapted from (Sanner et al., 1992, and Scerri et al., 2009). Consider the cortical sheet defined on the surface $\Omega$ with the sensors placed on a regular grid at positions $\mathbf{r}_n$ (where $n=0,...,n_y-1$ indexes the sensors) that are separated by the distance $\Delta_y$. The observations can be considered samples from a continuous field that is filtered (convolved) with the observation kernel described by
 \begin{equation}
 	y(\mathbf{r}_n)=\sum_{n=0}^{n_y-1}\delta(\mathbf r - \mathbf{r}_n ) v_m(\mathbf{r}),
