@@ -100,6 +100,15 @@ The parameter $v_0$ describes the firing threshold of the neural populations and
 	f\left( v\left( \mathbf{r}',t' \right)\right)
 	\, d\mathbf{r}'dt'.
 \end{equation}
+To rearrange the model into an integro-differential equation the Laplace transform of equation~\ref{FullDoubleIntModel} is taken, giving
+\begin{align}
+	V(s) &= H(s)G(s) \\
+	&=\frac{G(s)}{s+\alpha},
+\end{align}
+since $H(s) = (s+\alpha)^{-1}$. After rearranging we can write
+\begin{equation}
+	(s+\alpha)V(s) = G(s).
+\end{equation}
 Now we shall express the synaptic response kernel as a Green's function 
 \begin{equation}
 	\label{GreensFuncDef} \textrm{D}h\left( t \right) = \delta \left( t \right), 
