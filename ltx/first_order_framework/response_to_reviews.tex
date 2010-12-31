@@ -96,7 +96,24 @@ where $\rho \in \mathbb{R} \ge 1$. }
 	
 \item Although we all know the 1970s version of Wilson and Cowan's field equations, there was an intriguing stochasticization of these equations by Benayoun et al PloS Comp Biol 2010. I and others will value the authors' thoughts of how a more palatable stochasticization of these field equations might influence the future development of the data-assimilation framework presented in this paper.
 
-\item This is NeuroImage, not the Physical Review. Although most of this framework involves mathematics that is reasonable to follow for typical readers of this journal, I would suggest that the authors explain and expand a bit on the introduction of Green's functions where introduced in equation 6.
+\item This is NeuroImage, not the Physical Review. Although most of this framework involves mathematics that is reasonable to follow for typical readers of this journal, I would suggest that the authors explain and expand a bit on the introduction of Green's functions where introduced in equation 6.\\
+
+\emph{The synaptic response kernel can be viewed as the Green function of a linear differential equation defined by the differential operator $\textrm{D}=d/dt + \zeta$ i.e., satisfying
+\begin{equation}
+	\label{GreensFuncDef} \textrm{D}h\left( t \right) = \delta \left( t \right), 
+\end{equation} 
+where $\delta(t)$ is the Dirac-delta function. Applying the differential operator $\textrm{D}$ on equation (5) we have
+\begin{align}
+ \textrm{D}v\left(\mathbf r,t\right)&= \textrm{D}\left(h\ast g\right)\left(\mathbf r,t\right)\\
+&=\left(\textrm{D}h\ast g\right)\left(\mathbf r,t\right)\\
+&=\left(\delta \left(t\right)\ast g\right)\left(\mathbf r,t\right)\\
+&=g\left(\mathbf r,t\right)
+\end{align}
+where $\ast$ denotes convolution operator. This gives the standard form of the model
+\begin{equation}
+	\label{FinalFormContinuous} 
+	\frac{dv\left( \mathbf{r},t \right)}{dt} + \zeta v\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)\, d\mathbf{r}'}. 
+\end{equation}}
 
 \item What is the relation of the substitution of the temporal and spatial basis functions as employed in this paper to Galerkin's projection? How do the two techniques differ? If this is close, the non-local case for a Galerkin projection (typically used in diffusive processes) has not, to my knowledge, been done. Certainly not in a way that is obvious for neural field theory. Perhaps this is my ignorance. This seems important to clarify for the rest of us.
 \item In the isotropic and translationally invariant case examined here, would a Fourier basis for temporal and spatial structure have been a formally correct alternative?\\
