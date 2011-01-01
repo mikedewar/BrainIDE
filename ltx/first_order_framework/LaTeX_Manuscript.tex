@@ -100,24 +100,34 @@ The parameter $v_0$ describes the firing threshold of the neural populations and
 	f\left( v\left( \mathbf{r}',t' \right)\right)
 	\, d\mathbf{r}'dt'.
 \end{equation}
-To rearrange the model into an integro-differential equation the Laplace transform of equation~\ref{FullDoubleIntModel} is taken, giving
-\begin{align}
-	V(s) &= H(s)G(s) \\
-	&=\frac{G(s)}{s+\alpha},
-\end{align}
-since $H(s) = (s+\alpha)^{-1}$. After rearranging we can write
-\begin{equation}
-	(s+\alpha)V(s) = G(s).
-\end{equation}
-Now we shall express the synaptic response kernel as a Green's function 
+
+\dean{(reviewer 2, comment 3:) To arrive at the standard integro-differential equation form of the model, we use the fact that the synaptic response kernel is a Green's function of a linear differential equation defined by the differential operator $\textrm{D}=d/dt + \zeta$. A Green's function satisfies
 \begin{equation}
 	\label{GreensFuncDef} \textrm{D}h\left( t \right) = \delta \left( t \right), 
-\end{equation}
-where $\textrm{D}=d/dt + \zeta$ is a temporal differential operator and $\delta(t)$ is the Dirac-delta function. This gives the standard form of the model
+\end{equation} 
+where $\delta(t)$ is the Dirac-delta function. To understand this property, one can take the Laplace transform of $\textrm{D}$ and $h(t)$, giving
+\begin{align}
+	\mathcal{L}\{h(t)\} &= \frac{1}{s+\zeta} \\
+	\mathcal{L}\{\textrm{D}\} &= s+\zeta,
+\end{align}
+and then taking the inverse Laplace transform of $\mathcal{L}\{\textrm{D}\}$ applied to $\mathcal{L}\{h(t)\}$, giving
+\begin{align}
+	\mathcal{L}^{-1}\left\{\frac{s+\zeta}{s+\zeta}\right\} &= \mathcal{L}^{-1}\left\{1\right\} \\
+	&= \delta \left( t \right).
+\end{align}
+Applying the differential operator $\textrm{D}$ to equation~\ref{FullDoubleIntModel} gives
+\begin{align}
+ \textrm{D}v\left(\mathbf r,t\right)&= \textrm{D}\left(h\ast g\right)\left(\mathbf r,t\right)\\
+&=\left(\textrm{D}h\ast g\right)\left(\mathbf r,t\right)\\
+&=\left(\delta \left(t\right)\ast g\right)\left(\mathbf r,t\right)\\
+&=g\left(\mathbf r,t\right)
+\end{align}
+where $\ast$ denotes convolution operator.} This gives the standard form of the model
 \begin{equation}
 	\label{FinalFormContinuous} 
 	\frac{dv\left( \mathbf{r},t \right)}{dt} + \zeta v\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)\, d\mathbf{r}'}. 
 \end{equation}
+
 To arrive at the integro-difference equation (IDE) form of the model, we discretize time using a first-order Euler method (see \ref{App:Time Discretization} for derivation) giving 
 \begin{equation}
 	\label{DiscreteTimeModel} 
@@ -318,9 +328,9 @@ the proof of the above\\
 \begin{align}
 	R_{y_{t},y_{t}}(\boldsymbol{\tau}) &= \mathbf{E}\left[y_{t}\left(\mathbf{r}_n+\boldsymbol{\tau}\right)y_{t}\left(\mathbf{r}_n\right)\right] \\
 	&= \mathbf{E}\left[\left(\int_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} + \boldsymbol{\varepsilon}_t\left(\mathbf{r}_n+\boldsymbol{\tau}\right)\right) \left(\int_{\Omega}{ m\left(\mathbf{r}_n - \mathbf{r}''\right) v_{t}\left(\mathbf{r}''\right) \, d\mathbf{r}''} + \boldsymbol{\varepsilon}_{t}\left(\mathbf{r}_n\right)\right) \right]\\
-	&=\mathbf{E}\left[\int_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} \int_{\Omega}{ m\left(\mathbf{r}_n - \mathbf{r}''\right) v_{t}\left(\mathbf{r}''\right) \, d\mathbf{r}''}\right]\\
-	&=\iint_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) m\left(\mathbf{r}_n - \mathbf{r}''\right) \mathbf{E}\left[v_t\left(\mathbf{r}'\right) v_{t}\left(\mathbf{r}''\right)\right]\, d\mathbf{r}'}{ \, d\mathbf{r}''}\\
-	&=\sigma_d\iint_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) m\left(\mathbf{r}_n - \mathbf{r}''\right)\gamma(\mathbf{r}'-\mathbf{r}'') \, d\mathbf{r}'}{ \, d\mathbf{r}''}\label{eq:ObsCorr}
+	&=\mathbf{E}\left[\int_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} \int_{\Omega}{ m\left(\mathbf{r}_n - \mathbf{r}''\right) v_{t}\left(\mathbf{r}''\right) \, d\mathbf{r}''}\right] + \delta(\boldsymbol{\tau})\sigma_{\varepsilon}^2 \\
+	&=\iint_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) m\left(\mathbf{r}_n - \mathbf{r}''\right) \mathbf{E}\left[v_t\left(\mathbf{r}'\right) v_{t}\left(\mathbf{r}''\right)\right]\, d\mathbf{r}'}{ \, d\mathbf{r}''} + \delta(\boldsymbol{\tau})\sigma_{\varepsilon}^2\\
+	&=\sigma_d\iint_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) m\left(\mathbf{r}_n - \mathbf{r}''\right)\gamma(\mathbf{r}'-\mathbf{r}'') \, d\mathbf{r}'}{ \, d\mathbf{r}''} + \delta(\boldsymbol{\tau})\sigma_{\varepsilon}^2\label{eq:ObsCorr}
 \end{align}
 
 % Therefore we can write
@@ -352,7 +362,7 @@ where $\boldsymbol{\nu}_c$ is a cutoff frequency (typically taken as the -3~dB p
 \begin{equation}
 	\label{eq:MinimumSensorDistance} \Delta_y \leq \frac{1}{2\rho_y\boldsymbol{\nu}_{c}}, 
 \end{equation}
-where $\rho_y \in \mathbb{R} \ge 1$ is an oversampling parameter. This condition must be satisfied to avoid spatial spectral aliasing effects when reconstructing the hidden dynamic field, $v_t(\mathbf{r})$, using the sampled observations, $\mathbf{y}_t$.
+where $\rho_y \in \mathbb{R} \ge 1$ is an oversampling parameter. \dean{(reviewer 1, additional comment 3:) A derivation of the sampling theorem is provided in \ref{App:SamplingTheorem} that is based on the work of \citet{Sanner1992} and \citet{Scerri2009}}. This condition must be satisfied to avoid spatial spectral aliasing effects when reconstructing the hidden dynamic field, $v_t(\mathbf{r})$, using the sampled observations, $\mathbf{y}_t$.
 
 In practice, it is difficult to estimate the bandwidth of the cortex using traditional electrophysiological measurements, possibly preventing placement of sensors in accordance to equation~\ref{eq:MinimumSensorDistance}. However, we envisage it may be possible to estimate the spatial bandwidth using other modalities with higher spatial resolution such as fMRI, NIRS or other optical imaging techniques (\cite{Issa2000}). Spectral aliasing can be avoided by a proper choice of the spatial sampling distance given the sensors' spectral characteristics. The spatial extent of the sensors results in a spectral low-pass action, thus providing spatial anti-aliasing filtering. Such sensors limit the spatial bandwidth of the observation to a value denoted by $\boldsymbol{\nu}_{cy}$. Aliasing can then be avoided by positioning the sensors according to equation~\ref{eq:MinimumSensorDistance}, replacing $\boldsymbol{\nu}_c$ with $\boldsymbol{\nu}_{cy}$.
 
@@ -517,7 +527,7 @@ When the observation kernel is too narrow, high frequency components in the neur
 \subsection{Implications for Experimental Design}
 As seen in Fig.~\ref{fig:Figure7} and Fig.~\ref{fig:Figure10}, the results show good estimation accuracy for the connectivity kernels, where the true kernels lie within the 95~\% confidence intervals of the kernel estimates. The estimates of the connectivity kernels show relatively broad distributions over the different realizations, which can be expected considering the system's input is modelled as a random disturbance and the observations are corrupted by noise. To overcome the effect of noise, the use of a controlled input stimulus should be considered when applying the estimation algorithm to electrophysiological recordings, where given knowledge of the input and the appropriate model, it is expected that the variance of the parameter estimates would decrease. Even when using a known input, our results imply that we should only expect to learn distributions of parameters, rather than uncover a `true' parameter set. By designing an input signal carefully and using an evoked-potential paradigm where stimuli are repeated many times, recordings could be averaged over a sufficient number of trials (realizations), such that a distribution of the parameter estimates and resulting connectivity kernels can be formed.
 
-The frequency analysis specifies the minimum sensor arrangement that is required to capture the dominant cortical dynamics. As pointed out in numerous publications by Freeman and colleagues (see \citet{Freeman1987} for example), a detailed description of the spatial properties of responses to stimuli is essential in understanding cortical dynamics. Importantly, the spatial frequency analysis tools presented in this paper can be used to design electrophysiological recording systems to avoid spatial aliasing, ensuring the essential spatial dynamics can be observed. In addition, the frequency analysis highlights the relationship between the width of the sensors and the information in the data. This analysis is becoming increasingly relevant as recording systems are becoming more sophisticated with higher density electrodes \citep{Brinkmann2009}.
+The frequency analysis specifies the minimum sensor arrangement that is required to capture the dominant cortical dynamics. As pointed out in numerous publications by Freeman and colleagues (see \citet{Freeman1987} for example), a detailed description of the spatial properties of responses to stimuli is essential in understanding cortical dynamics. Importantly, the spatial frequency analysis tools presented in this paper can be used to design \dean{(reviewer 1, item 3:) high density intracranial} electrophysiological recording systems to avoid spatial aliasing, ensuring the essential spatial dynamics can be observed. In addition, the frequency analysis highlights the relationship between the width of the sensors and the information in the data. This analysis is becoming increasingly relevant as recording systems are becoming more sophisticated with higher density electrodes \citep{Brinkmann2009}.
 
 \subsection{Computational Complexity}
 The closest competitor to our `grey-box' integro-difference equation approach is perhaps the multivariate auto-regressive (MVAR) model, which is a `black-box' approach. Examples of MVAR models for estimating functional connectivity include Granger causality \citep{Hesse2003}, the direct transfer function \citep{Kaminski1991}, and partial directed coherence \citep{Sameshima1999}. A distinct advantage of the integro-difference equation based technique proposed in this current study is that the number of parameters required to model the system is considerably less than a typical MVAR model. Furthermore, by using the neural field equations as a parametric form of a model, the estimated quantities have physical meaning and, therefore, can be clinically relevant. An advantage of the MVAR-based methods is that they allow for inhomogeneous connectivity, which is present in the longer range cortico-cortical fibres. 
@@ -534,6 +544,10 @@ Generating data-driven neural field models has the potential to have significant
 Estimation of the connectivity structure or the synaptic time constant may also have significant impact on the treatment of disease. For example, recent theoretical work has demonstrated that seemingly similar electrographic seizures in absence epilepsy may arise from either abnormal excitatory or inhibitory mechanisms \citep{Marten2009}. These very different mechanisms would require very different medications for successful treatment. However, the underlying mechanisms would be hidden from the clinician in the normal clinical setting. Successful parameter estimation has the potential to reveal these hidden mechanisms allowing for improved treatment strategies. 
 
 The development of the estimation framework also has implications for theoretical neuroscience, where the ability to estimate subject-specific properties will allow testing of hypotheses that have been generated in computational modeling studies. This has the potential to validate neural field models and, in doing so, provide new insights that may lead to a greater understanding of mesoscopic and macroscopic neurodynamics. For example, using the proposed model-based framework, we can reconstruct a neural field from data and estimate parameters to check if they correspond to theoretically derived values where certain solutions may exist. In addition, the parameters and the state-space can be explored during cognitive tasks and states of arousal such as sleep and anaesthesia. 
+
+\subsection{Real time implementation}
+\dean{(comment 1 and 9 from reviewer 2:) The implementation of the framework has been described a being appropriate for an evoked-potential experimental protocol. Over the time duration of an experimental paradigm the connectivity and synaptic kernel parameters are assumed to be stationary. However, if the method is applied to a continuous recording over a longer time duration it is unlikely that the parameters will be stationary. If fact, it is likely that changes in the parameter values would be of most interest. 
+To implement the algorithm in a real-time scenario the we would assume that the parameters are stationary over a time period (window) where the estimation is performed. The parameter of the previous window can be used to initialize parameters of the next window.  }
 
 \subsection{Extensions to the framework}
 In this study, an assumption was made that the chosen kernel basis functions can exactly represent the actual connectivity kernel. In future work, we plan to relax this assumption. In addition, we have assumed that the neural field is isotropic and homogeneous. It is generally accepted that the intracortical connectivity structure can be accurately modelled as being isotropic. However, the assumption of homogeneity is quite strong as the size of the neural field becomes larger. Future work should focus on developing estimation algorithms where assumptions of homogeneity can be relaxed. In addition, natural extensions of this framework are the inclusion of a post-synaptic response kernel with a finite rise and decay time, and a finite distant-dependant action potential propagation velocity into the parametric neural field equations.
@@ -1065,6 +1079,7 @@ The stimulation waveform for the current source consisted of a 40~Hz sine wave w
 	a = \frac{1}{T}\sum_t{\sqrt{(y_t^2-\mathcal{H}y_t^2})}
 \end{equation}
 where $\mathcal{H}$ denotes the Hilbert transform operator, $t$ indexes samples and $T$ is the total number of samples in the time series. Fig.~\ref{fig:Ch3} shows the mean amplitude of the recorded envelope versus the distance between the twisted wire electrode and the recording electrode. A Gaussian fitted to the amplitudes is also shown. The figure shows that a Gaussian is indeed a good model for the sensor kernel in the homogeneous solution.
+
 \section{Inner Product of Two \emph{n}-Dimensional Gaussians}\label{App:InnerProdOfGaussians}
 The derivation in this section was used for calculating the matrix $\mathbf \Gamma$ from equation~\ref{eq:DefGamma}. Consider two Gaussian basis functions
 \begin{equation}\label{eq:n_dimensional_Gaussian1}
@@ -1099,6 +1114,7 @@ Now we solve the convolution using the formula derived in \ref{ap:ConvOfGaussian
 &\times\mathrm{exp}\left({-\frac{1}{\sigma_i^2+\sigma_j^2} (\boldsymbol\mu_i-\boldsymbol\mu_j)^\top(\boldsymbol\mu_i-\boldsymbol\mu_j)}\right).
 \end{align}
 This completes the derivation.
+
 \section{Convolution of Two $n$-Dimensional Gaussians}\label{ap:ConvOfGaussians}
 In this section, we provide a derivation for the convolution of two $n$-dimensional Gaussian basis functions. This derivation is used in the analytic calculation of $\boldsymbol\Psi(\mathbf{r})$ and the elements of the observation matrix, $\mathbf C$. Consider the two Gaussian basis functions from equations~\ref{eq:n_dimensional_Gaussian1} and~\ref{eq:n_dimensional_Gaussian2}. The derivation proceeds by assuming the Gaussian basis functions are positioned at the origin ($\boldsymbol\mu_i=\boldsymbol\mu_j=\mathbf 0$). The convolution theorem states that the Fourier transform of the convolution of two functions is equal to the product of their Fourier transforms. Using the formula from the derivation of the Fourier transform of a \emph{n}-dimensional Gaussian from equation~\ref{eq:FTofGaussian} in \ref{App:FrequencyAnalysis}, we have
 \begin{equation}\label{eq:FTTwoGaussianMultiplication}
@@ -1119,6 +1135,7 @@ In the case where $\boldsymbol\mu_i\neq\boldsymbol\mu_j\neq\mathbf 0$, equation~
 \times & \mathrm{exp}\left({-\frac{1}{\sigma_i^2+\sigma_j^2} (\mathbf r-\boldsymbol\mu)^\top(\mathbf r-\boldsymbol\mu)}\right),
 \end{align}
 where $\boldsymbol\mu=\boldsymbol\mu_i+\boldsymbol\mu_j$.
+
 \section{Mean and Covariance of the State Disturbance }\label{App:ColoredNoise} 
 In this section, we show that the state disturbance vector is $\mathbf{e}_t\sim\mathcal{N}(\mathbf 0,\boldsymbol\Sigma_e)$ if $e_t(\mathbf{r})\sim\mathcal{GP}\left(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}')\right)$. We begin the derivation by acknowledging the state disturbance vector is a linear function of $e_t(\mathbf r)$. Therefore, $\mathbf{e}_t$ also follows a Gaussian distribution. From equation~\ref{eq:Wt}, the state disturbance vector is defined as
 \begin{equation}
@@ -1135,6 +1152,31 @@ The covariance of $\mathbf{e}_t$ is
 	&=\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega} \boldsymbol{\phi}(\mathbf{r}) \mathbf E[e_t(\mathbf{r})e_t(\mathbf{r}')]\boldsymbol{\phi}^{\top}(\mathbf{r}')d\mathbf{r}' d\mathbf r\mathbf{\Gamma}^{- \top} \nonumber\\
 	&=\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega}\boldsymbol{\phi}(\mathbf r) \gamma(\mathbf r- \mathbf r' )\boldsymbol{\phi}^{\top}(\mathbf r')d\mathbf r' d\mathbf r\mathbf{\Gamma}^{-\top}.
 \end{align}
+
+\section{Derivation of Sampling Theorem}\label{App:SamplingTheorem}
+\dean{This appendix provides a derivation for equations~\ref{eq:MinimumSensorDistance} and \ref{eq:BasisFunctionSeparation}. The derivation is adapted from \citet{Sanner1992} and \citet{Scerri2009}. Consider the cortical sheet defined on the surface $\Omega$ with sensors placed on a regular grid at positions $\mathbf{r}_n$ (where $n=0,...,n_y-1$ indexes the sensors) that are separated by the distance $\Delta_y$. The observations can be considered samples from a continuous field that is filtered (convolved) with the observation kernel described by
+\begin{equation}
+	y(\mathbf{r}_n)=\sum_{n=0}^{n_y-1}\delta(\mathbf r - \mathbf{r}_n ) v_m(\mathbf{r}),
+\end{equation} 
+where $v_m(\mathbf{r}) = v_t(\mathbf{r})\ast m(\mathbf{r})$. The Fourier transform of $y(\mathbf{r}_n)$ is
+\begin{align}
+ Y(\boldsymbol{\nu}) &= \frac{1}{\Delta_y^2}\sum_{n=0}^{n_y-1} \delta\left(\boldsymbol{\nu}-\frac{n}{\Delta_y}\right) \ast V_m(\boldsymbol \nu) \\
+	&= \frac{1}{\Delta_y^2}V_m(\boldsymbol\nu)+\frac{1}{\Delta_y^2}\sum_{n=1}^{n_y-1} V_m\left(\boldsymbol{\nu}-\frac{n}{\Delta_y}\right).
+\end{align} 
+It should be clear that $Y(\boldsymbol{\nu})$ contains $V_m(\boldsymbol\nu)$ plus $n_y-1$ copies (aliases) of $V_m(\boldsymbol\nu)$ repeated on the regular lattice, where each copy is centered at $n\Delta_y^{-1}$. Due to the lowpass action of the observation kernel, the filtered dynamic field is band-limited with a cutoff frequency $\boldsymbol\nu_{cy}$. In order for $V_m(\boldsymbol\nu)$ to be disjointed from its aliases, the amount of shift $\Delta_y^{-1}$ must be at least $2\boldsymbol\nu_{cy}$, since each alias has a spectral range of
+\begin{equation}
+	\boldsymbol\nu = \left[\frac{n}{\Delta_y}-\boldsymbol{\nu}_{cy},\frac{n}{\Delta_y}+\boldsymbol{\nu}_{cy}\right].
+\end{equation}
+Therefore, to avoid aliasing the distance between observations must satisfy
+\begin{equation}\label{eq:SamplingCriteria}
+	\frac{1}{\Delta_y} \ge 2\boldsymbol{\nu}_{cy}.
+\end{equation}
+Since the observation kernel is not an ideal filter, an oversampling parameter should be included to further separate the aliases. Rearranging equation~\ref{eq:SamplingCriteria} and adding the oversampling parameter, $\rho$, gives
+\begin{equation}\label{ap:Shannon}
+	\Delta_y\le\frac{1}{2\rho\boldsymbol{\nu}_{cy}},
+\end{equation}
+where $\rho \in \mathbb{R} \ge 1$.}
+
 \section{Spatial Cut-off Frequency of the Field Basis Functions}\label{App:FrequencyAnalysis}
 This section provides a derivation for the width of the Fourier transform of the field basis functions in terms of their spatial cut-off frequency (equations~\ref{eq:GaussianFT} and~\ref{eq:WidthFrequencyRelationship}). We define an \textit{n}-dimensional Gaussian centered at the origin as 
 \begin{equation}

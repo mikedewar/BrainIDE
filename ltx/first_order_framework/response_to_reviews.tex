@@ -31,7 +31,7 @@
 
         \item Do not consider the EEG/MEG lead field when constructing their mapping between the membrane voltage and the electrophysiological data (observation function)
 
-	\emph{In response to this important point, the authors have made an effort to be clear that we are not considering scalp EEG to be a valid data source for the estimation framework. Amendments have been made to the Introduction (last paragraph), Method (after equation 9), and Discussion. We have primarily developed the framework for higher density intracranial measurements. We believe that the spatial frequency response and sampling density of extracranial EEG/MEG measurements will be insufficient to estimate the connectivity structure.}
+	\emph{In response to this important point, the authors have made an effort to be clear that we are not considering scalp EEG to be a valid data source for the estimation framework. Amendments have been made to the Introduction (last paragraph), Method (after equation 9), and Discussion (Implications for Experimental Design). We have primarily developed the framework for higher density intracranial measurements. We believe that the spatial frequency response and sampling density of extracranial EEG/MEG measurements will be insufficient to estimate the connectivity structure.}
 	
 	
     \end{enumerate}
@@ -54,30 +54,10 @@
 		
         \item The derivation of Equations (30) and (31) [spacing of basis functions] and make them more transparent for the general audience.
 
-\emph{This appendix provides a derivation for equations ?? and ??. The derivation is adapted from (Sanner et al., 1992, and Scerri et al., 2009). Consider the cortical sheet defined on the surface $\Omega$ with the sensors placed on a regular grid at positions $\mathbf{r}_n$ (where $n=0,...,n_y-1$ indexes the sensors) that are separated by the distance $\Delta_y$. The observations can be considered samples from a continuous field that is filtered (convolved) with the observation kernel described by
-\begin{equation}
-	y(\mathbf{r}_n)=\sum_{n=0}^{n_y-1}\delta(\mathbf r - \mathbf{r}_n ) v_m(\mathbf{r}),
-\end{equation} 
-where $v_m(\mathbf{r}) = v_t(\mathbf{r})\ast m(\mathbf{r})$. The Fourier transform of $y(\mathbf{r}_n)$ is
-\begin{align}
- Y(\boldsymbol{\nu}) &= \frac{1}{\Delta_y^2}\sum_{n=0}^{n_y-1} \delta\left(\boldsymbol{\nu}-\frac{n}{\Delta_y}\right) \ast V_m(\boldsymbol \nu) \\
-	&= \frac{1}{\Delta_y^2}V_m(\boldsymbol\nu)+\frac{1}{\Delta_y^2}\sum_{n=1}^{n_y-1} V_m\left(\boldsymbol{\nu}-\frac{n}{\Delta_y}\right).
-\end{align} 
-It should be clear that $Y(\boldsymbol{\nu})$ contains $V_m(\boldsymbol\nu)$ plus $n_y-2$ copies (aliases) of $V_m(\boldsymbol\nu)$ repeated on the regular lattice centered at $n\Delta_y^{-1}$. Due to the lowpass action of the observation kernel, the filtered dynamic field is band-limited with a cutoff frequency $\boldsymbol\nu_{cy}$. In order for $V_m(\boldsymbol\nu)$ to be disjointed from its aliases, the amount of shift $\Delta_y^{-1}$ must be at least $2\boldsymbol\nu_{cy}$, since each alias has a spectral range of
-\begin{equation}
-	\boldsymbol\nu = \left[\frac{n}{\Delta_y}-\boldsymbol{\nu}_{cy},\frac{n}{\Delta_y}+\boldsymbol{\nu}_{cy}\right].
-\end{equation}
-Therefore, to avoid aliasing the distance between observations must satisfy
-\begin{equation}\label{eq:SamplingCriteria}
-	\frac{1}{\Delta_y} \ge 2\nu_{cy}.
-\end{equation}
-Since the observation kernel is not an ideal filter an oversampling parameter should be included to further separate the aliases. Rearranging equation~\ref{eq:SamplingCriteria} and adding the oversampling parameter, $\rho$, gives
-\begin{equation}\label{ap:Shannon}
-	\Delta_y\le\frac{1}{2\rho\nu_{cy}},
-\end{equation}
-where $\rho \in \mathbb{R} \ge 1$. }
+\emph{To address this point, we have added an extra appendix with a derivation of the sampling theorem with the appropriate cross-referencing to the main text. An effort was made to keep this derivation minimal and as clear as possible. We have also added the references to relevant part of the text (that should have been there before, as the reviewer has correctly pointed out). We felt that it was worth adding the extra appendix to provide a clear derivation that is contextually and notationally relevant to this paper, as the derivations cited papers may not be clear to the Neuroimage general audience.}
 
         \item The existing literature on inversion schemes for similar models of brain activity.
+
         \item In section 3, Table 6 is mentioned however there is no such table in the ms.
     \end{enumerate}
     
@@ -88,45 +68,34 @@ where $\rho \in \mathbb{R} \ge 1$. }
 \begin{enumerate}
     \item The handling of the (to borrow a term from numerical weather forecasting) `sub-grid scale physics' is inadequate for nervous systems (see, e.g., equation 8 [The nonlinear IntegroDifference Equation]). I do very much appreciate the spectral estimation of spatial and temporal scales. But the model errors are lumped into an iid model error term that is not realistic. For instance, the flow of potassium in the extracellular spaces has a known dynamic that will affect network excitability, generating important sub-grid dynamics that is anything but iid. See, for instance, the example in Ullah et al PLoS Comp Biol 2010 where without such dynamics, state tracking and parameter estimation for a neural system fails. A beautiful overview of sub-grid effects in data assimilation is found in Kalnay's 2003 book. I would very much value the authors comments on these issues. I guess were I to respond to this question, that I might consider extending the model error term to an autoregressive model. But I will let the authors answer this question.\\
 
-    \emph{talk about model order}
+	\emph{Indeed, there will always be a mismatch between a mathematical model and the natural phenomena it is attempting to describe. The model proposed in our paper is modest in terms of the temporal dynamics, where the state transition is assumed to be first-order. However, the development of the framework for this modest brain model is a significant development that can be expanded to include longer range time dependencies. A major benefit in using a mean field model is the freedom to lump detailed parameters, such as specific ion concentrations, into more general parameters such as the connectivity kernel coefficients that describe the net system gain. Please note, we have assumed that factors influencing excitability are stationary over the estimation period. This is a reasonable assumption is applying the framework to an evoked-potential experiment. An extension to our framework, that is currently in development, is to allow for time-varying parameter estimates. This will allow the application of the framework to longer-term data recordings. The problem can then be posed in terms of convergence time and estimation accuracy vs. nonstationarity of the metabolic processes and other unmodeled brain dynamics.}
 
-	\emph{Indeed, there will always be a mismatch between a mathematical model and the natural phenomena it is attempting to describe. The model proposed in our paper is modest in terms of the temporal dynamics, where the state transition is assumed to be first-order. However, the development of the framework for this modest brain model is a significant development that can be expanded to include longer range time dependencies. A major benefit in using a mean field model is the freedom to lump detailed parameters, such as specific ion concentrations, into more general parameters such as the connectivity kernel coefficients that describe the net system gain. Please note, we have assumed that factors influencing excitability are stationary over the estimation period. This is a reasonable assumption is applying the framework to an evoked potential experiment. An extension to our framework, that is currently in development, is to allow for time-varying parameter estimates. This will allow the application of the framework to longer-term data recordings. The problem then can be posed in terms of convergence time and estimation accuracy vs. nonstationarity of the metabolic processes and other unmodeled brain dynamics.}
-	
-	
+
 \item Although we all know the 1970s version of Wilson and Cowan's field equations, there was an intriguing stochasticization of these equations by Benayoun et al PloS Comp Biol 2010. I and others will value the authors' thoughts of how a more palatable stochasticization of these field equations might influence the future development of the data-assimilation framework presented in this paper.
 
-\item This is NeuroImage, not the Physical Review. Although most of this framework involves mathematics that is reasonable to follow for typical readers of this journal, I would suggest that the authors explain and expand a bit on the introduction of Green's functions where introduced in equation 6.\\
+\item This is NeuroImage, not the Physical Review. Although most of this framework involves mathematics that is reasonable to follow for typical readers of this journal, I would suggest that the authors explain and expand a bit on the introduction of Green's functions where introduced in equation 6.
 
-\emph{The synaptic response kernel can be viewed as the Green function of a linear differential equation defined by the differential operator $\textrm{D}=d/dt + \zeta$ i.e., satisfying
-\begin{equation}
-	\label{GreensFuncDef} \textrm{D}h\left( t \right) = \delta \left( t \right), 
-\end{equation} 
-where $\delta(t)$ is the Dirac-delta function. Applying the differential operator $\textrm{D}$ on equation (5) from the main text we have
-\begin{align}
- \textrm{D}v\left(\mathbf r,t\right)&= \textrm{D}\left(h\ast g\right)\left(\mathbf r,t\right)\\
-&=\left(\textrm{D}h\ast g\right)\left(\mathbf r,t\right)\\
-&=\left(\delta \left(t\right)\ast g\right)\left(\mathbf r,t\right)\\
-&=g\left(\mathbf r,t\right)
-\end{align}
-where $\ast$ denotes convolution operator. This gives the standard form of the model
-\begin{equation}
-	\label{FinalFormContinuous} 
-	\frac{dv\left( \mathbf{r},t \right)}{dt} + \zeta v\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)\, d\mathbf{r}'}. 
-\end{equation}}
+\emph{A more detailed explanation has been added to the manuscript.}
 
 \item What is the relation of the substitution of the temporal and spatial basis functions as employed in this paper to Galerkin's projection? How do the two techniques differ? If this is close, the non-local case for a Galerkin projection (typically used in diffusive processes) has not, to my knowledge, been done. Certainly not in a way that is obvious for neural field theory. Perhaps this is my ignorance. This seems important to clarify for the rest of us.
+
+
 \item In the isotropic and translationally invariant case examined here, would a Fourier basis for temporal and spatial structure have been a formally correct alternative?\\
 
 \emph{Gaussians has semi-compact support but Fourier basis functions are global functions. Gaussian can be easily extended to higher dimension (don't know about the Fourier basis functions), any orthonormal basis functions like Fourier basis functions simplify our equations, $\Gamma$ becomes identity matrix, but using Gaussian basis functions equations are in their generic form.}
 
 \item In equation 29, what would a reasonable $v_c$ be for a real neuronal system (mammalian) given the number of neurons and scale of electrodes? I am concerned that it might be much higher than any of us wish to consider. One would perhaps be saved by the filter characteristics of brain (e.g. Phys. Rev. E 73, 051911 (2006)).
+
 \item The two covariance inflation parameters in equation 41 make me cringe. How are we best to adjust these fudge factors?\\
+
 \emph{The positive constant $\alpha$ determines the spread of the sigma points around $\mathbf{\bar x}$ which can be made arbitrary small (e.g. $0<\alpha\le 10^{-4} $) to minimise higher order effect (Julier et al., 2002, and Haykin, 2001) , and  $\kappa$ is an additional scaling parameter which is usually set to $3-n_x$ (Julier et al., 1995).}
 
 
 
 \item I understand that the Mexican Hat bases are in this paper often a composite of $\theta_0$, $\theta_1$, and $\theta_2$, representing short range excitation, short range inhibition, and long range excitation. But many will be confused by this subtlety, and at times in the text the Mexican Hat basis is described as if it were a single function. I would show how the theta's sum to create the general spatial basis shape of the hat in figure 1, and go through the paper in order to clarify this issue.\\
+
 \emph{I think we need to show each kernel basis function in Figure 1}
+
  \begin{figure*}[!ht]
  \begin{center}
  \includegraphics{./Graph/pdf/fig1_revised.pdf} 
