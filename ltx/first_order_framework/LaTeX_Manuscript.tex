@@ -9,7 +9,9 @@
 \usepackage{setspace} 
 \usepackage{color}
 
-\newcommand{\dean}[1]{\textsf{\emph{\textbf{\textcolor{red}{#1}}}}} 
+\newcommand{\dean}[1]{\textsf{\emph{\textbf{\textcolor{red}{#1}}}}}
+ \newcommand{\parham}[1]{\textsf{\emph{\textbf{\textcolor{blue}{#1}}}}}
+
 
 \journal{Neuroimage}
 \begin{document}
@@ -1158,7 +1160,10 @@ The covariance of $\mathbf{e}_t$ is
 \begin{equation}
 	y(\mathbf{r}_n)=\sum_{n=0}^{n_y-1}\delta(\mathbf r - \mathbf{r}_n ) v_m(\mathbf{r}),
 \end{equation} 
-where $v_m(\mathbf{r}) = v_t(\mathbf{r})\ast m(\mathbf{r})$. The Fourier transform of $y(\mathbf{r}_n)$ is
+\parham{\begin{equation}
+	\mathbf y=\sum_{n=0}^{n_y-1}\delta(\mathbf r - \mathbf{r}_n ) v_m(\mathbf{r}),
+\end{equation}}
+where $v_m(\mathbf{r}) = v_t(\mathbf{r})\ast m(\mathbf{r})$. The Fourier transform of \parham{$\mathbf y$~}$y(\mathbf{r}_n)$ is
 \begin{align}
  Y(\boldsymbol{\nu}) &= \frac{1}{\Delta_y^2}\sum_{n=0}^{n_y-1} \delta\left(\boldsymbol{\nu}-\frac{n}{\Delta_y}\right) \ast V_m(\boldsymbol \nu) \\
 	&= \frac{1}{\Delta_y^2}V_m(\boldsymbol\nu)+\frac{1}{\Delta_y^2}\sum_{n=1}^{n_y-1} V_m\left(\boldsymbol{\nu}-\frac{n}{\Delta_y}\right).
