@@ -9,7 +9,9 @@
 \usepackage{setspace} 
 \usepackage{color}
 
-\newcommand{\dean}[1]{\textsf{\emph{\textbf{\textcolor{red}{#1}}}}}
+% \newcommand{\dean}[1]{\textsf{\emph{\textbf{\textcolor{red}{#1}}}}}
+\newcommand{\dean}[1]{\textcolor{red}{#1}}
+
  \newcommand{\parham}[1]{\textsf{\emph{\textbf{\textcolor{blue}{#1}}}}}
 
 
@@ -1157,7 +1159,7 @@ The covariance of $\mathbf{e}_t$ is
 \end{align}
 
 \section{Derivation of Sampling Theorem}\label{App:SamplingTheorem}
-\dean{This appendix provides a derivation for equations~\ref{eq:MinimumSensorDistance} and \ref{eq:BasisFunctionSeparation}. The derivation is adapted from \citet{Sanner1992} and \citet{Scerri2009}. Consider the cortical sheet defined on the surface $\Omega$ with sensors placed on a regular grid at positions $\mathbf{r}_n$ (where $n=0,...,n_y-1$ indexes the sensors) that are separated by the distance $\Delta_y$. The observations can be considered samples from a continuous field that is filtered (convolved) with the observation kernel described by
+\dean{This appendix provides a derivation for equations~\ref{eq:MinimumSensorDistance} and \ref{eq:BasisFunctionSeparation}. The derivation is adapted from \citet{Sanner1992} and \citet{Scerri2009}. Consider the cortical sheet defined on the surface $\Omega$ with sensors placed on a regular grid at positions $\mathbf{r}_n$ (where $n=0,...,n_y-1$ indexes the sensors) that are separated by the distance $\Delta_y$. Noise-free observations can be considered samples from a continuous field that is filtered (convolved) with the observation kernel described by
 \begin{equation}
 	y(\mathbf{r}_n)=\sum_{n=0}^{n_y-1}\delta(\mathbf r - \mathbf{r}_n ) v_m(\mathbf{r}),
 \end{equation} 
@@ -1166,10 +1168,10 @@ The covariance of $\mathbf{e}_t$ is
 \end{equation}}
 where $v_m(\mathbf{r}) = v_t(\mathbf{r})\ast m(\mathbf{r})$. The Fourier transform of \parham{$\mathbf y$~}$y(\mathbf{r}_n)$ is
 \begin{align}
- Y(\boldsymbol{\nu}) &= \frac{1}{\Delta_y^2}\sum_{n=0}^{n_y-1} \delta\left(\boldsymbol{\nu}-\frac{n}{\Delta_y}\right) \ast V_m(\boldsymbol \nu) \\
-	&= \frac{1}{\Delta_y^2}V_m(\boldsymbol\nu)+\frac{1}{\Delta_y^2}\sum_{n=1}^{n_y-1} V_m\left(\boldsymbol{\nu}-\frac{n}{\Delta_y}\right).
+ Y(\boldsymbol{\nu}) &= \frac{1}{\Delta_y^2}\sum_{n=0}^{n_y-1} \delta\left(\boldsymbol{\nu}-\frac{\mathbf{n}_n}{\Delta_y}\right) \ast V_m(\boldsymbol \nu) \\
+	&= \frac{1}{\Delta_y^2}V_m(\boldsymbol\nu) + \frac{1}{\Delta_y^2} \sum_{n=1}^{n_y-1} V_m\left(\boldsymbol{\nu}-\frac{\mathbf{n}_n}{\Delta_y}\right),
 \end{align} 
-It should be clear that $Y(\boldsymbol{\nu})$ contains $V_m(\boldsymbol\nu)$ plus $n_y-1$ copies (aliases) of $V_m(\boldsymbol\nu)$ repeated on the regular lattice, where each copy is centered at $n\Delta_y^{-1}$. Due to the lowpass action of the observation kernel, the filtered dynamic field is band-limited with a cutoff frequency $\boldsymbol\nu_{cy}$. In order for $V_m(\boldsymbol\nu)$ to be disjointed from its aliases, the amount of shift $\Delta_y^{-1}$ must be at least $2\boldsymbol\nu_{cy}$, since each alias has a spectral range of
+where $\mathbf{n}$ is a $n_y \times 2$ matrix, spatially indexing the sensors (the columns are different spatial dimensions such that $\mathbf{r}_n = \Delta_y \mathbf{n}$). It should be clear that $Y(\boldsymbol{\nu})$ contains $V_m(\boldsymbol\nu)$ plus $n_y-1$ copies (aliases) of $V_m(\boldsymbol\nu)$ repeated on the regular lattice, where each copy is centered at $n\Delta_y^{-1}$. Due to the lowpass action of the observation kernel, the filtered dynamic field is band-limited with a cutoff frequency $\boldsymbol\nu_{cy}$. In order for $V_m(\boldsymbol\nu)$ to be disjointed from its aliases, the amount of shift $\Delta_y^{-1}$ must be at least $2\boldsymbol\nu_{cy}$, since each alias has a spectral range of
 \begin{equation}
 	\boldsymbol\nu = \left[\frac{n}{\Delta_y}-\boldsymbol{\nu}_{cy},\frac{n}{\Delta_y}+\boldsymbol{\nu}_{cy}\right].
 \end{equation}
