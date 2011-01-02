@@ -253,34 +253,34 @@ and
 \end{equation}
 
 \subsection{Estimation of Connectivity Kernel Support}
-The support of the connectivity kernel can be inferred using spatial correlation analysis. The method presented in this paper is based on a similar published method, where the kernel support was estimated using correlation analysis for a linear system described by an IDE~\citep{Scerri2009}. To demonstrate the method for the neural field model, we first define the spatial cross-correlation function between consecutive observations as 
+The support of the connectivity kernel can be inferred using spatial correlation analysis. The method presented in this paper is based on a similar published method, where the kernel support was estimated using correlation analysis for a linear system described by an IDE~\citep{Scerri2009}. To demonstrate the method for the neural field model we assume the sensors are infinitesimally close (continuous observation). The spatial cross-correlation function between consecutive observations is defined as 
 \begin{align}
-	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &= \mathbf{E}\left[y_{t}\left(\mathbf{r}_n+\boldsymbol{\tau}\right)y_{t+1}\left(\mathbf{r}_n\right)\right] \\
-	&= \mathbf{E}\left[\left(\int_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} + \boldsymbol{\varepsilon}_t\left(\mathbf{r}_n+\boldsymbol{\tau}\right)\right) \left(\int_{\Omega}{ m\left(\mathbf{r}_n - \mathbf{r}'\right) v_{t+1}\left(\mathbf{r}'\right) \, d\mathbf{r}'} + \boldsymbol{\varepsilon}_{t+1}\left(\mathbf{r}_n\right)\right) \right], \label{eq:ObsXCorr}
+	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &= \mathbf{E}\left[y_{t}\left(\mathbf{r}+\boldsymbol{\tau}\right)y_{t+1}\left(\mathbf{r}\right)\right] \\
+	&= \mathbf{E}\left[\left(\int_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} + \boldsymbol{\varepsilon}_t\left(\mathbf{r}+\boldsymbol{\tau}\right)\right) \left(\int_{\Omega}{ m\left(\mathbf{r} - \mathbf{r}'\right) v_{t+1}\left(\mathbf{r}'\right) \, d\mathbf{r}'} + \boldsymbol{\varepsilon}_{t+1}\left(\mathbf{r}_n\right)\right) \right], \label{eq:ObsXCorr}
 \end{align}
 where $\mathbf{E}[\cdot]$ is the expected value. Since the observation noise is temporally white and independent of the field, equation~\ref{eq:ObsXCorr} reduces to
-\begin{align}
-	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &= \mathbf{E}\left[\int_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'}\int_{\Omega}{ m\left(\mathbf{r}_n - \mathbf{r}'\right) v_{t+1}\left(\mathbf{r}'\right)\, d\mathbf{r}'} \right] \\
-	&=\mathbf{E}\left[\bar{y}_t\left(\mathbf{r}_n + \boldsymbol{\tau}\right)\int_{\Omega}{ m\left(\mathbf{r}_n - \mathbf{r}'\right) v_{t+1}\left(\mathbf{r}'\right)\, d\mathbf{r}'} \right],
-\end{align}
-where $\bar{y}_t\left(\mathbf{r}_n + \boldsymbol{\tau}\right)$ is the noise-free observation.
-
+\begin{equation}
+	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) = \mathbf{E}\left[\int_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'}\int_{\Omega}{ m\left(\mathbf{r} - \mathbf{r}'\right) v_{t+1}\left(\mathbf{r}'\right)\, d\mathbf{r}'} \right].
+\end{equation}
 Substituting in equation~\ref{DiscreteTimeModel}  for $v_{t+1}\left(\mathbf{r}\right)$, the cross-correlation function is
 \begin{align}
-	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &= \mathbf{E}\left[\bar{y}_t\left(\mathbf{r}_n + \boldsymbol{\tau}\right) \int_{\Omega}{m\left(\mathbf{r}_n-\mathbf{r}'\right) \left(\xi v_t\left(\mathbf{r}'\right) +T_s \int_\Omega { w\left(\mathbf{r}',\mathbf{r}''\right) f\left(v_t\left(\mathbf{r}''\right)\right)\, d\mathbf{r}''} + e_t\left(\mathbf{r}'\right)\right)\, d\mathbf{r}'} \right] \\	
-	 &= \xi\mathbf{E}\left[\bar{y}_t\left(\mathbf{r}_n + \boldsymbol{\tau}\right)\int_{\Omega}{ m\left(\mathbf{r}_n - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right) d\mathbf{r}'} \right] \nonumber \\
-	&+ T_s\mathbf{E}\left[\bar{y}_t\left(\mathbf{r}_n + \boldsymbol{\tau}\right) \int_{\Omega} {m\left(\mathbf{r}_n-\mathbf{r}'\right) \int_\Omega { w\left(\mathbf{r}',\mathbf{r}''\right) f\left(v_t\left(\mathbf{r}''\right)\right)\, d\mathbf{r}''}\, d\mathbf{r}'} \right] \nonumber \\
-	&+ \mathbf{E}\left[\bar{y}_t\left(\mathbf{r}_n + \boldsymbol{\tau}\right)\int_{\Omega} { m\left(\mathbf{r}_n-\mathbf{r}'\right) e_t \left(\mathbf{r}'\right)\, d\mathbf{r}' } \right]
-	\label{eq:spatialxcorr}
+	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &= \mathbf{E}\left[\int_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} \int_{\Omega}{m\left(\mathbf{r}-\mathbf{r}'\right) \left(\xi v_t\left(\mathbf{r}'\right) +T_s \int_\Omega { w\left(\mathbf{r}',\mathbf{r}''\right) f\left(v_t\left(\mathbf{r}''\right)\right)\, d\mathbf{r}''} + e_t\left(\mathbf{r}'\right)\right)\, d\mathbf{r}'} \right] \\	
+	 &= \xi\mathbf{E}\left[\int_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'}\int_{\Omega}{ m\left(\mathbf{r} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right) d\mathbf{r}'} \right] \nonumber \\
+	&+ T_s\mathbf{E}\left[\int_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} \int_{\Omega} {m\left(\mathbf{r} - \mathbf{r}'\right) \int_\Omega { w\left(\mathbf{r}',\mathbf{r}''\right) f\left(v_t\left(\mathbf{r}''\right)\right)\, d\mathbf{r}''}\, d\mathbf{r}'} \right] \nonumber \\
+	&+ \mathbf{E}\left[\int_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'}\int_{\Omega} { m\left(\mathbf{r} - \mathbf{r}'\right) e_t \left(\mathbf{r}'\right)\, d\mathbf{r}' } \right]
+	\\
+	&= R_1(\boldsymbol{\tau}) + R_2(\boldsymbol{\tau}) + R_3(\boldsymbol{\tau}).\label{eq:spatialxcorr} 
 \end{align}
-
-The first term on the right hand side of equation~\ref{eq:spatialxcorr} is
+The last term on the right hand side of equation~\ref{eq:spatialxcorr} is
 \begin{equation}
-	\xi\mathbf{E}\left[\bar{y}_t\left(\mathbf{r}_n + \boldsymbol{\tau}\right) \int_{\Omega}{ m\left(\mathbf{r}_n-\mathbf{r}'\right) v_t\left(\mathbf{r}\right) d\mathbf{r}'} \right] = \xi R_{\bar{y}_{t},\bar{y}_{t}}(\boldsymbol{\tau}),
+	R_3(\boldsymbol{\tau}) = 0,
 \end{equation}
-which is the spatial autocorrelation of the observations scaled by the decay parameter $\xi$. The last term on the right hand side of equation~\ref{eq:spatialxcorr} equates to zero since the disturbance added to the field at time $t$ and assumed to be uncorrelated to the field at time $t$. 
-
-To understand the middle term, the sigmoid activation function, $f(\cdot)$, is approximated by the piecewise function
+since the disturbance added to the field at time $t$ and assumed to be uncorrelated to the field at time $t$. Putting to other two terms back together we can write
+\begin{align}
+	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &= \mathbf{E}\left[\int_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} \int_{\Omega}{m\left(\mathbf{r}-\mathbf{r}'\right) \left(\xi v_t\left(\mathbf{r}'\right) +T_s \int_\Omega { w\left(\mathbf{r}',\mathbf{r}''\right) f\left(v_t\left(\mathbf{r}''\right)\right)\, d\mathbf{r}''} \right)\, d\mathbf{r}'} \right] \\
+	&= \mathbf{E}\left[\mathcal{F}^{-1} \left\{e^{i\boldsymbol{\nu}^{\top}\boldsymbol{\tau}}M(\boldsymbol{\nu})V(\boldsymbol{\nu}) \ast \left(\xi M(\boldsymbol{\nu})V(\boldsymbol{\nu}) + T_s M(\boldsymbol{\nu}) W(\boldsymbol{\nu}) F(\boldsymbol{\nu}) \right) \right\} \right]
+\end{align}
+where $\mathcal{F}^{-1}$ denotes the inverse Fourier transform. Now we assume that sigmoid activation function, $f(\cdot)$, can be approximated by the piecewise function
 \begin{equation}
 	\hat{f}(v_t(\mathbf{r}')) = \left\{ \begin{array}{ll}
 		0, & v_t(\mathbf{r}') \le v_1 \\
@@ -288,53 +288,96 @@ To understand the middle term, the sigmoid activation function, $f(\cdot)$, is a
 		1, & v_t(\mathbf{r}') \ge v_2 \\ 
 		\end{array}\right.
 \end{equation}
-Evaluating the middle term of the RHS of equation~\ref{eq:spatialxcorr} for the case where the field is in the linear region of the nonlinearity gives
+Furthermore, we assume the field is in the linear region of the piecewise function for the majority of the time. From this we get the simplified cross-correlation function
 \begin{align}
-	middle term &= T_s\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ m\left(\mathbf{r}_n-\mathbf{r}'\right)\int_\Omega { w\left(\mathbf{r}',\mathbf{r}''\right) f\left(v_t\left(\mathbf{r}''\right)\right)\, d\mathbf{r}''}\, d\mathbf{r}'}\right]  \\
-	&=T_s\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ m\left(\mathbf{r}_n-\mathbf{r}'\right)\int_\Omega { w\left(\mathbf{r}',\mathbf{r}''\right) \varsigma v_t\left(\mathbf{r}''\right)\, d\mathbf{r}''}\, d\mathbf{r}'}\right] \label{eq:preswap}  \\
-	&= T_s\varsigma\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ w\left(\mathbf{r}_n,\mathbf{r}'\right) \int_\Omega {  m\left(\mathbf{r}'-\mathbf{r}''\right) v_t\left(\mathbf{r}''\right)\, d\mathbf{r}''}\, d\mathbf{r}'}\right]  \label{eq:postswap} \\
-	&= T_s\varsigma\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ w\left(\mathbf{r}_n,\mathbf{r}'\right) \bar{y}_t\left(\mathbf{r}'\right)\, d\mathbf{r}'}\right],	
+	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &= \mathbf{E}\left[\mathcal{F}^{-1} \left\{e^{i\boldsymbol{\nu}^{\top}\boldsymbol{\tau}} M(\boldsymbol{\nu}) V(\boldsymbol{\nu}) \ast \left(\xi M(\boldsymbol{\nu})V(\boldsymbol{\nu}) + T_s M(\boldsymbol{\nu}) W(\boldsymbol{\nu}) \varsigma V(\boldsymbol{\nu}) \right) \right\} \right] \\
+	&= \mathbf{E}\left[\mathcal{F}^{-1} \left\{e^{i\boldsymbol{\nu}^{\top}\boldsymbol{\tau}} M(\boldsymbol{\nu}) V(\boldsymbol{\nu}) \ast M(\boldsymbol{\nu})V(\boldsymbol{\nu}) \left(\xi  + T_s \varsigma W(\boldsymbol{\nu})  \right) \right\} \right] \\
+	&= \mathbf{E}\left[\mathcal{F}^{-1} \left\{e^{i\boldsymbol{\nu}^{\top}\boldsymbol{\tau}} M(\boldsymbol{\nu}) M(\boldsymbol{\nu}) V(\boldsymbol{\nu}) \ast V(\boldsymbol{\nu}) \left(\xi  + T_s \varsigma W(\boldsymbol{\nu}) \right) \right\} \right] \\
+	&= \mathbf{E}\left[m(\mathbf{r} + \boldsymbol{\tau}) \ast m(\mathbf{r}) \ast v^2(\mathbf{r}) \ast \left(\xi  + T_s \varsigma w(\mathbf{r})\right) \right] \\
+	&= (R_{y_t,y_t} - \delta(\boldsymbol{\tau})\sigma_{\varepsilon}^2) \ast \mathbf{E}\left[\left(\xi  + T_s \varsigma w(\mathbf{r})\right) \right]
 \end{align}
-where the associativity and commutativity algebraic properties of the spatial convolution where used to move from equation~\ref{eq:preswap} to equation~\ref{eq:postswap}.
 % 
-% Evaluating the middle term for the saturation regions. If $v_t(\mathbf{r}') \le v_1$ then the middle term will equate to zero. If $v_t(\mathbf{r}') \ge v_2$ then we get
 % \begin{align}
-% 	middle term &= T_s \mathbf{E} \left[ \bar{y}_t\left(\mathbf{r}_n+\boldsymbol{\tau}\right) \int_{\Omega} { m\left(\mathbf{r}_n-\mathbf{r}'\right) \int_\Omega { w\left(\mathbf{r},\mathbf{r}''\right) \, d\mathbf{r}''} \, d\mathbf{r}'} \right] \\
-% 	&= T_s a_1 \mathbf{E}\left[ \bar{y}_t \left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ m\left(\mathbf{r}_n - \mathbf{r}'\right)\, d\mathbf{r}'} \right] \\
-% 	&= T_s a_1 a_2 \mathbf{E}\left[ \bar{y}_t \left( \mathbf{r}_n + \boldsymbol{\tau} \right) \right],
+% 	middle term &= T_s\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ m\left(\mathbf{r}_n-\mathbf{r}'\right)\int_\Omega { w\left(\mathbf{r}',\mathbf{r}''\right) f\left(v_t\left(\mathbf{r}''\right)\right)\, d\mathbf{r}''}\, d\mathbf{r}'}\right]  \\
+% 	&=T_s\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ m\left(\mathbf{r}_n-\mathbf{r}'\right)\int_\Omega { w\left(\mathbf{r}',\mathbf{r}''\right) \varsigma v_t\left(\mathbf{r}''\right)\, d\mathbf{r}''}\, d\mathbf{r}'}\right] \label{eq:preswap}  \\
+% 	&= T_s\varsigma\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ w\left(\mathbf{r}_n,\mathbf{r}'\right) \int_\Omega {  m\left(\mathbf{r}'-\mathbf{r}''\right) v_t\left(\mathbf{r}''\right)\, d\mathbf{r}''}\, d\mathbf{r}'}\right]  \label{eq:postswap} \\
+% 	&= T_s\varsigma\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ w\left(\mathbf{r}_n,\mathbf{r}'\right) \bar{y}_t\left(\mathbf{r}'\right)\, d\mathbf{r}'}\right],	
 % \end{align}
-% where $a_1$ is the integral of the connectivity kernel and $a_2$ is the integral of the observation kernel.
+% where the associativity and commutativity algebraic properties of the spatial convolution where used to move from equation~\ref{eq:preswap} to equation~\ref{eq:postswap}.
+% % 
+% % Evaluating the middle term for the saturation regions. If $v_t(\mathbf{r}') \le v_1$ then the middle term will equate to zero. If $v_t(\mathbf{r}') \ge v_2$ then we get
+% % \begin{align}
+% % 	middle term &= T_s \mathbf{E} \left[ \bar{y}_t\left(\mathbf{r}_n+\boldsymbol{\tau}\right) \int_{\Omega} { m\left(\mathbf{r}_n-\mathbf{r}'\right) \int_\Omega { w\left(\mathbf{r},\mathbf{r}''\right) \, d\mathbf{r}''} \, d\mathbf{r}'} \right] \\
+% % 	&= T_s a_1 \mathbf{E}\left[ \bar{y}_t \left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ m\left(\mathbf{r}_n - \mathbf{r}'\right)\, d\mathbf{r}'} \right] \\
+% % 	&= T_s a_1 a_2 \mathbf{E}\left[ \bar{y}_t \left( \mathbf{r}_n + \boldsymbol{\tau} \right) \right],
+% % \end{align}
+% % where $a_1$ is the integral of the connectivity kernel and $a_2$ is the integral of the observation kernel.
+% 
+% The first term on the right hand side of equation~\ref{eq:spatialxcorr} is
+% \begin{equation}
+% 	R_1(\boldsymbol{\tau}) = \xi R_{\bar{y}_{t},\bar{y}_{t}}(\boldsymbol{\tau}),
+% \end{equation}
+% which is the spatial autocorrelation of the observations scaled by the decay parameter $\xi$.
+% 
+% Under the assumption that the field is in the linear region of the sigmoid for the majority of time then
+% \begin{equation}\label{eq:approx_xcorr}
+% 	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) \approx \xi R_{  \bar{y}_{t},\bar{y}_{t} } (\boldsymbol{\tau}) + T_s\varsigma\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ w\left(\mathbf{r}_n,\mathbf{r}'\right) \bar{y}_t\left( \mathbf{r}' \right)\, d\mathbf{r}'}\right].
+% \end{equation}
+% The autocorrelation of the noisy observations is
+% \begin{equation}\label{eq:autocorrelation_of_y}
+% 	R_{y_{t},y_{t}}(\boldsymbol{\tau}) = R_{\bar{y}_{t},\bar{y}_{t} } (\boldsymbol{\tau}) + \delta(\boldsymbol{\tau})\sigma_{\varepsilon}^2,
+% \end{equation}
+% where $\delta(\cdot)$ is the Kronecker delta function. Rearranging equation~\ref{eq:autocorrelation_of_y} and substituting it into equation~\ref{eq:approx_xcorr} gives
+% \begin{equation}
+% 	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) \approx \xi (R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \delta(\boldsymbol{\tau}) \sigma_{\varepsilon}^2) + T_s\varsigma\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ w\left(\mathbf{r}_n,\mathbf{r}'\right) \bar{y}_t\left( \mathbf{r}' \right)\, d\mathbf{r}'}\right],	
+% \end{equation}
+% and
+% \begin{equation}\label{eq:support_estimator}
+% 	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) - \xi (R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \delta(\boldsymbol{\tau}) \sigma_{\varepsilon}^2) \approx T_s\varsigma\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ w\left(\mathbf{r}_n,\mathbf{r}'\right) \bar{y}_t\left( \mathbf{r}' \right)\, d\mathbf{r}'}\right].	
+% \end{equation}
+% The right hand side of equation~\ref{eq:support_estimator} will have the structure of the connectivity kernel. To show this let
+% \begin{align}
+% 	Z &= \mathcal{F}\left\{\bar{y}_t\left( \mathbf{r} + \boldsymbol{\tau} \right) \int_{\Omega}{ w\left(\mathbf{r},\mathbf{r}'\right) \bar{y}_t\left( \mathbf{r}' \right)\, d\mathbf{r}'}\right\} \\
+% 	&= \exp(i\boldsymbol{\nu}^{\top}\boldsymbol{\tau})\bar{Y}(\boldsymbol{\nu}) \ast W(\boldsymbol{\nu})\bar{Y}(\boldsymbol{\nu}) \\
+% 	&= \exp(i\boldsymbol{\nu}^{\top}\boldsymbol{\tau})W(\boldsymbol{\nu})\bar{Y}(\boldsymbol{\nu}) \ast \bar{Y}(\boldsymbol{\nu}),
+% \end{align}
+% using the associativity with scalar multiplication property of convolution. Now taking the inverse Fourier transform
+% \begin{align}
+% 	z &= \mathcal{F}^{-1}\left\{ \exp(i\boldsymbol{\nu}^{\top}\boldsymbol{\tau})W(\boldsymbol{\nu})\bar{Y}(\boldsymbol{\nu}) \ast \bar{Y}(\boldsymbol{\nu})\right\} \\
+% 	&= w(\mathbf{r}+\boldsymbol{\tau}) \ast \bar{y}^2(\mathbf{r}) \\
+% 	&= \int_{\Omega}{w(\mathbf{r}+\boldsymbol{\tau},\mathbf{r}')\bar{y}^2(\mathbf{r}')d\mathbf{r}'}
+% \end{align}
+% 
+% 
+% This may hold:
+% \begin{equation}
+% 	R_{\bar{y}_{t},\bar{y}_{t} } (\boldsymbol{\tau}) = \sigma_d \int_{\Omega}{ m(\mathbf{r}_n+\boldsymbol{\tau}-\mathbf{r}')\int_{\Omega}{ m(\mathbf{r}'_n-\mathbf{r}'') \gamma(\mathbf{r}'-\mathbf{r}'') d\mathbf{r}''} d\mathbf{r}'}.
+% \end{equation}
+% If it does then we can estimate the support of the disturbance using the correlation analysis if the bandwidth of the sensor is wider than the bandwidth of the disturbance.\\
+% the proof of the above\\
+% \begin{align}
+% 	R_{y_{t},y_{t}}(\boldsymbol{\tau}) &= \mathbf{E}\left[\left(\int_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} + \boldsymbol{\varepsilon}_t\left(\mathbf{r}_n+\boldsymbol{\tau}\right)\right) \left(\int_{\Omega}{ m\left(\mathbf{r}_n - \mathbf{r}''\right) v_{t}\left(\mathbf{r}''\right) \, d\mathbf{r}''} + \boldsymbol{\varepsilon}_{t}\left(\mathbf{r}_n\right)\right) \right]\\
+% 		&=\mathbf{E}\left[\int_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} \int_{\Omega}{ m\left(\mathbf{r}_n - \mathbf{r}''\right) v_{t}\left(\mathbf{r}''\right) \, d\mathbf{r}''}\right] + \delta(\boldsymbol{\tau})\sigma_{\varepsilon}^2 \\
+% 		&=\iint_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) m\left(\mathbf{r}_n - \mathbf{r}''\right) \mathbf{E}\left[v_t\left(\mathbf{r}'\right) v_{t}\left(\mathbf{r}''\right)\right]\, d\mathbf{r}'}{ \, d\mathbf{r}''} + \delta(\boldsymbol{\tau})\sigma_{\varepsilon}^2\\
+% 		&=\sigma_d\iint_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) m\left(\mathbf{r}_n - \mathbf{r}''\right)\gamma(\mathbf{r}'-\mathbf{r}'') \, d\mathbf{r}'}{ \, d\mathbf{r}''} + \delta(\boldsymbol{\tau})\sigma_{\varepsilon}^2\label{eq:ObsCorr}
+% \end{align}
 
-Under the assumption that the field is in the linear region of the sigmoid for the majority of time then
-\begin{equation}\label{eq:approx_xcorr}
-	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) \approx \xi R_{  \bar{y}_{t},\bar{y}_{t} } (\boldsymbol{\tau}) + T_s\varsigma\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ w\left(\mathbf{r}_n,\mathbf{r}'\right) \bar{y}_t\left( \mathbf{r}' \right)\, d\mathbf{r}'}\right].
-\end{equation}
-The autocorrelation of the noisy observations is
-\begin{equation}\label{eq:autocorrelation_of_y}
-	R_{y_{t},y_{t}}(\boldsymbol{\tau}) = R_{\bar{y}_{t},\bar{y}_{t} } (\boldsymbol{\tau}) + \delta(\boldsymbol{\tau})\sigma_{\varepsilon}^2,
-\end{equation}
-where $\delta(\cdot)$ is the Kronecker delta function. Rearranging equation~\ref{eq:autocorrelation_of_y} and substituting it into equation~\ref{eq:approx_xcorr} gives
-\begin{equation}
-	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) \approx \xi (R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \delta(\boldsymbol{\tau}) \sigma_{\varepsilon}^2) + T_s\varsigma\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ w\left(\mathbf{r}_n,\mathbf{r}'\right) \bar{y}_t\left( \mathbf{r}' \right)\, d\mathbf{r}'}\right],	
-\end{equation}
-and
-\begin{equation}\label{eq:support_estimator}
-	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) - \xi (R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \delta(\boldsymbol{\tau}) \sigma_{\varepsilon}^2) \approx T_s\varsigma\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ w\left(\mathbf{r}_n,\mathbf{r}'\right) \bar{y}_t\left( \mathbf{r}' \right)\, d\mathbf{r}'}\right].	
-\end{equation}
-The right hand side of equation~\ref{eq:support_estimator} will have the structure of the connectivity kernel. 
-
-This may hold:
-\begin{equation}
-	R_{\bar{y}_{t},\bar{y}_{t} } (\boldsymbol{\tau}) = \sigma_d \int_{\Omega}{ m(\mathbf{r}_n+\boldsymbol{\tau}-\mathbf{r}')\int_{\Omega}{ m(\mathbf{r}'_n-\mathbf{r}'') \gamma(\mathbf{r}'-\mathbf{r}'') d\mathbf{r}''} d\mathbf{r}'}.
-\end{equation}
-If it does then we can estimate the support of the disturbance using the correlation analysis if the bandwidth of the sensor is wider than the bandwidth of the disturbance.\\
-the proof of the above\\
+Alternative, we can write
 \begin{align}
-	R_{y_{t},y_{t}}(\boldsymbol{\tau}) &= \mathbf{E}\left[y_{t}\left(\mathbf{r}_n+\boldsymbol{\tau}\right)y_{t}\left(\mathbf{r}_n\right)\right] \\
-	&= \mathbf{E}\left[\left(\int_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} + \boldsymbol{\varepsilon}_t\left(\mathbf{r}_n+\boldsymbol{\tau}\right)\right) \left(\int_{\Omega}{ m\left(\mathbf{r}_n - \mathbf{r}''\right) v_{t}\left(\mathbf{r}''\right) \, d\mathbf{r}''} + \boldsymbol{\varepsilon}_{t}\left(\mathbf{r}_n\right)\right) \right]\\
-	&=\mathbf{E}\left[\int_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} \int_{\Omega}{ m\left(\mathbf{r}_n - \mathbf{r}''\right) v_{t}\left(\mathbf{r}''\right) \, d\mathbf{r}''}\right] + \delta(\boldsymbol{\tau})\sigma_{\varepsilon}^2 \\
-	&=\iint_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) m\left(\mathbf{r}_n - \mathbf{r}''\right) \mathbf{E}\left[v_t\left(\mathbf{r}'\right) v_{t}\left(\mathbf{r}''\right)\right]\, d\mathbf{r}'}{ \, d\mathbf{r}''} + \delta(\boldsymbol{\tau})\sigma_{\varepsilon}^2\\
-	&=\sigma_d\iint_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) m\left(\mathbf{r}_n - \mathbf{r}''\right)\gamma(\mathbf{r}'-\mathbf{r}'') \, d\mathbf{r}'}{ \, d\mathbf{r}''} + \delta(\boldsymbol{\tau})\sigma_{\varepsilon}^2\label{eq:ObsCorr}
+	R_{y_{t},y_{t}}(\boldsymbol{\tau}) &= \mathbf{E}\left[y_{t}\left(\mathbf{r}_n+\boldsymbol{\tau}\right)y_{t}\left(\mathbf{r}_n\right)\right]\\
+	&= \mathbf{E}\left[m(\mathbf{r}_n+\boldsymbol{\tau})\ast v(\mathbf{r}) \times m(\mathbf{r}_n)\ast v(\mathbf{r})\right] + \delta(\boldsymbol{\tau})\sigma_{\varepsilon}^2 \\
+	&= \mathbf{E}\left[m(\mathbf{r}_n+\boldsymbol{\tau}) \ast m(\mathbf{r}_n) \ast v^2(\mathbf{r})\right] + \delta(\boldsymbol{\tau})\sigma_{\varepsilon}^2
+\end{align}
+To show how we get this result, we first define
+\begin{align}
+	K(\boldsymbol{\nu}) &= \mathcal{F}\left\{m(\mathbf{r}_n+\boldsymbol{\tau}) \ast v(\mathbf{r}) \times m(\mathbf{r}_n) \ast v(\mathbf{r})\right\} \\
+	&= \exp(i\boldsymbol{\nu}^{\top}\boldsymbol{\tau})M(\boldsymbol{\nu})V(\boldsymbol{\nu}) \ast M(\boldsymbol{\nu})V(\boldsymbol{\nu}) \\
+	&= \exp(i\boldsymbol{\nu}^{\top}\boldsymbol{\tau})M(\boldsymbol{\nu})V(\boldsymbol{\nu}) \ast M(\boldsymbol{\nu})V(\boldsymbol{\nu}) \\
+	&= \exp(i\boldsymbol{\nu}^{\top}\boldsymbol{\tau})M(\boldsymbol{\nu})M(\boldsymbol{\nu})V(\boldsymbol{\nu}) \ast V(\boldsymbol{\nu}).
+\end{align}
+Now taking the inverse Fourier transform we get
+\begin{align}
+	k(\mathbf{r}) = m(\mathbf{r}_n+\boldsymbol{\tau}) \ast m(\mathbf{r}_n) \ast v^2(\mathbf{r}).
 \end{align}
 
 % Therefore we can write
@@ -549,7 +592,7 @@ Estimation of the connectivity structure or the synaptic time constant may also 
 
 The development of the estimation framework also has implications for theoretical neuroscience, where the ability to estimate subject-specific properties will allow testing of hypotheses that have been generated in computational modeling studies. This has the potential to validate neural field models and, in doing so, provide new insights that may lead to a greater understanding of mesoscopic and macroscopic neurodynamics. For example, using the proposed model-based framework, we can reconstruct a neural field from data and estimate parameters to check if they correspond to theoretically derived values where certain solutions may exist. In addition, the parameters and the state-space can be explored during cognitive tasks and states of arousal such as sleep and anaesthesia. 
 
-\subsection{Real time implementation}
+\subsection{Modeling Assumptions}
 \dean{(comment 1 and 9 from reviewer 2:) The implementation of the framework has been described a being appropriate for an evoked-potential experimental protocol. Over the time duration of an experimental paradigm the connectivity and synaptic kernel parameters are assumed to be stationary. However, if the method is applied to a continuous recording over a longer time duration it is unlikely that the parameters will be stationary. If fact, it is likely that changes in the parameter values would be of most interest.}
  
 \dean{To implement the algorithm in a real-time scenario the we would assume that the parameters are stationary over a time period (window) where the estimation is performed. The parameter of the previous window can be used to initialize parameters of the next window.}
@@ -1161,7 +1204,7 @@ The covariance of $\mathbf{e}_t$ is
 \section{Derivation of Sampling Theorem}\label{App:SamplingTheorem}
 \dean{This appendix provides a derivation for equations~\ref{eq:MinimumSensorDistance} and \ref{eq:BasisFunctionSeparation}. The derivation is adapted from \citet{Sanner1992} and \citet{Scerri2009}. Consider the cortical sheet defined on the surface $\Omega$ with sensors placed on a regular grid at positions $\mathbf{r}_n$ (where $n=0,...,n_y-1$ indexes the sensors) that are separated by the distance $\Delta_y$. Noise-free observations can be considered samples from a continuous field that is filtered (convolved) with the observation kernel described by
 \begin{equation}
-	y(\mathbf{r}_n)=\sum_{n=0}^{n_y-1}\delta(\mathbf r - \mathbf{r}_n ) v_m(\mathbf{r}),
+	y(\mathbf{r}_n)=\delta(\mathbf r - \mathbf{r}_n ) v_m(\mathbf{r}),
 \end{equation} 
 \parham{\begin{equation}
 	\mathbf y=\sum_{n=0}^{n_y-1}\delta(\mathbf r - \mathbf{r}_n ) v_m(\mathbf{r}),
