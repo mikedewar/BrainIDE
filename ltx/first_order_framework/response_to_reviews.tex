@@ -70,8 +70,13 @@
 
 	\emph{Indeed, there will always be a mismatch between a mathematical model and the natural phenomena it is attempting to describe. The model used to develop our estimator is modest in terms of the temporal dynamics, where the state transition is assumed to be first-order. However, the development of the framework for this modest brain model is a significant development that can be expanded to include longer range time dependencies. A major benefit in using a mean field model is the freedom to lump detailed parameters, such as specific ion concentrations, into more general parameters such as the connectivity kernel coefficients that describe the net system gain. Please note, we have assumed that factors influencing excitability are stationary over the estimation period. This is a reasonable assumption if applying the framework to an evoked-potential experiment. An extension to our framework, that is currently in development, is to allow for time-varying parameter estimates. This will allow the application of the framework to longer-term data recordings. The problem can then be posed in terms of convergence time and estimation accuracy vs. nonstationarity of the metabolic processes and other unmodeled brain dynamics.}
 
-
 \item Although we all know the 1970s version of Wilson and Cowan's field equations, there was an intriguing stochasticization of these equations by Benayoun et al PloS Comp Biol 2010. I and others will value the authors' thoughts of how a more palatable stochasticization of these field equations might influence the future development of the data-assimilation framework presented in this paper.
+
+\emph{I think the paper that he is talking about uses the central limit theorem, approximating a large number of independent neurons as have Gaussian noise. The paper he is talk about is also a nightmare to read.}
+
+\emph{We added the disturbance term to the firing rate function $g(\mathbf{r},t)$ (equation 3). Although we added this after we provided the model derivation and discritization, we can show holds is we add the disturbance to equation 3 and use Ito's method to form the IDE and the Euler-Maruyama method for the discretization. We chose the simplest method to present the model due to space considerations and the expected audience. }
+
+\emph{We assume the neuronal firing that is not predicted by the model to be caused by external independent influences. Since we a talking about a large number of neurons, we expect this disturbance to be Gaussian (according to the central limit theorem). Furthermore, we expect the disturbance to be spatially correlated according to the covariance function $\sigma_d\gamma(\mathbf{r}-\mathbf{r}')$, since we consider the small areas of the field to be functional processing units.}
 
 \item This is NeuroImage, not the Physical Review. Although most of this framework involves mathematics that is reasonable to follow for typical readers of this journal, I would suggest that the authors explain and expand a bit on the introduction of Green's functions where introduced in equation 6.
 
@@ -82,9 +87,11 @@
 
 \item In the isotropic and translationally invariant case examined here, would a Fourier basis for temporal and spatial structure have been a formally correct alternative?\\
 
-\emph{Gaussians has semi-compact support but Fourier basis functions are global functions. Gaussian can be easily extended to higher dimension (don't know about the Fourier basis functions), any orthonormal basis functions like Fourier basis functions simplify our equations, $\Gamma$ becomes identity matrix, but using Gaussian basis functions equations are in their generic form.}
+\emph{Gaussians have semi-compact support but Fourier basis functions are global functions. Gaussian can be easily extended to higher dimension (don't know about the Fourier basis functions), any orthonormal basis functions like Fourier basis functions simplify our equations, $\Gamma$ becomes identity matrix, but using Gaussian basis functions equations are in their generic form.}
 
 \item In equation 29, what would a reasonable $v_c$ be for a real neuronal system (mammalian) given the number of neurons and scale of electrodes? I am concerned that it might be much higher than any of us wish to consider. One would perhaps be saved by the filter characteristics of brain (e.g. Phys. Rev. E 73, 051911 (2006)).
+
+
 
 \item The two covariance inflation parameters in equation 41 make me cringe. How are we best to adjust these fudge factors?\\
 
