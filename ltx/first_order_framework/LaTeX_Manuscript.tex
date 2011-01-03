@@ -460,7 +460,8 @@ where $\mathbf{\bar x}$ represents either $\hat{\mathbf x}_t^{f}$ or $\hat{\math
 \begin{equation}\label{eq:sigmapoints3}
 	\lambda=\alpha^2( n_x+\kappa) - n_x, 
 \end{equation}
-where the constant $\alpha$ determines the spread of the sigma points around $\mathbf{\bar x}$, and $\kappa$ is an additional scaling parameter (see~\citet{Haykin2001} for more details). 
+\parham{(reviewer 2, comment 7:) The positive constant $\alpha$ determines the spread of the sigma points around $\mathbf{\bar x}$ which is set arbitrary small (e.g., $10^{-3}$) to minimise higher order effect \citep{Haykin2001} , and  $\kappa$ is an additional scaling parameter which is usually set to $3-n_x$ \citep{Julier2002a}.}
+
 
 The sigma vectors are propagated through the system equations and weighted to form the predicted mean and covariance. The weights are calculated by 
 \begin{align}
@@ -819,7 +820,7 @@ $\mathbf P_{t}^{b}=\mathbf P_{t}^{f}+\mathbf S_t\left[\mathbf P_{t+1}^{b}-\mathb
 \newpage
 \clearpage
 \section*{Figure Legends}
-{\bf Figure 1. Mexican-hat connectivity kernel.} \parham{(comment 8, reviewer 2) The kernel is a composite of three Gaussian basis functions (dashed lines), representing short-range excitation, mid-range inhibition and long-range excitation.} The kernel is rotationally symmetric (isotropic) about zero, hence a cross-section captures the important aspect of the connectivity kernel's shape. The kernel decays asymptotically to zero.
+{\bf Figure 1. Mexican-hat connectivity kernel.} \parham{(reviewer 2, comment 8:) The kernel is a composite of three Gaussian basis functions (dashed lines), representing short-range excitation, mid-range inhibition and long-range excitation.} The kernel is rotationally symmetric (isotropic) about zero, hence a cross-section captures the important aspect of the connectivity kernel's shape. The kernel decays asymptotically to zero.
 
 {\bf Figure 2. Example of a one-dimensional field decomposition.} A continuous, one-dimensional field decomposed by a finite number of basis functions scaled by the state vector. The dashed line depicts the field, the black solid lines show the Gaussian basis functions and the vertical lines show the position and amplitude of the states.
 
