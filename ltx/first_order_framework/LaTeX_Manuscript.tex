@@ -12,7 +12,7 @@
 % \newcommand{\dean}[1]{\textsf{\emph{\textbf{\textcolor{red}{#1}}}}}
 \newcommand{\dean}[1]{\textcolor{red}{#1}}
 
- \newcommand{\parham}[1]{\textsf{\emph{\textbf{\textcolor{blue}{#1}}}}}
+\newcommand{\parham}[1]{\textcolor{blue}{#1}}
 
 
 \journal{Neuroimage}
@@ -294,7 +294,7 @@ Furthermore, we assume the field is in the linear region of the piecewise functi
 	&= \mathbf{E}\left[\mathcal{F}^{-1} \left\{e^{i\boldsymbol{\nu}^{\top}\boldsymbol{\tau}} M(\boldsymbol{\nu}) V(\boldsymbol{\nu}) \ast M(\boldsymbol{\nu})V(\boldsymbol{\nu}) \left(\xi  + T_s \varsigma W(\boldsymbol{\nu})  \right) \right\} \right] \\
 	&= \mathbf{E}\left[\mathcal{F}^{-1} \left\{e^{i\boldsymbol{\nu}^{\top}\boldsymbol{\tau}} M(\boldsymbol{\nu}) M(\boldsymbol{\nu}) V(\boldsymbol{\nu}) \ast V(\boldsymbol{\nu}) \left(\xi  + T_s \varsigma W(\boldsymbol{\nu}) \right) \right\} \right] \\
 	&= \mathbf{E}\left[m(\mathbf{r} + \boldsymbol{\tau}) \ast m(\mathbf{r}) \ast v^2(\mathbf{r}) \ast \left(\xi  + T_s \varsigma w(\mathbf{r})\right) \right] \\
-	&= (R_{y_t,y_t} - \delta(\boldsymbol{\tau})\sigma_{\varepsilon}^2) \ast \mathbf{E}\left[\left(\xi  + T_s \varsigma w(\mathbf{r})\right) \right]
+	&= (R_{y_t,y_t}(\boldsymbol{\tau}) - \delta(\boldsymbol{\tau})\sigma_{\varepsilon}^2) \ast \mathbf{E}\left[\left(\xi  + T_s \varsigma w(\mathbf{r})\right) \right]
 \end{align}
 % 
 % \begin{align}
@@ -362,22 +362,22 @@ Furthermore, we assume the field is in the linear region of the piecewise functi
 % 		&=\sigma_d\iint_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) m\left(\mathbf{r}_n - \mathbf{r}''\right)\gamma(\mathbf{r}'-\mathbf{r}'') \, d\mathbf{r}'}{ \, d\mathbf{r}''} + \delta(\boldsymbol{\tau})\sigma_{\varepsilon}^2\label{eq:ObsCorr}
 % \end{align}
 
-Alternative, we can write
-\begin{align}
-	R_{y_{t},y_{t}}(\boldsymbol{\tau}) &= \mathbf{E}\left[y_{t}\left(\mathbf{r}_n+\boldsymbol{\tau}\right)y_{t}\left(\mathbf{r}_n\right)\right]\\
-	&= \mathbf{E}\left[m(\mathbf{r}_n+\boldsymbol{\tau})\ast v(\mathbf{r}) \times m(\mathbf{r}_n)\ast v(\mathbf{r})\right] + \delta(\boldsymbol{\tau})\sigma_{\varepsilon}^2 \\
-	&= \mathbf{E}\left[m(\mathbf{r}_n+\boldsymbol{\tau}) \ast m(\mathbf{r}_n) \ast v^2(\mathbf{r})\right] + \delta(\boldsymbol{\tau})\sigma_{\varepsilon}^2
-\end{align}
 To show how we get this result, we first define
 \begin{align}
-	K(\boldsymbol{\nu}) &= \mathcal{F}\left\{m(\mathbf{r}_n+\boldsymbol{\tau}) \ast v(\mathbf{r}) \times m(\mathbf{r}_n) \ast v(\mathbf{r})\right\} \\
+	R_{y_{t},y_{t}}(\boldsymbol{\tau}) &= \mathbf{E}\left[y_{t}\left(\mathbf{r}+\boldsymbol{\tau}\right)y_{t}\left(\mathbf{r}\right)\right]\\
+	&= \mathbf{E}\left[m(\mathbf{r} + \boldsymbol{\tau}) \ast v(\mathbf{r}) \times m(\mathbf{r}) \ast v(\mathbf{r})\right] + \delta(\boldsymbol{\tau})\sigma_{\varepsilon}^2 \\
+	&= \mathbf{E}\left[m(\mathbf{r}+\boldsymbol{\tau}) \ast m(\mathbf{r}) \ast v^2(\mathbf{r})\right] + \delta(\boldsymbol{\tau})\sigma_{\varepsilon}^2
+\end{align}
+
+\begin{align}
+	K(\boldsymbol{\nu}) &= \mathcal{F}\left\{m(\mathbf{r}+\boldsymbol{\tau}) \ast v(\mathbf{r}) \times m(\mathbf{r}_n) \ast v(\mathbf{r})\right\} \\
 	&= \exp(i\boldsymbol{\nu}^{\top}\boldsymbol{\tau})M(\boldsymbol{\nu})V(\boldsymbol{\nu}) \ast M(\boldsymbol{\nu})V(\boldsymbol{\nu}) \\
 	&= \exp(i\boldsymbol{\nu}^{\top}\boldsymbol{\tau})M(\boldsymbol{\nu})V(\boldsymbol{\nu}) \ast M(\boldsymbol{\nu})V(\boldsymbol{\nu}) \\
 	&= \exp(i\boldsymbol{\nu}^{\top}\boldsymbol{\tau})M(\boldsymbol{\nu})M(\boldsymbol{\nu})V(\boldsymbol{\nu}) \ast V(\boldsymbol{\nu}).
 \end{align}
 Now taking the inverse Fourier transform we get
 \begin{align}
-	k(\mathbf{r}) = m(\mathbf{r}_n+\boldsymbol{\tau}) \ast m(\mathbf{r}_n) \ast v^2(\mathbf{r}).
+	k(\mathbf{r}) = m(\mathbf{r}+\boldsymbol{\tau}) \ast m(\mathbf{r}) \ast v^2(\mathbf{r}).
 \end{align}
 
 % Therefore we can write
@@ -1206,10 +1206,11 @@ The covariance of $\mathbf{e}_t$ is
 \begin{equation}
 	y(\mathbf{r}_n)=\delta(\mathbf r - \mathbf{r}_n ) v_m(\mathbf{r}),
 \end{equation} 
+where $v_m(\mathbf{r}) = v_t(\mathbf{r})\ast m(\mathbf{r})$. The observations in matrix form is described by
 \parham{\begin{equation}
 	\mathbf y=\sum_{n=0}^{n_y-1}\delta(\mathbf r - \mathbf{r}_n ) v_m(\mathbf{r}),
 \end{equation}}
-where $v_m(\mathbf{r}) = v_t(\mathbf{r})\ast m(\mathbf{r})$. The Fourier transform of \parham{$\mathbf y$~}$y(\mathbf{r}_n)$ is
+The Fourier transform of $\mathbf{y}$ is
 \begin{align}
  Y(\boldsymbol{\nu}) &= \frac{1}{\Delta_y^2}\sum_{n=0}^{n_y-1} \delta\left(\boldsymbol{\nu}-\frac{\mathbf{n}_n}{\Delta_y}\right) \ast V_m(\boldsymbol \nu) \\
 	&= \frac{1}{\Delta_y^2}V_m(\boldsymbol\nu) + \frac{1}{\Delta_y^2} \sum_{n=1}^{n_y-1} V_m\left(\boldsymbol{\nu}-\frac{\mathbf{n}_n}{\Delta_y}\right),
