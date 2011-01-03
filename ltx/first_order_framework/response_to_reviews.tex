@@ -95,13 +95,13 @@
 
 \item The two covariance inflation parameters in equation 41 make me cringe. How are we best to adjust these fudge factors?\\
 
-\emph{The positive constant $\alpha$ determines the spread of the sigma points around $\mathbf{\bar x}$ which can be made arbitrary small (e.g. $0<\alpha\le 10^{-4} $) to minimise higher order effect (Julier et al., 2002, and Haykin, 2001) , and  $\kappa$ is an additional scaling parameter which is usually set to $3-n_x$ (Julier et al., 1995).}
+\emph{Values for the two parameters in equation 41 along with the relevant references have been added to the manuscript.}
 
 
 
 \item I understand that the Mexican Hat bases are in this paper often a composite of $\theta_0$, $\theta_1$, and $\theta_2$, representing short range excitation, short range inhibition, and long range excitation. But many will be confused by this subtlety, and at times in the text the Mexican Hat basis is described as if it were a single function. I would show how the theta's sum to create the general spatial basis shape of the hat in figure 1, and go through the paper in order to clarify this issue.\\
 
-\emph{I think we need to show each kernel basis function in Figure 1}
+\emph{This point is clarified by adding the connectivity kernel componets superimposed by the resulting Mexican Hat basis in Figure 1. of the manuscript.}
 
  \begin{figure*}[!ht]
  \begin{center}
@@ -112,7 +112,10 @@
  \end{figure*}
 
 \item A few comments on how to adapt the smoother for real time implementation would be helpful. I presume that one would perform the smoothing during a training phase. But one would also wish to adapt in real time as observation or control scenarios progressed. A few words of perspective would be invaluable to help others translate the author's wisdom on this method to other applications.
-\item Figure 4. Should the axes be indicated as spatial frequency rather than just Hz?
+\item Figure 4. Should the axes be indicated as spatial frequency rather than just Hz?\\
+
+\emph{Axes of Figure 4. (and also Figure 5.) are now changed to spatial frequency. The unit of the spatial frequency within the text is changed to ?????}
+
 \item Page 45, Appendix D, Par 1, line 6: should `transform of a n-' should be `transform of an n-' ? I am grammatically challenged perhaps.
 \end{enumerate}
 
