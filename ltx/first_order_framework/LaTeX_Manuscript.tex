@@ -11,7 +11,6 @@
 
 % \newcommand{\dean}[1]{\textsf{\emph{\textbf{\textcolor{red}{#1}}}}}
 \newcommand{\dean}[1]{\textcolor{red}{#1}}
-
 \newcommand{\parham}[1]{\textcolor{blue}{#1}}
 
 
@@ -409,7 +408,9 @@ where $\boldsymbol{\nu}_c$ is a cutoff frequency (typically taken as the -3~dB p
 \end{equation}
 where $\rho_y \in \mathbb{R} \ge 1$ is an oversampling parameter. \dean{(reviewer 1, additional comment 3:) A derivation of the sampling theorem that is based on the work of \citet{Sanner1992} and \citet{Scerri2009} is provided in \ref{App:SamplingTheorem}}. The condition in equation~\ref{eq:MinimumSensorDistance} must be satisfied to avoid spatial spectral aliasing effects when reconstructing the hidden dynamic field, $v_t(\mathbf{r})$, using the sampled observations, $\mathbf{y}_t$.
 
-In practice, it is difficult to estimate the bandwidth of the cortex using traditional electrophysiological measurements, possibly preventing placement of sensors in accordance to equation~\ref{eq:MinimumSensorDistance}. However, we envisage it may be possible to estimate the spatial bandwidth using other modalities with higher spatial resolution such as fMRI, NIRS or other optical imaging techniques (\cite{Issa2000}). Spectral aliasing can be avoided by a proper choice of the spatial sampling distance given the sensors' spectral characteristics. The spatial extent of the sensors results in a spectral low-pass action, thus providing spatial anti-aliasing filtering. Such sensors limit the spatial bandwidth of the observation to a value denoted by $\boldsymbol{\nu}_{cy}$. Aliasing can then be avoided by positioning the sensors according to equation~\ref{eq:MinimumSensorDistance}, replacing $\boldsymbol{\nu}_c$ with $\boldsymbol{\nu}_{cy}$.
+In practice, it is difficult to estimate the bandwidth of the cortex using traditional electrophysiological measurements, possibly preventing placement of sensors in accordance to equation~\ref{eq:MinimumSensorDistance}. However, we envisage it may be possible to estimate the spatial bandwidth using other modalities with higher spatial resolution such as fMRI, NIRS or other optical imaging techniques (\cite{Issa2000}). \dean{Reviewer 2, comment 6: From the work of~\citet{Freeman2000}, the expected bandwidth of the human neocortex is approximately 0.4 cycles/mm which requires a maximal sensor spacing of approximately 1.25 mm to avoid distortions due to aliasing.}
+
+Spectral aliasing can be avoided by a proper choice of the spatial sampling distance given the sensors' spectral characteristics. The spatial extent of the sensors results in a spectral low-pass action, thus providing spatial anti-aliasing filtering. Such sensors limit the spatial bandwidth of the observation to a value denoted by $\boldsymbol{\nu}_{cy}$. Aliasing can then be avoided by positioning the sensors according to equation~\ref{eq:MinimumSensorDistance}, replacing $\boldsymbol{\nu}_c$ with $\boldsymbol{\nu}_{cy}$.
 
 Although such sensors avoid errors due to aliasing, they attenuate the high spatial frequency variations in the observations. Therefore, any procedure applied to estimate the original field or the underlying connectivity structure from these band-limited observations has the potential to underestimate the high spatial frequency components of both the field and the connectivity kernel. This motivates the use of sensors with wider bandwidths (narrower in space). This choice would require more sensors in order to satisfy Shannon's sampling theorem for a given spatial region. Therefore, a compromise should be found between the bandwidth of the sensor response, the accuracy of the estimation results, the number of sensors and the computational demands of the estimation procedure when designing experiments.
 
@@ -462,14 +463,13 @@ where $\mathbf{\bar x}$ represents either $\hat{\mathbf x}_t^{f}$ or $\hat{\math
 \end{equation}
 \parham{(reviewer 2, comment 7:) The positive constant $\alpha$ determines the spread of the sigma points around $\mathbf{\bar x}$ which is set arbitrary small (e.g., $10^{-3}$) to minimise higher order effect \citep{Haykin2001} , and  $\kappa$ is an additional scaling parameter which is usually set to $3-n_x$ \citep{Julier2002a}.}
 
-
 The sigma vectors are propagated through the system equations and weighted to form the predicted mean and covariance. The weights are calculated by 
 \begin{align}
 	\mathbf W_0^{(m)}&=\frac{\lambda}{ n_x+\lambda} \\
 	\mathbf W_0^{(c)}&=\frac{\lambda}{ n_x+\lambda}+(1-\alpha^2+\beta) \\
 	\mathbf W_i^{(m)}&=\mathbf W_i^{(c)}=\frac{1}{2( n_x+\lambda)} \quad i=1, \dots, 2n_x, 
 \end{align}
-where the superscripts $m$ and $c$ denote mean and covariance and $\beta$ incorporates prior knowledge of the distribution of the states, $\mathbf{x}$. Since the observation equation is linear (equation~\ref{ObservationEquation}), the standard Kalman Filter update equations are used to correct the predicted states. The state estimates from forward filtering are used to form a new set of sigma points for the smoother, as described above. The cross-covariance matrix of the states, $\mathbf M$, is also required for computing the smoother gain, as described in the summary of the steps in the URTSS algorithm is given in Table~\ref{tab:UKFAlgorithm}.
+where the superscripts $m$ and $c$ denote mean and covariance and $\beta$ incorporates prior knowledge of the distribution of the states, $\mathbf{x}$ \dean{(for Gaussian disturbance $\beta$ should be set to 2)}. Since the observation equation is linear (equation~\ref{ObservationEquation}), the standard Kalman Filter update equations are used to correct the predicted states. The state estimates from forward filtering are used to form a new set of sigma points for the smoother, as described above. The cross-covariance matrix of the states, $\mathbf M$, is also required for computing the smoother gain, as described in the summary of the steps in the URTSS algorithm is given in Table~\ref{tab:UKFAlgorithm}.
 
 Although the system is nonlinear, the parameters of the system are linear with respect to the state. This is exploited by our procedure where the parameter estimation uses a least squares (LS) method that minimizes the sum of the squared errors (of a predicted state update) with each new estimate of the state vector sequence. To create the least squares parameter estimator, we first define the $n_x \times n_{\theta}$ matrix
 \begin{equation}
