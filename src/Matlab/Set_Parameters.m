@@ -22,7 +22,7 @@ EstimationSpaceMin = -10;
 % temporal parameters
 % ~~~~~~~~~~~~~
 Ts = 1e-3;          % sampling period (s)
-T = 1000;            % maximum time (ms)
+T = 200;            % maximum time (ms)
 
 % kernel parameters
 % ~~~~~~~~~~~
@@ -118,7 +118,7 @@ Create_m
 
 % observation noise characteristics
 % ~~~~~~~~~~~~~~~~~~~~
-sigma_varepsilon = 0.1;                                  
+sigma_varepsilon = 0.0; %0.1                                  
 Sigma_varepsilon = sigma_varepsilon*eye(NSensors);        % observation covariance matrix
 
 % sigmoid parameters

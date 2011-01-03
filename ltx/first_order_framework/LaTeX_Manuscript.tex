@@ -109,17 +109,7 @@ The parameter $v_0$ describes the firing threshold of the neural populations and
 \begin{equation}
 	\label{GreensFuncDef} \textrm{D}h\left( t \right) = \delta \left( t \right), 
 \end{equation} 
-where $\delta(t)$ is the Dirac-delta function. To understand this property, one can take the Laplace transform of $\textrm{D}$ and $h(t)$, giving
-\begin{align}
-	\mathcal{L}\{h(t)\} &= \frac{1}{s+\zeta} \\
-	\mathcal{L}\{\textrm{D}\} &= s+\zeta,
-\end{align}
-and then taking the inverse Laplace transform of $\mathcal{L}\{\textrm{D}\}$ applied to $\mathcal{L}\{h(t)\}$, giving
-\begin{align}
-	\mathcal{L}^{-1}\left\{\frac{s+\zeta}{s+\zeta}\right\} &= \mathcal{L}^{-1}\left\{1\right\} \\
-	&= \delta \left( t \right).
-\end{align}
-Applying the differential operator $\textrm{D}$ to equation~\ref{FullDoubleIntModel} gives
+where $\delta(t)$ is the Dirac-delta function. Applying the differential operator $\textrm{D}$ to equation~\ref{FullDoubleIntModel} gives
 \begin{align}
  \textrm{D}v\left(\mathbf r,t\right)&= \textrm{D}\left(h\ast g\right)\left(\mathbf r,t\right)\\
 &=\left(\textrm{D}h\ast g\right)\left(\mathbf r,t\right)\\
@@ -1216,14 +1206,14 @@ The covariance of $\mathbf{e}_t$ is
 \end{equation} 
 where $v_m(\mathbf{r}) = v_t(\mathbf{r})\ast m(\mathbf{r})$. The observations in matrix form is described by
 \parham{\begin{equation}
-	\mathbf y=\sum_{n=0}^{n_y-1}\delta(\mathbf r - \mathbf{r}_n ) v_m(\mathbf{r}),
+	\mathbf y=\sum_{n=0}^{n_y-1}\delta(\mathbf r - \mathbf{r}_n ) v_m(\mathbf{r}).
 \end{equation}}
 The Fourier transform of $\mathbf{y}$ is
 \begin{align}
- Y(\boldsymbol{\nu}) &= \frac{1}{\Delta_y^2}\sum_{n=0}^{n_y-1} \delta\left(\boldsymbol{\nu}-\frac{\mathbf{n}_n}{\Delta_y}\right) \ast V_m(\boldsymbol \nu) \\
-	&= \frac{1}{\Delta_y^2}V_m(\boldsymbol\nu) + \frac{1}{\Delta_y^2} \sum_{n=1}^{n_y-1} V_m\left(\boldsymbol{\nu}-\frac{\mathbf{n}_n}{\Delta_y}\right),
+ Y(\boldsymbol{\nu}) &= \frac{1}{\Delta_y^2}\sum_{n=0}^{n_y-1} \delta\left(\boldsymbol{\nu}-\frac{\mathbf{k}_n}{\Delta_y}\right) \ast V_m(\boldsymbol \nu) \\
+	&= \frac{1}{\Delta_y^2}V_m(\boldsymbol\nu) + \frac{1}{\Delta_y^2} \sum_{n=1}^{n_y-1} V_m\left(\boldsymbol{\nu}-\frac{\mathbf{k}_n}{\Delta_y}\right),
 \end{align} 
-where $\mathbf{n}$ is a $n_y \times 2$ matrix, spatially indexing the sensors (the columns are different spatial dimensions such that $\mathbf{r}_n = \Delta_y \mathbf{n}$). It should be clear that $Y(\boldsymbol{\nu})$ contains $V_m(\boldsymbol\nu)$ plus $n_y-1$ copies (aliases) of $V_m(\boldsymbol\nu)$ repeated on the regular lattice, where each copy is centered at $n\Delta_y^{-1}$. Due to the lowpass action of the observation kernel, the filtered dynamic field is band-limited with a cutoff frequency $\boldsymbol\nu_{cy}$. In order for $V_m(\boldsymbol\nu)$ to be disjointed from its aliases, the amount of shift $\Delta_y^{-1}$ must be at least $2\boldsymbol\nu_{cy}$, since each alias has a spectral range of
+where $\mathbf{k}$ is a $n_y \times 2$ matrix, spatially indexing the sensors (the columns are different spatial dimensions such that $\mathbf{r}_n = \Delta_y \mathbf{k}$). It should be clear that $Y(\boldsymbol{\nu})$ contains $V_m(\boldsymbol\nu)$ plus $n_y-1$ copies (aliases) of $V_m(\boldsymbol\nu)$ repeated on the regular lattice, where each copy is centered at $n\Delta_y^{-1}$. Due to the lowpass action of the observation kernel, the filtered dynamic field is band-limited with a cutoff frequency $\boldsymbol\nu_{cy}$. In order for $V_m(\boldsymbol\nu)$ to be disjointed from its aliases, the amount of shift $\Delta_y^{-1}$ must be at least $2\boldsymbol\nu_{cy}$, since each alias has a spectral range of
 \begin{equation}
 	\boldsymbol\nu = \left[\frac{n}{\Delta_y}-\boldsymbol{\nu}_{cy},\frac{n}{\Delta_y}+\boldsymbol{\nu}_{cy}\right].
 \end{equation}
