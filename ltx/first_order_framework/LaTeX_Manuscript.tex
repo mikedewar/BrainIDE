@@ -283,32 +283,32 @@ Furthermore, we assume the field is in the linear region of the piecewise functi
 	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &\approx \mathbf{E}\left[\mathcal{F}^{-1} \left\{e^{i\boldsymbol{\nu}^{\top}\boldsymbol{\tau}} M(\boldsymbol{\nu}) V(\boldsymbol{\nu}) \ast \left(\xi M(\boldsymbol{\nu})V(\boldsymbol{\nu}) + T_s M(\boldsymbol{\nu}) W(\boldsymbol{\nu}) \varsigma V(\boldsymbol{\nu}) \right) \right\} \right] \\
 	&= \mathbf{E}\left[\mathcal{F}^{-1} \left\{e^{i\boldsymbol{\nu}^{\top}\boldsymbol{\tau}} M(\boldsymbol{\nu}) V(\boldsymbol{\nu}) \ast M(\boldsymbol{\nu})V(\boldsymbol{\nu}) \left(\xi  + T_s \varsigma W(\boldsymbol{\nu})  \right) \right\} \right] \\
 	&= \mathbf{E}\left[\mathcal{F}^{-1} \left\{e^{i\boldsymbol{\nu}^{\top}\boldsymbol{\tau}} M(\boldsymbol{\nu}) M(\boldsymbol{\nu}) V(\boldsymbol{\nu}) \ast V(\boldsymbol{\nu}) \left(\xi  + T_s \varsigma W(\boldsymbol{\nu}) \right) \right\} \right] \\
-	&= \mathbf{E}\left[m(\mathbf{r} + \boldsymbol{\tau}) \ast m(\mathbf{r}) \ast v^2(\mathbf{r}) \ast \left(\xi  + T_s \varsigma w(\mathbf{r})\right) \right] \\
-	&= \left(R_{y_t,y_t}(\boldsymbol{\tau}) - \delta(\boldsymbol{\tau}\right)\sigma_{\varepsilon}^2) \ast \left(\xi  + T_s \varsigma w(\mathbf{r})\right) \label{eq:xcorr_with_autocorr}
+	&= \mathbf{E}\left[m(\mathbf{r} + \boldsymbol{\tau}) \ast m(\mathbf{r}) \ast v^2(\mathbf{r}) \ast \left(\xi\delta_D(\mathbf{r})  + T_s \varsigma w(\mathbf{r})\right) \right] \\
+	&= \left(R_{y_t,y_t}(\boldsymbol{\tau}) - \delta_K(\boldsymbol{\tau}\right)\sigma_{\varepsilon}^2) \ast \left(\xi\delta_D(\mathbf{r})  + T_s \varsigma w(\mathbf{r})\right) \label{eq:xcorr_with_autocorr}
 \end{align}
-where $R_{y_{t},y_{t}}(\boldsymbol{\tau})$ is the auto-correlation of the observations and $\delta(\cdot)$ is the Kronecker delta function.
+where $R_{y_{t},y_{t}}(\boldsymbol{\tau})$ is the auto-correlation of the observations, $\delta_K(\cdot)$ is the Kronecker delta function, and $\delta_D(\cdot)$ is the Dirac delta function.
 
 To show how we get this result, we define the auto-correlation of the observations as
 \begin{align}
 	R_{y_{t},y_{t}}(\boldsymbol{\tau}) &= \mathbf{E}\left[y_{t}\left(\mathbf{r}+\boldsymbol{\tau}\right)y_{t}\left(\mathbf{r}\right)\right]\\
-	&= \mathbf{E}\left[m(\mathbf{r} + \boldsymbol{\tau}) \ast v(\mathbf{r}) \times m(\mathbf{r}) \ast v(\mathbf{r})\right] + \delta(\boldsymbol{\tau})\sigma_{\varepsilon}^2 \\
-	&= \mathbf{E}\left[\mathcal{F}^{-1}\left\{ \exp(i\boldsymbol{\nu}^{\top}\boldsymbol{\tau})M(\boldsymbol{\nu})V(\boldsymbol{\nu}) \ast M(\boldsymbol{\nu})V(\boldsymbol{\nu}) \right\}\right] + \delta(\boldsymbol{\tau})\sigma_{\varepsilon}^2 \\
-	&= \mathbf{E}\left[\mathcal{F}^{-1}\left\{ \exp(i\boldsymbol{\nu}^{\top}\boldsymbol{\tau})M(\boldsymbol{\nu})M(\boldsymbol{\nu})V(\boldsymbol{\nu}) \ast V(\boldsymbol{\nu}) \right\}\right] + \delta(\boldsymbol{\tau})\sigma_{\varepsilon}^2 \\
-	&= \mathbf{E}\left[m(\mathbf{r}+\boldsymbol{\tau}) \ast m(\mathbf{r}) \ast v^2(\mathbf{r})\right] + \delta(\boldsymbol{\tau})\sigma_{\varepsilon}^2
+	&= \mathbf{E}\left[m(\mathbf{r} + \boldsymbol{\tau}) \ast v(\mathbf{r}) \times m(\mathbf{r}) \ast v(\mathbf{r})\right] + \delta_K(\boldsymbol{\tau})\sigma_{\varepsilon}^2 \\
+	&= \mathbf{E}\left[\mathcal{F}^{-1}\left\{ \exp(i\boldsymbol{\nu}^{\top}\boldsymbol{\tau})M(\boldsymbol{\nu})V(\boldsymbol{\nu}) \ast M(\boldsymbol{\nu})V(\boldsymbol{\nu}) \right\}\right] + \delta_K(\boldsymbol{\tau})\sigma_{\varepsilon}^2 \\
+	&= \mathbf{E}\left[\mathcal{F}^{-1}\left\{ \exp(i\boldsymbol{\nu}^{\top}\boldsymbol{\tau})M(\boldsymbol{\nu})M(\boldsymbol{\nu})V(\boldsymbol{\nu}) \ast V(\boldsymbol{\nu}) \right\}\right] + \delta_K(\boldsymbol{\tau})\sigma_{\varepsilon}^2 \\
+	&= \mathbf{E}\left[m(\mathbf{r}+\boldsymbol{\tau}) \ast m(\mathbf{r}) \ast v^2(\mathbf{r})\right] + \delta_K(\boldsymbol{\tau})\sigma_{\varepsilon}^2
 \end{align}
 
 Now to isolate the kernel, the Fourier transform is taken
 \begin{align}
-	\mathcal{F}\left\{R_{y_{t},y_{t+1}}(\boldsymbol{\tau})\right\} &\approx \mathcal{F}\left\{ \left(R_{y_t,y_t}(\boldsymbol{\tau}) - \delta\left(\boldsymbol{\tau}\right)\sigma_{\varepsilon}^2\right) \ast \left(\xi  + T_s \varsigma w(\mathbf{r})\right) \right\} \\
-	&= \mathcal{F}\left\{ R_{y_t,y_t}(\boldsymbol{\tau}) - \delta\left(\boldsymbol{\tau}\right)\sigma_{\varepsilon}^2 \right\} \mathcal{F}\left\{ \xi  + T_s \varsigma w(\mathbf{r}) \right\}.
+	\mathcal{F}\left\{R_{y_{t},y_{t+1}}(\boldsymbol{\tau})\right\} &\approx \mathcal{F}\left\{ \left(R_{y_t,y_t}(\boldsymbol{\tau}) - \delta_K\left(\boldsymbol{\tau}\right)\sigma_{\varepsilon}^2\right) \ast \left(\xi\delta_D(\mathbf{r})  + T_s \varsigma w(\mathbf{r})\right) \right\} \\
+	&= \mathcal{F}\left\{ R_{y_t,y_t}(\boldsymbol{\tau}) - \delta_K\left(\boldsymbol{\tau}\right)\sigma_{\varepsilon}^2 \right\} \mathcal{F}\left\{ \xi\delta_D(\mathbf{r})  + T_s \varsigma w(\mathbf{r}) \right\}.
 \end{align}
-Now rearranging
+Now rearranging (Note: this step is wrong. The RHS should be a function of $\boldsymbol\tau$!)
 \begin{equation}
-	\frac{\mathcal{F}\left\{R_{y_{t},y_{t+1}}(\boldsymbol{\tau})\right\}}{\mathcal{F}\left\{ R_{y_t,y_t}(\boldsymbol{\tau}) - \delta\left(\boldsymbol{\tau}\right)\sigma_{\varepsilon}^2 \right\}} \approx \mathcal{F}\left\{ \xi  + T_s \varsigma w(\mathbf{r}) \right\}.
+	\frac{\mathcal{F}\left\{R_{y_{t},y_{t+1}}(\boldsymbol{\tau})\right\}}{\mathcal{F}\left\{ R_{y_t,y_t}(\boldsymbol{\tau}) - \delta_K\left(\boldsymbol{\tau}\right)\sigma_{\varepsilon}^2 \right\}} \approx \mathcal{F}\left\{ \xi\delta_D\left(\mathbf{r}\right)  + T_s \varsigma w(\mathbf{r}) \right\}.
 \end{equation}
 Take inverse Fourier transform and rearrange to get an approximation of the kernel
 \begin{align}
-	\mathcal{F}^{-1}\left\{\frac{\mathcal{F}\left\{R_{y_{t},y_{t+1}}(\boldsymbol{\tau})\right\}}{\mathcal{F}\left\{ R_{y_t,y_t}(\boldsymbol{\tau}) - \delta\left(\boldsymbol{\tau}\right)\sigma_{\varepsilon}^2 \right\}}\right\} &\approx \xi  + T_s \varsigma w(\mathbf{r}) % \\
+	\mathcal{F}^{-1}\left\{\frac{\mathcal{F}\left\{R_{y_{t},y_{t+1}}(\boldsymbol{\tau})\right\}}{\mathcal{F}\left\{ R_{y_t,y_t}(\boldsymbol{\tau}) - \delta_K\left(\boldsymbol{\tau}\right)\sigma_{\varepsilon}^2 \right\}}\right\} &\approx \xi\delta_D\left(\mathbf{r}\right)  + T_s \varsigma w(\mathbf{r}) % \\
 	 % 	(\varsigma T_s)^{-1} \mathcal{F}^{-1}\left\{\frac{\mathcal{F}\left\{R_{y_{t},y_{t+1}}(\boldsymbol{\tau})\right\}} {\mathcal{F}\left\{ R_{y_t,y_t}(\boldsymbol{\tau}) - \delta\left(\boldsymbol{\tau}\right)\sigma_{\varepsilon}^2 \right\}}\right\} - (\varsigma T_s)^{-1}\xi &\approx w(\mathbf{r})
 \end{align}
 This equation states that the support of the kernel can be estimated given knowledge of $\sigma_\varepsilon^2$. Furthermore, is we assume a local coupling (at $\boldsymbol\tau=0$) regime, either excitation or inhibition, than we don't even need to know $\sigma_\varepsilon^2$. The peak in the kernel at $\mathbf{r}=0$ will be bigger or smaller if we guess incorrectly and the kernel parameters can do the rest!
@@ -407,7 +407,7 @@ where $\boldsymbol{\nu}_c$ is a cutoff frequency (typically taken as the -3~dB p
 \begin{equation}
 	\label{eq:MinimumSensorDistance} \Delta_y \leq \frac{1}{2\rho_y\boldsymbol{\nu}_{c}}, 
 \end{equation}
-where $\rho_y \in \mathbb{R} \ge 1$ is an oversampling parameter. \dean{(reviewer 1, additional comment 3:) A derivation of the sampling theorem is provided in \ref{App:SamplingTheorem} that is based on the work of \citet{Sanner1992} and \citet{Scerri2009}}. This condition must be satisfied to avoid spatial spectral aliasing effects when reconstructing the hidden dynamic field, $v_t(\mathbf{r})$, using the sampled observations, $\mathbf{y}_t$.
+where $\rho_y \in \mathbb{R} \ge 1$ is an oversampling parameter. \dean{(reviewer 1, additional comment 3:) A derivation of the sampling theorem that is based on the work of \citet{Sanner1992} and \citet{Scerri2009} is provided in \ref{App:SamplingTheorem}}. The condition in equation~\ref{eq:MinimumSensorDistance} must be satisfied to avoid spatial spectral aliasing effects when reconstructing the hidden dynamic field, $v_t(\mathbf{r})$, using the sampled observations, $\mathbf{y}_t$.
 
 In practice, it is difficult to estimate the bandwidth of the cortex using traditional electrophysiological measurements, possibly preventing placement of sensors in accordance to equation~\ref{eq:MinimumSensorDistance}. However, we envisage it may be possible to estimate the spatial bandwidth using other modalities with higher spatial resolution such as fMRI, NIRS or other optical imaging techniques (\cite{Issa2000}). Spectral aliasing can be avoided by a proper choice of the spatial sampling distance given the sensors' spectral characteristics. The spatial extent of the sensors results in a spectral low-pass action, thus providing spatial anti-aliasing filtering. Such sensors limit the spatial bandwidth of the observation to a value denoted by $\boldsymbol{\nu}_{cy}$. Aliasing can then be avoided by positioning the sensors according to equation~\ref{eq:MinimumSensorDistance}, replacing $\boldsymbol{\nu}_c$ with $\boldsymbol{\nu}_{cy}$.
 
@@ -591,7 +591,11 @@ Estimation of the connectivity structure or the synaptic time constant may also 
 The development of the estimation framework also has implications for theoretical neuroscience, where the ability to estimate subject-specific properties will allow testing of hypotheses that have been generated in computational modeling studies. This has the potential to validate neural field models and, in doing so, provide new insights that may lead to a greater understanding of mesoscopic and macroscopic neurodynamics. For example, using the proposed model-based framework, we can reconstruct a neural field from data and estimate parameters to check if they correspond to theoretically derived values where certain solutions may exist. In addition, the parameters and the state-space can be explored during cognitive tasks and states of arousal such as sleep and anaesthesia. 
 
 \subsection{Modeling Assumptions}
-\dean{(comment 1 and 9 from reviewer 2:) The implementation of the framework has been described a being appropriate for an evoked-potential experimental protocol. Over the time duration of an experimental paradigm the connectivity and synaptic kernel parameters are assumed to be stationary. However, if the method is applied to a continuous recording over a longer time duration it is unlikely that the parameters will be stationary. If fact, it is likely that changes in the parameter values would be of most interest.}
+\dean{(comment 1 and 9 from reviewer 2:) It is an implicit assumption that the neural field model (in equation~\ref{DiscreteTimeModel}) provides an apt description of cortical dynamics. Although models of this form are capable of describing a variety of cortical dynamics, there is without doubt, a mismatch between the cortex and the model. Nevertheless, there is a major benefit in using a mean field model over a more detailed model is that the myriad of parameters that might influence excitability, such as specific ion concentrations, are considered to be lumped into the connectivity kernel coefficients that effectively describe the net system gain. Analytic solutions... A goal of the framework is to create a method to assimilate ...}
+
+\dean{The framework assumes that the model parameters are stationary over the estimation period. This is a reasonable assumption if applying the framework to an evoked-potential experiment over a short time period in a controlled environment. However, it is well known that factors that influence excitability are non-stationary over longer time periods. Therefore, the estimation framework must be altered if it is to be applied to data over extended periods of time. A possible way to achieve this is to use a more sophisticated model.. Alternatively, a simpler method would be to allow for time-varying parameter estimates...  }
+
+\dean{The implementation of the framework has been described a being appropriate for an evoked-potential experimental protocol. Over the time duration of an experimental paradigm the connectivity and synaptic kernel parameters are assumed to be stationary. However, if the method is applied to a continuous recording over a longer time duration it is unlikely that the parameters will be stationary. If fact, it is likely that changes in the parameter values would be of most interest.}
  
 \dean{To implement the algorithm in a real-time scenario the we would assume that the parameters are stationary over a time period (window) where the estimation is performed. The parameter of the previous window can be used to initialize parameters of the next window.}
 

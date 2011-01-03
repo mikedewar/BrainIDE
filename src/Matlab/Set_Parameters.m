@@ -22,7 +22,7 @@ EstimationSpaceMin = -10;
 % temporal parameters
 % ~~~~~~~~~~~~~
 Ts = 1e-3;          % sampling period (s)
-T = 200;            % maximum time (ms)
+T = 1000;            % maximum time (ms)
 
 % kernel parameters
 % ~~~~~~~~~~~
