@@ -9,7 +9,10 @@
 \usepackage{setspace} 
 \usepackage{color}
 
-\newcommand{\dean}[1]{\textsf{\emph{\textbf{\textcolor{red}{#1}}}}} 
+% \newcommand{\dean}[1]{\textsf{\emph{\textbf{\textcolor{red}{#1}}}}}
+\newcommand{\dean}[1]{\textcolor{red}{#1}}
+\newcommand{\parham}[1]{\textcolor{blue}{#1}}
+
 
 \journal{Neuroimage}
 \begin{document}
@@ -100,24 +103,24 @@ The parameter $v_0$ describes the firing threshold of the neural populations and
 	f\left( v\left( \mathbf{r}',t' \right)\right)
 	\, d\mathbf{r}'dt'.
 \end{equation}
-To rearrange the model into an integro-differential equation the Laplace transform of equation~\ref{FullDoubleIntModel} is taken, giving
-\begin{align}
-	V(s) &= H(s)G(s) \\
-	&=\frac{G(s)}{s+\alpha},
-\end{align}
-since $H(s) = (s+\alpha)^{-1}$. After rearranging we can write
-\begin{equation}
-	(s+\alpha)V(s) = G(s).
-\end{equation}
-Now we shall express the synaptic response kernel as a Green's function 
+
+\dean{(reviewer 2, comment 3:) To arrive at the standard integro-differential equation form of the model, we use the fact that the synaptic response kernel is a Green's function of a linear differential equation defined by the differential operator $\textrm{D}=d/dt + \zeta$. A Green's function satisfies
 \begin{equation}
 	\label{GreensFuncDef} \textrm{D}h\left( t \right) = \delta \left( t \right), 
-\end{equation}
-where $\textrm{D}=d/dt + \zeta$ is a temporal differential operator and $\delta(t)$ is the Dirac-delta function. This gives the standard form of the model
+\end{equation} 
+where $\delta(t)$ is the Dirac-delta function. Applying the differential operator $\textrm{D}$ to equation~\ref{FullDoubleIntModel} gives
+\begin{align}
+ \textrm{D}v\left(\mathbf r,t\right)&= \textrm{D}\left(h\ast g\right)\left(\mathbf r,t\right)\\
+&=\left(\textrm{D}h\ast g\right)\left(\mathbf r,t\right)\\
+&=\left(\delta \left(t\right)\ast g\right)\left(\mathbf r,t\right)\\
+&=g\left(\mathbf r,t\right)
+\end{align}
+where $\ast$ denotes convolution operator.} This gives the standard form of the model
 \begin{equation}
 	\label{FinalFormContinuous} 
 	\frac{dv\left( \mathbf{r},t \right)}{dt} + \zeta v\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)\, d\mathbf{r}'}. 
 \end{equation}
+
 To arrive at the integro-difference equation (IDE) form of the model, we discretize time using a first-order Euler method (see \ref{App:Time Discretization} for derivation) giving 
 \begin{equation}
 	\label{DiscreteTimeModel} 
@@ -239,34 +242,34 @@ and
 \end{equation}
 
 \subsection{Estimation of Connectivity Kernel Support}
-The support of the connectivity kernel can be inferred using spatial correlation analysis. The method presented in this paper is based on a similar published method, where the kernel support was estimated using correlation analysis for a linear system described by an IDE~\citep{Scerri2009}. To demonstrate the method for the neural field model, we first define the spatial cross-correlation function between consecutive observations as 
+The support of the connectivity kernel can be inferred using spatial correlation analysis. The method presented in this paper is based on a similar published method, where the kernel support was estimated using correlation analysis for a linear system described by an IDE~\citep{Scerri2009}. To demonstrate the method for the neural field model we assume the sensors are infinitesimally close (continuous observation). The spatial cross-correlation function between consecutive observations is defined as 
 \begin{align}
-	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &= \mathbf{E}\left[y_{t}\left(\mathbf{r}_n+\boldsymbol{\tau}\right)y_{t+1}\left(\mathbf{r}_n\right)\right] \\
-	&= \mathbf{E}\left[\left(\int_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} + \boldsymbol{\varepsilon}_t\left(\mathbf{r}_n+\boldsymbol{\tau}\right)\right) \left(\int_{\Omega}{ m\left(\mathbf{r}_n - \mathbf{r}'\right) v_{t+1}\left(\mathbf{r}'\right) \, d\mathbf{r}'} + \boldsymbol{\varepsilon}_{t+1}\left(\mathbf{r}_n\right)\right) \right], \label{eq:ObsXCorr}
+	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &= \mathbf{E}\left[y_{t}\left(\mathbf{r}+\boldsymbol{\tau}\right)y_{t+1}\left(\mathbf{r}\right)\right] \\
+	&= \mathbf{E}\left[\left(\int_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} + \boldsymbol{\varepsilon}_t\left(\mathbf{r}+\boldsymbol{\tau}\right)\right) \left(\int_{\Omega}{ m\left(\mathbf{r} - \mathbf{r}'\right) v_{t+1}\left(\mathbf{r}'\right) \, d\mathbf{r}'} + \boldsymbol{\varepsilon}_{t+1}\left(\mathbf{r}_n\right)\right) \right], \label{eq:ObsXCorr}
 \end{align}
 where $\mathbf{E}[\cdot]$ is the expected value. Since the observation noise is temporally white and independent of the field, equation~\ref{eq:ObsXCorr} reduces to
-\begin{align}
-	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &= \mathbf{E}\left[\int_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'}\int_{\Omega}{ m\left(\mathbf{r}_n - \mathbf{r}'\right) v_{t+1}\left(\mathbf{r}'\right)\, d\mathbf{r}'} \right] \\
-	&=\mathbf{E}\left[\bar{y}_t\left(\mathbf{r}_n + \boldsymbol{\tau}\right)\int_{\Omega}{ m\left(\mathbf{r}_n - \mathbf{r}'\right) v_{t+1}\left(\mathbf{r}'\right)\, d\mathbf{r}'} \right],
-\end{align}
-where $\bar{y}_t\left(\mathbf{r}_n + \boldsymbol{\tau}\right)$ is the noise-free observation.
-
+\begin{equation}
+	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) = \mathbf{E}\left[\int_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'}\int_{\Omega}{ m\left(\mathbf{r} - \mathbf{r}'\right) v_{t+1}\left(\mathbf{r}'\right)\, d\mathbf{r}'} \right].
+\end{equation}
 Substituting in equation~\ref{DiscreteTimeModel}  for $v_{t+1}\left(\mathbf{r}\right)$, the cross-correlation function is
 \begin{align}
-	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &= \mathbf{E}\left[\bar{y}_t\left(\mathbf{r}_n + \boldsymbol{\tau}\right) \int_{\Omega}{m\left(\mathbf{r}_n-\mathbf{r}'\right) \left(\xi v_t\left(\mathbf{r}'\right) +T_s \int_\Omega { w\left(\mathbf{r}',\mathbf{r}''\right) f\left(v_t\left(\mathbf{r}''\right)\right)\, d\mathbf{r}''} + e_t\left(\mathbf{r}'\right)\right)\, d\mathbf{r}'} \right] \\	
-	 &= \xi\mathbf{E}\left[\bar{y}_t\left(\mathbf{r}_n + \boldsymbol{\tau}\right)\int_{\Omega}{ m\left(\mathbf{r}_n - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right) d\mathbf{r}'} \right] \nonumber \\
-	&+ T_s\mathbf{E}\left[\bar{y}_t\left(\mathbf{r}_n + \boldsymbol{\tau}\right) \int_{\Omega} {m\left(\mathbf{r}_n-\mathbf{r}'\right) \int_\Omega { w\left(\mathbf{r}',\mathbf{r}''\right) f\left(v_t\left(\mathbf{r}''\right)\right)\, d\mathbf{r}''}\, d\mathbf{r}'} \right] \nonumber \\
-	&+ \mathbf{E}\left[\bar{y}_t\left(\mathbf{r}_n + \boldsymbol{\tau}\right)\int_{\Omega} { m\left(\mathbf{r}_n-\mathbf{r}'\right) e_t \left(\mathbf{r}'\right)\, d\mathbf{r}' } \right]
-	\label{eq:spatialxcorr}
+	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &= \mathbf{E}\left[\int_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} \int_{\Omega}{m\left(\mathbf{r}-\mathbf{r}'\right) \left(\xi v_t\left(\mathbf{r}'\right) +T_s \int_\Omega { w\left(\mathbf{r}',\mathbf{r}''\right) f\left(v_t\left(\mathbf{r}''\right)\right)\, d\mathbf{r}''} + e_t\left(\mathbf{r}'\right)\right)\, d\mathbf{r}'} \right] \\	
+	 &= \xi\mathbf{E}\left[\int_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'}\int_{\Omega}{ m\left(\mathbf{r} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right) d\mathbf{r}'} \right] \nonumber \\
+	&+ T_s\mathbf{E}\left[\int_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} \int_{\Omega} {m\left(\mathbf{r} - \mathbf{r}'\right) \int_\Omega { w\left(\mathbf{r}',\mathbf{r}''\right) f\left(v_t\left(\mathbf{r}''\right)\right)\, d\mathbf{r}''}\, d\mathbf{r}'} \right] \nonumber \\
+	&+ \mathbf{E}\left[\int_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'}\int_{\Omega} { m\left(\mathbf{r} - \mathbf{r}'\right) e_t \left(\mathbf{r}'\right)\, d\mathbf{r}' } \right]
+	\\
+	&= R_1(\boldsymbol{\tau}) + R_2(\boldsymbol{\tau}) + R_3(\boldsymbol{\tau}).\label{eq:spatialxcorr} 
 \end{align}
-
-The first term on the right hand side of equation~\ref{eq:spatialxcorr} is
+The last term on the right hand side of equation~\ref{eq:spatialxcorr} is
 \begin{equation}
-	\xi\mathbf{E}\left[\bar{y}_t\left(\mathbf{r}_n + \boldsymbol{\tau}\right) \int_{\Omega}{ m\left(\mathbf{r}_n-\mathbf{r}'\right) v_t\left(\mathbf{r}\right) d\mathbf{r}'} \right] = \xi R_{\bar{y}_{t},\bar{y}_{t}}(\boldsymbol{\tau}),
+	R_3(\boldsymbol{\tau}) = 0,
 \end{equation}
-which is the spatial autocorrelation of the observations scaled by the decay parameter $\xi$. The last term on the right hand side of equation~\ref{eq:spatialxcorr} equates to zero since the disturbance added to the field at time $t$ and assumed to be uncorrelated to the field at time $t$. 
-
-To understand the middle term, the sigmoid activation function, $f(\cdot)$, is approximated by the piecewise function
+since the disturbance added to the field at time $t$ and assumed to be uncorrelated to the field at time $t$. Putting to other two terms back together we can write
+\begin{align}
+	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &= \mathbf{E}\left[\int_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} \int_{\Omega}{m\left(\mathbf{r}-\mathbf{r}'\right) \left(\xi v_t\left(\mathbf{r}'\right) +T_s \int_\Omega { w\left(\mathbf{r}',\mathbf{r}''\right) f\left(v_t\left(\mathbf{r}''\right)\right)\, d\mathbf{r}''} \right)\, d\mathbf{r}'} \right] \\
+	&= \mathbf{E}\left[\mathcal{F}^{-1} \left\{e^{i\boldsymbol{\nu}^{\top}\boldsymbol{\tau}}M(\boldsymbol{\nu})V(\boldsymbol{\nu}) \ast \left(\xi M(\boldsymbol{\nu})V(\boldsymbol{\nu}) + T_s M(\boldsymbol{\nu}) W(\boldsymbol{\nu}) F(\boldsymbol{\nu}) \right) \right\} \right]
+\end{align}
+where $\mathcal{F}^{-1}$ denotes the inverse Fourier transform. Now we assume that sigmoid activation function, $f(\cdot)$, can be approximated by the piecewise function
 \begin{equation}
 	\hat{f}(v_t(\mathbf{r}')) = \left\{ \begin{array}{ll}
 		0, & v_t(\mathbf{r}') \le v_1 \\
@@ -274,54 +277,105 @@ To understand the middle term, the sigmoid activation function, $f(\cdot)$, is a
 		1, & v_t(\mathbf{r}') \ge v_2 \\ 
 		\end{array}\right.
 \end{equation}
-Evaluating the middle term of the RHS of equation~\ref{eq:spatialxcorr} for the case where the field is in the linear region of the nonlinearity gives
+Furthermore, we assume the field is in the linear region of the piecewise function for the majority of the time. From this we get the simplified cross-correlation function
 \begin{align}
-	middle term &= T_s\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ m\left(\mathbf{r}_n-\mathbf{r}'\right)\int_\Omega { w\left(\mathbf{r}',\mathbf{r}''\right) f\left(v_t\left(\mathbf{r}''\right)\right)\, d\mathbf{r}''}\, d\mathbf{r}'}\right]  \\
-	&=T_s\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ m\left(\mathbf{r}_n-\mathbf{r}'\right)\int_\Omega { w\left(\mathbf{r}',\mathbf{r}''\right) \varsigma v_t\left(\mathbf{r}''\right)\, d\mathbf{r}''}\, d\mathbf{r}'}\right] \label{eq:preswap}  \\
-	&= T_s\varsigma\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ w\left(\mathbf{r}_n,\mathbf{r}'\right) \int_\Omega {  m\left(\mathbf{r}'-\mathbf{r}''\right) v_t\left(\mathbf{r}''\right)\, d\mathbf{r}''}\, d\mathbf{r}'}\right]  \label{eq:postswap} \\
-	&= T_s\varsigma\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ w\left(\mathbf{r}_n,\mathbf{r}'\right) \bar{y}_t\left(\mathbf{r}'\right)\, d\mathbf{r}'}\right],	
+	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &\approx \mathbf{E}\left[\mathcal{F}^{-1} \left\{e^{i\boldsymbol{\nu}^{\top}\boldsymbol{\tau}} M(\boldsymbol{\nu}) V(\boldsymbol{\nu}) \ast \left(\xi M(\boldsymbol{\nu})V(\boldsymbol{\nu}) + T_s M(\boldsymbol{\nu}) W(\boldsymbol{\nu}) \varsigma V(\boldsymbol{\nu}) \right) \right\} \right] \\
+	&= \mathbf{E}\left[\mathcal{F}^{-1} \left\{e^{i\boldsymbol{\nu}^{\top}\boldsymbol{\tau}} M(\boldsymbol{\nu}) V(\boldsymbol{\nu}) \ast M(\boldsymbol{\nu})V(\boldsymbol{\nu}) \left(\xi  + T_s \varsigma W(\boldsymbol{\nu})  \right) \right\} \right] \\
+	&= \mathbf{E}\left[\mathcal{F}^{-1} \left\{e^{i\boldsymbol{\nu}^{\top}\boldsymbol{\tau}} M(\boldsymbol{\nu}) M(\boldsymbol{\nu}) V(\boldsymbol{\nu}) \ast V(\boldsymbol{\nu}) \left(\xi  + T_s \varsigma W(\boldsymbol{\nu}) \right) \right\} \right] \\
+	&= \mathbf{E}\left[m(\mathbf{r} + \boldsymbol{\tau}) \ast m(\mathbf{r}) \ast v^2(\mathbf{r}) \ast \left(\xi\delta_D(\mathbf{r})  + T_s \varsigma w(\mathbf{r})\right) \right] \\
+	&= \left(R_{y_t,y_t}(\boldsymbol{\tau}) - \delta_K(\boldsymbol{\tau}\right)\sigma_{\varepsilon}^2) \ast \left(\xi\delta_D(\mathbf{r})  + T_s \varsigma w(\mathbf{r})\right) \label{eq:xcorr_with_autocorr}
 \end{align}
-where the associativity and commutativity algebraic properties of the spatial convolution where used to move from equation~\ref{eq:preswap} to equation~\ref{eq:postswap}.
+where $R_{y_{t},y_{t}}(\boldsymbol{\tau})$ is the auto-correlation of the observations, $\delta_K(\cdot)$ is the Kronecker delta function, and $\delta_D(\cdot)$ is the Dirac delta function.
+
+To show how we get this result, we define the auto-correlation of the observations as
+\begin{align}
+	R_{y_{t},y_{t}}(\boldsymbol{\tau}) &= \mathbf{E}\left[y_{t}\left(\mathbf{r}+\boldsymbol{\tau}\right)y_{t}\left(\mathbf{r}\right)\right]\\
+	&= \mathbf{E}\left[m(\mathbf{r} + \boldsymbol{\tau}) \ast v(\mathbf{r}) \times m(\mathbf{r}) \ast v(\mathbf{r})\right] + \delta_K(\boldsymbol{\tau})\sigma_{\varepsilon}^2 \\
+	&= \mathbf{E}\left[\mathcal{F}^{-1}\left\{ \exp(i\boldsymbol{\nu}^{\top}\boldsymbol{\tau})M(\boldsymbol{\nu})V(\boldsymbol{\nu}) \ast M(\boldsymbol{\nu})V(\boldsymbol{\nu}) \right\}\right] + \delta_K(\boldsymbol{\tau})\sigma_{\varepsilon}^2 \\
+	&= \mathbf{E}\left[\mathcal{F}^{-1}\left\{ \exp(i\boldsymbol{\nu}^{\top}\boldsymbol{\tau})M(\boldsymbol{\nu})M(\boldsymbol{\nu})V(\boldsymbol{\nu}) \ast V(\boldsymbol{\nu}) \right\}\right] + \delta_K(\boldsymbol{\tau})\sigma_{\varepsilon}^2 \\
+	&= \mathbf{E}\left[m(\mathbf{r}+\boldsymbol{\tau}) \ast m(\mathbf{r}) \ast v^2(\mathbf{r})\right] + \delta_K(\boldsymbol{\tau})\sigma_{\varepsilon}^2
+\end{align}
+
+Now to isolate the kernel, the Fourier transform is taken
+\begin{align}
+	\mathcal{F}\left\{R_{y_{t},y_{t+1}}(\boldsymbol{\tau})\right\} &\approx \mathcal{F}\left\{ \left(R_{y_t,y_t}(\boldsymbol{\tau}) - \delta_K\left(\boldsymbol{\tau}\right)\sigma_{\varepsilon}^2\right) \ast \left(\xi\delta_D(\mathbf{r})  + T_s \varsigma w(\mathbf{r})\right) \right\} \\
+	&= \mathcal{F}\left\{ R_{y_t,y_t}(\boldsymbol{\tau}) - \delta_K\left(\boldsymbol{\tau}\right)\sigma_{\varepsilon}^2 \right\} \mathcal{F}\left\{ \xi\delta_D(\mathbf{r})  + T_s \varsigma w(\mathbf{r}) \right\}.
+\end{align}
+Now rearranging (Note: this step is wrong. The RHS should be a function of $\boldsymbol\tau$!)
+\begin{equation}
+	\frac{\mathcal{F}\left\{R_{y_{t},y_{t+1}}(\boldsymbol{\tau})\right\}}{\mathcal{F}\left\{ R_{y_t,y_t}(\boldsymbol{\tau}) - \delta_K\left(\boldsymbol{\tau}\right)\sigma_{\varepsilon}^2 \right\}} \approx \mathcal{F}\left\{ \xi\delta_D\left(\mathbf{r}\right)  + T_s \varsigma w(\mathbf{r}) \right\}.
+\end{equation}
+Take inverse Fourier transform and rearrange to get an approximation of the kernel
+\begin{align}
+	\mathcal{F}^{-1}\left\{\frac{\mathcal{F}\left\{R_{y_{t},y_{t+1}}(\boldsymbol{\tau})\right\}}{\mathcal{F}\left\{ R_{y_t,y_t}(\boldsymbol{\tau}) - \delta_K\left(\boldsymbol{\tau}\right)\sigma_{\varepsilon}^2 \right\}}\right\} &\approx \xi\delta_D\left(\mathbf{r}\right)  + T_s \varsigma w(\mathbf{r}) % \\
+	 % 	(\varsigma T_s)^{-1} \mathcal{F}^{-1}\left\{\frac{\mathcal{F}\left\{R_{y_{t},y_{t+1}}(\boldsymbol{\tau})\right\}} {\mathcal{F}\left\{ R_{y_t,y_t}(\boldsymbol{\tau}) - \delta\left(\boldsymbol{\tau}\right)\sigma_{\varepsilon}^2 \right\}}\right\} - (\varsigma T_s)^{-1}\xi &\approx w(\mathbf{r})
+\end{align}
+This equation states that the support of the kernel can be estimated given knowledge of $\sigma_\varepsilon^2$. Furthermore, is we assume a local coupling (at $\boldsymbol\tau=0$) regime, either excitation or inhibition, than we don't even need to know $\sigma_\varepsilon^2$. The peak in the kernel at $\mathbf{r}=0$ will be bigger or smaller if we guess incorrectly and the kernel parameters can do the rest!
 % 
-% Evaluating the middle term for the saturation regions. If $v_t(\mathbf{r}') \le v_1$ then the middle term will equate to zero. If $v_t(\mathbf{r}') \ge v_2$ then we get
 % \begin{align}
-% 	middle term &= T_s \mathbf{E} \left[ \bar{y}_t\left(\mathbf{r}_n+\boldsymbol{\tau}\right) \int_{\Omega} { m\left(\mathbf{r}_n-\mathbf{r}'\right) \int_\Omega { w\left(\mathbf{r},\mathbf{r}''\right) \, d\mathbf{r}''} \, d\mathbf{r}'} \right] \\
-% 	&= T_s a_1 \mathbf{E}\left[ \bar{y}_t \left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ m\left(\mathbf{r}_n - \mathbf{r}'\right)\, d\mathbf{r}'} \right] \\
-% 	&= T_s a_1 a_2 \mathbf{E}\left[ \bar{y}_t \left( \mathbf{r}_n + \boldsymbol{\tau} \right) \right],
+% 	middle term &= T_s\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ m\left(\mathbf{r}_n-\mathbf{r}'\right)\int_\Omega { w\left(\mathbf{r}',\mathbf{r}''\right) f\left(v_t\left(\mathbf{r}''\right)\right)\, d\mathbf{r}''}\, d\mathbf{r}'}\right]  \\
+% 	&=T_s\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ m\left(\mathbf{r}_n-\mathbf{r}'\right)\int_\Omega { w\left(\mathbf{r}',\mathbf{r}''\right) \varsigma v_t\left(\mathbf{r}''\right)\, d\mathbf{r}''}\, d\mathbf{r}'}\right] \label{eq:preswap}  \\
+% 	&= T_s\varsigma\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ w\left(\mathbf{r}_n,\mathbf{r}'\right) \int_\Omega {  m\left(\mathbf{r}'-\mathbf{r}''\right) v_t\left(\mathbf{r}''\right)\, d\mathbf{r}''}\, d\mathbf{r}'}\right]  \label{eq:postswap} \\
+% 	&= T_s\varsigma\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ w\left(\mathbf{r}_n,\mathbf{r}'\right) \bar{y}_t\left(\mathbf{r}'\right)\, d\mathbf{r}'}\right],	
 % \end{align}
-% where $a_1$ is the integral of the connectivity kernel and $a_2$ is the integral of the observation kernel.
-
-Under the assumption that the field is in the linear region of the sigmoid for the majority of time then
-\begin{equation}\label{eq:approx_xcorr}
-	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) \approx \xi R_{  \bar{y}_{t},\bar{y}_{t} } (\boldsymbol{\tau}) + T_s\varsigma\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ w\left(\mathbf{r}_n,\mathbf{r}'\right) \bar{y}_t\left( \mathbf{r}' \right)\, d\mathbf{r}'}\right].
-\end{equation}
-The autocorrelation of the noisy observations is
-\begin{equation}\label{eq:autocorrelation_of_y}
-	R_{y_{t},y_{t}}(\boldsymbol{\tau}) = R_{\bar{y}_{t},\bar{y}_{t} } (\boldsymbol{\tau}) + \delta(\boldsymbol{\tau})\sigma_{\varepsilon}^2,
-\end{equation}
-where $\delta(\cdot)$ is the Kronecker delta function. Rearranging equation~\ref{eq:autocorrelation_of_y} and substituting it into equation~\ref{eq:approx_xcorr} gives
-\begin{equation}
-	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) \approx \xi (R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \delta(\boldsymbol{\tau}) \sigma_{\varepsilon}^2) + T_s\varsigma\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ w\left(\mathbf{r}_n,\mathbf{r}'\right) \bar{y}_t\left( \mathbf{r}' \right)\, d\mathbf{r}'}\right],	
-\end{equation}
-and
-\begin{equation}\label{eq:support_estimator}
-	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) - \xi (R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \delta(\boldsymbol{\tau}) \sigma_{\varepsilon}^2) \approx T_s\varsigma\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ w\left(\mathbf{r}_n,\mathbf{r}'\right) \bar{y}_t\left( \mathbf{r}' \right)\, d\mathbf{r}'}\right].	
-\end{equation}
-The right hand side of equation~\ref{eq:support_estimator} will have the structure of the connectivity kernel. 
-
-This may hold:
-\begin{equation}
-	R_{\bar{y}_{t},\bar{y}_{t} } (\boldsymbol{\tau}) = \sigma_d \int_{\Omega}{ m(\mathbf{r}_n+\boldsymbol{\tau}-\mathbf{r}')\int_{\Omega}{ m(\mathbf{r}'_n-\mathbf{r}'') \gamma(\mathbf{r}'-\mathbf{r}'') d\mathbf{r}''} d\mathbf{r}'}.
-\end{equation}
-If it does then we can estimate the support of the disturbance using the correlation analysis if the bandwidth of the sensor is wider than the bandwidth of the disturbance.\\
-the proof of the above\\
-\begin{align}
-	R_{y_{t},y_{t}}(\boldsymbol{\tau}) &= \mathbf{E}\left[y_{t}\left(\mathbf{r}_n+\boldsymbol{\tau}\right)y_{t}\left(\mathbf{r}_n\right)\right] \\
-	&= \mathbf{E}\left[\left(\int_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} + \boldsymbol{\varepsilon}_t\left(\mathbf{r}_n+\boldsymbol{\tau}\right)\right) \left(\int_{\Omega}{ m\left(\mathbf{r}_n - \mathbf{r}''\right) v_{t}\left(\mathbf{r}''\right) \, d\mathbf{r}''} + \boldsymbol{\varepsilon}_{t}\left(\mathbf{r}_n\right)\right) \right]\\
-	&=\mathbf{E}\left[\int_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} \int_{\Omega}{ m\left(\mathbf{r}_n - \mathbf{r}''\right) v_{t}\left(\mathbf{r}''\right) \, d\mathbf{r}''}\right]\\
-	&=\iint_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) m\left(\mathbf{r}_n - \mathbf{r}''\right) \mathbf{E}\left[v_t\left(\mathbf{r}'\right) v_{t}\left(\mathbf{r}''\right)\right]\, d\mathbf{r}'}{ \, d\mathbf{r}''}\\
-	&=\sigma_d\iint_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) m\left(\mathbf{r}_n - \mathbf{r}''\right)\gamma(\mathbf{r}'-\mathbf{r}'') \, d\mathbf{r}'}{ \, d\mathbf{r}''}\label{eq:ObsCorr}
-\end{align}
+% where the associativity and commutativity algebraic properties of the spatial convolution where used to move from equation~\ref{eq:preswap} to equation~\ref{eq:postswap}.
+% % 
+% % Evaluating the middle term for the saturation regions. If $v_t(\mathbf{r}') \le v_1$ then the middle term will equate to zero. If $v_t(\mathbf{r}') \ge v_2$ then we get
+% % \begin{align}
+% % 	middle term &= T_s \mathbf{E} \left[ \bar{y}_t\left(\mathbf{r}_n+\boldsymbol{\tau}\right) \int_{\Omega} { m\left(\mathbf{r}_n-\mathbf{r}'\right) \int_\Omega { w\left(\mathbf{r},\mathbf{r}''\right) \, d\mathbf{r}''} \, d\mathbf{r}'} \right] \\
+% % 	&= T_s a_1 \mathbf{E}\left[ \bar{y}_t \left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ m\left(\mathbf{r}_n - \mathbf{r}'\right)\, d\mathbf{r}'} \right] \\
+% % 	&= T_s a_1 a_2 \mathbf{E}\left[ \bar{y}_t \left( \mathbf{r}_n + \boldsymbol{\tau} \right) \right],
+% % \end{align}
+% % where $a_1$ is the integral of the connectivity kernel and $a_2$ is the integral of the observation kernel.
+% 
+% The first term on the right hand side of equation~\ref{eq:spatialxcorr} is
+% \begin{equation}
+% 	R_1(\boldsymbol{\tau}) = \xi R_{\bar{y}_{t},\bar{y}_{t}}(\boldsymbol{\tau}),
+% \end{equation}
+% which is the spatial autocorrelation of the observations scaled by the decay parameter $\xi$.
+% 
+% Under the assumption that the field is in the linear region of the sigmoid for the majority of time then
+% \begin{equation}\label{eq:approx_xcorr}
+% 	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) \approx \xi R_{  \bar{y}_{t},\bar{y}_{t} } (\boldsymbol{\tau}) + T_s\varsigma\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ w\left(\mathbf{r}_n,\mathbf{r}'\right) \bar{y}_t\left( \mathbf{r}' \right)\, d\mathbf{r}'}\right].
+% \end{equation}
+% The autocorrelation of the noisy observations is
+% \begin{equation}\label{eq:autocorrelation_of_y}
+% 	R_{y_{t},y_{t}}(\boldsymbol{\tau}) = R_{\bar{y}_{t},\bar{y}_{t} } (\boldsymbol{\tau}) + \delta(\boldsymbol{\tau})\sigma_{\varepsilon}^2,
+% \end{equation}
+% where $\delta(\cdot)$ is the Kronecker delta function. Rearranging equation~\ref{eq:autocorrelation_of_y} and substituting it into equation~\ref{eq:approx_xcorr} gives
+% \begin{equation}
+% 	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) \approx \xi (R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \delta(\boldsymbol{\tau}) \sigma_{\varepsilon}^2) + T_s\varsigma\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ w\left(\mathbf{r}_n,\mathbf{r}'\right) \bar{y}_t\left( \mathbf{r}' \right)\, d\mathbf{r}'}\right],	
+% \end{equation}
+% and
+% \begin{equation}\label{eq:support_estimator}
+% 	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) - \xi (R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \delta(\boldsymbol{\tau}) \sigma_{\varepsilon}^2) \approx T_s\varsigma\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ w\left(\mathbf{r}_n,\mathbf{r}'\right) \bar{y}_t\left( \mathbf{r}' \right)\, d\mathbf{r}'}\right].	
+% \end{equation}
+% The right hand side of equation~\ref{eq:support_estimator} will have the structure of the connectivity kernel. To show this let
+% \begin{align}
+% 	Z &= \mathcal{F}\left\{\bar{y}_t\left( \mathbf{r} + \boldsymbol{\tau} \right) \int_{\Omega}{ w\left(\mathbf{r},\mathbf{r}'\right) \bar{y}_t\left( \mathbf{r}' \right)\, d\mathbf{r}'}\right\} \\
+% 	&= \exp(i\boldsymbol{\nu}^{\top}\boldsymbol{\tau})\bar{Y}(\boldsymbol{\nu}) \ast W(\boldsymbol{\nu})\bar{Y}(\boldsymbol{\nu}) \\
+% 	&= \exp(i\boldsymbol{\nu}^{\top}\boldsymbol{\tau})W(\boldsymbol{\nu})\bar{Y}(\boldsymbol{\nu}) \ast \bar{Y}(\boldsymbol{\nu}),
+% \end{align}
+% using the associativity with scalar multiplication property of convolution. Now taking the inverse Fourier transform
+% \begin{align}
+% 	z &= \mathcal{F}^{-1}\left\{ \exp(i\boldsymbol{\nu}^{\top}\boldsymbol{\tau})W(\boldsymbol{\nu})\bar{Y}(\boldsymbol{\nu}) \ast \bar{Y}(\boldsymbol{\nu})\right\} \\
+% 	&= w(\mathbf{r}+\boldsymbol{\tau}) \ast \bar{y}^2(\mathbf{r}) \\
+% 	&= \int_{\Omega}{w(\mathbf{r}+\boldsymbol{\tau},\mathbf{r}')\bar{y}^2(\mathbf{r}')d\mathbf{r}'}
+% \end{align}
+% 
+% 
+% This may hold:
+% \begin{equation}
+% 	R_{\bar{y}_{t},\bar{y}_{t} } (\boldsymbol{\tau}) = \sigma_d \int_{\Omega}{ m(\mathbf{r}_n+\boldsymbol{\tau}-\mathbf{r}')\int_{\Omega}{ m(\mathbf{r}'_n-\mathbf{r}'') \gamma(\mathbf{r}'-\mathbf{r}'') d\mathbf{r}''} d\mathbf{r}'}.
+% \end{equation}
+% If it does then we can estimate the support of the disturbance using the correlation analysis if the bandwidth of the sensor is wider than the bandwidth of the disturbance.\\
+% the proof of the above\\
+% \begin{align}
+% 	R_{y_{t},y_{t}}(\boldsymbol{\tau}) &= \mathbf{E}\left[\left(\int_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} + \boldsymbol{\varepsilon}_t\left(\mathbf{r}_n+\boldsymbol{\tau}\right)\right) \left(\int_{\Omega}{ m\left(\mathbf{r}_n - \mathbf{r}''\right) v_{t}\left(\mathbf{r}''\right) \, d\mathbf{r}''} + \boldsymbol{\varepsilon}_{t}\left(\mathbf{r}_n\right)\right) \right]\\
+% 		&=\mathbf{E}\left[\int_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} \int_{\Omega}{ m\left(\mathbf{r}_n - \mathbf{r}''\right) v_{t}\left(\mathbf{r}''\right) \, d\mathbf{r}''}\right] + \delta(\boldsymbol{\tau})\sigma_{\varepsilon}^2 \\
+% 		&=\iint_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) m\left(\mathbf{r}_n - \mathbf{r}''\right) \mathbf{E}\left[v_t\left(\mathbf{r}'\right) v_{t}\left(\mathbf{r}''\right)\right]\, d\mathbf{r}'}{ \, d\mathbf{r}''} + \delta(\boldsymbol{\tau})\sigma_{\varepsilon}^2\\
+% 		&=\sigma_d\iint_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) m\left(\mathbf{r}_n - \mathbf{r}''\right)\gamma(\mathbf{r}'-\mathbf{r}'') \, d\mathbf{r}'}{ \, d\mathbf{r}''} + \delta(\boldsymbol{\tau})\sigma_{\varepsilon}^2\label{eq:ObsCorr}
+% \end{align}
 
 % Therefore we can write
 % \begin{equation}
@@ -352,9 +406,11 @@ where $\boldsymbol{\nu}_c$ is a cutoff frequency (typically taken as the -3~dB p
 \begin{equation}
 	\label{eq:MinimumSensorDistance} \Delta_y \leq \frac{1}{2\rho_y\boldsymbol{\nu}_{c}}, 
 \end{equation}
-where $\rho_y \in \mathbb{R} \ge 1$ is an oversampling parameter. This condition must be satisfied to avoid spatial spectral aliasing effects when reconstructing the hidden dynamic field, $v_t(\mathbf{r})$, using the sampled observations, $\mathbf{y}_t$.
+where $\rho_y \in \mathbb{R} \ge 1$ is an oversampling parameter. \dean{(reviewer 1, additional comment 3:) A derivation of the sampling theorem that is based on the work of \citet{Sanner1992} and \citet{Scerri2009} is provided in \ref{App:SamplingTheorem}}. The condition in equation~\ref{eq:MinimumSensorDistance} must be satisfied to avoid spatial spectral aliasing effects when reconstructing the hidden dynamic field, $v_t(\mathbf{r})$, using the sampled observations, $\mathbf{y}_t$.
 
-In practice, it is difficult to estimate the bandwidth of the cortex using traditional electrophysiological measurements, possibly preventing placement of sensors in accordance to equation~\ref{eq:MinimumSensorDistance}. However, we envisage it may be possible to estimate the spatial bandwidth using other modalities with higher spatial resolution such as fMRI, NIRS or other optical imaging techniques (\cite{Issa2000}). Spectral aliasing can be avoided by a proper choice of the spatial sampling distance given the sensors' spectral characteristics. The spatial extent of the sensors results in a spectral low-pass action, thus providing spatial anti-aliasing filtering. Such sensors limit the spatial bandwidth of the observation to a value denoted by $\boldsymbol{\nu}_{cy}$. Aliasing can then be avoided by positioning the sensors according to equation~\ref{eq:MinimumSensorDistance}, replacing $\boldsymbol{\nu}_c$ with $\boldsymbol{\nu}_{cy}$.
+In practice, it is difficult to estimate the bandwidth of the cortex using traditional electrophysiological measurements, possibly preventing placement of sensors in accordance to equation~\ref{eq:MinimumSensorDistance}. However, we envisage it may be possible to estimate the spatial bandwidth using other modalities with higher spatial resolution such as fMRI, NIRS or other optical imaging techniques (\cite{Issa2000}). \dean{Reviewer 2, comment 6: From the work of~\citet{Freeman2000}, the expected bandwidth of the human neocortex is approximately 0.4 cycles/mm which requires a maximal sensor spacing of approximately 1.25 mm to avoid distortions due to aliasing.}
+
+Spectral aliasing can be avoided by a proper choice of the spatial sampling distance given the sensors' spectral characteristics. The spatial extent of the sensors results in a spectral low-pass action, thus providing spatial anti-aliasing filtering. Such sensors limit the spatial bandwidth of the observation to a value denoted by $\boldsymbol{\nu}_{cy}$. Aliasing can then be avoided by positioning the sensors according to equation~\ref{eq:MinimumSensorDistance}, replacing $\boldsymbol{\nu}_c$ with $\boldsymbol{\nu}_{cy}$.
 
 Although such sensors avoid errors due to aliasing, they attenuate the high spatial frequency variations in the observations. Therefore, any procedure applied to estimate the original field or the underlying connectivity structure from these band-limited observations has the potential to underestimate the high spatial frequency components of both the field and the connectivity kernel. This motivates the use of sensors with wider bandwidths (narrower in space). This choice would require more sensors in order to satisfy Shannon's sampling theorem for a given spatial region. Therefore, a compromise should be found between the bandwidth of the sensor response, the accuracy of the estimation results, the number of sensors and the computational demands of the estimation procedure when designing experiments.
 
@@ -405,7 +461,7 @@ where $\mathbf{\bar x}$ represents either $\hat{\mathbf x}_t^{f}$ or $\hat{\math
 \begin{equation}\label{eq:sigmapoints3}
 	\lambda=\alpha^2( n_x+\kappa) - n_x, 
 \end{equation}
-where the constant $\alpha$ determines the spread of the sigma points around $\mathbf{\bar x}$, and $\kappa$ is an additional scaling parameter (see~\citet{Haykin2001} for more details). 
+\parham{(reviewer 2, comment 7:) The positive constant $\alpha$ determines the spread of the sigma points around $\mathbf{\bar x}$ which is set arbitrary small (e.g., $10^{-3}$) to minimise higher order effect \citep{Haykin2001} , and  $\kappa$ is an additional scaling parameter which is usually set to $3-n_x$ \citep{Julier2002a}.}
 
 The sigma vectors are propagated through the system equations and weighted to form the predicted mean and covariance. The weights are calculated by 
 \begin{align}
@@ -413,7 +469,7 @@ The sigma vectors are propagated through the system equations and weighted to fo
 	\mathbf W_0^{(c)}&=\frac{\lambda}{ n_x+\lambda}+(1-\alpha^2+\beta) \\
 	\mathbf W_i^{(m)}&=\mathbf W_i^{(c)}=\frac{1}{2( n_x+\lambda)} \quad i=1, \dots, 2n_x, 
 \end{align}
-where the superscripts $m$ and $c$ denote mean and covariance and $\beta$ incorporates prior knowledge of the distribution of the states, $\mathbf{x}$. Since the observation equation is linear (equation~\ref{ObservationEquation}), the standard Kalman Filter update equations are used to correct the predicted states. The state estimates from forward filtering are used to form a new set of sigma points for the smoother, as described above. The cross-covariance matrix of the states, $\mathbf M$, is also required for computing the smoother gain, as described in the summary of the steps in the URTSS algorithm is given in Table~\ref{tab:UKFAlgorithm}.
+where the superscripts $m$ and $c$ denote mean and covariance and $\beta$ incorporates prior knowledge of the distribution of the states, $\mathbf{x}$ \dean{(for Gaussian disturbance $\beta$ should be set to 2)}. Since the observation equation is linear (equation~\ref{ObservationEquation}), the standard Kalman Filter update equations are used to correct the predicted states. The state estimates from forward filtering are used to form a new set of sigma points for the smoother, as described above. The cross-covariance matrix of the states, $\mathbf M$, is also required for computing the smoother gain, as described in the summary of the steps in the URTSS algorithm is given in Table~\ref{tab:UKFAlgorithm}.
 
 Although the system is nonlinear, the parameters of the system are linear with respect to the state. This is exploited by our procedure where the parameter estimation uses a least squares (LS) method that minimizes the sum of the squared errors (of a predicted state update) with each new estimate of the state vector sequence. To create the least squares parameter estimator, we first define the $n_x \times n_{\theta}$ matrix
 \begin{equation}
@@ -478,11 +534,11 @@ Following this, the LS parameter estimates \citep{Ljung1985}, $ \hat{\mathcal{W}
 The sensors were spaced on a $14 \times 14$ square grid and the sensor width was set to $\sigma^2_m = 0.81$. This provides a width of 1.5~mm at half the maximum amplitude of the observation kernel. The distance between sensors was set to $\Delta_y = 1.5$~mm. This arrangement modeled the recording as having some cross talk (from volume conduction), which is typical for neurophysiological recordings.
 
 \subsection{Spatial Frequency Analysis}
-The spectral analysis was used to confirm that the spacing and width of the sensors was adequate to capture the significant dynamics of the field. Fig.~\ref{fig:Figure4}(A) shows the spatial frequency of the neural field and Fig.~\ref{fig:Figure4}(B) shows the spatial frequency of the reconstructed neural field from the basis function decomposition. The cutoff frequency ($-3$~dB point) of the neural field is $\boldsymbol{\nu}_c \approx 0.24$~Hz. From equation~\ref{eq:MinimumSensorDistance}, this yielded a maximum sensor separation of 2.08~mm. This confirms that the separation of $\Delta_{y} = 1.5$~mm was sufficient to mitigate problems associated with spatial aliasing of the dominant dynamics.
+The spectral analysis was used to confirm that the spacing and width of the sensors was adequate to capture the significant dynamics of the field. Fig.~\ref{fig:Figure4}(A) shows the spatial frequency of the neural field and Fig.~\ref{fig:Figure4}(B) shows the spatial frequency of the reconstructed neural field from the basis function decomposition. The cutoff frequency ($-3$~dB point) of the neural field is \parham{$\boldsymbol{\nu}_c \approx 0.24$~cycles/mm}. From equation~\ref{eq:MinimumSensorDistance}, this yielded a maximum sensor separation of 2.08~mm. This confirms that the separation of $\Delta_{y} = 1.5$~mm was sufficient to mitigate problems associated with spatial aliasing of the dominant dynamics.
 
-The spatial frequency of the observed field is shown in Fig.~\ref{fig:Figure5}(A). The cutoff frequency is $\boldsymbol{\nu}_{cy} \approx 0.2$~Hz ($-3$~dB point). The observation cutoff frequency is lower than the field cutoff due to the low-pass filtering effect of the sensors. The spatial frequency response of the sensors can be seen in Fig.~\ref{fig:Figure5}(B). 
+The spatial frequency of the observed field is shown in Fig.~\ref{fig:Figure5}(A). The cutoff frequency is \parham{$\boldsymbol{\nu}_{cy} \approx 0.2$~cycles/mm} ($-3$~dB point). The observation cutoff frequency is lower than the field cutoff due to the low-pass filtering effect of the sensors. The spatial frequency response of the sensors can be seen in Fig.~\ref{fig:Figure5}(B). 
 
-As described in Section~\ref{SpectralAnalysisSection}, the basis function configuration can be systematically chosen to account for the full spatial bandwidth from the observations, or alternatively, the configuration can be chosen to represent the neural field up to a specified bandwidth to limit the computational complexity of the estimation procedure. In the examples provided in this paper, the later option was chosen, where the neural field cutoff frequency was further reduced to $\boldsymbol{\nu}_{c\phi} = 0.12$~Hz. The band-limiting effect on the field reconstruction can be seen by comparing Fig.~\ref{fig:Figure4}(A) to Fig.~\ref{fig:Figure4}(B). This effect is due to the spatial frequency response of the basis functions, which is shown in Fig.~\ref{fig:Figure5}(C). Due to the slow roll-off in the frequency response of Gaussian basis functions an oversampling parameter of $\rho_{\phi} = 1.67$ was chosen. Given the spectral response of the basis functions, the over-sampling parameter, and the spatial domain an equally spaced grid of $9\times9$ basis functions was used to decompose the field, which resulted in $81$ states. 
+As described in Section~\ref{SpectralAnalysisSection}, the basis function configuration can be systematically chosen to account for the full spatial bandwidth from the observations, or alternatively, the configuration can be chosen to represent the neural field up to a specified bandwidth to limit the computational complexity of the estimation procedure. In the examples provided in this paper, the later option was chosen, where the neural field cutoff frequency was further reduced to \parham{$\boldsymbol{\nu}_{c\phi} = 0.12$~cycles/mm}. The band-limiting effect on the field reconstruction can be seen by comparing Fig.~\ref{fig:Figure4}(A) to Fig.~\ref{fig:Figure4}(B). This effect is due to the spatial frequency response of the basis functions, which is shown in Fig.~\ref{fig:Figure5}(C). Due to the slow roll-off in the frequency response of Gaussian basis functions an oversampling parameter of $\rho_{\phi} = 1.67$ was chosen. Given the spectral response of the basis functions, the over-sampling parameter, and the spatial domain an equally spaced grid of $9\times9$ basis functions was used to decompose the field, which resulted in $81$ states. 
 
 \subsection{State and Parameter Estimates} 
 \label{sec:state_and_param_results}
@@ -517,7 +573,7 @@ When the observation kernel is too narrow, high frequency components in the neur
 \subsection{Implications for Experimental Design}
 As seen in Fig.~\ref{fig:Figure7} and Fig.~\ref{fig:Figure10}, the results show good estimation accuracy for the connectivity kernels, where the true kernels lie within the 95~\% confidence intervals of the kernel estimates. The estimates of the connectivity kernels show relatively broad distributions over the different realizations, which can be expected considering the system's input is modelled as a random disturbance and the observations are corrupted by noise. To overcome the effect of noise, the use of a controlled input stimulus should be considered when applying the estimation algorithm to electrophysiological recordings, where given knowledge of the input and the appropriate model, it is expected that the variance of the parameter estimates would decrease. Even when using a known input, our results imply that we should only expect to learn distributions of parameters, rather than uncover a `true' parameter set. By designing an input signal carefully and using an evoked-potential paradigm where stimuli are repeated many times, recordings could be averaged over a sufficient number of trials (realizations), such that a distribution of the parameter estimates and resulting connectivity kernels can be formed.
 
-The frequency analysis specifies the minimum sensor arrangement that is required to capture the dominant cortical dynamics. As pointed out in numerous publications by Freeman and colleagues (see \citet{Freeman1987} for example), a detailed description of the spatial properties of responses to stimuli is essential in understanding cortical dynamics. Importantly, the spatial frequency analysis tools presented in this paper can be used to design electrophysiological recording systems to avoid spatial aliasing, ensuring the essential spatial dynamics can be observed. In addition, the frequency analysis highlights the relationship between the width of the sensors and the information in the data. This analysis is becoming increasingly relevant as recording systems are becoming more sophisticated with higher density electrodes \citep{Brinkmann2009}.
+The frequency analysis specifies the minimum sensor arrangement that is required to capture the dominant cortical dynamics. As pointed out in numerous publications by Freeman and colleagues (see \citet{Freeman1987} for example), a detailed description of the spatial properties of responses to stimuli is essential in understanding cortical dynamics. Importantly, the spatial frequency analysis tools presented in this paper can be used to design \dean{(reviewer 1, item 3:) high density intracranial} electrophysiological recording systems to avoid spatial aliasing, ensuring the essential spatial dynamics can be observed. In addition, the frequency analysis highlights the relationship between the width of the sensors and the information in the data. This analysis is becoming increasingly relevant as recording systems are becoming more sophisticated with higher density electrodes \citep{Brinkmann2009}.
 
 \subsection{Computational Complexity}
 The closest competitor to our `grey-box' integro-difference equation approach is perhaps the multivariate auto-regressive (MVAR) model, which is a `black-box' approach. Examples of MVAR models for estimating functional connectivity include Granger causality \citep{Hesse2003}, the direct transfer function \citep{Kaminski1991}, and partial directed coherence \citep{Sameshima1999}. A distinct advantage of the integro-difference equation based technique proposed in this current study is that the number of parameters required to model the system is considerably less than a typical MVAR model. Furthermore, by using the neural field equations as a parametric form of a model, the estimated quantities have physical meaning and, therefore, can be clinically relevant. An advantage of the MVAR-based methods is that they allow for inhomogeneous connectivity, which is present in the longer range cortico-cortical fibres. 
@@ -534,6 +590,14 @@ Generating data-driven neural field models has the potential to have significant
 Estimation of the connectivity structure or the synaptic time constant may also have significant impact on the treatment of disease. For example, recent theoretical work has demonstrated that seemingly similar electrographic seizures in absence epilepsy may arise from either abnormal excitatory or inhibitory mechanisms \citep{Marten2009}. These very different mechanisms would require very different medications for successful treatment. However, the underlying mechanisms would be hidden from the clinician in the normal clinical setting. Successful parameter estimation has the potential to reveal these hidden mechanisms allowing for improved treatment strategies. 
 
 The development of the estimation framework also has implications for theoretical neuroscience, where the ability to estimate subject-specific properties will allow testing of hypotheses that have been generated in computational modeling studies. This has the potential to validate neural field models and, in doing so, provide new insights that may lead to a greater understanding of mesoscopic and macroscopic neurodynamics. For example, using the proposed model-based framework, we can reconstruct a neural field from data and estimate parameters to check if they correspond to theoretically derived values where certain solutions may exist. In addition, the parameters and the state-space can be explored during cognitive tasks and states of arousal such as sleep and anaesthesia. 
+
+\subsection{Modeling Assumptions}
+\dean{(comment 1 and 9 from reviewer 2:) It is an implicit assumption that the neural field model (in equation~\ref{DiscreteTimeModel}) provides an apt description of the cortical dynamics recorded from the subject. Although models of this form are capable of describing a variety of cortical dynamics, there is without doubt, a mismatch between the cortex and the model. Nevertheless, there is a sufficient volume of interesting results from theoretical studies that warrants the data assimilation framework. }
+
+\dean{An advantage in using a mean field model over a more detailed mathematical description is that the myriad of parameters that might influence excitability, such as specific ion concentrations, are considered to be lumped into the connectivity kernel coefficients that effectively describe the net system gain. In this way a minimal number of assumptions are made. A major challenge in data assimilation for the mass action of the brain is to make models sufficiently detailed such that the parameters are meaningful, but simple enough to yield clear insights that can be related to theoretical studies (from both neuroscience and engineering perspectives).}
+
+\dean{The framework assumes that the parameters of the model (and brain) are stationary over the estimation period. This is a reasonable assumption if applying the framework to an evoked-potential experiment over a short time period in a controlled environment. However, it is well known that factors that influence excitability are non-stationary over longer time periods (see \citet{Ullah2010} for a nice example). Therefore, the estimation framework must be altered if it is to be applied to data over extended periods of time. A possible way to achieve this is to use a more sophisticated model that accounts for longer term time dependancies (higher temporal order). Alternatively, the parameters of the model could be considered time-varying, where changes in excitability might result in different connectivity kernel parameters. A possible way to achieve this would be to employ window-based estimation, where the estimation is performed on successive windows of data (possibly overlapping windows). The window length will need to be sufficiently short such that the parameters are approximately stationary of the estimation duration, and sufficiently long to achieve a good estimation result. A real-time implementation can also be achieved using the UKF (without the smoother) and a real-time LS estimator (see REF for example). }
+
 
 \subsection{Extensions to the framework}
 In this study, an assumption was made that the chosen kernel basis functions can exactly represent the actual connectivity kernel. In future work, we plan to relax this assumption. In addition, we have assumed that the neural field is isotropic and homogeneous. It is generally accepted that the intracortical connectivity structure can be accurately modelled as being isotropic. However, the assumption of homogeneity is quite strong as the size of the neural field becomes larger. Future work should focus on developing estimation algorithms where assumptions of homogeneity can be relaxed. In addition, natural extensions of this framework are the inclusion of a post-synaptic response kernel with a finite rise and decay time, and a finite distant-dependant action potential propagation velocity into the parametric neural field equations.
@@ -593,8 +657,8 @@ Dean Freestone would like to thank Dr. Mark van Rossum for hosting him while vis
 	\hline
 	\multicolumn{3}{|c|}{\emph{Frequency Analysis}} \\
 	\hline
-	$\boldsymbol{\nu}$, $\boldsymbol{\nu}_c$ & spatial frequency and spatial cutoff frequency & Hz \\
-	$\sigma_{\nu}^2$ & variance of Fourier transformed Gaussian basis function & Hz$^2$\\
+	$\boldsymbol{\nu}$, $\boldsymbol{\nu}_c$ & spatial frequency and spatial cutoff frequency & \parham{cycles/mm} \\
+	$\sigma_{\nu}^2$ & variance of Fourier transformed Gaussian basis function & \parham{(cycles/mm)$^2$}\\
 	\hline
 	\multicolumn{3}{|c|}{\emph{Estimation}} \\
 	\hline
@@ -756,7 +820,7 @@ $\mathbf P_{t}^{b}=\mathbf P_{t}^{f}+\mathbf S_t\left[\mathbf P_{t+1}^{b}-\mathb
 \newpage
 \clearpage
 \section*{Figure Legends}
-{\bf Figure 1. Mexican-hat connectivity kernel.} The kernel is rotationally symmetric (isotropic) about zero, hence a cross-section captures the important aspect of the connectivity kernel's shape. The kernel decays asymptotically to zero.
+{\bf Figure 1. Mexican-hat connectivity kernel.} \parham{(reviewer 2, comment 8:) The kernel is a composite of three Gaussian basis functions (dashed lines), representing short-range excitation, mid-range inhibition and long-range excitation.} The kernel is rotationally symmetric (isotropic) about zero, hence a cross-section captures the important aspect of the connectivity kernel's shape. The kernel decays asymptotically to zero.
 
 {\bf Figure 2. Example of a one-dimensional field decomposition.} A continuous, one-dimensional field decomposed by a finite number of basis functions scaled by the state vector. The dashed line depicts the field, the black solid lines show the Gaussian basis functions and the vertical lines show the position and amplitude of the states.
 
@@ -1065,6 +1129,7 @@ The stimulation waveform for the current source consisted of a 40~Hz sine wave w
 	a = \frac{1}{T}\sum_t{\sqrt{(y_t^2-\mathcal{H}y_t^2})}
 \end{equation}
 where $\mathcal{H}$ denotes the Hilbert transform operator, $t$ indexes samples and $T$ is the total number of samples in the time series. Fig.~\ref{fig:Ch3} shows the mean amplitude of the recorded envelope versus the distance between the twisted wire electrode and the recording electrode. A Gaussian fitted to the amplitudes is also shown. The figure shows that a Gaussian is indeed a good model for the sensor kernel in the homogeneous solution.
+
 \section{Inner Product of Two \emph{n}-Dimensional Gaussians}\label{App:InnerProdOfGaussians}
 The derivation in this section was used for calculating the matrix $\mathbf \Gamma$ from equation~\ref{eq:DefGamma}. Consider two Gaussian basis functions
 \begin{equation}\label{eq:n_dimensional_Gaussian1}
@@ -1099,6 +1164,7 @@ Now we solve the convolution using the formula derived in \ref{ap:ConvOfGaussian
 &\times\mathrm{exp}\left({-\frac{1}{\sigma_i^2+\sigma_j^2} (\boldsymbol\mu_i-\boldsymbol\mu_j)^\top(\boldsymbol\mu_i-\boldsymbol\mu_j)}\right).
 \end{align}
 This completes the derivation.
+
 \section{Convolution of Two $n$-Dimensional Gaussians}\label{ap:ConvOfGaussians}
 In this section, we provide a derivation for the convolution of two $n$-dimensional Gaussian basis functions. This derivation is used in the analytic calculation of $\boldsymbol\Psi(\mathbf{r})$ and the elements of the observation matrix, $\mathbf C$. Consider the two Gaussian basis functions from equations~\ref{eq:n_dimensional_Gaussian1} and~\ref{eq:n_dimensional_Gaussian2}. The derivation proceeds by assuming the Gaussian basis functions are positioned at the origin ($\boldsymbol\mu_i=\boldsymbol\mu_j=\mathbf 0$). The convolution theorem states that the Fourier transform of the convolution of two functions is equal to the product of their Fourier transforms. Using the formula from the derivation of the Fourier transform of a \emph{n}-dimensional Gaussian from equation~\ref{eq:FTofGaussian} in \ref{App:FrequencyAnalysis}, we have
 \begin{equation}\label{eq:FTTwoGaussianMultiplication}
@@ -1119,6 +1185,7 @@ In the case where $\boldsymbol\mu_i\neq\boldsymbol\mu_j\neq\mathbf 0$, equation~
 \times & \mathrm{exp}\left({-\frac{1}{\sigma_i^2+\sigma_j^2} (\mathbf r-\boldsymbol\mu)^\top(\mathbf r-\boldsymbol\mu)}\right),
 \end{align}
 where $\boldsymbol\mu=\boldsymbol\mu_i+\boldsymbol\mu_j$.
+
 \section{Mean and Covariance of the State Disturbance }\label{App:ColoredNoise} 
 In this section, we show that the state disturbance vector is $\mathbf{e}_t\sim\mathcal{N}(\mathbf 0,\boldsymbol\Sigma_e)$ if $e_t(\mathbf{r})\sim\mathcal{GP}\left(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}')\right)$. We begin the derivation by acknowledging the state disturbance vector is a linear function of $e_t(\mathbf r)$. Therefore, $\mathbf{e}_t$ also follows a Gaussian distribution. From equation~\ref{eq:Wt}, the state disturbance vector is defined as
 \begin{equation}
@@ -1135,6 +1202,35 @@ The covariance of $\mathbf{e}_t$ is
 	&=\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega} \boldsymbol{\phi}(\mathbf{r}) \mathbf E[e_t(\mathbf{r})e_t(\mathbf{r}')]\boldsymbol{\phi}^{\top}(\mathbf{r}')d\mathbf{r}' d\mathbf r\mathbf{\Gamma}^{- \top} \nonumber\\
 	&=\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega}\boldsymbol{\phi}(\mathbf r) \gamma(\mathbf r- \mathbf r' )\boldsymbol{\phi}^{\top}(\mathbf r')d\mathbf r' d\mathbf r\mathbf{\Gamma}^{-\top}.
 \end{align}
+
+\section{Derivation of Sampling Theorem}\label{App:SamplingTheorem}
+\dean{This appendix provides a derivation for equations~\ref{eq:MinimumSensorDistance} and \ref{eq:BasisFunctionSeparation}. The derivation is adapted from \citet{Sanner1992} and \citet{Scerri2009}. Consider the cortical sheet defined on the surface $\Omega$ with sensors placed on a regular grid at positions $\mathbf{r}_n$ (where $n=0,...,n_y-1$ indexes the sensors) that are separated by the distance $\Delta_y$. Noise-free observations can be considered samples from a continuous field that is filtered (convolved) with the observation kernel described by
+\begin{equation}
+	y(\mathbf{r}_n)=\delta(\mathbf r - \mathbf{r}_n ) v_m(\mathbf{r}),
+\end{equation} 
+where $v_m(\mathbf{r}) = v_t(\mathbf{r})\ast m(\mathbf{r})$. The observations in matrix form is described by
+\parham{\begin{equation}
+	\mathbf y=\sum_{n=0}^{n_y-1}\delta(\mathbf r - \mathbf{r}_n ) v_m(\mathbf{r}).
+\end{equation}}
+The Fourier transform of $\mathbf{y}$ is
+\begin{align}
+ Y(\boldsymbol{\nu}) &= \frac{1}{\Delta_y^2}\sum_{n=0}^{n_y-1} \delta\left(\boldsymbol{\nu}-\frac{\mathbf{k}_n}{\Delta_y}\right) \ast V_m(\boldsymbol \nu) \\
+	&= \frac{1}{\Delta_y^2}V_m(\boldsymbol\nu) + \frac{1}{\Delta_y^2} \sum_{n=1}^{n_y-1} V_m\left(\boldsymbol{\nu}-\frac{\mathbf{k}_n}{\Delta_y}\right),
+\end{align} 
+where $\mathbf{k}$ is a $n_y \times 2$ matrix, spatially indexing the sensors (the columns are different spatial dimensions such that $\mathbf{r}_n = \Delta_y \mathbf{k}$). It should be clear that $Y(\boldsymbol{\nu})$ contains $V_m(\boldsymbol\nu)$ plus $n_y-1$ copies (aliases) of $V_m(\boldsymbol\nu)$ repeated on the regular lattice, where each copy is centered at $n\Delta_y^{-1}$. Due to the lowpass action of the observation kernel, the filtered dynamic field is band-limited with a cutoff frequency $\boldsymbol\nu_{cy}$. In order for $V_m(\boldsymbol\nu)$ to be disjointed from its aliases, the amount of shift $\Delta_y^{-1}$ must be at least $2\boldsymbol\nu_{cy}$, since each alias has a spectral range of
+\begin{equation}
+	\boldsymbol\nu = \left[\frac{n}{\Delta_y}-\boldsymbol{\nu}_{cy},\frac{n}{\Delta_y}+\boldsymbol{\nu}_{cy}\right].
+\end{equation}
+Therefore, to avoid aliasing the distance between observations must satisfy
+\begin{equation}\label{eq:SamplingCriteria}
+	\frac{1}{\Delta_y} \ge 2\boldsymbol{\nu}_{cy}.
+\end{equation}
+Since the observation kernel is not an ideal filter, an oversampling parameter should be included to further separate the aliases. Rearranging equation~\ref{eq:SamplingCriteria} and adding the oversampling parameter, $\rho$, gives
+\begin{equation}\label{ap:Shannon}
+	\Delta_y\le\frac{1}{2\rho\boldsymbol{\nu}_{cy}},
+\end{equation}
+where $\rho \in \mathbb{R} \ge 1$.}
+
 \section{Spatial Cut-off Frequency of the Field Basis Functions}\label{App:FrequencyAnalysis}
 This section provides a derivation for the width of the Fourier transform of the field basis functions in terms of their spatial cut-off frequency (equations~\ref{eq:GaussianFT} and~\ref{eq:WidthFrequencyRelationship}). We define an \textit{n}-dimensional Gaussian centered at the origin as 
 \begin{equation}
@@ -1166,6 +1262,9 @@ since the maximum of the Gaussian described in equation~\ref{eq:FTofGaussian} is
 \begin{equation}
  \sigma_{\nu}^2=\frac{2\boldsymbol\nu_{c}^\top \boldsymbol\nu_{c}}{\ln 2 }.
 \end{equation}
+
+
+
 
 \end{document}
 

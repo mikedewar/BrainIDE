@@ -53,39 +53,39 @@ for n=1:NPointsInField
         Sigma_gamma(:,mm) = temp2(:);
         mm=mm+1;
         
-        clim = [-200 -1];         % for log
-        clim = [0 0.08];
-
-        subplot(3,3,1),imagesc(topleft,clim)
-        subplot(3,3,2),imagesc(top,clim)
-        subplot(3,3,3),imagesc(topright,clim)
-        
-        subplot(3,3,4),imagesc(left,clim)
-        subplot(3,3,5),imagesc(middle,clim)
-        subplot(3,3,6),imagesc(right,clim)
-        
-        subplot(3,3,7),imagesc(bottomleft,clim)
-        subplot(3,3,8),imagesc(bottom,clim)
-        subplot(3,3,9),imagesc(bottomright,clim)
+%         clim = [-200 -1];         % for log
+%         clim = [0 0.08];
 % 
- %       imagesc(log10(temp2))
-        drawnow
-        clim = [0 0.08];
-% 
-        subplot(3,3,1),imagesc(topleft,clim)
-        subplot(3,3,2),imagesc(top,clim)
-        subplot(3,3,3),imagesc(topright,clim)
-        
-        subplot(3,3,4),imagesc(left,clim)
-        subplot(3,3,5),imagesc(middle,clim)
-        subplot(3,3,6),imagesc(right,clim)
-        
-        subplot(3,3,7),imagesc(bottomleft,clim)
-        subplot(3,3,8),imagesc(bottom,clim)
-        subplot(3,3,9),imagesc(bottomright,clim)
-% 
-%         imagesc(log10(temp2))
-        drawnow
+%         subplot(3,3,1),imagesc(topleft,clim)
+%         subplot(3,3,2),imagesc(top,clim)
+%         subplot(3,3,3),imagesc(topright,clim)
+%         
+%         subplot(3,3,4),imagesc(left,clim)
+%         subplot(3,3,5),imagesc(middle,clim)
+%         subplot(3,3,6),imagesc(right,clim)
+%         
+%         subplot(3,3,7),imagesc(bottomleft,clim)
+%         subplot(3,3,8),imagesc(bottom,clim)
+%         subplot(3,3,9),imagesc(bottomright,clim)
+% % 
+%  %       imagesc(log10(temp2))
+%         drawnow
+%         clim = [0 0.08];
+% % 
+%         subplot(3,3,1),imagesc(topleft,clim)
+%         subplot(3,3,2),imagesc(top,clim)
+%         subplot(3,3,3),imagesc(topright,clim)
+%         
+%         subplot(3,3,4),imagesc(left,clim)
+%         subplot(3,3,5),imagesc(middle,clim)
+%         subplot(3,3,6),imagesc(right,clim)
+%         
+%         subplot(3,3,7),imagesc(bottomleft,clim)
+%         subplot(3,3,8),imagesc(bottom,clim)
+%         subplot(3,3,9),imagesc(bottomright,clim)
+% % 
+% %         imagesc(log10(temp2))
+%         drawnow
      end
  end
 

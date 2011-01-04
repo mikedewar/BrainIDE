@@ -15,7 +15,6 @@
         plotdata = 0;
     end
 
-    load InitialConditionandDisturbance.mat
     % create the observation disturbance
     varepsilon = mvnrnd(zeros(1,NSensors),Sigma_varepsilon,T);
 
@@ -34,7 +33,13 @@
 
     disp('generating data')
     % initialize field
+%         load InitialConditionandDisturbance.mat
+
+    max_field_init = gamma_weight;
+    min_field_init = -gamma_weight;
     v = zeros(T,NPoints,NPoints);
+    InitialCondition = min_field_init + (max_field_init - min_field_init)*rand(NPoints,NPoints);
+    
     v(1,:,:) = InitialCondition;%Define2DGaussian(0,0, sigma_phi^2, 0,NPoints,SpaceMin,SpaceMax);
 
     % generate data
