@@ -58,6 +58,8 @@
 
         \item The existing literature on inversion schemes for similar models of brain activity.
 
+	\emph{Valdes uses a Lopes Da Silva / Freeman neural mass model. }
+
         \item In section 3, Table 6 is mentioned however there is no such table in the ms.
     \end{enumerate}
     
@@ -91,7 +93,7 @@
 
 \item In equation 29, what would a reasonable $v_c$ be for a real neuronal system (mammalian) given the number of neurons and scale of electrodes? I am concerned that it might be much higher than any of us wish to consider. One would perhaps be saved by the filter characteristics of brain (e.g. Phys. Rev. E 73, 051911 (2006)).
 
-\emph{The spatial frequency content is seems to be actually lower than one might first think. We have added 'From the work of (Freeman et al, 2000), the expected bandwidth of the human neocortex is approximately 0.4 cycles/mm which requires a maximal sensor spacing of approximately 1.25 mm to avoid distortions due to aliasing' to the Frequency Analysis section of the paper to clear this up. Note, we expect the spatial bandwidth of the cortex to be governed by the connectivity kernel, since it is equivalent to a spatial low-pass filter acting on the firing rates.  }
+\emph{The spatial frequency content is seems to be actually lower than one might first think. We have added `From the work of (Freeman et al, 2000), the expected bandwidth of the human neocortex is approximately 0.1-0.4 cycles/mm which requires a sensor spacing of approximately 1.25 mm to avoid distortions due to aliasing' to the Frequency Analysis section of the paper to clear this up. We have also added to the discussion. Note, we expect the spatial bandwidth of the cortex to be governed by the connectivity kernel, since it is equivalent to a spatial low-pass filter acting on the firing rates.  }
 
 \item The two covariance inflation parameters in equation 41 make me cringe. How are we best to adjust these fudge factors?\\
 
@@ -99,7 +101,7 @@
 
 \item I understand that the Mexican Hat bases are in this paper often a composite of $\theta_0$, $\theta_1$, and $\theta_2$, representing short range excitation, short range inhibition, and long range excitation. But many will be confused by this subtlety, and at times in the text the Mexican Hat basis is described as if it were a single function. I would show how the theta's sum to create the general spatial basis shape of the hat in figure 1, and go through the paper in order to clarify this issue.\\
 
-\emph{This point is clarified by adding the connectivity kernel componets superimposed by the resulting Mexican Hat basis in Figure 1. of the manuscript.}
+\emph{This point is clarified by adding the connectivity kernel components superimposed by the resulting Mexican Hat basis in Figure 1. of the manuscript.}
 
  \begin{figure*}[!ht]
  \begin{center}
@@ -110,7 +112,10 @@
  \end{figure*}
 
 \item A few comments on how to adapt the smoother for real time implementation would be helpful. I presume that one would perform the smoothing during a training phase. But one would also wish to adapt in real time as observation or control scenarios progressed. A few words of perspective would be invaluable to help others translate the author's wisdom on this method to other applications.
-\item Figure 4. Should the axes be indicated as spatial frequency rather than just Hz?\\
+
+\emph{A few comments have been added to the Modeling Assumptions section of the discussion.}
+
+\item Figure 4. Should the axes be indicated as spatial frequency rather than just Hz?
 
 \emph{Axes of Figure 4. (and also Figure 5.) are now changed to spatial frequency. The unit of the spatial frequency within the text is changed to cycles/mm.}
 
