@@ -340,6 +340,9 @@ Therefore we have
 \begin{align}
 	R_{y_{t},y_{t}}(\boldsymbol{\tau}) &= -\sigma_d\left(m \ast m \ast \gamma\right)\left(\boldsymbol{\tau}\right)+\sigma_{\epsilon}^2\delta(\boldsymbol\tau)
 \end{align}
+\begin{align}
+	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &= R_{y_{t},y_{t}}(\boldsymbol{\tau})-\sigma_{\epsilon}^2\delta(\boldsymbol\tau)-T_s\varsigma\left(m\ast m\ast w\ast\gamma\right)\left(\boldsymbol\tau\right)
+\end{align}
 \section*{Estimation of Connectivity Kernel Support}
 The support of the connectivity kernel can be inferred using spatial correlation analysis. The method presented in this paper is based on a similar published method, where the kernel support was estimated using correlation analysis for a linear system described by an IDE~\cite{Scerri2009}. To demonstrate the method for the neural field model, we first define the spatial cross-correlation function between consecutive observations as 
 \begin{align}
