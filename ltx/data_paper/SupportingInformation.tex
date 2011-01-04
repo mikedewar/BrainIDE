@@ -316,11 +316,29 @@ setting above to zero and solving for $\sigma_e^2$ we have
 \end{eqnarray}
 \section*{Observation Autocorrelation}\label{sec:ObservAutocor} 
 \begin{align}
-	R_{y_{t},y_{t}}(\boldsymbol{\tau}) &= \mathbf{E}\left[y_{t}\left(\mathbf{r}_n+\boldsymbol{\tau}\right)y_{t}\left(\mathbf{r}_n\right)\right] \\
-	&= \mathbf{E}\left[\left(\int_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} + \boldsymbol{\varepsilon}_t\left(\mathbf{r}_n+\boldsymbol{\tau}\right)\right) \left(\int_{\Omega}{ m\left(\mathbf{r}_n - \mathbf{r}''\right) v_{t}\left(\mathbf{r}''\right) \, d\mathbf{r}''} + \boldsymbol{\varepsilon}_{t}\left(\mathbf{r}_n\right)\right) \right]\\
-	&=\mathbf{E}\left[\int_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} \int_{\Omega}{ m\left(\mathbf{r}_n - \mathbf{r}''\right) v_{t}\left(\mathbf{r}''\right) \, d\mathbf{r}''}\right]\\
-	&=\iint_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) m\left(\mathbf{r}_n - \mathbf{r}''\right) \mathbf{E}\left[v_t\left(\mathbf{r}'\right) v_{t}\left(\mathbf{r}''\right)\right]\, d\mathbf{r}'}{ \, d\mathbf{r}''}\\
-	&=\sigma_d\iint_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) m\left(\mathbf{r}_n - \mathbf{r}''\right)\gamma(\mathbf{r}'-\mathbf{r}'') \, d\mathbf{r}'}{ \, d\mathbf{r}''}\label{eq:ObsCorr}
+	R_{y_{t},y_{t}}(\boldsymbol{\tau}) &= \mathbf{E}\left[y_{t}\left(\mathbf{r}+\boldsymbol{\tau}\right)y_{t}\left(\mathbf{r}\right)\right] \nonumber\\
+	&= \mathbf{E}\left[\left(\int_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} + \boldsymbol{\varepsilon}_t\left(\mathbf{r}+\boldsymbol{\tau}\right)\right) \left(\int_{\Omega}{ m\left(\mathbf{r} - \mathbf{r}''\right) v_{t}\left(\mathbf{r}''\right) \, d\mathbf{r}''} + \boldsymbol{\varepsilon}_{t}\left(\mathbf{r}\right)\right) \right]\nonumber \\
+	&=\mathbf{E}\left[\int_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} \int_{\Omega}{ m\left(\mathbf{r} - \mathbf{r}''\right) v_{t}\left(\mathbf{r}''\right) \, d\mathbf{r}''}\right]+\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\nonumber\\
+	&=\iint_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) m\left(\mathbf{r} - \mathbf{r}''\right) \mathbf{E}\left[v_t\left(\mathbf{r}'\right) v_{t}\left(\mathbf{r}''\right)\right]\, d\mathbf{r}'}{ \, d\mathbf{r}''}+\sigma_{\epsilon}^2\delta(\boldsymbol\tau) \nonumber\\
+	&=\sigma_d\iint_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) m\left(\mathbf{r} - \mathbf{r}''\right)\gamma(\mathbf{r}'-\mathbf{r}'') \, d\mathbf{r}'}{ \, d\mathbf{r}''}+\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\label{eq:ObsCorr1}
+\end{align}
+to simplify the first term in \eqref{eq:ObsCorr1} we define $\mathbf s=\mathbf r-\mathbf r''$ and therefore $d\mathbf r''=-d\mathbf s$ and therefore
+\begin{align}
+\sigma_d&\iint_{\Omega}{m\left(\mathbf{r}  + \boldsymbol{\tau}- \mathbf{r}'\right)m\left(\mathbf{r} - \mathbf{r}''\right)\gamma(\mathbf{r}'-\mathbf{r}'') \, d\mathbf{r}'}{ \, d\mathbf{r}''}\nonumber\\
+&=-\sigma_d\iint_{\Omega}{ m\left(\mathbf{s} + \mathbf{r}''+\boldsymbol{\tau} - \mathbf{r}'\right) m\left(\mathbf{s}\right)\gamma(\mathbf{r}'-\mathbf{r}'') \, d\mathbf{r}'}{ \, d\mathbf{s}}\nonumber\\
+&=-\sigma_d\iint_{\Omega}{ m\left(\mathbf{s}-\tau'\right) m\left(\mathbf{s}\right)\gamma(\mathbf{r}'-\mathbf{r}'') \, d\mathbf{r}'}{ \, d\mathbf{s}}
+\end{align}
+where  $\boldsymbol\tau'=\mathbf{r}'-\mathbf{r}''-\boldsymbol{\tau}$, since the observation kernel is symmetric at origin we have $m\left(\mathbf{s}-\tau'\right)=m\left(\tau'-\mathbf{s}\right)$ and therefore we have
+\begin{align}
+ -\sigma_d&\iint_{\Omega}{ m\left(\boldsymbol\tau'-\mathbf{s}\right) m\left(\mathbf{s}\right)\gamma(\mathbf{r}'-\mathbf{r}'') \, d\mathbf{r}'}{ \, d\mathbf{s}}\nonumber\\
+&=-\sigma_d\int_{\Omega}{ \left(m\ast m\right)\left(\mathbf{r}'-\mathbf{r}''-\boldsymbol{\tau}\right)\gamma(\mathbf{r}'-\mathbf{r}'') \, d\mathbf{r}'}\nonumber\\
+&=-\sigma_d\int_{\Omega}{ \left(m\ast m\right)\left(\boldsymbol\tau''-\boldsymbol{\tau}\right)\gamma(\boldsymbol\tau'') \, d\boldsymbol\tau''}\\
+&=-\sigma_d\int_{\Omega}{ \left(m\ast m\right)\left(\boldsymbol{\tau}-\boldsymbol\tau''\right)\gamma(\boldsymbol\tau'') \, d\boldsymbol\tau''}=-\sigma_d\left(m \ast m \ast \gamma\right)\left(\boldsymbol{\tau}\right)
+\end{align}
+where $\boldsymbol\tau''=\mathbf{r}'-\mathbf{r}''$ and $\left(m\ast m\right)\left(\boldsymbol{\tau}-\boldsymbol\tau''\right)= \left(m\ast m\right)\left(\boldsymbol{\tau''}-\boldsymbol\tau\right)$
+Therefore we have
+\begin{align}
+	R_{y_{t},y_{t}}(\boldsymbol{\tau}) &= -\sigma_d\left(m \ast m \ast \gamma\right)\left(\boldsymbol{\tau}\right)+\sigma_{\epsilon}^2\delta(\boldsymbol\tau)
 \end{align}
 \section*{Estimation of Connectivity Kernel Support}
 The support of the connectivity kernel can be inferred using spatial correlation analysis. The method presented in this paper is based on a similar published method, where the kernel support was estimated using correlation analysis for a linear system described by an IDE~\cite{Scerri2009}. To demonstrate the method for the neural field model, we first define the spatial cross-correlation function between consecutive observations as 
