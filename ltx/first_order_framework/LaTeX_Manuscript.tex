@@ -246,7 +246,7 @@ and
 \end{equation}
 
 \subsection{Estimation of Connectivity Kernel Support}
-The support of the connectivity kernel can be inferred using spatial correlation analysis. The method presented in this paper is based on a similar published method, where the kernel support was estimated using correlation analysis for a linear system described by an IDE~\citep{Scerri2009}. To demonstrate the method for the neural field model we assume the sensors are infinitesimally close (continuous observation). The spatial cross-correlation function between consecutive observations is defined as 
+\dean{The support of the connectivity kernel can be inferred using spatial correlation analysis. The method presented in this paper is based on a similar published method, where the kernel support was estimated using correlation analysis for a linear system described by an IDE~\citep{Scerri2009}. To demonstrate the method for the neural field model we assume the sensors are infinitesimally close (continuous observation). The spatial cross-correlation function between consecutive observations is defined as 
 \begin{align}
 	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &= \mathbf{E}\left[ y_{t}\left(\mathbf{r}\right) y_{t+1}\left(\mathbf{r}+\boldsymbol{\tau}\right) \right] \\
 	&= \mathbf{E}\left[\left(m\left(\mathbf{r}\right) \ast v_t\left(\mathbf{r}\right) + \boldsymbol{\varepsilon}_t\left(\mathbf{r}\right) \right) \times \left( m\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast v_{t+1}\left(\mathbf{r}+\boldsymbol{\tau}\right) + \boldsymbol{\varepsilon}_{t+1}\left(\mathbf{r}+\boldsymbol{\tau}\right)\right) \right], \label{eq:ObsXCorr}
@@ -292,9 +292,7 @@ Now we take the Fourier transform of the terms inside the expectation giving
 	&= \mathbf{E}\left[m(\mathbf{r}) \ast v_t(\mathbf{r}) \times m(\mathbf{r}+\boldsymbol{\tau}) \ast v_t(\mathbf{r}+\boldsymbol{\tau}) \ast \left( \xi\delta_D(\mathbf{r}) + T_s \varsigma w(\mathbf{r}+\boldsymbol{\tau}) \right) \right] \\
 	&= \mathbf{E}\left[m(\mathbf{r}) \ast v_t(\mathbf{r}) \times m(\mathbf{r}+\boldsymbol{\tau}) \ast v_t(\mathbf{r}+\boldsymbol{\tau}) \right] \ast \mathbf{E}\left[\left( \xi\delta_D(\mathbf{r}) + T_s \varsigma w(\mathbf{r}+\boldsymbol{\tau}) \right) \right] \label{eq:xcorr_pre_sub}
 \end{align}
-where $\mathcal{F}^{-1}$ denotes the inverse Fourier transform and $R_{y_{t},y_{t}}(\boldsymbol{\tau})$ is the auto-correlation of the observations, $\delta_K(\cdot)$ is the Kronecker delta function, and $\delta_D(\cdot)$ is the Dirac delta function.
-
-We define the auto-correlation of the observations as
+where $\mathcal{F}^{-1}$ denotes the inverse Fourier transform and $R_{y_{t},y_{t}}(\boldsymbol{\tau})$ is the auto-correlation of the observations, $\delta_K(\cdot)$ is the Kronecker delta function, and $\delta_D(\cdot)$ is the Dirac delta function. We define the auto-correlation of the observations as
 \begin{align}
 	R_{y_{t},y_{t}}(\boldsymbol{\tau}) &= \mathbf{E}\left[ y_{t}\left(\mathbf{r}\right) y_{t}\left(\mathbf{r}+\boldsymbol{\tau}\right) \right]\\
 	&= \mathbf{E}\left[m(\mathbf{r}) \ast v_t(\mathbf{r}) \times m(\mathbf{r}+\boldsymbol{\tau}) \ast v_t(\mathbf{r}+\boldsymbol{\tau})\right] + \delta_K(\boldsymbol{\tau})\sigma_{\varepsilon}^2
@@ -316,7 +314,7 @@ Take inverse Fourier transform and rearrange to get an approximation of the kern
 \begin{equation}
 	\mathcal{F}^{-1}\left\{\frac{\mathcal{F}\left\{R_{y_{t},y_{t+1}}(\boldsymbol{\tau})\right\}}{\mathcal{F}\left\{ R_{y_t,y_t}(\boldsymbol{\tau}) - \delta_K\left(\boldsymbol{\tau}\right)\sigma_{\varepsilon}^2 \right\}}\right\} \approx \mathbf{E}[\xi\delta_D\left(\mathbf{r}\right)  + T_s \varsigma w(\mathbf{r}+\boldsymbol{\tau})].
 \end{equation}
-This equation states that the support of the kernel can be estimated given knowledge of $\sigma_\varepsilon^2$. Furthermore, is we assume a local coupling (at $\boldsymbol\tau=0$) regime, either excitation or inhibition, than we don't even need to know $\sigma_\varepsilon^2$. The peak in the kernel at $\mathbf{r}=0$ will be bigger or smaller if we guess incorrectly and the kernel parameters can do the rest!
+This equation states that the support of the kernel can be estimated given knowledge of $\sigma_\varepsilon^2$. Furthermore, is we assume a local coupling (at $\boldsymbol\tau=0$) regime, either excitation or inhibition, than we don't even need to know $\sigma_\varepsilon^2$. The peak in the kernel at $\mathbf{r}=0$ will be bigger or smaller if we guess incorrectly and the kernel parameters can do the rest! }
 % 
 % \begin{align}
 % 	middle term &= T_s\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ m\left(\mathbf{r}_n-\mathbf{r}'\right)\int_\Omega { w\left(\mathbf{r}',\mathbf{r}''\right) f\left(v_t\left(\mathbf{r}''\right)\right)\, d\mathbf{r}''}\, d\mathbf{r}'}\right]  \\
