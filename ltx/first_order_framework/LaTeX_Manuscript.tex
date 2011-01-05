@@ -281,8 +281,7 @@ Furthermore, we assume the field is in the linear region of the piecewise functi
 \begin{align}
 	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &\approx \mathbf{E}\left[\mathcal{F}^{-1} \left\{e^{i\boldsymbol{\nu}^{\top}\boldsymbol{\tau}} M(\boldsymbol{\nu}) V(\boldsymbol{\nu}) \ast \left(\xi M(\boldsymbol{\nu})V(\boldsymbol{\nu}) + T_s M(\boldsymbol{\nu}) W(\boldsymbol{\nu}) \varsigma V(\boldsymbol{\nu}) \right) \right\} \right] \\
 	&= \mathbf{E}\left[\mathcal{F}^{-1} \left\{e^{i\boldsymbol{\nu}^{\top}\boldsymbol{\tau}} M(\boldsymbol{\nu}) V(\boldsymbol{\nu}) \ast M(\boldsymbol{\nu})V(\boldsymbol{\nu}) \left(\xi  + T_s \varsigma W(\boldsymbol{\nu})  \right) \right\} \right] \\
-	&= \mathbf{E}\left[\mathcal{F}^{-1} \left\{e^{i\boldsymbol{\nu}^{\top}\boldsymbol{\tau}} M(\boldsymbol{\nu}) M(\boldsymbol{\nu}) V(\boldsymbol{\nu}) \ast V(\boldsymbol{\nu}) \left(\xi  + T_s \varsigma W(\boldsymbol{\nu}) \right) \right\} \right] \\
-	&= \mathbf{E}\left[m(\mathbf{r} + \boldsymbol{\tau}) \ast m(\mathbf{r}) \ast v^2(\mathbf{r}) \ast \left(\xi\delta_D(\mathbf{r})  + T_s \varsigma w(\mathbf{r})\right) \right] \\
+	&= \mathbf{E}\left[m(\mathbf{r} + \boldsymbol{\tau}) \ast v(\mathbf{r}) \times m(\mathbf{r}) \ast v(\mathbf{r}) \ast \left( \xi \delta_D(\mathbf{r}) + T_s \varsigma w(\mathbf{r}) \right)\right] \\
 	&= \left(R_{y_t,y_t}(\boldsymbol{\tau}) - \delta_K(\boldsymbol{\tau}\right)\sigma_{\varepsilon}^2) \ast \left(\xi\delta_D(\mathbf{r})  + T_s \varsigma w(\mathbf{r})\right) \label{eq:xcorr_with_autocorr}
 \end{align}
 where $R_{y_{t},y_{t}}(\boldsymbol{\tau})$ is the auto-correlation of the observations, $\delta_K(\cdot)$ is the Kronecker delta function, and $\delta_D(\cdot)$ is the Dirac delta function.
@@ -290,12 +289,12 @@ where $R_{y_{t},y_{t}}(\boldsymbol{\tau})$ is the auto-correlation of the observ
 To show how we get this result, we define the auto-correlation of the observations as
 \begin{align}
 	R_{y_{t},y_{t}}(\boldsymbol{\tau}) &= \mathbf{E}\left[y_{t}\left(\mathbf{r}+\boldsymbol{\tau}\right)y_{t}\left(\mathbf{r}\right)\right]\\
-	&= \mathbf{E}\left[m(\mathbf{r} + \boldsymbol{\tau}) \ast v(\mathbf{r}) \times m(\mathbf{r}) \ast v(\mathbf{r})\right] + \delta_K(\boldsymbol{\tau})\sigma_{\varepsilon}^2 \\
-	&= \mathbf{E}\left[\mathcal{F}^{-1}\left\{ \exp(i\boldsymbol{\nu}^{\top}\boldsymbol{\tau})M(\boldsymbol{\nu})V(\boldsymbol{\nu}) \ast M(\boldsymbol{\nu})V(\boldsymbol{\nu}) \right\}\right] + \delta_K(\boldsymbol{\tau})\sigma_{\varepsilon}^2 \\
-	&= \mathbf{E}\left[\mathcal{F}^{-1}\left\{ \exp(i\boldsymbol{\nu}^{\top}\boldsymbol{\tau})M(\boldsymbol{\nu})M(\boldsymbol{\nu})V(\boldsymbol{\nu}) \ast V(\boldsymbol{\nu}) \right\}\right] + \delta_K(\boldsymbol{\tau})\sigma_{\varepsilon}^2 \\
-	&= \mathbf{E}\left[m(\mathbf{r}+\boldsymbol{\tau}) \ast m(\mathbf{r}) \ast v^2(\mathbf{r})\right] + \delta_K(\boldsymbol{\tau})\sigma_{\varepsilon}^2
+	&= \mathbf{E}\left[m(\mathbf{r} + \boldsymbol{\tau}) \ast v(\mathbf{r}) \times m(\mathbf{r}) \ast v(\mathbf{r})\right] + \delta_K(\boldsymbol{\tau})\sigma_{\varepsilon}^2
 \end{align}
-
+Rearrange to get
+\begin{equation}
+	R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \delta_K(\boldsymbol{\tau})\sigma_{\varepsilon}^2 = \mathbf{E}\left[m(\mathbf{r} + \boldsymbol{\tau}) \ast v(\mathbf{r}) \times m(\mathbf{r}) \ast v(\mathbf{r})\right].
+\end{equation}
 Now to isolate the kernel, the Fourier transform is taken
 \begin{align}
 	\mathcal{F}\left\{R_{y_{t},y_{t+1}}(\boldsymbol{\tau})\right\} &\approx \mathcal{F}\left\{ \left(R_{y_t,y_t}(\boldsymbol{\tau}) - \delta_K\left(\boldsymbol{\tau}\right)\sigma_{\varepsilon}^2\right) \ast \left(\xi\delta_D(\mathbf{r})  + T_s \varsigma w(\mathbf{r})\right) \right\} \\
