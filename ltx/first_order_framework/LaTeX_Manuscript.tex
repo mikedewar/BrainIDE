@@ -60,7 +60,7 @@ Mathematical neural field models provide insights into the underlying physics an
 
 Unfortunately, the use of these models in the clinic has been limited, since they are constructed for ``general'' brain dynamics whereas pathologies almost always have unique underlying patient-specific causes. Patient-specific data from electrophysiological recordings is readily available in the clinical setting, particularly from epilepsy surgery patients, suggesting an opportunity to make the patient-specific link to models of cortical dynamics. Furthermore, recent technological advances have driven an increased level of sophistication in recording techniques, with dramatic increases in spatial and temporal sampling \citep{Brinkmann2009}. However, the mesoscopic and macroscopic neural dynamic state is not directly observable in neurophysiological data, making predictions of the underlying physiology inherently difficult.
 
-For models to be clinically viable, they must be patient-specific. A possible approach to achieve this would be to fit a general continuum neural field model, like the \citet{Wilson1973} (WC) or \citet{Amari1977} models, or a neural mass model like the \citet{Jansen1995} model, to patient-specific data. Fitting the neural models to individuals is a highly non-trivial task. Recently, however, this task has been approached from a number of standpoints. \dean{(Reviewer 1, additional comment d):) The first paper on patient specific modeling came from~\citet{Valdes1999}, where they fit a neural mass model of \citet{LopesDaSilva1976} and \citet{Zetterberg1978} using an extended Kalman filter. This paper demonstrated for the first time the feasibility of assimilating data with neural models of EEG.} 
+For models to be clinically viable, they must be patient-specific. A possible approach to achieve this would be to fit a general continuum neural field model, like the \citet{Wilson1973} (WC) or \citet{Amari1977} models, or a neural mass model like the \citet{Jansen1995} model, to patient-specific data. Fitting the neural models to individuals is a highly non-trivial task. Recently, however, this task has been approached from a number of standpoints. \dean{(Reviewer 1, additional comment d):) The first paper on patient specific modeling came from~\citet{Valdes1999}, where they fit a neural mass model of \citet{LopesDaSilva1976} and \citet{Zetterberg1978} \parham{using an extended Kalman filter--need to check (it's not extended Kalman filter I think-maybe just say using nonlinear Kalman filtering algorithm or maybe using Local Linearisation filter \citep{Ozaki1994}}. This paper demonstrated for the first time the feasibility of assimilating data with neural models of EEG.} 
 
 Perhaps the most accepted estimation framework for neural mass models is dynamical causal modeling (DCM) \citep{David2003,David2006}, which has been proposed for studying evoked potential dynamics. This framework can be viewed as an extension to the work of~\citet{Valdes1999} allowing for coupling of neural masses. Via a Bayesian inference scheme, DCM estimates the long range (cortico-cortical) connectivity structure between the specific isolated brain regions that best explains a given data set using the model of \citet{Jansen1995}.
 
@@ -168,28 +168,48 @@ The connectivity kernel can also be decomposed as
 \end{equation}
 where $\boldsymbol{\psi}(\mathbf{r},\mathbf{r}')$ is a vector of Gaussian basis functions and $\boldsymbol{\theta}$ is a vector of scaling parameters. By exploiting the isotropy of the connectivity basis functions, they can be written as  
 $\boldsymbol{\psi}(\mathbf{r}-\mathbf{r}')$. We will assume that we know the parametric form of the connectivity basis functions, where the scaling parameters $\boldsymbol{\theta}$ are unknown. 
-\dean{(for reviewer 1 point 2:) Note, that although the examples presented in this paper use the Mexican hat connectivity kernel, the framework is also valid for other connectivity kernels provided they are homogeneous and that they can be approximated by a set of isotropic basis functions parametrized by a coefficient vector $\mathbf{\theta}$. The mathematical formulation does not restrict the shape of the kernel, where anisotropic arbitrary shapes can be represented. Furthermore, the kernel basis functions need not be a Gaussian shape, but can be, for example, Laplacian to describe the ``wizard hat'' connectivity or B-spline functions to describe a kernel with a more compact support.}
+\dean{(for reviewer 1 point 2:) Note, that although the examples presented in this paper use the Mexican hat connectivity kernel, the framework is also valid for other connectivity kernels provided they are homogeneous and that they can be approximated by a set of isotropic basis functions parametrized by a coefficient vector $\mathbf{\theta}$. The mathematical formulation does not restrict the shape of the kernel, where anisotropic arbitrary shapes can be represented. Furthermore, the kernel basis functions need not be a Gaussian shape, but can be, for example, Laplacian to describe the ``wizard hat'' connectivity or B-spline functions to describe a kernel with a compact support.}
 
-Each connectivity basis function of the Mexican hat can, individually, be considered a layer in the Wilson and Cowan model. Rearranging the order of the spatial convolution in equation~\ref{DiscreteTimeModel} and substituting in equations~\ref{DefFieldDecomp} and~\ref{DefKernelDecomp} we get 
+Each connectivity basis function of the Mexican hat can, individually, be considered a layer in the Wilson and Cowan model. Rearranging the order of the spatial convolution in equation~\ref{DiscreteTimeModel} and substituting in equations~\ref{DefFieldDecomp} and~\ref{DefKernelDecomp} \dean{to the left hand side} we get the approximation of the dynamic field
+% \begin{align}
+% 	\label{reduced continuous model}
+% 	\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_{t+1} &= T_s\int_\Omega{f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t )\boldsymbol{\psi}^{\top}(\mathbf{r}-\mathbf{r}') \, d\mathbf{r}'}\boldsymbol{\theta} \nonumber \\
+% 	&+ \xi\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_t + \mathbf{e}_t(\mathbf{r}). 
+% \end{align}
 \begin{align}
 	\label{reduced continuous model}
-	\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_{t+1} &= T_s\int_\Omega{f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t )\boldsymbol{\psi}^{\top}(\mathbf{r}-\mathbf{r}') \, d\mathbf{r}'}\boldsymbol{\theta} \nonumber \\
+	v_{t+1}\left(\mathbf{r}\right) &\approx T_s\int_\Omega{f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t )\boldsymbol{\psi}^{\top}(\mathbf{r}-\mathbf{r}') \, d\mathbf{r}'}\boldsymbol{\theta} \nonumber \\
 	&+ \xi\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_t + \mathbf{e}_t(\mathbf{r}). 
 \end{align}
 Next we cross-multiply equation~\ref{reduced continuous model} by $\boldsymbol{\phi}(\mathbf{r})$ and integrate over the spatial domain, $\Omega$, to get 
 \begin{align}
-	\label{StartofReduction}
- 	\int_\Omega \boldsymbol{\phi} &\left(\mathbf{r}\right)\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right)d\mathbf{r} \mathbf{x}_{t+1}  \nonumber \\
- &=T_s \int_\Omega \boldsymbol{\phi} (\mathbf{r}) \int_\Omega \boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}') 
- f(\boldsymbol{\phi}^{\top}(\mathbf{r}') \mathbf{x}_t ) \, d\mathbf{r}'d\mathbf{r}\boldsymbol{\theta} \nonumber \\ 
-&+ \xi\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\phi}^{\top}(\mathbf{r})d\mathbf{r}} \mathbf{x}_t + 
-\int_\Omega{\boldsymbol{\phi} (\mathbf{r}) e_t(\mathbf{r}) \, d\mathbf{r}}. 
+	\label{eq:decompRHS}
+ 	\int_\Omega \boldsymbol{\phi}&\left(\mathbf{r}\right) v_{t+1}\left(\mathbf{r}\right)d\mathbf{r}  \nonumber \\
+	&\approx T_s \int_\Omega \boldsymbol{\phi} (\mathbf{r}) \int_\Omega \boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}') \mathbf{x}_t ) \, d\mathbf{r}'d\mathbf{r}\boldsymbol{\theta} \nonumber \\ 
+	&+ \xi\int_\Omega {\boldsymbol{\phi}(\mathbf{r}) \boldsymbol{\phi}^{\top}(\mathbf{r})d\mathbf{r} } \mathbf{x}_t + \int_\Omega{\boldsymbol{\phi} (\mathbf{r}) e_t(\mathbf{r}) \, d\mathbf{r}}. 
 \end{align}
+\dean{The solution of this equation for $\mathbf{x}_t$ is equivalent to the Galerkin projection. To show this we define the residual
+\begin{align}
+	\Xi(\mathbf{x}_t,v_{t+1}(\mathbf{r})) &= v_{t+1}(\mathbf{r}) - T_s\int_\Omega{f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t )\boldsymbol{\psi}^{\top}(\mathbf{r}-\mathbf{r}') \, d\mathbf{r}'}\boldsymbol{\theta} \nonumber \\
+	&+ \xi\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_t + \mathbf{e}_t(\mathbf{r}).
+\end{align} 
+The Galerkin projection method finds $\mathbf{x}_t$ such that for all of the basis functions the inner product with the residual satisfies
+\begin{equation}\label{eq:GalerkinProjection}
+	G_i = \int_{\Omega}\Xi(\mathbf{x}_t,v_{t+1}(\mathbf{r})) \phi_i(\mathbf{r}) d\mathbf{r} = 0, \> i=0,1,\hdots,n_x-1,
+\end{equation}
+where $n_x$ is the number of states and basis functions. If equation~\ref{eq:GalerkinProjection} is satisfied then the basis functions are orthogonal to the residual. If one was using the Galerkin projection to estimate the states, they would numerically solve the $n_x$ equations to estimate the state vector, which is a standard method in economics modeling. The method in this paper takes a different approach by forming the state-space model. To show how this is achieved we substitute the field decomposition into the right hand side of equation~\ref{eq:decompRHS} giving
+\begin{align}
+	\label{eq:StartofReduction}
+ 	\int_\Omega \boldsymbol{\phi}&\left(\mathbf{r}\right) \boldsymbol{\phi}^{\top}\left(\mathbf{r}\right)\mathbf{x}_{t+1}d\mathbf{r}  \nonumber \\
+	&= T_s \int_\Omega \boldsymbol{\phi} (\mathbf{r}) \int_\Omega \boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}') \mathbf{x}_t ) \, d\mathbf{r}'d\mathbf{r}\boldsymbol{\theta} \nonumber \\ 
+	&+ \xi\int_\Omega {\boldsymbol{\phi}(\mathbf{r}) \boldsymbol{\phi}^{\top}(\mathbf{r})d\mathbf{r} } \mathbf{x}_t + \int_\Omega{\boldsymbol{\phi} (\mathbf{r}) e_t(\mathbf{r}) \, d\mathbf{r}}. 
+\end{align}
+  }
 Now defining the matrix
 \begin{equation}\label{eq:DefGamma}
 	\boldsymbol{\Gamma} \triangleq \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi} ^{\top}\left(\mathbf{r}\right) \, d\mathbf{r}}, 
 \end{equation}
-and substituting this into equation~\ref{StartofReduction} and cross-multiplying by $\boldsymbol{\Gamma}^{-1}$ gives
+and substituting it into equation~\ref{eq:StartofReduction} and cross-multiplying by $\boldsymbol{\Gamma}^{-1}$ gives
 \begin{align}
     \label{eq:ReducedForm}
 	 \mathbf{x}_{t+1} &= T_s\boldsymbol{\Gamma}^{-1}
@@ -197,7 +217,7 @@ and substituting this into equation~\ref{StartofReduction} and cross-multiplying
 	 \int_\Omega \boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}')f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t)d\mathbf{r}' d\mathbf{r} \boldsymbol{\theta}  \nonumber \\
 	& + \xi\mathbf{x}_t + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r}) e_t(\mathbf{r}) \, d\mathbf{r}}.
 \end{align}
-The analytic derivation of the inner product of \emph{n}-dimensional Gaussians, which was used for calculating $\mathbf\Gamma$, is provided in \ref{App:InnerProdOfGaussians}. Equation~\ref{eq:ReducedForm} can be simplified by exploiting the isotropy of the connectivity kernel basis functions where
+The analytic derivation of the inner product of \emph{n}-dimensional Gaussians, which was used for calculating $\mathbf\Gamma$, is provided in \ref{App:InnerProdOfGaussians}. \dean{Alternative field basis functions may be used to form the decomposition and if the basis is orthonormal then $\Gamma$ become the identity matrix.} Equation~\ref{eq:ReducedForm} can be simplified by exploiting the isotropy of the connectivity kernel basis functions where
 \begin{equation}
 	\psi_i (\mathbf{r}-\mathbf{r}') = \psi_i (2\mathbf{c}_i+\mathbf{r}'-\mathbf{r})
 \end{equation}
@@ -246,7 +266,7 @@ and
 \end{equation}
 
 \subsection{Estimation of Connectivity Kernel Support}
-The support of the connectivity kernel can be inferred using spatial correlation analysis. The method presented in this paper is based on a similar published method, where the kernel support was estimated using correlation analysis for a linear system described by an IDE~\citep{Scerri2009}. To demonstrate the method for the neural field model we assume the sensors are infinitesimally close (continuous observation). The spatial cross-correlation function between consecutive observations is defined as 
+\dean{The support of the connectivity kernel can be inferred using spatial correlation analysis. The method presented in this paper is based on a similar published method, where the kernel support was estimated using correlation analysis for a linear system described by an IDE~\citep{Scerri2009}. To demonstrate the method for the neural field model we assume the sensors are infinitesimally close (continuous observation). The spatial cross-correlation function between consecutive observations is defined as 
 \begin{align}
 	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &= \mathbf{E}\left[ y_{t}\left(\mathbf{r}\right) y_{t+1}\left(\mathbf{r}+\boldsymbol{\tau}\right) \right] \\
 	&= \mathbf{E}\left[\left(m\left(\mathbf{r}\right) \ast v_t\left(\mathbf{r}\right) + \boldsymbol{\varepsilon}_t\left(\mathbf{r}\right) \right) \times \left( m\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast v_{t+1}\left(\mathbf{r}+\boldsymbol{\tau}\right) + \boldsymbol{\varepsilon}_{t+1}\left(\mathbf{r}+\boldsymbol{\tau}\right)\right) \right], \label{eq:ObsXCorr}
@@ -292,9 +312,7 @@ Now we take the Fourier transform of the terms inside the expectation giving
 	&= \mathbf{E}\left[m(\mathbf{r}) \ast v_t(\mathbf{r}) \times m(\mathbf{r}+\boldsymbol{\tau}) \ast v_t(\mathbf{r}+\boldsymbol{\tau}) \ast \left( \xi\delta_D(\mathbf{r}) + T_s \varsigma w(\mathbf{r}+\boldsymbol{\tau}) \right) \right] \\
 	&= \mathbf{E}\left[m(\mathbf{r}) \ast v_t(\mathbf{r}) \times m(\mathbf{r}+\boldsymbol{\tau}) \ast v_t(\mathbf{r}+\boldsymbol{\tau}) \right] \ast \mathbf{E}\left[\left( \xi\delta_D(\mathbf{r}) + T_s \varsigma w(\mathbf{r}+\boldsymbol{\tau}) \right) \right] \label{eq:xcorr_pre_sub}
 \end{align}
-where $\mathcal{F}^{-1}$ denotes the inverse Fourier transform and $R_{y_{t},y_{t}}(\boldsymbol{\tau})$ is the auto-correlation of the observations, $\delta_K(\cdot)$ is the Kronecker delta function, and $\delta_D(\cdot)$ is the Dirac delta function.
-
-We define the auto-correlation of the observations as
+where $\mathcal{F}^{-1}$ denotes the inverse Fourier transform and $R_{y_{t},y_{t}}(\boldsymbol{\tau})$ is the auto-correlation of the observations, $\delta_K(\cdot)$ is the Kronecker delta function, and $\delta_D(\cdot)$ is the Dirac delta function. We define the auto-correlation of the observations as
 \begin{align}
 	R_{y_{t},y_{t}}(\boldsymbol{\tau}) &= \mathbf{E}\left[ y_{t}\left(\mathbf{r}\right) y_{t}\left(\mathbf{r}+\boldsymbol{\tau}\right) \right]\\
 	&= \mathbf{E}\left[m(\mathbf{r}) \ast v_t(\mathbf{r}) \times m(\mathbf{r}+\boldsymbol{\tau}) \ast v_t(\mathbf{r}+\boldsymbol{\tau})\right] + \delta_K(\boldsymbol{\tau})\sigma_{\varepsilon}^2
@@ -310,13 +328,13 @@ Now to isolate the kernel equation~\ref{eq:autocorr_for_sub} is substituted into
 \end{align}
 Now rearranging
 \begin{equation}
-	\frac{\mathcal{F}\left\{R_{y_{t},y_{t+1}}(\boldsymbol{\tau})\right\}}{\mathcal{F}\left\{ R_{y_t,y_t}(\boldsymbol{\tau}) - \delta_K\left(\boldsymbol{\tau}\right)\sigma_{\varepsilon}^2 \right\}} \approx \mathcal{F}\left\{ \mathbf{E}[ \xi\delta_D\left(\mathbf{r}\right)  + T_s \varsigma w(\mathbf{r}+\boldsymbol{\tau}) ]\right\}.
+	\frac{\mathcal{F}\left\{R_{y_{t},y_{t+1}}(\boldsymbol{\tau})\right\}}{\mathcal{F}\left\{ R_{y_t,y_t}(\boldsymbol{\tau}) - \delta_K\left(\boldsymbol{\tau}\right)\sigma_{\varepsilon}^2 \right\}} \approx \mathcal{F}\left\{ \mathbf{E}\left[ \xi\delta_D\left(\mathbf{r}\right)  + T_s \varsigma w(\mathbf{r}+\boldsymbol{\tau}) \right]\right\}.
 \end{equation}
 Take inverse Fourier transform and rearrange to get an approximation of the kernel
 \begin{equation}
 	\mathcal{F}^{-1}\left\{\frac{\mathcal{F}\left\{R_{y_{t},y_{t+1}}(\boldsymbol{\tau})\right\}}{\mathcal{F}\left\{ R_{y_t,y_t}(\boldsymbol{\tau}) - \delta_K\left(\boldsymbol{\tau}\right)\sigma_{\varepsilon}^2 \right\}}\right\} \approx \mathbf{E}[\xi\delta_D\left(\mathbf{r}\right)  + T_s \varsigma w(\mathbf{r}+\boldsymbol{\tau})].
 \end{equation}
-This equation states that the support of the kernel can be estimated given knowledge of $\sigma_\varepsilon^2$. Furthermore, is we assume a local coupling (at $\boldsymbol\tau=0$) regime, either excitation or inhibition, than we don't even need to know $\sigma_\varepsilon^2$. The peak in the kernel at $\mathbf{r}=0$ will be bigger or smaller if we guess incorrectly and the kernel parameters can do the rest!
+This equation states that the support of the kernel can be estimated given knowledge of $\sigma_\varepsilon^2$. Furthermore, is we assume a local coupling (at $\boldsymbol\tau=0$) regime, either excitation or inhibition, than we don't even need to know $\sigma_\varepsilon^2$. The peak in the kernel at $\mathbf{r}=0$ will be bigger or smaller if we guess incorrectly and the kernel parameters can do the rest! }
 % 
 % \begin{align}
 % 	middle term &= T_s\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ m\left(\mathbf{r}_n-\mathbf{r}'\right)\int_\Omega { w\left(\mathbf{r}',\mathbf{r}''\right) f\left(v_t\left(\mathbf{r}''\right)\right)\, d\mathbf{r}''}\, d\mathbf{r}'}\right]  \\
@@ -475,7 +493,7 @@ The sigma vectors are propagated through the system equations and weighted to fo
 	\mathbf W_0^{(c)}&=\frac{\lambda}{ n_x+\lambda}+(1-\alpha^2+\beta) \\
 	\mathbf W_i^{(m)}&=\mathbf W_i^{(c)}=\frac{1}{2( n_x+\lambda)} \quad i=1, \dots, 2n_x, 
 \end{align}
-where the superscripts $m$ and $c$ denote mean and covariance and $\beta$ incorporates prior knowledge of the distribution of the states, $\mathbf{x}$ \dean{(for a Gaussian disturbance $\beta$ should be set to 2)}. Since the observation equation is linear (equation~\ref{ObservationEquation}), the standard Kalman Filter update equations are used to correct the predicted states. The state estimates from forward filtering are used to form a new set of sigma points for the smoother, as described above. The cross-covariance matrix of the states, $\mathbf M$, is also required for computing the smoother gain, as described in the summary of the steps in the URTSS algorithm is given in Table~\ref{tab:UKFAlgorithm}.
+where the superscripts $m$ and $c$ denote mean and covariance and $\beta$ incorporates prior knowledge of the distribution of the states, $\mathbf{x}$ \dean{(for a Gaussian disturbance $\beta$ should be set to 2 \parham{\citep{Haykin2001}})}. Since the observation equation is linear (equation~\ref{ObservationEquation}), the standard Kalman Filter update equations are used to correct the predicted states. The state estimates from forward filtering are used to form a new set of sigma points for the smoother, as described above. The cross-covariance matrix of the states, $\mathbf M$, is also required for computing the smoother gain, as described in the summary of the steps in the URTSS algorithm is given in Table~\ref{tab:UKFAlgorithm}.
 
 Although the system is nonlinear, the parameters of the system are linear with respect to the state. This is exploited by our procedure where the parameter estimation uses a least squares (LS) method that minimizes the sum of the squared errors (of a predicted state update) with each new estimate of the state vector sequence. To create the least squares parameter estimator, we first define the $n_x \times n_{\theta}$ matrix
 \begin{equation}
@@ -530,7 +548,7 @@ and
 	\right].
 \end{equation*}
 \end{small}
-Following this, the LS parameter estimates \citep{Ljung1985}, $ \hat{\mathcal{W}}$, are
+Following this, the LS parameter estimates \parham{\citep{Ljung1999}}, $ \hat{\mathcal{W}}$, are
 \begin{equation}
 	\hat{\mathcal{W}}=(\mathbf X^\top\mathbf X)^{-1}\mathbf X^\top\mathbf Z. 
 \end{equation}
@@ -604,7 +622,7 @@ The development of the estimation framework also has implications for theoretica
 
 \dean{An advantage in using a lumped-parameter field model over a more detailed mathematical description is that the myriad of parameters that might influence excitability, such as specific ion concentrations, are considered to be lumped into the connectivity kernel coefficients that effectively describe the net system gain. In this way a minimal number of assumptions are made. A major challenge in data assimilation for the mass action of the brain is to make models sufficiently detailed such that the parameters are meaningful, but simple enough to yield clear insights that can be related to theoretical studies (from both neuroscience and engineering perspectives).}
 
-\dean{The framework assumes that the parameters of the model (and brain) are stationary over the estimation period. This is a reasonable assumption if applying the framework to an evoked-potential experiment over a short time period in a controlled environment. However, it is well known that factors that influence excitability are non-stationary over longer time periods (see \citet{Ullah2010} for a nice example). Therefore, the estimation framework must be altered if it is to be applied to data over extended periods of time. A possible way to achieve this is to use a more sophisticated model that accounts for longer term time dependancies (higher temporal order). Alternatively, the parameters of the model could be considered time-varying, where changes in excitability might result in different connectivity kernel parameters. A possible way to achieve this would be to employ window-based estimation, where the estimation is performed on successive windows of data (possibly overlapping windows). The window length will need to be sufficiently short such that the parameters are approximately stationary of the estimation duration, and sufficiently long to achieve a good estimation result. If this trade-off can not be successfully achieved then the level of detail in the model must be increased. A real-time implementation can also be achieved using the UKF (without the smoother) and a real-time LS estimator (see REF for example). }
+\dean{The framework assumes that the parameters of the model (and brain) are stationary over the estimation period. This is a reasonable assumption if applying the framework to an evoked-potential experiment over a short time period in a controlled environment. However, it is well known that factors that influence excitability are non-stationary over longer time periods (see \citet{Ullah2010} for a nice example). Therefore, the estimation framework must be altered if it is to be applied to data over extended periods of time. A possible way to achieve this is to use a more sophisticated model that accounts for longer term time dependancies (higher temporal order). Alternatively, the parameters of the model could be considered time-varying, where changes in excitability might result in different connectivity kernel parameters. A possible way to achieve this would be to employ window-based estimation or fixed-lag, where the estimation is performed on successive windows of data (possibly overlapping windows). The window length will need to be sufficiently short such that the parameters are approximately stationary of the estimation duration, and sufficiently long to achieve a good estimation result. If this trade-off can not be successfully achieved then the level of detail in the model must be increased. A real-time implementation can also be achieved using the UKF \parham{and an online recursive LS estimator (see \citet{Ljung1999} for example)}. }
 
 \dean{We have assumed that the model can be discretized by the first order Euler method. This discretization may change the properties of the stochastic nonlinear system. An alternative is to use the LL method....}
 
