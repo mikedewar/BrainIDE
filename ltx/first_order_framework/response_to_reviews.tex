@@ -27,11 +27,11 @@
 	
         \item Assume that a few kernel basis functions accurately represent the actual connectivity kernel, which might not be the case when using real data;
 
-	\emph{The examples presented in the paper use the Mexican hat connectivity kernel. The framework is also valid for other connectivity kernels provided they are homogeneous and that they can be approximated by a set of isotropic basis functions parametrized by a coefficient vector $\mathbf{\theta}$. The mathematical formulation does not restrict the shape of the kernel, where anisotropic (we assume isotropy of the kernel basis functions to make the simplification in equation~18) arbitrary shapes can be represented. Furthermore, the kernel basis functions need not be a Gaussian shape, but can be, for example, Laplacian to describe the ``wizard hat'' connectivity or B-spline functions to describe a kernel with a more compact support. For more complex basis functions some of the analytic derivations described in the Appendix may have to be performed numerically. We have added the above statements to the methods section (after equation~13) to be more explicit in describing subtleties of the method.}
+	\emph{The examples presented in the paper use the Mexican hat connectivity kernel. The framework is also valid for other connectivity kernels provided they are homogeneous and that they can be approximated by a set of isotropic basis functions parametrized by a coefficient vector $\mathbf{\theta}$. The mathematical formulation does not restrict the shape of the kernel, where anisotropic (we assume isotropy of the kernel basis functions to make the simplification in equation~18) arbitrary shapes can be represented. Furthermore, the kernel basis functions need not be a Gaussian shape, but can be, for example, Laplacian to describe the ``wizard hat'' connectivity or B-spline functions to describe a kernel with a compact support. For more complex basis functions some of the analytic derivations described in the Appendix may have to be performed numerically. We have added the above statements to the methods section (after equation~13) to be more explicit in describing subtleties of the method.}
 
         \item Do not consider the EEG/MEG lead field when constructing their mapping between the membrane voltage and the electrophysiological data (observation function)
 
-	\emph{In response to this important point, the authors have made an effort to be clear that we are not considering scalp EEG to be a valid data source for the estimation framework. Amendments have been made to the Introduction (last paragraph), Method (after equation 9), and Discussion (Implications for Experimental Design). We have primarily developed the framework for higher density intracranial measurements. We believe that the spatial frequency response and sampling density of extracranial EEG/MEG measurements will be insufficient to estimate the connectivity structure.}
+	\emph{In response to this important point, the authors have made an effort to be clear that we are not considering scalp EEG to be a valid data source for the estimation framework. Amendments have been made to the Introduction (last paragraph), Method (after equation 9), and Discussion (Implications for Experimental Design). We have primarily developed the framework for higher density intracranial measurements. This is explained in the spatial freq analysis method and discussion.}
 	
 	
     \end{enumerate}
@@ -70,7 +70,7 @@
     
     \section{Reviewer 2}
     
-    We thank the author for their encouraging review. Each point raised is dealt with in turn.
+    We thank the reviewer for their encouraging review. Each point raised is dealt with in turn.
 
 \begin{enumerate}
     \item The handling of the (to borrow a term from numerical weather forecasting) `sub-grid scale physics' is inadequate for nervous systems (see, e.g., equation 8 [The nonlinear IntegroDifference Equation]). I do very much appreciate the spectral estimation of spatial and temporal scales. But the model errors are lumped into an iid model error term that is not realistic. For instance, the flow of potassium in the extracellular spaces has a known dynamic that will affect network excitability, generating important sub-grid dynamics that is anything but iid. See, for instance, the example in Ullah et al PLoS Comp Biol 2010 where without such dynamics, state tracking and parameter estimation for a neural system fails. A beautiful overview of sub-grid effects in data assimilation is found in Kalnay's 2003 book. I would very much value the authors comments on these issues. I guess were I to respond to this question, that I might consider extending the model error term to an autoregressive model. But I will let the authors answer this question.\\
@@ -91,12 +91,13 @@
 
 \item What is the relation of the substitution of the temporal and spatial basis functions as employed in this paper to Galerkin's projection? How do the two techniques differ? If this is close, the non-local case for a Galerkin projection (typically used in diffusive processes) has not, to my knowledge, been done. Certainly not in a way that is obvious for neural field theory. Perhaps this is my ignorance. This seems important to clarify for the rest of us.
 
+\emph{The relationship to our basis function decomposition to Galerkin's projection has been added to the derivation of the state-space model. }
 
 \item In the isotropic and translationally invariant case examined here, would a Fourier basis for temporal and spatial structure have been a formally correct alternative?\\
 
 \emph{Gaussians have semi-compact support but Fourier basis functions are global functions. Gaussian can be easily extended to higher dimension (don't know about the Fourier basis functions), any orthonormal basis functions like Fourier basis functions simplify our equations, $\Gamma$ becomes identity matrix, but using Gaussian basis functions equations are in their generic form.}
 
-\item In equation 29, what would a reasonable $v_c$ be for a real neuronal system (mammalian) given the number of neurons and scale of electrodes? I am concerned that it might be much higher than any of us wish to consider. One would perhaps be saved by the filter characteristics of brain (e.g. Phys. Rev. E 73, 051911 (2006)).
+\item In equation 29, what would a reasonable $\boldsymbol{\nu}_c$ be for a real neuronal system (mammalian) given the number of neurons and scale of electrodes? I am concerned that it might be much higher than any of us wish to consider. One would perhaps be saved by the filter characteristics of brain (e.g. Phys. Rev. E 73, 051911 (2006)).
 
 \emph{The spatial frequency content is seems to be actually lower than one might first think. We have added `From the work of (Freeman et al, 2000), the expected bandwidth of the human neocortex is approximately 0.1-0.4 cycles/mm which requires a sensor spacing of approximately 1.25 mm to avoid distortions due to aliasing' to the Frequency Analysis section of the paper to clear this up. We have also added to the discussion. Note, we expect the spatial bandwidth of the cortex to be governed by the connectivity kernel, since it is equivalent to a spatial low-pass filter acting on the firing rates.  }
 

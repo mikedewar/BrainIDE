@@ -168,28 +168,48 @@ The connectivity kernel can also be decomposed as
 \end{equation}
 where $\boldsymbol{\psi}(\mathbf{r},\mathbf{r}')$ is a vector of Gaussian basis functions and $\boldsymbol{\theta}$ is a vector of scaling parameters. By exploiting the isotropy of the connectivity basis functions, they can be written as  
 $\boldsymbol{\psi}(\mathbf{r}-\mathbf{r}')$. We will assume that we know the parametric form of the connectivity basis functions, where the scaling parameters $\boldsymbol{\theta}$ are unknown. 
-\dean{(for reviewer 1 point 2:) Note, that although the examples presented in this paper use the Mexican hat connectivity kernel, the framework is also valid for other connectivity kernels provided they are homogeneous and that they can be approximated by a set of isotropic basis functions parametrized by a coefficient vector $\mathbf{\theta}$. The mathematical formulation does not restrict the shape of the kernel, where anisotropic arbitrary shapes can be represented. Furthermore, the kernel basis functions need not be a Gaussian shape, but can be, for example, Laplacian to describe the ``wizard hat'' connectivity or B-spline functions to describe a kernel with a more compact support.}
+\dean{(for reviewer 1 point 2:) Note, that although the examples presented in this paper use the Mexican hat connectivity kernel, the framework is also valid for other connectivity kernels provided they are homogeneous and that they can be approximated by a set of isotropic basis functions parametrized by a coefficient vector $\mathbf{\theta}$. The mathematical formulation does not restrict the shape of the kernel, where anisotropic arbitrary shapes can be represented. Furthermore, the kernel basis functions need not be a Gaussian shape, but can be, for example, Laplacian to describe the ``wizard hat'' connectivity or B-spline functions to describe a kernel with a compact support.}
 
-Each connectivity basis function of the Mexican hat can, individually, be considered a layer in the Wilson and Cowan model. Rearranging the order of the spatial convolution in equation~\ref{DiscreteTimeModel} and substituting in equations~\ref{DefFieldDecomp} and~\ref{DefKernelDecomp} we get 
+Each connectivity basis function of the Mexican hat can, individually, be considered a layer in the Wilson and Cowan model. Rearranging the order of the spatial convolution in equation~\ref{DiscreteTimeModel} and substituting in equations~\ref{DefFieldDecomp} and~\ref{DefKernelDecomp} \dean{to the left hand side} we get 
+% \begin{align}
+% 	\label{reduced continuous model}
+% 	\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_{t+1} &= T_s\int_\Omega{f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t )\boldsymbol{\psi}^{\top}(\mathbf{r}-\mathbf{r}') \, d\mathbf{r}'}\boldsymbol{\theta} \nonumber \\
+% 	&+ \xi\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_t + \mathbf{e}_t(\mathbf{r}). 
+% \end{align}
 \begin{align}
 	\label{reduced continuous model}
-	\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_{t+1} &= T_s\int_\Omega{f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t )\boldsymbol{\psi}^{\top}(\mathbf{r}-\mathbf{r}') \, d\mathbf{r}'}\boldsymbol{\theta} \nonumber \\
+	v_{t+1}\left(\mathbf{r}\right) &\approx T_s\int_\Omega{f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t )\boldsymbol{\psi}^{\top}(\mathbf{r}-\mathbf{r}') \, d\mathbf{r}'}\boldsymbol{\theta} \nonumber \\
 	&+ \xi\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_t + \mathbf{e}_t(\mathbf{r}). 
 \end{align}
 Next we cross-multiply equation~\ref{reduced continuous model} by $\boldsymbol{\phi}(\mathbf{r})$ and integrate over the spatial domain, $\Omega$, to get 
 \begin{align}
-	\label{StartofReduction}
- 	\int_\Omega \boldsymbol{\phi} &\left(\mathbf{r}\right)\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right)d\mathbf{r} \mathbf{x}_{t+1}  \nonumber \\
- &=T_s \int_\Omega \boldsymbol{\phi} (\mathbf{r}) \int_\Omega \boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}') 
- f(\boldsymbol{\phi}^{\top}(\mathbf{r}') \mathbf{x}_t ) \, d\mathbf{r}'d\mathbf{r}\boldsymbol{\theta} \nonumber \\ 
-&+ \xi\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\boldsymbol{\phi}^{\top}(\mathbf{r})d\mathbf{r}} \mathbf{x}_t + 
-\int_\Omega{\boldsymbol{\phi} (\mathbf{r}) e_t(\mathbf{r}) \, d\mathbf{r}}. 
+	\label{eq:decompRHS}
+ 	\int_\Omega \boldsymbol{\phi}&\left(\mathbf{r}\right) v_{t+1}\left(\mathbf{r}\right)d\mathbf{r}  \nonumber \\
+	&\approx T_s \int_\Omega \boldsymbol{\phi} (\mathbf{r}) \int_\Omega \boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}') \mathbf{x}_t ) \, d\mathbf{r}'d\mathbf{r}\boldsymbol{\theta} \nonumber \\ 
+	&+ \xi\int_\Omega {\boldsymbol{\phi}(\mathbf{r}) \boldsymbol{\phi}^{\top}(\mathbf{r})d\mathbf{r} } \mathbf{x}_t + \int_\Omega{\boldsymbol{\phi} (\mathbf{r}) e_t(\mathbf{r}) \, d\mathbf{r}}. 
 \end{align}
+\dean{The solution of this equation for $\mathbf{x}_t$ is equivalent to the Galerkin projection. To show this we define the residual
+\begin{align}
+	\Xi(\mathbf{x}_t,v_{t+1}(\mathbf{r})) &= v_{t+1}(\mathbf{r}) - T_s\int_\Omega{f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t )\boldsymbol{\psi}^{\top}(\mathbf{r}-\mathbf{r}') \, d\mathbf{r}'}\boldsymbol{\theta} \nonumber \\
+	&+ \xi\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_t + \mathbf{e}_t(\mathbf{r}).
+\end{align} 
+The Galerkin projection finds $\mathbf{x}_t$ such that for all basis functions, the inner product with the residual satisfies
+\begin{equation}\label{eq:GalerkinProjection}
+	G_i = \int_{\Omega}\Xi(x_t,v_t(\mathbf{r})) \phi_i(\mathbf{r}) d\mathbf{r} = 0, \> i=0,1,\hdots,n_x-1,
+\end{equation}
+where $n_x$ is the number of states and basis functions. If equation~\ref{eq:GalerkinProjection} is satisfied then the basis functions are orthogonal to the residual. If one was using the Galerkin projection to estimate the states, they would numerically solve the $n_x$ equations to estimate the state vector, which is a standard method in economics modeling. The method in this paper takes a different approach by forming the state-space model. To show how this is achieved we substitute the field decomposition into the right hand side of equation~\ref{eq:decompRHS} giving
+\begin{align}
+	\label{eq:StartofReduction}
+ 	\int_\Omega \boldsymbol{\phi}&\left(\mathbf{r}\right) \boldsymbol{\phi}^{\top}\left(\mathbf{r}\right)\mathbf{x}_{t+1}d\mathbf{r}  \nonumber \\
+	&= T_s \int_\Omega \boldsymbol{\phi} (\mathbf{r}) \int_\Omega \boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}') \mathbf{x}_t ) \, d\mathbf{r}'d\mathbf{r}\boldsymbol{\theta} \nonumber \\ 
+	&+ \xi\int_\Omega {\boldsymbol{\phi}(\mathbf{r}) \boldsymbol{\phi}^{\top}(\mathbf{r})d\mathbf{r} } \mathbf{x}_t + \int_\Omega{\boldsymbol{\phi} (\mathbf{r}) e_t(\mathbf{r}) \, d\mathbf{r}}. 
+\end{align}
+  }
 Now defining the matrix
 \begin{equation}\label{eq:DefGamma}
 	\boldsymbol{\Gamma} \triangleq \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi} ^{\top}\left(\mathbf{r}\right) \, d\mathbf{r}}, 
 \end{equation}
-and substituting this into equation~\ref{StartofReduction} and cross-multiplying by $\boldsymbol{\Gamma}^{-1}$ gives
+and substituting it into equation~\ref{eq:StartofReduction} and cross-multiplying by $\boldsymbol{\Gamma}^{-1}$ gives
 \begin{align}
     \label{eq:ReducedForm}
 	 \mathbf{x}_{t+1} &= T_s\boldsymbol{\Gamma}^{-1}
@@ -308,7 +328,7 @@ Now to isolate the kernel equation~\ref{eq:autocorr_for_sub} is substituted into
 \end{align}
 Now rearranging
 \begin{equation}
-	\frac{\mathcal{F}\left\{R_{y_{t},y_{t+1}}(\boldsymbol{\tau})\right\}}{\mathcal{F}\left\{ R_{y_t,y_t}(\boldsymbol{\tau}) - \delta_K\left(\boldsymbol{\tau}\right)\sigma_{\varepsilon}^2 \right\}} \approx \mathcal{F}\left\{ \mathbf{E}[ \xi\delta_D\left(\mathbf{r}\right)  + T_s \varsigma w(\mathbf{r}+\boldsymbol{\tau}) ]\right\}.
+	\frac{\mathcal{F}\left\{R_{y_{t},y_{t+1}}(\boldsymbol{\tau})\right\}}{\mathcal{F}\left\{ R_{y_t,y_t}(\boldsymbol{\tau}) - \delta_K\left(\boldsymbol{\tau}\right)\sigma_{\varepsilon}^2 \right\}} \approx \mathcal{F}\left\{ \mathbf{E}\left[ \xi\delta_D\left(\mathbf{r}\right)  + T_s \varsigma w(\mathbf{r}+\boldsymbol{\tau}) \right]\right\}.
 \end{equation}
 Take inverse Fourier transform and rearrange to get an approximation of the kernel
 \begin{equation}
@@ -602,7 +622,7 @@ The development of the estimation framework also has implications for theoretica
 
 \dean{An advantage in using a lumped-parameter field model over a more detailed mathematical description is that the myriad of parameters that might influence excitability, such as specific ion concentrations, are considered to be lumped into the connectivity kernel coefficients that effectively describe the net system gain. In this way a minimal number of assumptions are made. A major challenge in data assimilation for the mass action of the brain is to make models sufficiently detailed such that the parameters are meaningful, but simple enough to yield clear insights that can be related to theoretical studies (from both neuroscience and engineering perspectives).}
 
-\dean{The framework assumes that the parameters of the model (and brain) are stationary over the estimation period. This is a reasonable assumption if applying the framework to an evoked-potential experiment over a short time period in a controlled environment. However, it is well known that factors that influence excitability are non-stationary over longer time periods (see \citet{Ullah2010} for a nice example). Therefore, the estimation framework must be altered if it is to be applied to data over extended periods of time. A possible way to achieve this is to use a more sophisticated model that accounts for longer term time dependancies (higher temporal order). Alternatively, the parameters of the model could be considered time-varying, where changes in excitability might result in different connectivity kernel parameters. A possible way to achieve this would be to employ window-based estimation, where the estimation is performed on successive windows of data (possibly overlapping windows). The window length will need to be sufficiently short such that the parameters are approximately stationary of the estimation duration, and sufficiently long to achieve a good estimation result. If this trade-off can not be successfully achieved then the level of detail in the model must be increased. A real-time implementation can also be achieved using the UKF (without the smoother\parham{???}) \parham{and an online recursive LS estimator (see \citet{Ljung1999} for example)}. }
+\dean{The framework assumes that the parameters of the model (and brain) are stationary over the estimation period. This is a reasonable assumption if applying the framework to an evoked-potential experiment over a short time period in a controlled environment. However, it is well known that factors that influence excitability are non-stationary over longer time periods (see \citet{Ullah2010} for a nice example). Therefore, the estimation framework must be altered if it is to be applied to data over extended periods of time. A possible way to achieve this is to use a more sophisticated model that accounts for longer term time dependancies (higher temporal order). Alternatively, the parameters of the model could be considered time-varying, where changes in excitability might result in different connectivity kernel parameters. A possible way to achieve this would be to employ window-based estimation or fixed-lag, where the estimation is performed on successive windows of data (possibly overlapping windows). The window length will need to be sufficiently short such that the parameters are approximately stationary of the estimation duration, and sufficiently long to achieve a good estimation result. If this trade-off can not be successfully achieved then the level of detail in the model must be increased. A real-time implementation can also be achieved using the UKF \parham{and an online recursive LS estimator (see \citet{Ljung1999} for example)}. }
 
 \dean{We have assumed that the model can be discretized by the first order Euler method. This discretization may change the properties of the stochastic nonlinear system. An alternative is to use the LL method....}
 
