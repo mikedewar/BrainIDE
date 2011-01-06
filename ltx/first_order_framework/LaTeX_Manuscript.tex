@@ -107,7 +107,6 @@ The parameter $v_0$ describes the firing threshold of the neural populations and
 	f\left( v\left( \mathbf{r}',t' \right)\right)
 	\, d\mathbf{r}'dt'.
 \end{equation}
-
 \dean{(reviewer 2, comment 3:) To arrive at the standard integro-differential equation form of the model, we use the fact that the synaptic response kernel is a Green's function of a linear differential equation defined by the differential operator $\textrm{D}=d/dt + \zeta$. A Green's function satisfies
 \begin{equation}
 	\label{GreensFuncDef} \textrm{D}h\left( t \right) = \delta \left( t \right), 
@@ -124,7 +123,6 @@ where $\ast$ denotes convolution operator.} This gives the standard form of the 
 	\label{FinalFormContinuous} 
 	\frac{dv\left( \mathbf{r},t \right)}{dt} + \zeta v\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)\, d\mathbf{r}'}. 
 \end{equation}
-
 To arrive at the integro-difference equation (IDE) form of the model, we discretize time using a first-order Euler method (see \ref{App:Time Discretization} for derivation) giving 
 \begin{equation}
 	\label{DiscreteTimeModel} 
@@ -188,16 +186,7 @@ Next we cross-multiply equation~\ref{reduced continuous model} by $\boldsymbol{\
 	&\approx T_s \int_\Omega \boldsymbol{\phi} (\mathbf{r}) \int_\Omega \boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}') \mathbf{x}_t ) \, d\mathbf{r}'d\mathbf{r}\boldsymbol{\theta} \nonumber \\ 
 	&+ \xi\int_\Omega {\boldsymbol{\phi}(\mathbf{r}) \boldsymbol{\phi}^{\top}(\mathbf{r})d\mathbf{r} } \mathbf{x}_t + \int_\Omega{\boldsymbol{\phi} (\mathbf{r}) e_t(\mathbf{r}) \, d\mathbf{r}}. 
 \end{align}
-\dean{The solution of this equation for $\mathbf{x}_t$ is equivalent to the Galerkin projection. To show this we define the residual
-\begin{align}
-	\Xi(\mathbf{x}_t,v_{t+1}(\mathbf{r})) &= v_{t+1}(\mathbf{r}) - T_s\int_\Omega{f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t )\boldsymbol{\psi}^{\top}(\mathbf{r}-\mathbf{r}') \, d\mathbf{r}'}\boldsymbol{\theta} \nonumber \\
-	&+ \xi\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_t + \mathbf{e}_t(\mathbf{r}).
-\end{align} 
-The Galerkin projection method finds $\mathbf{x}_t$ such that for all of the basis functions the inner product with the residual satisfies
-\begin{equation}\label{eq:GalerkinProjection}
-	G_i = \int_{\Omega}\Xi(\mathbf{x}_t,v_{t+1}(\mathbf{r})) \phi_i(\mathbf{r}) d\mathbf{r} = 0, \> i=0,1,\hdots,n_x-1,
-\end{equation}
-where $n_x$ is the number of states and basis functions. If equation~\ref{eq:GalerkinProjection} is satisfied then the basis functions are orthogonal to the residual. If one was using the Galerkin projection to estimate the states, they would numerically solve the $n_x$ equations to estimate the state vector, which is a standard method in economics modeling. The method in this paper takes a different approach by forming the state-space model. To show how this is achieved we substitute the field decomposition into the right hand side of equation~\ref{eq:decompRHS} giving
+\dean{The solution of this equation for $\mathbf{x}_t$ is equivalent to finding a Galerkin projection, where the field basis functions would be considered the Galerkin projection functions and the states would be the amplitude coefficients. If the Galerkin approach was used estimate the states, $n_x$ coupled ODEs would be solved independently to estimate the state vector, which is a standard method in fluid dynamics and economics modeling. The method in this paper takes a different approach by forming the state-space model, allowing for more efficient estimation. To show how this is achieved we substitute the field decomposition into the left hand side of equation~\ref{eq:decompRHS} giving
 \begin{align}
 	\label{eq:StartofReduction}
  	\int_\Omega \boldsymbol{\phi}&\left(\mathbf{r}\right) \boldsymbol{\phi}^{\top}\left(\mathbf{r}\right)\mathbf{x}_{t+1}d\mathbf{r}  \nonumber \\
@@ -606,7 +595,7 @@ The closest competitor to our `grey-box' integro-difference equation approach is
 
 Previous work by \citet{schiff2008kalman} demonstrated for the first time the applicability of the unscented Kalman filter (UKF) for state estimation of discrete (in space and time) nonlinear spatiotemporal systems. Within their framework, each discrete spatial location formed an element of the state vector to be estimated with the UKF. A limitation of this framework was that an increase in spatial resolution and/or the physical size of the neural field resulted in an increased state dimension. This, in turn, leads to increases in uncertainty in the state estimates. In addition, directly linking the complexity of the underlying system to the spatial resolution of the observation process implies that the system's dynamics become increasingly more complex the closer we look, which may not be an accurate modeling assumption.
 
-The current study builds on Schiff and Sauer's approach by estimating a continuous field whose complexity is independent of the resolution of the observation process and spatial resolution of the model. Instead, the dimensionality is governed by the expected complexity of the underlying field, which we measure using the frequency analysis presented in the Methods section. These methods provide a rigorous framework for determining the dimensionality of the system using inherent spatial properties of the field. This enables estimation of a larger field with a lower dimensional state vector than would be otherwise possible. 
+The current study builds on Schiff and Sauer's approach by estimating a continuous field whose complexity is independent of the resolution of the observation process and spatial resolution of the model. Instead, the dimensionality is governed by the expected complexity of the underlying field, which we measure using the frequency analysis presented in the Methods section. These methods provide a rigorous framework for determining the dimensionality of the system using inherent spatial properties of the field. \dean{It should be noted that Schiff and Sauer suggest the possibility of using a Galerkin projection or similar decomposition that is used in this paper to perform efficient estimation as a direction for future work. Indeed,} we have show that this enables estimation of a larger field with a lower dimensional state vector than would be otherwise possible. 
 
 The isotropy of the connectivity kernel basis functions means that the mixing effect of the kernel on the firing rates can be written as a convolution of the kernel with the field basis functions. This transformation greatly simplifies the computational complexity of the estimator, which is important for the estimator to run in a real-time scenario.
 
@@ -1158,6 +1147,19 @@ The stimulation waveform for the current source consisted of a 40~Hz sine wave w
 	a = \frac{1}{T}\sum_t{\sqrt{(y_t^2-\mathcal{H}y_t^2})}
 \end{equation}
 where $\mathcal{H}$ denotes the Hilbert transform operator, $t$ indexes samples and $T$ is the total number of samples in the time series. Fig.~\ref{fig:Ch3} shows the mean amplitude of the recorded envelope versus the distance between the twisted wire electrode and the recording electrode. A Gaussian fitted to the amplitudes is also shown. The figure shows that a Gaussian is indeed a good model for the sensor kernel in the homogeneous solution.
+
+\section{Equivalence to Galerkin's Projection}
+To show how to solution of equation for the state vector is equivalent to the Galerkin projection we define the residual between the field and the decomposition as 
+\begin{align}
+	\Xi(\mathbf{x}_t,v_{t+1}(\mathbf{r})) &= v_{t+1}(\mathbf{r}) - T_s\int_\Omega{f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t )\boldsymbol{\psi}^{\top}(\mathbf{r}-\mathbf{r}') \, d\mathbf{r}'}\boldsymbol{\theta} \nonumber \\
+	&+ \xi\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_t + \mathbf{e}_t(\mathbf{r}).
+\end{align} 
+The Galerkin projection method finds $\mathbf{x}_t$, such that for all of the basis functions, the inner product with the residual satisfies
+\begin{equation}\label{eq:GalerkinProjection}
+	G_i = \int_{\Omega}\Xi(\mathbf{x}_t,v_{t+1}(\mathbf{r})) \phi_i(\mathbf{r}) d\mathbf{r} = 0, \> i=0,1,\hdots,n_x-1,
+\end{equation}
+where $n_x$ is the number of states and basis functions. If the inner product between the residual and the basis functions in equation~\ref{eq:GalerkinProjection} is zero, then the basis functions are orthogonal to the residual. 
+
 
 \section{Inner Product of Two \emph{n}-Dimensional Gaussians}\label{App:InnerProdOfGaussians}
 The derivation in this section was used for calculating the matrix $\mathbf \Gamma$ from equation~\ref{eq:DefGamma}. Consider two Gaussian basis functions
