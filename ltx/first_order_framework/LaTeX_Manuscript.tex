@@ -170,7 +170,7 @@ where $\boldsymbol{\psi}(\mathbf{r},\mathbf{r}')$ is a vector of Gaussian basis 
 $\boldsymbol{\psi}(\mathbf{r}-\mathbf{r}')$. We will assume that we know the parametric form of the connectivity basis functions, where the scaling parameters $\boldsymbol{\theta}$ are unknown. 
 \dean{(for reviewer 1 point 2:) Note, that although the examples presented in this paper use the Mexican hat connectivity kernel, the framework is also valid for other connectivity kernels provided they are homogeneous and that they can be approximated by a set of isotropic basis functions parametrized by a coefficient vector $\mathbf{\theta}$. The mathematical formulation does not restrict the shape of the kernel, where anisotropic arbitrary shapes can be represented. Furthermore, the kernel basis functions need not be a Gaussian shape, but can be, for example, Laplacian to describe the ``wizard hat'' connectivity or B-spline functions to describe a kernel with a compact support.}
 
-Each connectivity basis function of the Mexican hat can, individually, be considered a layer in the Wilson and Cowan model. Rearranging the order of the spatial convolution in equation~\ref{DiscreteTimeModel} and substituting in equations~\ref{DefFieldDecomp} and~\ref{DefKernelDecomp} \dean{to the left hand side} we get 
+Each connectivity basis function of the Mexican hat can, individually, be considered a layer in the Wilson and Cowan model. Rearranging the order of the spatial convolution in equation~\ref{DiscreteTimeModel} and substituting in equations~\ref{DefFieldDecomp} and~\ref{DefKernelDecomp} \dean{to the left hand side} we get the approximation of the dynamic field
 % \begin{align}
 % 	\label{reduced continuous model}
 % 	\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_{t+1} &= T_s\int_\Omega{f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t )\boldsymbol{\psi}^{\top}(\mathbf{r}-\mathbf{r}') \, d\mathbf{r}'}\boldsymbol{\theta} \nonumber \\
@@ -193,9 +193,9 @@ Next we cross-multiply equation~\ref{reduced continuous model} by $\boldsymbol{\
 	\Xi(\mathbf{x}_t,v_{t+1}(\mathbf{r})) &= v_{t+1}(\mathbf{r}) - T_s\int_\Omega{f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t )\boldsymbol{\psi}^{\top}(\mathbf{r}-\mathbf{r}') \, d\mathbf{r}'}\boldsymbol{\theta} \nonumber \\
 	&+ \xi\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_t + \mathbf{e}_t(\mathbf{r}).
 \end{align} 
-The Galerkin projection finds $\mathbf{x}_t$ such that for all basis functions, the inner product with the residual satisfies
+The Galerkin projection method finds $\mathbf{x}_t$ such that for all of the basis functions the inner product with the residual satisfies
 \begin{equation}\label{eq:GalerkinProjection}
-	G_i = \int_{\Omega}\Xi(x_t,v_t(\mathbf{r})) \phi_i(\mathbf{r}) d\mathbf{r} = 0, \> i=0,1,\hdots,n_x-1,
+	G_i = \int_{\Omega}\Xi(\mathbf{x}_t,v_{t+1}(\mathbf{r})) \phi_i(\mathbf{r}) d\mathbf{r} = 0, \> i=0,1,\hdots,n_x-1,
 \end{equation}
 where $n_x$ is the number of states and basis functions. If equation~\ref{eq:GalerkinProjection} is satisfied then the basis functions are orthogonal to the residual. If one was using the Galerkin projection to estimate the states, they would numerically solve the $n_x$ equations to estimate the state vector, which is a standard method in economics modeling. The method in this paper takes a different approach by forming the state-space model. To show how this is achieved we substitute the field decomposition into the right hand side of equation~\ref{eq:decompRHS} giving
 \begin{align}
@@ -217,7 +217,7 @@ and substituting it into equation~\ref{eq:StartofReduction} and cross-multiplyin
 	 \int_\Omega \boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}')f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t)d\mathbf{r}' d\mathbf{r} \boldsymbol{\theta}  \nonumber \\
 	& + \xi\mathbf{x}_t + \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r}) e_t(\mathbf{r}) \, d\mathbf{r}}.
 \end{align}
-The analytic derivation of the inner product of \emph{n}-dimensional Gaussians, which was used for calculating $\mathbf\Gamma$, is provided in \ref{App:InnerProdOfGaussians}. Equation~\ref{eq:ReducedForm} can be simplified by exploiting the isotropy of the connectivity kernel basis functions where
+The analytic derivation of the inner product of \emph{n}-dimensional Gaussians, which was used for calculating $\mathbf\Gamma$, is provided in \ref{App:InnerProdOfGaussians}. \dean{Alternative field basis functions may be used to form the decomposition and if the basis is orthonormal then $\Gamma$ become the identity matrix.} Equation~\ref{eq:ReducedForm} can be simplified by exploiting the isotropy of the connectivity kernel basis functions where
 \begin{equation}
 	\psi_i (\mathbf{r}-\mathbf{r}') = \psi_i (2\mathbf{c}_i+\mathbf{r}'-\mathbf{r})
 \end{equation}
