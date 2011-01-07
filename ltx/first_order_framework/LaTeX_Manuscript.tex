@@ -475,7 +475,7 @@ where $\mathbf{\bar x}$ represents either $\hat{\mathbf x}_t^{f}$ or $\hat{\math
 \begin{equation}\label{eq:sigmapoints3}
 	\lambda=\alpha^2( n_x+\kappa) - n_x, 
 \end{equation}
-\parham{(reviewer 2, comment 7:) The positive constant $\alpha$ that determines the spread of the sigma points around $\mathbf{\bar x}$ is typically set arbitrary small (e.g., $10^{-3}$) to minimise higher-order effects \citep{Haykin2001}, and  $\kappa$ is an additional scaling parameter which was set to $3-n_x$ in accordance to \citet{Julier2002a}.}
+\parham{(reviewer 2, comment 7:) The positive constant $\alpha$, that determines the spread of the sigma points around $\mathbf{\bar x}$, was set to $10^{-3}$. It is typically set arbitrary small to minimise higher-order effects \citep{Haykin2001}. The other scaling parameter, $\kappa$, was set to $3-n_x$ in accordance to \citet{Julier2002a}.}
 
 The sigma vectors are propagated through the system equations and weighted to form the predicted mean and covariance. The weights are calculated by 
 \begin{align}
