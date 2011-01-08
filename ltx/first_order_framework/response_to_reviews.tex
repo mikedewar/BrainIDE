@@ -65,23 +65,19 @@
 		   g_{t}(\mathbf r)=\int_\Omega  {w\left( \mathbf{r}-\mathbf{r}' \right)f\left( v_t\left(
 \mathbf{r}'\right) \right)d\mathbf{r}'} 
 		  \end{equation}
-		  in a worst case scenario ( I realised it's not but still I will keep it)if we assume $f(v_t(\mathbf r))$ saturates for all $g_t$ we have
-		  \begin{align}
-		   g_{t}(\mathbf r)=&\int_\Omega  {w\left( \mathbf{r}-\mathbf{r}' \right)d\mathbf{r}'} \nonumber \\
-				   =-a
-		  \end{align}	
-		  where $a$ is the area under the connectivity kernel. Substituting $-a$ for all $g_{t}$ in \eqref{vrecursive} we get
+		  since $0\leq f(v_t(\mathbf r)) \leq 1$ and the area under the kernel is bounded, $g_t(\mathbf r)$ is always bounded,
+		  if we assume $g_t=g_b$ for all time, where $g_b$ is the upper bound on the average firing rate, we have
 		  \begin{align}\label{vrecursiveinlimit}
-		   v_{t+1}(\mathbf r)&=\xi^{t+1}v_0(\mathbf r)-aT_s\sum_{i=0}^t\xi^i \nonumber\\
-				     &=\xi^{t+1}v_0(\mathbf r)-\frac{aT_s(1-\xi^{t+1})}{1-\xi}
+		   v_{t+1}(\mathbf r)&=\xi^{t+1}v_0(\mathbf r)-g_{b}T_s\sum_{i=0}^t\xi^i \nonumber\\
+				     &=\xi^{t+1}v_0(\mathbf r)-\frac{g_{b}T_s(1-\xi^{t+1})}{1-\xi}
 		  \end{align}
 		  in a limit equation \eqref{vrecursiveinlimit} can be written as 
 		  \begin{equation}\label{simplifiedvrecursiveinlimit}
-		   v_{t+1}(\mathbf r)=\xi^{t+1}v_0(\mathbf r)-\frac{aT_s}{1-\xi}
+		   v_{t+1}(\mathbf r)=\xi^{t+1}v_0(\mathbf r)-\frac{g_{b}T_s}{1-\xi}
 		  \end{equation}
 		  substituting $\xi=1-\zeta T_s$ in \eqref{simplifiedvrecursiveinlimit} we get
 		  \begin{equation}
-		   v_{t+1}(\mathbf r)=(1-\zeta T_s)^{t+1}v_0(\mathbf r)-\frac{a}{\zeta}
+		   v_{t+1}(\mathbf r)=(1-\zeta T_s)^{t+1}v_0(\mathbf r)-\frac{g_{b}}{\zeta}
 		  \end{equation}
 		  by choosing $0<T_s\le \frac{1}{\zeta}$ which is the case in practice the discretized system will be stable.}}
 
