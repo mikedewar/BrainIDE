@@ -53,7 +53,39 @@
 		be in fact treated as stochastic. In equation (S1.1) of the extended
 		derivation, it is shown that an Euler approximation is taken which may
 		even change the dynamical properties of the system. The authors should
-		discuss this issue.'' ALL THESE PAPERS USE a method called local linearisation approach for discretisation.}
+		discuss this issue.'' ALL THESE PAPERS USE a method called local linearisation approach for discretisation.}\\
+
+
+		\emph{\parham{ discretized membrane voltage $v_{t+1}(\mathbf r)$ can be written as 
+		  \begin{equation}\label{vrecursive}
+		   v_{t+1}(\mathbf r)=\xi^{t+1}v_0(\mathbf r)+T_s\sum_{i=0}^t\xi^ig_{t-i}(\mathbf r)
+		  \end{equation}
+		  where
+		  \begin{equation}
+		   g_{t}(\mathbf r)=\int_\Omega  {w\left( \mathbf{r}-\mathbf{r}' \right)f\left( v_t\left(
+\mathbf{r}'\right) \right)d\mathbf{r}'} 
+		  \end{equation}
+		  in a worst case scenario if we assume $f(v_t(\mathbf r))$ saturates for all $g_t$ we have
+		  \begin{align}
+		   g_{t}(\mathbf r)=&\int_\Omega  {w\left( \mathbf{r}-\mathbf{r}' \right)d\mathbf{r}'} \nonumber \\
+				   =-a
+		  \end{align}	
+		  where $a$ is the area under the connectivity kernel. Substituting $-a$ for all $g_{t}$ in \eqref{vrecursive} we get
+		  \begin{align}\label{vrecursiveinlimit}
+		   v_{t+1}(\mathbf r)&=\xi^{t+1}v_0(\mathbf r)-aT_s\sum_{i=0}^t\xi^i \nonumber\\
+				     &=\xi^{t+1}v_0(\mathbf r)-\frac{aT_s(1-\xi^{t+1})}{1-\xi}
+		  \end{align}
+		  in a limit equation \eqref{vrecursiveinlimit} can be written as 
+		  \begin{equation}\label{simplifiedvrecursiveinlimit}
+		   v_{t+1}(\mathbf r)=\xi^{t+1}v_0(\mathbf r)-\frac{aT_s}{1-\xi}
+		  \end{equation}
+		  substituting $\xi=1-\zeta T_s$ in \eqref{simplifiedvrecursiveinlimit}
+		  \begin{equation}
+		   v_{t+1}(\mathbf r)=(1-\zeta T_s)^{t+1}v_0(\mathbf r)-\frac{a}{\zeta}
+		  \end{equation}
+		  by choosing sufficiently small $T_s$ the discretized model will be stable.}}
+
+
 		
 		\emph{We should add some more to the modeling assumptions section to address this one. I have begun to talk about the LL method.}
 		
