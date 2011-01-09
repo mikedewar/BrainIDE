@@ -65,13 +65,13 @@
 		   g_{t}(\mathbf r)=\int_\Omega  {w\left( \mathbf{r}-\mathbf{r}' \right)f\left( v_t\left(
 \mathbf{r}'\right) \right)d\mathbf{r}'} 
 		  \end{equation}
-		  since $0\leq f(v_t(\mathbf r)) \leq 1$ and the area under the kernel is bounded, $g_t(\mathbf r)$ is always bounded,
+		  since $0 \leq f(v_t(\mathbf r)) \leq 1$ and the area under the kernel is bounded, $g_t(\mathbf r)$ is always bounded,
 		  in a worse case scenario if we assume $g_t=g_b$ for all time, where $g_b$ is the upper bound on the average firing rate, we have
 		  \begin{align}\label{vrecursiveinlimit}
 		   v_{t+1}(\mathbf r)&=\xi^{t+1}v_0(\mathbf r)+g_{b}T_s\sum_{i=0}^t\xi^i \nonumber\\
 				     &=\xi^{t+1}v_0(\mathbf r)+\frac{g_{b}T_s(1-\xi^{t+1})}{1-\xi}
 		  \end{align}
-		  in a limit equation \eqref{vrecursiveinlimit} can be written as 
+		  in a limit equation (geometric series) \eqref{vrecursiveinlimit} can be written as 
 		  \begin{equation}\label{simplifiedvrecursiveinlimit}
 		   v_{t+1}(\mathbf r)=\xi^{t+1}v_0(\mathbf r)+\frac{g_{b}T_s}{1-\xi}
 		  \end{equation}

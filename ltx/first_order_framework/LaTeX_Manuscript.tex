@@ -1145,6 +1145,32 @@ Now making simplifications, the discrete time form of the model is
 \end{equation}
 where $\xi = 1 - T_s \zeta$.
 
+Even though the continuous system is stable, it is not guaranteed the discrete system is stable when using Euler's method. Therefore, it is necessary to demonstrate the stability of the discretized IDE. To show this, the model is written as the series
+\begin{align}
+	v_1(\mathbf{r}) &= \xi v_0(\mathbf{r}) + T_s g_0(\mathbf{r}) \\
+	v_2(\mathbf{r})	&= \xi^2 v_0(\mathbf{r}) + T_s \left(\xi g_0(\mathbf{r}) + g_1(\mathbf{r}) \right) \\
+	\vdots \, \, \, \, \, &= \, \, \, \, \, \vdots \\
+	v_{t+1}(\mathbf r) &= \xi^{t+1} v_0\left(\mathbf{r} \right) + T_s \sum_{i=0}^t \xi^i g_{t-i}(\mathbf{r}), \label{eq:fieldmodelseries}
+\end{align}
+where
+\begin{equation}
+	g_{t}(\mathbf{r}) = \int_\Omega { w\left(\mathbf{r}-\mathbf{r}'\right) f\left(v_t\left(\mathbf{r}'\right)\right) d\mathbf{r}'}.
+\end{equation}
+Now, since $0 \leq f(v_t(\mathbf r)) \leq 1$ and the area under the kernel is bounded, $g_t(\mathbf r)$ is always bounded. To assess the stability of the system  we assume the entire field is firing at the maximal rate. Therefore $g_{t}(\mathbf{r}) = c$, where $c$ is the integral of the connectivity kernel. Substituting this into equation~\ref{eq:fieldmodelseries} yields
+\begin{align}\label{vrecursiveinlimit}
+	v_{t+1}(\mathbf r) &= \xi^{t+1}v_0(\mathbf r)+ c T_s \sum_{i=0}^t \xi^i \nonumber \\
+	&=\xi^{t+1}v_0(\mathbf r) + \frac{ c T_s(1-\xi^{t+1})}{1-\xi}.
+\end{align}
+Now considering the limit as $t$ approaches infinity, equation \eqref{vrecursiveinlimit} can be written as a geometric series
+\begin{equation}\label{simplifiedvrecursiveinlimit}
+	v_{t+1}(\mathbf r)=\xi^{t+1}v_0(\mathbf r)+\frac{c T_s}{1-\xi}.
+\end{equation}
+Substituting $\xi=1-\zeta T_s$ into equation \eqref{simplifiedvrecursiveinlimit} gives
+\begin{equation}
+	v_{t+1}(\mathbf r)=(1-\zeta T_s)^{t+1}v_0(\mathbf r)+\frac{c}{\zeta}.
+\end{equation}
+From this equation it can be seen that the system is stable if $0 < T_s < \tau$, where the synaptic time constant $\tau = 1/\zeta$. The sampling period was set to $T_s = 0.001 s$ and the time constant was set to $\tau = 0.01 s^{-1}$. Therefore, the discretization preserved the stability properties of the system.
+
 \section{Observation Kernel}\label{App:ObsKernelExperiment}
 The Gaussian shape of the observation kernel was verified experimentally. This was achieved by moving a dipole across a recording electrode submerged in saline. A photograph through a microscope of the submerged electrodes can be seen in Fig.~\ref{fig:SensorAndSource}. The measurement sensor was the most central electrode of a $5\times5$ Utah array (Blackrock Microsystems) which had electrode spacing of 400~$\mu$m. The current source was a twisted wire electrode (Plastics One Inc.) with tip-tip spacing of 60~$\mu$m and tip diameter of 200~$\mu$m. The twisted wire electrode was moved in the saline solution using a 3 dimensional manipulator (Sutter Instrument Company, MPC-100) in increments of 200~$\mu$m. The twisted wire electrode and the Utah array were co-registered visually using the microscope.
 The stimulation waveform for the current source consisted of a 40~Hz sine wave with a duration of 1~s. The recording from the central electrode in the array was used to estimate the shape of the sensor kernel. To extract the amplitude of the signal, the data was first band-pass filtered with a center frequency of 40~Hz. The envelope of the signal was found by computing the mean instantaneous amplitude over the 1~s stimulation duration by
