@@ -164,7 +164,7 @@ The connectivity kernel can also be decomposed as
 \begin{equation}\label{DefKernelDecomp}
 	 w\left(\mathbf{r},\mathbf{r}'\right) =\boldsymbol{\psi}^\top\left(\mathbf{r},\mathbf{r}'\right) \boldsymbol{\theta},
 \end{equation}
-where $\boldsymbol{\psi}(\mathbf{r},\mathbf{r}')$ is a vector of Gaussian basis functions and $\boldsymbol{\theta}$ is a vector of scaling parameters. By exploiting the isotropy of the connectivity basis functions, they can be written as  
+where $\boldsymbol{\psi}(\mathbf{r},\mathbf{r}')$ is a vector of Gaussian basis functions and $\boldsymbol{\theta}$ is a vector of scaling parameters. \dean{A graphical demonstration of the connectivity kernel decomposition is provided in Figure~\ref{fig:Figure1}.} By exploiting the isotropy of the connectivity basis functions, they can be written as  
 $\boldsymbol{\psi}(\mathbf{r}-\mathbf{r}')$. We will assume that we know the parametric form of the connectivity basis functions, where the scaling parameters $\boldsymbol{\theta}$ are unknown. 
 \dean{(for reviewer 1 point 2:) Note, that although the examples presented in this paper use the Mexican hat connectivity kernel, the framework is also valid for other connectivity kernels provided they are homogeneous and that they can be approximated by a set of isotropic basis functions parametrized by a coefficient vector $\mathbf{\theta}$. The mathematical formulation does not restrict the shape of the kernel, where anisotropic arbitrary shapes can be represented. Furthermore, the kernel basis functions need not be a Gaussian shape, but can be, for example, Laplacian to describe the ``wizard hat'' connectivity or B-spline functions to describe a kernel with a compact support.}
 
@@ -1145,29 +1145,29 @@ Now making simplifications, the discrete time form of the model is
 \end{equation}
 where $\xi = 1 - T_s \zeta$.
 
-Even though the continuous system is stable, it is not guaranteed the discrete system is stable when using Euler's method. Therefore, it is necessary to demonstrate the stability of the discretized IDE. To show this, the model is written as the series
+Even though the continuous system is stable, there is no guarantee that the discrete system is stable when using Euler's method. Therefore, it is necessary to demonstrate the stability of the discretized IDE. To do this, the model is written as the series
 \begin{align}
 	v_1(\mathbf{r}) &= \xi v_0(\mathbf{r}) + T_s g_0(\mathbf{r}) \\
 	v_2(\mathbf{r})	&= \xi^2 v_0(\mathbf{r}) + T_s \left(\xi g_0(\mathbf{r}) + g_1(\mathbf{r}) \right) \\
-	\vdots \, \, \, \, \, &= \, \, \, \, \, \vdots \\
+	\vdots \, \, \, \, \, &= \, \, \, \, \, \vdots \nonumber \\
 	v_{t+1}(\mathbf r) &= \xi^{t+1} v_0\left(\mathbf{r} \right) + T_s \sum_{i=0}^t \xi^i g_{t-i}(\mathbf{r}), \label{eq:fieldmodelseries}
 \end{align}
 where
 \begin{equation}
 	g_{t}(\mathbf{r}) = \int_\Omega { w\left(\mathbf{r}-\mathbf{r}'\right) f\left(v_t\left(\mathbf{r}'\right)\right) d\mathbf{r}'}.
 \end{equation}
-Now, since $0 \leq f(v_t(\mathbf r)) \leq 1$ and the area under the kernel is bounded, $g_t(\mathbf r)$ is always bounded. To assess the stability of the system  we assume the entire field is firing at the maximal rate. Therefore $g_{t}(\mathbf{r}) = c$, where $c$ is the integral of the connectivity kernel. Substituting this into equation~\ref{eq:fieldmodelseries} yields
+Now, $g_t(\mathbf r)$ is always bounded since $0 \leq f(v_t(\mathbf r)) \leq 1$ and the area under the kernel is finite. To assess the stability of the discrete time system we assume that $g_t(\mathbf{r})$ is maximally saturated over the entire field for all time, which we denote as $g_{max}$. Substituting this into equation~\ref{eq:fieldmodelseries} yields
 \begin{align}\label{vrecursiveinlimit}
-	v_{t+1}(\mathbf r) &= \xi^{t+1}v_0(\mathbf r)+ c T_s \sum_{i=0}^t \xi^i \nonumber \\
-	&=\xi^{t+1}v_0(\mathbf r) + \frac{ c T_s(1-\xi^{t+1})}{1-\xi}.
+	v_{t+1}(\mathbf r) &= \xi^{t+1}v_0(\mathbf r)+ g_{max} T_s \sum_{i=0}^t \xi^i \nonumber \\
+	&=\xi^{t+1}v_0(\mathbf r) + \frac{ g_{max} T_s(1-\xi^{t+1})}{1-\xi}.
 \end{align}
-Now considering the limit as $t$ approaches infinity, equation \eqref{vrecursiveinlimit} can be written as a geometric series
+To study the asymptotic behaviour of the system we consider the limit as $t$ approaches infinity and in doing so we use a property of the geometric series to simplify equation \eqref{vrecursiveinlimit} to
 \begin{equation}\label{simplifiedvrecursiveinlimit}
-	v_{t+1}(\mathbf r)=\xi^{t+1}v_0(\mathbf r)+\frac{c T_s}{1-\xi}.
+	v_{t+1}(\mathbf r)=\xi^{t+1}v_0(\mathbf r)+\frac{g_{max} T_s}{1-\xi}.
 \end{equation}
 Substituting $\xi=1-\zeta T_s$ into equation \eqref{simplifiedvrecursiveinlimit} gives
 \begin{equation}
-	v_{t+1}(\mathbf r)=(1-\zeta T_s)^{t+1}v_0(\mathbf r)+\frac{c}{\zeta}.
+	v_{t+1}(\mathbf r)=(1-\zeta T_s)^{t+1}v_0(\mathbf r)+\frac{g_{max}}{\zeta}.
 \end{equation}
 From this equation it can be seen that the system is stable if $0 < T_s < \tau$, where the synaptic time constant $\tau = 1/\zeta$. The sampling period was set to $T_s = 0.001 s$ and the time constant was set to $\tau = 0.01 s^{-1}$. Therefore, the discretization preserved the stability properties of the system.
 
