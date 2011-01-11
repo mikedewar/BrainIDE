@@ -1185,7 +1185,7 @@ where $\mathcal{H}$ denotes the Hilbert transform operator, $t$ indexes samples 
 	&- T_s\int_\Omega{f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t )\boldsymbol{\psi}^{\top}(\mathbf{r}-\mathbf{r}') \, d\mathbf{r}'}\boldsymbol{\theta} \nonumber \\
 	&+ \xi\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_t + \mathbf{e}_t(\mathbf{r}).
 \end{align} 
-The Galerkin projection method finds $\mathbf{x}_t$, such that the inner product of the residual with all of the basis functions satisfies
+The Galerkin projection finds $\mathbf{x}_t$, such that the inner product of the residual with all of the basis functions satisfies
 \begin{equation}\label{eq:GalerkinProjection}
 	G_i = \int_{\Omega}\Xi(\mathbf{x}_t,v_{t+1}(\mathbf{r})) \phi_i(\mathbf{r}) d\mathbf{r} = 0,
 \end{equation}
