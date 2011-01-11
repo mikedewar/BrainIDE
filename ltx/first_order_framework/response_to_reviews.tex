@@ -6,9 +6,9 @@
 \usepackage{anysize} %<-for setting margins
 \marginsize {1.6cm}{1.6cm}{2.0cm}{2cm}
 \usepackage{color}
-\newcommand{\dean}[1]{\textsf{\emph{\textbf{\textcolor{red}{#1}}}}}
-\newcommand{\mike}[1]{\textsf{\emph{\textbf{\textcolor{green}{#1}}}}}
-\newcommand{\parham}[1]{\textsf{\emph{\textbf{\textcolor{blue}{#1}}}}}
+\newcommand{\dean}[1]{\textcolor{red}{#1}}
+\newcommand{\mike}[1]{\textcolor{green}{#1}}
+\newcommand{\parham}[1]{\textcolor{blue}{#1}}
 
 \title{Response To Reviews - A Data-Driven Framework for Neural Field Modeling}
 \author{D. Freestone, P. Aram, M. Dewar, K. Scerri, D. Grayden, V. Kadirkamanathan}
@@ -42,48 +42,12 @@
     
     \begin{enumerate}
         \item The discrepancy of the results in Experiment II where the weights of the basis functions are not in agreement with the actual parameters while the reconstructed kernels seem satisfying.
-        \emph{\mike{something about the identifiability of the parameters, as many parametere sets give rise to the same kernel?}}
+
+		\emph{These results show that the system may not be identifiable in non-ideal, practical situations. Nevertheless, the net shape of the estimated kernels will be in accordance to actual data.}
 
         \item The use of Euler discretisation and how this affects the system's behavior.
 
-		\emph{This point was made by a reviewer from our PLoS attempt. The reviewer stated: ``1. The authors might want to reference prior work in using Kalman
-		Filtering for the estimation of neural mass models from data [1-3],
-		[13]. In fact from those papers stressed the importance of carrying out
-		a high order discretization of the differential equations, which should
-		be in fact treated as stochastic. In equation (S1.1) of the extended
-		derivation, it is shown that an Euler approximation is taken which may
-		even change the dynamical properties of the system. The authors should
-		discuss this issue.'' ALL THESE PAPERS USE a method called local linearisation approach for discretisation.}\\
-
-
-		\emph{\parham{ discretized membrane voltage $v_{t+1}(\mathbf r)$ can be written in a form of 
-		  \begin{equation}\label{vrecursive}
-		   v_{t+1}(\mathbf r)=\xi^{t+1}v_0(\mathbf r)+T_s\sum_{i=0}^t\xi^ig_{t-i}(\mathbf r)
-		  \end{equation}
-		  where
-		  \begin{equation}
-		   g_{t}(\mathbf r)=\int_\Omega  {w\left( \mathbf{r}-\mathbf{r}' \right)f\left( v_t\left(
-\mathbf{r}'\right) \right)d\mathbf{r}'} 
-		  \end{equation}
-		  since $0 \leq f(v_t(\mathbf r)) \leq 1$ and the area under the kernel is bounded, $g_t(\mathbf r)$ is always bounded,
-		  in a worse case scenario if we assume $g_t=g_b$ for all time, where $g_b$ is the upper bound on the average firing rate, we have
-		  \begin{align}\label{vrecursiveinlimit}
-		   v_{t+1}(\mathbf r)&=\xi^{t+1}v_0(\mathbf r)+g_{b}T_s\sum_{i=0}^t\xi^i \nonumber\\
-				     &=\xi^{t+1}v_0(\mathbf r)+\frac{g_{b}T_s(1-\xi^{t+1})}{1-\xi}
-		  \end{align}
-		  in a limit equation (geometric series) \eqref{vrecursiveinlimit} can be written as 
-		  \begin{equation}\label{simplifiedvrecursiveinlimit}
-		   v_{t+1}(\mathbf r)=\xi^{t+1}v_0(\mathbf r)+\frac{g_{b}T_s}{1-\xi}
-		  \end{equation}
-		  substituting $\xi=1-\zeta T_s$ in \eqref{simplifiedvrecursiveinlimit} we get
-		  \begin{equation}
-		   v_{t+1}(\mathbf r)=(1-\zeta T_s)^{t+1}v_0(\mathbf r)+\frac{g_{b}}{\zeta}
-		  \end{equation}
-		  by choosing $0<T_s\le \frac{1}{\zeta}$ which is the case in practice the discretized system will be stable.}}
-
-
-		
-		\emph{We should add some more to the modeling assumptions section to address this one. I have begun to talk about the LL method. \parham{here he just ask about Euler method he doesn't ask about s-word.}}
+		\emph{Amendments have been made to Appendix A, where the discretization is performed. We have commented on how the discrete-time system's properties may differ from the continuous-time system. In addition, we have provided a proof for the stability of the discrete-time system.}
 		
         \item The derivation of Equations (30) and (31) and make them more transparent for the general audience.
 
@@ -91,7 +55,7 @@
 
         \item The existing literature on inversion schemes for similar models of brain activity.
 
-\emph{The existing literature has been discussed in more depth in the Introduction section.}
+\emph{The existing literature has been discussed in more depth in the Introduction.}
 
         \item In section 3, Table 6 is mentioned however there is no such table in the ms.
 
@@ -104,7 +68,7 @@
     We thank the reviewer for their encouraging review. Each point raised is dealt with in turn.
 
 \begin{enumerate}
-    \item The handling of the (to borrow a term from numerical weather forecasting) `sub-grid scale physics' is inadequate for nervous systems (see, e.g., equation 8 [The nonlinear IntegroDifference Equation]). I do very much appreciate the spectral estimation of spatial and temporal scales. But the model errors are lumped into an iid model error term that is not realistic. For instance, the flow of potassium in the extracellular spaces has a known dynamic that will affect network excitability, generating important sub-grid dynamics that is anything but iid. See, for instance, the example in Ullah et al PLoS Comp Biol 2010 where without such dynamics, state tracking and parameter estimation for a neural system fails. A beautiful overview of sub-grid effects in data assimilation is found in Kalnay's 2003 book. I would very much value the authors comments on these issues. I guess were I to respond to this question, that I might consider extending the model error term to an autoregressive model. But I will let the authors answer this question.\\
+    \item The handling of the (to borrow a term from numerical weather forecasting) `sub-grid scale physics' is inadequate for nervous systems (see, e.g., equation 8 [The nonlinear IntegroDifference Equation]). I do very much appreciate the spectral estimation of spatial and temporal scales. But the model errors are lumped into an iid model error term that is not realistic. For instance, the flow of potassium in the extracellular spaces has a known dynamic that will affect network excitability, generating important sub-grid dynamics that is anything but iid. See, for instance, the example in Ullah et al PLoS Comp Biol 2010 where without such dynamics, state tracking and parameter estimation for a neural system fails. A beautiful overview of sub-grid effects in data assimilation is found in Kalnay's 2003 book. I would very much value the authors comments on these issues. I guess were I to respond to this question, that I might consider extending the model error term to an autoregressive model. But I will let the authors answer this question.
 
 	\emph{To address this point, we have added an extra section to the discussion, `Modeling Assumptions'. Within this section we discuss model mismatch and what we think is a good way to deal with it.}
 	\emph{\mike{We would like to directly address the idea of representing the error using an autoregressive model. The reason we have not performed this kind of extension in the paper is that we have attempted to remain as close as possible to the original Wilson and Cowan model, to show that such models can be inferred from data. Done properly, modelling the error as an autoregressive process  will introduce additional connectivity kernels, one for each temporal lag in the AR process, i.e.
@@ -125,11 +89,12 @@ and in a discretized form we have
 
 \item Although we all know the 1970s version of Wilson and Cowan's field equations, there was an intriguing stochasticization of these equations by Benayoun et al PloS Comp Biol 2010. I and others will value the authors' thoughts of how a more palatable stochasticization of these field equations might influence the future development of the data-assimilation framework presented in this paper.
 
-\emph{I think the paper that he is talking about uses the central limit theorem, approximating a large number of independent neurons as have Gaussian noise. The paper he is talking about is also a nightmare to read.}
-
-\emph{We added the disturbance term to the firing rate function (equation 12). Although we added this after we provided the model derivation and discritization, we can show this holds if we assume the disturbance is a Wiener process, add it to the firing rate $g(\mathbf{r},t)$ (equation 3), use Ito's method to form the IDE, and the Euler-Maruyama method for the discretization. The disturbance will then be an incremental Wiener process. We chose the simplest method to present the model so the paper did not get too heavy in the maths (at least in the intro) and due to space considerations. }
-
-\emph{We assume the neuronal firing that is not predicted by the model to be caused by external independent influences. Since we a talking about a large number of neurons, we expect this disturbance to be Gaussian (according to the central limit theorem). Furthermore, we expect the disturbance to be spatially colored according to the covariance function $\sigma_d\gamma(\mathbf{r}-\mathbf{r}')$, since we consider small neighboring regions within the field to be functional processing units.}
+\dean{\emph{The author do not have much to add to this comment. We feel that adding the disturbance to the firing rate is appropriate for this model, which is what we have done. By the central limit theorem, we expect the disturbance to be Gaussian and due to the structural organization of the cortex, we expect the disturance to be spatially colored. In future work we plan to add to the framework and show how the disturbance properties can also be estimated from data.}}
+% \emph{I think the paper that he is talking about uses the central limit theorem, approximating a large number of independent neurons as have Gaussian noise. The paper he is talking about is also a nightmare to read.}
+% 
+% \emph{We added the disturbance term to the firing rate function (equation 12). Although we added this after we provided the model derivation and discritization, we can show this holds if we assume the disturbance is a Wiener process, add it to the firing rate $g(\mathbf{r},t)$ (equation 3), use Ito's method to form the IDE, and the Euler-Maruyama method for the discretization. The disturbance will then be an incremental Wiener process. We chose the simplest method to present the model so the paper did not get too heavy in the maths (at least in the intro) and due to space considerations. }
+% 
+% \emph{We assume the neuronal firing that is not predicted by the model to be caused by external independent influences. Since we a talking about a large number of neurons, we expect this disturbance to be Gaussian (according to the central limit theorem). Furthermore, we expect the disturbance to be spatially colored according to the covariance function $\sigma_d\gamma(\mathbf{r}-\mathbf{r}')$, since we consider small neighboring regions within the field to be functional processing units.}
 
 \item This is NeuroImage, not the Physical Review. Although most of this framework involves mathematics that is reasonable to follow for typical readers of this journal, I would suggest that the authors explain and expand a bit on the introduction of Green's functions where introduced in equation 6.
 
@@ -139,15 +104,15 @@ and in a discretized form we have
 
 \emph{The relationship to our basis function decomposition to Galerkin's projection has been added to the derivation of the state-space model. }
 
-\item In the isotropic and translationally invariant case examined here, would a Fourier basis for temporal and spatial structure have been a formally correct alternative?\\
+\item In the isotropic and translationally invariant case examined here, would a Fourier basis for temporal and spatial structure have been a formally correct alternative?
 
 \emph{Fourier basis functions would be a correct alternative to the case examined in this paper. In fact Fourier basis functions or any other orthonormal basis functions would simplify the state-space representation of the model, since $\Gamma$ (defined in equation (20)) of the manuscript would be the identity matrix. However, we have chosen Gaussian basis functions due to their semi-compact support.} %By choosing Gaussian basis functions the state-space representation of the model remains in its generic form which is also correct in the case of orthonormal basis functions.}
 
 \item In equation 29, what would a reasonable $\boldsymbol{\nu}_c$ be for a real neuronal system (mammalian) given the number of neurons and scale of electrodes? I am concerned that it might be much higher than any of us wish to consider. One would perhaps be saved by the filter characteristics of brain (e.g. Phys. Rev. E 73, 051911 (2006)).
 
-\emph{The mean spatial frequency content is seems to be actually lower than one might first think. We have added `From the work of (Freeman et al, 2000), the expected bandwidth of the human neocortex is approximately 0.1-0.4 cycles/mm which requires a sensor spacing of approximately 1.25 mm to avoid distortions due to aliasing' to the Frequency Analysis section of the paper to clear this up. We have also added to the discussion. Note, we expect the spatial bandwidth of the cortex to be governed by the connectivity kernel, since it is equivalent to a spatial low-pass filter acting on the firing rates.}
+\emph{The mean spatial frequency content is actually lower than one might first expect. We have added `From the work of (Freeman et al, 2000), the expected bandwidth of the human neocortex is approximately 0.1-0.4 cycles/mm which requires a sensor spacing of approximately 1.25 mm to avoid distortions due to aliasing' to the Frequency Analysis section of the paper to clear this up. We have also added to the discussion. Note, we expect the spatial bandwidth of the cortex to be governed by the connectivity kernel, since it is equivalent to a spatial low-pass filter acting on the firing rates.}
 
-\item The two covariance inflation parameters in equation 41 make me cringe. How are we best to adjust these fudge factors?\\
+\item The two covariance inflation parameters in equation 41 make me cringe. How are we best to adjust these fudge factors?
 
 \emph{Values for the two parameters in equation 41 along with the relevant references ,that describe the rationale for parameter choice, have been added to the manuscript.}
 
