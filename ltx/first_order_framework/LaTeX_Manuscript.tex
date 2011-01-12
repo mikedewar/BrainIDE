@@ -64,7 +64,7 @@ For models to be clinically viable, they must be patient-specific. A possible ap
 
 Perhaps the most accepted estimation framework for neural mass models is dynamical causal modeling (DCM) \citep{David2003,David2006}, which has been proposed for studying evoked potential dynamics. This framework can be viewed as an extension to the work of~\citet{Valdes1999} allowing for coupling of neural masses. Via a Bayesian inference scheme, DCM estimates the long range (cortico-cortical) connectivity structure between the specific isolated brain regions that best explains a given data set using the model of \citet{Jansen1995}.
 
-\dean{(Reviewer 1, additional comment d):) Data-driven neural modeling was extended to the continuum approximation by \citet{Galka2008}, where they proposed an estimation framework based on a linear damped wave equation. Using a Kalman filter maximum likelihood framework, they improved on the low resolution electromagnetic tomography (LORETA) method for solving the inverse EEG problem. Another continuum neural field model-based estimator was developed by \citet{Daunizeau2009}, as an extension to the DCM framework. They argue that using a spatially extended continuum field models is superior for explaining cortical function than the neural mass DCM, since field models can explain a richer repertoire of dynamics such as traveling waves and bump solutions.}   
+\dean{(Reviewer 1, additional comment d):) Data-driven neural modeling was extended to the continuum approximation by \citet{Galka2008}, where they proposed an estimation framework based on a linear damped wave equation. Using a Kalman filter maximum likelihood framework, they improved on the low resolution electromagnetic tomography (LORETA) method for solving the inverse EEG problem. Another continuum neural field model-based estimator was developed by \citet{Daunizeau2009}, as an extension to the DCM framework. \parham{They argue that using a spatially extended continuum field model is superior for explaining cortical function than the neural mass DCM, since field models can explain a richer repertoire of dynamics such as traveling waves and bump solutions.}}   
 
 \dean{Another recent approach estimates the parameters of a modified WC neural field model using an unscented Kalman filter~\citep{schiff2008kalman}. This work takes a systems theoretic approach to the neural estimation problem, successfully demonstrating that it is possible to perform state estimation and control on spatiotemporal neural fields. This marks the first step in what has the potential to revolutionize the treatment of many neurological diseases where therapeutic electrical stimulation is viable. For other valuable contributions to data-driven neural modeling, see \citet{Nunez2000}, \citet{Jirsa2002}, and \citet{Robinson2004}.}
 
@@ -107,18 +107,23 @@ The parameter $v_0$ describes the firing threshold of the neural populations and
 	f\left( v\left( \mathbf{r}',t' \right)\right)
 	\, d\mathbf{r}'dt'.
 \end{equation}
-\dean{(reviewer 2, comment 3:) To arrive at the standard integro-differential equation form of the model, we use the fact that the synaptic response kernel is a Green's function of a linear differential equation defined by the operator $\textrm{D}=d/dt + \zeta$. A Green's function satisfies
+\parham{The post-synaptic membrane potential is in fact the temporal convolution between the synaptic kernel and the average firing rate
+\begin{equation}\label{FullConvolutionModel}
+ v\left(\mathbf r,t\right)= \left(h\ast g\right)\left(\mathbf r,t\right)
+\end{equation}
+where $\ast$ denotes the convolution operator.}
+\dean{(reviewer 2, comment 3:) \parham{To obtain (To arrive at)} the standard integro-differential equation form of the model, we use the fact that the synaptic response kernel is a Green's function of a linear differential equation defined by the differential operator $\textrm{D}=d/dt + \zeta$. A Green's function satisfies
 \begin{equation}
 	\label{GreensFuncDef} \textrm{D}h\left( t \right) = \delta \left( t \right), 
 \end{equation} 
-where $\delta(t)$ is the Dirac-delta function. Applying the differential operator $\textrm{D}$ to equation~\ref{FullDoubleIntModel} gives
+where $\delta(t)$ is the Dirac-delta function. Applying the differential operator $\textrm{D}$ \parham{to equation~\ref{FullConvolutionModel}} gives
 \begin{align}
  \textrm{D}v\left(\mathbf r,t\right)&= \textrm{D}\left(h\ast g\right)\left(\mathbf r,t\right)\\
 &=\left(\textrm{D}h\ast g\right)\left(\mathbf r,t\right)\\
 &=\left(\delta \left(t\right)\ast g\right)\left(\mathbf r,t\right)\\
 &=g\left(\mathbf r,t\right)
 \end{align}
-where $\ast$ denotes the convolution operator.} This gives the standard form of the model
+} This gives the standard form of the model
 \begin{equation}
 	\label{FinalFormContinuous} 
 	\frac{dv\left( \mathbf{r},t \right)}{dt} + \zeta v\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)\, d\mathbf{r}'}. 
@@ -416,7 +421,7 @@ To study the robustness of the estimation algorithm, the performance was evaluat
 
 For each of the Mexican hat connectivities, the support of the kernel was assumed to be known. However, in Fig.~\ref{fig:Figure10}(D-F) the kernel support in the estimator differed from the actual data. In these cases the data sets were generated using a single positive (excitatory) Gaussian kernel, as seen by the solid line in each of the subplots of the figure. The estimation algorithm was constructed allowing for the Mexican hat connectivity of the previous examples. Each plot shows that the actual kernel lies within the confidence intervals of the reconstructed estimates for the majority of the kernel space, until the amplitude is relatively low.
 
-Table~\ref{tab:GaussianKernelResults} shows the statistics of the parameter estimates. Although the net reconstructed kernel estimates are in good accordance with the actual kernels, the individual kernel basis function weights are not in agreement with the actual parameters. This result demonstrates that the interpretation of the results should be based on the net shape of the estimated connectivity kernel and not on the estimated parameter values individually.  
+Table~\ref{tab:GaussianKernelResults} shows the statistics of the parameter estimates. Although the net reconstructed kernel estimates are in good accordance with the actual kernels, the individual kernel basis function weights are not in agreement with the actual parameters. This result demonstrates that the interpretation of the results should be based on the net shape of the estimated connectivity kernel and not on the estimated parameter values individually. \parham{(reviewer 1, additional comments 1:) These results indicate that the solution to the system may not be unique in non-ideal, practical situations. Nevertheless, the system is identifiable in terms of the net shape of the estimated kernel.}  
 
 \subsubsection{Experiment III: Results for Varying the Parameters of the Sigmoidal Activation Function}
 Fig.~\ref{fig:Figure11} demonstrates the effect of the sigmoid parameters on the estimation accuracy. The RMSE of the reconstructed connectivity kernel was calculated for various parameters of the sigmoid by varying the slope, $\varsigma$, and the threshold, $v_0$. The other model parameters remained fixed and were set according to the Table~\ref{tab:Parameters}.
@@ -464,7 +469,7 @@ The development of the estimation framework also has implications for theoretica
 \subsection{Extensions to the Framework}
 In this study, an assumption was made that the chosen kernel basis functions can exactly represent the actual connectivity kernel. In future work, we plan to relax this assumption \dean{and show how the support of the connectivity kernel can also be inferred from data}. In addition, we have assumed that the neural field is isotropic and homogeneous. It is generally accepted that the intracortical connectivity structure can be accurately modeled as being isotropic. However, the assumption of homogeneity is quite strong as the size of the neural field becomes larger. Future work should focus on developing estimation algorithms where assumptions of homogeneity can be relaxed. In addition, natural extensions of this framework are the inclusion of a post-synaptic response kernel with a finite rise and decay time, and a finite distant-dependant action potential propagation velocity into the parametric neural field equations. 
 
-\mike{A further extension of the framework is to allow for the algorithm to learn online. The estimation framework that we have presented is inherently a batch algorithm designed to operate after data has been collected. A filter that designed to be implemented in an online setting, can be used in place of the smoother. Doing this, while sacrificing accuracy, will increase the speed at which the state estimation can be done and decrease the amount of information that would need to be stored. Approaches for online state estimation include the incremental EM algorithm \cite{Neal1998}, and the stepwise EM \cite{Sato00,Cappe09} may be used. These algorithms would facilitate dealing with non-stationary responses as well as providing a basis for optimal, model-based control, suggesting novel approaches to therapy. Something something something estimator, something something something online, something something something complete... about updating parameters rather than finding brand new ones, recursive LS estimator \cite{Ljung1999},}
+\mike{(Reviewer 2, comment 9:)A further extension of the framework is to allow for the algorithm to learn online. The estimation framework that we have presented is inherently a batch algorithm designed to operate after data has been collected. \parham{A simple real-time implementation can be achieved using the UKF  and an online recursive  LS estimator \cite{Ljung1999}, more sophisticated approaches include the incremental EM algorithm \cite{Neal1998}, and the stepwise EM \citep{Sato2000,Cappe2009}.}}
 
 \section{Conclusion}
 This paper has presented a framework for creating data-driven neural field models by developing a method for estimating intracortical connectivity and synaptic dynamics from electrophysiological data. In doing so, we have highlighted important aspects of the experiment design process, demonstrating the relationship between sensor bandwidth and the complexity of the field that can be inferred. We have derived a finite-order state-space representation of the continuum neural field equations that allows inference to be performed efficiently. Importantly, the mathematical formulation that we have presented scales well with the number of sensors. The major contribution of this framework is to formally bridge a gap between experimental and theoretical neuroscience in order to gain a better understanding of the mesoscopic dynamics of the brain. \dean{A validation of the estimation framework on real data is now required. This is the subject of planned future work.}
@@ -988,7 +993,7 @@ Now making simplifications, the discrete time form of the model is
 \end{equation}
 where $\xi = 1 - T_s \zeta$.
 
-The preservation of the system's stability, identifiability, observability, and controllability properties is not guaranteed with the discretization. Observability is assumed and then verified with the estimation results. The stability of the discretized IDE is proven below. To do this, the model is written as the series
+\parham{(Reviewer1, Additional comments 2:) The analysis of the error introduced by Euler discretization method can be found in \citet{Butcher2008}. Here we only study the stability of the discretized model, we show that if $0 < T_s < \tau$, where the synaptic time constant $\tau = 1/\zeta$,  the discretized IDE is stable. To do this, the model is written as the series
 \begin{align}
 	v_1(\mathbf{r}) &= \xi v_0(\mathbf{r}) + T_s g_0(\mathbf{r}) \\
 	v_2(\mathbf{r})	&= \xi^2 v_0(\mathbf{r}) + T_s \left(\xi g_0(\mathbf{r}) + g_1(\mathbf{r}) \right) \\
@@ -999,12 +1004,12 @@ where
 \begin{equation}
 	g_{t}(\mathbf{r}) = \int_\Omega { w\left(\mathbf{r}-\mathbf{r}'\right) f\left(v_t\left(\mathbf{r}'\right)\right) d\mathbf{r}'}.
 \end{equation}
-Now, $g_t(\mathbf r)$ is always bounded since $0 \leq f(v_t(\mathbf r)) \leq 1$ and the area under the kernel is finite. To assess the stability of the discrete time system we assume that $g_t(\mathbf{r})$ is maximally saturated over the entire field for all time, which we denote as $g_{max}$. Substituting this into equation~\ref{eq:fieldmodelseries} yields
+Since  $0 \leq f(v_t(\mathbf r)) \leq 1$ and the kernel is semi-compactly supported, $g_t(\mathbf r)$ is always bounded . To assess the stability of the discrete time system we assume that $g_t(\mathbf{r})$ is maximally saturated over the entire field for all time, which we denote as $g_{max}$. Substituting this into equation~\ref{eq:fieldmodelseries} yields
 \begin{align}\label{vrecursiveinlimit}
 	v_{t+1}(\mathbf r) &= \xi^{t+1}v_0(\mathbf r)+ g_{max} T_s \sum_{i=0}^t \xi^i \nonumber \\
 	&=\xi^{t+1}v_0(\mathbf r) + \frac{ g_{max} T_s(1-\xi^{t+1})}{1-\xi}.
 \end{align}
-To study the asymptotic behaviour of the system we consider the limit as $t$ approaches infinity and in doing so we use a property of the geometric series to simplify equation \eqref{vrecursiveinlimit} to
+To study the asymptotic behaviour of the system we consider the limit as $t$ approaches infinity. Noting $0 < \xi <1$  we use a property of the geometric series to simplify equation \eqref{vrecursiveinlimit} to
 \begin{equation}\label{simplifiedvrecursiveinlimit}
 	v_{t+1}(\mathbf r)=\xi^{t+1}v_0(\mathbf r)+\frac{g_{max} T_s}{1-\xi}.
 \end{equation}
@@ -1012,7 +1017,7 @@ Substituting $\xi=1-\zeta T_s$ into equation \eqref{simplifiedvrecursiveinlimit}
 \begin{equation}
 	v_{t+1}(\mathbf r)=(1-\zeta T_s)^{t+1}v_0(\mathbf r)+\frac{g_{max}}{\zeta}.
 \end{equation}
-From this equation it can be seen that the system is stable if $0 < T_s < \tau$, where the synaptic time constant $\tau = 1/\zeta$. The sampling period was set to $T_s = 0.001 s$ and the time constant was set to $\tau = 0.01 s^{-1}$. Therefore, the discretization preserved the stability properties of the system.
+From this equation it can be seen that if $0 < T_s < \tau$, the system is stable. The sampling period was set to $T_s = 0.001 s$ and the time constant was set to $\tau = 0.01 s^{-1}$. Therefore, the discretization preserved the stability properties of the system.}
 
 \section{Observation Kernel}\label{App:ObsKernelExperiment}
 The Gaussian shape of the observation kernel was verified experimentally. This was achieved by moving a dipole across a recording electrode submerged in saline. A photograph through a microscope of the submerged electrodes can be seen in Fig.~\ref{fig:SensorAndSource}. The measurement sensor was the most central electrode of a $5\times5$ Utah array (Blackrock Microsystems) which had electrode spacing of 400~$\mu$m. The current source was a twisted wire electrode (Plastics One Inc.) with tip-tip spacing of 60~$\mu$m and tip diameter of 200~$\mu$m. The twisted wire electrode was moved in the saline solution using a 3 dimensional manipulator (Sutter Instrument Company, MPC-100) in increments of 200~$\mu$m. The twisted wire electrode and the Utah array were co-registered visually using the microscope.
@@ -1033,7 +1038,7 @@ The Galerkin projection finds $\mathbf{x}_t$, such that the inner product of the
 \begin{equation}\label{eq:GalerkinProjection}
 	G_i = \int_{\Omega}\Xi(\mathbf{x}_t,v_{t+1}(\mathbf{r})) \phi_i(\mathbf{r}) d\mathbf{r} = 0,
 \end{equation}
-where $i=0,1,\hdots,n_x-1,$ and $n_x$ is the number of states and basis functions. If equation~\ref{eq:GalerkinProjection} is satisfied the basis functions are orthogonal to the residual. By substituting equation~\ref{eq:BasisFunctionResidual} into equation~\ref{eq:GalerkinProjection} and rearranging we get equation~\ref{eq:decompRHS} of the main text. Note, if Galerkin's method was used estimate the states, $n_x$ coupled ODEs would need to be solved independently (each $G_i$) to estimate the state vector, which is a standard method in fluid dynamics and economics modeling. The method in this paper takes a different approach by forming the state-space model, allowing for more efficient estimation. }
+where $i=0,1,\hdots,n_x-1,$ and $n_x$ is the number of states and basis functions. If equation~\ref{eq:GalerkinProjection} is satisfied the basis functions are orthogonal to the residual. By substituting equation~\ref{eq:BasisFunctionResidual} into equation~\ref{eq:GalerkinProjection} and rearranging we get equation~\ref{eq:decompRHS} of the main text. Note, if Galerkin's method was used to estimate the states, $n_x$ coupled ODEs would need to be solved independently (each $G_i$) to estimate the state vector, which is a standard method in fluid dynamics and economics modeling. The method in this paper takes a different approach by forming the state-space model, allowing for more efficient estimation. }
 
 \section{Inner Product of Two \emph{n}-Dimensional Gaussians}\label{App:InnerProdOfGaussians}
 The derivation in this section was used for calculating the matrix $\mathbf \Gamma$ from equation~\ref{eq:DefGamma}. Consider two Gaussian basis functions
