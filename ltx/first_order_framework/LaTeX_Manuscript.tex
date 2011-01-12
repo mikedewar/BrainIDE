@@ -1144,7 +1144,7 @@ Now making simplifications, the discrete time form of the model is
 \end{equation}
 where $\xi = 1 - T_s \zeta$.
 
-\parham{(Reviewer1, Additional comments 2:) The preservation of the system's stability, identifiability, observability, and controllability properties is not guaranteed with the discretization. Observability is assumed and then verified with the estimation results. The stability of the discretized IDE is proven below. To do this, the model is written as the series
+\parham{(Reviewer1, Additional comments 2:) The preservation of the system's stability, identifiability, observability, and controllability properties is not guaranteed with the discretization. Observability is assumed and then verified with the estimation results. Here we show that if $0 < T_s < \tau$, where the synaptic time constant $\tau = 1/\zeta$,  the discretized IDE is stable. To do this, the model is written as the series
 \begin{align}
 	v_1(\mathbf{r}) &= \xi v_0(\mathbf{r}) + T_s g_0(\mathbf{r}) \\
 	v_2(\mathbf{r})	&= \xi^2 v_0(\mathbf{r}) + T_s \left(\xi g_0(\mathbf{r}) + g_1(\mathbf{r}) \right) \\
@@ -1160,7 +1160,7 @@ Now, $g_t(\mathbf r)$ is always bounded since $0 \leq f(v_t(\mathbf r)) \leq 1$ 
 	v_{t+1}(\mathbf r) &= \xi^{t+1}v_0(\mathbf r)+ g_{max} T_s \sum_{i=0}^t \xi^i \nonumber \\
 	&=\xi^{t+1}v_0(\mathbf r) + \frac{ g_{max} T_s(1-\xi^{t+1})}{1-\xi}.
 \end{align}
-To study the asymptotic behaviour of the system we consider the limit as $t$ approaches infinity and in doing so we use a property of the geometric series to simplify equation \eqref{vrecursiveinlimit} to
+To study the asymptotic behaviour of the system we consider the limit as $t$ approaches infinity. Noting $0 < \xi <1$  we use a property of the geometric series to simplify equation \eqref{vrecursiveinlimit} to
 \begin{equation}\label{simplifiedvrecursiveinlimit}
 	v_{t+1}(\mathbf r)=\xi^{t+1}v_0(\mathbf r)+\frac{g_{max} T_s}{1-\xi}.
 \end{equation}
@@ -1168,7 +1168,7 @@ Substituting $\xi=1-\zeta T_s$ into equation \eqref{simplifiedvrecursiveinlimit}
 \begin{equation}
 	v_{t+1}(\mathbf r)=(1-\zeta T_s)^{t+1}v_0(\mathbf r)+\frac{g_{max}}{\zeta}.
 \end{equation}
-From this equation it can be seen that the system is stable if $0 < T_s < \tau$, where the synaptic time constant $\tau = 1/\zeta$. The sampling period was set to $T_s = 0.001 s$ and the time constant was set to $\tau = 0.01 s^{-1}$. Therefore, the discretization preserved the stability properties of the system.}
+From this equation it can be seen that if $0 < T_s < \tau$, the system is stable. The sampling period was set to $T_s = 0.001 s$ and the time constant was set to $\tau = 0.01 s^{-1}$. Therefore, the discretization preserved the stability properties of the system.}
 
 \section{Observation Kernel}\label{App:ObsKernelExperiment}
 The Gaussian shape of the observation kernel was verified experimentally. This was achieved by moving a dipole across a recording electrode submerged in saline. A photograph through a microscope of the submerged electrodes can be seen in Fig.~\ref{fig:SensorAndSource}. The measurement sensor was the most central electrode of a $5\times5$ Utah array (Blackrock Microsystems) which had electrode spacing of 400~$\mu$m. The current source was a twisted wire electrode (Plastics One Inc.) with tip-tip spacing of 60~$\mu$m and tip diameter of 200~$\mu$m. The twisted wire electrode was moved in the saline solution using a 3 dimensional manipulator (Sutter Instrument Company, MPC-100) in increments of 200~$\mu$m. The twisted wire electrode and the Utah array were co-registered visually using the microscope.
