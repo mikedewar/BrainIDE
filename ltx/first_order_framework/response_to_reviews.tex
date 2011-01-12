@@ -2,10 +2,13 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{graphicx}
+\usepackage{soul}
 \usepackage{anysize} %<-for setting margins
 \marginsize {1.6cm}{1.6cm}{2.0cm}{2cm}
 \usepackage{color}
-\newcommand{\dean}[1]{\textsf{\emph{\textbf{\textcolor{red}{#1}}}}}
+\newcommand{\dean}[1]{\textcolor{red}{#1}}
+\newcommand{\mike}[1]{\textcolor{green}{#1}}
+\newcommand{\parham}[1]{\textcolor{blue}{#1}}
 
 \title{Response To Reviews - A Data-Driven Framework for Neural Field Modeling}
 \author{D. Freestone, P. Aram, M. Dewar, K. Scerri, D. Grayden, V. Kadirkamanathan}
@@ -23,16 +26,15 @@
     \begin{enumerate}
         \item Do not use real data for the validation of their approach
 
-	\emph{The authors appreciate that the only way to truly validate the proposed framework is with real data. However, before validating the method on real data we believe that it is essential to first validate the estimation method using accepted models and synthetic data, where the true and estimated parameters can be compared. In an effort to make the method employed in the paper more explicit, we have added ``To illustrate the estimation framework, data is generated using the neural field equations incorporating modeled sensors enabling a comparison between the estimated and true parameters'' to the introduction. Another paper demonstrating the application of the method with data recorded from a Utah array implanted in an epilepsy surgical patient is currently in preparation.  WE SHOULD ADD SOMETHING IN THE CONCLUSION TO SAY WE TOTALLY NEED TO VALIDATE THIS ON REAL DATA AND IT'S NOTED AS FUTURE WORK}
+	\emph{The authors appreciate that the only way to truly validate the proposed framework is with real data. However, before validating the method on real data we believe that it is essential to first validate the estimation method using accepted models and synthetic data, where the true and estimated parameters can be compared. In an effort to make the method employed in the paper more explicit, we have added ``To illustrate the estimation framework, data is generated using the neural field equations incorporating modeled sensors enabling a comparison between the estimated and true parameters'' to the introduction. Another paper demonstrating the application of the method with data recorded from a Utah array implanted in an epilepsy surgical patient is currently in preparation. We have also added that validating the framework on real data is noted as future work in the conclusion.}
 	
         \item Assume that a few kernel basis functions accurately represent the actual connectivity kernel, which might not be the case when using real data;
 
-	\emph{The examples presented in the paper use the Mexican hat connectivity kernel. The framework is also valid for other connectivity kernels provided they are homogeneous and that they can be approximated by a set of isotropic basis functions parametrized by a coefficient vector $\mathbf{\theta}$. The mathematical formulation does not restrict the shape of the kernel, where anisotropic (we assume isotropy of the kernel basis functions to make the simplification in equation~18) arbitrary shapes can be represented. Furthermore, the kernel basis functions need not be a Gaussian shape, but can be, for example, Laplacian to describe the ``wizard hat'' connectivity or B-spline functions to describe a kernel with a more compact support. For more complex basis functions some of the analytic derivations described in the Appendix may have to be performed numerically. We have added the above statements to the methods section (after equation~13) to be more explicit in describing subtleties of the method.}
+	\emph{The examples presented in the paper use the Mexican hat connectivity kernel. The framework is also valid for other connectivity kernels provided they are spatially homogeneous and that they can be approximated by a set of weighted isotropic basis functions. The mathematical formulation does not place any further restrictions on the form of the spatial mixing kernel. We have added statements to the methods section (after equation~13) to be more explicit in describing subtleties of the method.}
 
         \item Do not consider the EEG/MEG lead field when constructing their mapping between the membrane voltage and the electrophysiological data (observation function)
 
-	\emph{In response to this important point, the authors have made an effort to be clear that we are not considering scalp EEG to be a valid data source for the estimation framework. Amendments have been made to the Introduction (last paragraph), Method (after equation 9), and Discussion (Implications for Experimental Design). We have primarily developed the framework for higher density intracranial measurements. We believe that the spatial frequency response and sampling density of extracranial EEG/MEG measurements will be insufficient to estimate the connectivity structure.}
-	
+	\emph{In response to this important point, the authors have made an effort to be clear that we are not considering scalp EEG to be a valid data source for the estimation framework. Amendments have been made to the Introduction (last paragraph), Method (after equation 9), and Discussion (Implications for Experimental Design). We have primarily developed the framework for higher density intracranial measurements. This is explained in the spatial frequency analysis method and discussion.}
 	
     \end{enumerate}
     
@@ -41,26 +43,19 @@
     \begin{enumerate}
         \item The discrepancy of the results in Experiment II where the weights of the basis functions are not in agreement with the actual parameters while the reconstructed kernels seem satisfying.
 
+		\emph{These results show that the system may not be identifiable in non-ideal, practical situations. Nevertheless, the net shape of the estimated kernels will be in accordance to actual data.}
+
         \item The use of Euler discretisation and how this affects the system's behavior.
 
-		\emph{This point was made by a reviewer from our PLoS attempt. The reviewer stated: ``1. The authors might want to reference prior work in using Kalman
-		Filtering for the estimation of neural mass models from data [1-3],
-		[13]. In fact from those papers stressed the importance of carrying out
-		a high order discretization of the differential equations, which should
-		be in fact treated as stochastic. In equation (S1.1) of the extended
-		derivation, it is shown that an Euler approximation is taken which may
-		even change the dynamical properties of the system. The authors should
-		discuss this issue.'' ALL THESE PAPERS USE a method called local linearisation approach for discretisation.}
+		\emph{Amendments have been made to Appendix A, where the discretization is performed. We have commented on how the discrete-time system's properties may differ from the continuous-time system. In addition, we have provided a proof for the stability of the discrete-time system.}
 		
-		\emph{We should add some more to the modeling assumptions section to address this one. I have begun to talk about the LL method.}
-		
-        \item The derivation of Equations (30) and (31) [spacing of basis functions] and make them more transparent for the general audience.
+        \item The derivation of Equations (30) and (31) and make them more transparent for the general audience.
 
-\emph{To address this point, we have added an extra appendix with a derivation of the sampling theorem with the appropriate cross-referencing to the main text. An effort was made to keep this derivation minimal and as clear as possible. We have also added the references to relevant part of the text (that should have been there before, as the reviewer has correctly pointed out). We felt that it was worth adding the extra appendix to provide a clear derivation that is contextually and notationally relevant to this paper, as the derivations cited papers may not be clear to the Neuroimage general audience.}
+\emph{To address this point, we have added an extra appendix with a derivation of the sampling theorem with the appropriate cross-referencing to the main text. An effort was made to keep this derivation minimal and as clear as possible. We have also added the references to relevant part of the text (that should have been there before, as the reviewer has correctly pointed out). We felt that it was worth adding the extra appendix to provide a clear derivation that is contextually and notationally relevant to this paper.}
 
         \item The existing literature on inversion schemes for similar models of brain activity.
 
-\emph{The existing literature has been discussed in more depth in the introduction.}
+\emph{The existing literature has been discussed in more depth in the Introduction.}
 
         \item In section 3, Table 6 is mentioned however there is no such table in the ms.
 
@@ -70,20 +65,21 @@
     
     \section{Reviewer 2}
     
-    We thank the author for their encouraging review. Each point raised is dealt with in turn.
+    We thank the reviewer for their encouraging review. Each point raised is dealt with in turn.
 
 \begin{enumerate}
-    \item The handling of the (to borrow a term from numerical weather forecasting) `sub-grid scale physics' is inadequate for nervous systems (see, e.g., equation 8 [The nonlinear IntegroDifference Equation]). I do very much appreciate the spectral estimation of spatial and temporal scales. But the model errors are lumped into an iid model error term that is not realistic. For instance, the flow of potassium in the extracellular spaces has a known dynamic that will affect network excitability, generating important sub-grid dynamics that is anything but iid. See, for instance, the example in Ullah et al PLoS Comp Biol 2010 where without such dynamics, state tracking and parameter estimation for a neural system fails. A beautiful overview of sub-grid effects in data assimilation is found in Kalnay's 2003 book. I would very much value the authors comments on these issues. I guess were I to respond to this question, that I might consider extending the model error term to an autoregressive model. But I will let the authors answer this question.\\
+    \item The handling of the (to borrow a term from numerical weather forecasting) `sub-grid scale physics' is inadequate for nervous systems (see, e.g., equation 8 [The nonlinear IntegroDifference Equation]). I do very much appreciate the spectral estimation of spatial and temporal scales. But the model errors are lumped into an iid model error term that is not realistic. For instance, the flow of potassium in the extracellular spaces has a known dynamic that will affect network excitability, generating important sub-grid dynamics that is anything but iid. See, for instance, the example in Ullah et al PLoS Comp Biol 2010 where without such dynamics, state tracking and parameter estimation for a neural system fails. A beautiful overview of sub-grid effects in data assimilation is found in Kalnay's 2003 book. I would very much value the authors comments on these issues. I guess were I to respond to this question, that I might consider extending the model error term to an autoregressive model. But I will let the authors answer this question.
 
-	\emph{To address this point, we have added an extra section to the discussion, 'Modeling Asusumptions'. Within this section we discuss model mismatch and what we think is a good way to deal with it.}
+	\emph{To address this point, we have added an extra section to the discussion, `Modeling Assumptions'. Within this section we discuss model mismatch and what we think is a good way to deal with it.}
+	\emph{\mike{We would like to directly address the idea of representing the error using an autoregressive model. The reason we have not performed this kind of extension in the paper is that we have attempted to remain as close as possible to the original Wilson and Cowan model, to show that such models can be inferred from data. Done properly, modelling the error as an autoregressive process  will introduce additional connectivity kernels, one for each temporal lag in the AR process, i.e.
+	\begin{equation}
+	   e_t(s) = \sum_i \int_\Omega K_i(s,s')e_{t-i}(s')ds'
+	\end{equation} 
+where $K_i$ is the $i^\mathrm{th}$ connectivity kernel. Hence this would imply something about the connectivity in the field that we would need to relate to an extension in the underlying field model or its discretisation. Having said this, we are considering various model extensions, and that of higher order temporal dynamics is particularly intriguing due to the additional richness of signal we can represent.}}
 
 \item Although we all know the 1970s version of Wilson and Cowan's field equations, there was an intriguing stochasticization of these equations by Benayoun et al PloS Comp Biol 2010. I and others will value the authors' thoughts of how a more palatable stochasticization of these field equations might influence the future development of the data-assimilation framework presented in this paper.
 
-\emph{I think the paper that he is talking about uses the central limit theorem, approximating a large number of independent neurons as have Gaussian noise. The paper he is talk about is also a nightmare to read.}
-
-\emph{We added the disturbance term to the firing rate function  (equation 12). Although we added this after we provided the model derivation and discritization, we can show this holds if we assume the disturbance is a Wiener process, add it to the firing rate $g(\mathbf{r},t)$ (equation 3), use Ito's method to form the IDE, and the Euler-Maruyama method for the discretization. The disturbance will then be an incremental Wiener process. We chose the simplest method to present the model so the paper did not get too heavy in the maths (at least in the intro) and due to space considerations. }
-
-\emph{We assume the neuronal firing that is not predicted by the model to be caused by external independent influences. Since we a talking about a large number of neurons, we expect this disturbance to be Gaussian (according to the central limit theorem). Furthermore, we expect the disturbance to be spatially colored according to the covariance function $\sigma_d\gamma(\mathbf{r}-\mathbf{r}')$, since we consider small neighboring regions within the field to be functional processing units.}
+\dean{\emph{We have not added anything to the The authors do not have much to add to this comment. We feel that adding the disturbance to the firing rate is appropriate for this model, which is what we have done, and it agrees with the work by Benayoun et al PloS Comp Biol 2010. By the central limit theorem, we expect the disturbance to be Gaussian and due to the structural organization of the cortex, we expect the disturance to be spatially colored. In future work we plan to add to the framework and show how the disturbance properties can also be estimated from data.}}
 
 \item This is NeuroImage, not the Physical Review. Although most of this framework involves mathematics that is reasonable to follow for typical readers of this journal, I would suggest that the authors explain and expand a bit on the introduction of Green's functions where introduced in equation 6.
 
@@ -91,16 +87,17 @@
 
 \item What is the relation of the substitution of the temporal and spatial basis functions as employed in this paper to Galerkin's projection? How do the two techniques differ? If this is close, the non-local case for a Galerkin projection (typically used in diffusive processes) has not, to my knowledge, been done. Certainly not in a way that is obvious for neural field theory. Perhaps this is my ignorance. This seems important to clarify for the rest of us.
 
+\emph{The relationship to our basis function decomposition to Galerkin's projection has been added to the derivation of the state-space model. }
 
-\item In the isotropic and translationally invariant case examined here, would a Fourier basis for temporal and spatial structure have been a formally correct alternative?\\
+\item In the isotropic and translationally invariant case examined here, would a Fourier basis for temporal and spatial structure have been a formally correct alternative?
 
-\emph{Gaussians have semi-compact support but Fourier basis functions are global functions. Gaussian can be easily extended to higher dimension (don't know about the Fourier basis functions), any orthonormal basis functions like Fourier basis functions simplify our equations, $\Gamma$ becomes identity matrix, but using Gaussian basis functions equations are in their generic form.}
+\emph{Fourier basis functions would be a correct alternative to the case examined in this paper. In fact Fourier basis functions or any other orthonormal basis functions would simplify the state-space representation of the model, since $\Gamma$ (defined in equation (20)) of the manuscript would be the identity matrix. However, we have chosen Gaussian basis functions due to their semi-compact support.} %By choosing Gaussian basis functions the state-space representation of the model remains in its generic form which is also correct in the case of orthonormal basis functions.}
 
-\item In equation 29, what would a reasonable $v_c$ be for a real neuronal system (mammalian) given the number of neurons and scale of electrodes? I am concerned that it might be much higher than any of us wish to consider. One would perhaps be saved by the filter characteristics of brain (e.g. Phys. Rev. E 73, 051911 (2006)).
+\item In equation 29, what would a reasonable $\boldsymbol{\nu}_c$ be for a real neuronal system (mammalian) given the number of neurons and scale of electrodes? I am concerned that it might be much higher than any of us wish to consider. One would perhaps be saved by the filter characteristics of brain (e.g. Phys. Rev. E 73, 051911 (2006)).
 
-\emph{The spatial frequency content is seems to be actually lower than one might first think. We have added `From the work of (Freeman et al, 2000), the expected bandwidth of the human neocortex is approximately 0.1-0.4 cycles/mm which requires a sensor spacing of approximately 1.25 mm to avoid distortions due to aliasing' to the Frequency Analysis section of the paper to clear this up. We have also added to the discussion. Note, we expect the spatial bandwidth of the cortex to be governed by the connectivity kernel, since it is equivalent to a spatial low-pass filter acting on the firing rates.  }
+\emph{The mean spatial frequency content is actually lower than one might first expect. We have added `From the work of (Freeman et al, 2000), the expected bandwidth of the human neocortex is approximately 0.1-0.4 cycles/mm which requires a sensor spacing of approximately 1.25 mm to avoid distortions due to aliasing' to the Frequency Analysis section of the paper to clear this up. We have also added to the discussion. Note, we expect the spatial bandwidth of the cortex to be governed by the connectivity kernel, since it is equivalent to a spatial low-pass filter acting on the firing rates.}
 
-\item The two covariance inflation parameters in equation 41 make me cringe. How are we best to adjust these fudge factors?\\
+\item The two covariance inflation parameters in equation 41 make me cringe. How are we best to adjust these fudge factors?
 
 \emph{Values for the two parameters in equation 41 along with the relevant references ,that describe the rationale for parameter choice, have been added to the manuscript.}
 
@@ -118,13 +115,16 @@
 
 \item A few comments on how to adapt the smoother for real time implementation would be helpful. I presume that one would perform the smoothing during a training phase. But one would also wish to adapt in real time as observation or control scenarios progressed. A few words of perspective would be invaluable to help others translate the author's wisdom on this method to other applications.
 
-\emph{A few comments have been added to the Modeling Assumptions section of the discussion.}
+\emph{A few comments have been added to the `Extensions to the Framework' section of the discussion.}
 
 \item Figure 4. Should the axes be indicated as spatial frequency rather than just Hz?
 
 \emph{Axes of Figure 4. (and also Figure 5.) are now changed to spatial frequency. The unit of the spatial frequency within the text is changed to cycles/mm.}
 
 \item Page 45, Appendix D, Par 1, line 6: should `transform of a n-' should be `transform of an n-' ? I am grammatically challenged perhaps.
+
+\emph{We stand corrected. We have changed the text to `an n-dimensional'.}
+
 \end{enumerate}
 
 \end{document}
