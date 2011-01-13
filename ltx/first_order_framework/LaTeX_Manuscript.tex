@@ -109,23 +109,18 @@ The parameter $v_0$ describes the firing threshold of the neural populations and
 	f\left( v\left( \mathbf{r}',t' \right)\right)
 	\, d\mathbf{r}'dt'.
 \end{equation}
-\parham{The post-synaptic membrane potential is in fact the temporal convolution between the synaptic kernel and the average firing rate
-\begin{equation}\label{FullConvolutionModel}
- v\left(\mathbf r,t\right)= \left(h\ast g\right)\left(\mathbf r,t\right)
-\end{equation}
-where $\ast$ denotes the convolution operator.}
-\dean{(reviewer 2, comment 3:) \parham{To obtain (To arrive at)} the standard integro-differential equation form of the model, we use the fact that the synaptic response kernel is a Green's function of a linear differential equation defined by the differential operator $\textrm{D}=d/dt + \zeta$. A Green's function satisfies
+To obtain (To arrive at) the standard integro-differential equation form of the model, we use the fact that the synaptic response kernel is a Green's function of a linear differential equation defined by the differential operator $\textrm{D}=d/dt + \zeta$. A Green's function satisfies
 \begin{equation}
 	\label{GreensFuncDef} \textrm{D}h\left( t \right) = \delta \left( t \right), 
 \end{equation} 
-where $\delta(t)$ is the Dirac-delta function. Applying the differential operator $\textrm{D}$ \parham{to equation~\ref{FullConvolutionModel}} gives
+where $\delta(t)$ is the Dirac-delta function. Applying the differential operator $\textrm{D}$ \parham{to equation~\ref{SpikesToPotential}} gives
 \begin{align}
  \textrm{D}v\left(\mathbf r,t\right)&= \textrm{D}\left(h\ast g\right)\left(\mathbf r,t\right)\\
 &=\left(\textrm{D}h\ast g\right)\left(\mathbf r,t\right)\\
 &=\left(\delta \left(t\right)\ast g\right)\left(\mathbf r,t\right)\\
 &=g\left(\mathbf r,t\right)
 \end{align}
-} This gives the standard form of the model
+This gives the standard form of the model
 \begin{equation}
 	\label{FinalFormContinuous} 
 	\frac{dv\left( \mathbf{r},t \right)}{dt} + \zeta v\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)\, d\mathbf{r}'}. 
