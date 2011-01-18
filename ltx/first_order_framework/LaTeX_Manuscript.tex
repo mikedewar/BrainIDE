@@ -317,7 +317,7 @@ where $\mathbf{\bar x}$ represents either $\hat{\mathbf x}_t^{f}$ or $\hat{\math
 \begin{equation}\label{eq:sigmapoints3}
 	\lambda=\alpha^2( n_x+\kappa) - n_x, 
 \end{equation}
-The positive constant $\alpha$, that determines the spread of the sigma points around $\mathbf{\bar x}$, was set to $10^{-3}$. It is typically set arbitrary small to minimise higher-order effects \citep{Haykin2001}. The other scaling parameter, $\kappa$, was set to $3-n_x$ in accordance to \citet{Julier2002a}.
+The positive constant $\alpha$, that determines the spread of the sigma points around $\mathbf{\bar x}$, was set to $10^{-3}$. It is typically set arbitrary small to minimise higher-order effects \citep{Haykin2001}. The other scaling parameter, $\kappa$, was set to $3-n_x$ in accordance to \citet{Julier2002a}. \dean{Parham to add something about the sensitivity of the parameters.}
 
 The sigma vectors are propagated through the system equations and weighted to form the predicted mean and covariance. The weights are calculated by 
 \begin{align}
@@ -977,32 +977,33 @@ Now making simplifications, the discrete time form of the model is
 \end{equation}
 where $\xi = 1 - T_s \zeta$.
 
-If $0 < T_s < \tau$, where the synaptic time constant $\tau = 1/\zeta$, the IDE field model is stable. To show this, the model is written as the series
-\begin{align}
-	v_1(\mathbf{r}) &= \xi v_0(\mathbf{r}) + T_s g_0(\mathbf{r}) \\
-	v_2(\mathbf{r})	&= \xi^2 v_0(\mathbf{r}) + T_s \left(\xi g_0(\mathbf{r}) + g_1(\mathbf{r}) \right) \\
-	\vdots \, \, \, \, \, &= \, \, \, \, \, \vdots \nonumber \\
-	v_{t+1}(\mathbf r) &= \xi^{t+1} v_0\left(\mathbf{r} \right) + T_s \sum_{i=0}^t \xi^i g_{t-i}(\mathbf{r}), \label{eq:fieldmodelseries}
-\end{align}
-where
-\begin{equation}
-	g_{t}(\mathbf{r}) = \int_\Omega { w\left(\mathbf{r}-\mathbf{r}'\right) f\left(v_t\left(\mathbf{r}'\right)\right) d\mathbf{r}'}.
-\end{equation}
-Since  $0 \leq f(v_t(\mathbf r)) \leq 1$ and the kernel is semi-compactly supported, $g_t(\mathbf r)$ is always bounded . To assess the stability of the system we assume that $g_t(\mathbf{r})$ is maximally saturated over the entire field for all time, which we denote as $g_{max}$. Substituting this into equation~\ref{eq:fieldmodelseries} yields
-\begin{align}\label{vrecursiveinlimit}
-	v_{t+1}(\mathbf r) &= \xi^{t+1}v_0(\mathbf r)+ g_{max} T_s \sum_{i=0}^t \xi^i \nonumber \\
-	&=\xi^{t+1}v_0(\mathbf r) + \frac{ g_{max} T_s(1-\xi^{t+1})}{1-\xi}.
-\end{align}
-To study the asymptotic behaviour of the system we consider the limit as $t$ approaches infinity. Since $0 < \xi <1$  we use a property of the geometric series to simplify equation \eqref{vrecursiveinlimit} to
-\begin{equation}\label{simplifiedvrecursiveinlimit}
-	v_{t+1}(\mathbf r)=\xi^{t+1}v_0(\mathbf r)+\frac{g_{max} T_s}{1-\xi}.
-\end{equation}
-Substituting $\xi=1-\zeta T_s$ into equation \eqref{simplifiedvrecursiveinlimit} gives
-\begin{align}
-	v_{t+1}(\mathbf r) &= (1-\zeta T_s)^{t+1}v_0(\mathbf r)+\frac{g_{max}}{\zeta} \\
-	&= \left(1-\frac{T_s}{\tau}\right)^{t+1}v_0(\mathbf r) + \tau g_{max}
-\end{align}
-From this equation it can be seen that if $0 < T_s < \tau$, the system is stable. The sampling period was set to $T_s = 0.001 s$ and the time constant was set to $\tau = 0.01 s^{-1}$. Therefore, the discretization preserved the stability properties of the system. Further analysis of the error introduced by Euler discretization method can be found in \citet{Butcher2008}. 
+% If $0 < T_s < \tau$, where the synaptic time constant $\tau = 1/\zeta$, the IDE field model is stable. To show this, the model is written as the series
+% \begin{align}
+% 	v_1(\mathbf{r}) &= \xi v_0(\mathbf{r}) + T_s g_0(\mathbf{r}) \\
+% 	v_2(\mathbf{r})	&= \xi^2 v_0(\mathbf{r}) + T_s \left(\xi g_0(\mathbf{r}) + g_1(\mathbf{r}) \right) \\
+% 	\vdots \, \, \, \, \, &= \, \, \, \, \, \vdots \nonumber \\
+% 	v_{t+1}(\mathbf r) &= \xi^{t+1} v_0\left(\mathbf{r} \right) + T_s \sum_{i=0}^t \xi^i g_{t-i}(\mathbf{r}), \label{eq:fieldmodelseries}
+% \end{align}
+% where
+% \begin{equation}
+% 	g_{t}(\mathbf{r}) = \int_\Omega { w\left(\mathbf{r}-\mathbf{r}'\right) f\left(v_t\left(\mathbf{r}'\right)\right) d\mathbf{r}'}.
+% \end{equation}
+% Since  $0 \leq f(v_t(\mathbf r)) \leq 1$ and the kernel is semi-compactly supported, $g_t(\mathbf r)$ is always bounded . To assess the stability of the system we assume that $g_t(\mathbf{r})$ is maximally saturated over the entire field for all time, which we denote as $g_{max}$. Substituting this into equation~\ref{eq:fieldmodelseries} yields
+% \begin{align}\label{vrecursiveinlimit}
+% 	v_{t+1}(\mathbf r) &= \xi^{t+1}v_0(\mathbf r)+ g_{max} T_s \sum_{i=0}^t \xi^i \nonumber \\
+% 	&=\xi^{t+1}v_0(\mathbf r) + \frac{ g_{max} T_s(1-\xi^{t+1})}{1-\xi}.
+% \end{align}
+% To study the asymptotic behaviour of the system we consider the limit as $t$ approaches infinity. Since $0 < \xi <1$  we use a property of the geometric series to simplify equation \eqref{vrecursiveinlimit} to
+% \begin{equation}\label{simplifiedvrecursiveinlimit}
+% 	v_{t+1}(\mathbf r)=\xi^{t+1}v_0(\mathbf r)+\frac{g_{max} T_s}{1-\xi}.
+% \end{equation}
+% Substituting $\xi=1-\zeta T_s$ into equation \eqref{simplifiedvrecursiveinlimit} gives
+% \begin{align}
+% 	v_{t+1}(\mathbf r) &= (1-\zeta T_s)^{t+1}v_0(\mathbf r)+\frac{g_{max}}{\zeta} \\
+% 	&= \left(1-\frac{T_s}{\tau}\right)^{t+1}v_0(\mathbf r) + \tau g_{max}
+% \end{align}
+% From this equation it can be seen that if $0 < T_s < \tau$, the system is stable. The sampling period was set to $T_s = 0.001 s$ and the time constant was set to $\tau = 0.01 s^{-1}$. Therefore, the discretization preserved the stability properties of the system. 
+Note, the discretization using the first Euler method has the potential to affect the system's behaviour. If the sampling period is too large, the difference between the continuous and discrete-time systems can be substantial. The sampling period of 1~ms was used in this paper, which was sufficiently small to yield good estimation results. An analysis of the error introduced by Euler discretization method can be found in \citet{Butcher2008}. An alternative to the Euler's method is the local linearization method, which may provide improved results~\citep{Ozaki1994}.
 
 \section{Observation Kernel}\label{App:ObsKernelExperiment}
 The Gaussian shape of the observation kernel was verified experimentally. This was achieved by moving a dipole across a recording electrode submerged in saline. A photograph through a microscope of the submerged electrodes can be seen in Fig.~\ref{fig:SensorAndSource}. The measurement sensor was the most central electrode of a $5\times5$ Utah array (Blackrock Microsystems) which had electrode spacing of 400~$\mu$m. The current source was a twisted wire electrode (Plastics One Inc.) with tip-tip spacing of 60~$\mu$m and tip diameter of 200~$\mu$m. The twisted wire electrode was moved in the saline solution using a 3 dimensional manipulator (Sutter Instrument Company, MPC-100) in increments of 200~$\mu$m. The twisted wire electrode and the Utah array were co-registered visually using the microscope.
