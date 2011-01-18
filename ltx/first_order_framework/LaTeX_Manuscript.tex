@@ -167,7 +167,7 @@ The connectivity kernel can also be decomposed as
 \end{equation}
 where $\boldsymbol{\psi}(\mathbf{r},\mathbf{r}')$ is a vector of Gaussian basis functions and $\boldsymbol{\theta}$ is a vector of scaling parameters. A graphical demonstration of the connectivity kernel decomposition and the net shape is provided in Fig.~\ref{fig:Figure1}. By exploiting the isotropy of the connectivity basis functions, they can be written as  
 $\boldsymbol{\psi}(\mathbf{r}-\mathbf{r}')$. We will assume that we know the parametric form of the connectivity basis functions, where the scaling parameters $\boldsymbol{\theta}$ are unknown. 
-Note, that although the examples presented in this paper use the Mexican hat connectivity kernel, the framework is also valid for other connectivity kernels, provided they are homogeneous and that they can be approximated by a set of isotropic basis functions parametrized by a coefficient vector $\boldsymbol{\theta}$. The mathematical formulation does not restrict the shape of the kernel, where anisotropic arbitrary shapes can be represented. Furthermore, the kernel basis functions need not be a Gaussian shape, but can be, for example, Laplacian to describe the ``wizard hat'' connectivity or B-spline functions to describe a kernel with a compact support.
+Note, that although most examples presented in this paper use the Mexican hat connectivity kernel, the framework is also valid for other connectivity kernels, provided they are homogeneous and that they can be approximated by a set of isotropic basis functions parametrized by a coefficient vector $\boldsymbol{\theta}$. The mathematical formulation does not restrict the shape of the kernel, where anisotropic arbitrary shapes can be represented. Furthermore, the kernel basis functions need not be a Gaussian shape, but can be, for example, Laplacian to describe the ``wizard hat'' connectivity or B-spline functions to describe a kernel with a compact support.
 
 Each connectivity basis function of the Mexican hat can, individually, be considered a layer in the Wilson and Cowan model. Rearranging the order of the spatial convolution in equation~\ref{DiscreteTimeModel} and substituting in equations~\ref{DefFieldDecomp} and~\ref{DefKernelDecomp} to the right hand side we get the approximation of the dynamic field
 \begin{align}
@@ -704,7 +704,7 @@ $\mathbf P_{t}^{b}=\mathbf P_{t}^{f}+\mathbf S_t\left[\mathbf P_{t+1}^{b}-\mathb
 
 {\bf Figure 12. RMSE of connectivity kernel estimates with various observation kernel widths}. RMSE of the connectivity kernel for different values of observation width, $\sigma_m$. Mean kernel estimates are obtained over 50 realizations in each case.
 
-{\bf Figure 13. Observation kernel experimental setup}. Photograph through a microscope of the Utah recording yy and the twisted bipolar current source.
+{\bf Figure 13. Observation kernel experimental setup}. Photograph through a microscope of the Utah array recording electrode and the twisted bipolar current source.
 
 {\bf Figure 14. Observation kernel experimental results}. Amplitude of the envelope of the signal recorded from the electrode at the center of the array vs. the source position.
 
