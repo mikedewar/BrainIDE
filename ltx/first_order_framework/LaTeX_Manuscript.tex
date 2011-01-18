@@ -967,7 +967,7 @@ $\mathbf P_{t}^{b}=\mathbf P_{t}^{f}+\mathbf S_t\left[\mathbf P_{t+1}^{b}-\mathb
 \newpage
 \appendix
 \section{Time Discretization of the Neural Field Model}
-\label{App:Time Discretization} This appendix provides a description of the discretization of the neural field model to form the integro-difference equation (IDE) and provides a proof for the stability of the discrete-time equations. To perform the discretization, we used a one-step Euler method, where equation~\ref{FinalFormContinuous} can be approximated by 
+\label{App:Time Discretization} This appendix provides a description of the discretization of the neural field model to form the integro-difference equation (IDE). To perform the discretization, we used a one-step Euler method, where equation~\ref{FinalFormContinuous} can be approximated by 
 \begin{align}
 	\label{Euler Approximation}\frac{v\left( \mathbf{r},t+T_s \right) - v\left( \mathbf{r},t\right)}{T_s} &=-\zeta v\left( \mathbf{r},t \right) \nonumber \\ 
 &+ \int_\Omega {w\left( \mathbf{r}-\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)d\mathbf{r}'}. 
