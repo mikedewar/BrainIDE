@@ -102,25 +102,27 @@ This equation states that the support of the kernel can be estimated given knowl
 	&= \mathbf{E}\left[\left(\int_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} + \boldsymbol{\varepsilon}_t\left(\mathbf{r}+\boldsymbol{\tau}\right)\right) \left(\int_{\Omega}{ m\left(\mathbf{r} - \mathbf{r}''\right) v_{t}\left(\mathbf{r}''\right) \, d\mathbf{r}''} + \boldsymbol{\varepsilon}_{t}\left(\mathbf{r}\right)\right) \right]\nonumber \\
 	&=\mathbf{E}\left[\int_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} \int_{\Omega}{ m\left(\mathbf{r} - \mathbf{r}''\right) v_{t}\left(\mathbf{r}''\right) \, d\mathbf{r}''}\right]+\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\nonumber\\
 	&=\iint_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) m\left(\mathbf{r} - \mathbf{r}''\right) \mathbf{E}\left[v_t\left(\mathbf{r}'\right) v_{t}\left(\mathbf{r}''\right)\right]\, d\mathbf{r}'}{ \, d\mathbf{r}''}+\sigma_{\epsilon}^2\delta(\boldsymbol\tau) \nonumber\\
-	&=\sigma_d\iint_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) m\left(\mathbf{r} - \mathbf{r}''\right)\gamma(\mathbf{r}'-\mathbf{r}'') \, d\mathbf{r}'}{ \, d\mathbf{r}''}+\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\label{eq:ObsCorr1}
+	&=\sigma_d\iint_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) m\left(\mathbf{r} - \mathbf{r}''\right)\gamma(\mathbf{r}'-\mathbf{r}'') \, d\mathbf{r}'}{ \, d\mathbf{r}''}+\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\nonumber \\
+	&=\sigma_d\int_{\Omega} m\left(\mathbf r  + \boldsymbol\tau - \mathbf r'\right) \left[\int_{\Omega} m\left(\mathbf r - \mathbf r''\right)\gamma(\mathbf r'-\mathbf r'') \, d\mathbf r'' \right]  d\mathbf r'+\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\label{eq:ObsCorr1}
 \end{align}
-to simplify the first term in \eqref{eq:ObsCorr1} we define $\mathbf s=\mathbf r-\mathbf r''$ and therefore $d\mathbf r''=-d\mathbf s$ and therefore
+the term in the bracket can be written
 \begin{align}
-\sigma_d&\iint_{\Omega}{m\left(\mathbf{r}  + \boldsymbol{\tau}- \mathbf{r}'\right)m\left(\mathbf{r} - \mathbf{r}''\right)\gamma(\mathbf{r}'-\mathbf{r}'') \, d\mathbf{r}'}{ \, d\mathbf{r}''}\nonumber\\
-&=-\sigma_d\iint_{\Omega}{ m\left(\mathbf{s} + \mathbf{r}''+\boldsymbol{\tau} - \mathbf{r}'\right) m\left(\mathbf{s}\right)\gamma(\mathbf{r}'-\mathbf{r}'') \, d\mathbf{r}'}{ \, d\mathbf{s}}\nonumber\\
-&=-\sigma_d\iint_{\Omega}{ m\left(\mathbf{s}-\tau'\right) m\left(\mathbf{s}\right)\gamma(\mathbf{r}'-\mathbf{r}'') \, d\mathbf{r}'}{ \, d\mathbf{s}}
+ \int_{\Omega} m\left(\mathbf r - \mathbf r''\right)\gamma(\mathbf r'-\mathbf r'') \, d\mathbf r''&=\int_{\Omega} m\left(\mathbf r'' - \mathbf r\right)\gamma(\mathbf r'-\mathbf r'') \, d\mathbf r'' \nonumber \\
+&=\int_{\Omega} m\left(\mathbf s\right)\gamma(\mathbf r'-\mathbf r-\mathbf s) \, d\mathbf s\nonumber \\
+&=\left(m\ast\gamma\right)(\mathbf r'-\mathbf r)\label{eq:ObsCorr1term1}
 \end{align}
-where  $\boldsymbol\tau'=\mathbf{r}'-\mathbf{r}''-\boldsymbol{\tau}$, since the observation kernel is symmetric at origin we have $m\left(\mathbf{s}-\tau'\right)=m\left(\tau'-\mathbf{s}\right)$ and therefore we have
+where $\mathbf s=\mathbf r''-\mathbf r$ and therefore $d\mathbf r''=d\mathbf s$. Note that  $m\left(\mathbf{r}-\mathbf{r''}\right)=m\left(\mathbf{r''}-\mathbf{r}\right)$ due to the  symmetry of the observation kernel.
+substituting \eqref{eq:ObsCorr1term1} in \eqref{eq:ObsCorr1} we have
+
 \begin{align}
- -\sigma_d&\iint_{\Omega}{ m\left(\boldsymbol\tau'-\mathbf{s}\right) m\left(\mathbf{s}\right)\gamma(\mathbf{r}'-\mathbf{r}'') \, d\mathbf{r}'}{ \, d\mathbf{s}}\nonumber\\
-&=-\sigma_d\int_{\Omega}{ \left(m\ast m\right)\left(\mathbf{r}'-\mathbf{r}''-\boldsymbol{\tau}\right)\gamma(\mathbf{r}'-\mathbf{r}'') \, d\mathbf{r}'}\nonumber\\
-&=-\sigma_d\int_{\Omega}{ \left(m\ast m\right)\left(\boldsymbol\tau''-\boldsymbol{\tau}\right)\gamma(\boldsymbol\tau'') \, d\boldsymbol\tau''}\\
-&=-\sigma_d\int_{\Omega}{ \left(m\ast m\right)\left(\boldsymbol{\tau}-\boldsymbol\tau''\right)\gamma(\boldsymbol\tau'') \, d\boldsymbol\tau''}=-\sigma_d\left(m \ast m \ast \gamma\right)\left(\boldsymbol{\tau}\right)
+&\sigma_d\int_{\Omega} m\left(\mathbf r  + \boldsymbol\tau - \mathbf r'\right) \left[\int_{\Omega} m\left(\mathbf r - \mathbf r''\right)\gamma(\mathbf r'-\mathbf r'') \, d\mathbf r'' \right]  d\mathbf r'+\sigma_{\epsilon}^2\delta(\boldsymbol\tau) \nonumber \\
+&=\sigma_d\int_{\Omega} m\left(\mathbf r  + \boldsymbol\tau - \mathbf r'\right) \left(m\ast\gamma\right)(\mathbf r'-\mathbf r) \ d\mathbf r'+\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\\
+&=\sigma_d\int_{\Omega} m\left(\boldsymbol\tau - \mathbf u\right) \left(m\ast\gamma\right)(\mathbf u) \ d\mathbf u+\sigma_{\epsilon}^2\delta(\boldsymbol\tau) \nonumber \\
+&=\sigma_d\left(m \ast m \ast \gamma\right)\left(\boldsymbol{\tau}\right)+\sigma_{\epsilon}^2\delta(\boldsymbol\tau)
 \end{align}
-where $\boldsymbol\tau''=\mathbf{r}'-\mathbf{r}''$ and $\left(m\ast m\right)\left(\boldsymbol{\tau}-\boldsymbol\tau''\right)= \left(m\ast m\right)\left(\boldsymbol{\tau''}-\boldsymbol\tau\right)$
 Therefore we have
 \begin{align}
-	R_{y_{t},y_{t}}(\boldsymbol{\tau}) &= -\sigma_d\left(m \ast m \ast \gamma\right)\left(\boldsymbol{\tau}\right)+\sigma_{\epsilon}^2\delta(\boldsymbol\tau)
+	R_{y_{t},y_{t}}(\boldsymbol{\tau}) &= \sigma_d\left(m \ast m \ast \gamma\right)\left(\boldsymbol{\tau}\right)+\sigma_{\epsilon}^2\delta(\boldsymbol\tau)
 \end{align}
 \section*{Observation Crosscorrelation}\label{sec:ObservCroocor} 
 \begin{align}
