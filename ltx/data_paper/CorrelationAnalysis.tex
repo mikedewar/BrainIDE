@@ -310,13 +310,13 @@ for the second term of \eqref{eq:ObsCrossCorr2} we have
  &\mathbf E \left[\int_{\Omega} m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right) v_t\left(\mathbf r'\right) d\mathbf r'\int_{\Omega} m(\mathbf r-\mathbf r'')T_s\int_{\Omega}w(\mathbf r'' -\mathbf r''')\varsigma v_t(\mathbf r''')d\mathbf r''' d\mathbf r''\right ] \nonumber\\ 
 &= T_s \varsigma \mathbf E \left[\iiint_{\Omega} m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right)m(\mathbf r-\mathbf r'')  w(\mathbf r'' -\mathbf r''') v_t\left(\mathbf r'\right) v_t(\mathbf r''')d\mathbf r' d\mathbf r'' d\mathbf r''' \right] \nonumber \\
  &= T_s \varsigma\iiint_{\Omega} m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right)m(\mathbf r-\mathbf r'')  w(\mathbf r'' -\mathbf r''')  \mathbf E \left[v_t\left(\mathbf r'\right) v_t(\mathbf r''')\right] d\mathbf r' d\mathbf r'' d\mathbf r''' \nonumber \\
-&= T_s \varsigma\iiint_{\Omega} m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right)m(\mathbf r-\mathbf r'')  w(\mathbf r'' -\mathbf r''')  \mathbf \gamma(\mathbf r'-\mathbf r''') d\mathbf r' d\mathbf r'' d\mathbf r''' \nonumber \\
- &= T_s \varsigma\int_{\Omega} \left[ \int_{\Omega}m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right)\gamma(\mathbf r'-\mathbf r''')d\mathbf r'\right] \left[\int_{\Omega}m(\mathbf r-\mathbf r'')  w(\mathbf r'' -\mathbf r''')  \mathbf   d\mathbf r''\right] d\mathbf r''' \nonumber \\ 
- &= T_s \varsigma\int_{\Omega}(m \ast \gamma)(\mathbf r+\boldsymbol\tau-\mathbf r''')(m \ast w)(\mathbf r-\mathbf r''') d\mathbf r''' \nonumber \\ 
-&= T_s\varsigma\left(m\ast m\ast w\ast\gamma\right)\left(\boldsymbol\tau\right)                                                                                                                                                                                                                                                             \end{align}
+&= \sigma_dT_s \varsigma\iiint_{\Omega} m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right)m(\mathbf r-\mathbf r'')  w(\mathbf r'' -\mathbf r''')  \mathbf \gamma(\mathbf r'-\mathbf r''') d\mathbf r' d\mathbf r'' d\mathbf r''' \nonumber \\
+ &= \sigma_dT_s \varsigma\int_{\Omega} \left[ \int_{\Omega}m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right)\gamma(\mathbf r'-\mathbf r''')d\mathbf r'\right] \left[\int_{\Omega}m(\mathbf r-\mathbf r'')  w(\mathbf r'' -\mathbf r''')  \mathbf   d\mathbf r''\right] d\mathbf r''' \nonumber \\ 
+ &= \sigma_d T_s \varsigma\int_{\Omega}(m \ast \gamma)(\mathbf r+\boldsymbol\tau-\mathbf r''')(m \ast w)(\mathbf r-\mathbf r''') d\mathbf r''' \nonumber \\ 
+&= \sigma_dT_s\varsigma\left(m\ast m\ast w\ast\gamma\right)\left(\boldsymbol\tau\right)                                                                                                                                                                                                                                                             \end{align}
  we have assumed here that the kernel is isotropic. the relation between $R_{y_{t},y_{t+1}}(\boldsymbol{\tau})$ and $R_{y_{t},y_{t}}(\boldsymbol{\tau})$ becomes
  \begin{align}
- 	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &= \xi \left[ R_{y_{t},y_{t}}(\boldsymbol{\tau})-\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\right]+T_s\varsigma\left(m\ast m\ast w\ast\gamma\right)\left(\boldsymbol\tau\right)\label{eq:XcorCorRelation}
+ 	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &= \xi \left[ R_{y_{t},y_{t}}(\boldsymbol{\tau})-\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\right]+\sigma_d T_s\varsigma\left(m\ast m\ast w\ast\gamma\right)\left(\boldsymbol\tau\right)\label{eq:XcorCorRelation}
  \end{align}
 from \eqref{eq:ObservationAutocorrelation} we have
 \begin{align}
@@ -324,15 +324,15 @@ from \eqref{eq:ObservationAutocorrelation} we have
 \end{align}
 from \eqref{eq:XcorCorRelation} and \eqref{eq:correarranged} we can write
 \begin{align}
- 	\frac{\sigma_d}{T_s\varsigma}\left[R_{y_{t},y_{t+1}}(\boldsymbol{\tau})- \xi \left[ R_{y_{t},y_{t}}(\boldsymbol{\tau})-\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\right]\right]&= \left[R_{y_{t},y_{t}}(\boldsymbol{\tau})-\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\right]\ast w\left(\boldsymbol\tau\right)
+ 	\frac{1}{T_s\varsigma}\left[R_{y_{t},y_{t+1}}(\boldsymbol{\tau})- \xi \left[ R_{y_{t},y_{t}}(\boldsymbol{\tau})-\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\right]\right]&= \left[R_{y_{t},y_{t}}(\boldsymbol{\tau})-\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\right]\ast w\left(\boldsymbol\tau\right)
  \end{align}
 taking Fourier transform we have
 \begin{align}
- 	\frac{\sigma_d}{T_s\varsigma}\left[S_{y_{t},y_{t+1}}(\boldsymbol{\nu})- \xi \left[ S_{y_{t},y_{t}}(\boldsymbol{\nu})-\sigma_{\epsilon}^2\mathbf I\right]\right]&= \left[S_{y_{t},y_{t}}(\boldsymbol{\nu})-\sigma_{\epsilon}^2\mathbf I\right] W\left(\boldsymbol\nu\right)
+ 	\frac{1}{T_s\varsigma}\left[S_{y_{t},y_{t+1}}(\boldsymbol{\nu})- \xi \left[ S_{y_{t},y_{t}}(\boldsymbol{\nu})-\sigma_{\epsilon}^2\mathbf I\right]\right]&= \left[S_{y_{t},y_{t}}(\boldsymbol{\nu})-\sigma_{\epsilon}^2\mathbf I\right] W\left(\boldsymbol\nu\right)
  \end{align}
 rearranging we get
 \begin{align}
- 	W\left(\boldsymbol\nu\right)&=\frac{\sigma_d}{T_s\varsigma}\left[\frac{S_{y_{t},y_{t+1}}(\boldsymbol{\nu})}{S_{y_{t},y_{t}}(\boldsymbol{\nu})-\sigma_{\epsilon}^2\mathbf I}- \xi \mathbf I \right]
+ 	W\left(\boldsymbol\nu\right)&=\frac{1}{T_s\varsigma}\left[\frac{S_{y_{t},y_{t+1}}(\boldsymbol{\nu})}{S_{y_{t},y_{t}}(\boldsymbol{\nu})-\sigma_{\epsilon}^2\mathbf I}- \xi \mathbf I \right]
  \end{align}
 
 \bibliographystyle{plain}
