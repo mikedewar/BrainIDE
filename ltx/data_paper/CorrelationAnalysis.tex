@@ -46,7 +46,7 @@ Substituting in equation~\ref{DiscreteTimeModel}  for $v_{t+1}\left(\mathbf{r}\r
 The first term, $R_1(\boldsymbol{\tau})$, can be simplified to
 \begin{align}
 	R_1(\boldsymbol{\tau}) &= \xi \mathbf{E}\left[ m\left(\mathbf{r}\right) \ast v_t\left(\mathbf{r}\right) \times m\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast v_t\left(\mathbf{r}+\boldsymbol{\tau}\right) \right] \\
-	&= \xi\left( R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \sigma_{\varepsilon}\delta_K\left(\boldsymbol{\tau}\right) \right).
+	&= \xi\left( R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \sigma_{\varepsilon}\delta_K\left(\boldsymbol{\tau}\right) \right). \label{eq:R1}
 \end{align}
 The second term
 \begin{equation}
@@ -70,7 +70,7 @@ The connectivity kernel can be taken outside the expectation since it is determi
 \end{equation}
 This can be simplified to
 \begin{align}
-	R_2(\boldsymbol{\tau}) &\approx T_s \varsigma \left( R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \sigma_{\varepsilon}\delta_K\left(\boldsymbol{\tau}\right) \right) \ast w\left(\boldsymbol{\tau}\right) \\
+	R_2(\boldsymbol{\tau}) &\approx T_s \varsigma \left( R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \sigma_{\varepsilon}^2 \delta_K\left(\boldsymbol{\tau}\right) \right) \ast w\left(\boldsymbol{\tau}\right) \\
 	&= \frac{T_s \varsigma}{\xi} R_1(\boldsymbol{\tau}) \ast w\left(\boldsymbol{\tau}\right)
 \end{align}
 The last term on the right hand side of equation~\ref{eq:spatialxcorr} is
@@ -79,8 +79,22 @@ The last term on the right hand side of equation~\ref{eq:spatialxcorr} is
 \end{equation}
 since the disturbance added to the field at time $t$ and assumed to be uncorrelated to the field at time $t$. Therefore 
 \begin{equation}
-	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) - R_1(\boldsymbol{\tau}) \approx \frac{T_s \varsigma}{\xi} R_1(\boldsymbol{\tau}) \ast w\left(\boldsymbol{\tau}\right)
+	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) - R_1(\boldsymbol{\tau}) \approx \frac{T_s \varsigma}{\xi} R_1(\boldsymbol{\tau}) \ast w\left(\boldsymbol{\tau}\right).
 \end{equation}
+Now, by taking the Fourier transform we get
+\begin{equation}
+	\mathcal{F}\left\{R_{y_{t},y_{t+1}}(\boldsymbol{\tau})\right\} - \mathcal{F}\left\{R_1(\boldsymbol{\tau})\right\} \approx \frac{T_s \varsigma}{\xi} \mathcal{F}\left\{R_1(\boldsymbol{\tau})\right\} \mathcal{F}\left\{ w\left(\boldsymbol{\tau}\right)\right\}.
+\end{equation}
+This simplifies to
+\begin{equation}
+	\frac{\xi}{T_s \varsigma} \left(\frac{\mathcal{F}\left\{R_{y_{t},y_{t+1}}(\boldsymbol{\tau})\right\}}{\mathcal{F}\left\{R_1(\boldsymbol{\tau})\right\}} - 1\right) \approx  \mathcal{F}\left\{ w\left(\boldsymbol{\tau}\right)\right\}.
+\end{equation}
+Now substituting back in equation~\ref{eq:R1}, we can write
+
+\begin{align}
+	\mathcal{F}\left\{ w\left(\boldsymbol{\tau}\right)\right\} &\approx \frac{\xi}{T_s \varsigma} \left(\frac{\mathcal{F}\left\{R_{y_{t},y_{t+1}}(\boldsymbol{\tau})\right\}}{\mathcal{F}\left\{\xi\left( R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \sigma_{\varepsilon}^2\delta_K\left(\boldsymbol{\tau}\right) \right)\right\}} - 1\right)  \\
+	&= \frac{\xi}{T_s \varsigma} \left(\frac{\mathcal{F}\left\{R_{y_{t},y_{t+1}}(\boldsymbol{\tau})\right\}}{\xi\mathcal{F}\left\{\left( R_{y_{t},y_{t}}(\boldsymbol{\tau})\right\} - \sigma_{\varepsilon}^2 \right)} - 1\right)
+\end{align}
 
 % Putting to other two terms back together we can write
 % \begin{equation}
