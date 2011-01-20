@@ -66,11 +66,11 @@ Furthermore, we assume the field is in the linear region of the piecewise functi
 \end{equation}
 The connectivity kernel can be taken outside the expectation since it is deterministic giving
 \begin{align}
-	R_2(\boldsymbol{\tau}) &\approx T_s\mathbf{E}\left[ m\left(\mathbf{r}\right) \ast v_t\left(\mathbf{r}\right) \times m\left(\mathbf{r}+\boldsymbol{\tau}\right)  \ast \varsigma v_t\left(\mathbf{r}+\boldsymbol{\tau}\right) \right] \ast w\left(\boldsymbol{\tau}\right) \\
+	R_2(\boldsymbol{\tau}) &\approx T_s \varsigma \mathbf{E}\left[ m\left(\mathbf{r}\right) \ast v_t\left(\mathbf{r}\right) \times m\left(\mathbf{r}+\boldsymbol{\tau}\right)  \ast  v_t\left(\mathbf{r}+\boldsymbol{\tau}\right) \right] \ast w\left(\boldsymbol{\tau}\right) \\
 	&= T_s \varsigma \mathbf{E}\left[ \hat{y}\left(\mathbf{r}\right) \times \hat{y}\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast w\left(\mathbf{r}+\boldsymbol{\tau}\right)\right] \\
-	&= T_s \varsigma \mathbf{E}\left[ \hat{y}\left(\mathbf{r}+\boldsymbol{\tau}\right)  \int_{\Omega}\hat{y}\left(\mathbf{r}\right) w\left(\mathbf{r}'-\mathbf{r}\right) d\mathbf{r} \right] \\
-	&= T_s \varsigma \mathbf{E}\left[  \int_{\Omega}\hat{y}\left(\mathbf{r}+\boldsymbol{\tau}\right)\hat{y}\left(\mathbf{r}\right) w\left(\mathbf{r}'-\mathbf{r}\right) d\mathbf{r} \right] \\
-	&= T_s \varsigma   \int_{\Omega}\mathbf{E}\left[\hat{y}\left(\mathbf{r}+\boldsymbol{\tau}\right)\hat{y}\left(\mathbf{r}\right) \right] w\left(\mathbf{r}'-\mathbf{r}\right) d\mathbf{r}
+	&= T_s \varsigma \mathbf{E}\left[ \hat{y}\left(\mathbf{r}\right)  \int_{\Omega}\hat{y}\left(\mathbf{r}+\boldsymbol{\tau}\right) w\left(\mathbf{r}'+\boldsymbol{\tau}-\mathbf{r}\right) d\mathbf{r} \right] \\
+	&= T_s \varsigma \mathbf{E}\left[  \int_{\Omega}\hat{y}\left(\mathbf{r}\right)\hat{y}\left(\mathbf{r}+\boldsymbol{\tau}\right) w\left(\mathbf{r}'+\boldsymbol{\tau}-\mathbf{r}\right) d\mathbf{r} \right] \\
+	&= T_s \varsigma   \int_{\Omega}\mathbf{E}\left[\hat{y}\left(\mathbf{r}\right)\hat{y}\left(\mathbf{r}+\boldsymbol{\tau}\right) \right] w\left(\mathbf{r}'+\boldsymbol{\tau}-\mathbf{r}\right) d\mathbf{r}
 \end{align}
 This can be simplified to
 \begin{align}
