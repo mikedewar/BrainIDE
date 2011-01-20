@@ -215,8 +215,75 @@ substituting \eqref{eq:ObsCorr1term1} in \eqref{eq:ObsCorr1} we have
 \end{align}
 Therefore we have
 \begin{align}
-	R_{y_{t},y_{t}}(\boldsymbol{\tau}) &= \sigma_d\left(m \ast m \ast \gamma\right)\left(\boldsymbol{\tau}\right)+\sigma_{\epsilon}^2\delta(\boldsymbol\tau)
+	R_{y_{t},y_{t}}(\boldsymbol{\tau}) &= \sigma_d\left(m \ast m \ast \gamma\right)\left(\boldsymbol{\tau}\right)+\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\label{eq:ObservationAutocorrelation}
 \end{align}
+% \section*{Observation Crosscorrelation}\label{sec:ObservCroocor} 
+% \begin{align}
+% 	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &= \mathbf{E}\left[y_{t}\left(\mathbf{r}+\boldsymbol{\tau}\right)y_{t+1}\left(\mathbf{r}\right)\right] \nonumber\\
+% 	&= \mathbf{E}\left[\left(\int_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} + \boldsymbol{\varepsilon}_t\left(\mathbf{r}+\boldsymbol{\tau}\right)\right) \left(\int_{\Omega}{ m\left(\mathbf{r} - \mathbf{r}''\right) v_{t+1}\left(\mathbf{r}''\right) \, d\mathbf{r}''} + \boldsymbol{\varepsilon}_{t+1}\left(\mathbf{r}\right)\right) \right]\label{eq:ObsCrossCorr1}
+% \end{align}
+% we have
+% \begin{equation}\label{vt+1}
+%  v_{t+1}\left(\mathbf{r}''\right)=\xi v_{t}\left(\mathbf{r}''\right)+T_s\int_{\Omega}w\left(\mathbf r'',\mathbf r'''\right)f\left(v_t\left(\mathbf r'''\right)\right)d\mathbf r'''
+% \end{equation}
+% substituting \eqref{vt+1} in \eqref{eq:ObsCrossCorr2} we get
+% \begin{align}
+% 	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) 
+% 	&= \mathbf{E}\left[\left(\int_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} + \boldsymbol{\varepsilon}_t\left(\mathbf{r}+\boldsymbol{\tau}\right)\right) \right. \nonumber \\
+%  \times& \left. \left(\int_{\Omega}{ m\left(\mathbf{r} - \mathbf{r}''\right) v_{t+1}\left(\mathbf{r}''\right)\left[ \xi v_{t}\left(\mathbf{r}''\right)+T_s\int_{\Omega}w\left(\mathbf r'',\mathbf r'''\right)f\left(v_t\left(\mathbf r'''\right)\right)d\mathbf r'''\right]  \, d\mathbf{r}''} + \boldsymbol{\varepsilon}_{t+1}\left(\mathbf{r}\right)\right) \right]\nonumber\\
+% &=\mathbf E \left[\int_{\Omega} m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right) v_t\left(\mathbf r'\right) d\mathbf r'\int_{\Omega}m\left(\mathbf r- \mathbf r''\right)\xi v_t\left(\mathbf r''\right)d\mathbf r''\right]\nonumber\\
+% +&\mathbf E \left[\int_{\Omega} m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right) v_t\left(\mathbf r'\right) d\mathbf r'\int_{\Omega} m(\mathbf r-\mathbf r'')T_s\int_{\Omega}w(\mathbf r'' -\mathbf r''')\varsigma v_t(\mathbf r''')d\mathbf r''' d\mathbf r''\right]\label{eq:ObsCrossCorr2}
+% \end{align}
+% from observation autocorrolation the first term of equation \eqref{eq:ObsCrossCorr2} is 
+% \begin{equation}
+%  \mathbf E \left[\int_{\Omega} m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right) v_t\left(\mathbf r'\right) d\mathbf r'\int_{\Omega}m\left(\mathbf r- \mathbf r''\right)\xi v_t\left(\mathbf r''\right)d\mathbf r''\right]=R_{y_{t},y_{t}}(\boldsymbol{\tau}) -\sigma_{\epsilon}^2\delta(\boldsymbol\tau)
+% \end{equation}
+% to simplify equation \eqref{eq:ObsCrossCorr2} we write
+% \begin{equation}\label{eq:KernelIntegral}
+%  W(\mathbf r'')=\int_{\Omega}w\left(\mathbf r''-\mathbf r'''\right)v_t\left(\mathbf r'''\right)d\mathbf r'''
+% \end{equation}
+% substituting \eqref{eq:KernelIntegral} in the first term of \eqref{eq:ObsCrossCorr2} we have
+% \begin{align}
+%  &T_s \varsigma\mathbf E \left[\int_{\Omega} m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right) v_t\left(\mathbf r'\right) d\mathbf r'\int_{\Omega}m\left(\mathbf r- \mathbf r''\right)  W(\mathbf r'') d\mathbf r''\right]\nonumber\\
+% &=T_s \varsigma\mathbf E \left[\iint_{\Omega} m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right)m\left(\mathbf r- \mathbf r''\right) v_t\left(\mathbf r'\right)  W(\mathbf r'') d\mathbf r'  d\mathbf r''\right]\nonumber\\
+% &=-T_s \varsigma\mathbf E \left[\iint_{\Omega} m\left(\mathbf s+\mathbf r'' + \boldsymbol \tau - \mathbf r'\right)m\left(\mathbf s\right) v_t\left(\mathbf r'\right)  W(\mathbf r'') d\mathbf r'  d\mathbf s\right]\nonumber\\ \label{eq:ObsCrossCorr3}
+% \end{align}
+% where $\mathbf r -\mathbf r''=\mathbf s $ and therefore $d \mathbf r''=-d\mathbf s $ and again in \eqref{eq:ObsCrossCorr3} by choosing $\boldsymbol\tau'=\mathbf r' -\mathbf r''-\boldsymbol\tau$ the equation \eqref{eq:ObsCrossCorr3} becomes
+% \begin{align}
+%  &-T_s \varsigma\mathbf E \left[\iint_{\Omega} m\left(\mathbf s-\boldsymbol \tau'\right)m\left(\mathbf s\right) v_t\left(\mathbf r'\right)  W(\mathbf r'') d\mathbf r'  d\mathbf s\right]\nonumber\\ 
+% &=-T_s \varsigma\mathbf E \left[\int_{\Omega} (m \ast m)\left(\mathbf r'-\mathbf r''-\boldsymbol \tau\right)v_t\left(\mathbf r'\right)  W(\mathbf r'') d\mathbf r'\right]\label{eq:ObsCrossCorr4}
+% \end{align}
+% replacing for $W(\mathbf r'')$ from \eqref{eq:KernelIntegral}  back to \eqref{eq:ObsCrossCorr4} we get
+% \begin{align}
+%  &-T_s \varsigma\mathbf E \left[\int_{\Omega} (m \ast m)\left(\mathbf r'-\mathbf r''-\boldsymbol \tau\right)v_t\left(\mathbf r'\right)  \int_{\Omega}w\left(\mathbf r''-\mathbf r'''\right)v_t\left(\mathbf r'''\right)d\mathbf r''' d\mathbf r'\right]\nonumber\\
+% &=-T_s \varsigma\iint_{\Omega} (m \ast m)\left(\mathbf r'-\mathbf r''-\boldsymbol \tau\right)w\left(\mathbf r''-\mathbf r'''\right)\mathbf E \left[v_t\left(\mathbf r'\right)  v_t\left(\mathbf r'''\right)\right]d\mathbf r''' d\mathbf r' \nonumber \\
+% &=-T_s \varsigma\iint_{\Omega} (m \ast m)\left(\mathbf r'-\mathbf r''-\boldsymbol \tau\right)w\left(\mathbf r''-\mathbf r'''\right)\gamma(\mathbf r'-\mathbf r''')d\mathbf r''' d\mathbf r'\nonumber \\
+% &=-T_s \varsigma\iint_{\Omega} (m \ast m)\left(\mathbf r'-\mathbf s'-\mathbf r'''-\boldsymbol \tau\right)w\left(\mathbf s'\right)\gamma(\mathbf r'-\mathbf r''')d\mathbf s'd\mathbf r'\label{eq:ObsCrossCorr5}
+% \end{align}
+% where $\mathbf r'' -\mathbf r'''=\mathbf s' $ and therefore $d \mathbf r'''=-d\mathbf s' $ and again in \eqref{eq:ObsCrossCorr5} by choosing $\boldsymbol\tau''=\mathbf r' -\mathbf r'''-\boldsymbol\tau$ the equation \eqref{eq:ObsCrossCorr5} becomes
+% \begin{align}
+% &T_s \varsigma\iint_{\Omega} (m \ast m)\left(\boldsymbol \tau''-\mathbf s'\right)w\left(\mathbf s'\right)\gamma(\mathbf r'-\mathbf r''')d\mathbf s'd\mathbf r' \nonumber \\
+% &=T_s \varsigma\iint_{\Omega} (m \ast m)\left(\mathbf s'-\boldsymbol \tau''\right)w\left(\mathbf s'\right)\gamma(\mathbf r'-\mathbf r''')d\mathbf s'd\mathbf r' \nonumber \\
+% &=T_s \varsigma\int_{\Omega} (m \ast m \ast w)\left(\boldsymbol \tau''\right)\gamma(\mathbf r'-\mathbf r''')d\mathbf r' \nonumber \\
+% &=T_s \varsigma\int_{\Omega} (m \ast m \ast w)\left(\mathbf r' -\mathbf r'''-\boldsymbol\tau\right)\gamma(\mathbf r'-\mathbf r''')d\mathbf r' \nonumber \\
+% \label{eq:ObsCrossCorr6}
+% \end{align}
+% Note that im \eqref{eq:ObsCrossCorr6} we use thee property $(m \ast m)\left(\boldsymbol \tau''-\mathbf s'\right)= (m \ast m)\left(\mathbf s'-\boldsymbol \tau''\right)$ by choosing $\boldsymbol\tau'''=\mathbf r'-\mathbf r'''$ and therefore $d\boldsymbol \tau'''=d\mathbf r'$ we therefore equation \ref{eq:ObsCrossCorr6} becomes
+% \begin{align}
+% &T_s \varsigma\int_{\Omega} (m \ast m \ast w)\left(\boldsymbol \tau'''-\boldsymbol\tau\right)\gamma(\boldsymbol \tau''')d\boldsymbol \tau''' \nonumber \\
+% =&T_s \varsigma\int_{\Omega} (m \ast m \ast w)\left(\boldsymbol\tau-\boldsymbol \tau'''\right)\gamma(\boldsymbol \tau''')d\boldsymbol \tau''' \nonumber \\
+% =&T_s \varsigma\int_{\Omega} (m \ast m \ast w \ast \gamma)\left(\boldsymbol\tau\right)
+% \label{eq:ObsCrossCorr7}
+% \end{align}
+% we have assumed here that the kernel is isotropic and therefore
+% \begin{equation}
+%  (m \ast m \ast w)\left(\boldsymbol \tau'''-\boldsymbol\tau\right)=(m \ast m \ast w)\left(\boldsymbol\tau-\boldsymbol \tau'''\right)
+% \end{equation}
+% the relation between $R_{y_{t},y_{t+1}}(\boldsymbol{\tau})$ and $R_{y_{t},y_{t}}(\boldsymbol{\tau})$ becomes
+% \begin{align}
+% 	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &= R_{y_{t},y_{t}}(\boldsymbol{\tau})-\sigma_{\epsilon}^2\delta(\boldsymbol\tau)+T_s\varsigma\left(m\ast m\ast w\ast\gamma\right)\left(\boldsymbol\tau\right)
+% \end{align}
+\newpage
 \section*{Observation Crosscorrelation}\label{sec:ObservCroocor} 
 \begin{align}
 	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &= \mathbf{E}\left[y_{t}\left(\mathbf{r}+\boldsymbol{\tau}\right)y_{t+1}\left(\mathbf{r}\right)\right] \nonumber\\
@@ -231,58 +298,42 @@ substituting \eqref{vt+1} in \eqref{eq:ObsCrossCorr2} we get
 	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) 
 	&= \mathbf{E}\left[\left(\int_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} + \boldsymbol{\varepsilon}_t\left(\mathbf{r}+\boldsymbol{\tau}\right)\right) \right. \nonumber \\
  \times& \left. \left(\int_{\Omega}{ m\left(\mathbf{r} - \mathbf{r}''\right) v_{t+1}\left(\mathbf{r}''\right)\left[ \xi v_{t}\left(\mathbf{r}''\right)+T_s\int_{\Omega}w\left(\mathbf r'',\mathbf r'''\right)f\left(v_t\left(\mathbf r'''\right)\right)d\mathbf r'''\right]  \, d\mathbf{r}''} + \boldsymbol{\varepsilon}_{t+1}\left(\mathbf{r}\right)\right) \right]\nonumber\\
-&=\mathbf E \left[\int_{\Omega} m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right) v_t\left(\mathbf r'\right) d\mathbf r'\int_{\Omega}m\left(\mathbf r- \mathbf r''\right)\xi v_t\left(\mathbf r''\right)d\mathbf r''\right]\nonumber\\
+&=\xi \ \mathbf  E \left[\int_{\Omega} m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right) v_t\left(\mathbf r'\right) d\mathbf r'\int_{\Omega}m\left(\mathbf r- \mathbf r''\right) v_t\left(\mathbf r''\right)d\mathbf r''\right]\nonumber\\
 +&\mathbf E \left[\int_{\Omega} m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right) v_t\left(\mathbf r'\right) d\mathbf r'\int_{\Omega} m(\mathbf r-\mathbf r'')T_s\int_{\Omega}w(\mathbf r'' -\mathbf r''')\varsigma v_t(\mathbf r''')d\mathbf r''' d\mathbf r''\right]\label{eq:ObsCrossCorr2}
 \end{align}
 from observation autocorrolation the first term of equation \eqref{eq:ObsCrossCorr2} is 
 \begin{equation}
- \mathbf E \left[\int_{\Omega} m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right) v_t\left(\mathbf r'\right) d\mathbf r'\int_{\Omega}m\left(\mathbf r- \mathbf r''\right)\xi v_t\left(\mathbf r''\right)d\mathbf r''\right]=R_{y_{t},y_{t}}(\boldsymbol{\tau}) -\sigma_{\epsilon}^2\delta(\boldsymbol\tau)
+\xi \ \mathbf E \left[\int_{\Omega} m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right) v_t\left(\mathbf r'\right) d\mathbf r'\int_{\Omega}m\left(\mathbf r- \mathbf r''\right) v_t\left(\mathbf r''\right)d\mathbf r''\right]=\xi \left[ R_{y_{t},y_{t}}(\boldsymbol{\tau}) -\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\right] 
 \end{equation}
-to simplify equation \eqref{eq:ObsCrossCorr2} we write
-\begin{equation}\label{eq:KernelIntegral}
- W(\mathbf r'')=\int_{\Omega}w\left(\mathbf r''-\mathbf r'''\right)v_t\left(\mathbf r'''\right)d\mathbf r'''
-\end{equation}
-substituting \eqref{eq:KernelIntegral} in the first term of \eqref{eq:ObsCrossCorr2} we have
+for the second term of \eqref{eq:ObsCrossCorr2} we have
 \begin{align}
- &T_s \varsigma\mathbf E \left[\int_{\Omega} m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right) v_t\left(\mathbf r'\right) d\mathbf r'\int_{\Omega}m\left(\mathbf r- \mathbf r''\right)  W(\mathbf r'') d\mathbf r''\right]\nonumber\\
-&=T_s \varsigma\mathbf E \left[\iint_{\Omega} m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right)m\left(\mathbf r- \mathbf r''\right) v_t\left(\mathbf r'\right)  W(\mathbf r'') d\mathbf r'  d\mathbf r''\right]\nonumber\\
-&=-T_s \varsigma\mathbf E \left[\iint_{\Omega} m\left(\mathbf s+\mathbf r'' + \boldsymbol \tau - \mathbf r'\right)m\left(\mathbf s\right) v_t\left(\mathbf r'\right)  W(\mathbf r'') d\mathbf r'  d\mathbf s\right]\nonumber\\ \label{eq:ObsCrossCorr3}
-\end{align}
-where $\mathbf r -\mathbf r''=\mathbf s $ and therefore $d \mathbf r''=-d\mathbf s $ and again in \eqref{eq:ObsCrossCorr3} by choosing $\boldsymbol\tau'=\mathbf r' -\mathbf r''-\boldsymbol\tau$ the equation \eqref{eq:ObsCrossCorr3} becomes
+ &\mathbf E \left[\int_{\Omega} m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right) v_t\left(\mathbf r'\right) d\mathbf r'\int_{\Omega} m(\mathbf r-\mathbf r'')T_s\int_{\Omega}w(\mathbf r'' -\mathbf r''')\varsigma v_t(\mathbf r''')d\mathbf r''' d\mathbf r''\right ] \nonumber\\ 
+&= T_s \varsigma \mathbf E \left[\iiint_{\Omega} m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right)m(\mathbf r-\mathbf r'')  w(\mathbf r'' -\mathbf r''') v_t\left(\mathbf r'\right) v_t(\mathbf r''')d\mathbf r' d\mathbf r'' d\mathbf r''' \right] \nonumber \\
+ &= T_s \varsigma\iiint_{\Omega} m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right)m(\mathbf r-\mathbf r'')  w(\mathbf r'' -\mathbf r''')  \mathbf E \left[v_t\left(\mathbf r'\right) v_t(\mathbf r''')\right] d\mathbf r' d\mathbf r'' d\mathbf r''' \nonumber \\
+&= T_s \varsigma\iiint_{\Omega} m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right)m(\mathbf r-\mathbf r'')  w(\mathbf r'' -\mathbf r''')  \mathbf \gamma(\mathbf r'-\mathbf r''') d\mathbf r' d\mathbf r'' d\mathbf r''' \nonumber \\
+ &= T_s \varsigma\int_{\Omega} \left[ \int_{\Omega}m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right)\gamma(\mathbf r'-\mathbf r''')d\mathbf r'\right] \left[\int_{\Omega}m(\mathbf r-\mathbf r'')  w(\mathbf r'' -\mathbf r''')  \mathbf   d\mathbf r''\right] d\mathbf r''' \nonumber \\ 
+ &= T_s \varsigma\int_{\Omega}(m \ast \gamma)(\mathbf r+\boldsymbol\tau-\mathbf r''')(m \ast w)(\mathbf r-\mathbf r''') d\mathbf r''' \nonumber \\ 
+&= T_s\varsigma\left(m\ast m\ast w\ast\gamma\right)\left(\boldsymbol\tau\right)                                                                                                                                                                                                                                                             \end{align}
+ we have assumed here that the kernel is isotropic. the relation between $R_{y_{t},y_{t+1}}(\boldsymbol{\tau})$ and $R_{y_{t},y_{t}}(\boldsymbol{\tau})$ becomes
+ \begin{align}
+ 	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &= \xi \left[ R_{y_{t},y_{t}}(\boldsymbol{\tau})-\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\right]+T_s\varsigma\left(m\ast m\ast w\ast\gamma\right)\left(\boldsymbol\tau\right)\label{eq:XcorCorRelation}
+ \end{align}
+from \eqref{eq:ObservationAutocorrelation} we have
 \begin{align}
- &-T_s \varsigma\mathbf E \left[\iint_{\Omega} m\left(\mathbf s-\boldsymbol \tau'\right)m\left(\mathbf s\right) v_t\left(\mathbf r'\right)  W(\mathbf r'') d\mathbf r'  d\mathbf s\right]\nonumber\\ 
-&=-T_s \varsigma\mathbf E \left[\int_{\Omega} (m \ast m)\left(\mathbf r'-\mathbf r''-\boldsymbol \tau\right)v_t\left(\mathbf r'\right)  W(\mathbf r'') d\mathbf r'\right]\label{eq:ObsCrossCorr4}
+	\frac{1}{\sigma_d}\left[R_{y_{t},y_{t}}(\boldsymbol{\tau})-\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\right] &=\left(m \ast m \ast \gamma\right)\left(\boldsymbol{\tau}\right)\label{eq:correarranged}
 \end{align}
-replacing for $W(\mathbf r'')$ from \eqref{eq:KernelIntegral}  back to \eqref{eq:ObsCrossCorr4} we get
+from \eqref{eq:XcorCorRelation} and \eqref{eq:correarranged} we can write
 \begin{align}
- &-T_s \varsigma\mathbf E \left[\int_{\Omega} (m \ast m)\left(\mathbf r'-\mathbf r''-\boldsymbol \tau\right)v_t\left(\mathbf r'\right)  \int_{\Omega}w\left(\mathbf r''-\mathbf r'''\right)v_t\left(\mathbf r'''\right)d\mathbf r''' d\mathbf r'\right]\nonumber\\
-&=-T_s \varsigma\iint_{\Omega} (m \ast m)\left(\mathbf r'-\mathbf r''-\boldsymbol \tau\right)w\left(\mathbf r''-\mathbf r'''\right)\mathbf E \left[v_t\left(\mathbf r'\right)  v_t\left(\mathbf r'''\right)\right]d\mathbf r''' d\mathbf r' \nonumber \\
-&=-T_s \varsigma\iint_{\Omega} (m \ast m)\left(\mathbf r'-\mathbf r''-\boldsymbol \tau\right)w\left(\mathbf r''-\mathbf r'''\right)\gamma(\mathbf r'-\mathbf r''')d\mathbf r''' d\mathbf r'\nonumber \\
-&=-T_s \varsigma\iint_{\Omega} (m \ast m)\left(\mathbf r'-\mathbf s'-\mathbf r'''-\boldsymbol \tau\right)w\left(\mathbf s'\right)\gamma(\mathbf r'-\mathbf r''')d\mathbf s'd\mathbf r'\label{eq:ObsCrossCorr5}
-\end{align}
-where $\mathbf r'' -\mathbf r'''=\mathbf s' $ and therefore $d \mathbf r'''=-d\mathbf s' $ and again in \eqref{eq:ObsCrossCorr5} by choosing $\boldsymbol\tau''=\mathbf r' -\mathbf r'''-\boldsymbol\tau$ the equation \eqref{eq:ObsCrossCorr5} becomes
+ 	\frac{\sigma_d}{T_s\varsigma}\left[R_{y_{t},y_{t+1}}(\boldsymbol{\tau})- \xi \left[ R_{y_{t},y_{t}}(\boldsymbol{\tau})-\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\right]\right]&= \left[R_{y_{t},y_{t}}(\boldsymbol{\tau})-\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\right]\ast w\left(\boldsymbol\tau\right)
+ \end{align}
+taking Fourier transform we have
 \begin{align}
-&T_s \varsigma\iint_{\Omega} (m \ast m)\left(\boldsymbol \tau''-\mathbf s'\right)w\left(\mathbf s'\right)\gamma(\mathbf r'-\mathbf r''')d\mathbf s'd\mathbf r' \nonumber \\
-&=T_s \varsigma\iint_{\Omega} (m \ast m)\left(\mathbf s'-\boldsymbol \tau''\right)w\left(\mathbf s'\right)\gamma(\mathbf r'-\mathbf r''')d\mathbf s'd\mathbf r' \nonumber \\
-&=T_s \varsigma\int_{\Omega} (m \ast m \ast w)\left(\boldsymbol \tau''\right)\gamma(\mathbf r'-\mathbf r''')d\mathbf r' \nonumber \\
-&=T_s \varsigma\int_{\Omega} (m \ast m \ast w)\left(\mathbf r' -\mathbf r'''-\boldsymbol\tau\right)\gamma(\mathbf r'-\mathbf r''')d\mathbf r' \nonumber \\
-\label{eq:ObsCrossCorr6}
-\end{align}
-Note that im \eqref{eq:ObsCrossCorr6} we use thee property $(m \ast m)\left(\boldsymbol \tau''-\mathbf s'\right)= (m \ast m)\left(\mathbf s'-\boldsymbol \tau''\right)$ by choosing $\boldsymbol\tau'''=\mathbf r'-\mathbf r'''$ and therefore $d\boldsymbol \tau'''=d\mathbf r'$ we therefore equation \ref{eq:ObsCrossCorr6} becomes
+ 	\frac{\sigma_d}{T_s\varsigma}\left[S_{y_{t},y_{t+1}}(\boldsymbol{\nu})- \xi \left[ S_{y_{t},y_{t}}(\boldsymbol{\nu})-\sigma_{\epsilon}^2\mathbf I\right]\right]&= \left[S_{y_{t},y_{t}}(\boldsymbol{\nu})-\sigma_{\epsilon}^2\mathbf I\right] W\left(\boldsymbol\nu\right)
+ \end{align}
+rearranging we get
 \begin{align}
-&T_s \varsigma\int_{\Omega} (m \ast m \ast w)\left(\boldsymbol \tau'''-\boldsymbol\tau\right)\gamma(\boldsymbol \tau''')d\boldsymbol \tau''' \nonumber \\
-=&T_s \varsigma\int_{\Omega} (m \ast m \ast w)\left(\boldsymbol\tau-\boldsymbol \tau'''\right)\gamma(\boldsymbol \tau''')d\boldsymbol \tau''' \nonumber \\
-=&T_s \varsigma\int_{\Omega} (m \ast m \ast w \ast \gamma)\left(\boldsymbol\tau\right)
-\label{eq:ObsCrossCorr7}
-\end{align}
-we have assumed here that the kernel is isotropic and therefore
-\begin{equation}
- (m \ast m \ast w)\left(\boldsymbol \tau'''-\boldsymbol\tau\right)=(m \ast m \ast w)\left(\boldsymbol\tau-\boldsymbol \tau'''\right)
-\end{equation}
-the relation between $R_{y_{t},y_{t+1}}(\boldsymbol{\tau})$ and $R_{y_{t},y_{t}}(\boldsymbol{\tau})$ becomes
-\begin{align}
-	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &= R_{y_{t},y_{t}}(\boldsymbol{\tau})-\sigma_{\epsilon}^2\delta(\boldsymbol\tau)+T_s\varsigma\left(m\ast m\ast w\ast\gamma\right)\left(\boldsymbol\tau\right)
-\end{align}
+ 	W\left(\boldsymbol\nu\right)&=\frac{\sigma_d}{T_s\varsigma}\left[\frac{S_{y_{t},y_{t+1}}(\boldsymbol{\nu})}{S_{y_{t},y_{t}}(\boldsymbol{\nu})-\sigma_{\epsilon}^2\mathbf I}- \xi \mathbf I \right]
+ \end{align}
 
 \bibliographystyle{plain}
 \bibliography{}
