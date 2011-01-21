@@ -9,6 +9,8 @@
 % Setup for fullpage use
 \usepackage{fullpage}
 
+\usepackage[pdftex]{graphicx}
+
 
 % More symbols
 \usepackage{amsmath}
@@ -64,13 +66,15 @@ Furthermore, we assume the field is in the linear region of the piecewise functi
 \begin{equation}
 	R_2(\boldsymbol{\tau}) \approx T_s\mathbf{E}\left[ m\left(\mathbf{r}\right) \ast v_t\left(\mathbf{r}\right) \times m\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast w\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast \varsigma v_t\left(\mathbf{r}+\boldsymbol{\tau}\right) \right].
 \end{equation}
-The connectivity kernel can be taken outside the expectation since it is deterministic giving
+$R_2(\boldsymbol{\tau})$ can be written as
 \begin{align}
-	R_2(\boldsymbol{\tau}) &\approx T_s \varsigma \mathbf{E}\left[ m\left(\mathbf{r}\right) \ast v_t\left(\mathbf{r}\right) \times m\left(\mathbf{r}+\boldsymbol{\tau}\right)  \ast  v_t\left(\mathbf{r}+\boldsymbol{\tau}\right) \right] \ast w\left(\boldsymbol{\tau}\right) \\
-	&= T_s \varsigma \mathbf{E}\left[ \hat{y}\left(\mathbf{r}\right) \times \hat{y}\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast w\left(\mathbf{r}+\boldsymbol{\tau}\right)\right] \\
-	&= T_s \varsigma \mathbf{E}\left[ \hat{y}\left(\mathbf{r}\right)  \int_{\Omega}\hat{y}\left(\mathbf{r}+\boldsymbol{\tau}\right) w\left(\mathbf{r}'+\boldsymbol{\tau}-\mathbf{r}\right) d\mathbf{r} \right] \\
-	&= T_s \varsigma \mathbf{E}\left[  \int_{\Omega}\hat{y}\left(\mathbf{r}\right)\hat{y}\left(\mathbf{r}+\boldsymbol{\tau}\right) w\left(\mathbf{r}'+\boldsymbol{\tau}-\mathbf{r}\right) d\mathbf{r} \right] \\
-	&= T_s \varsigma   \int_{\Omega}\mathbf{E}\left[\hat{y}\left(\mathbf{r}\right)\hat{y}\left(\mathbf{r}+\boldsymbol{\tau}\right) \right] w\left(\mathbf{r}'+\boldsymbol{\tau}-\mathbf{r}\right) d\mathbf{r}
+	R_2(\boldsymbol{\tau}) &\approx	T_s \varsigma \mathbf{E}\left[ \hat{y}\left(\mathbf{r}\right) \times \hat{y}\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast w\left(\mathbf{r}+\boldsymbol{\tau}\right)\right] \\
+	&= T_s \varsigma \mathbf{E}\left[ \hat{y}\left(\mathbf{r}\right)  \int_{\Omega}\hat{y}\left(\mathbf{r'}\right) w\left(\mathbf{r}+\boldsymbol{\tau}-\mathbf{r'}\right) d\mathbf{r'} \right] \\
+	&= T_s \varsigma \mathbf{E}\left[  \int_{\Omega}\hat{y}\left(\mathbf{r}\right)\hat{y}\left(\mathbf{r'}\right) w\left(\mathbf{r}+\boldsymbol{\tau}-\mathbf{r'}\right) d\mathbf{r'} \right] \\
+	&= T_s \varsigma \mathbf{E}\left[  \int_{\Omega}\hat{y}\left(\mathbf{r}\right)\hat{y}\left(\mathbf{r'}+\mathbf{r}\right) w\left(\boldsymbol{\tau}-\mathbf{r'}\right) d\mathbf{r'} \right] \\
+	&= T_s \varsigma   \int_{\Omega}\mathbf{E}\left[\hat{y}\left(\mathbf{r}\right)\hat{y}\left(\mathbf{r'}+\mathbf{r}\right) \right] w\left(\boldsymbol{\tau}-\mathbf{r}'\right) d\mathbf{r'} \nonumber \\
+	&=T_s \varsigma  \int_{\Omega} R_1(\mathbf{r'}) w\left(\boldsymbol{\tau}-\mathbf{r}'\right) d\mathbf{r'} \nonumber \\
+	&=T_s \varsigma \left(R_1 \ast w\right)\left(\boldsymbol{\tau}\right)\\
 \end{align}
 This can be simplified to
 \begin{align}
@@ -186,7 +190,7 @@ Now substituting back in equation~\ref{eq:R1}, we can write
 % \begin{equation}
 % 	\mathcal{F}^{-1}\left\{\frac{\mathcal{F}\left\{R_{y_{t},y_{t+1}}(\boldsymbol{\tau})\right\}}{\mathcal{F}\left\{ R_{y_t,y_t}(\boldsymbol{\tau}) - \delta_K\left(\boldsymbol{\tau}\right)\sigma_{\varepsilon}^2 \right\}}\right\} \approx \mathbf{E}[\xi\delta_D\left(\mathbf{r}\right)  + T_s \varsigma w(\mathbf{r}+\boldsymbol{\tau})].
 % \end{equation}
-This equation states that the support of the kernel can be estimated given knowledge of $\sigma_\varepsilon^2$. Furthermore, is we assume a local coupling (at $\boldsymbol\tau=0$) regime, either excitation or inhibition, than we don't even need to know $\sigma_\varepsilon^2$. The peak in the kernel at $\mathbf{r}=0$ will be bigger or smaller if we guess incorrectly and the kernel parameters can do the rest! 
+ This equation states that the support of the kernel can be estimated given knowledge of $\sigma_\varepsilon^2$. Furthermore, is we assume a local coupling (at $\boldsymbol\tau=0$) regime, either excitation or inhibition, than we don't even need to know $\sigma_\varepsilon^2$. The peak in the kernel at $\mathbf{r}=0$ will be bigger or smaller if we guess incorrectly and the kernel parameters can do the rest! 
 
 \newpage
 \section*{Observation Autocorrelation}\label{sec:ObservAutocor} 
@@ -338,6 +342,15 @@ taking Fourier transform from  \eqref{eq:ObservationAutocorrelation} we also hav
 \begin{align}
  \Gamma(\boldsymbol\nu)=\frac{S_{y_t,y_t}(\boldsymbol\nu)-\sigma_{\epsilon}^2 } {\sigma_d M  M}
 \end{align}
+\newpage
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics{./Figures/KernelWidthEstimation.pdf}
+\end{center}
+\caption{{\bf Estimation of Connectivity Kernel Support}. The kernel values are normalised. True  and estimated kernels are shown with solid and dotted lines respectively.}
+\label{fig:KernelWidth}
+\end{figure}
+
 
 \bibliographystyle{plain}
 \bibliography{}
