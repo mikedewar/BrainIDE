@@ -73,14 +73,14 @@ $R_2(\boldsymbol{\tau})$ can be written as
 	&= T_s \varsigma \mathbf{E}\left[  \int_{\Omega}\hat{y}\left(\mathbf{r}\right)\hat{y}\left(\mathbf{r'}\right) w\left(\mathbf{r}+\boldsymbol{\tau}-\mathbf{r'}\right) d\mathbf{r'} \right] \\
 	&= T_s \varsigma \mathbf{E}\left[  \int_{\Omega}\hat{y}\left(\mathbf{r}\right)\hat{y}\left(\mathbf{r'}+\mathbf{r}\right) w\left(\boldsymbol{\tau}-\mathbf{r'}\right) d\mathbf{r'} \right] \\
 	&= T_s \varsigma   \int_{\Omega}\mathbf{E}\left[\hat{y}\left(\mathbf{r}\right)\hat{y}\left(\mathbf{r'}+\mathbf{r}\right) \right] w\left(\boldsymbol{\tau}-\mathbf{r}'\right) d\mathbf{r'} \nonumber \\
-	&=T_s \varsigma  \int_{\Omega} R_1(\mathbf{r'}) w\left(\boldsymbol{\tau}-\mathbf{r}'\right) d\mathbf{r'} \nonumber \\
-	&=T_s \varsigma \left(R_1 \ast w\right)\left(\boldsymbol{\tau}\right)\\
+	&= \frac{T_s \varsigma}{\xi} \int_{\Omega} R_1(\mathbf{r'}) w\left(\boldsymbol{\tau}-\mathbf{r}'\right) d\mathbf{r'} \nonumber \\
+	&= \frac{T_s \varsigma}{\xi} \left(R_1 \ast w\right)\left(\boldsymbol{\tau}\right)\\
 \end{align}
-This can be simplified to
-\begin{align}
-	R_2(\boldsymbol{\tau}) &\approx T_s \varsigma \left( R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \sigma_{\varepsilon}^2 \delta_K\left(\boldsymbol{\tau}\right) \right) \ast w\left(\boldsymbol{\tau}\right) \\
-	&= \frac{T_s \varsigma}{\xi} R_1(\boldsymbol{\tau}) \ast w\left(\boldsymbol{\tau}\right)
-\end{align}
+% This can be simplified to
+% \begin{align}
+% 	R_2(\boldsymbol{\tau}) &\approx T_s \varsigma \left( R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \sigma_{\varepsilon}^2 \delta_K\left(\boldsymbol{\tau}\right) \right) \ast w\left(\boldsymbol{\tau}\right) \\
+% 	&= \frac{T_s \varsigma}{\xi} R_1(\boldsymbol{\tau}) \ast w\left(\boldsymbol{\tau}\right)
+% \end{align}
 The last term on the right hand side of equation~\ref{eq:spatialxcorr} is
 \begin{equation}
 	R_3(\boldsymbol{\tau}) = 0,
