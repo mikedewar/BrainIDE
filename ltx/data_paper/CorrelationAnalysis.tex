@@ -87,7 +87,7 @@ The last term on the right hand side of equation~\ref{eq:spatialxcorr} is
 \end{equation}
 since the disturbance added to the field at time $t$ and assumed to be uncorrelated to the field at time $t$. Therefore 
 \begin{equation}
-	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) - R_1(\boldsymbol{\tau}) \approx \frac{T_s \varsigma}{\xi} R_1(\boldsymbol{\tau}) \ast w\left(\boldsymbol{\tau}\right).
+	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) - R_1(\boldsymbol{\tau}) \approx \frac{T_s \varsigma}{\xi} \left(R_1 \ast w\right)\left(\boldsymbol{\tau}\right).
 \end{equation}
 Now, by taking the Fourier transform we get
 \begin{equation}
@@ -192,35 +192,35 @@ Now substituting back in equation~\ref{eq:R1}, we can write
 % \end{equation}
  This equation states that the support of the kernel can be estimated given knowledge of $\sigma_\varepsilon^2$. Furthermore, is we assume a local coupling (at $\boldsymbol\tau=0$) regime, either excitation or inhibition, than we don't even need to know $\sigma_\varepsilon^2$. The peak in the kernel at $\mathbf{r}=0$ will be bigger or smaller if we guess incorrectly and the kernel parameters can do the rest! 
 
-\newpage
-\section*{Observation Autocorrelation}\label{sec:ObservAutocor} 
-\begin{align}
-	R_{y_{t},y_{t}}(\boldsymbol{\tau}) &= \mathbf{E}\left[y_{t}\left(\mathbf{r}+\boldsymbol{\tau}\right)y_{t}\left(\mathbf{r}\right)\right] \nonumber\\
-	&= \mathbf{E}\left[\left(\int_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} + \boldsymbol{\varepsilon}_t\left(\mathbf{r}+\boldsymbol{\tau}\right)\right) \left(\int_{\Omega}{ m\left(\mathbf{r} - \mathbf{r}''\right) v_{t}\left(\mathbf{r}''\right) \, d\mathbf{r}''} + \boldsymbol{\varepsilon}_{t}\left(\mathbf{r}\right)\right) \right]\nonumber \\
-	&=\mathbf{E}\left[\int_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} \int_{\Omega}{ m\left(\mathbf{r} - \mathbf{r}''\right) v_{t}\left(\mathbf{r}''\right) \, d\mathbf{r}''}\right]+\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\nonumber\\
-	&=\iint_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) m\left(\mathbf{r} - \mathbf{r}''\right) \mathbf{E}\left[v_t\left(\mathbf{r}'\right) v_{t}\left(\mathbf{r}''\right)\right]\, d\mathbf{r}'}{ \, d\mathbf{r}''}+\sigma_{\epsilon}^2\delta(\boldsymbol\tau) \nonumber\\
-	&=\sigma_d\iint_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) m\left(\mathbf{r} - \mathbf{r}''\right)\gamma(\mathbf{r}'-\mathbf{r}'') \, d\mathbf{r}'}{ \, d\mathbf{r}''}+\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\nonumber \\
-	&=\sigma_d\int_{\Omega} m\left(\mathbf r  + \boldsymbol\tau - \mathbf r'\right) \left[\int_{\Omega} m\left(\mathbf r - \mathbf r''\right)\gamma(\mathbf r'-\mathbf r'') \, d\mathbf r'' \right]  d\mathbf r'+\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\label{eq:ObsCorr1}
-\end{align}
-the term in the bracket can be written
-\begin{align}
- \int_{\Omega} m\left(\mathbf r - \mathbf r''\right)\gamma(\mathbf r'-\mathbf r'') \, d\mathbf r''&=\int_{\Omega} m\left(\mathbf r'' - \mathbf r\right)\gamma(\mathbf r'-\mathbf r'') \, d\mathbf r'' \nonumber \\
-&=\int_{\Omega} m\left(\mathbf s\right)\gamma(\mathbf r'-\mathbf r-\mathbf s) \, d\mathbf s\nonumber \\
-&=\left(m\ast\gamma\right)(\mathbf r'-\mathbf r)\label{eq:ObsCorr1term1}
-\end{align}
-where $\mathbf s=\mathbf r''-\mathbf r$ and therefore $d\mathbf r''=d\mathbf s$. Note that  $m\left(\mathbf{r}-\mathbf{r''}\right)=m\left(\mathbf{r''}-\mathbf{r}\right)$ due to the  symmetry of the observation kernel.
-substituting \eqref{eq:ObsCorr1term1} in \eqref{eq:ObsCorr1} we have
-
-\begin{align}
-&\sigma_d\int_{\Omega} m\left(\mathbf r  + \boldsymbol\tau - \mathbf r'\right) \left[\int_{\Omega} m\left(\mathbf r - \mathbf r''\right)\gamma(\mathbf r'-\mathbf r'') \, d\mathbf r'' \right]  d\mathbf r'+\sigma_{\epsilon}^2\delta(\boldsymbol\tau) \nonumber \\
-&=\sigma_d\int_{\Omega} m\left(\mathbf r  + \boldsymbol\tau - \mathbf r'\right) \left(m\ast\gamma\right)(\mathbf r'-\mathbf r) \ d\mathbf r'+\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\\
-&=\sigma_d\int_{\Omega} m\left(\boldsymbol\tau - \mathbf u\right) \left(m\ast\gamma\right)(\mathbf u) \ d\mathbf u+\sigma_{\epsilon}^2\delta(\boldsymbol\tau) \nonumber \\
-&=\sigma_d\left(m \ast m \ast \gamma\right)\left(\boldsymbol{\tau}\right)+\sigma_{\epsilon}^2\delta(\boldsymbol\tau)
-\end{align}
-Therefore we have
-\begin{align}
-	R_{y_{t},y_{t}}(\boldsymbol{\tau}) &= \sigma_d\left(m \ast m \ast \gamma\right)\left(\boldsymbol{\tau}\right)+\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\label{eq:ObservationAutocorrelation}
-\end{align}
+% \newpage
+% \section*{Observation Autocorrelation}\label{sec:ObservAutocor} 
+% \begin{align}
+% 	R_{y_{t},y_{t}}(\boldsymbol{\tau}) &= \mathbf{E}\left[y_{t}\left(\mathbf{r}+\boldsymbol{\tau}\right)y_{t}\left(\mathbf{r}\right)\right] \nonumber\\
+% 	&= \mathbf{E}\left[\left(\int_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} + \boldsymbol{\varepsilon}_t\left(\mathbf{r}+\boldsymbol{\tau}\right)\right) \left(\int_{\Omega}{ m\left(\mathbf{r} - \mathbf{r}''\right) v_{t}\left(\mathbf{r}''\right) \, d\mathbf{r}''} + \boldsymbol{\varepsilon}_{t}\left(\mathbf{r}\right)\right) \right]\nonumber \\
+% 	&=\mathbf{E}\left[\int_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} \int_{\Omega}{ m\left(\mathbf{r} - \mathbf{r}''\right) v_{t}\left(\mathbf{r}''\right) \, d\mathbf{r}''}\right]+\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\nonumber\\
+% 	&=\iint_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) m\left(\mathbf{r} - \mathbf{r}''\right) \mathbf{E}\left[v_t\left(\mathbf{r}'\right) v_{t}\left(\mathbf{r}''\right)\right]\, d\mathbf{r}'}{ \, d\mathbf{r}''}+\sigma_{\epsilon}^2\delta(\boldsymbol\tau) \nonumber\\
+% 	&=\sigma_d\iint_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) m\left(\mathbf{r} - \mathbf{r}''\right)\gamma(\mathbf{r}'-\mathbf{r}'') \, d\mathbf{r}'}{ \, d\mathbf{r}''}+\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\nonumber \\
+% 	&=\sigma_d\int_{\Omega} m\left(\mathbf r  + \boldsymbol\tau - \mathbf r'\right) \left[\int_{\Omega} m\left(\mathbf r - \mathbf r''\right)\gamma(\mathbf r'-\mathbf r'') \, d\mathbf r'' \right]  d\mathbf r'+\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\label{eq:ObsCorr1}
+% \end{align}
+% the term in the bracket can be written
+% \begin{align}
+%  \int_{\Omega} m\left(\mathbf r - \mathbf r''\right)\gamma(\mathbf r'-\mathbf r'') \, d\mathbf r''&=\int_{\Omega} m\left(\mathbf r'' - \mathbf r\right)\gamma(\mathbf r'-\mathbf r'') \, d\mathbf r'' \nonumber \\
+% &=\int_{\Omega} m\left(\mathbf s\right)\gamma(\mathbf r'-\mathbf r-\mathbf s) \, d\mathbf s\nonumber \\
+% &=\left(m\ast\gamma\right)(\mathbf r'-\mathbf r)\label{eq:ObsCorr1term1}
+% \end{align}
+% where $\mathbf s=\mathbf r''-\mathbf r$ and therefore $d\mathbf r''=d\mathbf s$. Note that  $m\left(\mathbf{r}-\mathbf{r''}\right)=m\left(\mathbf{r''}-\mathbf{r}\right)$ due to the  symmetry of the observation kernel.
+% substituting \eqref{eq:ObsCorr1term1} in \eqref{eq:ObsCorr1} we have
+% 
+% \begin{align}
+% &\sigma_d\int_{\Omega} m\left(\mathbf r  + \boldsymbol\tau - \mathbf r'\right) \left[\int_{\Omega} m\left(\mathbf r - \mathbf r''\right)\gamma(\mathbf r'-\mathbf r'') \, d\mathbf r'' \right]  d\mathbf r'+\sigma_{\epsilon}^2\delta(\boldsymbol\tau) \nonumber \\
+% &=\sigma_d\int_{\Omega} m\left(\mathbf r  + \boldsymbol\tau - \mathbf r'\right) \left(m\ast\gamma\right)(\mathbf r'-\mathbf r) \ d\mathbf r'+\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\\
+% &=\sigma_d\int_{\Omega} m\left(\boldsymbol\tau - \mathbf u\right) \left(m\ast\gamma\right)(\mathbf u) \ d\mathbf u+\sigma_{\epsilon}^2\delta(\boldsymbol\tau) \nonumber \\
+% &=\sigma_d\left(m \ast m \ast \gamma\right)\left(\boldsymbol{\tau}\right)+\sigma_{\epsilon}^2\delta(\boldsymbol\tau)
+% \end{align}
+% Therefore we have
+% \begin{align}
+% 	R_{y_{t},y_{t}}(\boldsymbol{\tau}) &= \sigma_d\left(m \ast m \ast \gamma\right)\left(\boldsymbol{\tau}\right)+\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\label{eq:ObservationAutocorrelation}
+% \end{align}
 % \section*{Observation Crosscorrelation}\label{sec:ObservCroocor} 
 % \begin{align}
 % 	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &= \mathbf{E}\left[y_{t}\left(\mathbf{r}+\boldsymbol{\tau}\right)y_{t+1}\left(\mathbf{r}\right)\right] \nonumber\\
@@ -287,61 +287,61 @@ Therefore we have
 % \begin{align}
 % 	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &= R_{y_{t},y_{t}}(\boldsymbol{\tau})-\sigma_{\epsilon}^2\delta(\boldsymbol\tau)+T_s\varsigma\left(m\ast m\ast w\ast\gamma\right)\left(\boldsymbol\tau\right)
 % \end{align}
-\newpage
-\section*{Observation Crosscorrelation}\label{sec:ObservCroocor} 
-\begin{align}
-	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &= \mathbf{E}\left[y_{t}\left(\mathbf{r}+\boldsymbol{\tau}\right)y_{t+1}\left(\mathbf{r}\right)\right] \nonumber\\
-	&= \mathbf{E}\left[\left(\int_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} + \boldsymbol{\varepsilon}_t\left(\mathbf{r}+\boldsymbol{\tau}\right)\right) \left(\int_{\Omega}{ m\left(\mathbf{r} - \mathbf{r}''\right) v_{t+1}\left(\mathbf{r}''\right) \, d\mathbf{r}''} + \boldsymbol{\varepsilon}_{t+1}\left(\mathbf{r}\right)\right) \right]\label{eq:ObsCrossCorr1}
-\end{align}
-we have
-\begin{equation}\label{vt+1}
- v_{t+1}\left(\mathbf{r}''\right)=\xi v_{t}\left(\mathbf{r}''\right)+T_s\int_{\Omega}w\left(\mathbf r'',\mathbf r'''\right)f\left(v_t\left(\mathbf r'''\right)\right)d\mathbf r'''
-\end{equation}
-substituting \eqref{vt+1} in \eqref{eq:ObsCrossCorr2} we get
-\begin{align}
-	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) 
-	&= \mathbf{E}\left[\left(\int_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} + \boldsymbol{\varepsilon}_t\left(\mathbf{r}+\boldsymbol{\tau}\right)\right) \right. \nonumber \\
- \times& \left. \left(\int_{\Omega}{ m\left(\mathbf{r} - \mathbf{r}''\right) v_{t+1}\left(\mathbf{r}''\right)\left[ \xi v_{t}\left(\mathbf{r}''\right)+T_s\int_{\Omega}w\left(\mathbf r'',\mathbf r'''\right)f\left(v_t\left(\mathbf r'''\right)\right)d\mathbf r'''\right]  \, d\mathbf{r}''} + \boldsymbol{\varepsilon}_{t+1}\left(\mathbf{r}\right)\right) \right]\nonumber\\
-&=\xi \ \mathbf  E \left[\int_{\Omega} m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right) v_t\left(\mathbf r'\right) d\mathbf r'\int_{\Omega}m\left(\mathbf r- \mathbf r''\right) v_t\left(\mathbf r''\right)d\mathbf r''\right]\nonumber\\
-+&\mathbf E \left[\int_{\Omega} m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right) v_t\left(\mathbf r'\right) d\mathbf r'\int_{\Omega} m(\mathbf r-\mathbf r'')T_s\int_{\Omega}w(\mathbf r'' -\mathbf r''')\varsigma v_t(\mathbf r''')d\mathbf r''' d\mathbf r''\right]\label{eq:ObsCrossCorr2}
-\end{align}
-from observation autocorrolation the first term of equation \eqref{eq:ObsCrossCorr2} is 
-\begin{equation}
-\xi \ \mathbf E \left[\int_{\Omega} m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right) v_t\left(\mathbf r'\right) d\mathbf r'\int_{\Omega}m\left(\mathbf r- \mathbf r''\right) v_t\left(\mathbf r''\right)d\mathbf r''\right]=\xi \left[ R_{y_{t},y_{t}}(\boldsymbol{\tau}) -\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\right] 
-\end{equation}
-for the second term of \eqref{eq:ObsCrossCorr2} we have
-\begin{align}
- &\mathbf E \left[\int_{\Omega} m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right) v_t\left(\mathbf r'\right) d\mathbf r'\int_{\Omega} m(\mathbf r-\mathbf r'')T_s\int_{\Omega}w(\mathbf r'' -\mathbf r''')\varsigma v_t(\mathbf r''')d\mathbf r''' d\mathbf r''\right ] \nonumber\\ 
-&= T_s \varsigma \mathbf E \left[\iiint_{\Omega} m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right)m(\mathbf r-\mathbf r'')  w(\mathbf r'' -\mathbf r''') v_t\left(\mathbf r'\right) v_t(\mathbf r''')d\mathbf r' d\mathbf r'' d\mathbf r''' \right] \nonumber \\
- &= T_s \varsigma\iiint_{\Omega} m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right)m(\mathbf r-\mathbf r'')  w(\mathbf r'' -\mathbf r''')  \mathbf E \left[v_t\left(\mathbf r'\right) v_t(\mathbf r''')\right] d\mathbf r' d\mathbf r'' d\mathbf r''' \nonumber \\
-&= \sigma_dT_s \varsigma\iiint_{\Omega} m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right)m(\mathbf r-\mathbf r'')  w(\mathbf r'' -\mathbf r''')  \mathbf \gamma(\mathbf r'-\mathbf r''') d\mathbf r' d\mathbf r'' d\mathbf r''' \nonumber \\
- &= \sigma_dT_s \varsigma\int_{\Omega} \left[ \int_{\Omega}m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right)\gamma(\mathbf r'-\mathbf r''')d\mathbf r'\right] \left[\int_{\Omega}m(\mathbf r-\mathbf r'')  w(\mathbf r'' -\mathbf r''')  \mathbf   d\mathbf r''\right] d\mathbf r''' \nonumber \\ 
- &= \sigma_d T_s \varsigma\int_{\Omega}(m \ast \gamma)(\mathbf r+\boldsymbol\tau-\mathbf r''')(m \ast w)(\mathbf r-\mathbf r''') d\mathbf r''' \nonumber \\ 
-&= \sigma_dT_s\varsigma\left(m\ast m\ast w\ast\gamma\right)\left(\boldsymbol\tau\right)                                                                                                                                                                                                                                                             \end{align}
- we have assumed here that the connectivity kernel is isotropic. the relation between $R_{y_{t},y_{t+1}}(\boldsymbol{\tau})$ and $R_{y_{t},y_{t}}(\boldsymbol{\tau})$ becomes
- \begin{align}
- 	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &= \xi \left[ R_{y_{t},y_{t}}(\boldsymbol{\tau})-\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\right]+\sigma_d T_s\varsigma\left(m\ast m\ast w\ast\gamma\right)\left(\boldsymbol\tau\right)\label{eq:XcorCorRelation}
- \end{align}
-from \eqref{eq:ObservationAutocorrelation} we have
-\begin{align}
-	\frac{1}{\sigma_d}\left[R_{y_{t},y_{t}}(\boldsymbol{\tau})-\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\right] &=\left(m \ast m \ast \gamma\right)\left(\boldsymbol{\tau}\right)\label{eq:correarranged}
-\end{align}
-from \eqref{eq:XcorCorRelation} and \eqref{eq:correarranged} we can write
-\begin{align}
- 	\frac{1}{T_s\varsigma}\left[R_{y_{t},y_{t+1}}(\boldsymbol{\tau})- \xi \left[ R_{y_{t},y_{t}}(\boldsymbol{\tau})-\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\right]\right]&= \left[R_{y_{t},y_{t}}(\boldsymbol{\tau})-\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\right]\ast w\left(\boldsymbol\tau\right)
- \end{align}
-taking Fourier transform we have
-\begin{align}
- 	\frac{1}{T_s\varsigma}\left[S_{y_{t},y_{t+1}}(\boldsymbol{\nu})- \xi \left[ S_{y_{t},y_{t}}(\boldsymbol{\nu})-\sigma_{\epsilon}^2\right]\right]&= \left[S_{y_{t},y_{t}}(\boldsymbol{\nu})-\sigma_{\epsilon}^2\right] W\left(\boldsymbol\nu\right)
- \end{align}
-rearranging we get
-\begin{align}
- 	W\left(\boldsymbol\nu\right)&=\frac{1}{T_s\varsigma}\left[\frac{S_{y_{t},y_{t+1}}(\boldsymbol{\nu})}{S_{y_{t},y_{t}}(\boldsymbol{\nu})-\sigma_{\epsilon}^2}- \xi \right]
- \end{align}
-taking Fourier transform from  \eqref{eq:ObservationAutocorrelation} we also have
-\begin{align}
- \Gamma(\boldsymbol\nu)=\frac{S_{y_t,y_t}(\boldsymbol\nu)-\sigma_{\epsilon}^2 } {\sigma_d M  M}
-\end{align}
+% \newpage
+% \section*{Observation Crosscorrelation}\label{sec:ObservCroocor} 
+% \begin{align}
+% 	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &= \mathbf{E}\left[y_{t}\left(\mathbf{r}+\boldsymbol{\tau}\right)y_{t+1}\left(\mathbf{r}\right)\right] \nonumber\\
+% 	&= \mathbf{E}\left[\left(\int_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} + \boldsymbol{\varepsilon}_t\left(\mathbf{r}+\boldsymbol{\tau}\right)\right) \left(\int_{\Omega}{ m\left(\mathbf{r} - \mathbf{r}''\right) v_{t+1}\left(\mathbf{r}''\right) \, d\mathbf{r}''} + \boldsymbol{\varepsilon}_{t+1}\left(\mathbf{r}\right)\right) \right]\label{eq:ObsCrossCorr1}
+% \end{align}
+% we have
+% \begin{equation}\label{vt+1}
+%  v_{t+1}\left(\mathbf{r}''\right)=\xi v_{t}\left(\mathbf{r}''\right)+T_s\int_{\Omega}w\left(\mathbf r'',\mathbf r'''\right)f\left(v_t\left(\mathbf r'''\right)\right)d\mathbf r'''
+% \end{equation}
+% substituting \eqref{vt+1} in \eqref{eq:ObsCrossCorr2} we get
+% \begin{align}
+% 	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) 
+% 	&= \mathbf{E}\left[\left(\int_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} + \boldsymbol{\varepsilon}_t\left(\mathbf{r}+\boldsymbol{\tau}\right)\right) \right. \nonumber \\
+%  \times& \left. \left(\int_{\Omega}{ m\left(\mathbf{r} - \mathbf{r}''\right) v_{t+1}\left(\mathbf{r}''\right)\left[ \xi v_{t}\left(\mathbf{r}''\right)+T_s\int_{\Omega}w\left(\mathbf r'',\mathbf r'''\right)f\left(v_t\left(\mathbf r'''\right)\right)d\mathbf r'''\right]  \, d\mathbf{r}''} + \boldsymbol{\varepsilon}_{t+1}\left(\mathbf{r}\right)\right) \right]\nonumber\\
+% &=\xi \ \mathbf  E \left[\int_{\Omega} m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right) v_t\left(\mathbf r'\right) d\mathbf r'\int_{\Omega}m\left(\mathbf r- \mathbf r''\right) v_t\left(\mathbf r''\right)d\mathbf r''\right]\nonumber\\
+% +&\mathbf E \left[\int_{\Omega} m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right) v_t\left(\mathbf r'\right) d\mathbf r'\int_{\Omega} m(\mathbf r-\mathbf r'')T_s\int_{\Omega}w(\mathbf r'' -\mathbf r''')\varsigma v_t(\mathbf r''')d\mathbf r''' d\mathbf r''\right]\label{eq:ObsCrossCorr2}
+% \end{align}
+% from observation autocorrolation the first term of equation \eqref{eq:ObsCrossCorr2} is 
+% \begin{equation}
+% \xi \ \mathbf E \left[\int_{\Omega} m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right) v_t\left(\mathbf r'\right) d\mathbf r'\int_{\Omega}m\left(\mathbf r- \mathbf r''\right) v_t\left(\mathbf r''\right)d\mathbf r''\right]=\xi \left[ R_{y_{t},y_{t}}(\boldsymbol{\tau}) -\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\right] 
+% \end{equation}
+% for the second term of \eqref{eq:ObsCrossCorr2} we have
+% \begin{align}
+%  &\mathbf E \left[\int_{\Omega} m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right) v_t\left(\mathbf r'\right) d\mathbf r'\int_{\Omega} m(\mathbf r-\mathbf r'')T_s\int_{\Omega}w(\mathbf r'' -\mathbf r''')\varsigma v_t(\mathbf r''')d\mathbf r''' d\mathbf r''\right ] \nonumber\\ 
+% &= T_s \varsigma \mathbf E \left[\iiint_{\Omega} m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right)m(\mathbf r-\mathbf r'')  w(\mathbf r'' -\mathbf r''') v_t\left(\mathbf r'\right) v_t(\mathbf r''')d\mathbf r' d\mathbf r'' d\mathbf r''' \right] \nonumber \\
+%  &= T_s \varsigma\iiint_{\Omega} m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right)m(\mathbf r-\mathbf r'')  w(\mathbf r'' -\mathbf r''')  \mathbf E \left[v_t\left(\mathbf r'\right) v_t(\mathbf r''')\right] d\mathbf r' d\mathbf r'' d\mathbf r''' \nonumber \\
+% &= \sigma_dT_s \varsigma\iiint_{\Omega} m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right)m(\mathbf r-\mathbf r'')  w(\mathbf r'' -\mathbf r''')  \mathbf \gamma(\mathbf r'-\mathbf r''') d\mathbf r' d\mathbf r'' d\mathbf r''' \nonumber \\
+%  &= \sigma_dT_s \varsigma\int_{\Omega} \left[ \int_{\Omega}m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right)\gamma(\mathbf r'-\mathbf r''')d\mathbf r'\right] \left[\int_{\Omega}m(\mathbf r-\mathbf r'')  w(\mathbf r'' -\mathbf r''')  \mathbf   d\mathbf r''\right] d\mathbf r''' \nonumber \\ 
+%  &= \sigma_d T_s \varsigma\int_{\Omega}(m \ast \gamma)(\mathbf r+\boldsymbol\tau-\mathbf r''')(m \ast w)(\mathbf r-\mathbf r''') d\mathbf r''' \nonumber \\ 
+% &= \sigma_dT_s\varsigma\left(m\ast m\ast w\ast\gamma\right)\left(\boldsymbol\tau\right)                                                                                                                                                                                                                                                             \end{align}
+%  we have assumed here that the connectivity kernel is isotropic. the relation between $R_{y_{t},y_{t+1}}(\boldsymbol{\tau})$ and $R_{y_{t},y_{t}}(\boldsymbol{\tau})$ becomes
+%  \begin{align}
+%  	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &= \xi \left[ R_{y_{t},y_{t}}(\boldsymbol{\tau})-\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\right]+\sigma_d T_s\varsigma\left(m\ast m\ast w\ast\gamma\right)\left(\boldsymbol\tau\right)\label{eq:XcorCorRelation}
+%  \end{align}
+% from \eqref{eq:ObservationAutocorrelation} we have
+% \begin{align}
+% 	\frac{1}{\sigma_d}\left[R_{y_{t},y_{t}}(\boldsymbol{\tau})-\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\right] &=\left(m \ast m \ast \gamma\right)\left(\boldsymbol{\tau}\right)\label{eq:correarranged}
+% \end{align}
+% from \eqref{eq:XcorCorRelation} and \eqref{eq:correarranged} we can write
+% \begin{align}
+%  	\frac{1}{T_s\varsigma}\left[R_{y_{t},y_{t+1}}(\boldsymbol{\tau})- \xi \left[ R_{y_{t},y_{t}}(\boldsymbol{\tau})-\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\right]\right]&= \left[R_{y_{t},y_{t}}(\boldsymbol{\tau})-\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\right]\ast w\left(\boldsymbol\tau\right)
+%  \end{align}
+% taking Fourier transform we have
+% \begin{align}
+%  	\frac{1}{T_s\varsigma}\left[S_{y_{t},y_{t+1}}(\boldsymbol{\nu})- \xi \left[ S_{y_{t},y_{t}}(\boldsymbol{\nu})-\sigma_{\epsilon}^2\right]\right]&= \left[S_{y_{t},y_{t}}(\boldsymbol{\nu})-\sigma_{\epsilon}^2\right] W\left(\boldsymbol\nu\right)
+%  \end{align}
+% rearranging we get
+% \begin{align}
+%  	W\left(\boldsymbol\nu\right)&=\frac{1}{T_s\varsigma}\left[\frac{S_{y_{t},y_{t+1}}(\boldsymbol{\nu})}{S_{y_{t},y_{t}}(\boldsymbol{\nu})-\sigma_{\epsilon}^2}- \xi \right]
+%  \end{align}
+% taking Fourier transform from  \eqref{eq:ObservationAutocorrelation} we also have
+% \begin{align}
+%  \Gamma(\boldsymbol\nu)=\frac{S_{y_t,y_t}(\boldsymbol\nu)-\sigma_{\epsilon}^2 } {\sigma_d M  M}
+% \end{align}
 \newpage
 \begin{figure}[!ht]
 \begin{center}
