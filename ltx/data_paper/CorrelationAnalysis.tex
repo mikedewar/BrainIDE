@@ -115,6 +115,37 @@ Now substituting back in equation~\ref{eq:R1}, we can write
 \caption{{\bf Estimation of Connectivity Kernel Support}. The kernel values are normalised. True  and estimated kernels are shown with solid and dotted lines respectively.}
 \label{fig:KernelWidth}
 \end{figure}
+\newpage
+\subsection*{Estimation of Disturbance Support}
+\begin{align}
+	R_{y_{t+1},y_{t+1}}(\boldsymbol{\tau}) &= \mathbf{E}\left[ y_{t+1}\left(\mathbf{r}\right) y_{t+1}\left(\mathbf{r}+\boldsymbol{\tau}\right) \right] \nonumber \\
+	&= \mathbf{E}\left[\left(z_{t+1}\left(\mathbf r\right)  + \boldsymbol{\varepsilon}_{t+1}\left(\mathbf{r}\right) \right) \times \left(z_{t+1}\left(\mathbf{r}+\boldsymbol{\tau}\right)+ \boldsymbol{\varepsilon}_{t+1}\left(\mathbf{r}+\boldsymbol{\tau}\right)\right) \right] \nonumber \\
+ &= \mathbf{E}\left[z_{t+1}\left(\mathbf r\right)  \times z_{t+1}\left(\mathbf{r}+\boldsymbol{\tau}\right) \right]+\sigma_{\epsilon}\delta_{K}\left(\boldsymbol\tau\right),\label{eq:ObsXCorrtplusone}
+\end{align}
+where
+\begin{align}
+z_{t+1}\left(\mathbf r\right)&=\left(m\ast v_{t+1}\right)\left(\mathbf{r}\right) \nonumber \\
+&=\xi z_{t}\left(\mathbf r\right)+T_s\varsigma\left(z_t \ast w\right)\left(\mathbf r\right)+\left(m\ast e_t\right)\left(\mathbf r\right)\label{eq:zvariable}
+\end{align}
+substituting in equation \ref{eq:ObsXCorrtplusone} for $z_{t+1}$ we have
+\begin{align}
+	R_{y_{t+1},y_{t+1}}(\boldsymbol{\tau}) &=  \xi^2\mathbf{E}\left[ z_t\left(\mathbf r\right)z_t\left(\mathbf r+\boldsymbol \tau\right)\right] \nonumber \\
+						&+\xi T_s\varsigma \ \mathbf{E}\left[z_t\left(\mathbf r\right)\left(z_t \ast w\right)\left(\mathbf r+\boldsymbol\tau\right)\right]\nonumber \\
+						&+\xi T_s\varsigma \ \mathbf{E}\left[\left(z_t \ast w\right)\left(\mathbf r\right)z_t\left(\mathbf r+\boldsymbol\tau\right)\right]\nonumber \\
+						&+T_s^2\varsigma^2 \ \mathbf{E}\left[\left(z_t \ast w\right)\left(\mathbf r\right)\left(z_t \ast w\right)\left(\mathbf r+\boldsymbol\tau\right)\right]\nonumber \\
+						&+\mathbf{E}\left[\left(m \ast e_t\right)\left(\mathbf r\right)\left(m \ast e_t\right)\left(\mathbf r+\boldsymbol\tau\right)\right]+\sigma_{\epsilon}\delta_{K}\left(\boldsymbol\tau\right)\label{eq:AutocorrExpansion}
+\end{align}
+Equation \ref{eq:AutocorrExpansion} can be written in terms of $R_1\left(\boldsymbol\tau\right)$ and $R_2\left(\boldsymbol\tau\right)$ as
+\begin{align}
+R_{y_{t+1},y_{t+1}}(\boldsymbol{\tau}) &=\xi \left(R_1\left(\boldsymbol\tau\right)+ R_2\left(\boldsymbol\tau\right)+R_2\left(\boldsymbol-\tau\right)\right) \nonumber \\
+&+\xi T_s \varsigma\left(w\ast R_2\right)\left(\boldsymbol\tau\right)+\left(m\ast m \ast \gamma\right)\left(\boldsymbol\tau\right)+\sigma_{\epsilon}\delta_{K}\left(\boldsymbol\tau\right)\label{eq:AutocorrIntermsofR}
+\end{align}
+Equation \ref{eq:AutocorrIntermsofR} is correct for all times, noting $R_{y_{t},y_{t+1}}(\boldsymbol{\tau})=R_1\left(\boldsymbol\tau\right)+ R_2\left(\boldsymbol\tau\right) $ therefore we cam wite
+\begin{align}
+R_{y_{t},y_{t}}(\boldsymbol{\tau}) &=\xi \left(R_{y_{t},y_{t+1}}(\boldsymbol{\tau})+R_2\left(\boldsymbol-\tau\right)\right) \nonumber \\
+&+\xi T_s \varsigma\left(w\ast R_2\right)\left(\boldsymbol\tau\right)+\left(m\ast m \ast \gamma\right)\left(\boldsymbol\tau\right)+\sigma_{\epsilon}\delta_{K}\left(\boldsymbol\tau\right)
+\end{align}
+
 % Putting to other two terms back together we can write
 % \begin{equation}
 % 	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) = \mathbf{E}\left[ m\left(\mathbf{r}\right) \ast v_t\left(\mathbf{r}\right) \times m\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast \left(\xi v_t\left(\mathbf{r}+\boldsymbol{\tau}\right) + T_s w\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast f\left(v_t\left(\mathbf{r}+\boldsymbol{\tau}\right)\right) \right) \right]
