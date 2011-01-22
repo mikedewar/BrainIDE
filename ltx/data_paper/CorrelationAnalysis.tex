@@ -107,7 +107,6 @@ Now substituting back in equation~\ref{eq:R1}, we can write
 
 
  This equation states that the support of the kernel can be estimated given knowledge of $\sigma_\varepsilon^2$. Furthermore, is we assume a local coupling (at $\boldsymbol\tau=0$) regime, either excitation or inhibition, than we don't even need to know $\sigma_\varepsilon^2$. The peak in the kernel at $\mathbf{r}=0$ will be bigger or smaller if we guess incorrectly and the kernel parameters can do the rest! 
-\newpage
 \begin{figure}[!ht]
 \begin{center}
 \includegraphics{./Figures/KernelWidthEstimation.pdf}
@@ -161,10 +160,16 @@ and
 and therefore equation \ref{eq:SensorsConvgamma} can be written as 
 \begin{align}
  \mathcal{F}\left\{\left(m\ast m\ast \gamma\right)\left(\boldsymbol\tau\right)\right\}&=S_{y_{t},y_{t}}\left(\boldsymbol\nu\right)-\xi S_{y_{t},y_{t+1}}\left(\boldsymbol\nu\right) \nonumber \\
-&-\xi S_{y_{t},y_{t+1}}\left(-\boldsymbol\nu\right)-\xi^2 \left(S_{y_{t},y_{t}}\left(-\boldsymbol\nu\right)-\sigma_{\epsilon}^2\right) \nonumber\\
+&-\xi S_{y_{t},y_{t+1}}\left(-\boldsymbol\nu\right)-\xi^2 \left(S_{y_{t},y_{t}}\left(\boldsymbol\nu\right)-\sigma_{\epsilon}^2\right) \nonumber\\
 &-\xi  \left[\frac{S_{y_{t},y_{t+1}}^2\left(\boldsymbol\nu\right)}{S_{y_{t},y_{t}}\left(\boldsymbol\nu\right)-\sigma_{\epsilon}^2}-2\xi S_{y_{t},y_{t+1}}\left(\boldsymbol\nu\right)+\xi^2\left(S_{y_{t},y_{t}}\left(\boldsymbol\nu\right)-\sigma_{\epsilon}^2\right)\right]-\sigma_{\epsilon}^2
 \end{align}
-
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics{./Figures/DisturbanceWidthEstimation.pdf}
+\end{center}
+\caption{{\bf Estimation of $\left(m\ast m \ast \gamma \right)\left(\boldsymbol \tau\right) $ width}. Values are normalised. True  and estimated values are shown with solid and dotted lines respectively.}
+\label{fig:DisturbanceWidth}
+\end{figure}
 
 % Putting to other two terms back together we can write
 % \begin{equation}
