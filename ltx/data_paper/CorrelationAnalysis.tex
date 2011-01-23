@@ -30,30 +30,34 @@
 The support of the connectivity kernel can be inferred using spatial correlation analysis. The method presented in this paper is based on a similar published method, where the kernel support was estimated using correlation analysis for a linear system described by an IDE~\cite{Scerri2009}. To demonstrate the method for the neural field model we assume the sensors are infinitesimally close (continuous observation). The spatial cross-correlation function between consecutive observations is defined as 
 \begin{align}
 	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &= \mathbf{E}\left[ y_{t}\left(\mathbf{r}\right) y_{t+1}\left(\mathbf{r}+\boldsymbol{\tau}\right) \right] \\
-	&= \mathbf{E}\left[\left(m\left(\mathbf{r}\right) \ast v_t\left(\mathbf{r}\right) + \boldsymbol{\varepsilon}_t\left(\mathbf{r}\right) \right) \times \left( m\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast v_{t+1}\left(\mathbf{r}+\boldsymbol{\tau}\right) + \boldsymbol{\varepsilon}_{t+1}\left(\mathbf{r}+\boldsymbol{\tau}\right)\right) \right], \label{eq:ObsXCorr}
+	&= \mathbf{E}\left[\left(\left(m\ast v_t\right)\left(\mathbf{r}\right) + \boldsymbol{\varepsilon}_t\left(\mathbf{r}\right) \right) \times \left(\left( m \ast v_{t+1}\right)\left(\mathbf{r}+\boldsymbol{\tau}\right)+ \boldsymbol{\varepsilon}_{t+1}\left(\mathbf{r}+\boldsymbol{\tau}\right)\right) \right], \label{eq:ObsXCorr}
 \end{align}
+
 where $\mathbf{E}[\cdot]$ is the expected value. Since the observation noise is zero mean, temporally white and independent of the field, equation~\ref{eq:ObsXCorr} reduces to
 \begin{equation}
-	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) = \mathbf{E}\left[ m\left(\mathbf{r}\right) \ast v_t\left(\mathbf{r}\right) \times m\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast v_{t+1}\left(\mathbf{r}+\boldsymbol{\tau}\right) \right].
+	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) = \mathbf{E}\left[ \left(m \ast v_t\right)\left(\mathbf{r}\right) \times \left(m \ast v_{t+1}\right)\left(\mathbf{r}+\boldsymbol{\tau}\right)\right].
 \end{equation}
 Substituting in equation~\ref{DiscreteTimeModel}  for $v_{t+1}\left(\mathbf{r}\right)$, the cross-correlation function is
 \begin{align}
-	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &= \mathbf{E}\left[ m\left(\mathbf{r}\right) \ast v_t\left(\mathbf{r}\right) \times m\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast \left( \xi v_t\left(\mathbf{r}+\boldsymbol{\tau}\right) + T_s w\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast f\left(v_t\left(\mathbf{r}+\boldsymbol{\tau}\right)\right) + e_t\left(\mathbf{r}+\boldsymbol{\tau}\right)\right) \right] \\	
-	 &= \xi \mathbf{E}\left[ m\left(\mathbf{r}\right) \ast v_t\left(\mathbf{r}\right) \times m\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast v_t\left(\mathbf{r}+\boldsymbol{\tau}\right) \right] \nonumber \\
-	&+ T_s\mathbf{E}\left[ m\left(\mathbf{r}\right) \ast v_t\left(\mathbf{r}\right) \times m\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast w\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast f\left(v_t\left(\mathbf{r}+\boldsymbol{\tau}\right)\right) \right] \nonumber \\
-	&+ \mathbf{E}\left[ m\left(\mathbf{r}\right) \ast v_t\left(\mathbf{r}\right) \times m\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast e_t\left(\mathbf{r}+\boldsymbol{\tau}\right) \right]
-	\\
+	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &= \mathbf{E}\left[ \left(m \ast v_t \right)\left(\mathbf{r}\right) \times m\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast \left( \xi v_t\left(\mathbf{r}+\boldsymbol{\tau}\right) + T_s w\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast f\left(v_t\left(\mathbf{r}+\boldsymbol{\tau}\right)\right) + e_t\left(\mathbf{r}+\boldsymbol{\tau}\right)\right) \right] \nonumber \\	
+	 &= \xi \mathbf{E}\left[ \left(m \ast v_t \right)\left(\mathbf{r}\right) \times \left(m \ast v_t\right)\left(\mathbf{r}+\boldsymbol{\tau}\right)\right] \nonumber \\
+	&+ T_s\mathbf{E}\left[\left(m \ast v_t \right)\left(\mathbf{r}\right) \times \left(m \ast w \right)\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast f\left(v_t\left(\mathbf{r}+\boldsymbol{\tau}\right)\right) \right] \nonumber \\
+	&+ \mathbf{E}\left[ \left(m \ast v_t \right)\left(\mathbf{r}\right)  \times \left(m \ast e_t\right)\left(\mathbf{r}+\boldsymbol{\tau}\right)\right] \nonumber \\
 	&= R_1(\boldsymbol{\tau}) + R_2(\boldsymbol{\tau}) + R_3(\boldsymbol{\tau}).\label{eq:spatialxcorr} 
+\end{align}
+For simplicity we use $z_{t}\left(\mathbf{r}\right)$ to denote noise free observations, i.e.,
+\begin{align}
+z_{t}\left(\mathbf r\right)&=\left(m\ast v_{t}\right)\left(\mathbf{r}\right). 
 \end{align}
 The first term, $R_1(\boldsymbol{\tau})$, can be simplified to
 \begin{align}
-	R_1(\boldsymbol{\tau}) &= \xi \mathbf{E}\left[ m\left(\mathbf{r}\right) \ast v_t\left(\mathbf{r}\right) \times m\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast v_t\left(\mathbf{r}+\boldsymbol{\tau}\right) \right] \\
+	R_1(\boldsymbol{\tau}) &= \xi \mathbf{E}\left[z_{t}\left(\mathbf r\right)  z_{t}\left(\mathbf{r}+\boldsymbol{\tau}\right) \right] \\
 	&= \xi\left( R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \sigma_{\varepsilon}^2\delta_K\left(\boldsymbol{\tau}\right) \right). \label{eq:R1}
 \end{align}
-The second term
-\begin{equation}
-	R_2(\boldsymbol{\tau}) = T_s\mathbf{E}\left[ m\left(\mathbf{r}\right) \ast v_t\left(\mathbf{r}\right) \times m\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast w\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast f\left(v_t\left(\mathbf{r}+\boldsymbol{\tau}\right)\right) \right]
-\end{equation}
+% The second term
+% \begin{equation}
+% 	R_2(\boldsymbol{\tau}) = T_s\mathbf{E}\left[ m\left(\mathbf{r}\right) \ast v_t\left(\mathbf{r}\right) \times m\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast w\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast f\left(v_t\left(\mathbf{r}+\boldsymbol{\tau}\right)\right) \right]
+% \end{equation}
 Now we assume that the sigmoid activation function, $f(\cdot)$, can be approximated by the piecewise function
 \begin{equation}
 	\hat{f}(v_t(\mathbf{r}')) = \left\{ \begin{array}{ll}
@@ -64,23 +68,17 @@ Now we assume that the sigmoid activation function, $f(\cdot)$, can be approxima
 \end{equation}
 Furthermore, we assume the field is in the linear region of the piecewise function for the majority of the time giving
 \begin{equation}
-	R_2(\boldsymbol{\tau}) \approx T_s\mathbf{E}\left[ m\left(\mathbf{r}\right) \ast v_t\left(\mathbf{r}\right) \times m\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast w\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast \varsigma v_t\left(\mathbf{r}+\boldsymbol{\tau}\right) \right].
+	R_2(\boldsymbol{\tau}) \approx T_s \varsigma \mathbf{E}\left[ z_{t}\left(\mathbf{r}\right)\times \left(z_{t} \ast w\right)\left(\mathbf{r}+\boldsymbol{\tau}\right)\right].
 \end{equation}
 $R_2(\boldsymbol{\tau})$ can be written as
 \begin{align}
-	R_2(\boldsymbol{\tau}) &\approx	T_s \varsigma \mathbf{E}\left[ \hat{y}_t\left(\mathbf{r}\right) \times \hat{y}_t\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast w\left(\mathbf{r}+\boldsymbol{\tau}\right)\right] \\
-	&= T_s \varsigma \mathbf{E}\left[ \hat{y}_t\left(\mathbf{r}\right)  \int_{\Omega}\hat{y}_t\left(\mathbf{r'}\right) w\left(\mathbf{r}+\boldsymbol{\tau}-\mathbf{r'}\right) d\mathbf{r'} \right] \\
-	&= T_s \varsigma \mathbf{E}\left[  \int_{\Omega}\hat{y}_t\left(\mathbf{r}\right)\hat{y}_t\left(\mathbf{r'}\right) w\left(\mathbf{r}+\boldsymbol{\tau}-\mathbf{r'}\right) d\mathbf{r'} \right] \\
-	&= T_s \varsigma \mathbf{E}\left[  \int_{\Omega}\hat{y}\left(\mathbf{r}\right)\hat{y}_t\left(\mathbf{r'}+\mathbf{r}\right) w\left(\boldsymbol{\tau}-\mathbf{r'}\right) d\mathbf{r'} \right] \\
-	&= T_s \varsigma   \int_{\Omega}\mathbf{E}\left[\hat{y}_t\left(\mathbf{r}\right)\hat{y}_t\left(\mathbf{r'}+\mathbf{r}\right) \right] w\left(\boldsymbol{\tau}-\mathbf{r}'\right) d\mathbf{r'} \nonumber \\
+	R_2(\boldsymbol{\tau}) &\approx T_s \varsigma \mathbf{E}\left[ z_{t}\left(\mathbf{r}\right)  \int_{\Omega}z_{t}\left(\mathbf{r'}\right) w\left(\mathbf{r}+\boldsymbol{\tau}-\mathbf{r'}\right) d\mathbf{r'} \right] \\
+	&= T_s \varsigma \mathbf{E}\left[  \int_{\Omega}z_{t}\left(\mathbf{r}\right)z_{t}\left(\mathbf{r'}\right) w\left(\mathbf{r}+\boldsymbol{\tau}-\mathbf{r'}\right) d\mathbf{r'} \right] \\
+	&= T_s \varsigma \mathbf{E}\left[  \int_{\Omega}z_{t}\left(\mathbf{r}\right)z_{t}\left(\mathbf{r}+\mathbf{r'}\right) w\left(\boldsymbol{\tau}-\mathbf{r'}\right) d\mathbf{r'} \right] \\
+	&= T_s \varsigma   \int_{\Omega}\mathbf{E}\left[z_{t}\left(\mathbf{r}\right)z_{t}\left(\mathbf{r}+\mathbf{r'}\right) \right] w\left(\boldsymbol{\tau}-\mathbf{r}'\right) d\mathbf{r'} \nonumber \\
 	&= \frac{T_s \varsigma}{\xi} \int_{\Omega} R_1(\mathbf{r'}) w\left(\boldsymbol{\tau}-\mathbf{r}'\right) d\mathbf{r'} \nonumber \\
 	&= \frac{T_s \varsigma}{\xi} \left(R_1 \ast w\right)\left(\boldsymbol{\tau}\right)\\
 \end{align}
-% This can be simplified to
-% \begin{align}
-% 	R_2(\boldsymbol{\tau}) &\approx T_s \varsigma \left( R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \sigma_{\varepsilon}^2 \delta_K\left(\boldsymbol{\tau}\right) \right) \ast w\left(\boldsymbol{\tau}\right) \\
-% 	&= \frac{T_s \varsigma}{\xi} R_1(\boldsymbol{\tau}) \ast w\left(\boldsymbol{\tau}\right)
-% \end{align}
 The last term on the right hand side of equation~\ref{eq:spatialxcorr} is
 \begin{equation}
 	R_3(\boldsymbol{\tau}) = 0,
@@ -106,7 +104,7 @@ Now substituting back in equation~\ref{eq:R1}, we can write
 \end{align}
 
 
- This equation states that the support of the kernel can be estimated given knowledge of $\sigma_\varepsilon^2$. Furthermore, is we assume a local coupling (at $\boldsymbol\tau=0$) regime, either excitation or inhibition, than we don't even need to know $\sigma_\varepsilon^2$. The peak in the kernel at $\mathbf{r}=0$ will be bigger or smaller if we guess incorrectly and the kernel parameters can do the rest! 
+ This equation states that the support of the kernel can be estimated given knowledge of $\sigma_\varepsilon^2$. Furthermore, if we assume a local coupling (at $\boldsymbol\tau=0$) regime, either excitation or inhibition, then we don't even need to know $\sigma_\varepsilon^2$. The peak in the kernel at $\mathbf{r}=0$ will be bigger or smaller if we guess incorrectly and the kernel parameters can do the rest! 
 \begin{figure}[!ht]
 \begin{center}
 \includegraphics{./Figures/KernelWidthEstimation.pdf}
@@ -170,93 +168,6 @@ and therefore equation \ref{eq:SensorsConvgamma} can be written as
 \caption{{\bf Estimation of $\left(m\ast m \ast \gamma \right)\left(\boldsymbol \tau\right) $ width}. Values are normalised. True  and estimated values are shown with solid and dotted lines respectively.}
 \label{fig:DisturbanceWidth}
 \end{figure}
-
-% Putting to other two terms back together we can write
-% \begin{equation}
-% 	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) = \mathbf{E}\left[ m\left(\mathbf{r}\right) \ast v_t\left(\mathbf{r}\right) \times m\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast \left(\xi v_t\left(\mathbf{r}+\boldsymbol{\tau}\right) + T_s w\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast f\left(v_t\left(\mathbf{r}+\boldsymbol{\tau}\right)\right) \right) \right]
-% \end{equation}
-% Now we assume that the sigmoid activation function, $f(\cdot)$, can be approximated by the piecewise function
-% \begin{equation}
-% 	\hat{f}(v_t(\mathbf{r}')) = \left\{ \begin{array}{ll}
-% 		0, & v_t(\mathbf{r}') \le v_1 \\
-% 		\varsigma v_t(\mathbf{r}'), &  v_1 < v_t(\mathbf{r}') < v_2 \\
-% 		1, & v_t(\mathbf{r}') \ge v_2 \\ 
-% 		\end{array}\right.
-% \end{equation}
-% Furthermore, we assume the field is in the linear region of the piecewise function for the majority of the time. 
-% \begin{equation}
-% 	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) \approx \mathbf{E}\left[ m\left(\mathbf{r}\right) \ast v_t\left(\mathbf{r}\right) \times m\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast \left(\xi v_t\left(\mathbf{r}+\boldsymbol{\tau}\right) + T_s w\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast \varsigma v_t\left(\mathbf{r}+\boldsymbol{\tau}\right) \right) \right]
-% \end{equation}
-% Now we take the Fourier transform of the terms inside the expectation giving
-% \begin{align}
-% 	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &\approx \mathbf{E}\left[\mathcal{F}^{-1} \left\{M(\boldsymbol{\nu})V(\boldsymbol{\nu}) \ast \left(\xi e^{i\boldsymbol{\nu}^{\top}\boldsymbol{\tau}} M(\boldsymbol{\nu}) e^{i\boldsymbol{\nu}^{\top}\boldsymbol{\tau}} V(\boldsymbol{\nu}) + T_s e^{i\boldsymbol{\nu}^{\top}\boldsymbol{\tau}} M(\boldsymbol{\nu}) e^{i\boldsymbol{\nu}^{\top}\boldsymbol{\tau}} W(\boldsymbol{\nu}) e^{i\boldsymbol{\nu}^{\top}\boldsymbol{\tau}} \varsigma V(\boldsymbol{\nu}) \right) \right\} \right] \\
-% 	&= \mathbf{E}\left[\mathcal{F}^{-1} \left\{M(\boldsymbol{\nu}) V(\boldsymbol{\nu}) \ast \left(\xi e^{2i\boldsymbol{\nu}^{\top}\boldsymbol{\tau}} M(\boldsymbol{\nu}) V(\boldsymbol{\nu}) + T_s \varsigma e^{2i\boldsymbol{\nu}^{\top}\boldsymbol{\tau}} M(\boldsymbol{\nu})  V(\boldsymbol{\nu}) e^{i\boldsymbol{\nu}^{\top}\boldsymbol{\tau}} W(\boldsymbol{\nu}) \right) \right\} \right]
-% \end{align}
-% Expand brackets
-% \begin{equation}
-% 	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) \approx \mathbf{E}\left[\mathcal{F}^{-1} \left\{M(\boldsymbol{\nu}) V(\boldsymbol{\nu}) \ast  \xi e^{2i\boldsymbol{\nu}^{\top}\boldsymbol{\tau}} M(\boldsymbol{\nu}) V(\boldsymbol{\nu}) + M(\boldsymbol{\nu}) V(\boldsymbol{\nu}) \ast T_s \varsigma e^{2i\boldsymbol{\nu}^{\top}\boldsymbol{\tau}} M(\boldsymbol{\nu}) V(\boldsymbol{\nu}) e^{i\boldsymbol{\nu}^{\top}\boldsymbol{\tau}} W(\boldsymbol{\nu}) \right\} \right]
-% \end{equation}
-% 
-% Now taking the inverse Fourier transform we get
-% \begin{equation}
-% 	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) \approx \mathbf{E}\left[m(\mathbf{r}) \ast v_t(\mathbf{r}) \times \xi m(\mathbf{r}+\boldsymbol{\tau}) \ast v_t(\mathbf{r}+\boldsymbol{\tau}) +  m(\mathbf{r}) \ast v_t(\mathbf{r}) \times T_s \varsigma m(\mathbf{r}+\boldsymbol{\tau}) \ast v_t(\mathbf{r}+\boldsymbol{\tau}) \ast w(\mathbf{r}+\boldsymbol{\tau}) \right]
-% \end{equation}
-% Split the expectation at the plus sign
-% \begin{align}
-% 	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &\approx \xi \mathbf{E}\left[m(\mathbf{r}) \ast v_t(\mathbf{r}) \times  m(\mathbf{r}+\boldsymbol{\tau}) \ast v_t(\mathbf{r}+\boldsymbol{\tau}) \right] \\
-% 	&+ T_s \varsigma \mathbf{E}\left[  m(\mathbf{r}) \ast v_t(\mathbf{r}) \times  m(\mathbf{r}+\boldsymbol{\tau}) \ast v_t(\mathbf{r}+\boldsymbol{\tau}) \ast w(\mathbf{r}+\boldsymbol{\tau}) \right] \\
-% 	&= \xi \left(R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \sigma_{\varepsilon}\delta_K\left(\boldsymbol{\tau}\right)\right) \\
-% 	&+ T_s \varsigma \mathbf{E}\left[  m(\mathbf{r}) \ast v_t(\mathbf{r}) \times  m(\mathbf{r}+\boldsymbol{\tau}) \ast v_t(\mathbf{r}+\boldsymbol{\tau}) \right]  \ast w(\boldsymbol{\tau}) \\
-% 	&= \xi \left( R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \sigma_{\varepsilon}\delta_K\left(\boldsymbol{\tau}\right) \right) \\
-% 	&+ T_s \varsigma \left( R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \sigma_{\varepsilon}\delta_K\left(\boldsymbol{\tau}\right) \right) \ast w(\boldsymbol{\tau})
-% \end{align}
-% 
-% Now rearrange to get
-% \begin{align}
-% 	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) - \xi \left( R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \sigma_{\varepsilon}\delta_K\left(\boldsymbol{\tau}\right) \right) \approx T_s \varsigma \left( R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \sigma_{\varepsilon}\delta_K\left(\boldsymbol{\tau}\right) \right) \ast w(\boldsymbol{\tau})
-% \end{align}
-% 
-% Taking the Fourier transform gives
-% \begin{equation}
-% 	\frac{1}{T_s \varsigma}\mathcal{F}^{-1}\left\{\frac{\mathcal{F}\left\{ R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) - \xi \left( R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \sigma^2_{\varepsilon}\delta_K\left(\boldsymbol{\tau}\right) \right) \right\}} {  \mathcal{F} \left\{  R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \sigma^2_{\varepsilon}\delta_K\left(\boldsymbol{\tau}\right) \right\}}\right\} \approx  w(\boldsymbol{\tau})	
-% \end{equation}
-% Simplify
-% \begin{equation}
-% 	\frac{1}{T_s \varsigma}\mathcal{F}^{-1}\left\{\frac{(1 - \xi)\mathcal{F}\left\{ R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) \right\} - \xi \sigma^2_{\varepsilon} } {  \mathcal{F} \left\{  R_{y_{t},y_{t}}(\boldsymbol{\tau}) \right\} - \sigma^2_{\varepsilon} }\right\} \approx  w(\boldsymbol{\tau})	
-% \end{equation}
-% 
-% \begin{align}
-% 	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &\approx \mathbf{E}\left[m(\mathbf{r}) \ast v_t(\mathbf{r}) \times \left( m(\mathbf{r}+\boldsymbol{\tau}) \ast v_t(\mathbf{r}+\boldsymbol{\tau}) \ast \xi\delta_D(\mathbf{r}) + T_s \varsigma m(\mathbf{r}+\boldsymbol{\tau}) \ast v_t(\mathbf{r}+\boldsymbol{\tau}) \ast  w(\mathbf{r}+\boldsymbol{\tau})\right) \right] \\
-% 	&= \mathbf{E}\left[m(\mathbf{r}) \ast v_t(\mathbf{r}) \times \left( m(\mathbf{r}+\boldsymbol{\tau}) \ast \xi v_t(\mathbf{r}+\boldsymbol{\tau}) + T_s \varsigma m(\mathbf{r}+\boldsymbol{\tau}) \ast v_t(\mathbf{r}+\boldsymbol{\tau}) \ast  w(\mathbf{r}+\boldsymbol{\tau})\right) \right] \\
-% 	&= \mathbf{E}\left[m(\mathbf{r}) \ast v_t(\mathbf{r}) \times  m(\mathbf{r}+\boldsymbol{\tau}) \ast \xi v_t(\mathbf{r}+\boldsymbol{\tau}) + m(\mathbf{r}) \ast v_t(\mathbf{r}) \times T_s \varsigma m(\mathbf{r}+\boldsymbol{\tau}) \ast v_t(\mathbf{r}+\boldsymbol{\tau}) \ast  w(\mathbf{r}+\boldsymbol{\tau}) \right] \\
-% 	&= \mathbf{E}\left[m(\mathbf{r}) \ast v_t(\mathbf{r}) \times  m(\mathbf{r}+\boldsymbol{\tau}) \ast \xi v_t(\mathbf{r}+\boldsymbol{\tau}) \right] + \mathbf{E}\left[ m(\mathbf{r}) \ast v_t(\mathbf{r}) \times T_s \varsigma m(\mathbf{r}+\boldsymbol{\tau}) \ast v_t(\mathbf{r}+\boldsymbol{\tau}) \ast  w(\mathbf{r}+\boldsymbol{\tau}) \right] \\
-% 	&= R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \sigma_{\varepsilon}\delta_K\left(\boldsymbol{\tau}\right) + \mathbf{E}\left[ m(\mathbf{r}) \ast v_t(\mathbf{r}) \times T_s \varsigma m(\mathbf{r}+\boldsymbol{\tau}) \ast v_t(\mathbf{r}+\boldsymbol{\tau}) \ast  w(\mathbf{r}+\boldsymbol{\tau}) \right] \\
-% 	&= R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \sigma_{\varepsilon}\delta_K\left(\boldsymbol{\tau}\right) + \mathbf{E}\left[ m(\mathbf{r}) \ast v_t(\mathbf{r}) \times  m(\mathbf{r}+\boldsymbol{\tau}) \ast v_t(\mathbf{r}+\boldsymbol{\tau})\right] \ast T_s \varsigma w(\boldsymbol{\tau}) \\
-% 	% 	&\parham{= \mathbf{E}\left[m(\mathbf{r}) \ast v_t(\mathbf{r}) \times m(\mathbf{r}+\boldsymbol{\tau}) \ast v_t(\mathbf{r}+\boldsymbol{\tau}) \right] \ast \mathbf{E}\left[\left( \xi\delta_D(\mathbf{r}) + T_s \varsigma w(\mathbf{r}+\boldsymbol{\tau}) \right) \right]} \label{eq:xcorr_pre_sub}
-% \end{align}
-% \parham{From (S1.14) to (S1.15) doesn't hold.} where $\mathcal{F}^{-1}$ denotes the inverse Fourier transform and $R_{y_{t},y_{t}}(\boldsymbol{\tau})$ is the auto-correlation of the observations, $\delta_K(\cdot)$ is the Kronecker delta function, and $\delta_D(\cdot)$ is the Dirac delta function. We define the auto-correlation of the observations as
-% \begin{align}
-% 	R_{y_{t},y_{t}}(\boldsymbol{\tau}) &= \mathbf{E}\left[ y_{t}\left(\mathbf{r}\right) y_{t}\left(\mathbf{r}+\boldsymbol{\tau}\right) \right]\\
-% 	&= \mathbf{E}\left[m(\mathbf{r}) \ast v_t(\mathbf{r}) \times m(\mathbf{r}+\boldsymbol{\tau}) \ast v_t(\mathbf{r}+\boldsymbol{\tau})\right] + \delta_K(\boldsymbol{\tau})\sigma_{\varepsilon}^2
-% \end{align}
-% Rearrange to get
-% \begin{equation}\label{eq:autocorr_for_sub}
-% 	R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \delta_K(\boldsymbol{\tau})\sigma_{\varepsilon}^2 = \mathbf{E}\left[m(\mathbf{r}) \ast v_t(\mathbf{r}) \times m(\mathbf{r}+\boldsymbol{\tau}) \ast v_t(\mathbf{r}+\boldsymbol{\tau})\right].
-% \end{equation}
-% Now to isolate the kernel equation~\ref{eq:autocorr_for_sub} is substituted into equation~\ref{eq:xcorr_pre_sub} and the Fourier transform is taken giving
-% \begin{align}
-% 	\mathcal{F}\left\{R_{y_{t},y_{t+1}}(\boldsymbol{\tau})\right\} &\approx \mathcal{F}\left\{ \left(R_{y_t,y_t}(\boldsymbol{\tau}) - \delta_K\left(\boldsymbol{\tau}\right)\sigma_{\varepsilon}^2\right) \ast \mathbf{E} \left[ \xi\delta_D(\mathbf{r})  + T_s \varsigma w(\mathbf{r}+\boldsymbol{\tau}) \right] \right\} \\
-% 	&= \mathcal{F}\left\{ R_{y_t,y_t}(\boldsymbol{\tau}) - \delta_K\left(\boldsymbol{\tau}\right) \sigma_{\varepsilon}^2 \right\} \mathcal{F}\left\{\mathbf{E}[ \xi \delta_D(\mathbf{r})  + T_s \varsigma w(\mathbf{r}+\boldsymbol{\tau}) ]\right\}.
-% \end{align}
-% Now rearranging
-% \begin{equation}
-% 	\frac{\mathcal{F}\left\{R_{y_{t},y_{t+1}}(\boldsymbol{\tau})\right\}}{\mathcal{F}\left\{ R_{y_t,y_t}(\boldsymbol{\tau}) - \delta_K\left(\boldsymbol{\tau}\right)\sigma_{\varepsilon}^2 \right\}} \approx \mathcal{F}\left\{ \mathbf{E}\left[ \xi\delta_D\left(\mathbf{r}\right)  + T_s \varsigma w(\mathbf{r}+\boldsymbol{\tau}) \right]\right\}.
-% \end{equation}
-% Take inverse Fourier transform and rearrange to get an approximation of the kernel
-% \begin{equation}
-% 	\mathcal{F}^{-1}\left\{\frac{\mathcal{F}\left\{R_{y_{t},y_{t+1}}(\boldsymbol{\tau})\right\}}{\mathcal{F}\left\{ R_{y_t,y_t}(\boldsymbol{\tau}) - \delta_K\left(\boldsymbol{\tau}\right)\sigma_{\varepsilon}^2 \right\}}\right\} \approx \mathbf{E}[\xi\delta_D\left(\mathbf{r}\right)  + T_s \varsigma w(\mathbf{r}+\boldsymbol{\tau})].
-% \end{equation}
-
 \bibliographystyle{plain}
 \bibliography{}
 \end{document}
