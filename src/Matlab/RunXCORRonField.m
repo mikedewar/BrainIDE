@@ -65,10 +65,7 @@ ZeroPadFactor = 1;
 Syyplus1 = fft2(R_yyplus1, ZeroPadFactor*size(R_yyplus1,1), ZeroPadFactor*size(R_yyplus1,2));
 Szz = fft2(R_zz, ZeroPadFactor*size(R_yy,1), ZeroPadFactor*size(R_yy,2));
 
-Numerator = Syyplus1 - xi*Szz;
-Denominator = Szz;
-
-w_temp = ifft2( Numerator ./ Denominator) / (Ts*varsigma);%, size(meanxcorr,1), size(meanxcorr,2) );
+w_temp = ifft2( (Syyplus1 - xi*Szz) ./ Szz) / (Ts*varsigma);%, size(meanxcorr,1), size(meanxcorr,2) );
 w_est = ifftshift( w_temp );
 
 xscale = 0:1.5:size(w_est,1)*1.5-1;
