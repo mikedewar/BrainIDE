@@ -53,7 +53,7 @@ for realizationindex=1:50
     
 end
 
-R_yyplus1 = squeeze(mean(meanxcorr_all,1));
+R_yyplus1 = squeeze(mean(meanxcorr_all,1)); #mean across different realisation
 R_yy = squeeze(mean(meanautocorr_all,1));
 
 delta_sigma_varepsilon2 = zeros(size(R_yy));
@@ -62,10 +62,10 @@ delta_sigma_varepsilon2( floor(size(R_yy,1)/2)+1, floor(size(R_yy,2)/2)+1) = sig
 R_zz = R_yy - delta_sigma_varepsilon2;
 
 ZeroPadFactor = 1;
-Syyplus1 = fft2(R_yyplus1, ZeroPadFactor*size(R_yyplus1,1), ZeroPadFactor*size(R_yyplus1,2));
-Szz = fft2(R_zz, ZeroPadFactor*size(R_yy,1), ZeroPadFactor*size(R_yy,2));
+Syyplus1 = fft2(R_yyplus1, ZeroPadFactor*size(R_yyplus1,1), ZeroPadFactor*size(R_yyplus1,2));#cross
+Szz = fft2(R_zz, ZeroPadFactor*size(R_yy,1), ZeroPadFactor*size(R_yy,2));#auto and noise free
 
-w_temp = ifft2( (Syyplus1 - xi*Szz) ./ Szz) / (Ts*varsigma);%, size(meanxcorr,1), size(meanxcorr,2) );
+w_temp = ifft2( (Syyplus1 - xi*Szz) ./ Szz) / (Ts*varsigma);%, size(meanxcorr,1), size(meanxcorr,2) );s1.28
 w_est = ifftshift( w_temp );
 
 xscale = 0:1.5:size(w_est,1)*1.5-1;
