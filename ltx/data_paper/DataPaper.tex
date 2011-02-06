@@ -90,7 +90,7 @@
 	\item Neural field model
 	\item Improvements in electrode technology with great spatiotemporal resolution
 \end{itemize}
-The aim of this paper is to great a patient-specific neural field model, by estimating parameters of a general mathematical model using data acquired from an epilepsy surgical candidate in a clinical setting. 
+The aim of this paper is to create a patient-specific neural field model, by estimating parameters of a general mathematical model using data acquired from an epilepsy surgical candidate in a clinical setting. 
 
 Instead of extracting features we aim to extract meaningful parameters...
 
@@ -330,7 +330,7 @@ The sigma vectors are propagated through the system equations and weighted to fo
 where the superscripts $m$ and $c$ denote mean and covariance and $\beta$ incorporates prior knowledge of the distribution of the states, $\mathbf{x}$ (for a Gaussian disturbance, $\beta$ should be set to 2 \cite{Haykin2001}). Since the observation equation is linear (equation~\ref{ObservationEquation}), the standard Kalman Filter update equations are used to correct the predicted states. The state estimates from forward filtering are used to form a new set of sigma points for the smoother, as described above. The predicted and the smoothed cross-covariance matrices of the states, $\mathbf M_{t}^{b-}$ and  $\mathbf M_{t}^{b}$, are also required. The former is used  for computing the smoother gain and the latter is used to compute required terms in the M-step. The formulation of the cross-covariance matrices are given in the summary of the steps in the URTSS algorithm in Table~\ref{tab:URTSSAlgorithm}.  
 
 
-Since the state equation is non-linear,  calculation of covariance and  cross-covariance terms required for the maximisation step is not straightforward as in the linear case. Therefore, an additional  Taylor expansion step to the URTSS algorithm is also created to approximate $q(\mathbf{x}_t)$, which is required in the M-step. This is accomplished by taking the first-order truncated Taylor-series expansion of the sigmoidal activation function  around the smoothed state, $\hat{\mathbf x}_t^{b}$ at each time instant, i.e.
+Since the state equation is non-linear,  calculation of covariance and  cross-covariance terms required for the maximisation step is not straightforward as in the linear case. Therefore, an additional  Taylor expansion step to the URTSS algorithm is also created to approximate $q(\mathbf{x}_t)$ at each time instant which is required in the M-step. This is accomplished by taking the first-order truncated Taylor-series expansion of the sigmoidal activation function  around the smoothed state, $\hat{\mathbf x}_t^{b}$ at each time instant, i.e.
 \begin{equation}\label{eq:SigmoidTaylor}
  f\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\mathbf x_t\right) \approx f\left(\boldsymbol \phi^\top(\mathbf r')\hat{\mathbf x}_t^{b}\right)+  \boldsymbol \phi^\top\left(\mathbf r'\right)\left(\mathbf x_t - \hat{\mathbf x}_t^{b}\right)f'\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t^{b}\right)
 \end{equation}
