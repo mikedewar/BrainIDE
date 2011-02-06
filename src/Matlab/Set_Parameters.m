@@ -118,7 +118,11 @@ Create_m
 
 % observation noise characteristics
 % ~~~~~~~~~~~~~~~~~~~~
+<<<<<<< HEAD
 sigma_varepsilon = 0.1; %0.1                                  
+=======
+sigma_varepsilon = 0.0; %sqrt(0.1)                                  
+>>>>>>> a8b6a71319e4f8e268c97a5462174a6f3197c994
 Sigma_varepsilon = sigma_varepsilon*eye(NSensors);        % observation covariance matrix
 
 % sigmoid parameters

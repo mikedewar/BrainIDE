@@ -91,7 +91,7 @@ Now, by taking the Fourier transform we get
 \begin{equation}
 	\mathcal{F}\left\{R_{y_{t},y_{t+1}}(\boldsymbol{\tau})\right\} - \mathcal{F}\left\{R_1(\boldsymbol{\tau})\right\} \approx \frac{T_s \varsigma}{\xi} \mathcal{F}\left\{R_1(\boldsymbol{\tau})\right\} \mathcal{F}\left\{ w\left(\boldsymbol{\tau}\right)\right\}.
 \end{equation}
-This simplifies to
+This simplifies to (\dean{this step is where need to find a better method for deconv})
 \begin{equation}
 	\frac{\xi}{T_s \varsigma} \left(\frac{\mathcal{F}\left\{R_{y_{t},y_{t+1}}(\boldsymbol{\tau})\right\}}{\mathcal{F}\left\{R_1(\boldsymbol{\tau})\right\}} - 1\right) \approx  W\left(\boldsymbol{\nu}\right).
 \end{equation}
@@ -103,24 +103,24 @@ Now substituting back in equation~\ref{eq:R1}, we can write
 	&= \frac{1}{T_s \varsigma} \left(\frac{S_{y_{t},y_{t+1}}\left(\boldsymbol{\nu}\right)}{S_{y_{t},y_{t}}\left(\boldsymbol{\nu}\right) - \sigma_{\varepsilon}^2 } - \xi\right)
 \end{align}
 
-This equation states that the support of the kernel can be estimated given knowledge of $\sigma_\varepsilon^2$. The other parameters simply give an offset and scale the kernel. Furthermore, if we guess $\sigma_\varepsilon^2$ incorrectly, then the effect will only appear at $\boldsymbol{\tau}=0$. So if we assume local excitation, then we do not need to know $\sigma_\varepsilon^2$.
+This equation states that the support of the kernel can be estimated given knowledge of $\sigma_\varepsilon^2$. The other parameters simply give an offset and scale the kernel. Furthermore, if we guess $\sigma_\varepsilon^2$ incorrectly, then the effect will only appear at $\boldsymbol{\tau}=0$. So if we assume local excitation, then we do not need to know $\sigma_\varepsilon^2$.\\
 
 
-We can also write
-\begin{equation}
-	R_2(\boldsymbol{\tau}) \approx T_s \varsigma (R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \sigma_{\varepsilon}^2\delta_K\left(\boldsymbol{\tau}\right)) \ast w(\boldsymbol{\tau})  
-\end{equation}
-
-
-\begin{align}
-	R_2(\boldsymbol{\tau}) &\approx R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) - R_1(\boldsymbol{\tau}) \\
-	T_s \varsigma (R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \sigma_{\varepsilon}^2\delta_K\left(\boldsymbol{\tau}\right)) \ast w\left(\boldsymbol{\tau}\right) &\approx R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) - \xi\left( R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \sigma_{\varepsilon}^2\delta_K\left(\boldsymbol{\tau}\right))  \right)
-\end{align}
-Take FFT of both sides
-\begin{align}
-	T_s \varsigma (S_{y_{t},y_{t}}\left(\boldsymbol{\nu}\right) - \sigma_{\varepsilon}^2) W\left(\boldsymbol{\nu}\right) &\approx S_{y_{t},y_{t+1}}\left(\boldsymbol{\nu}\right) - \xi (S_{y_{t},y_{t}}\left(\boldsymbol{\nu}\right) - \sigma_{\varepsilon}^2) \\
-	W\left(\boldsymbol{\nu}\right) &\approx \frac{S_{y_{t},y_{t+1}}\left(\boldsymbol{\nu}\right) - \xi (S_{y_{t},y_{t}}\left(\boldsymbol{\nu}\right) - \sigma_{\varepsilon}^2)}{T_s \varsigma (S_{y_{t},y_{t}}\left(\boldsymbol{\nu}\right) - \sigma_{\varepsilon}^2)}
-\end{align}
+% We can also write an alternative less simplified form 
+% \begin{equation}
+% 	R_2(\boldsymbol{\tau}) \approx T_s \varsigma (R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \sigma_{\varepsilon}^2\delta_K\left(\boldsymbol{\tau}\right)) \ast w(\boldsymbol{\tau})  
+% \end{equation}
+% 
+% 
+% \begin{align}
+% 	R_2(\boldsymbol{\tau}) &\approx R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) - R_1(\boldsymbol{\tau}) \\
+% 	T_s \varsigma (R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \sigma_{\varepsilon}^2\delta_K\left(\boldsymbol{\tau}\right)) \ast w\left(\boldsymbol{\tau}\right) &\approx R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) - \xi\left( R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \sigma_{\varepsilon}^2\delta_K\left(\boldsymbol{\tau}\right))  \right)
+% \end{align}
+% Take FFT of both sides
+% \begin{align}
+% 	T_s \varsigma (S_{y_{t},y_{t}}\left(\boldsymbol{\nu}\right) - \sigma_{\varepsilon}^2) W\left(\boldsymbol{\nu}\right) &\approx S_{y_{t},y_{t+1}}\left(\boldsymbol{\nu}\right) - \xi (S_{y_{t},y_{t}}\left(\boldsymbol{\nu}\right) - \sigma_{\varepsilon}^2) \\
+% 	W\left(\boldsymbol{\nu}\right) &\approx \frac{S_{y_{t},y_{t+1}}\left(\boldsymbol{\nu}\right) - \xi (S_{y_{t},y_{t}}\left(\boldsymbol{\nu}\right) - \sigma_{\varepsilon}^2)}{T_s \varsigma (S_{y_{t},y_{t}}\left(\boldsymbol{\nu}\right) - \sigma_{\varepsilon}^2)}
+% \end{align}
 
 \begin{figure}[!ht]
 \begin{center}
