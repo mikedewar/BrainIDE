@@ -307,7 +307,7 @@ where the nonlinear function, $q(\cdot)$, is defined as
 	q(\mathbf{x}_t) = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) d\mathbf{r}'.
 \end{equation}
 \section{Estimation Algorithm}
-
+Here we describe the problem of estimating non-linear state-space neural field model using the expectation-maximisation (EM) technique. The resulting process is an iterative algorithm that converges on the maximum-likelihood estimates of the parameters.
 \subsection{E-Step}
 The unscented Rauch-Tung-Striebel smoother (URTSS)~\cite{Sarkka2010} was used for the state estimation. The URTSS incorporates an unscented Kalman filter (UKF)~\cite{Julier1997, Merwe2003} in a forward step to estimate posterior states, $\hat{\mathbf x}_t^{f}$, followed by a backward step to compute the smoothed state estimates, $\hat{\mathbf x}_t^{b}$. The first and second order moments of the predicted state are captured by propagating the so-called sigma points through the state equation. An additional step is required in the $\mathbf E$-step to calculate the cross-covariance matrix $\mathbf M_{t+1}=\textrm{cov}(\mathbf x_t,\mathbf x_{t+1})$. An additional element to the URTSS algorithm was also created to approximate $q(\mathbf{x}_t)$, which is required for the M-step. 
 
@@ -327,9 +327,6 @@ substituting \ref{eq:SigmoidTaylor} in \ref{eq:QmatrixForSigmapoints}  we get an
 The algorithm for the modified URTSS can be seen in Table~\ref{tab:URTSSAlgorithm}.
 
 \subsection{M-Step}
-
-
-\subsection{$\mathcal Q$-function}
 The goal of the M-step is to maximise the likelihood function $p(\mathbf Y;\boldsymbol \Theta)$ given the joint distribution $p(\mathbf X,\mathbf Y;\boldsymbol \Theta)$ over the observed variables $\mathbf Y$ and hidden variables $\mathbf X$ that is governed by parameters $\boldsymbol\Sigma_{\epsilon}$, $\boldsymbol \theta$ and $\xi$. Unfortunately, it is often not possible to maximise the likelihood $p(\mathbf Y;\boldsymbol\Theta)$ directly. However, by using the relationship between $p(\mathbf Y;\boldsymbol \Theta)$ and $p(\mathbf X,\mathbf Y;\boldsymbol \Theta)$ it is possible to compute a sequence of parameter estimates that converges on the maximum likelihood parameter estimate. 
 
 Expanding the joint distribution $p(\mathbf X,\mathbf Y;\boldsymbol \Theta)$ we have
@@ -544,8 +541,8 @@ $\mathbf M_{t +1}^{b}=\mathbf S_t\mathbf P_{t+1}^{b}$\\
 \end{flushleft}
 \label{tab:UKFAlgorithm}
 \end{table}
-\renewcommand{\arraystretch}{1}
-
+ \renewcommand{\arraystretch}{1}
+\newpage
 \bibliographystyle{plain}
 \bibliography{BrainIDE}
 \end{document}
