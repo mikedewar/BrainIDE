@@ -358,28 +358,27 @@ where $ \mathbf E_{\boldsymbol \Theta'}$ denotes expectation with respect to the
 \begin{align}
  \mathcal Q(\boldsymbol \Theta,\boldsymbol\Theta')&=\mathbf E_{\boldsymbol\Theta'}\left[\sum_{t=0}^{T-1}2\ln p(\mathbf y_{t+1}|\mathbf x_{t+1};\sigma_{\epsilon})+\sum_{t=0}^{T-1}2\ln p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta, \sigma_d)+\sum_{t=0}^{T-1}2\ln p(\mathbf x_0)\right],
 \end{align}
- It should be noted that
- $p(\mathbf x_0)$ is not a function of parameter set and therefore $\mathcal Q$-function can be rewritten as
-\begin{equation}
-\mathcal Q(\boldsymbol \Theta,\boldsymbol\Theta')=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}2\ln p(\mathbf y_{t+1}|\mathbf x_{t+1};\boldsymbol \sigma_{\epsilon})+\sum_{t=0}^{T-1}2\ln p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta ,\sigma_d)\right]+\mathrm{const}
+ It should be noted that the last term is not a function of parameter set and can be ignored therefore $\mathcal Q$-function can be rewritten as
+\begin{equation}\label{eq:QIntermsofJointDist}
+\mathcal Q(\boldsymbol \Theta,\boldsymbol\Theta')=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}2\ln p(\mathbf y_{t+1}|\mathbf x_{t+1}; \sigma_{\epsilon})+\sum_{t=0}^{T-1}2\ln p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta ,\sigma_d)\right].
 \end{equation}
-the constant term can be ignored since it is not affecting the derivative with respect to the parameters. Under the Gaussian assumption and ignoring constant normalising terms, the joint distribution at $t+1$ can be written as
-\begin{eqnarray}
- p(\mathbf x_{t+1}, \mathbf y_{t+1};\boldsymbol\Theta)&=& \mid\boldsymbol\Sigma_{\epsilon}\mid^{-\frac{1}{2}} \times  e^{-\frac{1}{2}(\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1})^\top\boldsymbol\Sigma_{\epsilon}^{-1}(\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1}) } \nonumber \\
-&+& e^{-\frac{1}{2}(\mathbf x_{t+1}-q(\mathbf  x_t)\boldsymbol\theta-\xi  \mathbf x_t)^\top\boldsymbol\Sigma_e^{-1}(\mathbf x_{t+1}-q( \mathbf x_t)\boldsymbol\theta-\xi \mathbf  x_t)}
-\end{eqnarray}
-by expanding the exponent and taking $2\log$ we get
-\begin{eqnarray}\label{eq:Qfunction}
-2\ln p(\mathbf x_{t+1} , \mathbf y_{t+1};\boldsymbol\Theta)&=&-\ln \mid\boldsymbol\Sigma_{\epsilon}\mid- (\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1})^\top\boldsymbol\Sigma_{\epsilon}^{-1}(\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1})\nonumber \\
-&-&\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}\mathbf x_{t+1}+2\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}q( \mathbf x_t)\boldsymbol\theta+2\xi \mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}\mathbf x_t\nonumber \\
-&-&\boldsymbol\theta^\top q^\top(\mathbf x_t)\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-2\xi \mathbf x_t^\top\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-\xi^2\mathbf x_t^\top\boldsymbol\Sigma_e^{-1}\mathbf x_t.
-\end{eqnarray}
-Taking trace and rearranging, using the invariant cyclic permutations property of the trace, this distribution can be written as
-\begin{eqnarray}\label{eq:Qfunctionintrace}
-  \ln p(\mathbf x_{t+1}, \mathbf y_{t+1};\boldsymbol\Theta)&=& -\ln \mid\boldsymbol\Sigma_{\epsilon}\mid-\mathrm{tr}\left\lbrace\boldsymbol\Sigma_{\epsilon}^{-1}(\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1})^\top\right\rbrace   \nonumber \\
-&-&\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}\mathbf x_{t+1}+2\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}q( \mathbf x_t)\boldsymbol\theta+2\xi \mathrm{tr} \left\lbrace \mathbf x_t\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}\right\rbrace \nonumber \\
-&&-\boldsymbol\theta^\top q^\top(\mathbf x_t)\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-2\xi \mathbf x_t^\top\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-\xi^2\mathrm{tr}\left\lbrace \mathbf x_t \mathbf x_t^\top\boldsymbol\Sigma_e^{-1}\right\rbrace. 
-\end{eqnarray}
+Gaussian distributions of the state disturbance and the observation noise results into the following conditional distributions
+\begin{align}
+ p\left(\mathbf y_{t+1}|\mathbf x_{t+1};\sigma_{\epsilon}\right)&= \mid\boldsymbol\Sigma_{\epsilon}\mid^{-\frac{1}{2}} \times  e^{-\frac{1}{2}(\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1})^\top\boldsymbol\Sigma_{\epsilon}^{-1}(\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1}) } \\
+p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta ,\sigma_d)&= \mid\boldsymbol\Sigma_{e}\mid^{-\frac{1}{2}} \times e^{-\frac{1}{2}(\mathbf x_{t+1}-q(\mathbf  x_t)\boldsymbol\theta-\xi  \mathbf x_t)^\top\boldsymbol\Sigma_e^{-1}(\mathbf x_{t+1}-q( \mathbf x_t)\boldsymbol\theta-\xi \mathbf  x_t)}
+\end{align}
+We ignored constant terms in the normalising factor of these conditional distributions. By expanding the exponent and taking $2\log$ we get
+\begin{align}\label{eq:CondititionDist1}
+2\ln p\left(\mathbf y_{t+1}|\mathbf x_{t+1};\sigma_{\epsilon}\right)&=-n_y\ln \sigma_{\epsilon}^2-\frac{1}{\sigma_{\epsilon}^2}\left[ (\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1})^\top(\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1})\right]  \\
+2\ln p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta ,\sigma_d)&=-n_x\ln\sigma_d^2-\ln\mid\tilde{\boldsymbol\Sigma}_e\mid-\frac{1}{\sigma_d^2}\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf x_{t+1}+\frac{2}{\sigma_d^2}\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}q( \mathbf x_t)\boldsymbol\theta+\frac{2\xi}{\sigma_d^2}\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf x_t \nonumber \\
+&-\frac{1}{\sigma_e^2}\boldsymbol\theta^\top q^\top(\mathbf x_t)\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf x_t)\boldsymbol\theta-\frac{2\xi}{\sigma_d^2} \mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf x_t)\boldsymbol\theta-\frac{\xi^2}{\sigma_d^2}\mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf x_t. \label{eq:CondititionDist2}
+\end{align}
+Note that $\boldsymbol\Sigma_e=\sigma_d^2\tilde{\boldsymbol\Sigma}_e$ where $\tilde{\boldsymbol\Sigma}_e$ is constant and can be calculated beforehand as the support of the disturbance covariance function is assumed to be known. Substituting equations \ref{eq:CondititionDist1} and \ref{eq:CondititionDist2} into \ref{eq:QIntermsofJointDist} and taking trace and rearranging, using the invariant cyclic permutations property of the trace, this distribution can be written as
+\begin{align}\label{eq:Qfunctiontrace}
+  2\ln p\left(\mathbf y_{t+1}|\mathbf x_{t+1};\sigma_{\epsilon}\right) &= -n_y\ln \sigma_{\epsilon}^2-\frac{1}{\sigma_{\epsilon}^2}\mathrm{tr}\left\lbrace(\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1})^\top\right\rbrace    \\
+ 2 \ln p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta ,\sigma_d) &=-\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}\mathbf x_{t+1}+2\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}q( \mathbf x_t)\boldsymbol\theta+2\xi \mathrm{tr} \left\lbrace \mathbf x_t\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}\right\rbrace \nonumber \\
+&-\boldsymbol\theta^\top q^\top(\mathbf x_t)\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-2\xi \mathbf x_t^\top\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-\xi^2\mathrm{tr}\left\lbrace \mathbf x_t \mathbf x_t^\top\boldsymbol\Sigma_e^{-1}\right\rbrace. 
+\end{align}
 Having approximated $q\left(\mathbf x_t\right)$ in the E-step, Substituting \ref{eq:qTaylor} in \ref{eq:Qfunctionintrace} and taking the expectation of the log likelihood function for all time instants gives an approximate to the lower-bound that needs to be maximised to gain optimal parameter estimates. Therefore $\mathcal Q$-function can be approximated as  
 \begin{eqnarray}\label{eq:Voldermont}
  \mathcal Q(\boldsymbol \Theta,\boldsymbol\Theta')&\approx& -(T-1)\ln \mid\boldsymbol\Sigma_{\epsilon}\mid-\mathrm{tr}\left\lbrace\boldsymbol\Sigma_{\epsilon}^{-1}\sum_{t=0}^{T-1}\left[ (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top\right] \right\rbrace\nonumber \\
