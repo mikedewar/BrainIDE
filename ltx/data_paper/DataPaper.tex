@@ -381,7 +381,7 @@ Note that $\boldsymbol\Sigma_e=\sigma_d^2\tilde{\boldsymbol\Sigma}_e$ where $\ti
 \end{align}
 Note that we ignore $\ln\mid\tilde{\boldsymbol\Sigma_e}\mid $ as it is not a function of the parameter set. Having approximated $q\left(\mathbf x_t\right)$ in the E-step, by substituting  \ref{eq:Qfunctiontrace1} and \ref{eq:Qfunctiontrace2} into \ref{eq:QIntermsofJointDist} and taking the expectation of the log likelihood function for all time instants gives an approximate to the lower-bound that needs to be maximised to gain optimal parameter estimates. Therefore $\mathcal Q$-function can be approximated as  
 \begin{eqnarray}\label{eq:Voldermont}
- \mathcal Q(\boldsymbol \Theta,\boldsymbol\Theta')&\approx& -(T-1)n_y\ln \sigma_{\epsilon}^2-\mathrm{tr}\left\lbrace\boldsymbol\Sigma_{\epsilon}^{-1}\sum_{t=0}^{T-1}\left[ (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top\right] \right\rbrace\nonumber \\
+ \mathcal Q(\boldsymbol \Theta,\boldsymbol\Theta')&\approx& -(T-1)n_y\ln \sigma_{\epsilon}^2-\frac{1}{\sigma_{\epsilon}^2}\mathrm{tr}\left\lbrace\boldsymbol\sum_{t=0}^{T-1}\left[ (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top\right] \right\rbrace\nonumber \\
 &-&(T-1)n_x\ln\sigma_d^2-\frac{1}{\sigma_d^2}\mathrm{tr}\left\lbrace \Xi'_0 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace +2\frac{1}{\sigma_d^2}\Xi_0\boldsymbol\theta+
 \frac{2\xi}{\sigma_d^2} \mathrm{tr}\left\lbrace \Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace \nonumber \\
 &-&\frac{1}{\sigma_d^2}\boldsymbol\theta^\top \Xi_2\boldsymbol\theta-\frac{2\xi}{\sigma_d^2} \Xi_3 \boldsymbol\theta -  \frac{\xi^2}{\sigma_d^2}\mathrm{tr} \left\lbrace\Xi_4\tilde{\boldsymbol\Sigma}_e^{-1} \right\rbrace 
@@ -404,7 +404,7 @@ and
 \end{align}
 It should be noted that the second term in equation \ref{eq:Voldermont} is obtained by adding and subtracting $\mathbf C \mathbf{\hat{x}}_t \mathbf{\hat{x}}_t^\top \mathbf C^\top$ to the expectation, $\mathbf E_{\boldsymbol\Theta'}\left[ .\right] $. Given the state estimates, $\mathbf {\hat x^{b}}_t$ the state covariance $\mathbf P_t^b$ and cross-covariance $\mathbf M_t^b$ , the $\Xi$-variables can be computed directly.
 
-When taking the derivative of equation~\ref{eq:Voldermont}, the constant $\beta$ described in equation~\ref{eq:def of beta} will disappear. Differntiating with respect to $\boldsymbol\theta$ we have
+Differntiating with respect to $\boldsymbol\theta$ we have
 \begin{equation}\label{eq:Qpartialtheta}
  \frac{\partial \mathcal Q}{\partial \boldsymbol\theta}=2\Xi_0-\boldsymbol\theta^\top(\Xi_2^\top+\Xi_2)-2\xi\Xi_3
 \end{equation}
