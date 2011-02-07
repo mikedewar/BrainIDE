@@ -307,7 +307,8 @@ where the nonlinear function, $q(\cdot)$, is defined as
 	q(\mathbf{x}_t) = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) d\mathbf{r}'.
 \end{equation}
 \section{Estimation Algorithm}
-Here we describe the problem of estimating non-linear state-space neural field model using the expectation-maximisation (EM) technique \cite{Shumway2000}. The resulting estimation process is an iterative algorithm that converges on the maximum-likelihood estimates of the parameters. In the E-step we estimate the states $\mathbf x_t$, of the systems and in the M-step we estimate the connectivity kernel parameters $\boldsymbol \theta$, disturbance variance $\sigma_d$ and the observation noise variance $\sigma_{\epsilon}$. Using the state estimates at each iteration we maximise an approximate lower bound on the log likelihood function.
+Here we describe the problem of estimating non-linear state-space neural field model using expectation-maximisation (EM) based algorithm \cite{Shumway2000}. The resulting estimation process is an iterative two step procedure that converges on the maximum-likelihood estimates of the parameters. In the E-step we estimate the states $\mathbf x_t$, of the systems and in the M-step we estimate the connectivity kernel parameters $\boldsymbol \theta$, disturbance variance $\sigma_d$ and the observation noise variance $\sigma_{\epsilon}$. Once initialized, at each iteration the sequence of smoothed state vectors is used to update the parameters by maximizing an approximate lower bound on the log likelihood function. The resulting parameters are then used when estimating the new
+state vector sequence for the next iteration. The procedure stops when the parameter estimates converge.
 \subsection{E-Step}
 In the E-step the additive form of the unscented Rauch-Tung-Striebel smoother (URTSS)~\cite{Sarkka2010} was used for the state estimation. The URTSS incorporates an unscented Kalman filter (UKF) \cite{Julier1997, Merwe2003} in a forward step to estimate posterior states, $\hat{\mathbf x}_t^{f}$, followed by a backward step to compute the smoothed state estimates, $\hat{\mathbf x}_t^{b}$. The first and second order moments of the predicted state are captured by propagating the so-called sigma points through the state equation. The sigma points, $\mathcal X_i$, are calculated using the unscented transform as follows:
 \begin{align}\label{eq:sigmapoints1}
@@ -338,25 +339,26 @@ where
 \begin{equation}\label{eq:SigmoidDerivative}
  f'\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t^{b}\right)=\varsigma f\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t^{b}\right)\left( 1-f\left( \boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t^{b}\right)\right)
 \end{equation}
-substituting \ref{eq:SigmoidTaylor} in \ref{eq:QmatrixForSigmapoints}  we get an approximation for $q(\mathbf x_t)$ as
+substituting \ref{eq:SigmoidTaylor} in \ref{eq:QmatrixForSigmapoints}  we get an approximation for $q(\mathbf x_t)$ around the smoothed estimate $\hat{\mathbf{x}}_t^b$ 
 \begin{equation}\label{eq:qTaylor}
  q(\mathbf x_t) \approx q\left(\hat{\mathbf x}_t^{b}\right)+\int_\Omega \boldsymbol{\Psi}\left(\mathbf{r}'\right)\boldsymbol \phi^\top\left(\mathbf r'\right) \left(\mathbf x_t -\hat{\mathbf x}_t^{b}\right)f'\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t^{b}\right) d\mathbf{r}'
 \end{equation}
 Equation \ref{eq:qTaylor} is used to approximate the lower bound on the log-likelihood function in the M-step.
 
 \subsection{M-Step}
-The goal of the M-step is to maximise the likelihood function $p(\mathbf Y;\boldsymbol \Theta)$ given the joint distribution $p(\mathbf X,\mathbf Y;\boldsymbol \Theta)$ over the observed variables $\mathbf Y$ and hidden variables $\mathbf X$ that is governed by parameters $\boldsymbol\Sigma_{\epsilon}$, $\boldsymbol \theta$ and $\xi$. Unfortunately, it is often not possible to maximise the likelihood $p(\mathbf Y;\boldsymbol\Theta)$ directly. However, by using the relationship between $p(\mathbf Y;\boldsymbol \Theta)$ and $p(\mathbf X,\mathbf Y;\boldsymbol \Theta)$ it is possible to compute a sequence of parameter estimates that converges on the maximum likelihood parameter estimate. 
-
-Expanding the joint distribution $p(\mathbf X,\mathbf Y;\boldsymbol \Theta)$ we have
+The goal of the M-step is to maximize a lower bound on the joint likelihood function, $p(\mathbf X,\mathbf Y;\boldsymbol \Theta)$, where $\mathbf X$ is the set of all states, $\mathbf Y$ is the set of all observations, and $\boldsymbol \Theta$ denotes the set of all unknown parameters, i.e., connectivity kernel parameters $\boldsymbol\theta$, disturbance variance $\sigma_d$ and the observation noise variance $\sigma_{\epsilon}$. We choose to maximize  $p(\mathbf X,\mathbf Y;\boldsymbol \Theta)$ since it is not  possible to maximise the likelihood function $p(\mathbf Y;\boldsymbol\Theta)$ directly. Increasing the joint likelihood function increases the likelihood function $p(\mathbf Y;\boldsymbol \Theta)$ \cite{McLachlan1997}. We proceed by expanding the joint distribution $p(\mathbf X,\mathbf Y;\boldsymbol \Theta)$
 \begin{equation}\label{eq:jointdistribution}
- p(\mathbf X,\mathbf Y;\boldsymbol \Theta)=\prod_{t=0}^{T-1} p(\mathbf y_{t+1}|\mathbf x_{t+1};\boldsymbol \Sigma_{\epsilon})p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta, \xi)p(\mathbf x_0).
+ p(\mathbf X,\mathbf Y;\boldsymbol \Theta)=\prod_{t=0}^{T-1} p(\mathbf y_{t+1}|\mathbf x_{t+1}; \sigma_{\epsilon})p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta, \sigma_d)p(\mathbf x_0).
 \end{equation}
-The $\mathcal Q$-function, or lower-bound on the likelihood, can be written in terms of joint distribution components as
+The  lower-bound on the joint likelihood function is defined as   
 \begin{align}
- \mathcal Q(\boldsymbol \Theta,\boldsymbol\Theta')&=\mathbf E_{\boldsymbol \Theta'}\left[2\ln p(\mathbf X,\mathbf Y;\boldsymbol \Theta)\right] \\
-&=\mathbf E_{\boldsymbol\Theta'}\left[\sum_{t=0}^{T-1}2\ln p(\mathbf y_{t+1}|\mathbf x_{t+1};\boldsymbol \Sigma_{\epsilon})+\sum_{t=0}^{T-1}2\ln p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta, \xi)+\sum_{t=0}^{T-1}2\ln p(\mathbf x_0)\right],
+ \mathcal Q(\boldsymbol \Theta,\boldsymbol\Theta')&=\mathbf E_{\boldsymbol \Theta'}\left[2\ln p(\mathbf X,\mathbf Y;\boldsymbol \Theta)\right],
 \end{align}
-where $ \mathbf E_{\boldsymbol \Theta'}$ denotes expectation taken with respect to the distribution $p(\mathbf X | \mathbf Y;\boldsymbol \Theta') $ where $\boldsymbol \Theta'$ is the current parameter estimate. It should be noted that
+where $ \mathbf E_{\boldsymbol \Theta'}$ denotes expectation with respect to the distribution $p(\mathbf X | \mathbf Y;\boldsymbol \Theta') $ where $\boldsymbol \Theta'$ is the current parameter estimate. Re-writing $\mathcal Q$-function in terms of joint distribution components gives
+\begin{align}
+ \mathcal Q(\boldsymbol \Theta,\boldsymbol\Theta')&=\mathbf E_{\boldsymbol\Theta'}\left[\sum_{t=0}^{T-1}2\ln p(\mathbf y_{t+1}|\mathbf x_{t+1};\boldsymbol \Sigma_{\epsilon})+\sum_{t=0}^{T-1}2\ln p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta, \xi)+\sum_{t=0}^{T-1}2\ln p(\mathbf x_0)\right],
+\end{align}
+ It should be noted that
  $p(\mathbf x_0)$ is not function of parameter set and therefore $\mathcal Q$-function can be rewritten as
 \begin{equation}
 \mathcal Q(\boldsymbol \Theta,\boldsymbol\Theta')=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}2\ln p(\mathbf y_{t+1}|\mathbf x_{t+1};\boldsymbol \Sigma_{\epsilon})+\sum_{t=0}^{T-1}2\ln p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta ,\xi)\right]+\mathrm{const}
