@@ -351,17 +351,17 @@ The goal of the M-step is to maximize a lower bound on the joint likelihood func
  p(\mathbf X,\mathbf Y;\boldsymbol \Theta)=\prod_{t=0}^{T-1} p(\mathbf y_{t+1}|\mathbf x_{t+1}; \sigma_{\epsilon})p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta, \sigma_d)p(\mathbf x_0).
 \end{equation}
 The  lower-bound on the joint likelihood function is defined as   
-\begin{align}
+\begin{align}\label{eq:QFunction}
  \mathcal Q(\boldsymbol \Theta,\boldsymbol\Theta')&=\mathbf E_{\boldsymbol \Theta'}\left[2\ln p(\mathbf X,\mathbf Y;\boldsymbol \Theta)\right],
 \end{align}
-where $ \mathbf E_{\boldsymbol \Theta'}$ denotes expectation with respect to the distribution $p(\mathbf X | \mathbf Y;\boldsymbol \Theta') $ where $\boldsymbol \Theta'$ is the current parameter estimate. Re-writing $\mathcal Q$-function in terms of joint distribution components gives
+where $ \mathbf E_{\boldsymbol \Theta'}$ denotes expectation with respect to the distribution $p(\mathbf X | \mathbf Y;\boldsymbol \Theta')$, and $\boldsymbol \Theta'$ is the current parameter estimates. Substituting  \ref{eq:jointdistribution} in \ref{eq:QFunction} gives
 \begin{align}
- \mathcal Q(\boldsymbol \Theta,\boldsymbol\Theta')&=\mathbf E_{\boldsymbol\Theta'}\left[\sum_{t=0}^{T-1}2\ln p(\mathbf y_{t+1}|\mathbf x_{t+1};\boldsymbol \Sigma_{\epsilon})+\sum_{t=0}^{T-1}2\ln p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta, \xi)+\sum_{t=0}^{T-1}2\ln p(\mathbf x_0)\right],
+ \mathcal Q(\boldsymbol \Theta,\boldsymbol\Theta')&=\mathbf E_{\boldsymbol\Theta'}\left[\sum_{t=0}^{T-1}2\ln p(\mathbf y_{t+1}|\mathbf x_{t+1};\sigma_{\epsilon})+\sum_{t=0}^{T-1}2\ln p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta, \sigma_d)+\sum_{t=0}^{T-1}2\ln p(\mathbf x_0)\right],
 \end{align}
  It should be noted that
- $p(\mathbf x_0)$ is not function of parameter set and therefore $\mathcal Q$-function can be rewritten as
+ $p(\mathbf x_0)$ is not a function of parameter set and therefore $\mathcal Q$-function can be rewritten as
 \begin{equation}
-\mathcal Q(\boldsymbol \Theta,\boldsymbol\Theta')=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}2\ln p(\mathbf y_{t+1}|\mathbf x_{t+1};\boldsymbol \Sigma_{\epsilon})+\sum_{t=0}^{T-1}2\ln p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta ,\xi)\right]+\mathrm{const}
+\mathcal Q(\boldsymbol \Theta,\boldsymbol\Theta')=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}2\ln p(\mathbf y_{t+1}|\mathbf x_{t+1};\boldsymbol \sigma_{\epsilon})+\sum_{t=0}^{T-1}2\ln p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta ,\sigma_d)\right]+\mathrm{const}
 \end{equation}
 the constant term can be ignored since it is not affecting the derivative with respect to the parameters. Under the Gaussian assumption and ignoring constant normalising terms, the joint distribution at $t+1$ can be written as
 \begin{eqnarray}
