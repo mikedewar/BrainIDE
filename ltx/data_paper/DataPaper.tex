@@ -373,32 +373,32 @@ We ignored constant terms in the normalising factor of these conditional distrib
 2\ln p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta ,\sigma_d)&=-n_x\ln\sigma_d^2-\ln\mid\tilde{\boldsymbol\Sigma}_e\mid-\frac{1}{\sigma_d^2}\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf x_{t+1}+\frac{2}{\sigma_d^2}\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}q( \mathbf x_t)\boldsymbol\theta+\frac{2\xi}{\sigma_d^2}\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf x_t \nonumber \\
 &-\frac{1}{\sigma_e^2}\boldsymbol\theta^\top q^\top(\mathbf x_t)\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf x_t)\boldsymbol\theta-\frac{2\xi}{\sigma_d^2} \mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf x_t)\boldsymbol\theta-\frac{\xi^2}{\sigma_d^2}\mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf x_t. \label{eq:CondititionDist2}
 \end{align}
-Note that $\boldsymbol\Sigma_e=\sigma_d^2\tilde{\boldsymbol\Sigma}_e$ where $\tilde{\boldsymbol\Sigma}_e$ is constant and can be calculated beforehand as the support of the disturbance covariance function is assumed to be known. Substituting equations \ref{eq:CondititionDist1} and \ref{eq:CondititionDist2} into \ref{eq:QIntermsofJointDist} and taking trace and rearranging, using the invariant cyclic permutations property of the trace, this distribution can be written as
-\begin{align}\label{eq:Qfunctiontrace}
+Note that $\boldsymbol\Sigma_e=\sigma_d^2\tilde{\boldsymbol\Sigma}_e$ where $\tilde{\boldsymbol\Sigma}_e$ is constant and can be calculated beforehand as the support of the disturbance covariance function is assumed to be known. Taking trace and rearranging, using the invariant cyclic permutations property of the trace, this distribution can be written as
+\begin{align}\label{eq:Qfunctiontrace1}
   2\ln p\left(\mathbf y_{t+1}|\mathbf x_{t+1};\sigma_{\epsilon}\right) &= -n_y\ln \sigma_{\epsilon}^2-\frac{1}{\sigma_{\epsilon}^2}\mathrm{tr}\left\lbrace(\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1})^\top\right\rbrace    \\
- 2 \ln p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta ,\sigma_d) &=-\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}\mathbf x_{t+1}+2\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}q( \mathbf x_t)\boldsymbol\theta+2\xi \mathrm{tr} \left\lbrace \mathbf x_t\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}\right\rbrace \nonumber \\
-&-\boldsymbol\theta^\top q^\top(\mathbf x_t)\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-2\xi \mathbf x_t^\top\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)\boldsymbol\theta-\xi^2\mathrm{tr}\left\lbrace \mathbf x_t \mathbf x_t^\top\boldsymbol\Sigma_e^{-1}\right\rbrace. 
+ 2 \ln p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta ,\sigma_d) &=-n_x\ln\sigma_d^2-\frac{1}{\sigma_d^2}\mathrm{tr}\left\lbrace\mathbf x_{t+1} \mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace+\frac{2}{\sigma_d^2}\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}q( \mathbf x_t)\boldsymbol\theta+\frac{2\xi}{\sigma_s^2} \mathrm{tr} \left\lbrace \mathbf x_t\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace \nonumber \\
+&-\frac{1}{\sigma_d^2}\boldsymbol\theta^\top q^\top(\mathbf x_t)\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf x_t)\boldsymbol\theta-\frac{2\xi}{\sigma_d^2} \mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf x_t)\boldsymbol\theta-\frac{\xi^2}{\sigma_d^2}\mathrm{tr}\left\lbrace \mathbf x_t \mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace. \label{eq:Qfunctiontrace2}
 \end{align}
-Having approximated $q\left(\mathbf x_t\right)$ in the E-step, Substituting \ref{eq:qTaylor} in \ref{eq:Qfunctionintrace} and taking the expectation of the log likelihood function for all time instants gives an approximate to the lower-bound that needs to be maximised to gain optimal parameter estimates. Therefore $\mathcal Q$-function can be approximated as  
+Note that we ignore $\ln\mid\tilde{\boldsymbol\Sigma_e}\mid $ as it is not a function of the parameter set. Having approximated $q\left(\mathbf x_t\right)$ in the E-step, by substituting  \ref{eq:Qfunctiontrace1} and \ref{eq:Qfunctiontrace2} into \ref{eq:QIntermsofJointDist} and taking the expectation of the log likelihood function for all time instants gives an approximate to the lower-bound that needs to be maximised to gain optimal parameter estimates. Therefore $\mathcal Q$-function can be approximated as  
 \begin{eqnarray}\label{eq:Voldermont}
- \mathcal Q(\boldsymbol \Theta,\boldsymbol\Theta')&\approx& -(T-1)\ln \mid\boldsymbol\Sigma_{\epsilon}\mid-\mathrm{tr}\left\lbrace\boldsymbol\Sigma_{\epsilon}^{-1}\sum_{t=0}^{T-1}\left[ (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top\right] \right\rbrace\nonumber \\
-&+&\beta+2\Xi_0\boldsymbol\theta+
-2\xi \mathrm{tr}\left\lbrace \Xi_1 \boldsymbol\Sigma_e^{-1}\right\rbrace \nonumber \\
-&-&\boldsymbol\theta^\top \Xi_2\boldsymbol\theta-2\xi \Xi_3 \boldsymbol\theta - \xi^2 \mathrm{tr} \left\lbrace\Xi_4\boldsymbol\Sigma_e^{-1} \right\rbrace 
+ \mathcal Q(\boldsymbol \Theta,\boldsymbol\Theta')&\approx& -(T-1)n_y\ln \sigma_{\epsilon}^2-\mathrm{tr}\left\lbrace\boldsymbol\Sigma_{\epsilon}^{-1}\sum_{t=0}^{T-1}\left[ (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top\right] \right\rbrace\nonumber \\
+&-&(T-1)n_x\ln\sigma_d^2-\frac{1}{\sigma_d^2}\mathrm{tr}\left\lbrace \Xi'_0 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace +2\frac{1}{\sigma_d^2}\Xi_0\boldsymbol\theta+
+\frac{2\xi}{\sigma_d^2} \mathrm{tr}\left\lbrace \Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace \nonumber \\
+&-&\frac{1}{\sigma_d^2}\boldsymbol\theta^\top \Xi_2\boldsymbol\theta-\frac{2\xi}{\sigma_d^2} \Xi_3 \boldsymbol\theta -  \frac{\xi^2}{\sigma_d^2}\mathrm{tr} \left\lbrace\Xi_4\tilde{\boldsymbol\Sigma}_e^{-1} \right\rbrace 
 \end{eqnarray}
 where 
 \begin{align}
-	\beta &= \sum_{t=0}^{T-1}\mathbf E_{\Theta'}\left[-\mathbf x_{t+1}^\top\boldsymbol\Sigma_e^{-1}\mathbf x_{t+1}\right] \label{eq:def of beta} \\
-\Xi_0&=\sum_{t=0}^{T-1}\left[ \mathbf{\hat x}_{t+1}^\top\boldsymbol\Sigma_e^{-1}q(\mathbf{\hat x}_t)+\int_\Omega\boldsymbol \phi^\top(\mathbf r') \mathbf M_{t+1} \boldsymbol\Sigma_e^{-1}  \boldsymbol{\Psi}(\mathbf{r}') f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\right] \\	
+	\Xi'_0&=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_{t+1}\mathbf x_{t+1}^\top\right]=\sum_{t=0}^{T-1}\left(\mathbf P_{t+1}+\mathbf{\hat x}_{t+1}\mathbf{\hat x}_{t+1}^\top\right)\label{eq:def of Xi'0} \\
+\Xi_0&=\sum_{t=0}^{T-1}\left[ \mathbf{\hat x}_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf{\hat x}_t)+\int_\Omega\boldsymbol \phi^\top(\mathbf r') \mathbf M_{t+1} \tilde{\boldsymbol\Sigma}_e^{-1} \boldsymbol{\Psi}(\mathbf{r}') f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\right] \\	
 \Xi_1&=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_t\mathbf x_{t+1}^\top\right]=\sum_{t=0}^{T-1}\left(\mathbf M_{t+1}+\mathbf{\hat x}_t\mathbf{\hat x}_{t+1}^\top\right) \\
-\Xi_2&=\sum_{t=0}^{T-1}\left[q^\top(\mathbf{\hat x}_t)\boldsymbol\Sigma_e^{-1}q(\mathbf{\hat x}_t)+\Lambda_t(\mathbf r)\mathbf P_t \tilde{\Lambda}_t(\mathbf r)\right] \\
- \Xi_3&=\sum_{t=0}^{T-1}\left[ \mathbf{\hat x}_{t}^\top\boldsymbol\Sigma_e^{-1}q(\mathbf{\hat x}_t)+\int_\Omega\boldsymbol \phi^\top(\mathbf r') \mathbf P_t \boldsymbol\Sigma_e^{-1}  \boldsymbol{\Psi}(\mathbf{r}') f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\right] \\
+\Xi_2&=\sum_{t=0}^{T-1}\left[q^\top(\mathbf{\hat x}_t)\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf{\hat x}_t)+\Lambda_t(\mathbf r)\mathbf P_t \tilde{\Lambda}_t(\mathbf r)\right] \\
+ \Xi_3&=\sum_{t=0}^{T-1}\left[ \mathbf{\hat x}_{t}^\top\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf{\hat x}_t)+\int_\Omega\boldsymbol \phi^\top(\mathbf r') \mathbf P_t \tilde{\boldsymbol\Sigma}_e^{-1}  \boldsymbol{\Psi}(\mathbf{r}') f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\right] \\
  \Xi_4&=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_t\mathbf x_{t}^\top\right]=\sum_{t=0}^{T-1}\left(\mathbf P_t+\mathbf{\hat x}_t\mathbf{\hat x}_t^\top\right)
 \end{align}
 and
 \begin{align}
 	 \Lambda_t(\mathbf r)&=\begin{bmatrix}\boldsymbol \lambda_t^{(1)}(\mathbf r) & \boldsymbol \lambda_t^{(2)}(\mathbf r)& \dots &\boldsymbol \lambda_t^{(i)}(\mathbf r)\end{bmatrix} \\
-	 \boldsymbol\lambda_t^{(i)}(\mathbf r)&=\int_{\Omega} \boldsymbol \Psi^\top(\mathbf r')\boldsymbol \Sigma_e^{-1}\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf {\hat x}_t)d\mathbf r'\\
+	 \boldsymbol\lambda_t^{(i)}(\mathbf r)&=\int_{\Omega} \boldsymbol \Psi^\top(\mathbf r')\tilde{\boldsymbol\Sigma}_e^{-1}\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf {\hat x}_t)d\mathbf r'\\
 	\tilde{\Lambda}_t(\mathbf r)&=\begin{bmatrix}\tilde{\boldsymbol \lambda}_t^{(1)}(\mathbf r) \\ \tilde{\boldsymbol \lambda}_t^{(2)}(\mathbf r) \\ \vdots \\ \tilde{\boldsymbol \lambda}_t^{(i)}(\mathbf r)\end{bmatrix} \\
 	 \tilde{\boldsymbol \lambda}_t^{(i)}(\mathbf r)&=\int_{\Omega} \boldsymbol \Psi(\mathbf r')\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf {\hat x}_t)d\mathbf r'
 \end{align}
