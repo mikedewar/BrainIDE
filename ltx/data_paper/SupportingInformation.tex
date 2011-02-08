@@ -71,7 +71,7 @@
 \renewcommand{\theequation}{S1.\arabic{equation}}
 \section*{Product of two $n$-dimensional Gaussian functions}\label{sec:GaussianProduct} 
 In this section, we provide a derivation for the product of two n-dimensional Gaussian basis functions.
-This derivation is used in the  calculation of $\nabla 	q$. Consider two
+This derivation is used in the  calculation of $\boldsymbol\lambda_t^{(i)}\left(\mathbf r\right)$ and $\tilde{\boldsymbol\lambda}_t^{(i)}\left(\mathbf r\right)$ defined in equation \ref{eq:lambdai} and \ref{eq:lambdatildei} of the main text. Consider two
 Gaussian basis functions
 \begin{equation}\label{eq:n_dimensional_Gaussian1}
  \varphi_i(\mathbf r)=\mathrm{exp}\left({-\frac{1}{\sigma_i^2} (\mathbf r-\boldsymbol \mu_i)^\top(\mathbf r-\boldsymbol \mu_i})\right)
@@ -106,7 +106,7 @@ and
  \boldsymbol\mu=\frac{\sigma_j^2\boldsymbol\mu_i+\sigma_i^2\boldsymbol\mu_j}{\sigma_i^2+\sigma_j^2}
 \end{equation}
 \section*{Derivative of the firing rate}\label{sec:FiringrateDerivative} 
-Here we find the derivative of the activation function which is used to compute  $\nabla q$. The sigmoidal activation function which relates firing rate of the presynaptic neurons to the post-synaptic membrane potential is given by
+Here we find the derivative of the activation function which is used to linearize  $q\left(\mathbf x_t\right)$ as described in equation \ref{eq:qTaylor} of the main text. The sigmoidal activation function which relates firing rate of the presynaptic neurons to the post-synaptic membrane potential is given by
 \begin{equation}
 	\label{ActivationFunction} f\left( v\left( \mathbf{r}', t \right) \right) = \frac{1}{1 + \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right)}. 
 \end{equation}
