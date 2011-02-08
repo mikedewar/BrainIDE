@@ -216,8 +216,9 @@ Note that the expectation of $\tilde{q}(\mathbf x_t)$ becomes zero since $\mathb
  \Xi_3= \sum_{t=0}^{T-1}\left[q^\top(\mathbf{\hat x}_t)\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf{\hat x}_t)+\Lambda_t(\mathbf r)\mathbf P_t \tilde{\Lambda}_t(\mathbf r)\right]
 \end{equation}
 \subsection*{Calculating $\Xi_{4}$}
+The last term of equation \ref{eq:Qfunctiontrace2} on page \pageref{eq:Qfunctiontrace2} can be approximated as following, 
 \begin{align}\label{eq:Xi4derivation1}
- \mathbf x_t^\top\boldsymbol\Sigma_e^{-1}q(\mathbf x_t)&\approx\mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}\left[q(\mathbf {\hat x}_t)+\int_\Omega \boldsymbol{\Psi}(\mathbf{r}')\boldsymbol \phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t)f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\right] \nonumber\\
+ \mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf x_t)&\approx\mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}\left[q(\mathbf {\hat x}_t)+\int_\Omega \boldsymbol{\Psi}(\mathbf{r}')\boldsymbol \phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t)f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\right] \nonumber\\
 &=\mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf {\hat x}_t)+\mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}\int_\Omega \boldsymbol{\Psi}(\mathbf{r}')\boldsymbol \phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t)f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}' \nonumber \\
 &=\mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf {\hat x}_t)+\int_\Omega \boldsymbol \phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t)\mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}\boldsymbol{\Psi}(\mathbf{r}')f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'
 \end{align}
