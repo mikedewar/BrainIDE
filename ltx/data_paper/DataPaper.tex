@@ -333,15 +333,15 @@ where the superscripts $m$ and $c$ denote mean and covariance and $\beta$ incorp
 
 Since the state equation is non-linear,  calculation of covariance and  cross-covariance terms required for the maximisation step is not straightforward as in the linear case. Therefore, an additional  Taylor expansion step to the URTSS algorithm is also created to approximate $q(\mathbf{x}_t)$ at each time instant which is to be used in the M-step. This is accomplished by taking the first-order truncated Taylor-series expansion of the sigmoidal activation function  around the smoothed state, $\hat{\mathbf x}_t^{b}$ at each time instant, i.e.
 \begin{equation}\label{eq:SigmoidTaylor}
- f\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\mathbf x_t\right) \approx f\left(\boldsymbol \phi^\top(\mathbf r')\hat{\mathbf x}_t^{b}\right)+  \boldsymbol \phi^\top\left(\mathbf r'\right)\left(\mathbf x_t - \hat{\mathbf x}_t^{b}\right)f'\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t^{b}\right)
+ f\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\mathbf x_t\right) \approx f\left(\boldsymbol \phi^\top(\mathbf r')\hat{\mathbf x}_t\right)+  \boldsymbol \phi^\top\left(\mathbf r'\right)\left(\mathbf x_t - \hat{\mathbf x}_t\right)f'\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t\right)
 \end{equation}
 where 
 \begin{equation}\label{eq:SigmoidDerivative}
- f'\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t^{b}\right)=\varsigma f\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t^{b}\right)\left( 1-f\left( \boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t^{b}\right)\right)
+ f'\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t\right)=\varsigma f\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t\right)\left( 1-f\left( \boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t\right)\right)
 \end{equation}
 substituting \ref{eq:SigmoidTaylor} in \ref{eq:QmatrixForSigmapoints}  we get an approximation for $q(\mathbf x_t)$ around the smoothed estimate $\hat{\mathbf{x}}_t^b$ 
 \begin{equation}\label{eq:qTaylor}
- q(\mathbf x_t) \approx q\left(\hat{\mathbf x}_t^{b}\right)+\int_\Omega \boldsymbol{\Psi}\left(\mathbf{r}'\right)\boldsymbol \phi^\top\left(\mathbf r'\right) \left(\mathbf x_t -\hat{\mathbf x}_t^{b}\right)f'\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t^{b}\right) d\mathbf{r}'
+ q(\mathbf x_t) \approx q\left(\hat{\mathbf x}_t\right)+\int_\Omega \boldsymbol{\Psi}\left(\mathbf{r}'\right)\boldsymbol \phi^\top\left(\mathbf r'\right) \left(\mathbf x_t -\hat{\mathbf x}_t\right)f'\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t\right) d\mathbf{r}'
 \end{equation}
 Equation \ref{eq:qTaylor} is used to approximate the lower bound on the log-likelihood function in the M-step.
 
@@ -388,8 +388,8 @@ Note that we ignore $\ln\mid\tilde{\boldsymbol\Sigma_e}\mid $ as it is not a fun
 \end{eqnarray}
 where 
 \begin{align}
-	\Xi_{0}&=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_{t+1}\mathbf x_{t+1}^\top\right]=\sum_{t=0}^{T-1}\left(\mathbf P_{t+1}+\mathbf{\hat x}_{t+1}\mathbf{\hat x}_{t+1}^\top\right)\label{eq:def of Xi'0} \\
-\Xi_{1}&=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_t\mathbf x_{t+1}^\top\right]=\sum_{t=0}^{T-1}\left(\mathbf M_{t+1}+\mathbf{\hat x}_t\mathbf{\hat x}_{t+1}^\top\right) \\
+	\Xi_{0}&=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_{t+1}\mathbf x_{t+1}^\top\right]=\sum_{t=0}^{T-1}\left(\mathbf P_{t+1}+\mathbf{\hat x}_{t+1}\mathbf{\hat x}_{t+1}^\top\right)\label{eq:defofXi0} \\
+\Xi_{1}&=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_t\mathbf x_{t+1}^\top\right]=\sum_{t=0}^{T-1}\left(\mathbf M_{t+1}+\mathbf{\hat x}_t\mathbf{\hat x}_{t+1}^\top\right) \label{eq:defofXi1} \\
 \Xi_{2}&=\sum_{t=0}^{T-1}\left[ \mathbf{\hat x}_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf{\hat x}_t)+\int_\Omega\boldsymbol \phi^\top(\mathbf r') \mathbf M_{t+1} \tilde{\boldsymbol\Sigma}_e^{-1} \boldsymbol{\Psi}(\mathbf{r}') f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\right] \\	
 \Xi_{3}&=\sum_{t=0}^{T-1}\left[q^\top(\mathbf{\hat x}_t)\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf{\hat x}_t)+\Lambda_t(\mathbf r)\mathbf P_t \tilde{\Lambda}_t(\mathbf r)\right] \\
  \Xi_{4}&=\sum_{t=0}^{T-1}\left[ \mathbf{\hat x}_{t}^\top\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf{\hat x}_t)+\int_\Omega\boldsymbol \phi^\top(\mathbf r') \mathbf P_t \tilde{\boldsymbol\Sigma}_e^{-1}  \boldsymbol{\Psi}(\mathbf{r}') f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\right] \\
@@ -397,10 +397,10 @@ where
 \end{align}
 and
 \begin{align}
-	 \Lambda_t(\mathbf r)&=\begin{bmatrix}\boldsymbol \lambda_t^{(1)}(\mathbf r) & \boldsymbol \lambda_t^{(2)}(\mathbf r)& \dots &\boldsymbol \lambda_t^{(i)}(\mathbf r)\end{bmatrix} \\
-	 \boldsymbol\lambda_t^{(i)}(\mathbf r)&=\int_{\Omega} \boldsymbol \Psi^\top(\mathbf r')\tilde{\boldsymbol\Sigma}_e^{-1}\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf {\hat x}_t)d\mathbf r'\\
-	\tilde{\Lambda}_t(\mathbf r)&=\begin{bmatrix}\tilde{\boldsymbol \lambda}_t^{(1)}(\mathbf r) \\ \tilde{\boldsymbol \lambda}_t^{(2)}(\mathbf r) \\ \vdots \\ \tilde{\boldsymbol \lambda}_t^{(i)}(\mathbf r)\end{bmatrix} \\
-	 \tilde{\boldsymbol \lambda}_t^{(i)}(\mathbf r)&=\int_{\Omega} \boldsymbol \Psi(\mathbf r')\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf {\hat x}_t)d\mathbf r'
+	 \Lambda_t(\mathbf r)&=\begin{bmatrix}\boldsymbol \lambda_t^{(1)}(\mathbf r) & \boldsymbol \lambda_t^{(2)}(\mathbf r)& \dots &\boldsymbol \lambda_t^{(i)}(\mathbf r)\end{bmatrix} \label{eq:Lambda}\\
+	 \boldsymbol\lambda_t^{(i)}(\mathbf r)&=\int_{\Omega} \boldsymbol \Psi^\top(\mathbf r')\tilde{\boldsymbol\Sigma}_e^{-1}\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf {\hat x}_t)d\mathbf r'\label{eq:lambdai}\\
+	\tilde{\Lambda}_t(\mathbf r)&=\begin{bmatrix}\tilde{\boldsymbol \lambda}_t^{(1)}(\mathbf r) \\ \tilde{\boldsymbol \lambda}_t^{(2)}(\mathbf r) \\ \vdots \\ \tilde{\boldsymbol \lambda}_t^{(i)}(\mathbf r)\end{bmatrix} \label{eq:Lambdatilde}\\
+	 \tilde{\boldsymbol \lambda}_t^{(i)}(\mathbf r)&=\int_{\Omega} \boldsymbol \Psi(\mathbf r')\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf {\hat x}_t)d\mathbf r' \label{eq:lambdatildei}
 \end{align}
 It should be noted that the second term in equation \ref{eq:Voldermont} is obtained by adding and subtracting $\mathbf C \mathbf{\hat{x}}_t \mathbf{\hat{x}}_t^\top \mathbf C^\top$ to the expectation, $\mathbf E_{\boldsymbol\Theta'}\left[ .\right] $. Given the state estimates, $\mathbf {\hat x^{b}}_t$ the state covariance $\mathbf P_t^b$ and cross-covariance $\mathbf M_t^b$ , the $\Xi$-variables can be computed directly.
 
