@@ -404,35 +404,24 @@ and
 \end{align}
 It should be noted that the second term in equation \ref{eq:Voldermont} is obtained by adding and subtracting $\mathbf C \mathbf{\hat{x}}_{t+1} \mathbf{\hat{x}}_{t+1}^\top \mathbf C^\top$ to the expectation, $\mathbf E_{\boldsymbol\Theta'}\left[ .\right] $. Given the state estimates, $\mathbf {\hat x^{b}}_t$ the state covariance $\mathbf P_t^b$ and cross-covariance $\mathbf M_t^b$ , the $\Xi$-variables can be computed directly. In the M-step, an update $\boldsymbol\Theta'$ is chosen such that $\mathcal{Q}\left(\boldsymbol\Theta',\boldsymbol\Theta'\right)>\mathcal{Q}\left(\boldsymbol\Theta,\boldsymbol\Theta'\right)$, this will guarantee that the likelihood increases. 
 
-In order to find the maximum of the $\mathcal{Q}$-function Differntiating with respect to $\boldsymbol\theta$ we have
+Consider first the maximization of $\mathcal{Q}$-function with respect to $\boldsymbol\theta$, we can write
 \begin{equation}\label{eq:Qpartialtheta}
- \frac{\partial \mathcal Q}{\partial \boldsymbol\theta}=2\Xi_0-\boldsymbol\theta^\top(\Xi_2^\top+\Xi_2)-2\xi\Xi_3
+ \frac{\partial \mathcal Q}{\partial \boldsymbol\theta}=\frac{2}{\sigma_d^2}\Xi_2-\frac{1}{\sigma_d^2}\boldsymbol\theta^\top(\Xi_3^\top+\Xi_3)-\frac{2\xi}{\sigma_d^2}\Xi_4
 \end{equation}
-noting that $\Xi_2$ is symmetric and equating \ref{eq:Qpartialtheta} to the zero vector we get
+noting that $\Xi_3$ is symmetric and equating \ref{eq:Qpartialtheta} to the zero vector we get
 \begin{equation}\label{eq:theta}
- \boldsymbol \theta=\Xi_2^{-1}\left(\Xi_0^\top-\xi\Xi_3^\top \right)
+ \boldsymbol \theta=\Xi_3^{-1}\left(\Xi_2^\top-\xi\Xi_4^\top \right).
 \end{equation}
-similarly differentiating with respect to $\xi$ we have
-\begin{equation}\label{eq:Qpartialxi}
- \frac{\partial \mathcal Q}{\partial \xi}=2tr\left\lbrace \Xi_1 \boldsymbol\Sigma_e^{-1}\right\rbrace -2 \Xi_3 \boldsymbol\theta - 2\xi tr \left\lbrace\Xi_4\boldsymbol\Sigma_e^{-1} \right\rbrace
-\end{equation}
-substituting \ref{eq:theta} in \ref{eq:Qpartialxi} and equating to zero we get
+The second derivative is negative definite at this stationary point, and hence it is a global maximizer of $\mathcal{Q}$-function.
+Now maximizing with respect to $\sigma_{\epsilon}^2$ we get
 \begin{equation}
- \xi=\frac{tr\left\lbrace \Xi_1 \boldsymbol\Sigma_e^{-1}\right\rbrace-\Xi_3\Xi_2^{-1}\Xi_0^\top}{tr\left\lbrace \Xi_4 \boldsymbol\Sigma_e^{-1}\right\rbrace-\Xi_3\Xi_2^{-1}\Xi_3^\top}
-\end{equation}
-Rewrite equation~\ref{eq:Voldermont} as
-\begin{equation}
- \mathcal Q(\boldsymbol \Theta,\boldsymbol\Theta')\propto-(T-1)n_y\ln\sigma^2_{\epsilon}-\frac{1}{\sigma_{\epsilon}^2}\mathrm{tr}\left\lbrace\sum_{t=0}^{T-1}\left[ (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top\right] \right\rbrace
-\end{equation}
-differentiating with respect to $\sigma_{\epsilon}^2$
-\begin{equation}
-  \frac{\partial \mathcal Q}{\partial \sigma_{\epsilon}^2}=-(T-1)n_y\frac{1}{\sigma_{\epsilon}^2}+\frac{1}{\sigma_{\epsilon^4}}\mathrm{tr}\left\lbrace\sum_{t=0}^{T-1}\left[ (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top\right] \right\rbrace
+  \frac{\partial \mathcal Q}{\partial \sigma_{\epsilon}^2}=-(T-1)n_y\frac{1}{\sigma_{\epsilon}^2}+\frac{1}{\sigma_{\epsilon}^4}\mathrm{tr}\left\lbrace\sum_{t=0}^{T-1}\left[ (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top\right] \right\rbrace
 \end{equation}
 setting above to zero and solving for $\sigma_{\epsilon}^2$ we have
 \begin{equation}
  \sigma_{\epsilon}^2=\frac{1}{(T-1)n_y}\sum_{t=0}^{T-1}\mathrm{tr}\left\lbrace (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top \right\rbrace
 \end{equation}
-
+A second derivative test shows that this is indeed the maximum.
 
 
 
