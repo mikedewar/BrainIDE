@@ -402,9 +402,9 @@ and
 	\tilde{\Lambda}_t(\mathbf r)&=\begin{bmatrix}\tilde{\boldsymbol \lambda}_t^{(1)}(\mathbf r) \\ \tilde{\boldsymbol \lambda}_t^{(2)}(\mathbf r) \\ \vdots \\ \tilde{\boldsymbol \lambda}_t^{(i)}(\mathbf r)\end{bmatrix} \label{eq:Lambdatilde}\\
 	 \tilde{\boldsymbol \lambda}_t^{(i)}(\mathbf r)&=\int_{\Omega} \boldsymbol \Psi(\mathbf r')\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf {\hat x}_t)d\mathbf r' \label{eq:lambdatildei}
 \end{align}
-It should be noted that the second term in equation \ref{eq:Voldermont} is obtained by adding and subtracting $\mathbf C \mathbf{\hat{x}}_t \mathbf{\hat{x}}_t^\top \mathbf C^\top$ to the expectation, $\mathbf E_{\boldsymbol\Theta'}\left[ .\right] $. Given the state estimates, $\mathbf {\hat x^{b}}_t$ the state covariance $\mathbf P_t^b$ and cross-covariance $\mathbf M_t^b$ , the $\Xi$-variables can be computed directly.
+It should be noted that the second term in equation \ref{eq:Voldermont} is obtained by adding and subtracting $\mathbf C \mathbf{\hat{x}}_{t+1} \mathbf{\hat{x}}_{t+1}^\top \mathbf C^\top$ to the expectation, $\mathbf E_{\boldsymbol\Theta'}\left[ .\right] $. Given the state estimates, $\mathbf {\hat x^{b}}_t$ the state covariance $\mathbf P_t^b$ and cross-covariance $\mathbf M_t^b$ , the $\Xi$-variables can be computed directly. In the M-step, an update $\boldsymbol\Theta'$ is chosen such that $\mathcal{Q}\left(\boldsymbol\Theta',\boldsymbol\Theta'\right)>\mathcal{Q}\left(\boldsymbol\Theta,\boldsymbol\Theta'\right)$, this will guarantee that the likelihood increases. 
 
-Differntiating with respect to $\boldsymbol\theta$ we have
+In order to find the maximum of the $\mathcal{Q}$-function Differntiating with respect to $\boldsymbol\theta$ we have
 \begin{equation}\label{eq:Qpartialtheta}
  \frac{\partial \mathcal Q}{\partial \boldsymbol\theta}=2\Xi_0-\boldsymbol\theta^\top(\Xi_2^\top+\Xi_2)-2\xi\Xi_3
 \end{equation}
