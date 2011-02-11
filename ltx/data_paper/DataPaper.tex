@@ -307,8 +307,8 @@ where the nonlinear function, $q(\cdot)$, is defined as
 	q(\mathbf{x}_t) = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) d\mathbf{r}'.
 \end{equation}
 \section{Estimation Algorithm}
-Here we describe the problem of estimating non-linear state-space neural field model using expectation-maximisation (EM) based algorithm \cite{Shumway2000}. The resulting estimation process is an iterative two step procedure that converges on the maximum-likelihood estimates of the parameters. In the E-step we estimate the states $\mathbf x_t$, of the systems and in the M-step we estimate the connectivity kernel parameters $\boldsymbol \theta$, disturbance variance $\sigma_d$ and the observation noise variance $\sigma_{\epsilon}$. Once initialized, at each iteration the sequence of smoothed state vectors is used to update the parameters by maximizing an approximate lower bound on the log likelihood function. The resulting parameters are then used when estimating the new
-state vector sequence for the next iteration. The procedure stops when the parameter estimates converge.
+Here we describe the problem of estimating non-linear state-space neural field model using expectation-maximisation (EM) based algorithm \cite{Dempster1977,Shumway2000}. The resulting estimation process is an iterative two step procedure that converges on the maximum-likelihood estimates of the parameters. In the E-step we estimate the states $\mathbf x_t$, of the systems and in the M-step we estimate the connectivity kernel parameters $\boldsymbol \theta$, disturbance variance $\sigma_d$ and the observation noise variance $\sigma_{\epsilon}$. Once initialized, at each iteration the sequence of smoothed state vectors is used to update the parameters by maximizing an approximate lower bound on the log likelihood function. The resulting parameters are then used when estimating the new
+state vector sequence for the next iteration. The stopping criterion is usually associated with either the change in the parameter estimates or the log-likelihood variation.
 \subsection{E-Step}
 In the E-step the additive form of the unscented Rauch-Tung-Striebel smoother (URTSS)~\cite{Sarkka2010} was used for the state estimation. The URTSS incorporates an unscented Kalman filter (UKF) \cite{Julier1997, Merwe2003} in a forward step to estimate posterior states, $\hat{\mathbf x}_t^{f}$, followed by a backward step to compute the smoothed state estimates, $\hat{\mathbf x}_t^{b}$. The first and second order moments of the predicted state are captured by propagating the so-called sigma points through the state equation. The sigma points, $\mathcal X_i$, are calculated using the unscented transform as follows:
 \begin{align}\label{eq:sigmapoints1}
@@ -423,7 +423,7 @@ setting above to zero and solving for $\sigma_{\epsilon}^2$ we have
 \end{equation}
 A second derivative test shows that this is indeed the maximum. Finally differentiating with respec to $\sigma_d^2$ we get
 \begin{eqnarray}
- \frac{\partial \mathcal Q}{\partial \sigma_d^2}&=& -(T-1)n_x\frac{1}{\sigma_d^2}+\frac{1}{\sigma_d^4}\mathrm{tr}\left\lbrace \Xi_0 \tilde{\boldsymbol\Sigma}_d^{-1}\right\rbrace-\frac{2\xi}{\sigma_d^4} \mathrm{tr}\left\lbrace \Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace -2\frac{1}{\sigma_d^4}\Xi_2\boldsymbol\theta \nonumber \\
+ \frac{\partial \mathcal Q}{\partial \sigma_d^2}&=& -(T-1)n_x\frac{1}{\sigma_d^2}+\frac{1}{\sigma_d^4}\mathrm{tr}\left\lbrace \Xi_0 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-\frac{2\xi}{\sigma_d^4} \mathrm{tr}\left\lbrace \Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace -2\frac{1}{\sigma_d^4}\Xi_2\boldsymbol\theta \nonumber \\
 &+&\frac{1}{\sigma_d^4}\boldsymbol\theta^\top \Xi_3\boldsymbol\theta+\frac{2\xi}{\sigma_d^4} \Xi_4 \boldsymbol\theta +\frac{\xi^2}{\sigma_d^4}\mathrm{tr} \left\lbrace\Xi_5\tilde{\boldsymbol\Sigma}_e^{-1} \right\rbrace 
 \end{eqnarray}
 setting above to zero and solving for $\sigma_e^2$ we have
@@ -431,7 +431,7 @@ setting above to zero and solving for $\sigma_e^2$ we have
 \sigma_d^2=\frac{1}{(T-1)n_x}\left[ \mathrm{tr}\left\lbrace \Xi_0 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-
 2\xi\mathrm{tr}\left\lbrace \Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace -2\Xi_2\boldsymbol\theta+\boldsymbol\theta^\top \Xi_3\boldsymbol\theta+2\xi\Xi_4 \boldsymbol\theta +\xi^2\mathrm{tr} \left\lbrace\Xi_5\tilde{\boldsymbol\Sigma}_e^{-1} \right\rbrace \right]  
 \end{eqnarray}
-It can be also shown that the resulting solution is a maximum.
+The second derivative test confirms this is a maximum.
 
 \section{Results}
 \begin{itemize}
