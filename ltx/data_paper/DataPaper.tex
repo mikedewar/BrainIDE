@@ -421,21 +421,17 @@ setting above to zero and solving for $\sigma_{\epsilon}^2$ we have
 \begin{equation}
  \sigma_{\epsilon}^2=\frac{1}{(T-1)n_y}\sum_{t=0}^{T-1}\mathrm{tr}\left\lbrace (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top \right\rbrace
 \end{equation}
-A second derivative test shows that this is indeed the maximum.
-
-
-
-\subsection{Discussion}
-The second derivative of the $\mathcal Q$-function with respect to $\xi$ is given by
-\begin{equation}
- \frac{\partial^2 \mathcal Q}{\partial \xi^2}=-2 tr \left\lbrace\Xi_1\boldsymbol\Sigma_e^{-1} \right\rbrace
-\end{equation}
-$\Xi_1 $ is positive definite if the state vector is persistently excited and the covariance matrix $\boldsymbol\Sigma_e^{-1}$ is also positive definite therefore the trace of $\Xi_1\boldsymbol\Sigma_w^{-1}$ is guaranteed to be positive so the second derivative is negative and represents a maximum of $\mathcal Q$-function.\\
-The second derivative of the $\mathcal Q$-function with respect to $\boldsymbol \theta$ is given by
-\begin{equation}
- \frac{\partial^2 \mathcal Q}{\partial \boldsymbol\theta^2}=-2 \Xi_2 
-\end{equation}
-$\Xi_2$ is positive definite and invertible and the second derivative is negative definite and represents a maximum of $\mathcal Q$- function.
+A second derivative test shows that this is indeed the maximum. Finally differentiating with respec to $\sigma_d^2$ we get
+\begin{eqnarray}
+ \frac{\partial \mathcal Q}{\partial \sigma_d^2}&=& -(T-1)n_x\frac{1}{\sigma_d^2}+\frac{1}{\sigma_d^4}\mathrm{tr}\left\lbrace \Xi_0 \tilde{\boldsymbol\Sigma}_d^{-1}\right\rbrace-\frac{2\xi}{\sigma_d^4} \mathrm{tr}\left\lbrace \Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace -2\frac{1}{\sigma_d^4}\Xi_2\boldsymbol\theta \nonumber \\
+&+&\frac{1}{\sigma_d^4}\boldsymbol\theta^\top \Xi_3\boldsymbol\theta+\frac{2\xi}{\sigma_d^4} \Xi_4 \boldsymbol\theta +\frac{\xi^2}{\sigma_d^4}\mathrm{tr} \left\lbrace\Xi_5\tilde{\boldsymbol\Sigma}_e^{-1} \right\rbrace 
+\end{eqnarray}
+setting above to zero and solving for $\sigma_e^2$ we have
+\begin{eqnarray}
+\sigma_d^2=\frac{1}{(T-1)n_x}\left[ \mathrm{tr}\left\lbrace \Xi_0 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-
+2\xi\mathrm{tr}\left\lbrace \Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace -2\Xi_2\boldsymbol\theta+\boldsymbol\theta^\top \Xi_3\boldsymbol\theta+2\xi\Xi_4 \boldsymbol\theta +\xi^2\mathrm{tr} \left\lbrace\Xi_5\tilde{\boldsymbol\Sigma}_e^{-1} \right\rbrace \right]  
+\end{eqnarray}
+It can be also shown that the resulting solution is a maximum.
 
 \section{Results}
 \begin{itemize}
