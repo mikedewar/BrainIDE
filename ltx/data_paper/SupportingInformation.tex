@@ -58,6 +58,9 @@
 % David B. Grayden$^{1}$,
 % Visakan Kadirkamanathan$^{4}$}
 \usepackage{xr}
+\usepackage{color}
+\newcommand{\dean}[1]{\textsf{\emph{\textbf{\textcolor{red}{#1}}}}}
+
 \externaldocument{DataPaper}
 
 \begin{document}
@@ -69,6 +72,10 @@
 \fi
 
 \renewcommand{\theequation}{S1.\arabic{equation}}
+
+
+
+
 \section*{Product of two $n$-dimensional Gaussian functions}\label{sec:GaussianProduct} 
 In this section, we provide a derivation for the product of two n-dimensional Gaussian basis functions.
 This derivation is used in the  calculation of $\boldsymbol\lambda_t^{(i)}\left(\mathbf r\right)$ and $\tilde{\boldsymbol\lambda}_t^{(i)}\left(\mathbf r\right)$ defined in equation \ref{eq:lambdai} and \ref{eq:lambdatildei} of the main text. Consider two
@@ -190,24 +197,24 @@ In order to find an approximation for the fifth term in equation \ref{eq:Qfuncti
 &=q^\top(\mathbf {\hat x}_t)\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf {\hat x}_t)+q^\top(\mathbf {\hat x}_t)\tilde{\boldsymbol\Sigma}_e^{-1}\int_\Omega \boldsymbol{\Psi}(\mathbf{r}')\boldsymbol \phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t)f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\nonumber\\
 &+\int_\Omega \boldsymbol{\Psi}^\top(\mathbf{r}')\boldsymbol \phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t)f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf {\hat x}_t) \nonumber \\
 &+\int_\Omega \boldsymbol{\Psi}^\top(\mathbf{r}')\boldsymbol \phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t)f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}' \times \tilde{\boldsymbol  \Sigma}_e^{-1} \times \int_\Omega \boldsymbol{\Psi}(\mathbf{r}')\boldsymbol \phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t)f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}' \nonumber \\
-&
+&= term1 + term2 + term3 + term4
 \end{align}
- The last term on the right hand side of equation \ref{eq:Xi4derivation1} can be rewritten as
+\dean{Motivate the step: To use the covariance estimate from the filter we need to get the $\mathbf{x}_t$ terms together.} To do this the last term on the right hand side of equation \ref{eq:Xi4derivation1} can be rewritten as (\dean{we should talk about this in words and go direct to the next equation})
 \begin{align}
- \int_\Omega \boldsymbol{\Psi}^\top(\mathbf{r}') \tilde{\boldsymbol\Sigma}_e^{-1}f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) \boldsymbol \phi^\top(\mathbf r')(\mathbf x_t - \mathbf  {\hat x}_t)d\mathbf{r}' \times\int_\Omega  (\mathbf x_t - \mathbf  {\hat x}_t)^\top\boldsymbol \phi(\mathbf r') \boldsymbol{\Psi}(\mathbf{r}')f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'& \nonumber \\
+ term4 = \int_\Omega \boldsymbol{\Psi}^\top(\mathbf{r}') \tilde{\boldsymbol\Sigma}_e^{-1}f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) \boldsymbol \phi^\top(\mathbf r')(\mathbf x_t - \mathbf  {\hat x}_t)d\mathbf{r}' \times\int_\Omega  (\mathbf x_t - \mathbf  {\hat x}_t)^\top\boldsymbol \phi(\mathbf r') \boldsymbol{\Psi}(\mathbf{r}')f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'& \nonumber \\
 =\begin{bmatrix} \int_{\Omega} \boldsymbol \Psi^\top(\mathbf r')\tilde{\boldsymbol \Sigma}_e^{-1}\phi_1(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf {\hat x}_t)d\mathbf r' &  \dots & \int_{\Omega} \boldsymbol \Psi^\top(\mathbf r')\tilde{\boldsymbol \Sigma}_e^{-1}\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf {\hat x}_t)d\mathbf r'\end{bmatrix}(\mathbf x_t - \mathbf  {\hat x}_t) & \nonumber \\
 \times (\mathbf x_t - \mathbf  {\hat x}_t)^\top \begin{bmatrix}\int_{\Omega} \boldsymbol \Psi(\mathbf r')\phi_1(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf {\hat x}_t)d\mathbf r' \\  \vdots \\ \int_{\Omega} \boldsymbol \Psi(\mathbf r')\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf {\hat x}_t)d\mathbf r'\end{bmatrix}& \nonumber \\
 \end{align}
-therefore \ref{eq:Xi4derivation1} can be written as
+therefore \ref{eq:Xi4derivation1} can be written as (\dean{instead of using q tilde we should just use the term entire term.})
 \begin{align}\label{eq:Xi3derivation2}
   q^\top(\mathbf x_t)\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf x_t)&\approx q^\top(\mathbf {\hat x}_t)\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf {\hat x}_t)+\Lambda_t(\mathbf r)(\mathbf x_t - \mathbf  {\hat x}_t) (\mathbf x_t - \mathbf  {\hat x}_t)^\top\tilde{\Lambda}_t(\mathbf r)+\tilde{q}(\mathbf x_t)
 \end{align}
-where $\Lambda_t(\mathbf r)$ and $\tilde{\Lambda}_t(\mathbf r)$ are defined in equations (\ref{eq:Lambda}-\ref{eq:lambdatildei}) of the main text, and  
+where $\Lambda_t(\mathbf r)$ and $\tilde{\Lambda}_t(\mathbf r)$ are defined in equations (\ref{eq:Lambda}-\ref{eq:lambdatildei}) of the main text, and (\dean{replace q tilde as term 2 and 3})
 \begin{align}\label{eq:qtilde}
  \tilde{q}(\mathbf x_t)&=q^\top(\mathbf {\hat x}_t)\tilde{\boldsymbol\Sigma}_e^{-1}\int_\Omega \boldsymbol{\Psi}(\mathbf{r}')\boldsymbol \phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t)f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\nonumber\\
 &+\int_\Omega \boldsymbol{\Psi}^\top(\mathbf{r}')\boldsymbol \phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t)f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf {\hat x}_t)
 \end{align}
-taking expectation from \ref{eq:Xi4derivation2} we have 
+taking expectation from \ref{eq:Xi4derivation1} we have 
 \begin{equation}\label{eq:Xi3derivation3}
 \mathbf E_{\Theta'}\left[ q^\top(\mathbf x_t)\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf x_t)\right]\approx q^\top(\mathbf {\hat x}_t)\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf {\hat x}_t)  +\Lambda_t(\mathbf r)\mathbf E_{\theta'}\left[  (\mathbf x_t - \mathbf  {\hat x}_t) (\mathbf x_t - \mathbf  {\hat x}_t)^\top\right]\tilde{\Lambda}_t(\mathbf r)
 \end{equation}
