@@ -87,18 +87,29 @@ since the disturbance added to the field at time $t$ and assumed to be uncorrela
 \begin{equation}
 	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) - R_1(\boldsymbol{\tau}) \approx \frac{T_s \varsigma}{\xi} \left(R_1 \ast w\right)\left(\boldsymbol{\tau}\right).
 \end{equation}
+Now we rewrite this equation as a matrix convolution giving
+\begin{equation}
+	\mathbf{y} = \mathbf{A}\mathbf{x}
+\end{equation}
+
 Now, by taking the Fourier transform we get
 \begin{equation}
-	\mathcal{F}\left\{R_{y_{t},y_{t+1}}(\boldsymbol{\tau})\right\} - \mathcal{F}\left\{R_1(\boldsymbol{\tau})\right\} \approx \frac{T_s \varsigma}{\xi} \mathcal{F}\left\{R_1(\boldsymbol{\tau})\right\} \mathcal{F}\left\{ w\left(\boldsymbol{\tau}\right)\right\}.
+	\mathcal{F}\left\{ R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) - R_1(\boldsymbol{\tau}) \right\} \approx \frac{T_s \varsigma}{\xi} \mathcal{F} \left\{ R_1(\boldsymbol{\tau}) \right\} \mathcal{F}\left\{ w\left(\boldsymbol{\tau}\right)\right\}.
 \end{equation}
 This simplifies to (\dean{this step is where need to find a better method for deconv})
+\begin{align}
+	\Delta^2&\sum_{\tau_{min}}^{\tau_{max}}\sum_{\tau_{min}}^{\tau_{max}}\left(R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) - R_1(\boldsymbol{\tau})\right) \exp\left(-j2\pi f \tau_x T_s\right)\exp\left(-j2\pi f \tau_y T_s\right) \\
+	& \approx \Delta^2\sum_{\tau_{min}}^{\tau_{max}}\sum_{\tau_{min}}^{\tau_{max}} R_1(\boldsymbol{\tau}) \exp\left(-j2\pi f \tau_x T_s\right)\exp\left(-j2\pi f \tau_y T_s\right) \\
+	&\times \Delta^2\sum_{\tau_{min}}^{\tau_{max}}\sum_{\tau_{min}}^{\tau_{max}} w(\boldsymbol{\tau}) \exp\left(-j2\pi f \tau_x T_s\right)\exp\left(-j2\pi f \tau_y T_s\right)
+\end{align}
+
 \begin{equation}
 	\frac{\xi}{T_s \varsigma} \left(\frac{\mathcal{F}\left\{R_{y_{t},y_{t+1}}(\boldsymbol{\tau})\right\}}{\mathcal{F}\left\{R_1(\boldsymbol{\tau})\right\}} - 1\right) \approx  W\left(\boldsymbol{\nu}\right).
 \end{equation}
 Now substituting back in equation~\ref{eq:R1}, we can write
 
 \begin{align}
-	W\left(\boldsymbol{\nu}\right) &\approx \frac{\xi}{T_s \varsigma} \left(\frac{\mathcal{F}\left\{R_{y_{t},y_{t+1}}(\boldsymbol{\tau})\right\}}{\mathcal{F}\left\{\xi\left( R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \sigma_{\varepsilon}^2\delta_K\left(\boldsymbol{\tau}\right) \right)\right\}} - 1\right)  \\
+	W\left(\boldsymbol{\nu}\right) &\approx \frac{\xi}{T_s \varsigma} \left(\frac{\mathcal{F}\left\{R_{y_{t},y_{t+1}}(\boldsymbol{\tau})\right\}}{\xi\mathcal{F}\left\{\left( R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \sigma_{\varepsilon}^2\delta_K\left(\boldsymbol{\tau}\right) \right)\right\}} - 1\right)  \\
 	&= \frac{1}{T_s \varsigma} \left(\frac{\mathcal{F}\left\{R_{y_{t},y_{t+1}}(\boldsymbol{\tau})\right\}}{\mathcal{F}\left\{ R_{y_{t},y_{t}}(\boldsymbol{\tau})\right\} - \sigma_{\varepsilon}^2 } - \xi\right) \\
 	&= \frac{1}{T_s \varsigma} \left(\frac{S_{y_{t},y_{t+1}}\left(\boldsymbol{\nu}\right)}{S_{y_{t},y_{t}}\left(\boldsymbol{\nu}\right) - \sigma_{\varepsilon}^2 } - \xi\right)
 \end{align}
@@ -137,6 +148,78 @@ This equation states that the support of the kernel can be estimated given knowl
 \caption{{\bf Estimation of Connectivity Kernel Support}. The kernel values are normalised. True  and estimated kernels are shown with black and red lines respectively.}
 \label{fig:KernelWidth2}
 \end{figure}
+
+\subsection{XCorr Analysis using the Field}
+\begin{equation}
+	R_{v_tv_{t+1}}(\boldsymbol{\tau}) = \mathbf{E}[v_t(\mathbf{r})v_{t+1}(\mathbf{r}+\boldsymbol{\tau})]
+\end{equation}
+Sub in def for $v_{t+1}(\mathbf{r}+\boldsymbol{\tau})$ giving
+\begin{equation}
+	R_{v_tv_{t+1}}(\boldsymbol{\tau}) = \mathbf{E}\left[v_t(\mathbf{r})\left(\xi v_t(\mathbf{r}+\boldsymbol{\tau}) + T_s g ( \mathbf{r} + \boldsymbol{\tau}) + e_t(\mathbf{r}+\boldsymbol{\tau})\right) \right]
+\end{equation}
+expand to give three terms inside the expectation
+\begin{equation}
+	R_{v_tv_{t+1}}(\boldsymbol{\tau}) = R_1(\boldsymbol{\tau}) + R_2(\boldsymbol{\tau}) + R_3(\boldsymbol{\tau})
+\end{equation}
+where
+\begin{align}
+	R_1(\boldsymbol{\tau}) &= \xi\mathbf{E}\left[v_t(\mathbf{r}) v_t(\mathbf{r}+\boldsymbol{\tau})\right] \\
+	&= \xi R_{v_tv_t}(\boldsymbol{\tau}) \\
+	R_2(\boldsymbol{\tau}) &= T_s \mathbf{E}\left[v_t(\mathbf{r}) g_t(\mathbf{r}+\boldsymbol{\tau}) \right] \\
+	&= T_s \mathbf{E}\left[v_t(\mathbf{r}) \int_{\Omega} w(\mathbf{r}-\mathbf{r}'+\boldsymbol{\tau}) f(v_t(\mathbf{r}')) d\mathbf{r}' \right] \\
+	&\approx T_s \varsigma \mathbf{E}\left[v_t(\mathbf{r}) \int_{\Omega} w(\mathbf{r}-\mathbf{r}'+\boldsymbol{\tau}) v_t(\mathbf{r}') d\mathbf{r}' \right] \\
+	&\approx T_s \varsigma \mathbf{E}\left[v_t(\mathbf{r}) \int_{\Omega} w(\mathbf{r}'+\boldsymbol{\tau}) v_t(\mathbf{r}-\mathbf{r}') d\mathbf{r}' \right] \\
+	&\approx T_s \varsigma \int_{\Omega} \mathbf{E}\left[ v_t(\mathbf{r}) v_t(\mathbf{r}-\mathbf{r}') \right] w(\mathbf{r}'+\boldsymbol{\tau})  d\mathbf{r}'  \\
+	&\approx T_s \varsigma \int_{\Omega} R_{v_tv_t}(-\mathbf{r}') w(\mathbf{r}'+\boldsymbol{\tau})  d\mathbf{r}'  \\
+	R_3(\boldsymbol{\tau}) &= \mathbf{E}\left[v_t(\mathbf{r}) e_t(\mathbf{r}+\boldsymbol{\tau})\right] \\
+	&= 0.
+\end{align}
+Therefore we can write
+\begin{equation}
+	R_{v_tv_{t+1}}(\boldsymbol{\tau}) \approx \xi R_{v_tv_t}(\boldsymbol{\tau}) + T_s \varsigma R_{v_tv_t}(\boldsymbol{\tau}) \ast w(\boldsymbol{\tau}).
+\end{equation}
+Rearranging gives
+\begin{equation}
+	R_{v_tv_{t+1}}(\boldsymbol{\tau}) - \xi R_{v_tv_t}(\boldsymbol{\tau}) \approx T_s \varsigma R_{v_tv_t}(\boldsymbol{\tau}) \ast w(\boldsymbol{\tau})
+\end{equation}
+Now performing the deconvolution using the FFT we have
+\begin{align}
+	\frac{1}{T_s \varsigma}\mathcal{F}(R_{v_tv_{t+1}}(\boldsymbol{\tau}) - \xi R_{v_tv_t}(\boldsymbol{\tau})) &\approx \mathcal{F}(R_{v_tv_t}(\boldsymbol{\tau})) \mathcal{F}(w(\boldsymbol{\tau})) \\
+	\frac{1}{T_s \varsigma}\frac{\mathcal{F}(R_{v_tv_{t+1}}(\boldsymbol{\tau}) - \xi R_{v_tv_t}(\boldsymbol{\tau}))}{\mathcal{F}(R_{v_tv_t}(\boldsymbol{\tau}))} &\approx \mathcal{F}(w(\boldsymbol{\tau})).
+\end{align}
+The final equation is
+\begin{equation}
+	w(\boldsymbol{\tau})\approx \frac{1}{T_s \varsigma}\mathcal{F}^{-1}\left\{\frac{\mathcal{F}(R_{v_tv_{t+1}}(\boldsymbol{\tau}) - \xi R_{v_tv_t}(\boldsymbol{\tau}))}{\mathcal{F}(R_{v_tv_t}(\boldsymbol{\tau}))}\right\}
+\end{equation}
+
+\newpage
+
+\subsection*{CRAZY}
+\begin{align}
+	R_{y_{t+1}y_t}(\boldsymbol{\tau}) &= \int_{\Omega} v_{t+1}(\mathbf{r}) v_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} \\
+	&= \int_{\Omega} \left(\xi v_t(\mathbf{r}) + g_t(\mathbf{r}) + e_t(\mathbf{r})\right) v_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} \\
+	&= \xi \int_{\Omega} v_t(\mathbf{r}) v_t(\mathbf{r}+\boldsymbol{\tau})d\mathbf{r} + \int_{\Omega}g_t(\mathbf{r})v_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} + \int_{\Omega} e_t(\mathbf{r})v_t(\mathbf{r}+\boldsymbol{\tau})d\mathbf{r}
+\end{align}
+These four terms in the above equation are easy to compute and it all balances. From this we can write
+\begin{equation}
+	R_{y_ty_{t+1}}(\boldsymbol{\tau}) - \xi R_{y_ty_t}(\boldsymbol{\tau}) = \int_{\Omega}g_t(\mathbf{r})v_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}
+\end{equation}
+Now a property of cross-correlation and convolution is $(a \ast b) \star c = b(-)\ast(a \star c)$ so we can write
+\begin{equation}
+	R_{y_ty_{t+1}}(\boldsymbol{\tau}) - \xi R_{y_ty_t}(\boldsymbol{\tau}) = w(-) \ast \int_{\Omega} v_t(\mathbf{r}) v_t(\mathbf{r}+\boldsymbol{\tau})d\mathbf{r}
+\end{equation}
+since
+\begin{equation}
+	g_t(\mathbf{r}) = (w \ast f_t)(\mathbf{r})
+\end{equation}
+Now I can easily compute
+\begin{equation}
+	\int_{\Omega}g_t(\mathbf{r})v_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}
+\end{equation}
+but I can't get
+\begin{equation}
+	\int_{\Omega}g_t(\mathbf{r})v_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} = w(-) \ast \int_{\Omega} v_t(\mathbf{r}) v_t(\mathbf{r}+\boldsymbol{\tau})d\mathbf{r}
+\end{equation}
 
 \newpage
 \subsection*{Estimation of Disturbance Support}

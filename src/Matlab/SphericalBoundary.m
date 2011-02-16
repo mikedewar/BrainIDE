@@ -30,7 +30,7 @@ SecondThirdEnd = 2*FirstThirdEnd+1;
 
 mm=1;
 Sigma_gamma = zeros(NPointsInField^2,NPointsInField^2);   % create disturbance covariance matrix
-figure
+% figure
 template = zeros(NPointsInField,NPointsInField);
 for n=1:NPointsInField
     for nn=1:NPointsInField
