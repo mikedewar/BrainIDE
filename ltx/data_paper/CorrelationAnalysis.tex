@@ -149,49 +149,6 @@ This equation states that the support of the kernel can be estimated given knowl
 \label{fig:KernelWidth2}
 \end{figure}
 
-\subsection{XCorr Analysis using the Field}
-\begin{equation}
-	R_{v_tv_{t+1}}(\boldsymbol{\tau}) = \mathbf{E}[v_t(\mathbf{r})v_{t+1}(\mathbf{r}+\boldsymbol{\tau})]
-\end{equation}
-Sub in def for $v_{t+1}(\mathbf{r}+\boldsymbol{\tau})$ giving
-\begin{equation}
-	R_{v_tv_{t+1}}(\boldsymbol{\tau}) = \mathbf{E}\left[v_t(\mathbf{r})\left(\xi v_t(\mathbf{r}+\boldsymbol{\tau}) + T_s g ( \mathbf{r} + \boldsymbol{\tau}) + e_t(\mathbf{r}+\boldsymbol{\tau})\right) \right]
-\end{equation}
-expand to give three terms inside the expectation
-\begin{equation}
-	R_{v_tv_{t+1}}(\boldsymbol{\tau}) = R_1(\boldsymbol{\tau}) + R_2(\boldsymbol{\tau}) + R_3(\boldsymbol{\tau})
-\end{equation}
-where
-\begin{align}
-	R_1(\boldsymbol{\tau}) &= \xi\mathbf{E}\left[v_t(\mathbf{r}) v_t(\mathbf{r}+\boldsymbol{\tau})\right] \\
-	&= \xi R_{v_tv_t}(\boldsymbol{\tau}) \\
-	R_2(\boldsymbol{\tau}) &= T_s \mathbf{E}\left[v_t(\mathbf{r}) g_t(\mathbf{r}+\boldsymbol{\tau}) \right] \\
-	&= T_s \mathbf{E}\left[v_t(\mathbf{r}) \int_{\Omega} w(\mathbf{r}-\mathbf{r}'+\boldsymbol{\tau}) f(v_t(\mathbf{r}')) d\mathbf{r}' \right] \\
-	&\approx T_s \varsigma \mathbf{E}\left[v_t(\mathbf{r}) \int_{\Omega} w(\mathbf{r}-\mathbf{r}'+\boldsymbol{\tau}) v_t(\mathbf{r}') d\mathbf{r}' \right] \\
-	&\approx T_s \varsigma \mathbf{E}\left[v_t(\mathbf{r}) \int_{\Omega} w(\mathbf{r}'+\boldsymbol{\tau}) v_t(\mathbf{r}-\mathbf{r}') d\mathbf{r}' \right] \\
-	&\approx T_s \varsigma \int_{\Omega} \mathbf{E}\left[ v_t(\mathbf{r}) v_t(\mathbf{r}-\mathbf{r}') \right] w(\mathbf{r}'+\boldsymbol{\tau})  d\mathbf{r}'  \\
-	&\approx T_s \varsigma \int_{\Omega} R_{v_tv_t}(-\mathbf{r}') w(\mathbf{r}'+\boldsymbol{\tau})  d\mathbf{r}'  \\
-	R_3(\boldsymbol{\tau}) &= \mathbf{E}\left[v_t(\mathbf{r}) e_t(\mathbf{r}+\boldsymbol{\tau})\right] \\
-	&= 0.
-\end{align}
-Therefore we can write
-\begin{equation}
-	R_{v_tv_{t+1}}(\boldsymbol{\tau}) \approx \xi R_{v_tv_t}(\boldsymbol{\tau}) + T_s \varsigma R_{v_tv_t}(\boldsymbol{\tau}) \ast w(\boldsymbol{\tau}).
-\end{equation}
-Rearranging gives
-\begin{equation}
-	R_{v_tv_{t+1}}(\boldsymbol{\tau}) - \xi R_{v_tv_t}(\boldsymbol{\tau}) \approx T_s \varsigma R_{v_tv_t}(\boldsymbol{\tau}) \ast w(\boldsymbol{\tau})
-\end{equation}
-Now performing the deconvolution using the FFT we have
-\begin{align}
-	\frac{1}{T_s \varsigma}\mathcal{F}(R_{v_tv_{t+1}}(\boldsymbol{\tau}) - \xi R_{v_tv_t}(\boldsymbol{\tau})) &\approx \mathcal{F}(R_{v_tv_t}(\boldsymbol{\tau})) \mathcal{F}(w(\boldsymbol{\tau})) \\
-	\frac{1}{T_s \varsigma}\frac{\mathcal{F}(R_{v_tv_{t+1}}(\boldsymbol{\tau}) - \xi R_{v_tv_t}(\boldsymbol{\tau}))}{\mathcal{F}(R_{v_tv_t}(\boldsymbol{\tau}))} &\approx \mathcal{F}(w(\boldsymbol{\tau})).
-\end{align}
-The final equation is
-\begin{equation}
-	w(\boldsymbol{\tau})\approx \frac{1}{T_s \varsigma}\mathcal{F}^{-1}\left\{\frac{\mathcal{F}(R_{v_tv_{t+1}}(\boldsymbol{\tau}) - \xi R_{v_tv_t}(\boldsymbol{\tau}))}{\mathcal{F}(R_{v_tv_t}(\boldsymbol{\tau}))}\right\}
-\end{equation}
-
 \newpage
 
 \subsection*{CRAZY}
@@ -222,6 +179,7 @@ but I can't get
 \end{equation}
 
 \newpage
+
 \subsection*{Estimation of Disturbance Support}
 Given the knowledge of the sensors' spatial bandwidth, the support of the disturbance can be also inferred using spatial correlation analysis. Here we also assume continuous observation and the linear behaviour of the firing rate for majority of the time. The spatial auto-correlation function between observations at each time  is defined as 
 \begin{align}
