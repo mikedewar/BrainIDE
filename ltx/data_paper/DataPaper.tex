@@ -55,6 +55,7 @@
 \newcommand{\dean}[1]{\textsf{\emph{\textbf{\textcolor{red}{#1}}}}} 
 \newcommand{\red}{\textcolor{red}}
 \newcommand{\blue}{\textcolor{blue}}
+\newcommand{\cyan}{\textcolor{cyan}}
 
 \title{Towards Patient-Specific Neural Field Modeling using Micro-Electrode Data}
 \author{In no specific order: Parham Aram, Dean R. Freestone, Kenneth Scerri, Michael Dewar,\\
@@ -105,11 +106,12 @@ where $v\left( {\mathbf{r},0} \right)$ is the membrane voltage at the initial ti
 \begin{equation}
 	\label{SynapticRespKernel} h(t) = \eta(t)\exp{\left(-\zeta t\right)}, 
 \end{equation}
+\cyan{small thing: are we using $\exp(x)$ or $e^x$ to represent exponential?}
 $\zeta=\tau^{-1}$, $\tau$ is the synaptic time constant and $\eta(t)$ is the Heaviside step function \blue{(you can keep it here if you wish as it doesn't change the integral equation because of the upper limit. I would remove it)}. $g(\cdot)$ describes the mean firing rate. In practice, the firing rate can rarely be considered as a purely determinstic process because \red{(can someone write down why?)}. We thus choose to introduce a spatially coloured space-time Wiener process $W(\mathbf{r},t)$ to model the flactuations in the mean firing rate and decompose $g(\cdot)$ as
 \begin{equation}\label{DecompositionOfg}
 g(\mathbf{r},t)\textrm{d}t = \tilde{g}(\mathbf{r},t)\textrm{d}t + \sigma_W \textrm{d}W(\mathbf{r},t) 
 \end{equation}
-where $\sigma_W \ge 0$ is a measure of the introduced space-time randomness. For $\sigma_W = 0$ a pure deterministic process is recovered. As a result of the random component component, for $\sigma_W > 0$, the membrane voltage $v(\mathbf{r},t)$ is itself a stochastic process. Assuming an infinite propagation velocity for action potentials within the field, the deterministic incoming firing rate is described by a spatial convolution \red{citation?}
+where $\sigma_W \ge 0$ is a measure of the introduced space-time randomness. For $\sigma_W = 0$ a pure deterministic process is recovered. As a result of the random component, for $\sigma_W > 0$, the membrane voltage $v(\mathbf{r},t)$ is itself a stochastic process. Assuming an infinite propagation velocity for action potentials within the field, the deterministic incoming firing rate is described by a spatial convolution \red{citation?}
 \begin{equation}
 	\label{RateBasedInteractions} \tilde{g}\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( v\left( \mathbf{r}',t \right) \right)\textrm{d}\mathbf{r}'}, 
 \end{equation}
@@ -117,7 +119,7 @@ where $w(\cdot)$ is the spatial connectivity kernel and $\Omega$ is the spatial 
 \begin{equation}
 	\label{ActivationFunction} f\left( v\left( \mathbf{r}', t \right) \right) = \frac{1}{1 + \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right)}, 
 \end{equation}
-where $v_0$ and $\varsigma$ describe the firing threshold the slope of the sigmoid respectively. 
+where $v_0$ and $\varsigma$ describe the firing threshold and the slope of the sigmoid respectively. 
 By substituting equation~\ref{DecompositionOfg} into equation~\ref{SpikesToPotential} we obtain the stochastic integral equation model 
 \begin{equation}
 	\label{StochasticModel} v\left(\mathbf{r},t\right) = e^{-\zeta t}v\left( {\mathbf{r},0} \right) +
@@ -172,7 +174,7 @@ Now by defining the matrix
 \begin{equation}\label{eq:DefGamma}
 	\boldsymbol{\Gamma} \triangleq \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi} ^{\top}\left(\mathbf{r}\right)\textrm{d}\mathbf{r}} 
 \end{equation}
-enables the pseudo inverse of $\boldsymbol{\phi(\mathbf{r})}$ to be taken, such that the state vector can is isolated on the left-hand-side as
+enables the pseudo inverse of $\boldsymbol{\phi(\mathbf{r})}$ to be taken, such that the state vector is isolated on the left-hand-side as
 \begin{equation}\label{eq:ReducedForm}
 	 \mathbf{x}_{t+1} = T_s\boldsymbol{\Gamma}^{-1}
 	 \int_\Omega \boldsymbol{\phi}(\mathbf{r}) 
