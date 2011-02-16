@@ -153,17 +153,17 @@ This equation states that the support of the kernel can be estimated given knowl
 
 \subsection*{CRAZY}
 \begin{align}
-	R_{y_{t+1}y_t}(\boldsymbol{\tau}) &= \int_{\Omega} v_{t+1}(\mathbf{r}) v_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} \\
+	R_{v_{t+1}v_t}(\boldsymbol{\tau}) &= \int_{\Omega} v_{t+1}(\mathbf{r}) v_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} \\
 	&= \int_{\Omega} \left(\xi v_t(\mathbf{r}) + g_t(\mathbf{r}) + e_t(\mathbf{r})\right) v_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} \\
 	&= \xi \int_{\Omega} v_t(\mathbf{r}) v_t(\mathbf{r}+\boldsymbol{\tau})d\mathbf{r} + \int_{\Omega}g_t(\mathbf{r})v_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} + \int_{\Omega} e_t(\mathbf{r})v_t(\mathbf{r}+\boldsymbol{\tau})d\mathbf{r}
 \end{align}
 These four terms in the above equation are easy to compute and it all balances. From this we can write
 \begin{equation}
-	R_{y_ty_{t+1}}(\boldsymbol{\tau}) - \xi R_{y_ty_t}(\boldsymbol{\tau}) = \int_{\Omega}g_t(\mathbf{r})v_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}
+	R_{v_{t+1}v_t}(\boldsymbol{\tau}) - \xi R_{v_tv_t}(\boldsymbol{\tau}) = \int_{\Omega}g_t(\mathbf{r})v_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}
 \end{equation}
 Now a property of cross-correlation and convolution is $(a \ast b) \star c = b(-)\ast(a \star c)$ so we can write
 \begin{equation}
-	R_{y_ty_{t+1}}(\boldsymbol{\tau}) - \xi R_{y_ty_t}(\boldsymbol{\tau}) = w(-) \ast \int_{\Omega} v_t(\mathbf{r}) v_t(\mathbf{r}+\boldsymbol{\tau})d\mathbf{r}
+	R_{v_{t+1}v_t}(\boldsymbol{\tau}) - \xi R_{v_tv_t}(\boldsymbol{\tau}) = w(-) \ast \int_{\Omega} v_t(\mathbf{r}) v_t(\mathbf{r}+\boldsymbol{\tau})d\mathbf{r}
 \end{equation}
 since
 \begin{equation}
@@ -177,7 +177,7 @@ but I can't get
 \begin{equation}
 	\int_{\Omega}g_t(\mathbf{r})v_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} = w(-) \ast \int_{\Omega} v_t(\mathbf{r}) v_t(\mathbf{r}+\boldsymbol{\tau})d\mathbf{r}
 \end{equation}
-
+but I get something pretty close. I can get a reasonable kernel estimate when I generate data with a linear equation instead of the sigmoid. 
 \newpage
 
 \subsection*{Estimation of Disturbance Support}
