@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009) (format=pdflatex 2010.1.13)  18 FEB 2011 00:49
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009) (format=pdflatex 2010.1.13)  18 FEB 2011 08:11
 entering extended mode
  file:line:error style messages enabled.
  %&-line parsing enabled.
@@ -208,7 +208,32 @@ Package: subfigure 2002/03/15 v2.1.5 subfigure package
 \subfig@top=\skip51
 \subfig@bottom=\skip52
 )
-(./EMBC_CorrelationAnalysis.aux)
+(./EMBC_CorrelationAnalysis.aux
+
+LaTeX Warning: Label `fig:KernelEstimate' multiply defined.
+
+
+LaTeX Warning: Label `sub@fig:KernelEstimate' multiply defined.
+
+
+LaTeX Warning: Label `fig:FFTKernelEstimate' multiply defined.
+
+
+LaTeX Warning: Label `sub@fig:FFTKernelEstimate' multiply defined.
+
+
+LaTeX Warning: Label `fig:FFTKernelEstimate' multiply defined.
+
+
+LaTeX Warning: Label `sub@fig:FFTKernelEstimate' multiply defined.
+
+
+LaTeX Warning: Label `fig:KernelCrossSection' multiply defined.
+
+
+LaTeX Warning: Label `sub@fig:KernelCrossSection' multiply defined.
+
+)
 \openout1 = `EMBC_CorrelationAnalysis.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 356.
@@ -223,8 +248,7 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 356.
 LaTeX Font Info:    ... okay on input line 356.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 356.
 LaTeX Font Info:    ... okay on input line 356.
-
-(/usr/local/texlive/2009/texmf-dist/tex/context/base/supp-pdf.mkii
+ (/usr/local/texlive/2009/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count108
 \scratchdimen=\dimen130
@@ -290,23 +314,40 @@ LaTeX Warning: Citation `Rasmussen2005' on page 1 undefined on input line 493.
 File: ./figures/pdf/FFTKernel.pdf Graphic file (type pdf)
 
 <use ./figures/pdf/FFTKernel.pdf>
-<./figures/pdf/FFTKernelEstimateFull.pdf, id=19, 235.88126pt x 184.69pt>
+<./figures/pdf/FFTKernelEstimateFullLinear.pdf, id=19, 235.88126pt x 184.69pt>
+File: ./figures/pdf/FFTKernelEstimateFullLinear.pdf Graphic file (type pdf)
+
+<use ./figures/pdf/FFTKernelEstimateFullLinear.pdf>
+<./figures/pdf/FFTKernelEstimateThresholdLinear.pdf, id=20, 235.88126pt x 184.6
+9pt>
+File: ./figures/pdf/FFTKernelEstimateThresholdLinear.pdf Graphic file (type pdf
+)
+ <use ./figures/pdf/FFTKernelEstimateThresholdLinear.pdf>
+<./figures/pdf/FFTKernelEstimateFull.pdf, id=21, 235.88126pt x 184.69pt>
 File: ./figures/pdf/FFTKernelEstimateFull.pdf Graphic file (type pdf)
 
 <use ./figures/pdf/FFTKernelEstimateFull.pdf>
-<./figures/pdf/FFTKernelEstimateThreshold.pdf, id=20, 235.88126pt x 184.69pt>
+<./figures/pdf/FFTKernelEstimateThreshold.pdf, id=22, 235.88126pt x 184.69pt>
 File: ./figures/pdf/FFTKernelEstimateThreshold.pdf Graphic file (type pdf)
 
 <use ./figures/pdf/FFTKernelEstimateThreshold.pdf>
-<./figures/pdf/Kernel.pdf, id=21, 235.88126pt x 184.69pt>
+<./figures/pdf/Kernel.pdf, id=23, 235.88126pt x 184.69pt>
 File: ./figures/pdf/Kernel.pdf Graphic file (type pdf)
 
 <use ./figures/pdf/Kernel.pdf>
-<./figures/pdf/KernelEstimate.pdf, id=22, 235.88126pt x 184.69pt>
+<./figures/pdf/KernelEstimateLinear.pdf, id=24, 235.88126pt x 184.69pt>
+File: ./figures/pdf/KernelEstimateLinear.pdf Graphic file (type pdf)
+
+<use ./figures/pdf/KernelEstimateLinear.pdf>
+<./figures/pdf/KernelEstimate.pdf, id=25, 235.88126pt x 184.69pt>
 File: ./figures/pdf/KernelEstimate.pdf Graphic file (type pdf)
 
 <use ./figures/pdf/KernelEstimate.pdf>
-<./figures/pdf/KernelsCrossSection.pdf, id=23, 235.88126pt x 184.69pt>
+<./figures/pdf/KernelsCrossSectionLinear.pdf, id=26, 235.88126pt x 184.69pt>
+File: ./figures/pdf/KernelsCrossSectionLinear.pdf Graphic file (type pdf)
+
+<use ./figures/pdf/KernelsCrossSectionLinear.pdf>
+<./figures/pdf/KernelsCrossSection.pdf, id=27, 235.88126pt x 184.69pt>
 File: ./figures/pdf/KernelsCrossSection.pdf Graphic file (type pdf)
 
 <use ./figures/pdf/KernelsCrossSection.pdf>
@@ -321,24 +362,44 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[2 <./figures/pdf/FFTKernel.pdf> <./figures/pdf/FFTKernelEstimateFull.pdf> <./f
-igures/pdf/FFTKernelEstimateThreshold.pdf>] [3
 
- <./figures/pdf/Kernel.pdf> <./figures/pdf/KernelEstimate.pdf> <./figures/pdf/K
-ernelsCrossSection.pdf>]
+LaTeX Warning: Text page 2 contains only floats.
+
+[2 <./figures/pdf/Kernel.pdf> <./figures/pdf/KernelEstimateLinear.pdf> <./figur
+es/pdf/KernelEstimate.pdf>]
+
+LaTeX Warning: Text page 3 contains only floats.
+
+
+Overfull \vbox (0.91615pt too high) has occurred while \output is active []
+
+
+
+LaTeX Warning: Text page 3 contains only floats.
+
+
+Overfull \vbox (0.91615pt too high) has occurred while \output is active []
+
+
+[3 <./figures/pdf/FFTKernel.pdf> <./figures/pdf/FFTKernelEstimateFullLinear.pdf
+> <./figures/pdf/FFTKernelEstimateThresholdLinear.pdf> <./figures/pdf/FFTKernel
+EstimateFull.pdf> <./figures/pdf/FFTKernelEstimateThreshold.pdf>] [4
+
+ <./figures/pdf/KernelsCrossSectionLinear.pdf> <./figures/pdf/KernelsCrossSecti
+on.pdf>]
 (./EMBC_CorrelationAnalysis.aux)
 
 LaTeX Warning: There were undefined references.
 
 
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 2474 strings out of 493848
- 36496 string characters out of 3149207
- 97956 words of memory out of 3000000
- 5748 multiletter control sequences out of 15000+200000
+ 2496 strings out of 493848
+ 37448 string characters out of 3149207
+ 98016 words of memory out of 3000000
+ 5766 multiletter control sequences out of 15000+200000
  41728 words of font info for 81 fonts, out of 3000000 for 9000
  717 hyphenation exceptions out of 8191
  32i,15n,24p,525b,361s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -356,9 +417,9 @@ mf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2009/texmf-dist/fo
 nts/type1/urw/times/utmbi8a.pfb></usr/local/texlive/2009/texmf-dist/fonts/type1
 /urw/times/utmr8a.pfb></usr/local/texlive/2009/texmf-dist/fonts/type1/urw/times
 /utmri8a.pfb>
-Output written on EMBC_CorrelationAnalysis.pdf (3 pages, 164343 bytes).
+Output written on EMBC_CorrelationAnalysis.pdf (4 pages, 183197 bytes).
 PDF statistics:
- 106 PDF objects out of 1000 (max. 8388607)
+ 136 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 31 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 51 words of extra memory for PDF output out of 10000 (max. 10000000)
 

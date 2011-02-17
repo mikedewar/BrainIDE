@@ -505,13 +505,17 @@ Show the exact estimation of the kernel.
 
 \subsection{Nonlinear Neural Field Model}
 
-
-
-\begin{figure}[t!]
+\begin{figure*}[t!]
 	\centering
 		\subfigure[]{
 		\includegraphics[scale=1]{FFTKernel}
 	\label{fig:FFTKernel}}
+		\subfigure[]{
+		\includegraphics[scale=1]{FFTKernelEstimateFullLinear}
+	\label{fig:FFTKernelEstimate}}
+		\subfigure[]{
+		\includegraphics[scale=1]{FFTKernelEstimateThresholdLinear}
+	\label{fig:FFTKernelEstimate}}
 		\subfigure[]{
 		\includegraphics[scale=1]{FFTKernelEstimateFull}
 	\label{fig:FFTKernelEstimate}}
@@ -519,8 +523,10 @@ Show the exact estimation of the kernel.
 		\includegraphics[scale=1]{FFTKernelEstimateThreshold}
 	\label{fig:FFTKernelThresholded}}
 	\label{fig:FFTKernels}
-	\caption{}
-\end{figure}
+	\caption{a) FFT of kernel. b) FFT of kernel estimate when generating data with linear model showing numerical issues. c) Thresholded FFT of kernel estimate when generating data with linear model. d) FFT of kernel estimate when generating data with nonlinear model. e) Thresholded FFT of kernel estimate when generating data with nonlinear linear model.}
+\end{figure*}
+
+
 
 \begin{figure}[t!]
 	\centering
@@ -528,18 +534,26 @@ Show the exact estimation of the kernel.
 		\includegraphics[scale=1]{Kernel}
 	\label{fig:Kernel}}
 		\subfigure[]{
+		\includegraphics[scale=1]{KernelEstimateLinear}
+	\label{fig:KernelEstimate}}
+		\subfigure[]{
 		\includegraphics[scale=1]{KernelEstimate}
 	\label{fig:KernelEstimate}}
 	\label{fig:Kernels}
-	\caption{}
+	\caption{a) The actual kernel. b) Estimate of kernel when generating data using the linear model. b) Estimate of the kernel when using the nonlinear model.}
 \end{figure}
 
 \begin{figure}
 	\centering
+	\subfigure[]{
+	\includegraphics[scale=1]{KernelsCrossSectionLinear}
+	\label{fig:KernelCrossSection}}
+	\subfigure[]{
 	\includegraphics[scale=1]{KernelsCrossSection}
-	\label{fig:Kernel}
-	\caption{}
+	\label{fig:KernelCrossSection}}
+	\caption{a) From the linear model. b) from the nonlinear model.}
 \end{figure}
+
 \section{Discussion}
 
  
