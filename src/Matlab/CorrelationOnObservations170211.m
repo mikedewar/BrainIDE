@@ -161,8 +161,15 @@ for n=1:N_realizations
     mean_spatial_freq = squeeze(mean(fft_y(2:end,:,:),1));
     
     LHS = (R_yy_plus_1 - xi*(R_yy-mean_obs_noise)) ;
+    
+    %%
+    R_yy_conv_mat = convmtx2(R_yy-mean_obs_noise,81,81);
+    LHS_vect = LHS(:);
+    w_vect = linsolve(full(R_yy_conv_mat)',LHS_vect);
+    w_est_linsolve = reshape(w_vect,161,161)*xi/(Ts*varsigma);
+    
+    %%
     S_yy = fft2(R_yy-mean_obs_noise); 
-
     S_LHS = fft2(LHS);               %auto and noise free
     
     %%

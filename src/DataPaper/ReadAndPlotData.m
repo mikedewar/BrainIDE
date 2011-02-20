@@ -180,7 +180,6 @@ LW = 1;
 plotwidth = 8.3;        % cm
 plotheight = 6.5;
 
-
 Delta = ElectrodeSpacing;
 varsigma = 0.56;
 xi = 0.9;
@@ -199,67 +198,89 @@ R_yy_plus_1 = squeeze(mean( xcorr(2:end,:,:) ,1));
 % imagesc(R_yy_plus_1 - xi*(R_yy-mean_obs_noise))
 
 LHS = (R_yy_plus_1 - xi*(R_yy-mean_obs_noise)) ;
-S_yy = fft2(R_yy-mean_obs_noise,19,19); 
-S_LHS = fft2(LHS,19,19);               %auto and noise free
+DeconvMode = 1;
+if DeconvMode == 1
+    R_yy_conv_mat = convmtx2(R_yy,19,19);
+    LHS_vect = LHS(:);
+    w_vect = linsolve(full(R_yy_conv_mat)',LHS_vect);
+    w_est = reshape(w_vect,37,37)*xi/(TsDec*varsigma);
+elseif DeconvMode == 2
+    R_yy_conv_mat = convmtx2(R_yy,19,19);
+    LHS_vect = LHS(:);
+    inv_conv_mat = pinv(full(R_yy_conv_mat));        % took 2757 s
+    w_vect = inv_conv_mat'*LHS_vect;
+    w_est = reshape(w_vect,37,37)*xi/(TsDec*varsigma);
+elseif DeconvMode == 3
+    S_yy = fft2(R_yy-mean_obs_noise,19,19); 
+    S_LHS = fft2(LHS,19,19);               %auto and noise free
+    ratio = S_LHS./S_yy;
+    shifted_ratio = fftshift(ratio);
+    NSamps = 4;
+    MidPoint = 10;
+    OS = 0;
+    temp1 = shifted_ratio(MidPoint-NSamps-OS:MidPoint+NSamps, MidPoint-NSamps-OS:MidPoint+NSamps);
+    temp2 = zeros(size(ratio));
+    temp2(MidPoint-NSamps-OS:MidPoint+NSamps,MidPoint-NSamps-OS:MidPoint+NSamps) = temp1;
+    ratio_thresh = ifftshift(temp2);
+    w_est = fftshift( (ifft2(ratio_thresh)) ) / (Delta^2*varsigma*TsDec);
 
-ratio = S_LHS./S_yy;
+    filename = '/Users/dean/Projects/BrainIDE/ltx/EMBCCorrelationAnalysisPaper/ltx/figures/FFTKernelEstimateFull.pdf';
+    figure('units','centimeters','position',[0 0 plotwidth plotheight],'filename',filename,...
+        'papersize',[plotheight, plotwidth],'paperorientation','landscape','renderer','painters')
+    nu = linspace(0,2*Delta*2,size(ratio,1));
+    imagesc(nu,nu,abs(ratio)/ (varsigma*TsDec));
+    xlabel('Spatial Freq','fontsize',FS_Label)
+    ylabel('Spatial Freq','fontsize',FS_Label)
+    set(gca,'xtick',[0 1 2],'ytick',[0 1 2],'fontsize',FS_Tick)
+    axis square
+    axis xy
+    colorbar
+    colormap hot
+    drawnow
 
-%%
-shifted_ratio = fftshift(ratio);
-NSamps = 5;
-MidPoint = 10;
-OS = 0;
-temp1 = shifted_ratio(MidPoint-NSamps-OS:MidPoint+NSamps, MidPoint-NSamps-OS:MidPoint+NSamps);
-temp2 = zeros(size(ratio));
-temp2(MidPoint-NSamps-OS:MidPoint+NSamps,MidPoint-NSamps-OS:MidPoint+NSamps) = temp1;
-ratio_thresh = ifftshift(temp2);
+    filename = '/Users/dean/Projects/BrainIDE/ltx/EMBCCorrelationAnalysisPaper/ltx/figures/FFTKernelEstimateThreshold.pdf';
+    figure('units','centimeters','position',[0 0 plotwidth plotheight],'filename',filename,...
+        'papersize',[plotheight, plotwidth],'paperorientation','landscape','renderer','painters')
+    nu = linspace(0,2*Delta*2,size(ratio,1));
+    disp(['cutoff freq: ' num2str(nu(NSamps)) ' cycles / mm'])
+    % CLIM = [880 895];
+    imagesc(nu,nu,abs(ratio_thresh)/ (varsigma*TsDec))%,CLIM);
+    xlabel('Spatial Freq','fontsize',FS_Label)
+    ylabel('Spatial Freq','fontsize',FS_Label)
+    set(gca,'xtick',[0 Delta*2 2*Delta*2],'ytick',[0 Delta*2 2*Delta*2],'fontsize',FS_Tick)
+    axis square
+    axis xy
+    colorbar
+    colormap hot
+    drawnow
+end
 
-w_est = fftshift( abs(ifft2(ratio_thresh)) ) / (Delta^2*varsigma*TsDec);
-
-%%
-filename = '/Users/dean/Projects/BrainIDE/ltx/EMBCCorrelationAnalysisPaper/ltx/figures/FFTKernelEstimateFull.pdf';
-figure('units','centimeters','position',[0 0 plotwidth plotheight],'filename',filename,...
-    'papersize',[plotheight, plotwidth],'paperorientation','landscape','renderer','painters')
-nu = linspace(0,2*Delta*2,size(ratio,1));
-imagesc(nu,nu,abs(ratio)/ (varsigma*TsDec));
-xlabel('Spatial Freq','fontsize',FS_Label)
-ylabel('Spatial Freq','fontsize',FS_Label)
-set(gca,'xtick',[0 1 2],'ytick',[0 1 2],'fontsize',FS_Tick)
-axis square
-axis xy
-colorbar
-colormap hot
-drawnow
-
-%%
-
-filename = '/Users/dean/Projects/BrainIDE/ltx/EMBCCorrelationAnalysisPaper/ltx/figures/FFTKernelEstimateThreshold.pdf';
-figure('units','centimeters','position',[0 0 plotwidth plotheight],'filename',filename,...
-    'papersize',[plotheight, plotwidth],'paperorientation','landscape','renderer','painters')
-nu = linspace(0,2*Delta*2,size(ratio,1));
-disp(['cutoff freq: ' num2str(nu(NSamps)) ' cycles / mm'])
-% CLIM = [880 895];
-imagesc(nu,nu,abs(ratio_thresh)/ (varsigma*TsDec))%,CLIM);
-xlabel('Spatial Freq','fontsize',FS_Label)
-ylabel('Spatial Freq','fontsize',FS_Label)
-set(gca,'xtick',[0 Delta*2 2*Delta*2],'ytick',[0 Delta*2 2*Delta*2],'fontsize',FS_Tick)
-axis square
-axis xy
-colorbar
-colormap hot
-drawnow
-    
 %%
 filename = '/Users/dean/Projects/BrainIDE/ltx/EMBCCorrelationAnalysisPaper/ltx/figures/KernelEstimate.pdf';
 figure('units','centimeters','position',[0 0 plotwidth plotheight],'filename',filename,...
     'papersize',[plotheight, plotwidth],'paperorientation','landscape','renderer','painters')
-r = linspace(-3.6,3.6,size(w_est,1));
-imagesc(r,r,w_est)
+if DeconvMode == 1
+    CLIMS = [-5 5];
+    r = linspace(-7.2,7.2,size(w_est,1));
+    imagesc(r,r,w_est,CLIMS)
+elseif DeconvMode == 2
+%     r = 0:Delta:(size(w_est,1)-1)*Delta;
+%     r = r - r(floor(length(r)/2)+1);
+    r = linspace(-7.2,7.2,size(w_est,1));
+    CLIMS = [-5 5];
+    imagesc(r,r,w_est,CLIMS)
+elseif DeconvMode == 3
+    r = linspace(-3.6,3.6,size(w_est,1));
+
+   CLIMS = [-40 60];
+   imagesc(r,r,w_est,CLIMS)
+end
+
 xlabel('Space','fontsize',FS_Label)
 ylabel('Space','fontsize',FS_Label)
-% xlim([-10,10])
-% ylim([-10,10])
-set(gca,'fontsize',FS_Tick)
+xlim([-3.6 3.6])
+ylim([-3.6 3.6])
+set(gca,'fontsize',FS_Tick,'xtick',[-3.6 -1.8 0 1.8 3.6],'ytick',[-3.6 -1.8 0 1.8 3.6])
 axis square
 axis xy
 colorbar

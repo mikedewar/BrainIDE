@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009) (format=pdflatex 2010.1.13)  18 FEB 2011 11:52
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009) (format=pdflatex 2010.1.13)  20 FEB 2011 22:15
 entering extended mode
  file:line:error style messages enabled.
  %&-line parsing enabled.
@@ -233,6 +233,27 @@ LaTeX Warning: Label `fig:KernelCrossSection' multiply defined.
 
 LaTeX Warning: Label `sub@fig:KernelCrossSection' multiply defined.
 
+
+LaTeX Warning: Label `fig:Kernel' multiply defined.
+
+
+LaTeX Warning: Label `sub@fig:Kernel' multiply defined.
+
+
+LaTeX Warning: Label `fig:KernelEstimate' multiply defined.
+
+
+LaTeX Warning: Label `sub@fig:KernelEstimate' multiply defined.
+
+
+LaTeX Warning: Label `fig:KernelEstimate' multiply defined.
+
+
+LaTeX Warning: Label `sub@fig:KernelEstimate' multiply defined.
+
+
+LaTeX Warning: Label `fig:Kernels' multiply defined.
+
 )
 \openout1 = `EMBC_CorrelationAnalysis.aux'.
 
@@ -358,6 +379,17 @@ File: ./figures/pdf/KernelsCrossSectionLinear.pdf Graphic file (type pdf)
 File: ./figures/pdf/KernelsCrossSection.pdf Graphic file (type pdf)
 
 <use ./figures/pdf/KernelsCrossSection.pdf>
+<./figures/pdf/KernelEstimateDataLinsolve.pdf, id=30, 235.88126pt x 184.69pt>
+File: ./figures/pdf/KernelEstimateDataLinsolve.pdf Graphic file (type pdf)
+
+<use ./figures/pdf/KernelEstimateDataLinsolve.pdf>
+<./figures/pdf/KernelEstimateDataInvConvMat.pdf, id=31, 235.88126pt x 184.69pt>
+File: ./figures/pdf/KernelEstimateDataInvConvMat.pdf Graphic file (type pdf)
+<use ./figures/pdf/KernelEstimateDataInvConvMat.pdf>
+<./figures/pdf/KernelEstimateDataFFT.pdf, id=32, 235.88126pt x 184.69pt>
+File: ./figures/pdf/KernelEstimateDataFFT.pdf Graphic file (type pdf)
+
+<use ./figures/pdf/KernelEstimateDataFFT.pdf>
 
 LaTeX Warning: Text page 2 contains only floats.
 
@@ -392,10 +424,10 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[4
-
- <./figures/pdf/KernelsCrossSectionLinear.pdf> <./figures/pdf/KernelsCrossSecti
-on.pdf>] (./EMBC_CorrelationAnalysis.aux)
+[4 <./figures/pdf/KernelsCrossSectionLinear.pdf> <./figures/pdf/KernelsCrossSec
+tion.pdf> <./figures/pdf/KernelEstimateDataLinsolve.pdf> <./figures/pdf/KernelE
+stimateDataInvConvMat.pdf> <./figures/pdf/KernelEstimateDataFFT.pdf>]
+(./EMBC_CorrelationAnalysis.aux)
 
 LaTeX Warning: There were undefined references.
 
@@ -404,10 +436,10 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 2510 strings out of 493848
- 38002 string characters out of 3149207
+ 2525 strings out of 493848
+ 38662 string characters out of 3149207
  99058 words of memory out of 3000000
- 5778 multiletter control sequences out of 15000+200000
+ 5790 multiletter control sequences out of 15000+200000
  41728 words of font info for 81 fonts, out of 3000000 for 9000
  717 hyphenation exceptions out of 8191
  32i,15n,24p,525b,361s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -425,9 +457,9 @@ mf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2009/texmf-dist/fo
 nts/type1/urw/times/utmbi8a.pfb></usr/local/texlive/2009/texmf-dist/fonts/type1
 /urw/times/utmr8a.pfb></usr/local/texlive/2009/texmf-dist/fonts/type1/urw/times
 /utmri8a.pfb>
-Output written on EMBC_CorrelationAnalysis.pdf (4 pages, 188881 bytes).
+Output written on EMBC_CorrelationAnalysis.pdf (4 pages, 197965 bytes).
 PDF statistics:
- 147 PDF objects out of 1000 (max. 8388607)
+ 164 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 61 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 76 words of extra memory for PDF output out of 10000 (max. 10000000)
 
