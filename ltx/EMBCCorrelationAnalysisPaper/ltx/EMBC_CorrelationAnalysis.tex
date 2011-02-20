@@ -357,7 +357,7 @@
 %
 % paper title
 % can use linebreaks \\ within to get better formatting as desired
-\title{Model-Based Estimation of Intracortical Connectivity}
+\title{Model-Based Estimation of Intracortical Spatial Properties}
 
 
 % author names and affiliations
@@ -443,11 +443,11 @@ Discuss model-based estimation
 \begin{equation}
 	\label{SpikesToPotential} v\left( {\mathbf{r},t} \right) = e^{-\zeta t}v\left( {\mathbf{r},0} \right) + \int_{0}^t {h\left( {t - t'} \right)g\left( {\mathbf{r},t'} \right)\textrm{d}t'}, 
 \end{equation}   
-where $v\left( {\mathbf{r},0} \right)$ is the membrane voltage at the initial time $t = 0$, $g(\cdot)$ describes the mean firing rate, $h(\cdot)$ is the first-order post-synaptic response kernel.  of the form 
+where $v\left( {\mathbf{r},0} \right)$ is the membrane voltage at the initial time $t = 0$, $g(\cdot)$ describes the mean firing rate, $h(\cdot)$ is the first-order post-synaptic response kernel of the form 
 \begin{equation}
 	\label{SynapticRespKernel} h(t) = \eta(t)\exp{\left(-\zeta t\right)}, 
 \end{equation}
-where $\zeta=\tau^{-1}$, $\tau$ is the synaptic time constant and $\eta(t)$ is the Heaviside step function. The firing rate is modeled by having both a deterministic and stochastic components as
+where $\zeta=\tau^{-1}$, $\tau$ is the synaptic time constant and $\eta(t)$ is the Heaviside step function. The firing rate is modeled by having both a deterministic component and stochastic component, modeled by a spatially coloured space-time Wiener process $W(\mathbf{r},t)$, and is described by
 \begin{equation}\label{DecompositionOfg}
 g(\mathbf{r},t)\textrm{d}t = \tilde{g}(\mathbf{r},t)\textrm{d}t + \sigma_W \textrm{d}W(\mathbf{r},t), 
 \end{equation}
@@ -504,6 +504,19 @@ where $e_t(\mathbf{r}) = \sigma_W[W\left( \mathbf{r},t+T_s \right)-W\left( \math
 Show the exact estimation of the kernel.
 
 \subsection{Nonlinear Neural Field Model}
+
+
+\begin{figure}
+	\centering
+	\subfigure[]{
+	\includegraphics[scale=1]{FieldSpatialFreq}
+	\label{fig:ObservationSpatialFreq}}
+	\subfigure[]{
+	\includegraphics[scale=1]{FieldSpatialFreqCrossSection}
+	\label{fig:ObservationSpatialFreqCrossSection}}
+	\caption{a) Field spatial frequency in dB. b) Spatial frequency cross-section showing cutoff frequency. The black line shows the spatial frequency in the x direction and the red line shows the frequency in the y direction.}
+\end{figure}
+
 
 \begin{figure*}[t!]
 	\centering
