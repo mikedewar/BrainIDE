@@ -55,7 +55,7 @@ w_tau = theta(1)*psi_0 + theta(2)*psi_1 + theta(3)*psi_2;       % the kernel
 % ~~~~~~~~~~~~
 sigma_m = 0.9;                                                         % sensor width
 m = Define2DGaussian(0,0,sigma_m^2,0,NPoints,SpaceMin,SpaceMax);        % sensor kernel
-sigma_varepsilon = 0.001;       % observation noise                            
+sigma_varepsilon = 0.1;       % observation noise                            
 
 % sigmoid parameters
 % ~~~~~~~~~~~~
@@ -113,7 +113,9 @@ for n=1:N_realizations
     InitialCondition = min_field_init + (max_field_init - min_field_init)*rand(NPoints,NPoints);
     future_field = InitialCondition;
 
+    fft_y = zeros(T,NPoints,NPoints);       % initialize for speed
     y = zeros(T,NPoints,NPoints);       % initialize for speed
+
     future_obs = squeeze(y(1,:,:));
     xcorr = zeros(T-1,81,81);           % initialize for speed
     autocorr = xcorr;                       % initialize for speed
@@ -123,8 +125,8 @@ for n=1:N_realizations
     % main loop
     for t=1:T-1
         current_field = future_field;
-        f = 1./(1+exp(varsigma*(v_0-current_field)));           % calc firing rate using sigmoid
-%         f = varsigma * current_field;
+%         f = 1./(1+exp(varsigma*(v_0-current_field)));           % calc firing rate using sigmoid
+        f = varsigma * current_field;
         if Torus == true
             f = padarray(f,size(f),'circular');                                     % pad array for toroidal boundary
         end
@@ -143,7 +145,7 @@ for n=1:N_realizations
         obs_noise =  reshape(varepsilon(t,:,:),NPoints,NPoints);
         
         future_obs = conv2(m,future_field,'same')*Delta_squared + obs_noise; 
-        y(t+1,:,:) = future_obs;
+        fft_y(t+1,:,:) = fft2(future_obs - mean(mean(future_obs,1)));
         
         autocorr(t,:,:) = xcorr2(current_obs, current_obs);
         xcorr(t,:,:) = xcorr2(future_obs, current_obs);
@@ -156,14 +158,55 @@ for n=1:N_realizations
 
     mean_obs_noise = squeeze(mean( obs_noise_autocorr(2:end,:,:) ,1));    
     
+    mean_spatial_freq = squeeze(mean(fft_y(2:end,:,:),1));
+    
     LHS = (R_yy_plus_1 - xi*(R_yy-mean_obs_noise)) ;
+    
+    %%
+    R_yy_conv_mat = convmtx2(R_yy-mean_obs_noise,81,81);
+    LHS_vect = LHS(:);
+    w_vect = linsolve(full(R_yy_conv_mat)',LHS_vect);
+    w_est_linsolve = reshape(w_vect,161,161)*xi/(Ts*varsigma);
+    
+    %%
     S_yy = fft2(R_yy-mean_obs_noise); 
-
     S_LHS = fft2(LHS);               %auto and noise free
     
     %%
+    
     ratio = S_LHS./S_yy;
-
+    
+    filename = '/Users/dean/Projects/BrainIDE/ltx/EMBCCorrelationAnalysisPaper/ltx/figures/FieldSpatialFreq.pdf';
+    figure('units','centimeters','position',[0 0 plotwidth plotheight],'filename',filename,...
+        'papersize',[plotheight, plotwidth],'paperorientation','landscape','renderer','painters')
+    nu_field = linspace(0,2*Delta*2,size(mean_spatial_freq,1));
+    CLIM = [-30 40];
+    SpatialFreq_dB = 20*log10(abs(mean_spatial_freq*Delta^2));
+    imagesc(nu_field,nu_field,SpatialFreq_dB,CLIM);
+    xlabel('Spatial Freq','fontsize',FS_Label)
+    ylabel('Spatial Freq','fontsize',FS_Label)
+    set(gca,'xtick',[0 1 2],'ytick',[0 1 2],'fontsize',FS_Tick)
+    axis square
+    axis xy
+    colorbar
+    colormap hot
+    drawnow
+    
+    filename = '/Users/dean/Projects/BrainIDE/ltx/EMBCCorrelationAnalysisPaper/ltx/figures/FieldSpatialFreqCrossSection.pdf';
+    figure('units','centimeters','position',[0 0 plotwidth plotheight],'filename',filename,...
+        'papersize',[plotheight, plotwidth],'paperorientation','landscape','renderer','painters')
+    nu_field = linspace(0,2*Delta*2,size(mean_spatial_freq,1));
+    plot(nu_field,SpatialFreq_dB(1,:),'k');
+    hold on
+    plot(nu_field,SpatialFreq_dB(:,1),'r');
+    hold off
+    xlabel('Spatial Freq','fontsize',FS_Label)
+    ylabel('Power (dB)','fontsize',FS_Label)
+    set(gca,'xtick',[0 1 2],'ytick',[-30 0 40],'fontsize',FS_Tick)
+    ylim(CLIM)
+    axis square
+    drawnow
+    
     filename = '/Users/dean/Projects/BrainIDE/ltx/EMBCCorrelationAnalysisPaper/ltx/figures/FFTKernelEstimateFull.pdf';
     figure('units','centimeters','position',[0 0 plotwidth plotheight],'filename',filename,...
         'papersize',[plotheight, plotwidth],'paperorientation','landscape','renderer','painters')
@@ -190,6 +233,7 @@ for n=1:N_realizations
     figure('units','centimeters','position',[0 0 plotwidth plotheight],'filename',filename,...
         'papersize',[plotheight, plotwidth],'paperorientation','landscape','renderer','painters')
     nu = linspace(0,2*Delta*2,size(ratio,1));
+    disp(['cutoff freq: ' num2str(nu(NSamps)) ' cycles / mm'])
     imagesc(nu,nu,abs(ratio)/ (varsigma*Ts));
     xlabel('Spatial Freq','fontsize',FS_Label)
     ylabel('Spatial Freq','fontsize',FS_Label)
@@ -207,8 +251,7 @@ for n=1:N_realizations
     imagesc(nu,nu,Delta^2*abs(fft2(w_tau)));
     xlabel('Spatial Freq','fontsize',FS_Label)
     ylabel('Spatial Freq','fontsize',FS_Label)
-    set(gca,'xtick',[0 1 2],'ytick',[0 1 2],'fontsize',FS_Tick)
-    
+    set(gca,'xtick',[0 1 2],'ytick',[0 1 2],'fontsize',FS_Tick)   
     axis square
     axis xy
     colorbar

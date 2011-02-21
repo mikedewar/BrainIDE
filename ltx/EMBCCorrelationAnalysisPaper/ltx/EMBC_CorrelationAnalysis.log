@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2010.9.1)  17 FEB 2011 21:20
+=======
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009) (format=pdflatex 2010.1.13)  20 FEB 2011 22:15
+>>>>>>> ac67672d5a0783f5bbfa08dc1d08fc5fa9100f2b
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -227,6 +231,27 @@ LaTeX Warning: Label `fig:FFTKernelEstimate' multiply defined.
 
 LaTeX Warning: Label `sub@fig:FFTKernelEstimate' multiply defined.
 
+
+LaTeX Warning: Label `fig:Kernel' multiply defined.
+
+
+LaTeX Warning: Label `sub@fig:Kernel' multiply defined.
+
+
+LaTeX Warning: Label `fig:KernelEstimate' multiply defined.
+
+
+LaTeX Warning: Label `sub@fig:KernelEstimate' multiply defined.
+
+
+LaTeX Warning: Label `fig:KernelEstimate' multiply defined.
+
+
+LaTeX Warning: Label `sub@fig:KernelEstimate' multiply defined.
+
+
+LaTeX Warning: Label `fig:Kernels' multiply defined.
+
 )
 \openout1 = `EMBC_CorrelationAnalysis.aux'.
 
@@ -304,63 +329,71 @@ LaTeX Warning: Citation `Rasmussen2005' on page 1 undefined on input line 493.
 
 
 ]
-<./figures/pdf/FFTKernel.pdf, id=18, 235.88126pt x 184.69pt>
+<./figures/pdf/FieldSpatialFreq.pdf, id=18, 235.88126pt x 184.69pt>
+File: ./figures/pdf/FieldSpatialFreq.pdf Graphic file (type pdf)
+
+<use ./figures/pdf/FieldSpatialFreq.pdf>
+<./figures/pdf/FieldSpatialFreqCrossSection.pdf, id=19, 235.88126pt x 184.69pt>
+File: ./figures/pdf/FieldSpatialFreqCrossSection.pdf Graphic file (type pdf)
+<use ./figures/pdf/FieldSpatialFreqCrossSection.pdf>
+<./figures/pdf/FFTKernel.pdf, id=20, 235.88126pt x 184.69pt>
 File: ./figures/pdf/FFTKernel.pdf Graphic file (type pdf)
 
 <use ./figures/pdf/FFTKernel.pdf>
-<./figures/pdf/FFTKernelEstimateFullLinear.pdf, id=19, 235.88126pt x 184.69pt>
+<./figures/pdf/FFTKernelEstimateFullLinear.pdf, id=21, 235.88126pt x 184.69pt>
 File: ./figures/pdf/FFTKernelEstimateFullLinear.pdf Graphic file (type pdf)
 
 <use ./figures/pdf/FFTKernelEstimateFullLinear.pdf>
-<./figures/pdf/FFTKernelEstimateThresholdLinear.pdf, id=20, 235.88126pt x 184.6
+<./figures/pdf/FFTKernelEstimateThresholdLinear.pdf, id=22, 235.88126pt x 184.6
 9pt>
 File: ./figures/pdf/FFTKernelEstimateThresholdLinear.pdf Graphic file (type pdf
 )
  <use ./figures/pdf/FFTKernelEstimateThresholdLinear.pdf>
-<./figures/pdf/FFTKernelEstimateFull.pdf, id=21, 235.88126pt x 184.69pt>
+<./figures/pdf/FFTKernelEstimateFull.pdf, id=23, 235.88126pt x 184.69pt>
 File: ./figures/pdf/FFTKernelEstimateFull.pdf Graphic file (type pdf)
 
 <use ./figures/pdf/FFTKernelEstimateFull.pdf>
-<./figures/pdf/FFTKernelEstimateThreshold.pdf, id=22, 235.88126pt x 184.69pt>
+<./figures/pdf/FFTKernelEstimateThreshold.pdf, id=24, 235.88126pt x 184.69pt>
 File: ./figures/pdf/FFTKernelEstimateThreshold.pdf Graphic file (type pdf)
 
 <use ./figures/pdf/FFTKernelEstimateThreshold.pdf>
-<./figures/pdf/Kernel.pdf, id=23, 235.88126pt x 184.69pt>
+<./figures/pdf/Kernel.pdf, id=25, 235.88126pt x 184.69pt>
 File: ./figures/pdf/Kernel.pdf Graphic file (type pdf)
 
 <use ./figures/pdf/Kernel.pdf>
-<./figures/pdf/KernelEstimateLinear.pdf, id=24, 235.88126pt x 184.69pt>
+<./figures/pdf/KernelEstimateLinear.pdf, id=26, 235.88126pt x 184.69pt>
 File: ./figures/pdf/KernelEstimateLinear.pdf Graphic file (type pdf)
 
 <use ./figures/pdf/KernelEstimateLinear.pdf>
-<./figures/pdf/KernelEstimate.pdf, id=25, 235.88126pt x 184.69pt>
+<./figures/pdf/KernelEstimate.pdf, id=27, 235.88126pt x 184.69pt>
 File: ./figures/pdf/KernelEstimate.pdf Graphic file (type pdf)
 
 <use ./figures/pdf/KernelEstimate.pdf>
-<./figures/pdf/KernelsCrossSectionLinear.pdf, id=26, 235.88126pt x 184.69pt>
+<./figures/pdf/KernelsCrossSectionLinear.pdf, id=28, 235.88126pt x 184.69pt>
 File: ./figures/pdf/KernelsCrossSectionLinear.pdf Graphic file (type pdf)
 
 <use ./figures/pdf/KernelsCrossSectionLinear.pdf>
-<./figures/pdf/KernelsCrossSection.pdf, id=27, 235.88126pt x 184.69pt>
+<./figures/pdf/KernelsCrossSection.pdf, id=29, 235.88126pt x 184.69pt>
 File: ./figures/pdf/KernelsCrossSection.pdf Graphic file (type pdf)
 
 <use ./figures/pdf/KernelsCrossSection.pdf>
+<./figures/pdf/KernelEstimateDataLinsolve.pdf, id=30, 235.88126pt x 184.69pt>
+File: ./figures/pdf/KernelEstimateDataLinsolve.pdf Graphic file (type pdf)
 
-** Conference Paper **
-Before submitting the final camera ready copy, remember to:
+<use ./figures/pdf/KernelEstimateDataLinsolve.pdf>
+<./figures/pdf/KernelEstimateDataInvConvMat.pdf, id=31, 235.88126pt x 184.69pt>
+File: ./figures/pdf/KernelEstimateDataInvConvMat.pdf Graphic file (type pdf)
+<use ./figures/pdf/KernelEstimateDataInvConvMat.pdf>
+<./figures/pdf/KernelEstimateDataFFT.pdf, id=32, 235.88126pt x 184.69pt>
+File: ./figures/pdf/KernelEstimateDataFFT.pdf Graphic file (type pdf)
 
- 1. Manually equalize the lengths of two columns on the last page
- of your paper;
-
- 2. Ensure that any PostScript and/or PDF output post-processing
- uses only Type 1 fonts and that every step in the generation
- process uses the appropriate paper size.
-
+<use ./figures/pdf/KernelEstimateDataFFT.pdf>
 
 LaTeX Warning: Text page 2 contains only floats.
 
-[2 <./figures/pdf/Kernel.pdf> <./figures/pdf/KernelEstimateLinear.pdf> <./figur
-es/pdf/KernelEstimate.pdf>]
+[2 <./figures/pdf/FieldSpatialFreq.pdf> <./figures/pdf/FieldSpatialFreqCrossSec
+tion.pdf> <./figures/pdf/Kernel.pdf> <./figures/pdf/KernelEstimateLinear.pdf> <
+./figures/pdf/KernelEstimate.pdf>]
 
 LaTeX Warning: Text page 3 contains only floats.
 
@@ -377,10 +410,21 @@ Overfull \vbox (0.91615pt too high) has occurred while \output is active []
 
 [3 <./figures/pdf/FFTKernel.pdf> <./figures/pdf/FFTKernelEstimateFullLinear.pdf
 > <./figures/pdf/FFTKernelEstimateThresholdLinear.pdf> <./figures/pdf/FFTKernel
-EstimateFull.pdf> <./figures/pdf/FFTKernelEstimateThreshold.pdf>] [4
+EstimateFull.pdf> <./figures/pdf/FFTKernelEstimateThreshold.pdf>]
 
- <./figures/pdf/KernelsCrossSectionLinear.pdf> <./figures/pdf/KernelsCrossSecti
-on.pdf>]
+** Conference Paper **
+Before submitting the final camera ready copy, remember to:
+
+ 1. Manually equalize the lengths of two columns on the last page
+ of your paper;
+
+ 2. Ensure that any PostScript and/or PDF output post-processing
+ uses only Type 1 fonts and that every step in the generation
+ process uses the appropriate paper size.
+
+[4 <./figures/pdf/KernelsCrossSectionLinear.pdf> <./figures/pdf/KernelsCrossSec
+tion.pdf> <./figures/pdf/KernelEstimateDataLinsolve.pdf> <./figures/pdf/KernelE
+stimateDataInvConvMat.pdf> <./figures/pdf/KernelEstimateDataFFT.pdf>]
 (./EMBC_CorrelationAnalysis.aux)
 
 LaTeX Warning: There were undefined references.
@@ -390,13 +434,21 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
+<<<<<<< HEAD
  2497 strings out of 495061
  36983 string characters out of 1182622
  97037 words of memory out of 3000000
  5667 multiletter control sequences out of 15000+50000
+=======
+ 2525 strings out of 493848
+ 38662 string characters out of 3149207
+ 99058 words of memory out of 3000000
+ 5790 multiletter control sequences out of 15000+200000
+>>>>>>> ac67672d5a0783f5bbfa08dc1d08fc5fa9100f2b
  41728 words of font info for 81 fonts, out of 3000000 for 9000
  31 hyphenation exceptions out of 8191
  32i,15n,24p,525b,361s stack positions out of 5000i,500n,10000p,200000b,50000s
+<<<<<<< HEAD
 {/usr/share/texmf-texlive/fonts/enc/dvips/base/8r.enc}</usr/share/texmf-texli
 ve/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texmf-texlive/fonts/ty
 pe1/public/amsfonts/cm/cmex10.pfb></usr/share/texmf-texlive/fonts/type1/public/
@@ -410,8 +462,25 @@ tmb8a.pfb></usr/share/texmf-texlive/fonts/type1/urw/times/utmbi8a.pfb></usr/sha
 re/texmf-texlive/fonts/type1/urw/times/utmr8a.pfb></usr/share/texmf-texlive/fon
 ts/type1/urw/times/utmri8a.pfb>
 Output written on EMBC_CorrelationAnalysis.pdf (4 pages, 183192 bytes).
+=======
+{/usr/local/texlive/2009/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
+exlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/te
+xlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/tex
+live/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texl
+ive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texliv
+e/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/
+2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/200
+9/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2009
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2009/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2009/tex
+mf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2009/texmf-dist/fo
+nts/type1/urw/times/utmbi8a.pfb></usr/local/texlive/2009/texmf-dist/fonts/type1
+/urw/times/utmr8a.pfb></usr/local/texlive/2009/texmf-dist/fonts/type1/urw/times
+/utmri8a.pfb>
+Output written on EMBC_CorrelationAnalysis.pdf (4 pages, 197965 bytes).
+>>>>>>> ac67672d5a0783f5bbfa08dc1d08fc5fa9100f2b
 PDF statistics:
- 136 PDF objects out of 1000 (max. 8388607)
+ 164 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 51 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 76 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -8,8 +8,8 @@ close all
 % hi guys, when you use this uncomment your name. You also need to add
 % where you have saved the data and where you want to save the figures
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-%User = 'Dean';                   
- User = 'Parham';
+User = 'Dean';                   
+%  User = 'Parham';
 % User = 'Mike';
 % User = 'Ken';
 
@@ -55,7 +55,7 @@ FS2 = 12;
 TwoColumnWidth = 17.35;     % PLoS figure width cm
 OneColumnWidth = 8.3; % cm
 Fs = 30e3;                              % sampling rate in Hz of the raw data
-FsDec = 5e3;                          % this is the sampling rate that we will use
+FsDec = 1e3;                          % this is the sampling rate that we will use
 TsDec = 1/FsDec;                    % the decimated sampling period
 DecimationFactor = Fs/FsDec;
 
@@ -66,6 +66,7 @@ SzStart = 8;        % seconds
 SzEnd = 34;         % seconds
 
 % read in neuroport data from .mat file
+% ~~~~~~~~~~~~~~~~~~~~~~
 Data = open(DataFileLocation);
 Data = Data.whole_data';
 
@@ -104,8 +105,8 @@ end
 % ~~~~~~~~~~~~~~~~~~~~~
 CAR = repmat(mean(MappedData,2),1,100);
 CARData = MappedData-CAR;                       % CAR = common average reference
- clear MappedData
-
+clear MappedData
+clear CAR;
 %%
 % re-assign the bad channels and the corners to nans so we can interpolate
 ZeroChannels = [1 10 13 15 19 24 26 35 42 46 47 54 56  57 67 81 85 87 91 100];
@@ -121,7 +122,7 @@ Wn = Fc/(Fs/2);
 FilterOrder = 2;
 [b a] = butter(FilterOrder,Wn);
 FiltData = filter(b,a,CARData);
-%clear CARData
+clear CARData
 
 %%
 % downsample to FsDec
@@ -139,11 +140,11 @@ t = TsDec*(0:size(FiltData,1)-1);
 
 %
 % here reshape the data so each time point is 10x10 matrix
- NPoints2DFFT = 30;
- SpatialFreq = linspace(0,SpatialFreqMax,NPoints2DFFT);
+%  NPoints2DFFT = 30;
+%  SpatialFreq = linspace(0,SpatialFreqMax,NPoints2DFFT);
 % 
 MatrixData = zeros(size(FiltData,1),10,10);
- DataFFT = zeros(size(FiltData,1),NPoints2DFFT,NPoints2DFFT);
+% DataFFT = zeros(size(FiltData,1),NPoints2DFFT,NPoints2DFFT);
  for n=1:size(FiltData,1)
      MatrixDataTemp = reshape(FiltData(n,:),10,10);
      MatrixDataTemp = inpaint_nans(MatrixDataTemp);            % interpolate missing data points
@@ -152,18 +153,141 @@ MatrixData = zeros(size(FiltData,1),10,10);
     % MeanObservation = mean(mean(MatrixDataTemp));
     % DataFFT(n,:,:) = 20*log10(abs(fft2(MatrixDataTemp-MeanObservation,NPoints2DFFT,NPoints2DFFT )));
  end
+clear FiltData
+
+%%
+% calc and plot the 2D cross-correlation
+disp('finding cross correlations')
+autocorr = zeros(size(MatrixData,1),2*size(MatrixData,2)-1,2*size(MatrixData,2)-1);
+xcorr = autocorr;
+future_obs = zeros(size(MatrixData,2),size(MatrixData,3));
+fft_obs  = zeros(size(MatrixData,1),2*size(MatrixData,2),2*size(MatrixData,2));
+for n=1:size(MatrixData,1)-1   
+    current_obs = future_obs;
+    future_obs = squeeze(MatrixData(n+1,:,:));
+    fft_obs(n,:,:) = fft2(current_obs,2*size(MatrixData,2),2*size(MatrixData,3));
+    autocorr(n,:,:) = xcorr2(current_obs, current_obs);
+    xcorr(n,:,:) = xcorr2(future_obs, current_obs);
+end
+
+%%
+% for plotting
+% ~~~~~~~
+FS_Label = 10;          % fontsize for the axis label
+FS_Tick = 8;                % fontsize for the ticks
+MS = 10;                     % marker size
+LW = 1;
+plotwidth = 8.3;        % cm
+plotheight = 6.5;
+
+Delta = ElectrodeSpacing;
+varsigma = 0.56;
+xi = 0.9;
+mean_obs_noise = 0;
+
+R_yy = squeeze(mean( autocorr(2:end,:,:) ,1));
+R_yy_plus_1 = squeeze(mean( xcorr(2:end,:,:) ,1));
+
+% figure
+% imagesc(R_yy)
 % 
-% %%
-% % calc and plot the 2D cross-correlation
-% disp('finding cross correlations')
-% CrossCor = zeros(size(MatrixData,1),2*size(MatrixData,2)-1,2*size(MatrixData,2)-1);
-% v0 = 2;
-% varsigma = 0.56;
-% for n=1:size(MatrixData,1)-1   
-% %     f = 1./(1+exp(varsigma*(v0-squeeze(MatrixData(n,:,:)))));
-%     f = squeeze(MatrixData(n+1,:,:));
-%     CrossCor(n,:,:) = normxcorr2(squeeze(MatrixData(n+1,:,:)),f);
-% end
+% figure
+% imagesc(R_yy_plus_1)
+% 
+% figure
+% imagesc(R_yy_plus_1 - xi*(R_yy-mean_obs_noise))
+
+LHS = (R_yy_plus_1 - xi*(R_yy-mean_obs_noise)) ;
+DeconvMode = 1;
+if DeconvMode == 1
+    R_yy_conv_mat = convmtx2(R_yy,19,19);
+    LHS_vect = LHS(:);
+    w_vect = linsolve(full(R_yy_conv_mat)',LHS_vect);
+    w_est = reshape(w_vect,37,37)*xi/(TsDec*varsigma);
+elseif DeconvMode == 2
+    R_yy_conv_mat = convmtx2(R_yy,19,19);
+    LHS_vect = LHS(:);
+    inv_conv_mat = pinv(full(R_yy_conv_mat));        % took 2757 s
+    w_vect = inv_conv_mat'*LHS_vect;
+    w_est = reshape(w_vect,37,37)*xi/(TsDec*varsigma);
+elseif DeconvMode == 3
+    S_yy = fft2(R_yy-mean_obs_noise,19,19); 
+    S_LHS = fft2(LHS,19,19);               %auto and noise free
+    ratio = S_LHS./S_yy;
+    shifted_ratio = fftshift(ratio);
+    NSamps = 4;
+    MidPoint = 10;
+    OS = 0;
+    temp1 = shifted_ratio(MidPoint-NSamps-OS:MidPoint+NSamps, MidPoint-NSamps-OS:MidPoint+NSamps);
+    temp2 = zeros(size(ratio));
+    temp2(MidPoint-NSamps-OS:MidPoint+NSamps,MidPoint-NSamps-OS:MidPoint+NSamps) = temp1;
+    ratio_thresh = ifftshift(temp2);
+    w_est = fftshift( (ifft2(ratio_thresh)) ) / (Delta^2*varsigma*TsDec);
+
+    filename = '/Users/dean/Projects/BrainIDE/ltx/EMBCCorrelationAnalysisPaper/ltx/figures/FFTKernelEstimateFull.pdf';
+    figure('units','centimeters','position',[0 0 plotwidth plotheight],'filename',filename,...
+        'papersize',[plotheight, plotwidth],'paperorientation','landscape','renderer','painters')
+    nu = linspace(0,2*Delta*2,size(ratio,1));
+    imagesc(nu,nu,abs(ratio)/ (varsigma*TsDec));
+    xlabel('Spatial Freq','fontsize',FS_Label)
+    ylabel('Spatial Freq','fontsize',FS_Label)
+    set(gca,'xtick',[0 1 2],'ytick',[0 1 2],'fontsize',FS_Tick)
+    axis square
+    axis xy
+    colorbar
+    colormap hot
+    drawnow
+
+    filename = '/Users/dean/Projects/BrainIDE/ltx/EMBCCorrelationAnalysisPaper/ltx/figures/FFTKernelEstimateThreshold.pdf';
+    figure('units','centimeters','position',[0 0 plotwidth plotheight],'filename',filename,...
+        'papersize',[plotheight, plotwidth],'paperorientation','landscape','renderer','painters')
+    nu = linspace(0,2*Delta*2,size(ratio,1));
+    disp(['cutoff freq: ' num2str(nu(NSamps)) ' cycles / mm'])
+    % CLIM = [880 895];
+    imagesc(nu,nu,abs(ratio_thresh)/ (varsigma*TsDec))%,CLIM);
+    xlabel('Spatial Freq','fontsize',FS_Label)
+    ylabel('Spatial Freq','fontsize',FS_Label)
+    set(gca,'xtick',[0 Delta*2 2*Delta*2],'ytick',[0 Delta*2 2*Delta*2],'fontsize',FS_Tick)
+    axis square
+    axis xy
+    colorbar
+    colormap hot
+    drawnow
+end
+
+%%
+filename = '/Users/dean/Projects/BrainIDE/ltx/EMBCCorrelationAnalysisPaper/ltx/figures/KernelEstimate.pdf';
+figure('units','centimeters','position',[0 0 plotwidth plotheight],'filename',filename,...
+    'papersize',[plotheight, plotwidth],'paperorientation','landscape','renderer','painters')
+if DeconvMode == 1
+    CLIMS = [-5 5];
+    r = linspace(-7.2,7.2,size(w_est,1));
+    imagesc(r,r,w_est,CLIMS)
+elseif DeconvMode == 2
+%     r = 0:Delta:(size(w_est,1)-1)*Delta;
+%     r = r - r(floor(length(r)/2)+1);
+    r = linspace(-7.2,7.2,size(w_est,1));
+    CLIMS = [-5 5];
+    imagesc(r,r,w_est,CLIMS)
+elseif DeconvMode == 3
+    r = linspace(-3.6,3.6,size(w_est,1));
+
+   CLIMS = [-40 60];
+   imagesc(r,r,w_est,CLIMS)
+end
+
+xlabel('Space','fontsize',FS_Label)
+ylabel('Space','fontsize',FS_Label)
+xlim([-3.6 3.6])
+ylim([-3.6 3.6])
+set(gca,'fontsize',FS_Tick,'xtick',[-3.6 -1.8 0 1.8 3.6],'ytick',[-3.6 -1.8 0 1.8 3.6])
+axis square
+axis xy
+colorbar
+colormap hot
+drawnow
+
+%%
 % CrossCorrMeanPreSeizure = squeeze(mean(CrossCor(1:SzStart*FsDec,:,:),1)); 
 % % CrossCorrMeanPreSeizure=CrossCorrMeanPreSeizure/max(max(CrossCorrMeanPreSeizure));
 % CrossCorrMeanSeizure = squeeze(mean(CrossCor(SzStart*FsDec+1:SzEnd*FsDec,:,:),1)); 
