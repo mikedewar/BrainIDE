@@ -29,7 +29,7 @@ r = linspace(SpaceMin,SpaceMax,NPoints);      % define space
 % temporal parameters
 % ~~~~~~~~~~~~~
 Ts = 1e-3;          % sampling period (s)
-T = 10000;            % maximum time (ms)
+T = 1000;            % maximum time (ms)
 
 % kernel parameters
 % ~~~~~~~~~~~
@@ -120,7 +120,11 @@ for n=1:N_realizations
     xcorr = zeros(T-1,81,81);           % initialize for speed
     autocorr = xcorr;                       % initialize for speed
     obs_noise_autocorr = xcorr;
-%     w_est_FFT = xcorr;
+    extra_bit1 = xcorr;
+    extra_bit2 = xcorr;
+    extra_bit3 = xcorr;
+
+    %     w_est_FFT = xcorr;
     
     % main loop
     for t=1:T-1
@@ -141,20 +145,33 @@ for n=1:N_realizations
         
         current_obs = future_obs;
         
-%         obs_noise = squeeze(varepsilon(t+1,:,:));
+%         obs_noise = squeeze(varepsilon(t,:,:));
         obs_noise =  reshape(varepsilon(t,:,:),NPoints,NPoints);
         
-        future_obs = conv2(m,future_field,'same')*Delta_squared + obs_noise; 
+        future_obs = conv2(m,future_field,'same') * Delta_squared + obs_noise; 
+        
         fft_y(t+1,:,:) = fft2(future_obs - mean(mean(future_obs,1)));
         
         autocorr(t,:,:) = xcorr2(current_obs, current_obs);
         xcorr(t,:,:) = xcorr2(future_obs, current_obs);
         
+        extra_bit1(t,:,:) = xcorr2(conv2(m,disturbance,'same'),current_obs);
+        extra_bit2(t,:,:) = xcorr2(conv2(m,xi*current_field,'same'),current_obs);
+        extra_bit3(t,:,:) = xcorr2(conv2(m,g,'same'),current_obs);
+        
         obs_noise_autocorr(t,:,:) = xcorr2(obs_noise, obs_noise);
+        
+        imagesc(squeeze(xcorr(t,:,:) - extra_bit1(t,:,:) - extra_bit2(t,:,:) - extra_bit3(t,:,:)))
+        colorbar
+        drawnow
     end
 
     R_yy = squeeze(mean( autocorr(2:end,:,:) ,1));
     R_yy_plus_1 = squeeze(mean( xcorr(2:end,:,:) ,1));
+    
+    mean_extra_bit1 = squeeze(mean( extra_bit1(2:end,:,:) ,1));
+    mean_extra_bit2 = squeeze(mean( extra_bit2(2:end,:,:) ,1));
+    mean_extra_bit3 = squeeze(mean( extra_bit3(2:end,:,:) ,1));
 
     mean_obs_noise = squeeze(mean( obs_noise_autocorr(2:end,:,:) ,1));    
     
