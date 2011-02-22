@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009) (format=pdflatex 2010.1.13)  22 FEB 2011 17:03
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009) (format=pdflatex 2010.1.13)  22 FEB 2011 17:20
 entering extended mode
  file:line:error style messages enabled.
  %&-line parsing enabled.
@@ -347,14 +347,11 @@ stimate.pdf>] (./EMBC_CorrelationAnalysis.aux)
 
 LaTeX Warning: There were undefined references.
 
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
  ) 
 Here is how much of TeX's memory you used:
  2551 strings out of 493848
  39338 string characters out of 3149207
- 101147 words of memory out of 3000000
+ 101168 words of memory out of 3000000
  5810 multiletter control sequences out of 15000+200000
  43558 words of font info for 87 fonts, out of 3000000 for 9000
  717 hyphenation exceptions out of 8191
@@ -376,7 +373,7 @@ st/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2009/texmf-dist/fonts/t
 ype1/urw/times/utmbi8a.pfb></usr/local/texlive/2009/texmf-dist/fonts/type1/urw/
 times/utmr8a.pfb></usr/local/texlive/2009/texmf-dist/fonts/type1/urw/times/utmr
 i8a.pfb>
-Output written on EMBC_CorrelationAnalysis.pdf (5 pages, 228214 bytes).
+Output written on EMBC_CorrelationAnalysis.pdf (5 pages, 228239 bytes).
 PDF statistics:
  178 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
