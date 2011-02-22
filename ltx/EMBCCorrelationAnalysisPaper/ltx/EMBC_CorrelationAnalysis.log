@@ -1,18 +1,20 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2010.9.1)  17 FEB 2011 21:20
+=======
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009) (format=pdflatex 2010.1.13)  20 FEB 2011 22:15
+>>>>>>> ac67672d5a0783f5bbfa08dc1d08fc5fa9100f2b
+=======
 This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009) (format=pdflatex 2010.1.13)  22 FEB 2011 17:20
+>>>>>>> 95a286e520ab901dd48a5089da494f30145658e2
 entering extended mode
- file:line:error style messages enabled.
+ restricted \write18 enabled.
  %&-line parsing enabled.
 **EMBC_CorrelationAnalysis.tex
 (./EMBC_CorrelationAnalysis.tex
 LaTeX2e <2009/09/24>
 Babel <v3.8l> and hyphenation patterns for english, usenglishmax, dumylang, noh
-yphenation, german-x-2009-06-19, ngerman-x-2009-06-19, ancientgreek, ibycus, ar
-abic, basque, bulgarian, catalan, pinyin, coptic, croatian, czech, danish, dutc
-h, esperanto, estonian, farsi, finnish, french, galician, german, ngerman, mono
-greek, greek, hungarian, icelandic, indonesian, interlingua, irish, italian, ku
-rmanji, latin, latvian, lithuanian, mongolian, mongolian2a, bokmal, nynorsk, po
-lish, portuguese, romanian, russian, sanskrit, serbian, slovak, slovenian, span
-ish, swedish, turkish, ukenglish, ukrainian, uppersorbian, welsh, loaded.
+yphenation, loaded.
 (./IEEEtran.cls
 Document Class: IEEEtran 2007/03/05 V1.7a by Michael Shell
 -- See the "IEEEtran_HOWTO" manual for usage information.
@@ -24,7 +26,7 @@ Document Class: IEEEtran 2007/03/05 V1.7a by Michael Shell
 \@IEEEtrantmptoksA=\toks14
 LaTeX Font Info:    Try loading font information for OT1+ptm on input line 366.
 
-(/usr/local/texlive/2009/texmf-dist/tex/latex/psnfss/ot1ptm.fd
+(/usr/share/texmf-texlive/tex/latex/psnfss/ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
 -- Using 8.5in x 11in (letter) paper.
@@ -97,32 +99,32 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <24> not available
 \@IEEEtmpitemindent=\dimen116
 \c@IEEEbiography=\count90
 \@IEEEtranrubishbin=\box26
-) (/usr/local/texlive/2009/texmf-dist/tex/latex/graphics/color.sty
+) (/usr/share/texmf-texlive/tex/latex/graphics/color.sty
 Package: color 2005/11/14 v1.0j Standard LaTeX Color (DPC)
 
-(/usr/local/texlive/2009/texmf-dist/tex/latex/latexconfig/color.cfg
+(/etc/texmf/tex/latex/config/color.cfg
 File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
 )
 Package color Info: Driver file: pdftex.def on input line 130.
 
-(/usr/local/texlive/2009/texmf-dist/tex/latex/pdftex-def/pdftex.def
+(/usr/share/texmf-texlive/tex/latex/pdftex-def/pdftex.def
 File: pdftex.def 2009/08/25 v0.04m Graphics/color for pdfTeX
 \Gread@gobject=\count91
 ))
-(/usr/local/texlive/2009/texmf-dist/tex/latex/graphics/graphicx.sty
+(/usr/share/texmf-texlive/tex/latex/graphics/graphicx.sty
 Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
 
-(/usr/local/texlive/2009/texmf-dist/tex/latex/graphics/keyval.sty
+(/usr/share/texmf-texlive/tex/latex/graphics/keyval.sty
 Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
 \KV@toks@=\toks15
 )
-(/usr/local/texlive/2009/texmf-dist/tex/latex/graphics/graphics.sty
+(/usr/share/texmf-texlive/tex/latex/graphics/graphics.sty
 Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
 
-(/usr/local/texlive/2009/texmf-dist/tex/latex/graphics/trig.sty
+(/usr/share/texmf-texlive/tex/latex/graphics/trig.sty
 Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
 )
-(/usr/local/texlive/2009/texmf-dist/tex/latex/latexconfig/graphics.cfg
+(/etc/texmf/tex/latex/config/graphics.cfg
 File: graphics.cfg 2009/08/28 v1.8 graphics configuration of TeX Live
 )
 Package graphics Info: Driver file: pdftex.def on input line 91.
@@ -130,24 +132,24 @@ Package graphics Info: Driver file: pdftex.def on input line 91.
 \Gin@req@height=\dimen117
 \Gin@req@width=\dimen118
 )
-(/usr/local/texlive/2009/texmf-dist/tex/latex/amsmath/amsmath.sty
+(/usr/share/texmf-texlive/tex/latex/amsmath/amsmath.sty
 Package: amsmath 2000/07/18 v2.13 AMS math features
 \@mathmargin=\skip44
 
 For additional information on amsmath, use the `?' option.
-(/usr/local/texlive/2009/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/share/texmf-texlive/tex/latex/amsmath/amstext.sty
 Package: amstext 2000/06/29 v2.01
 
-(/usr/local/texlive/2009/texmf-dist/tex/latex/amsmath/amsgen.sty
+(/usr/share/texmf-texlive/tex/latex/amsmath/amsgen.sty
 File: amsgen.sty 1999/11/30 v2.0
 \@emptytoks=\toks16
 \ex@=\dimen119
 ))
-(/usr/local/texlive/2009/texmf-dist/tex/latex/amsmath/amsbsy.sty
+(/usr/share/texmf-texlive/tex/latex/amsmath/amsbsy.sty
 Package: amsbsy 1999/11/29 v1.2d
 \pmbraise@=\dimen120
 )
-(/usr/local/texlive/2009/texmf-dist/tex/latex/amsmath/amsopn.sty
+(/usr/share/texmf-texlive/tex/latex/amsmath/amsopn.sty
 Package: amsopn 1999/12/14 v2.01 operator names
 )
 \inf@bad=\count92
@@ -188,7 +190,7 @@ LaTeX Font Info:    Redeclaring font encoding OMS on input line 568.
 LaTeX Info: Redefining \[ on input line 2666.
 LaTeX Info: Redefining \] on input line 2667.
 )
-(/usr/local/texlive/2009/texmf-dist/tex/latex/subfigure/subfigure.sty
+(/usr/share/texmf-texlive/tex/latex/subfigure/subfigure.sty
 Package: subfigure 2002/03/15 v2.1.5 subfigure package
 \subfigtopskip=\skip47
 \subfigcapskip=\skip48
@@ -204,11 +206,61 @@ Package: subfigure 2002/03/15 v2.1.5 subfigure package
 ****************************************
 * Local config file subfigure.cfg used *
 ****************************************
-(/usr/local/texlive/2009/texmf-dist/tex/latex/subfigure/subfigure.cfg)
+(/usr/share/texmf-texlive/tex/latex/subfigure/subfigure.cfg)
 \subfig@top=\skip51
 \subfig@bottom=\skip52
 )
+<<<<<<< HEAD
+(./EMBC_CorrelationAnalysis.aux
+
+LaTeX Warning: Label `fig:KernelEstimate' multiply defined.
+
+
+LaTeX Warning: Label `sub@fig:KernelEstimate' multiply defined.
+
+
+LaTeX Warning: Label `fig:KernelCrossSection' multiply defined.
+
+
+LaTeX Warning: Label `sub@fig:KernelCrossSection' multiply defined.
+
+
+LaTeX Warning: Label `fig:FFTKernelEstimate' multiply defined.
+
+
+LaTeX Warning: Label `sub@fig:FFTKernelEstimate' multiply defined.
+
+
+LaTeX Warning: Label `fig:FFTKernelEstimate' multiply defined.
+
+
+LaTeX Warning: Label `sub@fig:FFTKernelEstimate' multiply defined.
+
+
+LaTeX Warning: Label `fig:Kernel' multiply defined.
+
+
+LaTeX Warning: Label `sub@fig:Kernel' multiply defined.
+
+
+LaTeX Warning: Label `fig:KernelEstimate' multiply defined.
+
+
+LaTeX Warning: Label `sub@fig:KernelEstimate' multiply defined.
+
+
+LaTeX Warning: Label `fig:KernelEstimate' multiply defined.
+
+
+LaTeX Warning: Label `sub@fig:KernelEstimate' multiply defined.
+
+
+LaTeX Warning: Label `fig:Kernels' multiply defined.
+
+)
+=======
 (./EMBC_CorrelationAnalysis.aux)
+>>>>>>> 95a286e520ab901dd48a5089da494f30145658e2
 \openout1 = `EMBC_CorrelationAnalysis.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 356.
@@ -223,8 +275,12 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 356.
 LaTeX Font Info:    ... okay on input line 356.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 356.
 LaTeX Font Info:    ... okay on input line 356.
+<<<<<<< HEAD
+ (/usr/share/texmf/tex/context/base/supp-pdf.mkii
+=======
 
 (/usr/local/texlive/2009/texmf-dist/tex/context/base/supp-pdf.mkii
+>>>>>>> 95a286e520ab901dd48a5089da494f30145658e2
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count108
 \scratchdimen=\dimen130
@@ -256,7 +312,7 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 
 LaTeX Warning: Citation `Rasmussen2005' on page 1 undefined on input line 495.
 
-[1{/usr/local/texlive/2009/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
+[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
 
 
 ]
@@ -349,6 +405,37 @@ LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
+<<<<<<< HEAD
+<<<<<<< HEAD
+ 2497 strings out of 495061
+ 36983 string characters out of 1182622
+ 97037 words of memory out of 3000000
+ 5667 multiletter control sequences out of 15000+50000
+=======
+ 2525 strings out of 493848
+ 38662 string characters out of 3149207
+ 99058 words of memory out of 3000000
+ 5790 multiletter control sequences out of 15000+200000
+>>>>>>> ac67672d5a0783f5bbfa08dc1d08fc5fa9100f2b
+ 41728 words of font info for 81 fonts, out of 3000000 for 9000
+ 31 hyphenation exceptions out of 8191
+ 32i,15n,24p,525b,361s stack positions out of 5000i,500n,10000p,200000b,50000s
+<<<<<<< HEAD
+{/usr/share/texmf-texlive/fonts/enc/dvips/base/8r.enc}</usr/share/texmf-texli
+ve/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texmf-texlive/fonts/ty
+pe1/public/amsfonts/cm/cmex10.pfb></usr/share/texmf-texlive/fonts/type1/public/
+amsfonts/cm/cmmi10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm
+/cmmi7.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr10.pfb><
+/usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/te
+xmf-texlive/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-texlive
+/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texmf-texlive/fonts/type1
+/public/amsfonts/cm/cmsy8.pfb></usr/share/texmf-texlive/fonts/type1/urw/times/u
+tmb8a.pfb></usr/share/texmf-texlive/fonts/type1/urw/times/utmbi8a.pfb></usr/sha
+re/texmf-texlive/fonts/type1/urw/times/utmr8a.pfb></usr/share/texmf-texlive/fon
+ts/type1/urw/times/utmri8a.pfb>
+Output written on EMBC_CorrelationAnalysis.pdf (4 pages, 183192 bytes).
+=======
+=======
  2551 strings out of 493848
  39338 string characters out of 3149207
  101168 words of memory out of 3000000
@@ -356,10 +443,25 @@ Here is how much of TeX's memory you used:
  43558 words of font info for 87 fonts, out of 3000000 for 9000
  717 hyphenation exceptions out of 8191
  32i,15n,24p,702b,361s stack positions out of 5000i,500n,10000p,200000b,50000s
+>>>>>>> 95a286e520ab901dd48a5089da494f30145658e2
 {/usr/local/texlive/2009/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
 exlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/te
 xlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/tex
 live/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texl
+<<<<<<< HEAD
+ive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texliv
+e/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/
+2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/200
+9/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2009
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2009/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2009/tex
+mf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2009/texmf-dist/fo
+nts/type1/urw/times/utmbi8a.pfb></usr/local/texlive/2009/texmf-dist/fonts/type1
+/urw/times/utmr8a.pfb></usr/local/texlive/2009/texmf-dist/fonts/type1/urw/times
+/utmri8a.pfb>
+Output written on EMBC_CorrelationAnalysis.pdf (4 pages, 197965 bytes).
+>>>>>>> ac67672d5a0783f5bbfa08dc1d08fc5fa9100f2b
+=======
 ive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texliv
 e/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/
 2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/local/texlive/
@@ -374,6 +476,7 @@ ype1/urw/times/utmbi8a.pfb></usr/local/texlive/2009/texmf-dist/fonts/type1/urw/
 times/utmr8a.pfb></usr/local/texlive/2009/texmf-dist/fonts/type1/urw/times/utmr
 i8a.pfb>
 Output written on EMBC_CorrelationAnalysis.pdf (5 pages, 228239 bytes).
+>>>>>>> 95a286e520ab901dd48a5089da494f30145658e2
 PDF statistics:
  178 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
