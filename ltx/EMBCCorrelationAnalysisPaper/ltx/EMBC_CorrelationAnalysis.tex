@@ -573,6 +573,7 @@ Show the exact estimation of the kernel.
 
 \subsection{Nonlinear Neural Field Model}
 
+\newpage
 
 \begin{figure}
 	\centering
@@ -585,7 +586,9 @@ Show the exact estimation of the kernel.
 	\caption{a) Field spatial frequency in dB. b) Spatial frequency cross-section showing cutoff frequency. The black line shows the spatial frequency in the x direction and the red line shows the frequency in the y direction.}
 \end{figure}
 
-\begin{figure*}[t!]
+\newpage
+
+\begin{figure*}
 	\centering
 		\subfigure[]{
 		\includegraphics[scale=1]{FFTKernel}
@@ -606,7 +609,7 @@ Show the exact estimation of the kernel.
 	\caption{a) FFT of kernel. b) FFT of kernel estimate when generating data with linear model showing numerical issues. c) Thresholded FFT of kernel estimate when generating data with linear model. d) FFT of kernel estimate when generating data with nonlinear model. e) Thresholded FFT of kernel estimate when generating data with nonlinear linear model.}
 \end{figure*}
 
-
+\newpage
 
 \begin{figure}[t!]
 	\centering
@@ -623,7 +626,9 @@ Show the exact estimation of the kernel.
 	\caption{a) The actual kernel. b) Estimate of kernel when generating data using the linear model. b) Estimate of the kernel when using the nonlinear model.}
 \end{figure}
 
-\begin{figure}
+\newpage
+
+\begin{figure}[t!]
 	\centering
 	\subfigure[]{
 	\includegraphics[scale=1]{KernelsCrossSectionLinear}
@@ -632,6 +637,20 @@ Show the exact estimation of the kernel.
 	\includegraphics[scale=1]{KernelsCrossSection}
 	\label{fig:KernelCrossSectionNonlinear}}
 	\caption{a) From the linear model. b) from the nonlinear model.}
+\end{figure}
+
+\begin{figure}[t!]
+	\centering
+	\subfigure[]{
+	\includegraphics[scale=1]{FFTRemovedKernelEstimateThreshold}
+	\label{fig:SpectrumOfEstimateWithoutKernel}}
+	\subfigure[]{
+	\includegraphics[scale=1]{KernelEstimateLeftOvers}
+	\label{fig:KernelLeftOvers}}
+	\subfigure[]{
+	\includegraphics[scale=1]{LeftOverFromEstimate}
+	\label{fig:KernelLeftOversCrossSection}}
+	\caption{a) Removing the kernel from the spectrum of the estimate. b) Kernel left overs. c) Cross section of b.}
 \end{figure}
 
 % \begin{figure}[t!]

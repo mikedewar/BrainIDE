@@ -125,8 +125,8 @@ for n=1:N_realizations
     % main loop
     for t=1:T-1
         current_field = future_field;
-        f = 1./(1+exp(varsigma*(v_0-current_field)));           % calc firing rate using sigmoid
-%         f = varsigma * current_field;
+%         f = 1./(1+exp(varsigma*(v_0-current_field)));           % calc firing rate using sigmoid
+        f = varsigma * current_field;
         if Torus == true
             f = padarray(f,size(f),'circular');                                     % pad array for toroidal boundary
         end
@@ -246,10 +246,16 @@ for n=1:N_realizations
     drawnow
     
     shifted_ratio = fftshift(ratio);
+    
+    figure,imagesc(abs(shifted_ratio))
+    
     NSamps = 13;
-    temp1 = shifted_ratio(41-NSamps:41+NSamps,41-NSamps:41+NSamps);
-    temp2 = zeros(size(ratio));
-    temp2(41-NSamps:41+NSamps,41-NSamps:41+NSamps) = temp1;
+%     temp1 = shifted_ratio(41-NSamps:41+NSamps,41-NSamps:41+NSamps);
+%     temp2 = zeros(size(ratio));
+%     temp2(41-NSamps:41+NSamps,41-NSamps:41+NSamps) = temp1;
+    temp1 = shifted_ratio;
+    temp1(41-NSamps:41+NSamps,41-NSamps:41+NSamps) = 0;
+    temp2 = temp1;
     ratio = ifftshift(temp2);
     
     filename = '/Users/dean/Projects/BrainIDE/ltx/EMBCCorrelationAnalysisPaper/ltx/figures/FFTKernelEstimateThreshold.pdf';
