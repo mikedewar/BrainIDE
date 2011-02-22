@@ -29,7 +29,7 @@ r = linspace(SpaceMin,SpaceMax,NPoints);      % define space
 % temporal parameters
 % ~~~~~~~~~~~~~
 Ts = 1e-3;          % sampling period (s)
-T = 20000;            % maximum time (ms)
+T = 10000;            % maximum time (ms)
 
 % kernel parameters
 % ~~~~~~~~~~~
@@ -55,7 +55,7 @@ w_tau = theta(1)*psi_0 + theta(2)*psi_1 + theta(3)*psi_2;       % the kernel
 % ~~~~~~~~~~~~
 sigma_m = 0.9;                                                         % sensor width
 m = Define2DGaussian(0,0,sigma_m^2,0,NPoints,SpaceMin,SpaceMax);        % sensor kernel
-sigma_varepsilon = 0.1;       % observation noise                            
+sigma_varepsilon = 0.0;       % observation noise                            
 
 % sigmoid parameters
 % ~~~~~~~~~~~~
@@ -162,11 +162,34 @@ for n=1:N_realizations
     
     LHS = (R_yy_plus_1 - xi*(R_yy-mean_obs_noise)) ;
     
-    %%
-    R_yy_conv_mat = convmtx2(R_yy-mean_obs_noise,81,81);
-    LHS_vect = LHS(:);
-    w_vect = linsolve(full(R_yy_conv_mat)',LHS_vect);
-    w_est_linsolve = reshape(w_vect,161,161)*xi/(Ts*varsigma);
+%     %%
+%     R_yy_conv_mat = convmtx2(R_yy-mean_obs_noise,81,81);
+%     LHS_vect = LHS(:);
+%     tic
+%     w_vect = linsolve(full(R_yy_conv_mat)',LHS_vect);
+%     toc
+%     
+%     %%
+%     w_est_linsolve = reshape(w_vect,161,161)*xi/(Ts*varsigma*Delta^2);
+%     figure,imagesc(w_est_linsolve)
+% 
+%     FFT_w_est_linsolve = fft2(w_est_linsolve);
+%     
+%     figure,imagesc(abs(FFT_w_est_linsolve))
+% 
+%     shifted_FFT_w_est_linsolve = fftshift(FFT_w_est_linsolve);
+%     NSamps = 30;
+%     MidPoint = 81;
+%     temp1 = shifted_FFT_w_est_linsolve(MidPoint-NSamps:MidPoint+NSamps,MidPoint-NSamps:MidPoint+NSamps);
+%     temp2 = zeros(size(FFT_w_est_linsolve));
+%     temp2(MidPoint-NSamps:MidPoint+NSamps,MidPoint-NSamps:MidPoint+NSamps) = temp1;
+%     FFT_w_est_linsolve_thresh = ifftshift(temp2);
+%     
+%     figure,imagesc(abs((FFT_w_est_linsolve_thresh)))
+% 
+%     w_est_linsolve_thresh = ifft2(FFT_w_est_linsolve_thresh);
+%     
+%     figure,imagesc(w_est_linsolve_thresh)
     
     %%
     S_yy = fft2(R_yy-mean_obs_noise); 
@@ -223,10 +246,16 @@ for n=1:N_realizations
     drawnow
     
     shifted_ratio = fftshift(ratio);
+    
+    figure,imagesc(abs(shifted_ratio))
+    
     NSamps = 13;
-    temp1 = shifted_ratio(41-NSamps:41+NSamps,41-NSamps:41+NSamps);
-    temp2 = zeros(size(ratio));
-    temp2(41-NSamps:41+NSamps,41-NSamps:41+NSamps) = temp1;
+%     temp1 = shifted_ratio(41-NSamps:41+NSamps,41-NSamps:41+NSamps);
+%     temp2 = zeros(size(ratio));
+%     temp2(41-NSamps:41+NSamps,41-NSamps:41+NSamps) = temp1;
+    temp1 = shifted_ratio;
+    temp1(41-NSamps:41+NSamps,41-NSamps:41+NSamps) = 0;
+    temp2 = temp1;
     ratio = ifftshift(temp2);
     
     filename = '/Users/dean/Projects/BrainIDE/ltx/EMBCCorrelationAnalysisPaper/ltx/figures/FFTKernelEstimateThreshold.pdf';
@@ -292,10 +321,10 @@ colorbar
 colormap hot
 drawnow
 
-figure
-imagesc(r_xcor,r_xcor,mean_w_est),axis square,title('FFT'),colorbar
-xlim([-10,10])
-ylim([-10,10])
+% figure
+% imagesc(r_xcor,r_xcor,mean_w_est),axis square,title('FFT'),colorbar
+% xlim([-10,10])
+% ylim([-10,10])
 
 filename = '/Users/dean/Projects/BrainIDE/ltx/EMBCCorrelationAnalysisPaper/ltx/figures/Kernel.pdf';
 figure('units','centimeters','position',[0 0 plotwidth plotheight],'filename',filename,...
