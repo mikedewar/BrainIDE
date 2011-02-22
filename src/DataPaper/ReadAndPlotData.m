@@ -107,6 +107,7 @@ CAR = repmat(mean(MappedData,2),1,100);
 CARData = MappedData-CAR;                       % CAR = common average reference
 clear MappedData
 clear CAR;
+
 %%
 % re-assign the bad channels and the corners to nans so we can interpolate
 ZeroChannels = [1 10 13 15 19 24 26 35 42 46 47 54 56  57 67 81 85 87 91 100];
@@ -158,14 +159,27 @@ clear FiltData
 %%
 % calc and plot the 2D cross-correlation
 disp('finding cross correlations')
-autocorr = zeros(size(MatrixData,1),2*size(MatrixData,2)-1,2*size(MatrixData,2)-1);
+
+% EndSample = SzEnd*FsDec;
+EndSample = SzStart*FsDec;
+
+autocorr = zeros(EndSample,2*size(MatrixData,2)-1,2*size(MatrixData,2)-1);
 xcorr = autocorr;
 future_obs = zeros(size(MatrixData,2),size(MatrixData,3));
-fft_obs  = zeros(size(MatrixData,1),2*size(MatrixData,2),2*size(MatrixData,2));
-for n=1:size(MatrixData,1)-1   
+FFT_padding = 3;
+fft_obs  = zeros(EndSample,FFT_padding*size(MatrixData,2),FFT_padding*size(MatrixData,2));
+for n=1:EndSample           %size(MatrixData,1)-1   
     current_obs = future_obs;
+    mean_current_obs = mean(mean(current_obs,2),1);
     future_obs = squeeze(MatrixData(n+1,:,:));
-    fft_obs(n,:,:) = fft2(current_obs,2*size(MatrixData,2),2*size(MatrixData,3));
+    fft_obs(n,:,:) = 20*log10( abs( fft2(current_obs-mean_current_obs, ...
+        FFT_padding*size(MatrixData,2), FFT_padding*size(MatrixData,3)) ) );
+%     clims = [0 70];
+%     imagesc(squeeze(fft_obs(n,:,:)),clims)
+%     axis xy
+%     axis square
+%     drawnow
+%     pause
     autocorr(n,:,:) = xcorr2(current_obs, current_obs);
     xcorr(n,:,:) = xcorr2(future_obs, current_obs);
 end
@@ -183,10 +197,36 @@ plotheight = 6.5;
 Delta = ElectrodeSpacing;
 varsigma = 0.56;
 xi = 0.9;
-mean_obs_noise = 0;
+
+% for n=1:size(fft_obs,1)
+%     clims = [0 70];
+%     imagesc(squeeze(fft_obs(n,:,:)),clims)    
+%     drawnow
+% end
+
+mean_FFT = squeeze(mean(fft_obs(2:end,:,:),1));
+filename = '/Users/dean/Projects/BrainIDE/ltx/EMBCCorrelationAnalysisPaper/ltx/figures/FFTObs.pdf';
+figure('units','centimeters','position',[0 0 plotwidth plotheight],'filename',filename,...
+    'papersize',[plotheight, plotwidth],'paperorientation','landscape','renderer','painters')
+nu = linspace(0,1/Delta,size(mean_FFT,1));
+CLIM = [30 70];
+imagesc(nu,nu,mean_FFT)%,CLIM);
+xlabel('Spatial Freq','fontsize',FS_Label)
+ylabel('Spatial Freq','fontsize',FS_Label)
+set(gca,'fontsize',FS_Tick)
+axis square
+axis xy
+colorbar
+% colormap hot
+drawnow
 
 R_yy = squeeze(mean( autocorr(2:end,:,:) ,1));
 R_yy_plus_1 = squeeze(mean( xcorr(2:end,:,:) ,1));
+
+mean_obs_noise = zeros(size(R_yy));
+sigma_varepsilon = 0;
+mean_obs_noise(floor(size(R_yy,1)/2)+1,floor(size(R_yy,2)/2)+1) = sigma_varepsilon;
+
 
 % figure
 % imagesc(R_yy)
@@ -198,22 +238,72 @@ R_yy_plus_1 = squeeze(mean( xcorr(2:end,:,:) ,1));
 % imagesc(R_yy_plus_1 - xi*(R_yy-mean_obs_noise))
 
 LHS = (R_yy_plus_1 - xi*(R_yy-mean_obs_noise)) ;
-DeconvMode = 1;
+DeconvMode = 3;
 if DeconvMode == 1
-    R_yy_conv_mat = convmtx2(R_yy,19,19);
+    R_yy_conv_mat = convmtx2(R_yy-mean_obs_noise,19,19);
     LHS_vect = LHS(:);
     w_vect = linsolve(full(R_yy_conv_mat)',LHS_vect);
     w_est = reshape(w_vect,37,37)*xi/(TsDec*varsigma);
+    
+    figure
+    clim = [-5 10];
+    imagesc(w_est,clim)
+    colorbar
+    axis xy
+    axis square
+    
+    %%
+    plot_fft_w_est = fft2(w_est-mean(mean(w_est)));      % need to demean
+    fft_w_est = fft2(w_est);
+    shifted_fft_w_est = fftshift(fft_w_est);
+    
+    figure
+    clim = [140 160];
+    clim = [40 45];
+    nu = linspace(0,1/Delta,size(plot_fft_w_est,1));
+    imagesc(nu,nu,20*log10(abs(plot_fft_w_est)),clim)
+    axis square
+    axis xy
+    colorbar
+    
+    NSampsX = 17;
+    NSampsY = 17;
+    MidPoint = 19;
+    OS = 0;
+    temp1 = shifted_fft_w_est(MidPoint-NSampsX-OS:MidPoint+NSampsX, MidPoint-NSampsY-OS:MidPoint+NSampsY);
+    
+    temp2 = zeros(size(shifted_fft_w_est));
+    temp2(MidPoint-NSampsX-OS:MidPoint+NSampsX,MidPoint-NSampsY-OS:MidPoint+NSampsY) = temp1;
+%     Taper = 0.25;
+%     TwoDWindow = tukeywin(size(temp2,1), Taper)*tukeywin(size(temp2,2), Taper)';
+%     temp2 = temp2.*TwoDWindow;
+%     temp2 = TwoDWindow;
+
+    figure
+    imagesc(abs(temp2))
+    
+    fft_w_est_thresh = ifftshift(temp2);
+    
+    figure
+    imagesc(abs(fft_w_est_thresh),clim)
+    w_est_thresh = (real(ifft2(fft_w_est_thresh)));
+    figure,imagesc(w_est_thresh)
+    axis square
+    colorbar
+    
+    figure
+    plot(w_est_thresh(19,:))
+    %%
 elseif DeconvMode == 2
     R_yy_conv_mat = convmtx2(R_yy,19,19);
     LHS_vect = LHS(:);
     inv_conv_mat = pinv(full(R_yy_conv_mat));        % took 2757 s
-    w_vect = inv_conv_mat'*LHS_vect;
+    w_vect = inv_conv_mat' * LHS_vect;
     w_est = reshape(w_vect,37,37)*xi/(TsDec*varsigma);
 elseif DeconvMode == 3
     S_yy = fft2(R_yy-mean_obs_noise,19,19); 
     S_LHS = fft2(LHS,19,19);               %auto and noise free
-    ratio = S_LHS./S_yy;
+    ratio = S_LHS ./ S_yy;
     shifted_ratio = fftshift(ratio);
     NSamps = 4;
     MidPoint = 10;
@@ -222,7 +312,7 @@ elseif DeconvMode == 3
     temp2 = zeros(size(ratio));
     temp2(MidPoint-NSamps-OS:MidPoint+NSamps,MidPoint-NSamps-OS:MidPoint+NSamps) = temp1;
     ratio_thresh = ifftshift(temp2);
-    w_est = fftshift( (ifft2(ratio_thresh)) ) / (Delta^2*varsigma*TsDec);
+    w_est = fftshift( (ifft2(ratio)) ) / (Delta^2*varsigma*TsDec);
 
     filename = '/Users/dean/Projects/BrainIDE/ltx/EMBCCorrelationAnalysisPaper/ltx/figures/FFTKernelEstimateFull.pdf';
     figure('units','centimeters','position',[0 0 plotwidth plotheight],'filename',filename,...

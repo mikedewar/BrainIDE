@@ -440,62 +440,130 @@ Discuss model-based estimation
 
 
 \subsection{Stochastic Neural Field Model}
+The model relates the average number of action potentials $g(\mathbf{r},t)$ arriving at time $t$ and position $\mathbf{r}$ to the local post-synaptic membrane voltage $v(\mathbf{r},t)$. The post-synaptic potentials generated at a neuronal population at location $\mathbf{r}$ by action potentials arriving from all other connected populations is described by 
 \begin{equation}
-	\label{SpikesToPotential} v\left( {\mathbf{r},t} \right) = e^{-\zeta t}v\left( {\mathbf{r},0} \right) + \int_{0}^t {h\left( {t - t'} \right)g\left( {\mathbf{r},t'} \right)\textrm{d}t'}, 
-\end{equation}   
-where $v\left( {\mathbf{r},0} \right)$ is the membrane voltage at the initial time $t = 0$, $g(\cdot)$ describes the mean firing rate, $h(\cdot)$ is the first-order post-synaptic response kernel of the form 
+	\label{SpikesToPotential} v\left( {\mathbf{r},t} \right) = \int_{ - \infty }^t {h\left( {t - t'} \right)g\left( {\mathbf{r},t'} \right) \, dt'}. 
+\end{equation}
+The post-synaptic response kernel $h(t)$ is described by 
 \begin{equation}
 	\label{SynapticRespKernel} h(t) = \eta(t)\exp{\left(-\zeta t\right)}, 
 \end{equation}
-where $\zeta=\tau^{-1}$, $\tau$ is the synaptic time constant and $\eta(t)$ is the Heaviside step function. The firing rate is modeled by having both a deterministic component and stochastic component, modeled by a spatially coloured space-time Wiener process $W(\mathbf{r},t)$, and is described by
-\begin{equation}\label{DecompositionOfg}
-g(\mathbf{r},t)\textrm{d}t = \tilde{g}(\mathbf{r},t)\textrm{d}t + \sigma_W \textrm{d}W(\mathbf{r},t), 
-\end{equation}
-where $\sigma_W \ge 0$ is a measure of the introduced space-time randomness. For $\sigma_W = 0$ a pure deterministic process is recovered. Alternatively if $\sigma_W > 0$, the membrane voltage $v(\mathbf{r},t)$ is itself a stochastic process. Incorporating the stochastic process is a variation of the typical WC or Amari formulations accounting for model uncertainty and unknown inputs. and is modeled by a spatially coloured space-time Wiener process $W(\mathbf{r},t)$. 
-
-Assuming an infinite propagation velocity for action potentials within the field (intracortical patch), the deterministic incoming firing rate is described by the spatial convolution 
+where $\zeta=\tau^{-1}$, $\tau$ is the synaptic time constant and $\eta(t)$ is the Heaviside step function. Non-local interactions between cortical populations at positions $\mathbf{r}$ and $\mathbf{r}'$ are described by 
 \begin{equation}
-	\label{RateBasedInteractions} \tilde{g}\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( v\left( \mathbf{r}',t \right) \right)\textrm{d}\mathbf{r}'}, 
+	\label{eq:RateBasedInteractions} g\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( v\left( \mathbf{r}',t \right) \right)\, d\mathbf{r}'}, 
 \end{equation}
-where $w(\cdot)$ is the spatial connectivity kernel and $\Omega$ is the spatial domain representing the cortical sheet or surface. The function $f(\cdot)$ relates mean post-synaptic potentials to mean firing rates and follows a sigmoid described by
+where $f(\cdot)$ is the firing rate function, $w(\cdot)$ is the spatial connectivity kernel and $\Omega$ is the spatial domain representing a cortical sheet or surface. The firing rate of the presynaptic neurons is related to the post-synaptic membrane potential by the sigmoidal activation function 
 \begin{equation}
-	\label{ActivationFunction} f\left( v\left( \mathbf{r}', t \right) \right) = \frac{1}{1 + \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right)}, 
+	\label{ActivationFunction} f\left( v\left( \mathbf{r}', t \right) \right) = \frac{1}{1 + \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right)}. 
 \end{equation}
-where $v_0$ and $\varsigma$ describe the firing threshold and the slope of the sigmoid respectively. 
-By substituting equation~\ref{DecompositionOfg} into equation~\ref{SpikesToPotential} we obtain the stochastic integral equation model 
+The parameter $v_0$ describes the firing threshold of the neural populations and $\varsigma$ governs the slope of the sigmoid. By substituting equation~\ref{eq:RateBasedInteractions} into equation~\ref{SpikesToPotential} we get the spatiotemporal model 
 \begin{equation}
-	\label{StochasticModel} v\left(\mathbf{r},t\right) = e^{-\zeta t}v\left( {\mathbf{r},0} \right) + \int_{0}^t h\left(t - t'\right)\tilde{g}\left(\mathbf{r},t'\right) \textrm{d}t'+ \sigma_W\int_{0}^t h\left(t - t'\right)\textrm{d}W\left(\mathbf{r},t'\right).
+	\label{FullDoubleIntModel} v\left(\mathbf{r},t\right) =
+	\int_{-\infty}^t 
+	h\left(t - t'\right) \int_\Omega
+	w\left(\mathbf{r},\mathbf{r}'\right) 
+	f\left( v\left( \mathbf{r}',t' \right)\right)
+	\, d\mathbf{r}'dt'.
 \end{equation}
- Here we assume that $v\left( {\mathbf{r}},0 \right)$ is independent of the disturbance on the action potentials and assumed to be generated by a known distribution. We stress that $\sigma_W$ does not depend on the field $v({\mathbf{r}},t)$ and hence the noise in equation \ref{StochasticModel} is strictly additive. The general integral-differential equation is given by 
-\begin{equation} \label{DifferentialEquationContTime}
- \textrm{d}v(\mathbf{r},t) + \zeta v(\mathbf{r},t)\textrm{d}t = \tilde{g}(\mathbf{r},t)\textrm{d}t + \textrm{d}W(\mathbf{r},t)  ~~~~ t \ge 0, v(\mathbf{r},0) = \red{GP?}
-\end{equation}
-To show that this is indeed the case consider the function $\kappa(v(\mathbf{r},t),t) = v(\mathbf{r},t)e^{\zeta t}$. We note that $\kappa(v(\mathbf{r},t),t)$ is twice differentiable so that we can apply Ito's formula to obtain
+To obtain the standard integro-differential equation form of the model, we use the fact that the synaptic response kernel is a Green's function of a linear differential equation defined by the differential operator $\textrm{D}=d/dt + \zeta$. A Green's function satisfies
 \begin{equation}
- \textrm{d}\kappa = e^{\zeta t}g(\mathbf{r},t)\textrm{d}t + e^{\zeta t}\sigma \textrm{d}W(\mathbf{r},t)
-\end{equation}
-\noindent Integrating over $[0,t]$ and multiplying throughout by $e^{-\zeta t}$ gives the required result.
-The neural field equations must be written as a discrete-time finite-dimensional model in order to relate it to patient-specific data. The discrete-time model is found applying the a first-order Euler-Maruyama method on equation \ref{DifferentialEquationContTime} giving
-\begin{equation}\label{EulerMethod}
-	v\left( \mathbf{r},t+T_s \right)-v\left( \mathbf{r},t \right) + \zeta T_sv\left(\mathbf{r},t \right) = T_s\int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right) f\left( {v\left( \mathbf{r}',t \right)}\right)\textrm{d}\mathbf{r}'} + 	\sigma_W[W\left( \mathbf{r},t+T_s \right)-W\left( \mathbf{r},t \right)],
-\end{equation}
-where $T_s$ is the time step or sampling period. To simplify the notation, the sample at the the current time step shall be indexed by $t$ and the future time step by $t+1$ for the rest of the paper. Rearranging equation~\ref{EulerMethod} gives the integro-difference equation (IDE) form
+	\label{GreensFuncDef} \textrm{D}h\left( t \right) = \delta \left( t \right), 
+\end{equation} 
+where $\delta(t)$ is the Dirac-delta function. Applying the differential operator $\textrm{D}$ to equation~\ref{SpikesToPotential} gives
+\begin{align}
+ \textrm{D}v\left(\mathbf r,t\right)&= \textrm{D}\left(h\ast g\right)\left(\mathbf r,t\right)\\
+&=\left(\textrm{D}h\ast g\right)\left(\mathbf r,t\right)\\
+&=\left(\delta \left(t\right)\ast g\right)\left(\mathbf r,t\right)\\
+&=g\left(\mathbf r,t\right)
+\end{align}
+where $\ast$ denotes the convolution operator. This gives the standard form of the model
 \begin{equation}
-	\label{NoisyDiscreteTimeModel} 
-	v_{t+1}\left(\mathbf{r}\right) = 
+	\label{FinalFormContinuous} 
+	\frac{dv\left( \mathbf{r},t \right)}{dt} + \zeta v\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( {v\left( \mathbf{r}',t \right)} \right)\, d\mathbf{r}'}. 
+\end{equation}
+To arrive at the integro-difference equation (IDE) form of the model, we discretize time using a first-order Euler method giving 
+\begin{equation}
+	\label{eq:DiscreteTimeModel} 
+	v_{t+T_s}\left(\mathbf{r}\right) = 
 	\xi v_t\left(\mathbf{r}\right) + 
 	T_s \int_\Omega { 
 	    w\left(\mathbf{r},\mathbf{r}'\right)
 	    f\left(v_t\left(\mathbf{r}'\right)\right) 
-	\textrm{d}\mathbf{r}'} 
+	\, d\mathbf{r}'} 
 	+ e_t\left(\mathbf{r}\right), 
 \end{equation}
-where $e_t(\mathbf{r}) = \sigma_W[W\left( \mathbf{r},t+T_s \right)-W\left( \mathbf{r},t \right)]$ is the increment of a space-time Wiener process, $i.i.d.$ with zero spatial mean such that $e_t(\mathbf{r})\sim\mathcal{GP}(\mathbf 0,T_s\sigma_W^2\gamma(\mathbf{r}-\mathbf{r}'))$. Here $\mathcal{GP}(\mathbf 0,T_s\sigma_W^2\gamma(\mathbf{r}-\mathbf{r}'))$ denotes a zero mean spatial Gaussian process with covariance function $\gamma(\mathbf{r}-\mathbf{r}')$~\cite{Rasmussen2005}.
+where $T_s$ is the time step, $\xi = 1-T_s\zeta $ and $e_t(\mathbf{r})$ is an $i.i.d.$ disturbance such that $e_t(\mathbf{r})\sim\mathcal{GP}(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}'))$. Here $\mathcal{GP}(\mathbf 0,\gamma(\mathbf{r}-\mathbf{r}'))$ denotes a zero mean Gaussian process with spatial covariance function $\gamma(\mathbf{r}-\mathbf{r}')$ (\cite{Rasmussen2005}). The disturbance is added to account for model uncertainty and unmodeled inputs. To simplify the notation, the index of the future time sample, $t+T_s$, shall be referred to as $t+1$ throughout the rest of the paper. 
+
+The mapping between the membrane voltage and the electrophysiological data, denoted by $\mathbf{y}_t$, is modeled using the observation function that incorporates sensors with a spatial extent by
+\begin{equation}\label{eq:ObservationEquation}
+	y_t(\mathbf{r}_n) = \int_{\Omega} { m\left(\mathbf{r}_n-\mathbf{r}'\right) v_t\left(\mathbf{r}'\right) \, d\mathbf{r}'} + \varepsilon_t(\mathbf{r}_n), 
+\end{equation}
+where $m\left(\mathbf{r}_n-\mathbf{r}'\right)$ is the observation kernel, $\mathbf{r}_n$ defines the location of the electrodes in the field, $n=0,...,n_y-1$ indexes the sensors and $\varepsilon_t(\mathbf{r}_n) \sim \mathcal{N}\left(0,\boldsymbol{\Sigma}_{\varepsilon}\right)$ denotes a multivariate normal distribution with mean zero and the covariance matrix $\boldsymbol{\Sigma}_{\varepsilon} = \sigma_{\varepsilon}^2\mathbf{I}$, where $\mathbf{I}$ is the identity matrix. Since we are considering intracranial measurements recorded directly from the surface of the cortex or within the brain, the lead field is not modeled by the observation equation.
+
 \subsection{Maybe: Basis Function Decomp}
 
 
 \subsection{Estimation of Connectivity Kernel Support}
-  
+The spatial relationship between consecutive observations is governed by the connectivity kernel. Therefore, the cross-correlation between consecutive observations is used to estimate the support of the connectivity kernel. The cross-correlation is defined as
+\begin{equation}
+	R_{y_{t+1}y_t}(\boldsymbol{\tau}) = \int_{\Omega} y_{t+1}(\mathbf{r}) y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r},
+\end{equation}
+where $\tau$ is the spatial shift. Now substituting equation~\ref{eq:ObservationEquation} for $y_{t+1}(\mathbf{r})$ and assuming noise-free observations gives 
+\begin{equation}
+	R_{y_{t+1}y_t}(\boldsymbol{\tau}) = \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}')v_{t+1}(\mathbf{r}')d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}.
+\end{equation}
+Next the equation~\ref{eq:DiscreteTimeModel} is substituted in for $v_{t+1}(\mathbf{r}')$ giving
+\begin{align}
+	R_{y_{t+1}y_t}(\boldsymbol{\tau}) &= \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}')\left(\xi v_t(\mathbf{r}') + g_t(\mathbf{r}')\right. \nonumber \\
+	&+ \left. e_t(\mathbf{r}')\right) d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}. 
+\end{align}
+The cross-correlation is simplified by recognizing that
+\begin{align}
+	\int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}')\xi v_t(\mathbf{r}')d\mathbf{r}'y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} = \xi R_{y_ty_t}(\boldsymbol{\tau}) \\
+	\mathbf{E}\left[\int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}') e_t(\mathbf{r}') d\mathbf{r}'y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}\right] = 0,
+\end{align}
+giving
+\begin{align}
+	R_{y_{t+1}y_t}(\boldsymbol{\tau}) &= \xi R_{y_ty_t}(\boldsymbol{\tau}) \nonumber \\
+	&+ \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}') g_t(\mathbf{r}') d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}.
+\end{align}
+Rearranging and substituting in equation~\ref{eq:RateBasedInteractions} for $g_t(\mathbf{r}')$ gives
+\begin{align}
+	R_{y_{t+1}y_t}(\boldsymbol{\tau}) &-\xi R_{y_ty_t}(\boldsymbol{\tau}) = T_s \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}') \nonumber \\
+	&\times \int_{\Omega} w(\mathbf{r}'-\mathbf{r}'') f\left(v_t(\mathbf{r}'')\right)d\mathbf{r}'' d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}. 
+\end{align}  
+Using the commutativity property of convolution, the order can be rearranged to
+\begin{align}
+	R_{y_{t+1}y_t}(\boldsymbol{\tau})&-\xi R_{y_ty_t}(\boldsymbol{\tau}) =  T_s \int_{\Omega}\int_{\Omega} w(\mathbf{r}-\mathbf{r}') \nonumber \\
+	&\times \int_{\Omega} m(\mathbf{r}'-\mathbf{r}'') f\left(v_t(\mathbf{r}'')\right) d\mathbf{r}'' d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}.
+\end{align}
+Next, the nonlinear function $f(\cdot)$ is approximated by the simple linear relationship
+\begin{equation}
+	f\left(v_t(\mathbf{r})\right) \approx \varsigma v_t(\mathbf{r})
+\end{equation} 
+giving
+\begin{align}
+	R_{y_{t+1}y_t}(\boldsymbol{\tau})&-\xi R_{y_ty_t}(\boldsymbol{\tau}) =  \varsigma T_s \int_{\Omega}\int_{\Omega} w(\mathbf{r}-\mathbf{r}') \nonumber \\
+	&\times \int_{\Omega} m(\mathbf{r}'-\mathbf{r}'')  v_t(\mathbf{r}'') d\mathbf{r}'' d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r},
+\end{align}
+which simplifies to
+\begin{align}
+	R_{y_{t+1}y_t}(\boldsymbol{\tau})&-\xi R_{y_ty_t}(\boldsymbol{\tau}) =  \varsigma T_s \int_{\Omega}\int_{\Omega} w(\mathbf{r}-\mathbf{r}')y_t(\mathbf{r}') d\mathbf{r}' \nonumber \\
+	&\times y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}
+\end{align}
+A property of cross-correlation and convolution is $(a \ast b) \star c = a(-)\ast(b \star c)$, so we can write
+\begin{align}
+	R_{y_{t+1}y_t}(\boldsymbol{\tau}) &-\xi R_{y_ty_t}(\boldsymbol{\tau}) = \varsigma T_s \int_{\Omega} w(\boldsymbol{\tau}-\boldsymbol{\tau}') \nonumber \\
+	&\times \int_{\Omega} y_t(\mathbf{r}) y_t(\mathbf{r}+\boldsymbol{\tau}') d\mathbf{r}d\boldsymbol{\tau}' \\
+	&= \varsigma T_s \int_{\Omega} w(\boldsymbol{\tau}-\boldsymbol{\tau}') R_{y_ty_t}(\boldsymbol{\tau}')d\boldsymbol{\tau}'.
+\end{align}
+The solution of the above equation for the connectivity kernel is a deconvolution. This can be approached from a number of different standpoints. The simplest solution is to use the convolution theorem and find the solution by
+\begin{equation}
+	w(\boldsymbol{\tau}) = \frac{1}{\varsigma T_s}\mathcal{F}^{-1}\left\{\frac{\mathcal{F}\left(R_{y_{t+1}y_t}(\boldsymbol{\tau}) -\xi R_{y_ty_t}(\boldsymbol{\tau})\right)}{\mathcal{F}\left(R_{y_ty_t}(\boldsymbol{\tau})\right)}\right\}.
+\end{equation}
+
+Alternatively, the convolution can be written as a system of linear equations by forming the convolution (Toeplitz) matrix. The solution of the convolution equation for $w(\cdot)$ can then be found by either inverting the convolution matrix or directly solving the system of equations. Directly solving the system is the most numerically stable and less computationally demanding then inverting the convolution matrix. 
+
 
 
 \section{Results}
@@ -517,7 +585,6 @@ Show the exact estimation of the kernel.
 	\caption{a) Field spatial frequency in dB. b) Spatial frequency cross-section showing cutoff frequency. The black line shows the spatial frequency in the x direction and the red line shows the frequency in the y direction.}
 \end{figure}
 
-
 \begin{figure*}[t!]
 	\centering
 		\subfigure[]{
@@ -525,16 +592,16 @@ Show the exact estimation of the kernel.
 	\label{fig:FFTKernel}}
 		\subfigure[]{
 		\includegraphics[scale=1]{FFTKernelEstimateFullLinear}
-	\label{fig:FFTKernelEstimate}}
+	\label{fig:FFTKernelEstimateFullLinear}}
 		\subfigure[]{
 		\includegraphics[scale=1]{FFTKernelEstimateThresholdLinear}
-	\label{fig:FFTKernelEstimate}}
+	\label{fig:FFTKernelEstimateThreshLinear}}
 		\subfigure[]{
 		\includegraphics[scale=1]{FFTKernelEstimateFull}
-	\label{fig:FFTKernelEstimate}}
+	\label{fig:FFTKernelEstimateFullNonlinear}}
 		\subfigure[]{
 		\includegraphics[scale=1]{FFTKernelEstimateThreshold}
-	\label{fig:FFTKernelThresholded}}
+	\label{fig:FFTKernelEstimateThreshNonlinear}}
 	\label{fig:FFTKernels}
 	\caption{a) FFT of kernel. b) FFT of kernel estimate when generating data with linear model showing numerical issues. c) Thresholded FFT of kernel estimate when generating data with linear model. d) FFT of kernel estimate when generating data with nonlinear model. e) Thresholded FFT of kernel estimate when generating data with nonlinear linear model.}
 \end{figure*}
@@ -548,10 +615,10 @@ Show the exact estimation of the kernel.
 	\label{fig:Kernel}}
 		\subfigure[]{
 		\includegraphics[scale=1]{KernelEstimateLinear}
-	\label{fig:KernelEstimate}}
+	\label{fig:KernelEstimateLinear}}
 		\subfigure[]{
 		\includegraphics[scale=1]{KernelEstimate}
-	\label{fig:KernelEstimate}}
+	\label{fig:KernelEstimateNonlinear}}
 	\label{fig:Kernels}
 	\caption{a) The actual kernel. b) Estimate of kernel when generating data using the linear model. b) Estimate of the kernel when using the nonlinear model.}
 \end{figure}
@@ -560,27 +627,27 @@ Show the exact estimation of the kernel.
 	\centering
 	\subfigure[]{
 	\includegraphics[scale=1]{KernelsCrossSectionLinear}
-	\label{fig:KernelCrossSection}}
+	\label{fig:KernelCrossSectionLinear}}
 	\subfigure[]{
 	\includegraphics[scale=1]{KernelsCrossSection}
-	\label{fig:KernelCrossSection}}
+	\label{fig:KernelCrossSectionNonlinear}}
 	\caption{a) From the linear model. b) from the nonlinear model.}
 \end{figure}
 
-\begin{figure}[t!]
-	\centering
-		\subfigure[]{
-		\includegraphics[scale=1]{KernelEstimateDataLinsolve}
-	\label{fig:Kernel}}
-		\subfigure[]{
-		\includegraphics[scale=1]{KernelEstimateDataInvConvMat}
-	\label{fig:KernelEstimate}}
-		\subfigure[]{
-		\includegraphics[scale=1]{KernelEstimateDataFFT}
-	\label{fig:KernelEstimate}}
-	\label{fig:Kernels}
-	\caption{Kernel estimates from data. a) Using linsolv. b) Using psuedo inverse of convolution matrix. b) Using FFT.}
-\end{figure}
+% \begin{figure}[t!]
+% 	\centering
+% 		\subfigure[]{
+% 		\includegraphics[scale=1]{KernelEstimateDataLinsolve}
+% 	\label{fig:Kernel}}
+% 		\subfigure[]{
+% 		\includegraphics[scale=1]{KernelEstimateDataInvConvMat}
+% 	\label{fig:KernelEstimate}}
+% 		\subfigure[]{
+% 		\includegraphics[scale=1]{KernelEstimateDataFFT}
+% 	\label{fig:KernelEstimate}}
+% 	\label{fig:Kernels}
+% 	\caption{Kernel estimates from data. a) Using linsolv. b) Using psuedo inverse of convolution matrix. b) Using FFT.}
+% \end{figure}
 
 
 \section{Discussion}
