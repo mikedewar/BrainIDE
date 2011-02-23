@@ -46,6 +46,8 @@ psi_1 = Define2DGaussian(0,0, sigma_psi(2)^2, 0,NPoints,SpaceMin,SpaceMax);
 psi_2 = Define2DGaussian(0,0, sigma_psi(3)^2, 0,NPoints,SpaceMin,SpaceMax);
 w = theta(1)*psi_0 + theta(2)*psi_1 + theta(3)*psi_2;       % the kernel
 
+w_conj = ifft2(conj(fft2(w)));
+
 psi_0 = Define2DGaussian(0,0, sigma_psi(1)^2, 0,81,2*SpaceMin,2*SpaceMax);
 psi_1 = Define2DGaussian(0,0, sigma_psi(2)^2, 0,81,2*SpaceMin,2*SpaceMax);
 psi_2 = Define2DGaussian(0,0, sigma_psi(3)^2, 0,81,2*SpaceMin,2*SpaceMax);
@@ -68,7 +70,7 @@ v_0 = 1.8;                    % firing threshold
 sigma_gamma = 1.3;              % parameter for covariance of disturbance
 gamma_weight = 0.1;            % variance of disturbance
 
-Torus = false;
+Torus = true;
 if Torus == true
     SphericalBoundary                   % to get Sigma_gamma on a torus
 else
@@ -117,13 +119,20 @@ for n=1:N_realizations
     y = zeros(T,NPoints,NPoints);       % initialize for speed
 
     future_obs = squeeze(y(1,:,:));
+    future_obs_full = zeros(81,81);
     xcorr = zeros(T-1,81,81);           % initialize for speed
     autocorr = xcorr;                       % initialize for speed
     obs_noise_autocorr = xcorr;
     extra_bit1 = xcorr;
-    extra_bit2 = xcorr;
+%     extra_bit2 = xcorr;
     extra_bit3 = xcorr;
+%     extra_bit4 = xcorr;
+    extra_bit5 = xcorr;
+    extra_bit6 = xcorr;
+    extra_bit7 = xcorr;
+    extra_bit8 = xcorr;
 
+    left_overs = xcorr;
     %     w_est_FFT = xcorr;
     
     % main loop
@@ -144,40 +153,66 @@ for n=1:N_realizations
         v(t+1,:,:) = future_field;
         
         current_obs = future_obs;
-        
+        current_obs_full = future_obs_full;
+
 %         obs_noise = squeeze(varepsilon(t,:,:));
         obs_noise =  reshape(varepsilon(t,:,:),NPoints,NPoints);
         
-        future_obs = conv2(m,future_field,'same') * Delta_squared + obs_noise; 
+        if Torus == true
+            future_field_pad = padarray(future_field,size(future_field),'circular');                                     % pad array for toroidal boundary
+            future_obs = conv2(m,future_field_pad,'same') * Delta_squared + obs_noise; 
+        else
+            future_obs = conv2(m,future_field,'same') * Delta_squared + obs_noise; 
+            future_obs_full = conv2(m,future_field) * Delta_squared;
+        end
         
         fft_y(t+1,:,:) = fft2(future_obs - mean(mean(future_obs,1)));
         
         autocorr(t,:,:) = xcorr2(current_obs, current_obs);
         xcorr(t,:,:) = xcorr2(future_obs, current_obs);
         
-        extra_bit1(t,:,:) = xcorr2(conv2(m,disturbance,'same'),current_obs);
-        extra_bit2(t,:,:) = xcorr2(conv2(m,xi*current_field,'same'),current_obs);
-        extra_bit3(t,:,:) = xcorr2(conv2(m,g,'same'),current_obs);
+        autocorr_trim = squeeze(autocorr(t,41-20:41+20,41-20:41+20));
         
-        obs_noise_autocorr(t,:,:) = xcorr2(obs_noise, obs_noise);
+        extra_bit1(t,:,:) = xcorr2(conv2(m,disturbance,'same')*Delta^2,current_obs);
+%         extra_bit2(t,:,:) = xcorr2(conv2(m,xi*current_field,'same')*Delta^2,current_obs);
+        extra_bit3(t,:,:) = xcorr2( conv2(m,padarray(g,size(g),'circular') ,'same')*Delta^2,current_obs);        
+%         extra_bit4(t,:,:) = Ts* xcorr2(conv2(m, conv2(w,f)*Delta^2,'same')*Delta^2 ,current_obs ); % should be the same as extra_bit3        
+        extra_bit5(t,:,:) = Ts* xcorr2( conv2(w, conv2(m,f)*Delta^2,'same')*Delta^2,current_obs ); % should be the same as extra_bit3
+
+        extra_bit6(t,:,:) = varsigma*Ts* xcorr2( conv2(w, padarray(current_obs,size(current_obs),'circular'),'same')*Delta^2, current_obs ); % should be the same as extra_bit3
+        extra_bit7(t,:,:) = varsigma*Ts*conv2(-w_tau,xcorr2(current_obs,flipud(fliplr(current_obs))),'same')*Delta^2; % should be the same as extra_bit3
+
+%         extra_bit8(t,:,:) = ifft2(fft2(w).*conj(fft2(current_obs)).*fft2(current_obs));
         
-        imagesc(squeeze(xcorr(t,:,:) - extra_bit1(t,:,:) - extra_bit2(t,:,:) - extra_bit3(t,:,:)))
+% extra_bit5 is not the same as extra bit4, but it should be due to the associativity and comutativity properties. 
+%         a = conv2(m, conv2(w,f)*Delta^2,'same')*Delta^2;
+%         b = conv2(w, conv2(m,f)*Delta^2,'same')*Delta^2;
+        
+        left_overs(t,:,:) = extra_bit3(t,:,:) - extra_bit7(t,:,:);
+% ok, removed the edge effects and these guys are the same
+        imagesc(squeeze(left_overs(t,:,:)))
         colorbar
         drawnow
+
+        obs_noise_autocorr(t,:,:) = xcorr2(obs_noise, obs_noise);
+        
     end
 
+    mean_left_overs = squeeze(mean(left_overs,1));
+    figure,imagesc(mean_left_overs),colorbar
+    
     R_yy = squeeze(mean( autocorr(2:end,:,:) ,1));
     R_yy_plus_1 = squeeze(mean( xcorr(2:end,:,:) ,1));
     
     mean_extra_bit1 = squeeze(mean( extra_bit1(2:end,:,:) ,1));
-    mean_extra_bit2 = squeeze(mean( extra_bit2(2:end,:,:) ,1));
-    mean_extra_bit3 = squeeze(mean( extra_bit3(2:end,:,:) ,1));
+%     mean_extra_bit2 = squeeze(mean( extra_bit2(2:end,:,:) ,1));
+%     mean_extra_bit3 = squeeze(mean( extra_bit3(2:end,:,:) ,1));
 
     mean_obs_noise = squeeze(mean( obs_noise_autocorr(2:end,:,:) ,1));    
     
     mean_spatial_freq = squeeze(mean(fft_y(2:end,:,:),1));
     
-    LHS = (R_yy_plus_1 - xi*(R_yy-mean_obs_noise)) ;
+    LHS = R_yy_plus_1 - xi*(R_yy-mean_obs_noise) - mean_extra_bit1 - mean_left_overs ;
     
 %     %%
 %     R_yy_conv_mat = convmtx2(R_yy-mean_obs_noise,81,81);
