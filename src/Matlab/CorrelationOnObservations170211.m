@@ -124,7 +124,7 @@ for n=1:N_realizations
     autocorr = xcorr;                       % initialize for speed
     obs_noise_autocorr = xcorr;
     extra_bit1 = xcorr;
-%     extra_bit2 = xcorr;
+    extra_bit2 = xcorr;
     extra_bit3 = xcorr;
 %     extra_bit4 = xcorr;
     extra_bit5 = xcorr;
@@ -173,28 +173,47 @@ for n=1:N_realizations
         
         autocorr_trim = squeeze(autocorr(t,41-20:41+20,41-20:41+20));
         
-        extra_bit1(t,:,:) = xcorr2(conv2(m,disturbance,'same')*Delta^2,current_obs);
-%         extra_bit2(t,:,:) = xcorr2(conv2(m,xi*current_field,'same')*Delta^2,current_obs);
+        extra_bit1(t,:,:) = xcorr2(conv2(m,padarray(disturbance,size(disturbance),'circular'),'same')*Delta^2,current_obs);
+        extra_bit2(t,:,:) = xcorr2(conv2(m,xi*padarray(current_field,size(current_field),'circular'),'same')*Delta^2,current_obs);
         extra_bit3(t,:,:) = xcorr2( conv2(m,padarray(g,size(g),'circular') ,'same')*Delta^2,current_obs);        
 %         extra_bit4(t,:,:) = Ts* xcorr2(conv2(m, conv2(w,f)*Delta^2,'same')*Delta^2 ,current_obs ); % should be the same as extra_bit3        
         extra_bit5(t,:,:) = Ts* xcorr2( conv2(w, conv2(m,f)*Delta^2,'same')*Delta^2,current_obs ); % should be the same as extra_bit3
 
         extra_bit6(t,:,:) = varsigma*Ts* xcorr2( conv2(w, padarray(current_obs,size(current_obs),'circular'),'same')*Delta^2, current_obs ); % should be the same as extra_bit3
-        extra_bit7(t,:,:) = varsigma*Ts*conv2(-w_tau,xcorr2(current_obs,flipud(fliplr(current_obs))),'same')*Delta^2; % should be the same as extra_bit3
-
-%         extra_bit8(t,:,:) = ifft2(fft2(w).*conj(fft2(current_obs)).*fft2(current_obs));
         
+        extra_bit_temp = varsigma*Ts* conv2( w,xcorr2(current_obs))*Delta^2; % should be the same as extra_bit3
+        MidPoint = 61;
+        OS = 40;
+        extra_bit7(t,:,:)= extra_bit7(MidPoint-OS:MidPoint+OS,MidPoint-OS:MidPoint+OS);
+        
+        
+%         plot(squeeze(extra_bit6(t,1,:)),'k')
+%         hold on
+%         plot(squeeze(extra_bit7(t,1,:)),'g')
+%         hold off
+%         drawnow
 % extra_bit5 is not the same as extra bit4, but it should be due to the associativity and comutativity properties. 
 %         a = conv2(m, conv2(w,f)*Delta^2,'same')*Delta^2;
 %         b = conv2(w, conv2(m,f)*Delta^2,'same')*Delta^2;
         
-        left_overs(t,:,:) = extra_bit3(t,:,:) - extra_bit7(t,:,:);
-% ok, removed the edge effects and these guys are the same
-        imagesc(squeeze(left_overs(t,:,:)))
-        colorbar
-        drawnow
+% autocorr_trim = squeeze(autocorr(t,41-20:41+20,41-20:41+20));
+% xcorr_trim = squeeze(xcorr(t,41-20:41+20,41-20:41+20));
+% extra_bit1_trim = squeeze(extra_bit1(t,41-20:41+20,41-20:41+20));
+% extra_bit6_trim = squeeze(extra_bit6(t,41-20:41+20,41-20:41+20));
 
-        obs_noise_autocorr(t,:,:) = xcorr2(obs_noise, obs_noise);
+
+        left_overs = xcorr(t,:,:) - xi*autocorr(t,:,:) - extra_bit7(t,:,:) - extra_bit1(t,:,:);
+        
+%         left_overs = xcorr_trim - xi*autocorr_trim - extra_bit8 - extra_bit1_trim;
+
+% ok, removed the edge effects and these guys are the same
+%         subplot(121),imagesc(squeeze(mean(extra_bit1,1))),axis square
+%         colorbar
+%         subplot(122),imagesc(squeeze(mean(autocorr,1))),axis square
+%         colorbar
+%         drawnow
+% 
+%         obs_noise_autocorr(t,:,:) = xcorr2(obs_noise, obs_noise);
         
     end
 
@@ -212,7 +231,7 @@ for n=1:N_realizations
     
     mean_spatial_freq = squeeze(mean(fft_y(2:end,:,:),1));
     
-    LHS = R_yy_plus_1 - xi*(R_yy-mean_obs_noise) - mean_extra_bit1 - mean_left_overs ;
+    LHS = R_yy_plus_1 - xi*(R_yy-mean_obs_noise) - mean_extra_bit1;
     
 %     %%
 %     R_yy_conv_mat = convmtx2(R_yy-mean_obs_noise,81,81);
