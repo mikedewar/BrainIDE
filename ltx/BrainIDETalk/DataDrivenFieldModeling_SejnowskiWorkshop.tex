@@ -109,18 +109,29 @@
 	\end{picture}
 \end{frame}
 
+\begin{frame}\frametitle{Patient specific model}
+	Aim: To estimate patient-specific neural states and parameters that influence seizure dynamics from electrophysiological measurements. 
+	\begin{center}
+		\includegraphics<1>[height=6cm]{./Figures/BrainElectrode.pdf} 
+	\end{center}
+\end{frame}
 
+\begin{frame}\frametitle{Modelling approaches} 
+	\begin{center}
+		\includegraphics<1>[height=3cm]{./Figures/ModellingApproaches.pdf} 
+	\end{center}
+\end{frame}
 \subsection{Fitting neural models to EEG}
 
-\begin{frame} \frametitle{Previous studies}
-\begin{itemize}
-	\item Valdes et al. (1999) - local linearisation filter (Ozaki) with neural mass of Lopes Da Silva.
-	\item David and Friston (2003) - Bayesian-based DCM framework, using coupled neural masses of Jansen and Rit.
-	\item Galka et al. (2008) - Linear damped wave equation.
-	\item Daunizeau et al. (2009) - DCM framework extended to neural fields.
-	\item Schiff et al. (2008) - Used UKF with modified Wilson and Cowan equation.
-\end{itemize}
-\end{frame}
+% \begin{frame} \frametitle{Previous studies}
+% \begin{itemize}
+% 	\item Valdes et al. (1999) - local linearisation filter (Ozaki) with neural mass of Lopes Da Silva.
+% 	\item David and Friston (2003) - Bayesian-based DCM framework, using coupled neural masses of Jansen and Rit.
+% 	\item Galka et al. (2008) - Linear damped wave equation.
+% 	\item Daunizeau et al. (2009) - DCM framework extended to neural fields.
+% 	\item Schiff et al. (2008) - Used UKF with modified Wilson and Cowan equation.
+% \end{itemize}
+% \end{frame}
 
 \section[Methodology]{Methodology}
 
@@ -141,7 +152,7 @@
 \end{center}
 \begin{align}
 	g\left( \mathbf{r},t \right) &= w_{\mathbf{r},\mathbf{r}'}f\left( v\left( \mathbf{r}',t \right) \right) \\ 
-	f\left( v\left( \mathbf{r}', t \right) \right) &= \frac{1}{1 + \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right)}. 
+	f\left( v\left( \mathbf{r}', t \right) \right) &= \frac{1}{1 + \exp \left( \varsigma \left( v_0 - v\left(\mathbf{r}',t\right) \right) \right)} 
 \end{align}
 \end{frame}
 
@@ -151,7 +162,7 @@
 	\includegraphics<1>[height=5cm]{./Figures/NeuralMass3.pdf} 
 \end{center}
 \begin{equation}
-	\label{SynapticRespKernel} h(t) = \eta(t)\exp{\left(-\frac{t}{\tau}\right)}, 
+	\label{SynapticRespKernel} h(t) = \eta(t)\exp{\left(-\frac{t}{\tau}\right)} 
 \end{equation}
 \end{frame}
 
@@ -161,7 +172,7 @@
 		\includegraphics<1>[height=5cm]{./Figures/NeuralMass4.pdf} 
 	\end{center}
 	\begin{equation}
-		\label{SpikesToPotential} v\left( {\mathbf{r},t} \right) = \int_{ - \infty }^t {h\left( {t - t'} \right)w_{\mathbf{r},\mathbf{r}'}f\left( v\left( \mathbf{r}',t \right) \right) \, dt'}. 
+		\label{SpikesToPotential} v\left( {\mathbf{r},t} \right) = \int_{ - \infty }^t {h\left( {t - t'} \right)w_{\mathbf{r},\mathbf{r}'}f\left( v\left( \mathbf{r}',t \right) \right) \, dt'} 
 	\end{equation}
 
 \end{frame}
@@ -352,6 +363,13 @@ where
 \end{frame}
 
 \subsection[Spectral analysis]{Spectral analysis}
+
+\begin{frame}\frametitle{Spatial aliasing}
+\begin{center}
+	\includegraphics[height=6cm]{./Figures/205px-Moire_pattern_of_bricks.pdf}
+	\includegraphics[height=6cm]{./Figures/Moire_pattern_of_bricks_small.pdf}	
+\end{center}
+\end{frame}
 
 \begin{frame}\frametitle{Positioning sensors}
 Assuming
