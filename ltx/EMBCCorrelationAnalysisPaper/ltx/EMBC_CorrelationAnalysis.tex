@@ -75,7 +75,7 @@
 \usepackage{color}
 \newcommand{\dean}[1]{\textsf{\emph{\textbf{\textcolor{red}{#1}}}}} 
 \newcommand{\red}{\textcolor{red}}
-\newcommand{\blue}{\textcolor{blue}}
+\newcommand{\parham}[1]{\textsf{\emph{\textbf{\textcolor{blue}{#1}}}}} 
 \newcommand{\cyan}{\textcolor{cyan}}
 
 
@@ -388,8 +388,8 @@
 % for over three affiliations, or if they all won't fit within the width
 % of the page, use this alternative format:
 % 
-\author{\IEEEauthorblockN{Dean R. Freestone\IEEEauthorrefmark{1},
-Parham Aram\IEEEauthorrefmark{2},
+\author{\IEEEauthorblockN{\dean{Dean R. Freestone}\IEEEauthorrefmark{1},
+\parham{Parham Aram}\IEEEauthorrefmark{2},
 Kenneth Scerri\IEEEauthorrefmark{3},
 Michael Dewar \IEEEauthorrefmark{4}, \\
 Visakan Kadirkamanathan\IEEEauthorrefmark{2} and 
@@ -512,9 +512,9 @@ where $\tau$ is the spatial shift. Now substituting equation~\ref{eq:Observation
 \begin{equation}
 	R_{y_{t+1}y_t}(\boldsymbol{\tau}) = \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}')v_{t+1}(\mathbf{r}')d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}.
 \end{equation}
-Next the equation~\ref{eq:DiscreteTimeModel} is substituted in for $v_{t+1}(\mathbf{r}')$ giving
+Next the equation~\ref{eq:DiscreteTimeModel} is substituted in for $v_{t+1}(\mathbf{r}')$ giving \parham{(added $T_s$)}
 \begin{align}
-	R_{y_{t+1}y_t}(\boldsymbol{\tau}) &= \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}')\left(\xi v_t(\mathbf{r}') + g_t(\mathbf{r}')\right. \nonumber \\
+	R_{y_{t+1}y_t}(\boldsymbol{\tau}) &= \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}')\left(\xi v_t(\mathbf{r}') +  T_s g_t(\mathbf{r}')\right. \nonumber \\
 	&+ \left. e_t(\mathbf{r}')\right) d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}. 
 \end{align}
 The cross-correlation is simplified by recognizing that
@@ -526,11 +526,10 @@ Also letting
 	\beta(\boldsymbol{\tau}) &= \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}') e_t(\mathbf{r}') d\mathbf{r}'y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} \\
 	&= \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}') e_t(\mathbf{r}') d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}	
 \end{align}
-
-giving
+giving \parham{(added $T_s$)}
 \begin{align}
 	R_{y_{t+1}y_t}(\boldsymbol{\tau}) &= \xi R_{y_ty_t}(\boldsymbol{\tau}) \nonumber \\
-	&+ \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}') g_t(\mathbf{r}') d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}.
+	&+ T_s \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}')  g_t(\mathbf{r}') d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}.
 \end{align}
 Rearranging and substituting in equation~\ref{eq:RateBasedInteractions} for $g_t(\mathbf{r}')$ gives
 \begin{align}
@@ -562,7 +561,7 @@ A property of cross-correlation and convolution is $(a \ast b) \star c = a(-)\as
 	&\times \int_{\Omega} y_t(\mathbf{r}) y_t(\mathbf{r}+\boldsymbol{\tau}') d\mathbf{r}d\boldsymbol{\tau}' \\
 	&= \varsigma T_s \int_{\Omega} w(\boldsymbol{\tau}-\boldsymbol{\tau}') R_{y_ty_t}(\boldsymbol{\tau}')d\boldsymbol{\tau}'.
 \end{align}
-The solution of the above equation for the connectivity kernel is a deconvolution. This can be approached from a number of different standpoints. The simplest solution is to use the convolution theorem and find the solution by
+The solution of the above equation for the connectivity kernel is a deconvolution. This can be approached from a number of different standpoints. The simplest solution is to use the convolution theorem and find the solution by \parham{needs noise term in denominator}
 \begin{equation}
 	w(\boldsymbol{\tau}) = \frac{1}{\varsigma T_s}\mathcal{F}^{-1}\left\{\frac{\mathcal{F}\left(R_{y_{t+1}y_t}(\boldsymbol{\tau}) -\xi R_{y_ty_t}(\boldsymbol{\tau})\right)}{\mathcal{F}\left(R_{y_ty_t}(\boldsymbol{\tau})\right)}\right\}.
 \end{equation}
