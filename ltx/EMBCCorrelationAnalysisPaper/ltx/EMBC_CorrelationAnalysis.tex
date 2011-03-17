@@ -517,11 +517,11 @@ Next the equation~\ref{eq:DiscreteTimeModel} is substituted in for $v_{t+1}(\mat
 	R_{y_{t+1}y_t}(\boldsymbol{\tau}) &= \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}')\left(\xi v_t(\mathbf{r}') +  T_s g_t(\mathbf{r}')\right. \nonumber \\
 	&+ \left. e_t(\mathbf{r}')\right) d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}. 
 \end{align}
-The cross-correlation is simplified by recognizing that
+The cross-correlation is simplified by recognizing that \parham{if you want to go for noisy observation you need noie term here}
 \begin{equation}
 	\int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}')\xi v_t(\mathbf{r}')d\mathbf{r}'y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} = \xi R_{y_ty_t}(\boldsymbol{\tau})
 \end{equation}
-Also letting
+Also letting \parham{what's the difference between these two equations for $\beta(\boldsymbol{\tau})$}
 \begin{align}
 	\beta(\boldsymbol{\tau}) &= \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}') e_t(\mathbf{r}') d\mathbf{r}'y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} %\\
 	% &= \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}') e_t(\mathbf{r}') d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}	
@@ -761,12 +761,29 @@ Show the exact estimation of the kernel.
 
 
 \section{Conclusion}
-The conclusion goes here.
+\subsection{The conclusion goes here.}
 
 
 
 
 % conference papers do not normally have an appendix
+\appendix
+\section*{\parham{Convolution and Correlation}}
+To show 
+\begin{equation}
+ \left(a \ast b \star c\right)\left(\tau\right)  = a\left(-\tau\right)\ast\left(b \star c\right)\left(\tau\right),
+\end{equation}
+we note that cross-correlation function is related to the convolution by \cite{Yarlagadda2009}
+\begin{equation}
+ \left(a \star b\right)\left(\tau\right)= a\left(-\tau \right)\ast b\left(\tau\right).
+\end{equation}
+Therefore, we can write
+\begin{align}
+ \left(a \ast b \star c\right)\left(\tau\right)&= \left(a \ast b\right)\left(-\tau \right)\ast c\left(\tau\right) \nonumber \\
+&=a\left(-\tau\right)\ast \left(b\left(-\tau\right) \ast c\left(\tau\right)\right)\nonumber \\
+&=a\left(-\tau\right)\ast\left(b\star c\right)\left(\tau\right)
+\end{align}
+
 
 
 % use section* for acknowledgement
@@ -794,20 +811,20 @@ The authors would like to thank...
 % http://www.ctan.org/tex-archive/biblio/bibtex/contrib/doc/
 % The IEEEtran BibTeX style support page is at:
 % http://www.michaelshell.org/tex/ieeetran/bibtex/
-%\bibliographystyle{IEEEtran}
+\bibliographystyle{IEEEtran}
 % argument is your BibTeX string definitions and bibliography database(s)
-%\bibliography{IEEEabrv,../bib/paper}
-%
+\bibliography{IEEEabrv,EMBC}
+% argument is your BibTeX string definitions and bibliography database(s)
 % <OR> manually copy in the resultant .bbl file
 % set second argument of \begin to the number of references
 % (used to reserve space for the reference number labels box)
-\begin{thebibliography}{1}
-
-\bibitem{IEEEhowto:kopka}
-H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
-  0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
-
-\end{thebibliography}
+% \begin{thebibliography}{1}
+% 
+% \bibitem{IEEEhowto:kopka}
+% H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
+%   0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
+% 
+% \end{thebibliography}
 
 
 
