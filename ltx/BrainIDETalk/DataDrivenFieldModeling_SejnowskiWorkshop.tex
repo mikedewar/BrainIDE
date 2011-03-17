@@ -50,8 +50,8 @@
 % Show ASU logo in title page
 %%%%%%%%%%%%%%%%%%%%%%
 \institute[The University of Melbourne]{
-\includegraphics[height=2cm]{UoM_logo.pdf} \\
-{Department of Electrical and Electronic Engineering}}
+\includegraphics[height=2.5cm]{./Figures/LOGOs.pdf} \\
+{BEI, SVHM, UoM (DEEE)}}
 % \institute[University of Sheffield]{
 % {Department of Automatic Control and Systems Engineering}}
 
@@ -109,6 +109,24 @@
 	\end{picture}
 \end{frame}
 
+\begin{frame}\frametitle{Electrical stimulation as therapy}
+	\begin{center}
+		\includegraphics[height=6cm]{./Figures/ExampleTherapyStim.pdf} 
+	\end{center}	
+\end{frame}
+
+\begin{frame}\frametitle{Trial and error (open loop) stimulation strategy}
+	\begin{center}
+		\includegraphics[height=5cm]{./Figures/EpilepsyStimulators.pdf} 
+	\end{center}	
+\end{frame}
+
+\begin{frame}
+	\begin{center}
+		switch to power-point
+	\end{center}	
+\end{frame}
+
 \begin{frame}\frametitle{Patient specific model}
 	Aim: To estimate patient-specific neural states and parameters that influence seizure dynamics from electrophysiological measurements. 
 	\begin{center}
@@ -136,6 +154,16 @@
 \section[Methodology]{Methodology}
 
 \subsection[Neural field model]{Neural field model}
+
+
+\begin{frame}\frametitle{Neural mass}
+	\begin{center}
+		\includegraphics[height=6.5cm]{./Figures/NeuralMassWithSystem.pdf} 
+	\end{center}
+\begin{picture}(0,0)
+	\put(-20,-40){\tiny Photo: Ecole Polytechnique Federale de Lausanne, HPC photo gallery, \emph{Golden Pyramids in Columns}}
+\end{picture}
+\end{frame}
 
 \begin{frame}\frametitle{Neural mass}
 	\begin{center}
@@ -172,9 +200,17 @@
 		\includegraphics<1>[height=5cm]{./Figures/NeuralMass4.pdf} 
 	\end{center}
 	\begin{equation}
-		\label{SpikesToPotential} v\left( {\mathbf{r},t} \right) = \int_{ - \infty }^t {h\left( {t - t'} \right)w_{\mathbf{r},\mathbf{r}'}f\left( v\left( \mathbf{r}',t \right) \right) \, dt'} 
+		\label{SpikesToPotential} {\color{red} \underbrace{v\left( {\mathbf{r},t} \right) }_{\text{potential}}} = \int_{ - \infty }^t { {\color{purple}\underbrace{h\left( {t - t'} \right)}_{\text{synaptic}}} {\color{orange}\overbrace{w_{\mathbf{r},\mathbf{r}'}}^{\text{weight}}} {\color{blue}\underbrace{f\left( v\left( \mathbf{r}',t \right) \right)}_{\text{firing}}} \, dt'} 
 	\end{equation}
+\end{frame}
 
+\begin{frame}\frametitle{Neural field}
+	\begin{center}
+		\includegraphics[height=6.5cm]{./Figures/NeuralFieldWithSystem.pdf} 
+	\end{center}
+\begin{picture}(0,0)
+	\put(-20,-40){\tiny Photo: Ecole Polytechnique Federale de Lausanne, HPC photo gallery, \emph{Golden Pyramids in Columns}}
+\end{picture}
 \end{frame}
 
 \begin{frame}\frametitle{Neural field model}
@@ -219,7 +255,19 @@
 \end{align}
 \end{frame}
 
+\begin{frame}\frametitle{Observations}
+	\begin{center}
+		\includegraphics[height=6.5cm]{./Figures/ObservationSystem.pdf} 
+	\end{center}
+\begin{picture}(0,0)
+	\put(-20,-40){\tiny Photo: Ecole Polytechnique Federale de Lausanne, HPC photo gallery, \emph{Golden Pyramids in Columns}}
+\end{picture}
+\end{frame}
+
 \begin{frame}\frametitle{Observation equation}
+	\includegraphics<1-2>[height=3.8cm]{./Figures/fig13.pdf}
+	\includegraphics<2-2>[height=2cm]{./Figures/WhiteSpace.pdf}
+	\includegraphics<2-2>[height=3.8cm]{./Figures/fig14.pdf}
 	\begin{equation}\label{eq:ObservationEquation}
 		y_t(\mathbf{r}_n) = \int_{\Omega} { m\left(\mathbf{r}_n-\mathbf{r}'\right) v_t\left(\mathbf{r}'\right) \, d\mathbf{r}'} + \varepsilon_t(\mathbf{r}_n), 
 	\end{equation}
@@ -229,12 +277,9 @@
 		\varepsilon_t(\mathbf{r}_n) &\sim \mathcal{N}\left(0,\boldsymbol{\Sigma}_{\varepsilon}\right).
 	\end{align}
 	\pause
-	\includegraphics<2-4>[height=3.8cm]{./Figures/SensorKernel1.pdf}
-	\includegraphics<3-4>[height=3.8cm]{./Figures/SensorKernel2.pdf}
-	\includegraphics<4-4>[height=3.8cm]{./Figures/SensorKernel3.pdf}
-	\includegraphics<5->[height=3.8cm]{./Figures/fig13.pdf}
-	\includegraphics<6->[height=2cm]{./Figures/WhiteSpace.pdf}
-	\includegraphics<6->[height=3.8cm]{./Figures/fig14.pdf}
+	\includegraphics<3-5>[height=3.8cm]{./Figures/SensorKernel1.pdf}
+	\includegraphics<4-5>[height=3.8cm]{./Figures/SensorKernel2.pdf}
+	\includegraphics<5-5>[height=3.8cm]{./Figures/SensorKernel3.pdf}
 \end{frame}
 
 \begin{frame}\frametitle{Neural field example}
@@ -382,7 +427,7 @@ Then
 \begin{equation}
 	\label{eq:MinimumSensorDistance} \Delta_y \leq \frac{1}{2\rho_y\boldsymbol{\nu}_{c}}, 
 \end{equation}
-where $\rho_y \in \mathbb{R} \ge 1$\footnote{Scerri et al. (2009) IEEE Trans. Sig. Proc. 57}. \\ 
+where $\rho_y \in \mathbb{R} \ge 1$. See Scerri et al. for more info\footnote{Scerri et al. (2009) IEEE Trans. Sig. Proc. 57}. \\ 
 \pause
 $\boldsymbol{\nu}_c \approx 0.24$~cycles/mm $\implies \Delta_y < 2.08$~mm if $\rho_y > 1$.
 \begin{center}
@@ -398,7 +443,7 @@ $\boldsymbol{\nu}_c \approx 0.24$~cycles/mm $\implies \Delta_y < 2.08$~mm if $\r
 	\begin{itemize}
   \item In practice it is difficult to estimate.
 \pause
-  \item Freeman et al. (2000)\footnote{Freeman et al. (2000) J. Neurosci. Meth. 95.} estimated $\nu_c$ to be $0.1-0.4$ cycles/mm.
+  \item Freeman\footnote{Freeman et al. (2000) J. Neurosci. Meth. 95.} estimated $\nu_c$ to be $0.1-0.4$ cycles/mm.
 \pause
   \item This implies $\Delta_y \lesssim 1.25$ mm to prevent aliasing.
 \pause
