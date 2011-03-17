@@ -767,11 +767,23 @@ Show the exact estimation of the kernel.
 
 
 % conference papers do not normally have an appendix
-\appendix{Convolution and Correlation}
-The cross-correlation function is related to the convolution by \cite{Yarlagadda2009}
+\appendix
+\section*{Convolution and Correlation}
+To show 
 \begin{equation}
- R_{a,b}\left(\tau\right)= a\left(-\tau \right)\ast b\left(\tau\right)
+ \left(a \ast b \star c\right)\left(\tau\right)  = a\left(-\tau\right)\ast\left(b \star c\right)\left(\tau\right),
 \end{equation}
+we note that cross-correlation function is related to the convolution by \cite{Yarlagadda2009}
+\begin{equation}
+ \left(a \star b\right)\left(\tau\right)= a\left(-\tau \right)\ast b\left(\tau\right).
+\end{equation}
+Therefore, we can write
+\begin{align}
+ \left(a \ast b \star c\right)\left(\tau\right)&= \left(a \ast b\right)\left(-\tau \right)\ast c\left(\tau\right) \nonumber \\
+&=a\left(-\tau\right)\ast \left(b\left(-\tau\right) \ast c\left(\tau\right)\right)\nonumber \\
+&=a\left(-\tau\right)\ast\left(b\star c\right)\left(\tau\right)
+\end{align}
+
 
 
 % use section* for acknowledgement
