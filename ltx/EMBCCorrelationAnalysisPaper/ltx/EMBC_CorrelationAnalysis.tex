@@ -508,7 +508,7 @@ The spatial relationship between consecutive observations is governed by the con
 \begin{equation}
 	R_{y_{t+1}y_t}(\boldsymbol{\tau}) = \int_{\Omega} y_{t+1}(\mathbf{r}) y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r},
 \end{equation}
-where $\tau$ is the spatial shift. Now substituting equation~\ref{eq:ObservationEquation} for $y_{t+1}(\mathbf{r})$ and assuming noise-free observations gives 
+where $\tau$ is the spatial shift. Now substituting equation~\ref{eq:ObservationEquation} for $y_{t+1}(\mathbf{r})$ \parham{and assuming noise-free observations} gives 
 \begin{equation}
 	R_{y_{t+1}y_t}(\boldsymbol{\tau}) = \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}')v_{t+1}(\mathbf{r}')d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}.
 \end{equation}
@@ -517,11 +517,12 @@ Next the equation~\ref{eq:DiscreteTimeModel} is substituted in for $v_{t+1}(\mat
 	R_{y_{t+1}y_t}(\boldsymbol{\tau}) &= \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}')\left(\xi v_t(\mathbf{r}') +  T_s g_t(\mathbf{r}')\right. \nonumber \\
 	&+ \left. e_t(\mathbf{r}')\right) d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}. 
 \end{align}
-The cross-correlation is simplified by recognizing that \parham{if you want to go for noisy observation you need noie term here}
-\begin{equation}
-	\int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}')\xi v_t(\mathbf{r}')d\mathbf{r}'y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} = \xi R_{y_ty_t}(\boldsymbol{\tau})
-\end{equation}
-Also letting 
+The cross-correlation is simplified by recognizing that \parham{I multiplied the noise term by $n_y$, I believe it should be there but check it mate}
+\begin{align}
+	\int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}')&\xi v_t(\mathbf{r}')d\mathbf{r}'y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} = \nonumber \\ 
+ &\xi \left(R_{y_ty_t}(\boldsymbol{\tau})-\parham{$n_y$}\sigma_{\epsilon}^2  \delta_{K}\left(\tau\right)\right),
+\end{align}
+where $\delta_{K}\left(.\right)$ denotes Kronecker delta. Also letting 
 \begin{align}
 	\beta(\boldsymbol{\tau}) &= \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}') e_t(\mathbf{r}') d\mathbf{r}'y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} %\\
 	% &= \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}') e_t(\mathbf{r}') d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}	
