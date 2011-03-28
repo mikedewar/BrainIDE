@@ -39,14 +39,14 @@
 % \usepackage{movie15}
 
 %%%%%%%%%%%%%%%%%%%%%
-
+\definecolor{darkgreen}{rgb}{0,0.4,0}
 
 %% The title and name 
 %% Note: [short title]{long title}, [short author(s) name]{long author(s) name}
 \title[Data-driven neural field modelling]{Data-driven neural field modelling}
-\author[Dean R. Freestone]{\emph{Dean R. Freestone}}
+\author[Dean R. Freestone]{\emph{Dean R. Freestone} \\ \tiny{Supervisors: David B. Grayden, Anthony N. Burkitt, Levin Kuhlmann and Mark J. Cook}}
 % , Parham Aram, Michael Dewar, Kenneth Scerri, David B. Grayden, Visaken Kadirkamanathan} }
-\date[]{}
+\date[]{25-03-2011}
 % Show ASU logo in title page
 %%%%%%%%%%%%%%%%%%%%%%
 \institute[The University of Melbourne]{
@@ -101,10 +101,10 @@
 
 \begin{frame} \frametitle{Motivation}
 	\begin{picture}(0,0)
-	\put(-60,-150){\includegraphics<1>[height=10cm]{./Figures/InterictaliEEGA4.pdf}}
-	\put(-60,-150){\includegraphics<2>[height=10cm]{./Figures/StartIctaliEEGA4.pdf}} 
-	\put(-60,-150){\includegraphics<3>[height=10cm]{./Figures/IctaliEEGA4.pdf} }
-	\put(-60,-150){\includegraphics<4>[height=10cm]{./Figures/PostIctaliEEGA4.pdf}} 
+	% \put(-60,-150){\includegraphics<1>[height=10cm]{./Figures/InterictaliEEGA4.pdf}}
+	\put(-60,-150){\includegraphics[height=10cm]{./Figures/StartIctaliEEGA4.pdf}} 
+	% \put(-60,-150){\includegraphics<3>[height=10cm]{./Figures/IctaliEEGA4.pdf} }
+	% \put(-60,-150){\includegraphics<4>[height=10cm]{./Figures/PostIctaliEEGA4.pdf}} 
 	\end{picture}
 \end{frame}
 
@@ -202,7 +202,7 @@
 	\includegraphics<1>[height=5cm]{./Figures/NeuralMass3.pdf} 
 \end{center}
 \begin{equation}
-	\label{SynapticRespKernel} \color{purple}h(t) = \eta(t)\exp{\left(-\frac{t}{\tau}\right)} 
+	\label{SynapticRespKernel} {\color{purple}h(t)} = \eta(t)\exp{\left(-\frac{t}{\tau}\right)} 
 \end{equation}
 \end{frame}
 
@@ -240,19 +240,18 @@
 
 \pause
 \begin{equation}
-	\label{FinalFormContinuous} 
-	\frac{dv\left( \mathbf{r},t \right)}{dt} = {\color{purple}-\frac{1}{\tau} v\left( \mathbf{r},t \right)} +\int_\Omega {{\color{orange}w\left( \mathbf{r},\mathbf{r}' \right)}{\color{blue}f\left( {v\left( \mathbf{r}',t \right)} \right)}\, d\mathbf{r}'}
+	{\color{darkgreen}\frac{dv\left( \mathbf{r},t \right)}{dt}} = {\color{purple}-\frac{1}{\tau} v\left( \mathbf{r},t \right)} +\int_\Omega {{\color{orange}w\left( \mathbf{r},\mathbf{r}' \right)}{\color{blue}f\left( {v\left( \mathbf{r}',t \right)} \right)}\, d\mathbf{r}'}
 \end{equation}
 \end{frame}
 
 \begin{frame}\frametitle{Discrete time stochastic neural field model}
 	\begin{equation}
 		\label{DiscreteTimeModel} 
-		v_{t+T_s}\left(\mathbf{r}\right) = 
-		{\color{purple}\xi v_t\left(\mathbf{r}\right)} + 
+		{\color{darkgreen}\underbrace{v_{t+T_s}\left(\mathbf{r}\right)}_{\text{dynamics}}} = 
+		{\color{purple}\underbrace{\xi v_t\left(\mathbf{r}\right)}_{\text{synaptic}}} + 
 		T_s \int_\Omega { 
-		    {\color{orange}w\left(\mathbf{r},\mathbf{r}'\right)}
-		    {\color{blue}f\left(v_t\left(\mathbf{r}'\right)\right)} 
+		    {\color{orange}\underbrace{ w\left(\mathbf{r},\mathbf{r}'\right) }_{\text{connectivity}}}
+		    {\color{blue}\underbrace{f\left(v_t\left(\mathbf{r}'\right)\right)}_{\text{firing}}} 
 		\, d\mathbf{r}'} 
 		+ {\color{brown}\underbrace{e_t\left(\mathbf{r}\right)}_{\text{uncertainty}}}, 
 	\end{equation}
@@ -280,7 +279,7 @@
 	\includegraphics<2-2>[height=2cm]{./Figures/WhiteSpace.pdf}
 	\includegraphics<2-2>[height=3.8cm]{./Figures/fig14.pdf}
 	\begin{equation}\label{eq:ObservationEquation}
-		y_t(\mathbf{r}_n) = \int_{\Omega} { {\color{cyan}\underbrace{m\left(\mathbf{r}_n-\mathbf{r}'\right)}_{\text{sensor}}} v_t\left(\mathbf{r}'\right) \, d\mathbf{r}'} + {\color{magenta}\underbrace{\varepsilon_t(\mathbf{r}_n)}_{\text{noise}}}, 
+		\underbrace{y_t(\mathbf{r}_n)}_{\text{observation}} = \int_{\Omega} { {\color{cyan}\underbrace{m\left(\mathbf{r}_n-\mathbf{r}'\right)}_{\text{sensor}}} {\color{red}\underbrace{v_t\left(\mathbf{r}'\right)}_{\text{potential}}} \, d\mathbf{r}'} + {\color{magenta}\underbrace{\varepsilon_t(\mathbf{r}_n)}_{\text{noise}}}, 
 	\end{equation}
 	where
 	\begin{align}
@@ -313,454 +312,375 @@ where $\boldsymbol\nu$ is the spatial frequency.
 	\label{eq:MinimumSensorDistance} \Delta_y \leq \frac{1}{2\rho_y\boldsymbol{\nu}_{c}}, 
 \end{equation}
 where $\rho_y \in \mathbb{R} \ge 1$. See Scerri et al. for more info\footnote{Scerri et al. (2009) IEEE Trans. Sig. Proc. 57}. \\ 
-% \pause
-% $\boldsymbol{\nu}_c \approx 0.24$~cycles/mm $\implies \Delta_y < 2.08$~mm if $\rho_y > 1$.
-% 
-% \pause
-% \begin{picture}(0,0)
-% \put(0,20){$\Delta_y = 1.5$~mm, giving $n_y = 141$ ($14 \times 14$ grid of sensors).}
-% \end{picture}
 \end{frame}
+
+\begin{frame}\frametitle{Field spatial frequency}
+	\begin{itemize}
+\item Freeman\footnote{Freeman et al. (2000) J. Neurosci. Meth. 95.} estimated $\boldsymbol{\nu}_c$ to be approximately 0.25~cycles/mm.
+\pause
+  \item This implies $\Delta_y \lesssim 1.25$ mm to prevent aliasing.
+\pause
+  \item Electrodes satisfying this requirement are in clinical use.
+ \end{itemize}
+	\begin{center}
+		\includegraphics[height=5cm]{./Figures/UtahArray.pdf}
+	\end{center}
+\end{frame}
+
 
 \begin{frame}\frametitle{Model output}
 	\begin{align}
-		v_{t+T_s}\left(\mathbf{r}\right) &= 
+		{\color{darkgreen}v_{t+T_s}\left(\mathbf{r}\right)} &= 
 		{\color{purple}\xi v_t\left(\mathbf{r}\right)} + 
 		T_s \int_\Omega { 
 		    {\color{orange}w\left(\mathbf{r},\mathbf{r}'\right)}
 		    {\color{blue}f\left(v_t\left(\mathbf{r}'\right)\right)} 
 		\, d\mathbf{r}'} 
 		+ {\color{brown}e_t\left(\mathbf{r}\right)} \nonumber \\
-		y_t(\mathbf{r}_n) &= \int_{\Omega} { {\color{cyan}m\left(\mathbf{r}_n-\mathbf{r}'\right)} v_t\left(\mathbf{r}'\right) \, d\mathbf{r}'} + {\color{magenta}\varepsilon_t(\mathbf{r}_n)} \nonumber 
+		y_t(\mathbf{r}_n) &= \int_{\Omega} { {\color{cyan}m\left(\mathbf{r}_n-\mathbf{r}'\right)} {\color{red}v_t\left(\mathbf{r}'\right)} \, d\mathbf{r}'} + {\color{magenta}\varepsilon_t(\mathbf{r}_n)} \nonumber 
 	\end{align}
 \begin{center} 
 \includegraphics[height=6cm]{./Figures/ModelOutput.pdf}
 \end{center}
 \end{frame}
 
-\begin{frame}\frametitle{Aim again}
-Aim: To track the patient-specific neural dynamics and estimate the parameters that influence seizures from electrophysiological measurements.	
-	\begin{align}
-		v_{t+T_s}\left(\mathbf{r}\right) &= 
-		{\color{purple}\xi v_t\left(\mathbf{r}\right)} + 
-		T_s \int_\Omega { 
-		    {\color{orange}w\left(\mathbf{r},\mathbf{r}'\right)}
-		    {\color{blue}f\left(v_t\left(\mathbf{r}'\right)\right)} 
-		\, d\mathbf{r}'} 
-		+ {\color{brown}e_t\left(\mathbf{r}\right)} \nonumber \\
-		y_t(\mathbf{r}_n) &= \int_{\Omega} { {\color{cyan}m\left(\mathbf{r}_n-\mathbf{r}'\right)} v_t\left(\mathbf{r}'\right) \, d\mathbf{r}'} + {\color{magenta}\varepsilon_t(\mathbf{r}_n)} \nonumber 
-	\end{align}	
-\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection[Kernel basis function decomposition]{Kernel basis function decomposition}
 
-\begin{frame} \frametitle{Connectivity kernel decomposition}
-\begin{equation}\label{DefKernelDecomp}
-	 {\color{orange}w\left(\mathbf{r},\mathbf{r}'\right)} = {\color{orange}\boldsymbol{\psi}^\top\left(\mathbf{r},\mathbf{r}'\right) \boldsymbol{\theta}}
-\end{equation}
-\begin{center}
-\includegraphics<1>[height=3.8cm]{./Figures/Kernel1.pdf}
-\end{center}
-\includegraphics<2>[height=3.8cm]{./Figures/Kernel2.pdf}
-\includegraphics<2>[height=3.8cm]{./Figures/Kernel3.pdf}
-\includegraphics<2>[height=3.8cm]{./Figures/Kernel4.pdf}
-\begin{center}
-\includegraphics<3>[height=3.8cm]{./Figures/fig1.pdf}
-\end{center}
-\end{frame}
-
-\begin{frame}\frametitle{Aim again, again}
-Aim: To track the patient-specific neural dynamics and estimate the parameters that influence seizures from electrophysiological measurements.	
-	\begin{align}
-		v_{t+T_s}\left(\mathbf{r}\right) &= 
-		{\color{purple}\xi v_t\left(\mathbf{r}\right)} + 
-		T_s \int_\Omega { 
-		    {\color{blue}f\left(v_t\left(\mathbf{r}'\right)\right)} 
-			{\color{orange}\boldsymbol\psi^{\top}\left(\mathbf{r},\mathbf{r}'\right)}
-		\, d\mathbf{r}'} {\color{orange}\boldsymbol\theta}
-		+ {\color{brown}e_t\left(\mathbf{r}\right)} \nonumber \\
-		y_t(\mathbf{r}_n) &= \int_{\Omega} { {\color{cyan}m\left(\mathbf{r}_n-\mathbf{r}'\right)} v_t\left(\mathbf{r}'\right) \, d\mathbf{r}'} + {\color{magenta}\varepsilon_t(\mathbf{r}_n)} \nonumber 
-	\end{align}	
-\end{frame}
-
-\subsection[Field basis function decomposition]{Field basis function decomposition}
-
-\begin{frame}\frametitle{Field basis function decomposition}
-We can approximate the field by
-\begin{equation}
-		\label{DefFieldDecomp} v_t\left(\mathbf{r}\right) \approx \boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) \mathbf{x}_t,
-\end{equation}
-where
-$$ \phi\left(\mathbf{r}-\mathbf{r}'\right) =
-\exp{\left(-\frac{(\mathbf{r}-\mathbf{r}')^\top(\mathbf{r}-\mathbf{r}')}{\sigma_{\phi}^2}\right)}. $$
-\end{frame}
-
-% \begin{frame} \frametitle{1D neural field}
-% \begin{center}	
-% \frame{\movie[height=188pt,width=242pt,poster,autoplay,repeat]{}{./Figures/1DFieldDemo.mov}}
-% \end{center}
+% \begin{frame}\frametitle{Aim again}
+% Aim: To track the patient-specific neural dynamics and estimate the parameters that influence seizures from electrophysiological measurements.
+% \begin{align}
+% 	{\color{darkgreen} \underbrace{v_{t+T_s}\left(\mathbf{r}\right)}_{\text{dynamics}}} &= 
+% 	{\color{purple}\underbrace{\xi v_t\left(\mathbf{r}\right)}_{\text{synaptic}}} + 
+% 	T_s \int_\Omega { 
+% 	    {\color{orange}\underbrace{w\left(\mathbf{r},\mathbf{r}'\right)}_{\text{connectivity}}}
+% 	    {\color{blue}\underbrace{f\left(v_t\left(\mathbf{r}'\right)\right)}_{\text{firing}}} 
+% 	\, d\mathbf{r}'} 
+% 	+ {\color{brown}\underbrace{e_t\left(\mathbf{r}\right)}_{\text{uncertainty}}} \nonumber \\
+% 	\underbrace{y_t(\mathbf{r}_n)}_{\text{observation}} &= \int_{\Omega} { {\color{cyan}\underbrace{m\left(\mathbf{r}_n-\mathbf{r}'\right)}_{\text{sensor}}} {\color{red}\underbrace{v_t\left(\mathbf{r}'\right)}_{\text{potential}}} \, d\mathbf{r}'} + {\color{magenta}\underbrace{\varepsilon_t(\mathbf{r}_n)}_{\text{noise}}} \nonumber 
+% \end{align}
 % \end{frame}
 % 
-% \begin{frame} \frametitle{1D neural field decomposition}
-% \begin{center}	
-% \frame{\movie[height=188pt,width=242pt,poster,autoplay,repeat]{}{./Figures/1DFieldWithBasisFunctionDemo.mov}}
-% \end{center}
-% \end{frame}
-
-\begin{frame} \frametitle{1D neural field decomposition with state}
-\begin{center}	
-\frame{\movie[height=188pt,width=242pt,poster,autoplay,repeat]{}{./Figures/1DFieldDemoWithBasisFunctionAndState.mov}}
-\end{center}
-\end{frame}
-
-\begin{frame}\frametitle{Sensor and field basis function position}
-	\begin{center}
-		\includegraphics[height=7cm]{./Figures/FieldAndSensors.pdf}
-	\end{center}
-\end{frame}
-
-\begin{frame}\frametitle{Reduced system equation}
-We get a reduced system equation
-\begin{equation}
-	\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_{t+T_s} = 
-	{\color{purple}\xi \boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_{t}} + 
-	T_s \int_\Omega { 
-	    {\color{blue}f\left(\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_{t}\right)} 
-		{\color{orange}\boldsymbol\psi^{\top}\left(\mathbf{r},\mathbf{r}'\right)}
-	\, d\mathbf{r}'} {\color{orange}\boldsymbol\theta}
-	+ {\color{brown}e_t\left(\mathbf{r}\right)}.
-\end{equation}
-\pause
-This simplifies to
-\begin{align}
-	\mathbf{x}_{t+1} = {\color{purple}\xi\mathbf{x}_t} 
-+ \int_\Omega {\color{orange}\boldsymbol{\Psi}(\mathbf{r}')} {\color{blue}f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t)} \, d\mathbf{r}' {\color{orange}\boldsymbol{\theta}} + {\color{brown}\mathbf{e}_t},
-\end{align}
-\pause
-where
-\begin{align}
-	\color{brown}\mathbf{e}_t &\triangleq \boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi} ( \mathbf{r} )e_t( \mathbf{r} ) \, d\mathbf{r}} \\
-	\boldsymbol{\Gamma} &\triangleq \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi} ^{\top}\left(\mathbf{r}\right) \, d\mathbf{r}} \\
-	\color{orange}\left[ \boldsymbol\Psi(\mathbf{r}')\right]_{:i}  &\triangleq T_s\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\psi_i (2\mathbf{c}_i+\mathbf{r}'-\mathbf{r})\textrm{d}\mathbf{r}}.
-\end{align}
-\end{frame}
-
-\begin{frame}\frametitle{Reduced observation equation}
-	\begin{equation}
-		y_t(\mathbf{r}_n) = \int_{\Omega} { {\color{cyan}m\left(\mathbf{r}_n-\mathbf{r}'\right)} \boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_{t} \, d\mathbf{r}'} + {\color{magenta}\varepsilon_t(\mathbf{r}_n)} 
-	\end{equation}
-\pause
-In the more compact form
-\begin{equation}\label{ObservationEquation} 
-	\mathbf{y}_t = {\color{cyan}\mathbf{C}}\mathbf{x}_t + {\color{magenta}\boldsymbol{\varepsilon}_t},
-\end{equation}
-\pause
-where each element of the observation matrix, $\mathbf{C}$, is 
-\begin{equation}
-	{\color{cyan}\mathbf{C}_{ij}} \triangleq \int_{\Omega}m(\mathbf{r}_i - \mathbf{r}')\boldsymbol{\phi}_j(\mathbf{r}') \, d\mathbf{r}'.
-\end{equation}
-\end{frame}
-	
-\begin{frame}\frametitle{Aim again, again, again}
-Aim: To track the patient-specific neural dynamics and estimate the parameters that influence seizures from electrophysiological measurements.	
-	\begin{align}
-		\mathbf{x}_{t+1} &= {\color{purple}\xi\mathbf{x}_t} 
-	+ \int_\Omega {\color{orange}\boldsymbol{\Psi}(\mathbf{r}')} {\color{blue}f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t)} \, d\mathbf{r}' {\color{orange}\boldsymbol{\theta}} + {\color{brown}\mathbf{e}_t} \nonumber \\
-	\mathbf{y}_t &= {\color{cyan}\mathbf{C}}\mathbf{x}_t + {\color{magenta}\boldsymbol{\varepsilon}_t}\nonumber 
-	\end{align}
-	\pause
-	We need to estimate the states, $\mathbf{x}_t$, and parameters, $\boldsymbol\theta$ and $\xi$, given the observations, $\mathbf{y}_t$.
-\end{frame}
-
-
-% \begin{frame} \frametitle{State-space model}
-% \begin{equation}
-% 	\label{reduced continuous model}
-% 	\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_{t+1} = T_s\int_\Omega{f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t )\boldsymbol{\psi}^{\top}(\mathbf{r}-\mathbf{r}') \, d\mathbf{r}'}\boldsymbol{\theta} + \xi\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_t + \mathbf{e}_t(\mathbf{r}). 
+% \subsection[Kernel basis function decomposition]{Kernel basis function decomposition}
+% 
+% \begin{frame} \frametitle{Connectivity kernel decomposition}
+% \begin{equation}\label{DefKernelDecomp}
+% 	 {\color{orange}w\left(\mathbf{r},\mathbf{r}'\right)} = {\color{orange}\boldsymbol{\psi}^\top\left(\mathbf{r},\mathbf{r}'\right) \boldsymbol{\theta}}
 % \end{equation}
-% \pause
-% \begin{align}
-% 	\label{eq:decompRHS}
-%  	\int_\Omega \boldsymbol{\phi}&\left(\mathbf{r}\right) \boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_{t+1} d\mathbf{r} = T_s \int_\Omega \boldsymbol{\phi} (\mathbf{r}) \int_\Omega \boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}') \mathbf{x}_t ) \, d\mathbf{r}'d\mathbf{r}\boldsymbol{\theta} \nonumber \\ 
-% 	&+ \xi\int_\Omega {\boldsymbol{\phi}(\mathbf{r}) \boldsymbol{\phi}^{\top}(\mathbf{r})d\mathbf{r} } \mathbf{x}_t + \int_\Omega{\boldsymbol{\phi} (\mathbf{r}) e_t(\mathbf{r}) \, d\mathbf{r}}. 
-% \end{align}
-% \pause
-% Now defining the matrix
-% $$	\boldsymbol{\Gamma} \triangleq \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi} ^{\top}\left(\mathbf{r}\right) \, d\mathbf{r}} $$
-% \pause
-% \begin{align}
-%     \label{eq:ReducedForm}
-% 	 \mathbf{x}_{t+1} &= T_s\boldsymbol{\Gamma}^{-1}
-% 	 \int_\Omega \boldsymbol{\phi}(\mathbf{r}) 
-% 	 \int_\Omega \boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}')f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t)d\mathbf{r}' d\mathbf{r} \boldsymbol{\theta} + \xi\mathbf{x}_t \nonumber \\ &+ \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r}) e_t(\mathbf{r}) \, d\mathbf{r}}.
-% \end{align}
+% \begin{center}
+% \includegraphics<1>[height=3.8cm]{./Figures/Kernel1.pdf}
+% \end{center}
+% \includegraphics<2>[height=3.8cm]{./Figures/Kernel2.pdf}
+% \includegraphics<2>[height=3.8cm]{./Figures/Kernel3.pdf}
+% \includegraphics<2>[height=3.8cm]{./Figures/Kernel4.pdf}
+% \begin{center}
+% \includegraphics<3>[height=3.8cm]{./Figures/fig1.pdf}
+% \end{center}
 % \end{frame}
 % 
-% \begin{frame}\frametitle{State-space model cont.}
-% From the previous slide we have
+% \begin{frame}\frametitle{Aim again, again}
+% Aim: To track the patient-specific neural dynamics and estimate the parameters that influence seizures from electrophysiological measurements.	
 % 	\begin{align}
-% 	    \label{eq:ReducedForm}
-% 		 \mathbf{x}_{t+1} &= T_s\boldsymbol{\Gamma}^{-1}
-% 		 \int_\Omega \boldsymbol{\phi}(\mathbf{r}) 
-% 		 \int_\Omega \boldsymbol{\psi}^{\top} (\mathbf{r}-\mathbf{r}')f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t)d\mathbf{r}' d\mathbf{r} \boldsymbol{\theta} + \xi\mathbf{x}_t \nonumber \\ &+ \boldsymbol{\Gamma}^{-1} \int_\Omega{\boldsymbol{\phi}(\mathbf{r}) e_t(\mathbf{r}) \, d\mathbf{r}}. \nonumber
+% 		{\color{darkgreen}v_{t+T_s}\left(\mathbf{r}\right)} &= 
+% 		{\color{purple}\xi v_t\left(\mathbf{r}\right)} + 
+% 		T_s \int_\Omega { 
+% 		    {\color{blue}f\left(v_t\left(\mathbf{r}'\right)\right)} 
+% 			{\color{orange}\boldsymbol\psi^{\top}\left(\mathbf{r},\mathbf{r}'\right)}
+% 		\, d\mathbf{r}'} {\color{orange}\boldsymbol\theta}
+% 		+ {\color{brown}e_t\left(\mathbf{r}\right)} \nonumber \\
+% 		y_t(\mathbf{r}_n) &= \int_{\Omega} { {\color{cyan}m\left(\mathbf{r}_n-\mathbf{r}'\right)} {\color{red}v_t\left(\mathbf{r}'\right)} \, d\mathbf{r}'} + {\color{magenta}\varepsilon_t(\mathbf{r}_n)} \nonumber 
 % 	\end{align}	
-% \pause
-% This simplifies to	
-% \begin{align}
-% 	\mathbf{x}_{t+1} = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \, d\mathbf{r}' \boldsymbol{\theta} + \xi\mathbf{x}_t 
-% + \mathbf{e}_t,
-% \end{align}
-% \pause
-% where
-% \begin{equation}\label{eq:Wt} 
-% 	\mathbf{e}_t \triangleq \boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi} ( \mathbf{r} )e_t( \mathbf{r} ) \, d\mathbf{r}},
-% \end{equation}
-% \begin{equation}\label{eq:DefPsi}
-% 	\left[ \boldsymbol\Psi(\mathbf{r}')\right]_{:i}  \triangleq T_s\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\psi_i (2\mathbf{c}_i+\mathbf{r}'-\mathbf{r})\textrm{d}\mathbf{r}},
-% \end{equation}
 % \end{frame}
 % 
-% \begin{frame}\frametitle{State-space observation equation}
-% 	\begin{equation}\label{eq:ReducedObservationEquation}
-% 		\mathbf{y}_t = \int_{\Omega}{m\left(\mathbf{r}_n-\mathbf{r}'\right)\boldsymbol{\phi}^{\top}\left(\mathbf{r'}\right) \mathbf{x}_t\, d\mathbf{r}'} + \boldsymbol{\varepsilon}_t. 
-% 	\end{equation}
-% 	\pause
-% 	In the more compact form
-% 	\begin{equation}\label{ObservationEquation} 
-% 		\mathbf{y}_t = \mathbf{C}\mathbf{x}_t + \boldsymbol{\varepsilon}_t,
-% 	\end{equation}
-% 	where each element of the observation matrix is 
-% 	\begin{equation}
-% 		\mathbf{C}_{ij} \triangleq \int_{\Omega}m(\mathbf{r}_i - \mathbf{r}')\boldsymbol{\phi}_j(\mathbf{r}') \, d\mathbf{r}'.
-% 	\end{equation}
+% \subsection[Field basis function decomposition]{Field basis function decomposition}
+% 
+% \begin{frame}\frametitle{Field basis function decomposition}
+% We can approximate the field by
+% \begin{equation}
+% 		\label{DefFieldDecomp} {\color{red}v_t\left(\mathbf{r}\right)} \approx {\color{red}\boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) \mathbf{x}_t},
+% \end{equation}
+% where
+% $$ \phi\left(\mathbf{r}-\mathbf{r}'\right) =
+% \exp{\left(-\frac{(\mathbf{r}-\mathbf{r}')^\top(\mathbf{r}-\mathbf{r}')}{\sigma_{\phi}^2}\right)}. $$
 % \end{frame}
-
-% \subsection[Spectral analysis]{Spectral analysis}
-
-% \begin{frame}\frametitle{Expected field spatial frequency}
-% 	\begin{itemize}
-%   \item In practice it is difficult to estimate.
-% \pause
-%   \item Freeman\footnote{Freeman et al. (2000) J. Neurosci. Meth. 95.} estimated $\nu_c$ to be $0.1-0.4$ cycles/mm.
-% \pause
-%   \item This implies $\Delta_y \lesssim 1.25$ mm to prevent aliasing.
-% \pause
-%   \item Electrodes satisfying this requirement are in clinical use.
-%  \end{itemize}
+% 
+% % \begin{frame} \frametitle{1D neural field}
+% % \begin{center}	
+% % \frame{\movie[height=188pt,width=242pt,poster,autoplay,repeat]{}{./Figures/1DFieldDemo.mov}}
+% % \end{center}
+% % \end{frame}
+% % 
+% % \begin{frame} \frametitle{1D neural field decomposition}
+% % \begin{center}	
+% % \frame{\movie[height=188pt,width=242pt,poster,autoplay,repeat]{}{./Figures/1DFieldWithBasisFunctionDemo.mov}}
+% % \end{center}
+% % \end{frame}
+% 
+% \begin{frame} \frametitle{1D neural field decomposition with state}
+% 	A movie was here
+% % \begin{center}	
+% % \frame{\movie[height=188pt,width=242pt,poster,autoplay,repeat]{}{./Figures/1DFieldDemoWithBasisFunctionAndState.mov}}
+% % \end{center}
+% \end{frame}
+% 
+% \begin{frame}\frametitle{Sensor and field basis function position}
 % 	\begin{center}
-% 		\includegraphics<4>[height=5cm]{./Figures/UtahArray.pdf}
-% 		\includegraphics<5>[height=4cm]{./Figures/UtahArraySpatialFreq.pdf}
-% 		\includegraphics<6>[height=4cm]{./Figures/UtahArraySpatialFreqCrossSect.pdf}
+% 		\includegraphics[height=7cm]{./Figures/FieldAndSensors.pdf}
 % 	\end{center}
 % \end{frame}
 % 
-% \begin{frame}\frametitle{Real neural field}
+% \begin{frame}\frametitle{Reduced system equation}
+% We get a reduced system equation
+% \begin{equation}
+% 	{\color{darkgreen}\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_{t+T_s}} = 
+% 	{\color{purple}\xi \boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_{t}} + 
+% 	T_s \int_\Omega { 
+% 	    {\color{blue}f\left(\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_{t}\right)} 
+% 		{\color{orange}\boldsymbol\psi^{\top}\left(\mathbf{r},\mathbf{r}'\right)}
+% 	\, d\mathbf{r}'} {\color{orange}\boldsymbol\theta}
+% 	+ {\color{brown}e_t\left(\mathbf{r}\right)}.
+% \end{equation}
+% \pause
+% This simplifies to
+% \begin{align}
+% 	{\color{darkgreen}\mathbf{x}_{t+1}} = {\color{purple}\xi\mathbf{x}_t} 
+% + \int_\Omega {\color{orange}\boldsymbol{\Psi}(\mathbf{r}')} {\color{blue}f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t)} \, d\mathbf{r}' {\color{orange}\boldsymbol{\theta}} + {\color{brown}\mathbf{e}_t},
+% \end{align}
+% \pause
+% where
+% \begin{align}
+% 	\color{brown}\mathbf{e}_t &\triangleq \boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi} ( \mathbf{r} )e_t( \mathbf{r} ) \, d\mathbf{r}} \\
+% 	\boldsymbol{\Gamma} &\triangleq \int_\Omega {\boldsymbol{\phi} \left(\mathbf{r}\right)\boldsymbol{\phi} ^{\top}\left(\mathbf{r}\right) \, d\mathbf{r}} \\
+% 	\color{orange}\left[ \boldsymbol\Psi(\mathbf{r}')\right]_{:i}  &\triangleq T_s\boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\psi_i (2\mathbf{c}_i+\mathbf{r}'-\mathbf{r})\textrm{d}\mathbf{r}}.
+% \end{align}
+% \end{frame}
+% 
+% \begin{frame}\frametitle{Reduced observation equation}
+% 	\begin{equation}
+% 		y_t(\mathbf{r}_n) = \int_{\Omega} { {\color{cyan}m\left(\mathbf{r}_n-\mathbf{r}'\right)} {\color{red}\boldsymbol{\phi}^{\top}(\mathbf{r})\mathbf{x}_{t}} \, d\mathbf{r}'} + {\color{magenta}\varepsilon_t(\mathbf{r}_n)} 
+% 	\end{equation}
+% \pause
+% In the more compact form
+% \begin{equation}\label{ObservationEquation} 
+% 	\mathbf{y}_t = {\color{cyan}\mathbf{C}}{\color{red}\mathbf{x}_t} + {\color{magenta}\boldsymbol{\varepsilon}_t},
+% \end{equation}
+% \pause
+% where each element of the observation matrix, $\mathbf{C}$, is 
+% \begin{equation}
+% 	{\color{cyan}\mathbf{C}_{ij}} \triangleq \int_{\Omega}m(\mathbf{r}_i - \mathbf{r}')\boldsymbol{\phi}_j(\mathbf{r}') \, d\mathbf{r}'.
+% \end{equation}
+% \end{frame}
+% 	
+% \begin{frame}\frametitle{Aim again, again, again}
+% Aim: To track the patient-specific neural dynamics and estimate the parameters that influence seizures from electrophysiological measurements.	
+% 	\begin{align}
+% 		{\color{darkgreen}\mathbf{x}_{t+1}} &= {\color{purple}\xi\mathbf{x}_t} 
+% 	+ \int_\Omega {\color{orange}\boldsymbol{\Psi}(\mathbf{r}')} {\color{blue}f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t)} \, d\mathbf{r}' {\color{orange}\boldsymbol{\theta}} + {\color{brown}\mathbf{e}_t} \nonumber \\
+% 	\mathbf{y}_t &= {\color{cyan}\mathbf{C}}\mathbf{x}_t + {\color{magenta}\boldsymbol{\varepsilon}_t}\nonumber 
+% 	\end{align}
+% 	\pause
+% 	We need to estimate the states, $\mathbf{x}_t$, and parameters, $\boldsymbol\theta$ and $\xi$, given the prerecorded observations, $\mathbf{y}_t$.
+% \end{frame}
+% 
+% 
+% \subsection[Estimation algorithm]{Estimation algorithm}
+% 
+% 
+% \begin{frame}\frametitle{Estimation algorithm}
+% We need to estimate the states, $\mathbf{x}_t$, and parameters, $\boldsymbol\theta$ and $\xi$, given the prerecorded observations, $\mathbf{y}_t$. (see refs\footnote{Ljung, L., (1999); Haykin, S., (2001); Sarkka, S., (2010); Julier, S. and Uhlmann, J., (1997).})
+% \begin{center}
+% 	\includegraphics<1>[height=4cm]{./Figures/EstimationAlgorithm1.pdf}
+% 	\includegraphics<2>[height=4cm]{./Figures/EstimationAlgorithm2.pdf}
+% 	\includegraphics<3>[height=4cm]{./Figures/EstimationAlgorithm3.pdf}
+% 	\includegraphics<4>[height=4cm]{./Figures/EstimationAlgorithm4.pdf}
+% 	% \includegraphics<5>[height=3cm]{./Figures/EstimationAlgorithm5.pdf}
+% 	\includegraphics<5>[height=4cm]{./Figures/EstimationAlgorithm6.pdf}
+% 	\includegraphics<6>[height=4cm]{./Figures/EstimationAlgorithm7.pdf}
+% 	\includegraphics<7>[height=4cm]{./Figures/EstimationAlgorithm8.pdf}
+% \end{center}
+% \end{frame}
+% 
+% \begin{frame}\frametitle{Parameter estimation - least squares}
+% 	Assume we have an estimate (guess) for $\hat{\mathbf{x}}_{t} = \hat{\mathbf{x}}_{0}, \hat{\mathbf{x}}_{1}, \hat{\mathbf{x}}_{2}, \hdots, \hat{\mathbf{x}}_{T}$ \pause and
+% 	\begin{equation}
+% 			{\color{darkgreen}\mathbf{x}_{t+1}} = {\color{purple}\xi\mathbf{x}_t} 
+% 		+ \underbrace{\int_\Omega {\color{orange}\boldsymbol{\Psi}(\mathbf{r}')} {\color{blue}f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t)} \, d\mathbf{r}' }_{\mathbf{q}(\hat{\mathbf{x}}_t)}{\color{orange}\boldsymbol{\theta}} + {\color{brown}\mathbf{e}_t}.
+% 	\end{equation}
+% \pause
+% Given the estimated state sequence we can write
+% \begin{align*}
+% 	 \hat{\mathbf x}_{1} &= \mathbf{q}(\hat{\mathbf x}_0) \boldsymbol{\theta}+\xi\hat{\mathbf x}_0+\mathbf e_0 \\
+% 	\hat{\mathbf x}_{2} &= \mathbf{q}(\hat{\mathbf x}_1) \boldsymbol{\theta}+\xi\hat{\mathbf x}_1+\mathbf e_1  \\
+% 	&\vdots& \\
+% 	\hat{\mathbf x}_{T}&= \mathbf{q}(\hat{\mathbf x}_{T-1}) \boldsymbol{\theta}+\xi\hat{\mathbf x}_{T-1}+\mathbf e_{T-1}. 
+% \end{align*}
+% \pause
+% This can be written in the compact form
+% \begin{equation}
+% 	\mathbf Z=\mathbf X \mathcal W+\mathbf{e}, 
+% \end{equation}
+% \end{frame}
+% 
+% \begin{frame}\frametitle{Parameter estimation continued}
+% \begin{equation}
+% 	\mathbf Z=\mathbf X \mathcal W+\mathbf{e}, 
+% \end{equation}
+% \pause
+% where
+% \begin{small}
+% \begin{equation*}
+% 	\mathbf Z=\left[
+% 	\begin{array}{cccc}
+% 		\hat{\mathbf x}_{1}\\
+% 		\hat{\mathbf x}_{2}\\
+% 		\vdots\\
+% 		\hat{\mathbf x}_{T}
+% 	\end{array}
+% 	\right],\quad \mathbf X=\left[
+% 	\begin{array}{cccc}
+% 		\mathbf q(\hat{\mathbf x}_0)& \hat{\mathbf x}_{0}\\
+% 		\mathbf q(\hat{\mathbf x}_1)& \hat{\mathbf x}_{1}\\
+% 		\vdots & \vdots\\
+% 		\mathbf q(\hat{\mathbf x}_{T-1})& \hat{\mathbf x}_{T-1}
+% 	\end{array}
+% 	\right] 
+% \end{equation*}
+% \end{small}
+% and
+% \begin{small}
+% \begin{equation*}
+% \quad \mathcal W=\left[
+% 	\begin{array}{cc}
+% 		\boldsymbol{\theta} \\
+% 		\xi
+% 	\end{array}
+% 	\right],\quad \mathbf{e}=\left[
+% 	\begin{array}{cccc}
+% 		\mathbf e_0\\
+% 		\mathbf e_1\\
+% 		\vdots\\
+% 		\mathbf e_{T-1}
+% 	\end{array}
+% 	\right].
+% \end{equation*}
+% \end{small}
+% \pause
+% The closed-form solution is
+% \begin{equation}
+% 	\hat{\mathcal{W}}=(\mathbf X^\top\mathbf X)^{-1}\mathbf X^\top\mathbf Z. 
+% \end{equation}
+% \end{frame}
+% 
+% \begin{frame}\frametitle{Estimation algorithm}
+% \begin{center}
+% 	\includegraphics[height=4cm]{./Figures/EstimationAlgorithm9.pdf}
+% \end{center}
+% \end{frame}
+% 
+% \begin{frame}\frametitle{State estimation - Kalman filter}
+% 	\includegraphics<1>[height=6cm]{./Figures/KalmanFilter1.pdf}
+% 	\includegraphics<2>[height=6cm]{./Figures/KalmanFilter2.pdf}
+% 	\includegraphics<3>[height=6cm]{./Figures/KalmanFilter3.pdf}
+% 	\includegraphics<4>[height=6cm]{./Figures/KalmanFilter4.pdf}
+% 	\includegraphics<5>[height=6cm]{./Figures/KalmanFilter5.pdf}
+% 	\includegraphics<6>[height=6cm]{./Figures/KalmanFilter6.pdf}
+% 	\includegraphics<7>[height=6cm]{./Figures/KalmanFilter7.pdf}
+% 	\includegraphics<8>[height=6cm]{./Figures/KalmanFilter8.pdf}
+% 	\includegraphics<9>[height=6cm]{./Figures/KalmanFilter9.pdf}
+% 	\includegraphics<10>[height=6cm]{./Figures/KalmanFilter10.pdf}
+% 	\includegraphics<11>[height=6cm]{./Figures/KalmanFilter11.pdf}
+% 	\includegraphics<12>[height=6cm]{./Figures/KalmanFilter12.pdf}
+% \end{frame}
+% 
+% \begin{frame}\frametitle{Estimation algorithm}
+% \begin{center}
+% 	\includegraphics[height=4cm]{./Figures/EstimationAlgorithm7.pdf}
+% \end{center}
+% \end{frame}
+% 
+% \section[Results]{Results}
+% 
+% \begin{frame}\frametitle{Experimental setup}
+% \begin{itemize}
+% 	\item 150 realisations of data using model (Monte Carlo)
+% 	\item Set the model parameters to be realistic
+% 	\item Use the data-driven framework to perform state and parameters estimation
+% 	\item Compare estimated parameters to actual parameters
+% 	\item Compare the estimated neural field to actual field
+% \end{itemize}	
+% \end{frame}
+% 
+% \begin{frame}\frametitle{Monte Carlo simulation results - convergence}
 % 	\begin{center}
-% 		\includegraphics[height=9cm]{./Figures/UtahFields.pdf}
+% 		\includegraphics[height=6cm]{./Figures/fig6.pdf}
+% 	\end{center}
+% \end{frame}
+% 
+% \begin{frame}\frametitle{Monte Carlo simulation results - distributions}
+% 	\begin{center}
+% 		\includegraphics<1>[height=2.5cm]{./Figures/Figure7a.pdf}
+% 		\includegraphics<1>[height=2.5cm]{./Figures/Figure7b.pdf}
+% 		\includegraphics<1>[height=2.5cm]{./Figures/Figure7c.pdf}
+% 		\includegraphics<1>[height=2.5cm]{./Figures/Figure7d.pdf}\\
+% 		\includegraphics<1>[height=2.5cm]{./Figures/Kernel2.pdf}
+% 		\includegraphics<1>[height=2.5cm]{./Figures/Kernel3.pdf}
+% 		\includegraphics<1>[height=2.5cm]{./Figures/Kernel4.pdf}
+% 		\includegraphics<1>[height=2.cm]{./Figures/PSP.pdf}
+% \end{center}	
+% \end{frame}
+% 
+% \begin{frame}\frametitle{Monte Carlo simulation results - kernel estimation}
+% 	\begin{center}
+% 		\includegraphics[height=6cm]{./Figures/Figure10a.pdf}
 % 	\end{center}	
 % \end{frame}
 % 
-% \begin{frame}\frametitle{Positioning field basis functions}
-% 	In a similar way
-% 	\begin{equation}\label{eq:BasisFunctionSeparation}
-% 		\Delta_{\phi} \leq \frac{1}{2\rho_{\phi}\boldsymbol{\nu}_{cy}},
-% 	\end{equation}
-% 	where $\rho_{\phi} \in \mathbb{R} \ge 1$. \\
-% 	\pause
-% 	$\boldsymbol{\nu}_{cy} \approx 0.2$~cycles/mm $\implies \Delta_{\phi} \le 2.5$~mm if $\rho_{\phi} \ge 1$
-% 	\pause
-% 	\includegraphics<2-6>[height=3cm]{./Figures/Figure5a.pdf}
-% 	\begin{picture}(0,0)
-% 		\put(-95,-10){\small{observation spatial freq.}}
-% 	\end{picture}
-% 	\pause
-% 	\includegraphics<4-6>[height=3cm]{./Figures/Figure5b.pdf}
-% 	\begin{picture}(0,0)
-% 		\put(-75,-10){\small{sensor freq. resp.}}
-% 	\end{picture}
-% 	\pause
-% 	\includegraphics<5-6>[height=3cm]{./Figures/Figure5c.pdf}
-% 	\begin{picture}(0,0)
-% 		\put(-85,-10){\small{basis function freq. resp.}}
-% 	\end{picture}
-% 	\pause
-% 	\begin{picture}(0,0)
-% 		\put(-300,-30){$\boldsymbol{\nu}_{c\phi} = 0.12$~cycles/mm, $\Delta_{\phi} = 2.5$~mm, $\rho_{\phi} = 1.67$, $n_x = 81$ ($9\times9$ grid)}
-% 	\end{picture}
+% \begin{frame}\frametitle{Monte Carlo simulation results - state estimation}
+% 	\begin{center}
+% 		\includegraphics[height=6cm]{./Figures/fig8.pdf}
+% 	\end{center}	
 % \end{frame}
 % 
-
-
-
-\subsection[Estimation algorithm]{Estimation algorithm}
-
-
-\begin{frame}\frametitle{Estimation algorithm}
-	% Recall that our system equations are
-	% \begin{align}
-	% 	\mathbf{x}_{t+1} &= \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) \, d\mathbf{r}' \boldsymbol{\theta} + \xi\mathbf{x}_t 
-	% + \mathbf{e}_t \nonumber \\
-	% \mathbf{y}_t &= \mathbf{C}\mathbf{x}_t + \boldsymbol{\varepsilon}_t \nonumber
-	% \end{align}
-	% \pause
-We need to estimate the states, $\mathbf{x}_t$, and parameters, $\boldsymbol\theta$ and $\xi$, given the observations, $\mathbf{y}_t$. (see refs\footnote{Ljung, L., (1999); Haykin, S., (2001); Sarkka, S., (2010); Julier, S. and Uhlmann, J., (1997).})
-\begin{center}
-	\includegraphics[height=3cm]{./Figures/EstimationAlgorithm.pdf}
-\end{center}
-\end{frame}
-
-\begin{frame}\frametitle{Parameter estimation - least squares}
-Let
-	\begin{equation}
-		\mathbf{q}(\hat{\mathbf{x}}_t) = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\hat{\mathbf{x}}_t) \,\textrm{d}\mathbf{r}'.
-	\end{equation}
-
-Given a state estimate sequence we can write
-\begin{align*}
-	 \hat{\mathbf x}_{1} &= \mathbf{q}(\hat{\mathbf x}_0) \boldsymbol{\theta}+\xi\hat{\mathbf x}_0+\mathbf e_0 \\
-	\hat{\mathbf x}_{2} &= \mathbf{q}(\hat{\mathbf x}_1) \boldsymbol{\theta}+\xi\hat{\mathbf x}_1+\mathbf e_1  \\
-	&\vdots& \\
-	\hat{\mathbf x}_{T}&= \mathbf{q}(\hat{\mathbf x}_{T-1}) \boldsymbol{\theta}+\xi\hat{\mathbf x}_{T-1}+\mathbf e_{T-1}. 
-\end{align*}
-\end{frame}
-
-\begin{frame}\frametitle{Parameter estimation 2}
-This can be written in the compact form
-\begin{equation}
-	\mathbf Z=\mathbf X \mathcal W+\mathbf{e}, 
-\end{equation}
-where
-\begin{small}
-\begin{equation*}
-	\mathbf Z=\left[
-	\begin{array}{cccc}
-		\hat{\mathbf x}_{1}\\
-		\hat{\mathbf x}_{2}\\
-		\vdots\\
-		\hat{\mathbf x}_{T}
-	\end{array}
-	\right],\quad \mathbf X=\left[
-	\begin{array}{cccc}
-		\mathbf q(\hat{\mathbf x}_0)& \hat{\mathbf x}_{0}\\
-		\mathbf q(\hat{\mathbf x}_1)& \hat{\mathbf x}_{1}\\
-		\vdots & \vdots\\
-		\mathbf q(\hat{\mathbf x}_{T-1})& \hat{\mathbf x}_{T-1}
-	\end{array}
-	\right] 
-\end{equation*}
-\end{small}
-and
-\begin{small}
-\begin{equation*}
-\quad \mathcal W=\left[
-	\begin{array}{cc}
-		\boldsymbol{\theta} \\
-		\xi
-	\end{array}
-	\right],\quad \mathbf{e}=\left[
-	\begin{array}{cccc}
-		\mathbf e_0\\
-		\mathbf e_1\\
-		\vdots\\
-		\mathbf e_{T-1}
-	\end{array}
-	\right].
-\end{equation*}
-\end{small}
-The closed-form solution is
-\begin{equation}
-	\hat{\mathcal{W}}=(\mathbf X^\top\mathbf X)^{-1}\mathbf X^\top\mathbf Z. 
-\end{equation}
-\end{frame}
-
-\begin{frame}
-\begin{center}
-	\includegraphics[height=3cm]{./Figures/EstimationAlgorithm.pdf}
-\end{center}
-\end{frame}
-
-\begin{frame}\frametitle{State estimation}
-	\includegraphics<1>[height=6cm]{./Figures/KalmanFilter1.pdf}
-	\includegraphics<2>[height=6cm]{./Figures/KalmanFilter2.pdf}
-	\includegraphics<3>[height=6cm]{./Figures/KalmanFilter3.pdf}
-	\includegraphics<4>[height=6cm]{./Figures/KalmanFilter4.pdf}
-	\includegraphics<5>[height=6cm]{./Figures/KalmanFilter5.pdf}
-	\includegraphics<6>[height=6cm]{./Figures/KalmanFilter6.pdf}
-	\includegraphics<7>[height=6cm]{./Figures/KalmanFilter7.pdf}
-	\includegraphics<8>[height=6cm]{./Figures/KalmanFilter8.pdf}
-	\includegraphics<9>[height=6cm]{./Figures/KalmanFilter9.pdf}
-	\includegraphics<10>[height=6cm]{./Figures/KalmanFilter10.pdf}
-	\includegraphics<11>[height=6cm]{./Figures/KalmanFilter11.pdf}
-\end{frame}
-
-\begin{frame}
-\begin{center}
-	\includegraphics[height=3cm]{./Figures/EstimationAlgorithm.pdf}
-\end{center}
-\end{frame}
-
-\section[Results]{Results}
-\begin{frame}\frametitle{Monte Carlo simulation results - convergence}
-	\begin{center}
-		\includegraphics[height=6cm]{./Figures/fig6.pdf}
-	\end{center}
-\end{frame}
-
-\begin{frame}\frametitle{Monte Carlo simulation results - distributions}
-	\begin{center}
-		\includegraphics<1>[height=4cm]{./Figures/Figure7a.pdf}
-		\includegraphics<1>[height=4cm]{./Figures/Figure7b.pdf}\\
-		\includegraphics<1>[height=4cm]{./Figures/Figure7c.pdf}
-		\includegraphics<1>[height=4cm]{./Figures/Figure7d.pdf}
-	\end{center}	
-\end{frame}
-
-\begin{frame}\frametitle{Monte Carlo simulation results - kernel estimation}
-	\begin{center}
-		\includegraphics[height=6cm]{./Figures/Figure10a.pdf}
-	\end{center}	
-\end{frame}
-
-\begin{frame}\frametitle{Monte Carlo simulation results - state estimation}
-	\begin{center}
-		\includegraphics[height=6cm]{./Figures/fig8.pdf}
-	\end{center}	
-\end{frame}
-
-\begin{frame} \frametitle{Field reconstruction}
-\begin{center}
-\frame{\movie[height=154pt,width=311pt,poster,autoplay,repeat]{}{./Figures/FieldComparison.mov}}
-\end{center}
-\end{frame}
-
-
-\section[Conclusion]{Conclusion}
-
-\begin{frame}\frametitle{Summary and Discussion}
-	\begin{itemize}
-		\item Recap
-		\item Assumptions
-		\item Future work
-	\end{itemize}
-	\begin{center}
-		\includegraphics<1>[height=6cm]{./Figures/StimulationSeizureControl.pdf}
-		\includegraphics<2>[height=6cm]{./Figures/BrainElectrode.pdf} 
-		\includegraphics<3->[height=4.5cm]{./Figures/Columns.pdf}
-		\begin{picture}(0,0)
-			\put(-130,-115){\tiny Photo: Ecole Polytechnique Federale de Lausanne, HPC photo gallery, \emph{Golden Pyramids in Columns}}
-		\end{picture}
-		\includegraphics<3->[height=.5cm]{./Figures/WhiteSpace.pdf}
-		\includegraphics<3->[height=4.5cm]{./Figures/Anatomy.pdf}	
-	\end{center}
-	% \begin{picture}(0,0)
-	% 	\put(120,20){\includegraphics[height=5cm]{./Figures/MRAIDEfig1.pdf}}
-	% 	\put(80,-100){\includegraphics[height=4cm]{./Figures/MRAIDEfig2.pdf}}
-	% \end{picture}
-\end{frame}
-
-\begin{frame}\frametitle{That's it}
-\begin{center}
-	\large{Thanks!}
-\end{center}
-\end{frame}
+% \begin{frame} \frametitle{Field reconstruction}
+% 	A movie was here
+% % \begin{center}
+% % \frame{\movie[height=154pt,width=311pt,poster,autoplay,repeat]{}{./Figures/FieldComparison.mov}}
+% % \end{center}
+% \end{frame}
+% 
+% 
+% \section[Summary and Discussion]{Summary and Discussion}
+% 
+% \begin{frame}\frametitle{Summary and Discussion}
+% 	\begin{itemize}
+% 		\item Recap
+% 		\item Assumptions
+% 		\item Future work
+% 	\end{itemize}
+% 	\begin{center}
+% 		\includegraphics<1>[height=6cm]{./Figures/StimulationSeizureControl.pdf}
+% 		\includegraphics<2>[height=6cm]{./Figures/BrainElectrode.pdf} 
+% 		\includegraphics<3->[height=4.5cm]{./Figures/Columns.pdf}
+% 		\begin{picture}(0,0)
+% 			\put(-130,-115){\tiny Photo: Ecole Polytechnique Federale de Lausanne, HPC photo gallery, \emph{Golden Pyramids in Columns}}
+% 		\end{picture}
+% 		\includegraphics<3->[height=.5cm]{./Figures/WhiteSpace.pdf}
+% 		\includegraphics<3->[height=4.5cm]{./Figures/Anatomy.pdf}	
+% 	\end{center}
+% 	% \begin{picture}(0,0)
+% 	% 	\put(120,20){\includegraphics[height=5cm]{./Figures/MRAIDEfig1.pdf}}
+% 	% 	\put(80,-100){\includegraphics[height=4cm]{./Figures/MRAIDEfig2.pdf}}
+% 	% \end{picture}
+% \end{frame}
+% 
+% \begin{frame}\frametitle{Patient-specific modelling - drug therapy}
+% 	\includegraphics[height=5cm]{./Figures/PatientHistory.pdf}
+% 	\includegraphics[height=5cm]{./Figures/PatientMRI.pdf}
+% 	\includegraphics[height=5cm]{./Figures/PatientEEG.pdf}
+% \end{frame}
+% \begin{frame}\frametitle{That's it}
+% \begin{center}
+% 	\large{Thanks!}
+% \end{center}
+% \end{frame}
 \end{document}
