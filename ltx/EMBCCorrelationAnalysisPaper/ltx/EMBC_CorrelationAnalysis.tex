@@ -786,7 +786,7 @@ Show the exact estimation of the kernel.
 \section*{\parham{Convolution and Correlation}}
 To show 
 \begin{equation}
- \left(a \ast b \star c\right)\left(\tau\right)  = a\left(-\tau\right)\ast\left(b \star c\right)\left(\tau\right),
+ \left(a \ast b \right)\left(\tau\right)  \star c\left(\tau\right)  = a\left(-\tau\right)\ast\left(b \star c\right)\left(\tau\right),
 \end{equation}
 we note that cross-correlation function is related to the convolution by \cite{Yarlagadda2009}
 \begin{equation}
@@ -794,7 +794,7 @@ we note that cross-correlation function is related to the convolution by \cite{Y
 \end{equation}
 Therefore, we can write
 \begin{align}
- \left(a \ast b \star c\right)\left(\tau\right)&= \left(a \ast b\right)\left(-\tau \right)\ast c\left(\tau\right) \nonumber \\
+ \left(a \ast b\right)\left(\tau\right) \star c\left(\tau\right)&= \left(a \ast b\right)\left(-\tau \right)\ast c\left(\tau\right) \nonumber \\
 &=a\left(-\tau\right)\ast \left(b\left(-\tau\right) \ast c\left(\tau\right)\right)\nonumber \\
 &=a\left(-\tau\right)\ast\left(b\star c\right)\left(\tau\right)
 \end{align}
