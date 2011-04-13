@@ -338,8 +338,41 @@ the third term in \eqref{eq:Auto&Cross} can be simplified as
 	+ e_t\left(\mathbf{r}+\boldsymbol{\tau}\right) \right] \right)d\mathbf r \nonumber \\
 	&=\int\left(m \ast e_t\right)(\mathbf r)\left(m \ast e_t\right)(\mathbf r+\boldsymbol\tau)d\mathbf r
 \end{align}
-Note that other terms in \ref{eq:term3} are zero.
+Note that other terms in \ref{eq:term3} are zero.A property of cross-correlation and convolution is $(a \ast b) \star (a \ast b)=(a \star a)\ast(b \star b)$, so we can write
+\begin{align}
+ \int\left(m \ast e_t\right)(\mathbf r)\left(m \ast e_t\right)(\mathbf r+\boldsymbol\tau)d\mathbf r&=\left(m \ast e_t\right)(\boldsymbol\tau)\star\left(m \ast e_t\right)(\boldsymbol\tau) \nonumber \\
+&=\left(m \star m\right)(\boldsymbol\tau)\ast\left(e_t \star e_t\right)(\boldsymbol\tau) \nonumber\\
+&=m(-\boldsymbol\tau)\ast m(\boldsymbol\tau)\ast \gamma(\boldsymbol\tau) \nonumber \\
+&=(m\ast m \ast \gamma)(\boldsymbol\tau)
+\end{align}
+Using expressions for term1, term2 and term3, $R_{y_{t+1}y_{t+1}}$ can be written as
+\begin{align}
+	R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})= \xi R_{y_ty_{t+1}}(\boldsymbol{\tau})+\varsigma T_s \left(w \ast R_{y_ty_{t+1}} \right)(\boldsymbol{\tau})+(m\ast m \ast \gamma)(\boldsymbol\tau)
+\end{align}
+Taking Fourier transform and rearranging we have
+\begin{align}
+ \mathcal F\left\lbrace (m\ast m \ast \gamma)(\boldsymbol\tau)\right\rbrace&= S_{y_{t+1}y_{t+1}}(\boldsymbol{\nu})-S_{y_{t}y_{t+1}}(\boldsymbol{\nu})-\varsigma T_s W(\boldsymbol{\nu}) \times S_{y_ty_{t+1}}(\boldsymbol{\nu}) \nonumber \\
+&=S_{y_{t+1}y_{t+1}}(\boldsymbol{\nu})-S_{y_{t}y_{t+1}}(\boldsymbol{\nu})-\left(\frac{S^2_{y_{t},y_{t+1}}\left(\boldsymbol{\nu}\right)}{S_{y_{t},y_{t}}\left(\boldsymbol{\nu}\right)} - \xi S_{y_{t},y_{t+1}}\left(\boldsymbol{\nu}\right)\right) \nonumber \\
+&=S_{y_{t+1}y_{t+1}}(\boldsymbol{\nu})+(\xi-1)S_{y_{t}y_{t+1}}(\boldsymbol{\nu})-\frac{S^2_{y_{t},y_{t+1}}\left(\boldsymbol{\nu}\right)}{S_{y_{t},y_{t}}\left(\boldsymbol{\nu}\right)} 
+\end{align}
 
+
+\section*{Appendix}
+\subsection*{Convolution and Correlation}
+To show  
+\begin{equation}
+(a \ast b)(\boldsymbol \tau) \star (a \ast b)(\boldsymbol\tau)=(a \star a)(\boldsymbol\tau)\ast(b \star b)(\boldsymbol\tau)
+\end{equation}
+we note that cross-correlation function is related to the convolution by 
+\begin{equation}
+ \left(a \star b\right)\left(\tau\right)= a\left(-\tau \right)\ast b\left(\tau\right).
+\end{equation}
+Therefore, we can write
+\begin{align}
+ (a \ast b)(\boldsymbol \tau) \star (a \ast b)(\boldsymbol\tau)&=(a \ast b)(\boldsymbol -\tau) \ast (a \ast b)(\boldsymbol\tau) \nonumber \\
+&=a(-\boldsymbol\tau)\ast a(\boldsymbol\tau) \ast b(-\boldsymbol\tau)\ast b(\boldsymbol\tau) \nonumber \\
+&=(a \star a)(\boldsymbol\tau)\ast(b \star b)(\boldsymbol\tau)
+\end{align}
 \bibliographystyle{plain}
 \bibliography{}
 \end{document}
