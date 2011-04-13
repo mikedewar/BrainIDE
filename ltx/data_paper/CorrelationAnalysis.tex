@@ -96,12 +96,12 @@ Now, by taking the Fourier transform we get
 \begin{equation}
 	\mathcal{F}\left\{ R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) - R_1(\boldsymbol{\tau}) \right\} \approx \frac{T_s \varsigma}{\xi} \mathcal{F} \left\{ R_1(\boldsymbol{\tau}) \right\} \mathcal{F}\left\{ w\left(\boldsymbol{\tau}\right)\right\}.
 \end{equation}
-This simplifies to (\dean{this step is where need to find a better method for deconv})
-\begin{align}
-	\Delta^2&\sum_{\tau_{min}}^{\tau_{max}}\sum_{\tau_{min}}^{\tau_{max}}\left(R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) - R_1(\boldsymbol{\tau})\right) \exp\left(-j2\pi f \tau_x T_s\right)\exp\left(-j2\pi f \tau_y T_s\right) \\
-	& \approx \Delta^2\sum_{\tau_{min}}^{\tau_{max}}\sum_{\tau_{min}}^{\tau_{max}} R_1(\boldsymbol{\tau}) \exp\left(-j2\pi f \tau_x T_s\right)\exp\left(-j2\pi f \tau_y T_s\right) \\
-	&\times \Delta^2\sum_{\tau_{min}}^{\tau_{max}}\sum_{\tau_{min}}^{\tau_{max}} w(\boldsymbol{\tau}) \exp\left(-j2\pi f \tau_x T_s\right)\exp\left(-j2\pi f \tau_y T_s\right)
-\end{align}
+% This simplifies to (\dean{this step is where need to find a better method for deconv})
+% \begin{align}
+% 	\Delta^2&\sum_{\tau_{min}}^{\tau_{max}}\sum_{\tau_{min}}^{\tau_{max}}\left(R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) - R_1(\boldsymbol{\tau})\right) \exp\left(-j2\pi f \tau_x T_s\right)\exp\left(-j2\pi f \tau_y T_s\right) \\
+% 	& \approx \Delta^2\sum_{\tau_{min}}^{\tau_{max}}\sum_{\tau_{min}}^{\tau_{max}} R_1(\boldsymbol{\tau}) \exp\left(-j2\pi f \tau_x T_s\right)\exp\left(-j2\pi f \tau_y T_s\right) \\
+% 	&\times \Delta^2\sum_{\tau_{min}}^{\tau_{max}}\sum_{\tau_{min}}^{\tau_{max}} w(\boldsymbol{\tau}) \exp\left(-j2\pi f \tau_x T_s\right)\exp\left(-j2\pi f \tau_y T_s\right)
+% \end{align}
 
 \begin{equation}
 	\frac{\xi}{T_s \varsigma} \left(\frac{\mathcal{F}\left\{R_{y_{t},y_{t+1}}(\boldsymbol{\tau})\right\}}{\mathcal{F}\left\{R_1(\boldsymbol{\tau})\right\}} - 1\right) \approx  W\left(\boldsymbol{\nu}\right).
@@ -149,55 +149,55 @@ This equation states that the support of the kernel can be estimated given knowl
 \label{fig:KernelWidth2}
 \end{figure}
 
-\newpage
-
-\subsection*{CRAZY}
-\begin{align}
-	R_{v_{t+1}v_t}(\boldsymbol{\tau}) &= \int_{\Omega} v_{t+1}(\mathbf{r}) v_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} \\
-	&= \int_{\Omega} \left(\xi v_t(\mathbf{r}) + g_t(\mathbf{r}) + e_t(\mathbf{r})\right) v_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} \\
-	&= \xi \int_{\Omega} v_t(\mathbf{r}) v_t(\mathbf{r}+\boldsymbol{\tau})d\mathbf{r} + \int_{\Omega}g_t(\mathbf{r})v_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} + \int_{\Omega} e_t(\mathbf{r})v_t(\mathbf{r}+\boldsymbol{\tau})d\mathbf{r}
-\end{align}
-These four terms in the above equation are easy to compute and it all balances. From this we can write
-\begin{equation}
-	R_{v_{t+1}v_t}(\boldsymbol{\tau}) - \xi R_{v_tv_t}(\boldsymbol{\tau}) = \int_{\Omega}g_t(\mathbf{r})v_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}
-\end{equation}
-Now a property of cross-correlation and convolution is $(a \ast b) \star c = b(-)\ast(a \star c)$ so we can write
-\begin{equation}
-	R_{v_{t+1}v_t}(\boldsymbol{\tau}) - \xi R_{v_tv_t}(\boldsymbol{\tau}) = \varsigma w(-) \ast \int_{\Omega} v_t(\mathbf{r}) v_t(\mathbf{r}+\boldsymbol{\tau})d\mathbf{r}
-\end{equation}
-since
-\begin{equation}
-	g_t(\mathbf{r}) = (w \ast f_t)(\mathbf{r})
-\end{equation}
-Now I can easily compute
-\begin{equation}
-	\int_{\Omega}g_t(\mathbf{r})v_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}
-\end{equation}
-but I can't get
-\begin{equation}
-	\int_{\Omega}g_t(\mathbf{r})v_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} = w(-) \ast \int_{\Omega} v_t(\mathbf{r}) v_t(\mathbf{r}+\boldsymbol{\tau})d\mathbf{r}
-\end{equation}
-but I get something pretty close. I can get a reasonable kernel estimate when I generate data with a linear equation instead of the sigmoid. 
-
-\subsection*{CRAZY II}
-Noise free observations
-\begin{align}
-	R_{y_{t+1}y_t}(\boldsymbol{\tau}) &= \int_{\Omega} y_{t+1}(\mathbf{r}) y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} \\
-	&= \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}')v_{t+1}(\mathbf{r}')d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} \\
-	&= \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}')\left(\xi v_t(\mathbf{r}') + g_t(\mathbf{r}') + e_t(\mathbf{r}')\right) d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} \\
-	&= \int_{\Omega} \left(\xi y_t(\mathbf{r}) + \int_{\Omega} m(\mathbf{r}-\mathbf{r}') g_t(\mathbf{r}') d\mathbf{r}'\right) y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} \\
-	&= \int_{\Omega} \xi y_t(\mathbf{r}) y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} + \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}') g_t(\mathbf{r}') d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} \\
-	&= \xi R_{y_ty_t}(\boldsymbol{\tau}) + \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}') g_t(\mathbf{r}') d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} \\
-\end{align}
-Assume $g = \varsigma w \ast v$ giving
-\begin{align}
-	R_{y_{t+1}y_t}(\boldsymbol{\tau})-\xi R_{y_ty_t}(\boldsymbol{\tau}) &= \varsigma \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}') \int_{\Omega} w(\mathbf{r}'-\mathbf{r}'') v_t(\mathbf{r}'')d\mathbf{r}'' d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} \\
-	R_{y_{t+1}y_t}(\boldsymbol{\tau})-\xi R_{y_ty_t}(\boldsymbol{\tau}) &= \varsigma \int_{\Omega}\int_{\Omega}\int_{\Omega} w(\mathbf{r}-\mathbf{r}') m(\mathbf{r}'-\mathbf{r}'') v_t(\mathbf{r}'') d\mathbf{r}'' d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} \\
-	R_{y_{t+1}y_t}(\boldsymbol{\tau})-\xi R_{y_ty_t}(\boldsymbol{\tau}) &= \varsigma \int_{\Omega}\int_{\Omega} w(\mathbf{r}-\mathbf{r}') y_t(\mathbf{r}') d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} \\
-	R_{y_{t+1}y_t}(\boldsymbol{\tau})-\xi R_{y_ty_t}(\boldsymbol{\tau}) &= \varsigma w(-) \ast \int_{\Omega} y_t(\mathbf{r}) y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} \\
-	R_{y_{t+1}y_t}(\boldsymbol{\tau})-\xi R_{y_ty_t}(\boldsymbol{\tau}) &= \varsigma w(-) \ast R_{y_ty_t}(\boldsymbol{\tau})
-\end{align}
-\newpage
+% \newpage
+% 
+% \subsection*{CRAZY}
+% \begin{align}
+% 	R_{v_{t+1}v_t}(\boldsymbol{\tau}) &= \int_{\Omega} v_{t+1}(\mathbf{r}) v_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} \\
+% 	&= \int_{\Omega} \left(\xi v_t(\mathbf{r}) + g_t(\mathbf{r}) + e_t(\mathbf{r})\right) v_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} \\
+% 	&= \xi \int_{\Omega} v_t(\mathbf{r}) v_t(\mathbf{r}+\boldsymbol{\tau})d\mathbf{r} + \int_{\Omega}g_t(\mathbf{r})v_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} + \int_{\Omega} e_t(\mathbf{r})v_t(\mathbf{r}+\boldsymbol{\tau})d\mathbf{r}
+% \end{align}
+% These four terms in the above equation are easy to compute and it all balances. From this we can write
+% \begin{equation}
+% 	R_{v_{t+1}v_t}(\boldsymbol{\tau}) - \xi R_{v_tv_t}(\boldsymbol{\tau}) = \int_{\Omega}g_t(\mathbf{r})v_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}
+% \end{equation}
+% Now a property of cross-correlation and convolution is $(a \ast b) \star c = b(-)\ast(a \star c)$ so we can write
+% \begin{equation}
+% 	R_{v_{t+1}v_t}(\boldsymbol{\tau}) - \xi R_{v_tv_t}(\boldsymbol{\tau}) = \varsigma w(-) \ast \int_{\Omega} v_t(\mathbf{r}) v_t(\mathbf{r}+\boldsymbol{\tau})d\mathbf{r}
+% \end{equation}
+% since
+% \begin{equation}
+% 	g_t(\mathbf{r}) = (w \ast f_t)(\mathbf{r})
+% \end{equation}
+% Now I can easily compute
+% \begin{equation}
+% 	\int_{\Omega}g_t(\mathbf{r})v_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}
+% \end{equation}
+% but I can't get
+% \begin{equation}
+% 	\int_{\Omega}g_t(\mathbf{r})v_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} = w(-) \ast \int_{\Omega} v_t(\mathbf{r}) v_t(\mathbf{r}+\boldsymbol{\tau})d\mathbf{r}
+% \end{equation}
+% but I get something pretty close. I can get a reasonable kernel estimate when I generate data with a linear equation instead of the sigmoid. 
+% 
+% \subsection*{CRAZY II}
+% Noise free observations
+% \begin{align}
+% 	R_{y_{t+1}y_t}(\boldsymbol{\tau}) &= \int_{\Omega} y_{t+1}(\mathbf{r}) y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} \\
+% 	&= \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}')v_{t+1}(\mathbf{r}')d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} \\
+% 	&= \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}')\left(\xi v_t(\mathbf{r}') + g_t(\mathbf{r}') + e_t(\mathbf{r}')\right) d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} \\
+% 	&= \int_{\Omega} \left(\xi y_t(\mathbf{r}) + \int_{\Omega} m(\mathbf{r}-\mathbf{r}') g_t(\mathbf{r}') d\mathbf{r}'\right) y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} \\
+% 	&= \int_{\Omega} \xi y_t(\mathbf{r}) y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} + \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}') g_t(\mathbf{r}') d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} \\
+% 	&= \xi R_{y_ty_t}(\boldsymbol{\tau}) + \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}') g_t(\mathbf{r}') d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} \\
+% \end{align}
+% Assume $g = \varsigma w \ast v$ giving
+% \begin{align}
+% 	R_{y_{t+1}y_t}(\boldsymbol{\tau})-\xi R_{y_ty_t}(\boldsymbol{\tau}) &= \varsigma \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}') \int_{\Omega} w(\mathbf{r}'-\mathbf{r}'') v_t(\mathbf{r}'')d\mathbf{r}'' d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} \\
+% 	R_{y_{t+1}y_t}(\boldsymbol{\tau})-\xi R_{y_ty_t}(\boldsymbol{\tau}) &= \varsigma \int_{\Omega}\int_{\Omega}\int_{\Omega} w(\mathbf{r}-\mathbf{r}') m(\mathbf{r}'-\mathbf{r}'') v_t(\mathbf{r}'') d\mathbf{r}'' d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} \\
+% 	R_{y_{t+1}y_t}(\boldsymbol{\tau})-\xi R_{y_ty_t}(\boldsymbol{\tau}) &= \varsigma \int_{\Omega}\int_{\Omega} w(\mathbf{r}-\mathbf{r}') y_t(\mathbf{r}') d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} \\
+% 	R_{y_{t+1}y_t}(\boldsymbol{\tau})-\xi R_{y_ty_t}(\boldsymbol{\tau}) &= \varsigma w(-) \ast \int_{\Omega} y_t(\mathbf{r}) y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} \\
+% 	R_{y_{t+1}y_t}(\boldsymbol{\tau})-\xi R_{y_ty_t}(\boldsymbol{\tau}) &= \varsigma w(-) \ast R_{y_ty_t}(\boldsymbol{\tau})
+% \end{align}
+% \newpage
 
 \subsection*{Estimation of Disturbance Support}
 Given the knowledge of the sensors' spatial bandwidth, the support of the disturbance can be also inferred using spatial correlation analysis. Here we also assume continuous observation and the linear behaviour of the firing rate for majority of the time. The spatial auto-correlation function between observations at each time  is defined as 
@@ -255,6 +255,91 @@ Note that, the exact knowlege of $\sigma_{\epsilon}^2$ and $\xi$ are not require
 \caption{{\bf Estimation of $\left(m\ast m \ast \gamma \right)\left(\boldsymbol \tau\right) $ width}. Values are normalised. True  and estimated values are shown with solid and dotted lines respectively.}
 \label{fig:DisturbanceWidth}
 \end{figure}
+\section*{Estimation of Disturbance Support-II (Noise Free)}
+The spatial correlation between observations at a given time is governed by the disturbance covariance function. Therefore, the correlation between observations at eachtime is used to estimate the support of the disturbance ovariance function. The correlation is defined as
+\begin{equation}
+	R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau}) = \int_{\Omega} y_{t+1}(\mathbf{r}) y_{t+1}(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r},
+\end{equation}
+where $\tau$ is the spatial shift. Now substituting 
+\begin{equation}\label{eq:ObservationEquation}
+	y_t(\mathbf{r}) = \int_{\Omega} { m\left(\mathbf{r}-\mathbf{r}'\right) v_t\left(\mathbf{r}'\right) \, d\mathbf{r}'} + \varepsilon_t(\mathbf{r}_n), 
+\end{equation}
+for  $y_{t+1}(\mathbf{r})$ \parham{and assuming noise-free observations} gives 
+\begin{equation}
+	R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau}) = \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}')v_{t+1}(\mathbf{r}')d\mathbf{r}' y_{t+1}(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}.
+\end{equation}
+Next the equation
+\begin{equation}
+	\label{eq:DiscreteTimeModel} 
+	v_{t+1}\left(\mathbf{r}\right) = 
+	\xi v_t\left(\mathbf{r}\right) + 
+	T_s \int_\Omega { 
+	    w\left(\mathbf{r},\mathbf{r}'\right)
+	    f\left(v_t\left(\mathbf{r}'\right)\right) 
+	\, d\mathbf{r}'} 
+	+ e_t\left(\mathbf{r}\right), 
+\end{equation}
+is substituted in for  $v_{t+1}(\mathbf{r}')$ giving 
+\begin{align}
+	R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau}) &= \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}')\left(\xi v_t(\mathbf{r}') +  T_s g_t(\mathbf{r}')\right. \nonumber \\
+	&+ \left. e_t(\mathbf{r}')\right) d\mathbf{r}' y_{t+1}(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}. 
+\end{align}
+The auto-correlation is simplified by noting that
+\begin{align}
+	\int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}')&\xi v_t(\mathbf{r}')d\mathbf{r}'y_{t+1}(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} = \nonumber \\ 
+ &\xi R_{y_ty_{t+1}}(\boldsymbol{\tau}),
+\end{align}
+giving
+\begin{align}\label{eq:Auto&Cross}
+	R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau}) &= \xi R_{y_ty_{t+1}}(\boldsymbol{\tau}) \nonumber \\
+	&+ T_s \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}')  g_t(\mathbf{r}') d\mathbf{r}' y_{t+1}(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} \nonumber \\
+	&+\int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}')e_t(\mathbf{r}')d\mathbf{r}'y_{t+1}(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}.
+\end{align}
+Substituting in equation
+\begin{equation}
+	\label{eq:RateBasedInteractions} g\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( v\left( \mathbf{r}',t \right) \right)\, d\mathbf{r}'}, 
+\end{equation}
+for $g_t(\mathbf{r}')$, the second term in \eqref{eq:Auto&Cross} gives
+\begin{align}
+	\text{term2} = T_s \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}') 
+	\times \int_{\Omega} w(\mathbf{r}'-\mathbf{r}'') f\left(v_t(\mathbf{r}'')\right)d\mathbf{r}'' d\mathbf{r}' y_{t+1}(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}. 
+\end{align} 
+Using the commutativity property of convolution, the order can be rearranged to
+\begin{align}
+	\text{term2}  =  T_s \int_{\Omega}\int_{\Omega} w(\mathbf{r}-\mathbf{r}')
+	\times \int_{\Omega} m(\mathbf{r}'-\mathbf{r}'') f\left(v_t(\mathbf{r}'')\right) d\mathbf{r}'' d\mathbf{r}' y_{t+1}(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}.
+\end{align}
+Next, the nonlinear function $f(\cdot)$ is approximated by the simple linear relationship
+\begin{equation}
+	f\left(v_t(\mathbf{r})\right) \approx \varsigma v_t(\mathbf{r})
+\end{equation} 
+giving
+\begin{align}
+	\text{term2} =  \varsigma T_s \int_{\Omega}\int_{\Omega} w(\mathbf{r}-\mathbf{r}') 
+	\times \int_{\Omega} m(\mathbf{r}'-\mathbf{r}'')  v_t(\mathbf{r}'') d\mathbf{r}'' d\mathbf{r}' y_{t+1}(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r},
+\end{align}
+which simplifies to
+\begin{align}
+	\text{term2}=  \varsigma T_s \int_{\Omega}\int_{\Omega} w(\mathbf{r}-\mathbf{r}')y_t(\mathbf{r}') d\mathbf{r}' 
+	\times y_{t+1}(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}
+\end{align}
+A property of cross-correlation and convolution is $(a \ast b) \star c = a(-)\ast(b \star c)$, so we can write
+\begin{align}
+	\text{term2}&= \varsigma T_s \int_{\Omega} w(\boldsymbol{\tau}-\boldsymbol{\tau}') 
+	\times \int_{\Omega} y_t(\mathbf{r}) y_{t+1}(\mathbf{r}+\boldsymbol{\tau}') d\mathbf{r}d\boldsymbol{\tau}' \nonumber \\
+	&= \varsigma T_s \int_{\Omega} w(\boldsymbol{\tau}-\boldsymbol{\tau}') R_{y_ty_{t+1}}(\boldsymbol{\tau}')d\boldsymbol{\tau}' \nonumber \\
+	&=\varsigma T_s \left(w \ast R_{y_ty_{t+1}} \right)(\boldsymbol{\tau})
+\end{align}
+the third term in \eqref{eq:Auto&Cross} can be simplified as
+\begin{align}\label{eq:term3}
+\text{term3}&=\int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}')e_t(\mathbf{r}')d\mathbf{r}'y_{t+1}(\mathbf{r}+\boldsymbol{\tau})  d\mathbf{r} \nonumber \\
+&=\int \left(m \ast e_t\right)(\mathbf r)\left(m\left(\mathbf{r}+\boldsymbol\tau\right) \ast \left[\xi v_t\left(\mathbf{r}+\boldsymbol\tau\right) + 
+	T_s \varsigma \left(w \ast v_t\right)(\mathbf r + \boldsymbol \tau)
+	+ e_t\left(\mathbf{r}+\boldsymbol{\tau}\right) \right] \right)d\mathbf r \nonumber \\
+	&=\int\left(m \ast e_t\right)(\mathbf r)\left(m \ast e_t\right)(\mathbf r+\boldsymbol\tau)d\mathbf r
+\end{align}
+Note that other terms in \ref{eq:term3} are zero.
+
 \bibliographystyle{plain}
 \bibliography{}
 \end{document}
