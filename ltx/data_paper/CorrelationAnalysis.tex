@@ -356,6 +356,117 @@ Taking Fourier transform and rearranging we have
 &=S_{y_{t+1}y_{t+1}}(\boldsymbol{\nu})+(\xi-1)S_{y_{t}y_{t+1}}(\boldsymbol{\nu})-\frac{S^2_{y_{t},y_{t+1}}\left(\boldsymbol{\nu}\right)}{S_{y_{t},y_{t}}\left(\boldsymbol{\nu}\right)} 
 \end{align}
 
+\section*{Estimation of Disturbance Support-III (with Observation Noise)}
+The spatial correlation between observations at a given time is governed by the disturbance covariance function. Therefore, the correlation between observations at eachtime is used to estimate the support of the disturbance ovariance function. The correlation is defined as
+\begin{equation}
+	R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau}) = \int_{\Omega} y_{t+1}(\mathbf{r}) y_{t+1}(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r},
+\end{equation}
+where $\tau$ is the spatial shift. Now substituting 
+\begin{equation}\label{eq:ObservationEquationNoisy}
+	y_t(\mathbf{r}) = \int_{\Omega} { m\left(\mathbf{r}-\mathbf{r}'\right) v_t\left(\mathbf{r}'\right) \, d\mathbf{r}'} + \varepsilon_t(\mathbf{r}_n), 
+\end{equation}
+for  $y_{t+1}(\mathbf{r})$ gives 
+\begin{equation}
+	R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau}) = \int_{\Omega}\left[ \int_{\Omega} m(\mathbf{r}-\mathbf{r}')v_{t+1}(\mathbf{r}')d\mathbf{r}' +\varepsilon_{t+1}(\mathbf{r}_n)\right] y_{t+1}(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}.
+\end{equation}
+Next the equation
+\begin{equation}
+	\label{eq:DiscreteTimeModelNoisy} 
+	v_{t+1}\left(\mathbf{r}\right) = 
+	\xi v_t\left(\mathbf{r}\right) + 
+	T_s \int_\Omega { 
+	    w\left(\mathbf{r},\mathbf{r}'\right)
+	    f\left(v_t\left(\mathbf{r}'\right)\right) 
+	\, d\mathbf{r}'} 
+	+ e_t\left(\mathbf{r}\right), 
+\end{equation}
+is substituted in for  $v_{t+1}(\mathbf{r}')$ giving 
+\begin{equation}
+	R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau}) = \int_{\Omega}\left[ \int_{\Omega} m(\mathbf{r}-\mathbf{r}')\left[ \xi v_t\left(\mathbf{r}'\right) + 
+	T_s g_t(\mathbf{r}') 
+	+ e_t\left(\mathbf{r}'\right)\right] d\mathbf{r}' +\varepsilon_{t+1}(\mathbf{r})\right] y_{t+1}(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}.
+\end{equation}
+The auto-correlation is simplified by noting that
+\begin{align}
+	\int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}')&\xi v_t(\mathbf{r}')d\mathbf{r}'y_{t+1}(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} = \nonumber \\ 
+ &\xi R_{y_ty_{t+1}}(\boldsymbol{\tau}),
+\end{align}
+and
+\begin{align}
+ \int_{\Omega}\varepsilon_{t+1}(\mathbf{r})y_{t+1}(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}&= \nonumber \\
+&=\int_{\Omega}\varepsilon_{t+1}(\mathbf{r})\left[(m \ast v_{t+1})(\mathbf r+\boldsymbol\tau)+ \varepsilon_{t+1}(\mathbf{r}+\boldsymbol{\tau})\right] d\mathbf{r} \nonumber \\
+&=\int_{\Omega}\varepsilon_{t+1}(\mathbf{r}) \varepsilon_{t+1}(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} \nonumber \\
+&=\sigma_{\epsilon}^2\delta_K(\boldsymbol{\tau})
+\end{align}
+giving
+\begin{align}\label{eq:Auto&CrossNoisy}
+	R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau}) &= \xi R_{y_ty_{t+1}}(\boldsymbol{\tau}) \nonumber \\
+	&+ T_s \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}')  g_t(\mathbf{r}') d\mathbf{r}' y_{t+1}(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} \nonumber \\
+	&+\int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}')e_t(\mathbf{r}')d\mathbf{r}'y_{t+1}(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}+\sigma_{\epsilon}^2\delta_K(\boldsymbol{\tau}).
+\end{align}
+Substituting in equation
+\begin{equation}
+	\label{eq:RateBasedInteractions} g\left( \mathbf{r},t \right) = \int_\Omega {w\left( \mathbf{r},\mathbf{r}' \right)f\left( v\left( \mathbf{r}',t \right) \right)\, d\mathbf{r}'}, 
+\end{equation}
+for $g_t(\mathbf{r}')$, the second term in \eqref{eq:Auto&CrossNoisy} gives
+\begin{align}
+	\text{term2} = T_s \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}') 
+	\times \int_{\Omega} w(\mathbf{r}'-\mathbf{r}'') f\left(v_t(\mathbf{r}'')\right)d\mathbf{r}'' d\mathbf{r}' y_{t+1}(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}. 
+\end{align} 
+Using the commutativity property of convolution, the order can be rearranged to
+\begin{align}
+	\text{term2}  =  T_s \int_{\Omega}\int_{\Omega} w(\mathbf{r}-\mathbf{r}')
+	\times \int_{\Omega} m(\mathbf{r}'-\mathbf{r}'') f\left(v_t(\mathbf{r}'')\right) d\mathbf{r}'' d\mathbf{r}' y_{t+1}(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}.
+\end{align}
+Next, the nonlinear function $f(\cdot)$ is approximated by the simple linear relationship
+\begin{equation}
+	f\left(v_t(\mathbf{r})\right) \approx \varsigma v_t(\mathbf{r})
+\end{equation} 
+giving
+\begin{align}
+	\text{term2} &=  \varsigma T_s \int_{\Omega}\int_{\Omega} w(\mathbf{r}-\mathbf{r}') 
+	\times \int_{\Omega} m(\mathbf{r}'-\mathbf{r}'')  v_t(\mathbf{r}'') d\mathbf{r}'' d\mathbf{r}' y_{t+1}(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} \nonumber \\
+&=\varsigma T_s \int_{\Omega}\int_{\Omega} w(\mathbf{r}-\mathbf{r}') 
+	\times \left[y_t(\mathbf r')- \varepsilon_t(\mathbf r')\right]  d\mathbf{r}' y_{t+1}(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}
+\end{align}
+which simplifies to
+\begin{align}
+	\text{term2}=  \varsigma T_s \int_{\Omega}\int_{\Omega} w(\mathbf{r}-\mathbf{r}')y_t(\mathbf{r}') d\mathbf{r}' 
+	\times y_{t+1}(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}
+\end{align}
+A property of cross-correlation and convolution is $(a \ast b) \star c = a(-)\ast(b \star c)$, so we can write
+\begin{align}
+	\text{term2}&= \varsigma T_s \int_{\Omega} w(\boldsymbol{\tau}-\boldsymbol{\tau}') 
+	\times \int_{\Omega} y_t(\mathbf{r}) y_{t+1}(\mathbf{r}+\boldsymbol{\tau}') d\mathbf{r}d\boldsymbol{\tau}' \nonumber \\
+	&= \varsigma T_s \int_{\Omega} w(\boldsymbol{\tau}-\boldsymbol{\tau}') R_{y_ty_{t+1}}(\boldsymbol{\tau}')d\boldsymbol{\tau}' \nonumber \\
+	&=\varsigma T_s \left(w \ast R_{y_ty_{t+1}} \right)(\boldsymbol{\tau})
+\end{align}
+the third term in \eqref{eq:Auto&Cross} can be simplified as
+\begin{align}\label{eq:term3Noisy}
+\text{term3}&=\int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}')e_t(\mathbf{r}')d\mathbf{r}'y_{t+1}(\mathbf{r}+\boldsymbol{\tau})  d\mathbf{r} \nonumber \\
+&=\int \left(m \ast e_t\right)(\mathbf r)\left[m\left(\mathbf{r}+\boldsymbol\tau\right) \ast \left[\xi v_t\left(\mathbf{r}+\boldsymbol\tau\right) + 
+	T_s \varsigma \left(w \ast v_t\right)(\mathbf r + \boldsymbol \tau)
+	+ e_t\left(\mathbf{r}+\boldsymbol{\tau}\right) \right]+\varepsilon_{t+1}(\mathbf r+\boldsymbol\tau) \right]d\mathbf r \nonumber \\
+	&=\int\left(m \ast e_t\right)(\mathbf r)\left(m \ast e_t\right)(\mathbf r+\boldsymbol\tau)d\mathbf r
+\end{align}
+Note that other terms in \ref{eq:term3Noisy} are zero.A property of cross-correlation and convolution is $(a \ast b) \star (a \ast b)=(a \star a)\ast(b \star b)$, so we can write
+\begin{align}
+ \int\left(m \ast e_t\right)(\mathbf r)\left(m \ast e_t\right)(\mathbf r+\boldsymbol\tau)d\mathbf r&=\left(m \ast e_t\right)(\boldsymbol\tau)\star\left(m \ast e_t\right)(\boldsymbol\tau) \nonumber \\
+&=\left(m \star m\right)(\boldsymbol\tau)\ast\left(e_t \star e_t\right)(\boldsymbol\tau) \nonumber\\
+&=m(-\boldsymbol\tau)\ast m(\boldsymbol\tau)\ast \gamma(\boldsymbol\tau) \nonumber \\
+&=(m\ast m \ast \gamma)(\boldsymbol\tau)
+\end{align}
+Using expressions for term1, term2 and term3, $R_{y_{t+1}y_{t+1}}$ can be written as
+\begin{align}
+	R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})= \xi R_{y_ty_{t+1}}(\boldsymbol{\tau})+\varsigma T_s \left(w \ast R_{y_ty_{t+1}} \right)(\boldsymbol{\tau})+(m\ast m \ast \gamma)(\boldsymbol\tau)+\sigma_{\epsilon}^2\delta_K(\boldsymbol{\tau}).
+\end{align}
+Taking Fourier transform and rearranging we have
+\begin{align}
+ \mathcal F\left\lbrace (m\ast m \ast \gamma)(\boldsymbol\tau)\right\rbrace&= S_{y_{t+1}y_{t+1}}(\boldsymbol{\nu})-S_{y_{t}y_{t+1}}(\boldsymbol{\nu})-\varsigma T_s W(\boldsymbol{\nu}) \times S_{y_ty_{t+1}}(\boldsymbol{\nu})-\sigma_{\epsilon}^2 \nonumber \\
+&=S_{y_{t+1}y_{t+1}}(\boldsymbol{\nu})-S_{y_{t}y_{t+1}}(\boldsymbol{\nu})-\left(\frac{S^2_{y_{t},y_{t+1}}\left(\boldsymbol{\nu}\right)}{S_{y_{t},y_{t}}\left(\boldsymbol{\nu}\right)} - \xi S_{y_{t},y_{t+1}}\left(\boldsymbol{\nu}\right)\right)-\sigma_{\epsilon}^2 \nonumber \\
+&=S_{y_{t+1}y_{t+1}}(\boldsymbol{\nu})+(\xi-1)S_{y_{t}y_{t+1}}(\boldsymbol{\nu})-\frac{S^2_{y_{t},y_{t+1}}\left(\boldsymbol{\nu}\right)}{S_{y_{t},y_{t}}\left(\boldsymbol{\nu}\right)}-\sigma_{\epsilon}^2 
+\end{align}
+
 
 \section*{Appendix}
 \subsection*{Convolution and Correlation}
