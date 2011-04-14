@@ -257,8 +257,82 @@ Note that, the exact knowlege of $\sigma_{\epsilon}^2$ and $\xi$ are not require
 \end{figure}
 \newpage
 \section*{Estimation of Kernel Support-II (With observation noise)}
+The spatial relationship between consecutive observations is governed by the connectivity kernel. Therefore, the cross-correlation between consecutive observations is used to estimate the support of the connectivity kernel. The cross-correlation is defined as
+\begin{align}
+	R_{y_{t+1}y_t}(\boldsymbol{\tau})& =(y_{t+1} \star y_t)(\boldsymbol\tau) \nonumber \\
+ &=\int_{\Omega} y_{t+1}(\mathbf{r}) y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r},
+\end{align}
+where $\tau$ is the spatial shift. Now substituting for $y_{t+1}(\mathbf{r})$ 
+\begin{equation}
+	R_{y_{t+1}y_t}(\boldsymbol{\tau}) = \int_{\Omega}\left[ \int_{\Omega} m(\mathbf{r}-\mathbf{r}')v_{t+1}(\mathbf{r}')d\mathbf{r}'+\varepsilon_{t+1}(\mathbf r)\right]  y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}.
+\end{equation}
+Next  substituting in for $v_{t+1}(\mathbf{r}')$ gives
+\begin{equation}
+	R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau}) = \int_{\Omega}\left[ \int_{\Omega} m(\mathbf{r}-\mathbf{r}')\left[ \xi v_t\left(\mathbf{r}'\right) + 
+	T_s g_t(\mathbf{r}') 
+	+ e_t\left(\mathbf{r}'\right)\right] d\mathbf{r}' +\varepsilon_{t+1}(\mathbf{r})\right] y_{t}(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}.
+\end{equation}
+The cross-correlation is simplified by recognizing that 
+\begin{align}
+	\int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}')&\xi v_t(\mathbf{r}')d\mathbf{r}'y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} = \nonumber \\ 
+ &\xi \left(R_{y_ty_t}(\boldsymbol{\tau})-n_y\sigma_{\epsilon}^2  \delta_{K}\left(\boldsymbol\tau\right)\right),
+\end{align}
+where $\delta_{K}\left(.\right)$ denotes Kronecker delta. Also  
+\begin{align}
+	\beta(\boldsymbol{\tau}) &= \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}') e_t(\mathbf{r}') d\mathbf{r}'y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}=0 %\\
+	% &= \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}') e_t(\mathbf{r}') d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}	
+\end{align}
+giving 
+\begin{align}
+	R_{y_{t+1}y_t}(\boldsymbol{\tau}) &= \xi \left(R_{y_ty_t}(\boldsymbol{\tau})-\sigma_{\epsilon}^2  \delta_{K}\left(\boldsymbol\tau\right)\right)\nonumber \\
+	&+ T_s \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}')  g_t(\mathbf{r}') d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}.
+\end{align}
+Rearranging and substituting  for $g_t(\mathbf{r}')$ gives
+\begin{align}
+	R_{y_{t+1}y_t}(\boldsymbol{\tau}) &-\xi \left(R_{y_ty_t}(\boldsymbol{\tau})-\sigma_{\epsilon}^2  \delta_{K}\left(\boldsymbol\tau\right)\right) = T_s \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}') \nonumber \\
+	&\times \int_{\Omega} w(\mathbf{r}'-\mathbf{r}'') f\left(v_t(\mathbf{r}'')\right)d\mathbf{r}'' d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}. 
+\end{align}  
+Using the commutativity property of convolution, the order can be rearranged to
+\begin{align}
+	R_{y_{t+1}y_t}(\boldsymbol{\tau})&-\xi \left(R_{y_ty_t}(\boldsymbol{\tau})-\sigma_{\epsilon}^2  \delta_{K}\left(\boldsymbol\tau\right)\right) =  T_s \int_{\Omega}\int_{\Omega} w(\mathbf{r}-\mathbf{r}') \nonumber \\
+	&\times \int_{\Omega} m(\mathbf{r}'-\mathbf{r}'') f\left(v_t(\mathbf{r}'')\right) d\mathbf{r}'' d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}.
+\end{align}
+Next, the nonlinear function $f(\cdot)$ is approximated by the simple linear relationship
+\begin{equation}
+	f\left(v_t(\mathbf{r})\right) \approx \varsigma v_t(\mathbf{r})
+\end{equation} 
+giving
+\begin{align}
+	R_{y_{t+1}y_t}(\boldsymbol{\tau})&-\xi R_{y_ty_t}(\boldsymbol{\tau}) =  \varsigma T_s \int_{\Omega}\int_{\Omega} w(\mathbf{r}-\mathbf{r}') \nonumber \\
+	&\times \int_{\Omega} m(\mathbf{r}'-\mathbf{r}'')  v_t(\mathbf{r}'') d\mathbf{r}'' d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r},
+\end{align}
+which simplifies to
+\begin{align}
+	R_{y_{t+1}y_t}(\boldsymbol{\tau})-\xi \left(R_{y_ty_t}(\boldsymbol{\tau})-\sigma_{\epsilon}^2  \delta_{K}\left(\boldsymbol\tau\right)\right)& =  \varsigma T_s \int_{\Omega}\int_{\Omega} w(\mathbf{r}-\mathbf{r}')\left[ y_t(\mathbf{r}')-\varepsilon_t(\mathbf r')\right]  d\mathbf{r}' \times y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} \nonumber \\
+	&=\varsigma T_s \int_{\Omega}\int_{\Omega} w(\mathbf{r}-\mathbf{r}') y_t(\mathbf{r}') d\mathbf{r}' \times y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} \nonumber \\
+        &-\varsigma T_s \int_{\Omega}\int_{\Omega} w(\mathbf{r}-\mathbf{r}')\varepsilon_t(\mathbf r') d\mathbf{r}' \times y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}
+\end{align}
+This can be written in a compact form as
+\begin{align}
+	R_{y_{t+1}y_t}(\boldsymbol{\tau})-\xi \left(R_{y_ty_t}(\boldsymbol{\tau})-\sigma_{\epsilon}^2  \delta_{K}\left(\boldsymbol\tau\right)\right)& = \varsigma T_s(w\ast y_t)(\boldsymbol\tau)\star y_t(\boldsymbol\tau) \nonumber \\
+&- \varsigma T_s(w\ast \varepsilon_t)(\boldsymbol\tau)\star y_t(\boldsymbol\tau)
+\end{align}
+A property of cross-correlation and convolution is $(a \ast b) \star c = a(-)\ast(b \star c)$, so we can write
+\begin{align}
+	R_{y_{t+1}y_t}(\boldsymbol{\tau}) -\xi \left(R_{y_ty_t}(\boldsymbol{\tau})-\sigma_{\epsilon}^2  \delta_{K}\left(\boldsymbol\tau\right)\right)& = \varsigma T_s w(-\boldsymbol\tau) \ast (y_t\star y_t)(\boldsymbol\tau)\nonumber\\
+&-\varsigma T_s w(-\boldsymbol\tau) \ast (\varepsilon_t\star y_t)(\boldsymbol\tau)
+\end{align}
+In a case where connectivity kernel is isotropic $ w(-\boldsymbol\tau)= w(\boldsymbol\tau)$ and we have
+\begin{align}
+	R_{y_{t+1}y_t}(\boldsymbol{\tau}) -\xi \left(R_{y_ty_t}(\boldsymbol{\tau})-\sigma_{\epsilon}^2  \delta_{K}\left(\boldsymbol\tau\right)\right)& = \varsigma T_s (w\ast R_{y_ty_t})(\boldsymbol\tau)-\varsigma T_s \sigma^2_{\varepsilon}w(\boldsymbol\tau) 
+\end{align}
+The solution of the above equation for the connectivity kernel is a deconvolution. This can be approached from a number of different standpoints. The simplest solution is to use the convolution theorem and find the solution by 
+\begin{equation}
+	w(\boldsymbol{\tau}) = \frac{1}{\varsigma T_s}\mathcal{F}^{-1}\left\{\frac{\mathcal{F}\left(R_{y_{t+1}y_t}(\boldsymbol{\tau})\right)}{\mathcal{F}\left(R_{y_ty_t}(\boldsymbol{\tau})-\sigma^2_{\varepsilon}\delta_K(\boldsymbol\tau)\right)}-\xi\right\}.
+\end{equation}
 
-
+Alternatively, the convolution can be written as a system of linear equations by forming the convolution (Toeplitz) matrix. The solution of the convolution equation for $w(\cdot)$ can then be found by either inverting the convolution matrix or directly solving the system of equations. Directly solving the system is the most numerically stable and less computationally demanding then inverting the convolution matrix. 
+\newpage
 \section*{Estimation of Disturbance Support-II (Noise Free)}
 The spatial correlation between observations at a given time is governed by the disturbance covariance function. Therefore, the correlation between observations at each time is used to estimate the support of the disturbance covariance function. The auto-correlation is defined as
 \begin{equation}
@@ -366,7 +440,7 @@ Therefore
 \begin{align}
  \mathcal F\left\lbrace (m\ast m \ast \gamma)(\boldsymbol\tau)\right\rbrace&= S_{y_{t+1}y_{t+1}}(\boldsymbol{\nu})-\left(1-\xi+\frac{S_{y_{t+1}y_t}(\boldsymbol{\nu})}{S_{y_ty_t}(\boldsymbol{\nu})}\right)S_{y_{t}y_{t+1}}(\boldsymbol{\nu})
 \end{align}
-
+\newpage
 
 \section*{Estimation of Disturbance Support-III (with Observation Noise)}
 The spatial correlation between observations at a given time is governed by the disturbance covariance function. Therefore, the correlation between observations at each time is used to estimate the support of the disturbance covariance function. The auto-correlation is defined as
