@@ -255,6 +255,10 @@ Note that, the exact knowlege of $\sigma_{\epsilon}^2$ and $\xi$ are not require
 \caption{{\bf Estimation of $\left(m\ast m \ast \gamma \right)\left(\boldsymbol \tau\right) $ width}. Values are normalised. True  and estimated values are shown with solid and dotted lines respectively.}
 \label{fig:DisturbanceWidth}
 \end{figure}
+\newpage
+\section*{Estimation of Kernel Support-II (With observation noise)}
+
+
 \section*{Estimation of Disturbance Support-II (Noise Free)}
 The spatial correlation between observations at a given time is governed by the disturbance covariance function. Therefore, the correlation between observations at eachtime is used to estimate the support of the disturbance ovariance function. The correlation is defined as
 \begin{equation}
@@ -352,9 +356,17 @@ Using expressions for term1, term2 and term3, $R_{y_{t+1}y_{t+1}}$ can be writte
 Taking Fourier transform and rearranging we have
 \begin{align}
  \mathcal F\left\lbrace (m\ast m \ast \gamma)(\boldsymbol\tau)\right\rbrace&= S_{y_{t+1}y_{t+1}}(\boldsymbol{\nu})-S_{y_{t}y_{t+1}}(\boldsymbol{\nu})-\varsigma T_s W(\boldsymbol{\nu}) \times S_{y_ty_{t+1}}(\boldsymbol{\nu}) \nonumber \\
-&=S_{y_{t+1}y_{t+1}}(\boldsymbol{\nu})-S_{y_{t}y_{t+1}}(\boldsymbol{\nu})-\left(\frac{S^2_{y_{t},y_{t+1}}\left(\boldsymbol{\nu}\right)}{S_{y_{t},y_{t}}\left(\boldsymbol{\nu}\right)} - \xi S_{y_{t},y_{t+1}}\left(\boldsymbol{\nu}\right)\right) \nonumber \\
-&=S_{y_{t+1}y_{t+1}}(\boldsymbol{\nu})+(\xi-1)S_{y_{t}y_{t+1}}(\boldsymbol{\nu})-\frac{S^2_{y_{t},y_{t+1}}\left(\boldsymbol{\nu}\right)}{S_{y_{t},y_{t}}\left(\boldsymbol{\nu}\right)} 
 \end{align}
+and we have
+\begin{align}
+ W(\boldsymbol{\nu}) &=\frac{1}{\varsigma T_s}\left(\frac{S_{y_{t+1}y_t}(\boldsymbol{\nu}) -\xi S_{y_ty_t}(\boldsymbol{\nu})}{S_{y_ty_t}(\boldsymbol{\nu})}\right) \nonumber \\
+&=\frac{1}{\varsigma T_s}\left(\frac{S_{y_{t+1}y_t}(\boldsymbol{\nu})}{S_{y_ty_t}(\boldsymbol{\nu})}-\xi\right).
+\end{align}
+Therefore
+\begin{align}
+ \mathcal F\left\lbrace (m\ast m \ast \gamma)(\boldsymbol\tau)\right\rbrace&= S_{y_{t+1}y_{t+1}}(\boldsymbol{\nu})-\left(1-\xi+\frac{S_{y_{t+1}y_t}(\boldsymbol{\nu})}{S_{y_ty_t}(\boldsymbol{\nu})}\right)S_{y_{t}y_{t+1}}(\boldsymbol{\nu})
+\end{align}
+
 
 \section*{Estimation of Disturbance Support-III (with Observation Noise)}
 The spatial correlation between observations at a given time is governed by the disturbance covariance function. Therefore, the correlation between observations at eachtime is used to estimate the support of the disturbance ovariance function. The correlation is defined as
@@ -462,11 +474,16 @@ Using expressions for term1, term2 and term3, $R_{y_{t+1}y_{t+1}}$ can be writte
 \end{align}
 Taking Fourier transform and rearranging we have
 \begin{align}
- \mathcal F\left\lbrace (m\ast m \ast \gamma)(\boldsymbol\tau)\right\rbrace&= S_{y_{t+1}y_{t+1}}(\boldsymbol{\nu})-S_{y_{t}y_{t+1}}(\boldsymbol{\nu})-\varsigma T_s W(\boldsymbol{\nu}) \times S_{y_ty_{t+1}}(\boldsymbol{\nu})-\sigma_{\epsilon}^2 \nonumber \\
-&=S_{y_{t+1}y_{t+1}}(\boldsymbol{\nu})-S_{y_{t}y_{t+1}}(\boldsymbol{\nu})-\left(\frac{S^2_{y_{t},y_{t+1}}\left(\boldsymbol{\nu}\right)}{S_{y_{t},y_{t}}\left(\boldsymbol{\nu}\right)} - \xi S_{y_{t},y_{t+1}}\left(\boldsymbol{\nu}\right)\right)-\sigma_{\epsilon}^2 \nonumber \\
-&=S_{y_{t+1}y_{t+1}}(\boldsymbol{\nu})+(\xi-1)S_{y_{t}y_{t+1}}(\boldsymbol{\nu})-\frac{S^2_{y_{t},y_{t+1}}\left(\boldsymbol{\nu}\right)}{S_{y_{t},y_{t}}\left(\boldsymbol{\nu}\right)}-\sigma_{\epsilon}^2 
+ \mathcal F\left\lbrace (m\ast m \ast \gamma)(\boldsymbol\tau)\right\rbrace&= S_{y_{t+1}y_{t+1}}(\boldsymbol{\nu})-S_{y_{t}y_{t+1}}(\boldsymbol{\nu})-\varsigma T_s W(\boldsymbol{\nu}) \times S_{y_ty_{t+1}}(\boldsymbol{\nu})-\sigma_{\epsilon}^2 
 \end{align}
-
+and we have
+\begin{align}
+ W(\boldsymbol{\nu}) &=\frac{1}{\varsigma T_s}\left(\frac{S_{y_{t+1}y_t}(\boldsymbol{\nu})}{S_{y_ty_t}(\boldsymbol{\nu})-\sigma_{\epsilon}^2}-\xi\right).
+\end{align}
+Therefore
+\begin{align}
+ \mathcal F\left\lbrace (m\ast m \ast \gamma)(\boldsymbol\tau)\right\rbrace&= S_{y_{t+1}y_{t+1}}(\boldsymbol{\nu})-\left(1-\xi+\frac{S_{y_{t+1}y_t}(\boldsymbol{\nu})}{S_{y_ty_t}(\boldsymbol{\nu})-\sigma_{\epsilon}^2}\right)S_{y_{t}y_{t+1}}(\boldsymbol{\nu})-\sigma_{\epsilon}^2
+\end{align}
 
 \section*{Appendix}
 \subsection*{Convolution and Correlation}
