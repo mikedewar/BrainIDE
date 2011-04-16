@@ -56,9 +56,11 @@ where $\tau$ is the spatial shift.  Now substituting equation~\ref{eq:Observatio
 	R_{y_{t+1}y_t}(\boldsymbol{\tau}) = \left[  (m\ast v_{t+1})(\boldsymbol\tau)+\varepsilon_{t+1}(\boldsymbol\tau)\right] \star  y_t(\boldsymbol{\tau}) 
 \end{equation}
 Next the equation~\ref{eq:DiscreteTimeModel} is substituted in for $v_{t+1}(\boldsymbol\tau)$ giving 
-\begin{equation}
-	R_{y_{t+1}y_t}(\boldsymbol{\tau}) = \left[  \xi(m\ast v_{t})(\boldsymbol\tau)+T_s(m\ast g_{t})(\boldsymbol\tau)+(m\ast e_{t})(\boldsymbol{\tau})+\varepsilon_{t+1}(\boldsymbol\tau)\right] \star  y_t(\boldsymbol{\tau}) 
-\end{equation}
+\begin{align}\label{eq:CrossCorrKernel}
+	R_{y_{t+1}y_t}(\boldsymbol{\tau}) &= \left[  \xi(m\ast v_{t})(\boldsymbol\tau)+T_s(m\ast g_{t})(\boldsymbol\tau)+(m\ast e_{t})(\boldsymbol{\tau})+\varepsilon_{t+1}(\boldsymbol\tau)\right] \star  y_t(\boldsymbol{\tau}) \nonumber \\
+&=\xi(m\ast v_{t})(\boldsymbol\tau)\star y_t(\boldsymbol\tau)+T_s(m\ast g_t)(\boldsymbol\tau)\star y_t(\boldsymbol\tau) \nonumber \\
+&+(m\ast  e_t)(\boldsymbol\tau) \star y_t(\boldsymbol\tau)+\varepsilon_{t+1}(\boldsymbol\tau) \star y_t(\boldsymbol\tau)
+\end{align}
 % \begin{equation}
 % 	R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau}) = \int_{\Omega}\left[ \int_{\Omega} m(\mathbf{r}-\mathbf{r}')\left[ \xi v_t\left(\mathbf{r}'\right) + 
 % 	T_s g_t(\mathbf{r}') 
