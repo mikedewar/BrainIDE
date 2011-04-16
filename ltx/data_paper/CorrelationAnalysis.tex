@@ -61,11 +61,6 @@ Next the equation~\ref{eq:DiscreteTimeModel} is substituted in for $v_{t+1}(\bol
 &=\xi(m\ast v_{t})(\boldsymbol\tau)\star y_t(\boldsymbol\tau)+T_s(m\ast g_t)(\boldsymbol\tau)\star y_t(\boldsymbol\tau) \nonumber \\
 &+(m\ast  e_t)(\boldsymbol\tau) \star y_t(\boldsymbol\tau)+\varepsilon_{t+1}(\boldsymbol\tau) \star y_t(\boldsymbol\tau)
 \end{align}
-% \begin{equation}
-% 	R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau}) = \int_{\Omega}\left[ \int_{\Omega} m(\mathbf{r}-\mathbf{r}')\left[ \xi v_t\left(\mathbf{r}'\right) + 
-% 	T_s g_t(\mathbf{r}') 
-% 	+ e_t\left(\mathbf{r}'\right)\right] d\mathbf{r}' +\varepsilon_{t+1}(\mathbf{r})\right] y_{t}(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}.
-% \end{equation}
 The cross-correlation is simplified by recognizing that 
 \begin{align}
 \xi(m\ast v_{t})(\boldsymbol\tau)\star y_t(\boldsymbol\tau)&=\xi(y_t-\varepsilon_t)(\boldsymbol\tau) \star y_t(\boldsymbol\tau)\nonumber \\
@@ -75,14 +70,11 @@ The cross-correlation is simplified by recognizing that
 % 	\int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}')&\xi v_t(\mathbf{r}')d\mathbf{r}'y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} = \nonumber \\ 
 %  &\xi \left(R_{y_ty_t}(\boldsymbol{\tau})-\parham{$n_y$}\sigma_{\epsilon}^2  \delta_{K}\left(\boldsymbol\tau\right)\right),
 % \end{align}
-where $\delta_{K}\left(.\right)$ denotes Kronecker delta. Since the observation and noise at time $t$ are uncorrelated,
+where $\delta_{K}\left(.\right)$ denotes Kronecker delta. Since the observation and process noise at time $t$ are uncorrelated we have
 \begin{align}
 (m\ast  e_t)(\boldsymbol\tau) \star y_t(\boldsymbol\tau)=0
 \end{align}
-% \begin{align}
-% 	\int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}') e_t(\mathbf{r}') d\mathbf{r}'y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}=0 %\\
-% \end{align}
-also
+and also
 \begin{align}
  \varepsilon_{t+1}(\boldsymbol\tau) \star y_t(\boldsymbol\tau)=0
 \end{align}
