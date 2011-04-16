@@ -110,7 +110,16 @@ In a case  connectivity kernel is isotropic $ w(-\boldsymbol\tau)= w(\boldsymbol
 	R_{y_{t+1}y_t}(\boldsymbol{\tau}) -\xi \left(R_{y_ty_t}(\boldsymbol{\tau})-\sigma_{\epsilon}^2  \delta_{K}\left(\boldsymbol\tau\right)\right)& = \varsigma T_s (w\ast R_{y_ty_t})(\boldsymbol\tau)-\varsigma T_s \sigma^2_{\varepsilon}w(\boldsymbol\tau) 
 \end{align}
 
-The solution of the above equation for the connectivity kernel is a deconvolution. This can be approached from a number of different standpoints. The simplest solution is to use the convolution theorem and find the solution by 
+The solution of the above equation for the connectivity kernel is a deconvolution. This can be approached from a number of different standpoints. The simplest solution is to use the convolution theorem. Taking Fourier transform gives
+\begin{align}
+ \mathcal{F}\left(R_{y_{t+1}y_t}(\boldsymbol{\tau})\right)-\xi\mathcal{F}\left(R_{y_ty_t}(\boldsymbol{\tau})-\sigma^2_{\varepsilon}\delta_K(\boldsymbol\tau)\right)&=\varsigma T_s\mathcal{F}\left(w(\boldsymbol\tau)\right)\times \mathcal F\left(R_{y_ty_t}(\boldsymbol\tau)\right)-\varsigma T_s\sigma_{\varepsilon}^2\mathcal{F}\left(w(\boldsymbol\tau)\right) \nonumber \\
+&=\varsigma T_s\mathcal{F}\left(w(\boldsymbol\tau)\right)\left[\mathcal{F}\left(R_{y_ty_t}(\boldsymbol{\tau})-\sigma^2_{\varepsilon}\delta_K(\boldsymbol\tau)\right) \right] 
+\end{align}
+ which gives
+\begin{equation}\label{eq:FourierKernelSolution}
+	\mathcal{F}\left(w(\boldsymbol\tau)\right) = \frac{1}{\varsigma T_s}\frac{\mathcal{F}\left(R_{y_{t+1}y_t}(\boldsymbol{\tau})\right)}{\mathcal{F}\left(R_{y_ty_t}(\boldsymbol{\tau})-\sigma^2_{\varepsilon}\delta_K(\boldsymbol\tau)\right)}-\xi.
+\end{equation}
+Taking the inverse Fourier tranform yields
 \begin{equation}\label{eq:KernelSolution}
 	w(\boldsymbol{\tau}) = \frac{1}{\varsigma T_s}\mathcal{F}^{-1}\left\{\frac{\mathcal{F}\left(R_{y_{t+1}y_t}(\boldsymbol{\tau})\right)}{\mathcal{F}\left(R_{y_ty_t}(\boldsymbol{\tau})-\sigma^2_{\varepsilon}\delta_K(\boldsymbol\tau)\right)}-\xi\right\}.
 \end{equation}
@@ -172,7 +181,7 @@ Taking Fourier transform and rearranging we have
 \begin{align}
  \mathcal F\left\lbrace (m\ast m \ast \gamma)(\boldsymbol\tau)\right\rbrace&= \mathcal F\left\lbrace R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})\right\rbrace-\xi\mathcal F\left\lbrace R_{y_{t}y_{t+1}}(\boldsymbol{\tau})\right\rbrace-\varsigma T_s \mathcal F\left\lbrace w(\boldsymbol{\tau})\right\rbrace \times \mathcal F \left\lbrace R_{y_ty_{t+1}}(\boldsymbol{\tau})\right\rbrace-\sigma_{\epsilon}^2 
 \end{align}
-Substituting in for $\mathcal{F}\left\lbrace w(\boldsymbol{\tau})\right\rbrace$ From \ref{eq:KernelSolution} we get
+Substituting in for $\mathcal{F}\left\lbrace w(\boldsymbol{\tau})\right\rbrace$ From \ref{eq:FourierKernelSolution} we get
 % \begin{align}
 %  W(\boldsymbol{\nu}) &=\frac{1}{\varsigma T_s}\left(\frac{S_{y_{t+1}y_t}(\boldsymbol{\nu})}{S_{y_ty_t}(\boldsymbol{\nu})-\sigma_{\epsilon}^2}-\xi\right).
 % \end{align}
