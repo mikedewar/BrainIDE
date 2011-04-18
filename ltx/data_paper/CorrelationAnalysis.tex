@@ -171,7 +171,7 @@ the third term in \eqref{eq:Auto&CrossNoisy} can be simplified as
 	+ e_t\left(\boldsymbol{\tau}\right) \right]+\varepsilon_{t+1}(\boldsymbol\tau) \right]\nonumber \\
 	&=\left(m \ast e_t\right)(\boldsymbol\tau)\star\left(m \ast e_t\right)(\boldsymbol\tau)
 \end{align}
-Note that other terms in \ref{eq:term3Noisy} are all zero. A property of cross-correlation and convolution is $(a \ast b)(\boldsymbol\tau) \star (a \ast b)(\boldsymbol\tau)=(a \star a)(\boldsymbol\tau)\ast(b \star b)(\boldsymbol\tau)$ (see Appendix II for a proof), so we can write
+Note that other terms in \ref{eq:term3Noisy} are all zero. A property of cross-correlation and convolution is $(a \ast b)(\boldsymbol\tau) \star (a \ast b)(\boldsymbol\tau)=(a \star a)(\boldsymbol\tau)\ast(b \star b)(\boldsymbol\tau)$ (see Appendix II for a proof), using the isotropy property of the observation kernel we can write
 \begin{align}\label{eq:term4}
 \left(m \ast e_t\right)(\boldsymbol\tau)\star\left(m \ast e_t\right)(\boldsymbol\tau)&=\left(m \star m\right)(\boldsymbol\tau)\ast\left(e_t \star e_t\right)(\boldsymbol\tau) \nonumber\\
 &=m(-\boldsymbol\tau)\ast m(\boldsymbol\tau)\ast \gamma(\boldsymbol\tau) \nonumber \\
