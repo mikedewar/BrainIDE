@@ -105,23 +105,27 @@ A property of cross-correlation and convolution is $(a \ast b)(\boldsymbol\tau) 
 	R_{y_{t+1}y_t}(\boldsymbol{\tau})-\xi \left(R_{y_ty_t}(\boldsymbol{\tau})-\sigma_{\epsilon}^2  \delta_{K}\left(\boldsymbol\tau\right)\right) &=  \varsigma T_s  w(-\boldsymbol\tau)\ast (\left[y_t-\varepsilon_t \right] \star y_t)(\boldsymbol\tau)\nonumber \\
 &= \varsigma T_s  w(-\boldsymbol\tau) \ast\left[R_{y_ty_t}(\boldsymbol\tau)-\sigma_{\varepsilon}^2\delta_K(\boldsymbol\tau) \right] 
 \end{align}
-In a case  connectivity kernel is isotropic $ w(-\boldsymbol\tau)= w(\boldsymbol\tau)$ and we have (see the conjugate Fourier transform $ W^{*}(\omega)=W(-\omega)$ for real $w$)
+% In a case  connectivity kernel is isotropic $ w(-\boldsymbol\tau)= w(\boldsymbol\tau)$ and we have \parham{(investigate the conjugate Fourier transform $ W^{*}(\nu)=W(-\nu)$ for real $w$ (reality condition)) then it might be correct for anisotropic kernel as well}
 \begin{align}
-	R_{y_{t+1}y_t}(\boldsymbol{\tau}) -\xi \left(R_{y_ty_t}(\boldsymbol{\tau})-\sigma_{\epsilon}^2  \delta_{K}\left(\boldsymbol\tau\right)\right)& = \varsigma T_s (w\ast R_{y_ty_t})(\boldsymbol\tau)-\varsigma T_s \sigma^2_{\varepsilon}w(\boldsymbol\tau) 
+	R_{y_{t+1}y_t}(\boldsymbol{\tau}) -\xi \left(R_{y_ty_t}(\boldsymbol{\tau})-\sigma_{\epsilon}^2  \delta_{K}\left(\boldsymbol\tau\right)\right)& = \varsigma T_s \left[ w(-\boldsymbol\tau)\ast R_{y_ty_t}(\boldsymbol\tau)\right] -\varsigma T_s \sigma^2_{\varepsilon}w(-\boldsymbol\tau) 
 \end{align}
 
 The solution of the above equation for the connectivity kernel is a deconvolution. This can be approached from a number of different standpoints. The simplest solution is to use the convolution theorem. Taking Fourier transform gives
 \begin{align}
- \mathcal{F}\left(R_{y_{t+1}y_t}(\boldsymbol{\tau})\right)-\xi\mathcal{F}\left(R_{y_ty_t}(\boldsymbol{\tau})-\sigma^2_{\varepsilon}\delta_K(\boldsymbol\tau)\right)&=\varsigma T_s\mathcal{F}\left(w(\boldsymbol\tau)\right)\times \mathcal F\left(R_{y_ty_t}(\boldsymbol\tau)\right)-\varsigma T_s\sigma_{\varepsilon}^2\mathcal{F}\left(w(\boldsymbol\tau)\right) \nonumber \\
-&=\varsigma T_s\mathcal{F}\left(w(\boldsymbol\tau)\right)\left[\mathcal{F}\left(R_{y_ty_t}(\boldsymbol{\tau})-\sigma^2_{\varepsilon}\delta_K(\boldsymbol\tau)\right) \right] 
+ \mathcal{F}\left(R_{y_{t+1}y_t}(\boldsymbol{\tau})\right)-\xi\mathcal{F}\left(R_{y_ty_t}(\boldsymbol{\tau})-\sigma^2_{\varepsilon}\delta_K(\boldsymbol\tau)\right)&=\varsigma T_s\mathcal{F}\left(w(-\boldsymbol\tau)\right)\times \mathcal F\left(R_{y_ty_t}(\boldsymbol\tau)\right)-\varsigma T_s\sigma_{\varepsilon}^2\mathcal{F}\left(w(-\boldsymbol\tau)\right) \nonumber \\
+&=\varsigma T_s\mathcal{F}\left(w(-\boldsymbol\tau)\right)\left[\mathcal{F}\left(R_{y_ty_t}(\boldsymbol{\tau})-\sigma^2_{\varepsilon}\delta_K(\boldsymbol\tau)\right) \right] 
 \end{align}
  which gives
 \begin{equation}\label{eq:FourierKernelSolution}
-	\mathcal{F}\left(w(\boldsymbol\tau)\right) = \frac{1}{\varsigma T_s}\frac{\mathcal{F}\left(R_{y_{t+1}y_t}(\boldsymbol{\tau})\right)}{\mathcal{F}\left(R_{y_ty_t}(\boldsymbol{\tau})-\sigma^2_{\varepsilon}\delta_K(\boldsymbol\tau)\right)}-\xi.
+	\mathcal{F}\left(w(-\boldsymbol\tau)\right) = \frac{1}{\varsigma T_s}\frac{\mathcal{F}\left(R_{y_{t+1}y_t}(\boldsymbol{\tau})\right)}{\mathcal{F}\left(R_{y_ty_t}(\boldsymbol{\tau})-\sigma^2_{\varepsilon}\delta_K(\boldsymbol\tau)\right)}-\xi.
 \end{equation}
-Taking the inverse Fourier transform yields
+It should be noted that since the connectivity kernel is a real function the following relation holds \cite{Bracewell2000}
+\begin{equation}
+ \mathcal{F}\left(w(\boldsymbol\tau)\right)=\overline{\mathcal{F}\left(w(-\boldsymbol\tau)\right)}
+\end{equation}
+where over-bar denotes complex conjugate operator. Taking the inverse Fourier tranform yields
 \begin{equation}\label{eq:KernelSolution}
-	w(\boldsymbol{\tau}) = \frac{1}{\varsigma T_s}\mathcal{F}^{-1}\left\{\frac{\mathcal{F}\left(R_{y_{t+1}y_t}(\boldsymbol{\tau})\right)}{\mathcal{F}\left(R_{y_ty_t}(\boldsymbol{\tau})-\sigma^2_{\varepsilon}\delta_K(\boldsymbol\tau)\right)}-\xi\right\}.
+	w(\boldsymbol{\tau}) = \frac{1}{\varsigma T_s}\mathcal{F}^{-1}\left\{\frac{\overline{\mathcal{F}\left(R_{y_{t+1}y_t}(\boldsymbol{\tau})\right)}}{\overline{\mathcal{F}\left(R_{y_ty_t}(\boldsymbol{\tau})\right)}-\sigma^2_{\varepsilon}}-\xi\right\}.
 \end{equation}
 
 \newpage
@@ -199,8 +203,8 @@ Using the commutativity property of convolution, and substituting for $(m\ast v_
 \begin{align}\label{eq:term3}
 	T_s (m\ast g_t)(\boldsymbol\tau) \star y_{t+1}(\boldsymbol\tau)&=  \varsigma T_s \left( w\ast \left[y_t-\varepsilon_t \right]\right)(\boldsymbol\tau) \star y_{t+1}(\boldsymbol\tau) \nonumber \\
 &=\varsigma T_s(w\ast y_t)(\boldsymbol{\tau}) \star  y_{t+1}(\boldsymbol{\tau}) \nonumber \\
-&=\varsigma T_s w(-\boldsymbol\tau)\ast R_{y_ty_{t+1}} (\boldsymbol{\tau}) \nonumber \\
-&=\varsigma T_s w(\boldsymbol\tau)\ast R_{y_ty_{t+1}} (\boldsymbol{\tau}).
+&=\varsigma T_s w(-\boldsymbol\tau)\ast R_{y_ty_{t+1}} (\boldsymbol{\tau}). 
+% &=\varsigma T_s w(\boldsymbol\tau)\ast R_{y_ty_{t+1}} (\boldsymbol{\tau}).
 \end{align}
 the third term in \eqref{eq:Auto&CrossNoisy} can be simplified as
 \begin{align}\label{eq:term3Noisy}
@@ -209,7 +213,7 @@ the third term in \eqref{eq:Auto&CrossNoisy} can be simplified as
 	+ e_t\left(\boldsymbol{\tau}\right) \right]+\varepsilon_{t+1}(\boldsymbol\tau) \right]\nonumber \\
 	&=\left(m \ast e_t\right)(\boldsymbol\tau)\star\left(m \ast e_t\right)(\boldsymbol\tau)
 \end{align}
-Note that other terms in \ref{eq:term3Noisy} are all zero. A property of cross-correlation and convolution is $(a \ast b)(\boldsymbol\tau) \star (a \ast b)(\boldsymbol\tau)=(a \star a)(\boldsymbol\tau)\ast(b \star b)(\boldsymbol\tau)$ (see Appendix II for a proof), so we can write
+Note that other terms in \ref{eq:term3Noisy} are all zero. A property of cross-correlation and convolution is $(a \ast b)(\boldsymbol\tau) \star (a \ast b)(\boldsymbol\tau)=(a \star a)(\boldsymbol\tau)\ast(b \star b)(\boldsymbol\tau)$ (see Appendix II for a proof), using the isotropy property of the observation kernel we can write
 \begin{align}\label{eq:term4}
 \left(m \ast e_t\right)(\boldsymbol\tau)\star\left(m \ast e_t\right)(\boldsymbol\tau)&=\left(m \star m\right)(\boldsymbol\tau)\ast\left(e_t \star e_t\right)(\boldsymbol\tau) \nonumber\\
 &=m(-\boldsymbol\tau)\ast m(\boldsymbol\tau)\ast \gamma(\boldsymbol\tau) \nonumber \\
@@ -217,13 +221,13 @@ Note that other terms in \ref{eq:term3Noisy} are all zero. A property of cross-c
 \end{align}
 Using results from \ref{eq:term1}, \ref{eq:term2}, \ref{eq:term3} and \ref{eq:term4}, $R_{y_{t+1}y_{t+1}}$ can be calculated as
 \begin{align}
-	R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})= \xi R_{y_ty_{t+1}}(\boldsymbol{\tau})+\varsigma T_s \left(w \ast R_{y_ty_{t+1}} \right)(\boldsymbol{\tau})+(m\ast m \ast \gamma)(\boldsymbol\tau)+\sigma_{\epsilon}^2\delta_K(\boldsymbol{\tau}).
+	R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})= \xi R_{y_ty_{t+1}}(\boldsymbol{\tau})+\varsigma T_s w(-\boldsymbol\tau) \ast R_{y_ty_{t+1}}(\boldsymbol{\tau})+(m\ast m \ast \gamma)(\boldsymbol\tau)+\sigma_{\epsilon}^2\delta_K(\boldsymbol{\tau}).
 \end{align}
 Taking Fourier transform and rearranging we have
 \begin{align}
- \mathcal F\left\lbrace (m\ast m \ast \gamma)(\boldsymbol\tau)\right\rbrace&= \mathcal F\left\lbrace R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})\right\rbrace-\xi\mathcal F\left\lbrace R_{y_{t}y_{t+1}}(\boldsymbol{\tau})\right\rbrace-\varsigma T_s \mathcal F\left\lbrace w(\boldsymbol{\tau})\right\rbrace \times \mathcal F \left\lbrace R_{y_ty_{t+1}}(\boldsymbol{\tau})\right\rbrace-\sigma_{\epsilon}^2 
+ \mathcal F\left\lbrace (m\ast m \ast \gamma)(\boldsymbol\tau)\right\rbrace&= \mathcal F\left\lbrace R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})\right\rbrace-\xi\mathcal F\left\lbrace R_{y_{t}y_{t+1}}(\boldsymbol{\tau})\right\rbrace-\varsigma T_s \mathcal F\left\lbrace w(\boldsymbol{-\tau})\right\rbrace \times \mathcal F \left\lbrace R_{y_ty_{t+1}}(\boldsymbol{\tau})\right\rbrace-\sigma_{\epsilon}^2 
 \end{align}
-Substituting in for $\mathcal{F}\left\lbrace w(\boldsymbol{\tau})\right\rbrace$ From \ref{eq:FourierKernelSolution} we get
+Substituting in for $\mathcal{F}\left\lbrace w(-\boldsymbol{\tau})\right\rbrace$ From \ref{eq:FourierKernelSolution} we get
 % \begin{align}
 %  W(\boldsymbol{\nu}) &=\frac{1}{\varsigma T_s}\left(\frac{S_{y_{t+1}y_t}(\boldsymbol{\nu})}{S_{y_ty_t}(\boldsymbol{\nu})-\sigma_{\epsilon}^2}-\xi\right).
 % \end{align}
@@ -267,5 +271,5 @@ Therefore, we can write
 &=(a \star a)(\boldsymbol\tau)\ast(b \star b)(\boldsymbol\tau)
 \end{align}
 \bibliographystyle{plain}
-\bibliography{}
+\bibliography{EMIDE}
 \end{document}
