@@ -84,7 +84,7 @@ giving
 	&+ T_s(m\ast g_t)(\boldsymbol\tau) \star y_t(\boldsymbol\tau)
 \end{align}
 Rearranging and substituting in equation~\ref{eq:RateBasedInteractions} for $g_t(\boldsymbol\tau)$ gives
-\begin{align}
+\begin{align}\label{eq:BeforeLinearisation}
 	R_{y_{t+1}y_t}(\boldsymbol{\tau}) &-\xi \left(R_{y_ty_t}(\boldsymbol{\tau})-\sigma_{\epsilon}^2  \delta_{K}\left(\boldsymbol\tau\right)\right) =  T_s(m\ast w*f(v_t))(\boldsymbol\tau) \star y_t(\boldsymbol\tau)
 \end{align}  
 Next, the nonlinear function $f(\cdot)$ is approximated by the simple linear relationship
@@ -119,10 +119,52 @@ The solution of the above equation for the connectivity kernel is a deconvolutio
 \begin{equation}\label{eq:FourierKernelSolution}
 	\mathcal{F}\left(w(\boldsymbol\tau)\right) = \frac{1}{\varsigma T_s}\frac{\mathcal{F}\left(R_{y_{t+1}y_t}(\boldsymbol{\tau})\right)}{\mathcal{F}\left(R_{y_ty_t}(\boldsymbol{\tau})-\sigma^2_{\varepsilon}\delta_K(\boldsymbol\tau)\right)}-\xi.
 \end{equation}
-Taking the inverse Fourier tranform yields
+Taking the inverse Fourier transform yields
 \begin{equation}\label{eq:KernelSolution}
 	w(\boldsymbol{\tau}) = \frac{1}{\varsigma T_s}\mathcal{F}^{-1}\left\{\frac{\mathcal{F}\left(R_{y_{t+1}y_t}(\boldsymbol{\tau})\right)}{\mathcal{F}\left(R_{y_ty_t}(\boldsymbol{\tau})-\sigma^2_{\varepsilon}\delta_K(\boldsymbol\tau)\right)}-\xi\right\}.
 \end{equation}
+
+\newpage
+
+Next, the nonlinear function $f(\cdot)$ is approximated by linearising about the threshold. The linearised activation function is found by taking the first order Taylor expansion. The derivative of the activation function is
+\begin{align}
+ f'(v_t\left(\mathbf{r}\right))=& \frac{\varsigma}{\left(1 + \exp \left( \varsigma \left( v_0 - v_t\left(\mathbf{r}\right) \right) \right)\right)^2} \times \exp \left( \varsigma \left( v_0 - v_t\left(\mathbf{r}\right) \right) \right) \nonumber \\
+=&\frac{\varsigma}{1 + \exp \left( \varsigma \left( v_0 - v_t\left(\mathbf{r}\right) \right) \right)} \times \left(1-\frac{1}{1 + \exp \left( \varsigma \left( v_0 - v_t\left(\mathbf{r}\right) \right) \right)}\right) \nonumber \\
+=& \varsigma f(v_t\left(\mathbf{r}\right))\left( 1-f( v_t\left(\mathbf{r}\right)\right).
+\end{align}
+The linearised activation function is 
+\begin{align}
+	\hat{f}(v_t\left(\mathbf{r}\right)) &= f(v_0) + f'(v_0)(v_t\left(\mathbf{r}\right) - v_0) \\
+	&= \frac{2 + \varsigma(v_t\left(\mathbf{r}\right) - v_0)}{4}. 
+\end{align}
+Substituting this back into the RHS of Eq.~\ref{eq:BeforeLinearisation} gives
+\begin{align}
+\frac{T_s}{4}(m\ast w* (2 + \varsigma(v_t - v_0)))(\boldsymbol\tau) \star y_t(\boldsymbol\tau) &\approx \frac{T_s}{4}(m\ast w\ast 2 + \varsigma m\ast w\ast v_t - \varsigma m\ast w\ast v_0 ) (\boldsymbol\tau) \star y_t(\boldsymbol\tau) \\
+&\approx \frac{T_s}{4}(\varsigma m\ast w\ast v_t + c_1 ) (\boldsymbol\tau) \star y_t(\boldsymbol\tau) \\
+&\approx \frac{T_s\varsigma}{4}( m \ast w\ast v_t ) (\boldsymbol\tau) \star y_t(\boldsymbol\tau) + c_2 \\
+&\approx \frac{T_s\varsigma}{4}( w \ast \left[y_t-\varepsilon_t \right] ) (\boldsymbol\tau) \star y_t(\boldsymbol\tau) + c_2 \\
+&\approx \frac{T_s\varsigma}{4} w(-\boldsymbol\tau) \ast (\left[y_t-\varepsilon_t \right]\star y_t ) (\boldsymbol\tau) + c_2 \\ 
+&\approx \frac{T_s\varsigma}{4} w(-\boldsymbol\tau) \ast \left[R_{y_ty_t}(\boldsymbol\tau) - \sigma_{\varepsilon}^2 \delta_K(\boldsymbol\tau) \right] + c_2,
+\end{align}
+where the constants $c_1$ and $c_2$ are 
+\begin{align}
+	c_1 &= m\ast w\ast 2 - \varsigma m\ast w\ast v_0 \\
+	c_2 &= \frac{T_s}{4}c_1 \star y_t(\boldsymbol\tau).
+\end{align}
+Substituting back into \ref{eq:BeforeLinearisation} gives
+\begin{equation}
+	R_{y_{t+1}y_t}(\boldsymbol{\tau}) -\xi \left(R_{y_ty_t}(\boldsymbol{\tau})-\sigma_{\epsilon}^2  \delta_{K}\left(\boldsymbol\tau\right)\right) \approx \frac{T_s\varsigma}{4} w(-\boldsymbol\tau) \ast \left[R_{y_ty_t}(\boldsymbol\tau) - \sigma_{\varepsilon}^2 \delta_K(\boldsymbol\tau) \right] + c_2.
+\end{equation}
+Now taking the Fourier transform of both sides gives
+\begin{equation}
+	\mathcal{F}(R_{y_{t+1}y_t}(\boldsymbol{\tau})) - \xi \left( \mathcal{F}\left(R_{y_ty_t}(\boldsymbol{\tau}) \right) - \sigma_{\epsilon}^2  \right) \approx \frac{T_s\varsigma}{4}\mathcal{F}(w(-\boldsymbol\tau)) (\mathcal{F}(R_{y_ty_t}(\boldsymbol\tau)) - \sigma_{\varepsilon}^2) + c_2\delta_K(\boldsymbol\nu).
+\end{equation}
+Now rearranging to get an expression for $w(\boldsymbol\tau)$
+\begin{align}
+	\mathcal{F}(R_{y_{t+1}y_t}(\boldsymbol{\tau})) - \xi \left( \mathcal{F}\left(R_{y_ty_t}(\boldsymbol{\tau}) \right) - \sigma_{\epsilon}^2  \right) - c_2\delta_K(\boldsymbol\nu) &\approx \frac{T_s\varsigma}{4}\mathcal{F}(w(-\boldsymbol\tau)) (\mathcal{F}(R_{y_ty_t}(\boldsymbol\tau)) - \sigma_{\varepsilon}^2) \\
+	\frac{\mathcal{F}(R_{y_{t+1}y_t}(\boldsymbol{\tau}))}{\mathcal{F}(R_{y_ty_t}(\boldsymbol\tau)) - \sigma_{\varepsilon}^2} - \xi - \frac{c_2\delta_K(\boldsymbol\nu)}{\mathcal{F}(R_{y_ty_t}(\boldsymbol\tau)) - \sigma_{\varepsilon}^2} &\approx \frac{T_s\varsigma}{4}\mathcal{F}(w(-\boldsymbol\tau)) \\ 
+	\frac{\mathcal{F}(R_{y_{t+1}y_t}(\boldsymbol{\tau})) -c_2\delta_K(\boldsymbol\nu) }{\mathcal{F}(R_{y_ty_t}(\boldsymbol\tau)) - \sigma_{\varepsilon}^2} - \xi &\approx \frac{T_s\varsigma}{4}\mathcal{F}(w(-\boldsymbol\tau))
+\end{align}
 
 \newpage
 \section*{Estimation of Disturbance Support}
