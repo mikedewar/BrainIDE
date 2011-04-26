@@ -46,11 +46,11 @@
 %\pdftrue
 %\fi
 
-\ifpdf
-\usepackage[pdftex]{graphicx}
-\else
-\usepackage{graphicx}
-\fi
+% \ifpdf
+% \usepackage[pdftex]{graphicx}
+% \else
+% \usepackage{graphicx}
+% \fi
 \usepackage{color}
 \newcommand{\dean}[1]{\textsf{\emph{\textbf{\textcolor{red}{#1}}}}} 
 \newcommand{\red}{\textcolor{red}}
@@ -388,30 +388,40 @@ Substituting  \ref{eq:Qfunctiontrace1} and \ref{eq:Qfunctiontrace2} into \ref{eq
 \end{align}
 It should be noted that the second term in equation \ref{eq:Voldermont} is obtained by adding and subtracting $\mathbf C \mathbf{\hat{x}}_{t+1} \mathbf{\hat{x}}_{t+1}^\top \mathbf C^\top$ to the expectation, $\mathbf E_{\boldsymbol\Theta'}\left[ .\right]$, ref(Shumway). By choosing
 \begin{align}
-	\Xi_{0}&=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_{t+1}\mathbf x_{t+1}^\top\right]\label{eq:defofXi0} \\
-\Xi_{1}&=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_t\mathbf x_{t+1}^\top\right]\label{eq:defofXi1} \\
-\Xi_{2}&=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_t\mathbf x_{t}^\top\right]\\
-\Xi_{3}&=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}q( \mathbf x_t)\right] \label{eq:Xi3} \\	
-\Xi_{4}&= \mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}  q^\top(\mathbf  x_t)\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf x_t)\right] \label{eq:Xi4}\\
- \Xi_{5}&=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1} \mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf x_t)  \right] \label{eq:Xi5}
+	\boldsymbol\Xi_{0}&=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_{t+1}\mathbf x_{t+1}^\top\right]\label{eq:defofXi0} \\
+\boldsymbol\Xi_{1}&=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_t\mathbf x_{t+1}^\top\right]\label{eq:defofXi1} \\
+\boldsymbol\Xi_{2}&=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_t\mathbf x_{t}^\top\right]\\
+\boldsymbol\Xi_{3}&=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}q( \mathbf x_t)\right] \label{eq:Xi3} \\	
+\boldsymbol\Xi_{4}&= \mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}  q^\top(\mathbf  x_t)\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf x_t)\right] \label{eq:Xi4}\\
+ \boldsymbol\Xi_{5}&=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1} \mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf x_t)  \right] \label{eq:Xi5}
  \end{align}
 equation \ref{eq:Voldermont} can be written as
 \begin{align}\label{eq:VoldermontwitXivariables}
  \mathcal Q(\boldsymbol \Theta,\boldsymbol\Theta')&=-(T-1)n_y\ln \sigma_{\epsilon}^2-\frac{1}{\sigma_{\epsilon}^2}\mathrm{tr}\left\lbrace\boldsymbol\sum_{t=0}^{T-1}\left[ (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top\right] \right\rbrace\nonumber \\
-&-(T-1)n_x\ln\sigma_d^2-\frac{1}{\sigma_d^2}\mathrm{tr}\left\lbrace \Xi_{0} \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace +\frac{2\xi}{\sigma_d^2} \mathrm{tr}\left\lbrace \Xi_{1} \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace -  \frac{\xi^2}{\sigma_d^2}\mathrm{tr} \left\lbrace\Xi_{2}\tilde{\boldsymbol\Sigma}_e^{-1} \right\rbrace 
+&-(T-1)n_x\ln\sigma_d^2-\frac{1}{\sigma_d^2}\mathrm{tr}\left\lbrace \boldsymbol\Xi_{0} \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace +\frac{2\xi}{\sigma_d^2} \mathrm{tr}\left\lbrace \boldsymbol\Xi_{1} \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace -  \frac{\xi^2}{\sigma_d^2}\mathrm{tr} \left\lbrace\boldsymbol\Xi_{2}\tilde{\boldsymbol\Sigma}_e^{-1} \right\rbrace 
  \nonumber \\
-&+\frac{2}{\sigma_d^2}\Xi_{3}\boldsymbol\theta-\frac{1}{\sigma_d^2}\boldsymbol\theta^\top \Xi_{4}\boldsymbol\theta-\frac{2\xi}{\sigma_d^2} \Xi_{5} \boldsymbol\theta.
+&+\frac{2}{\sigma_d^2}\boldsymbol\Xi_{3}\boldsymbol\theta-\frac{1}{\sigma_d^2}\boldsymbol\theta^\top \boldsymbol\Xi_{4}\boldsymbol\theta-\frac{2\xi}{\sigma_d^2}\boldsymbol \Xi_{5} \boldsymbol\theta.
 \end{align}
 
 Consider first the maximization of $\mathcal{Q}$-function with respect to $\boldsymbol\theta$, we can write
 \begin{equation}\label{eq:Qpartialtheta}
- \frac{\partial \mathcal Q}{\partial \boldsymbol\theta}=\frac{2}{\sigma_d^2}\Xi_3-\frac{1}{\sigma_d^2}\boldsymbol\theta^\top(\Xi_4^\top+\Xi_4)-\frac{2\xi}{\sigma_d^2}\Xi_5,
+ \frac{\partial \mathcal Q}{\partial \boldsymbol\theta}=\frac{2}{\sigma_d^2}\Xi_3-\frac{1}{\sigma_d^2}\boldsymbol\theta^\top(\boldsymbol\Xi_4^\top+\boldsymbol\Xi_4)-\frac{2\xi}{\sigma_d^2}\boldsymbol\Xi_5,
 \end{equation}
-variable $\Xi_4$ is symmetric and positive-definite by construction, equating \ref{eq:Qpartialtheta} to the zero vector yields
+variable $\boldsymbol\Xi_4$ is symmetric and positive-definite by construction, equating \eqref{eq:Qpartialtheta} to the zero vector yields
 \begin{equation}\label{eq:theta}
- \boldsymbol \theta=\Xi_4^{-1}\left(\Xi_3^\top-\xi\Xi_5^\top \right).
+ \boldsymbol \theta=\boldsymbol\Xi_4^{-1}\left(\boldsymbol\Xi_3^\top-\xi\boldsymbol\Xi_5^\top \right).
 \end{equation}
-The second derivative is negative definite at this stationary point, and hence it is a global maximizer of $\mathcal{Q}$-function.
+The second derivative is negative definite at this stationary point, and hence it is a global maximizer of $\mathcal{Q}$-function. In order to maximise $\mathcal{Q}$-function with respect to $\xi$ we can write
+\begin{equation}\label{eq:Qpartialxi}
+ \frac{\partial \mathcal Q}{\partial\xi}=\frac{2}{\sigma_d^2}\mathrm{tr}\left\lbrace \boldsymbol\Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace -\frac{2\xi}{\sigma_d^2}\mathrm{tr}\left\lbrace \boldsymbol\Xi_2 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-\frac{2}{\sigma_d^2}\boldsymbol\Xi_5,
+\end{equation}
+setting \eqref{eq:Qpartialxi} to zero and solving for $\xi$
+\begin{equation}
+ \xi=\frac{\mathrm{tr}\left\lbrace \boldsymbol\Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-\boldsymbol\Xi_5\boldsymbol\Xi_4^{-1}\boldsymbol\Xi_3^\top}{\mathrm{tr}\left\lbrace \boldsymbol\Xi_2 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-\boldsymbol\Xi_5\boldsymbol\Xi_4^{-1}\boldsymbol\Xi_5^{\top}}
+\end{equation}
+
+
+
 Now maximizing with respect to $\sigma_{\epsilon}^2$ we get
 \begin{equation}
   \frac{\partial \mathcal Q}{\partial \sigma_{\epsilon}^2}=-(T-1)n_y\frac{1}{\sigma_{\epsilon}^2}+\frac{1}{\sigma_{\epsilon}^4}\mathrm{tr}\left\lbrace\sum_{t=0}^{T-1}\left[ (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top\right] \right\rbrace
@@ -489,64 +499,64 @@ Given the state estimates, $\mathbf {\hat x}_t$ the state covariance $\mathbf P_
 	\item comment on how the e step is ukf and m step is kinda like the ekf.  
 \end{itemize}
 
-% all figures here
-% ~~~~~~~~~~~~~~~~
-\begin{figure}[!ht]
-\begin{center}
-\includegraphics{./Figures/LFPs.eps}
-\end{center}
-\caption{{\bf Local field potentials from the micro-electrode array}. Data recorded from the first 8 channels of the array. The red dotted line indicates the seizure onset and the blue dashed line indicates the seizure end.}
-\label{fig:TimeSeries}
-\end{figure}
-
-
-\begin{figure}[!ht]
-\begin{center}
-\includegraphics{./Figures/FieldObservations.eps}
-\end{center}
-\caption{{\bf Snap-shots of the spatial aspects of the observed field}. The snap-shots are ordered from A to I forming a consecutive sequence spaced 2.5~ms apart starting at 34.024s}
-\label{fig:FieldObserations}
-\end{figure}
-
-\begin{figure}[!ht]
-\begin{center}
-\includegraphics{./Figures/TemporalFreq.eps}
-\end{center}
-\caption{{\bf Spectra from local field potential recordings}. A. Pre-seizure observations. B. Seizure observations. C. Post-seizure observations.}
-\label{fig:TemporalFreqObservation}
-\end{figure}
-
-\begin{figure}[!ht]
-\begin{center}
-\includegraphics{./Figures/SpatialFreq.eps}
-\end{center}
-\caption{{\bf Spatial frequency analysis of the observed neural field}. A. Pre-seizure observations. B. Seizure observations. C. Post-seizure observations.}
-\label{fig:SpatialFreqObservation}
-\end{figure}
-
-\begin{figure}[!ht]
-\begin{center}
-\includegraphics{./Figures/SpatialFreqCrossSection.eps}
-\end{center}
-\caption{{\bf Diagonal cross-section of the spatial frequency plots of the observed neural field}. A. Pre-seizure observations. B. Seizure observations. C. Post-seizure observations.}
-\label{fig:DiagSpatialFreqObservation}
-\end{figure}
-
-\begin{figure}[!ht]
-\begin{center}
-\includegraphics{./Figures/CrossCorr2D.eps}
-\end{center}
-\caption{{\bf Mean cross-correlations between consecutive observations of the neural field}. Note: The correlations are normalised such that the maximum value is one. A. Pre-seizure observation correlations. B. Seizure observation correlations. C. Post-seizure observation correlations.}
-\label{fig:SpatialCrossCorrelation}
-\end{figure}
-
-\begin{figure}[!ht]
-\begin{center}
-\includegraphics{./Figures/HomoTestCrossCorr.eps}
-\end{center}
-\caption{{\bf Mean cross-correlations between consecutive samples using subsets of observations of the neural field}. Each subplot shows correlations corresponding to a subset electrodes. Indexing the electrodes in a (x,y) grid, where index ranges from 1 to 10. Subplot A shows the mean correlation between electrode indexes (1-6, 5-10), subplot B shows correlations from indexes (5-10,5-10), subplot C shows indexes (1-6, 1-6) and subplot D shows indexes (5-10, 5-10).}
-\label{fig:HomogeneityTest}
-\end{figure}
+% % all figures here
+% % ~~~~~~~~~~~~~~~~
+% \begin{figure}[!ht]
+% \begin{center}
+% \includegraphics{./Figures/LFPs.eps}
+% \end{center}
+% \caption{{\bf Local field potentials from the micro-electrode array}. Data recorded from the first 8 channels of the array. The red dotted line indicates the seizure onset and the blue dashed line indicates the seizure end.}
+% \label{fig:TimeSeries}
+% \end{figure}
+% 
+% 
+% \begin{figure}[!ht]
+% \begin{center}
+% \includegraphics{./Figures/FieldObservations.eps}
+% \end{center}
+% \caption{{\bf Snap-shots of the spatial aspects of the observed field}. The snap-shots are ordered from A to I forming a consecutive sequence spaced 2.5~ms apart starting at 34.024s}
+% \label{fig:FieldObserations}
+% \end{figure}
+% 
+% \begin{figure}[!ht]
+% \begin{center}
+% \includegraphics{./Figures/TemporalFreq.eps}
+% \end{center}
+% \caption{{\bf Spectra from local field potential recordings}. A. Pre-seizure observations. B. Seizure observations. C. Post-seizure observations.}
+% \label{fig:TemporalFreqObservation}
+% \end{figure}
+% 
+% \begin{figure}[!ht]
+% \begin{center}
+% \includegraphics{./Figures/SpatialFreq.eps}
+% \end{center}
+% \caption{{\bf Spatial frequency analysis of the observed neural field}. A. Pre-seizure observations. B. Seizure observations. C. Post-seizure observations.}
+% \label{fig:SpatialFreqObservation}
+% \end{figure}
+% 
+% \begin{figure}[!ht]
+% \begin{center}
+% \includegraphics{./Figures/SpatialFreqCrossSection.eps}
+% \end{center}
+% \caption{{\bf Diagonal cross-section of the spatial frequency plots of the observed neural field}. A. Pre-seizure observations. B. Seizure observations. C. Post-seizure observations.}
+% \label{fig:DiagSpatialFreqObservation}
+% \end{figure}
+% 
+% \begin{figure}[!ht]
+% \begin{center}
+% \includegraphics{./Figures/CrossCorr2D.eps}
+% \end{center}
+% \caption{{\bf Mean cross-correlations between consecutive observations of the neural field}. Note: The correlations are normalised such that the maximum value is one. A. Pre-seizure observation correlations. B. Seizure observation correlations. C. Post-seizure observation correlations.}
+% \label{fig:SpatialCrossCorrelation}
+% \end{figure}
+% 
+% \begin{figure}[!ht]
+% \begin{center}
+% \includegraphics{./Figures/HomoTestCrossCorr.eps}
+% \end{center}
+% \caption{{\bf Mean cross-correlations between consecutive samples using subsets of observations of the neural field}. Each subplot shows correlations corresponding to a subset electrodes. Indexing the electrodes in a (x,y) grid, where index ranges from 1 to 10. Subplot A shows the mean correlation between electrode indexes (1-6, 5-10), subplot B shows correlations from indexes (5-10,5-10), subplot C shows indexes (1-6, 1-6) and subplot D shows indexes (5-10, 5-10).}
+% \label{fig:HomogeneityTest}
+% \end{figure}
 
 % tables here
 % ~~~~~~~~~~~
