@@ -59,7 +59,11 @@ Next the equation~\ref{eq:DiscreteTimeModel} is substituted in for $v_{t+1}(\bol
 \begin{align}\label{eq:CrossCorrKernel}
 	R_{y_{t+1}y_t}(\boldsymbol{\tau}) &= \left[  \xi(m\ast v_{t})(\boldsymbol\tau)+T_s(m\ast g_{t})(\boldsymbol\tau)+(m\ast e_{t})(\boldsymbol{\tau})+\varepsilon_{t+1}(\boldsymbol\tau)\right] \star  y_t(\boldsymbol{\tau}) \nonumber \\
 &=\xi(m\ast v_{t})(\boldsymbol\tau)\star y_t(\boldsymbol\tau)+T_s(m\ast g_t)(\boldsymbol\tau)\star y_t(\boldsymbol\tau) \nonumber \\
-&+(m\ast  e_t)(\boldsymbol\tau) \star y_t(\boldsymbol\tau)+\varepsilon_{t+1}(\boldsymbol\tau) \star y_t(\boldsymbol\tau)
+&+(m\ast  e_t)(\boldsymbol\tau) \star y_t(\boldsymbol\tau)+\varepsilon_{t+1}(\boldsymbol\tau) \star y_t(\boldsymbol\tau).
+\end{align}
+Rearranging we get
+\begin{align}
+	R_{y_{t+1}y_t}(\boldsymbol{\tau}) - \xi(m\ast v_{t})(\boldsymbol\tau)\star y_t(\boldsymbol\tau) -(m\ast  e_t)(\boldsymbol\tau) \star y_t(\boldsymbol\tau) - \varepsilon_{t+1}(\boldsymbol\tau) \star y_t(\boldsymbol\tau) &= T_s(m\ast g_t)(\boldsymbol\tau)\star y_t(\boldsymbol\tau).
 \end{align}
 The cross-correlation is simplified by recognizing that 
 \begin{align}
@@ -143,16 +147,18 @@ The linearised activation function is
 \end{align}
 Substituting this back into the RHS of Eq.~\ref{eq:BeforeLinearisation} gives
 \begin{align}
-\frac{T_s}{4}(m\ast w* (2 + \varsigma(v_t - v_0)))(\boldsymbol\tau) \star y_t(\boldsymbol\tau) &\approx \frac{T_s}{4}(m\ast w\ast 2 + \varsigma m\ast w\ast v_t - \varsigma m\ast w\ast v_0 ) (\boldsymbol\tau) \star y_t(\boldsymbol\tau) \\
-&\approx \frac{T_s}{4}(\varsigma m\ast w\ast v_t + c_1 ) (\boldsymbol\tau) \star y_t(\boldsymbol\tau) \\
-&\approx \frac{T_s\varsigma}{4}( m \ast w\ast v_t ) (\boldsymbol\tau) \star y_t(\boldsymbol\tau) + c_2 \\
+	T_s(m \ast g_t) \star y_t(\boldsymbol\tau) &= \frac{T_s}{4}(m \ast w \ast (2 + \varsigma v_t - \varsigma v_0)))(\boldsymbol\tau) \star y_t(\boldsymbol\tau) \\
+	&\approx \frac{T_s}{4}(m\ast w \ast (2 -\varsigma v_0) + \varsigma m\ast w\ast v_t) (\boldsymbol\tau) \star y_t(\boldsymbol\tau) \\
+&\approx \frac{T_s}{4}(c_1 + \varsigma w \ast m\ast v_t) (\boldsymbol\tau) \star y_t(\boldsymbol\tau) \\
+&\approx \frac{T_s}{4} c_1 \star y_t(\boldsymbol\tau) + \frac{T_s}{4}\varsigma w \ast m\ast v_t (\boldsymbol\tau) \star y_t(\boldsymbol\tau) \\
+&\approx \frac{T_s\varsigma}{4}( w \ast m\ast v_t ) (\boldsymbol\tau) \star y_t(\boldsymbol\tau) + c_2 \\
 &\approx \frac{T_s\varsigma}{4}( w \ast \left[y_t-\varepsilon_t \right] ) (\boldsymbol\tau) \star y_t(\boldsymbol\tau) + c_2 \\
 &\approx \frac{T_s\varsigma}{4} w(-\boldsymbol\tau) \ast (\left[y_t-\varepsilon_t \right]\star y_t ) (\boldsymbol\tau) + c_2 \\ 
 &\approx \frac{T_s\varsigma}{4} w(-\boldsymbol\tau) \ast \left[R_{y_ty_t}(\boldsymbol\tau) - \sigma_{\varepsilon}^2 \delta_K(\boldsymbol\tau) \right] + c_2,
 \end{align}
 where the constants $c_1$ and $c_2$ are 
 \begin{align}
-	c_1 &= m\ast w\ast 2 - \varsigma m\ast w\ast v_0 \\
+	c_1 &= m\ast w\ast (2 - \varsigma v_0) \\
 	c_2 &= \frac{T_s}{4}c_1 \star y_t(\boldsymbol\tau).
 \end{align}
 Substituting back into \ref{eq:BeforeLinearisation} gives
