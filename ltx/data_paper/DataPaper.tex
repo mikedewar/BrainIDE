@@ -447,7 +447,17 @@ $\boldsymbol\Xi_2$ is positive definite under the persistent excitation conditio
 \begin{equation}
  0 < \mathrm{tr}\left\lbrace \boldsymbol\Xi_2 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace \le \mathrm{tr}\left\lbrace \boldsymbol\Xi_2\right\rbrace \mathrm{tr}\left\lbrace\tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace,
 \end{equation}
-meaning \eqref{eq:SecondDerivativexi} is negative and $\hat{\xi}$ represents a maximum. Equation \eqref{eq:SecondDerivativetheta} is negative where $\boldsymbol\Xi_4$ is positive definite requiring $\mathbf q(\mathbf x_t)$ to be of  rank $n_{\theta}$ \cite{Golub1996}. \blue{don't know how to prove $q$ is of rank $n_{\theta}$} According to \eqref{eq:SecondDerivativetheta} and \eqref{eq:SecondDerivativedisturbance}, disturbance and noise estimates clearly represent maxima of the $\mathcal{Q}$-function. 
+meaning \eqref{eq:SecondDerivativexi} is negative and $\hat{\xi}$ represents a maximum. Equation \eqref{eq:SecondDerivativetheta} is negative where $\boldsymbol\Xi_4$ is positive definite requiring $\mathbf q(\mathbf x_t)$ to be of  rank $n_{\theta}$ \cite{Golub1996}, 
+% to show this we define
+% \begin{equation}
+%  \boldsymbol\Psi(\mathbf r')=T_s\boldsymbol\Gamma^{-1}\tilde{\boldsymbol\Psi}(\mathbf r')
+% \end{equation}
+% where 
+% \begin{equation}\label{eq:DefPsitilde}
+% 	\left[ \tilde{\boldsymbol\Psi}(\mathbf{r}')\right]_{:i} =\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\psi_i (2c_i+\mathbf{r}'-\mathbf{r})\textrm{d}\mathbf{r}},
+% \end{equation}
+% since matrix $\boldsymbol\Gamma^{-1}$ is symmetric
+\blue{don't know how to prove $q$ is of rank $n_{\theta}$} According to \eqref{eq:SecondDerivativenoise} and \eqref{eq:SecondDerivativedisturbance}, observation noise and disturbance covariance estimates clearly represent maxima of the $\mathcal{Q}$-function. 
  
 
 Computing unknown variables, $\boldsymbol\Theta$, in the maximization step requires calculation of covariance and  cross-covariance terms, including both linear, $\boldsymbol\Xi_0$, $\boldsymbol\Xi_1$ and $\boldsymbol\Xi_2$ and non-linear terms, $\boldsymbol\Xi_3$, $\boldsymbol\Xi_4$ and  $\boldsymbol\Xi_5$. Finding linear $\boldsymbol\Xi$-variables is straightforward as they can be obtained using smoother outputs, $\hat{\mathbf x}_t $, $\mathbf P_t$ and $\mathbf M_t$ using the following expressions \cite{Shumway2000} (see supporting information for details)
@@ -490,6 +500,10 @@ where
 	\tilde{\Lambda}_t(\mathbf r)&=\begin{bmatrix}\tilde{\boldsymbol \lambda}_t^{(1)}(\mathbf r) \\ \tilde{\boldsymbol \lambda}_t^{(2)}(\mathbf r) \\ \vdots \\ \tilde{\boldsymbol \lambda}_t^{(i)}(\mathbf r)\end{bmatrix} \label{eq:Lambdatilde}\\
 	 \tilde{\boldsymbol \lambda}_t^{(i)}(\mathbf r)&=\int_{\Omega} \boldsymbol \Psi(\mathbf r')\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf {\hat x}_t)d\mathbf r' \label{eq:lambdatildei}
 \end{align}
+\begin{equation}
+ \sum_{i,j=1}^{n_x}[\mathbf{P_t}]_{ji}\boldsymbol\lambda_t^{(j)}\tilde{\boldsymbol\Sigma}_e^{-1}\boldsymbol\lambda_t^{(i)\top}
+\end{equation}
+
 Given the state estimates, $\mathbf {\hat x}_t$ the state covariance $\mathbf P_t$ and cross-covariance $\mathbf M_t$ , the $\boldsymbol\Xi$-variables can be computed directly. In the M-step, an update $\boldsymbol\Theta'$ is chosen such that $\mathcal{Q}\left(\boldsymbol\Theta',\boldsymbol\Theta'\right)>\mathcal{Q}\left(\boldsymbol\Theta,\boldsymbol\Theta'\right)$, this will guarantee that the likelihood increases. 
 
 
