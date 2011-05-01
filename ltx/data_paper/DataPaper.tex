@@ -310,7 +310,7 @@ where the nonlinear function, $q(\cdot)$, is defined as
 \end{equation}
 \section{Estimation Algorithm}
 Here we describe the problem of estimating non-linear state-space neural field model using expectation-maximisation (EM) based algorithm \cite{Dempster1977,Shumway2000}. The resulting estimation process is an iterative two step procedure that converges on the maximum-likelihood estimates of the parameters. In the E-step we estimate the states $\mathbf x_t$, of the systems and in the M-step we estimate the connectivity kernel parameters $\boldsymbol \theta$, synaptic dynamic $\xi$, disturbance variance $\sigma_d$ and the observation noise variance $\sigma_{\epsilon}$. Once initialized, at each iteration the sequence of smoothed state vectors is used to update the parameters by maximizing an approximate lower bound on the log likelihood function. The resulting parameters are then used when estimating the new
-state vector sequence for the next iteration. The stopping criterion is when the parameter estimates converge. or the log-likelihood variation.
+state vector sequence for the next iteration. The stopping criterion is usually associated with either the change in the parameter estimates or the log-likelihood variation \cite{McLachlan1997}.
 \subsection{E-Step}
 In the E-step the additive form of the unscented Rauch-Tung-Striebel smoother (URTSS)~\cite{Sarkka2010} was used for the state estimation. The URTSS incorporates an unscented Kalman filter (UKF) \cite{Julier1997, Merwe2003} in a forward step to estimate posterior states, $\hat{\mathbf x}_t^{f}$, followed by a backward step to compute the smoothed state estimates, $\hat{\mathbf x}_t^{b}$. The first and second order moments of the predicted state are captured by propagating the so-called sigma points through the state equation. The sigma points, $\mathcal X_i$, are calculated using the unscented transform as follows:
 \begin{align}\label{eq:sigmapoints1}
@@ -445,7 +445,7 @@ In order to confirm calculated parameters are indeed maxima of the lower bound, 
 \end{alignat}
 $\boldsymbol\Xi_2$ is positive definite under the persistent excitation condition of state vectors, which is guaranteed by the disturbance, $\mathbf e$, and $\tilde{\boldsymbol\Sigma}_e^{-1}$ is positive definite by construction (Note that the inverse of a positive definite matrix is also positive definite \cite{Horn2005}), therefore we have \cite{Coope1994}
 \begin{equation}
- 0 < \mathrm{tr}\left\lbrace \boldsymbol\Xi_2 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace \le \mathrm{tr}\left\lbrace \boldsymbol\Xi_2\right\rbrace \mathrm{tr}\left\lbrace\tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace,
+ \mathrm{tr}\left\lbrace \boldsymbol\Xi_2 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace >0,
 \end{equation}
 meaning \eqref{eq:SecondDerivativexi} is negative and $\hat{\xi}$ represents a maximum. Equation \eqref{eq:SecondDerivativetheta} is negative where $\boldsymbol\Xi_4$ is positive definite requiring $\mathbf q(\mathbf x_t)$ to be of  rank $n_{\theta}$ \cite{Golub1996}, 
 % to show this we define
@@ -490,18 +490,15 @@ Equation \ref{eq:qTaylor} is used to approximate the lower bound on the log-like
 Having approximated $q\left(\mathbf x_t\right)$ in the E-step, by substituting  \ref{eq:qTaylor} into equations \ref{eq:Xi3}-\ref{eq:Xi5} an approximate to the non-linear $\boldsymbol\Xi$-variables can be calculated which provides an approximate lower bound on the log-likelihood function (see supporting information), 
 \begin{align}
 \boldsymbol\Xi_{3}&\approx\sum_{t=0}^{T-1}\left[ \mathbf{\hat x}_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf{\hat x}_t)+\int_\Omega\boldsymbol \phi^\top(\mathbf r') \mathbf M_{t+1} \tilde{\boldsymbol\Sigma}_e^{-1} \boldsymbol{\Psi}(\mathbf{r}') f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\right] \\	
-\boldsymbol\Xi_{4}&\approx\sum_{t=0}^{T-1}\left[q^\top(\mathbf{\hat x}_t)\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf{\hat x}_t)+\Lambda_t(\mathbf r)\mathbf P_t \tilde{\Lambda}_t(\mathbf r)\right] \\
+\boldsymbol\Xi_{4}&\approx\sum_{t=0}^{T-1}\left[q^\top(\mathbf{\hat x}_t)\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf{\hat x}_t)+\Lambda_t\right] \\
  \boldsymbol\Xi_{5}&\approx\sum_{t=0}^{T-1}\left[ \mathbf{\hat x}_{t}^\top\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf{\hat x}_t)+\int_\Omega\boldsymbol \phi^\top(\mathbf r') \mathbf P_t \tilde{\boldsymbol\Sigma}_e^{-1}  \boldsymbol{\Psi}(\mathbf{r}') f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\right] 
  \end{align}
 where
 \begin{align}
-	 \Lambda_t(\mathbf r)&=\begin{bmatrix}\boldsymbol \lambda_t^{(1)}(\mathbf r) & \boldsymbol \lambda_t^{(2)}(\mathbf r)& \dots &\boldsymbol \lambda_t^{(i)}(\mathbf r)\end{bmatrix} \label{eq:Lambda}\\
-	 \boldsymbol\lambda_t^{(i)}(\mathbf r)&=\int_{\Omega} \boldsymbol \Psi^\top(\mathbf r')\tilde{\boldsymbol\Sigma}_e^{-1}\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf {\hat x}_t)d\mathbf r'\label{eq:lambdai}\\
-	\tilde{\Lambda}_t(\mathbf r)&=\begin{bmatrix}\tilde{\boldsymbol \lambda}_t^{(1)}(\mathbf r) \\ \tilde{\boldsymbol \lambda}_t^{(2)}(\mathbf r) \\ \vdots \\ \tilde{\boldsymbol \lambda}_t^{(i)}(\mathbf r)\end{bmatrix} \label{eq:Lambdatilde}\\
-	 \tilde{\boldsymbol \lambda}_t^{(i)}(\mathbf r)&=\int_{\Omega} \boldsymbol \Psi(\mathbf r')\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf {\hat x}_t)d\mathbf r' \label{eq:lambdatildei}
+	{\boldsymbol \lambda}_t^{(i)}&=\int_{\Omega} \boldsymbol \Psi(\mathbf r')\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf {\hat x}_t)d\mathbf r' \label{eq:lambdatildei}
 \end{align}
 \begin{equation}
- \sum_{i,j=1}^{n_x}[\mathbf{P_t}]_{ji}\boldsymbol\lambda_t^{(j)}\tilde{\boldsymbol\Sigma}_e^{-1}\boldsymbol\lambda_t^{(i)\top}
+ \Lambda_t=\sum_{i,j=1}^{n_x}[\mathbf{P_t}]_{ij}{\boldsymbol\lambda}_t^{(i)\top}\tilde{\boldsymbol\Sigma}_e^{-1}{\boldsymbol\lambda}_t^{(j)}
 \end{equation}
 
 Given the state estimates, $\mathbf {\hat x}_t$ the state covariance $\mathbf P_t$ and cross-covariance $\mathbf M_t$ , the $\boldsymbol\Xi$-variables can be computed directly. In the M-step, an update $\boldsymbol\Theta'$ is chosen such that $\mathcal{Q}\left(\boldsymbol\Theta',\boldsymbol\Theta'\right)>\mathcal{Q}\left(\boldsymbol\Theta,\boldsymbol\Theta'\right)$, this will guarantee that the likelihood increases. 
@@ -511,14 +508,14 @@ Given the state estimates, $\mathbf {\hat x}_t$ the state covariance $\mathbf P_
 \section{Results}
 \begin{itemize}
 	\item Will show parameter distributions
-	\item Will show parameter changes over time through the seizure
+	\item Will show lower bound
 \end{itemize}
 
 
 \section{Discussion}
 
 \begin{itemize}
-	\item comment on how the e step is ukf and m step is kinda like the ekf.  
+	\item comment on how the e step is UKF and M-step is kinda like the EKF, and we dont use EKF in E-step since UKF gives better estimates and the linearisation in M-step would be more accurate.  
 \end{itemize}
 
 % % all figures here
