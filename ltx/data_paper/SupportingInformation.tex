@@ -92,14 +92,11 @@ the product of two Gauusian basis functions is given by
  \varphi_i(\mathbf r)\varphi_j(\mathbf r)=\mathrm{exp}\left(-\left[ {\frac{1}{\sigma_i^2} (\mathbf r-\boldsymbol \mu_i)^\top(\mathbf r-\boldsymbol\mu_i)+{\frac{1}{\sigma_j^2} (\mathbf r-\boldsymbol \mu_j)^\top(\mathbf r-\boldsymbol\mu_j)}}\right] \right)
 \end{equation}
 the product is expanded to give
-\begin{equation}
-\begin{array}{ccc}
- 
- \varphi_i(\mathbf r)\varphi_j(\mathbf r)&=&\mathrm{exp}\left(-\left[ \frac{(\sigma_i^2+\sigma_j^2)\left[\mathbf r^\top\mathbf r-2\mathbf r^\top \frac{\sigma_j^2\boldsymbol\mu_i+\sigma_i^2\boldsymbol\mu_j}{\sigma_i^2+\sigma_j^2}+\frac{(\sigma_j^2\boldsymbol\mu_i+\sigma_i^2\boldsymbol\mu_j)^\top(\sigma_j^2\boldsymbol\mu_i+\sigma_i^2\boldsymbol\mu_j)}{(\sigma_i^2+\sigma_j^2)^2}   \right]  +\frac{\sigma_i^2\sigma_j^2}{\sigma_i^2+\sigma_j^2}(\boldsymbol \mu_i-\boldsymbol\mu_j)^\top(\boldsymbol \mu_i-\boldsymbol\mu_j) }{\sigma_i^2\sigma_j^2}\right] \right)\\
-&=&\mathrm{exp}\left(-\frac{(\sigma_i^2+\sigma_j^2)\left[(\mathbf r-\frac{\sigma_j^2\boldsymbol\mu_i+\sigma_i^2\boldsymbol\mu_j}{\sigma_i^2+\sigma_j^2})^\top(\mathbf r-\frac{\sigma_j^2\boldsymbol\mu_i+\sigma_i^2\boldsymbol\mu_j}{\sigma_i^2+\sigma_j^2})\right]  }{\sigma_i^2\sigma_j^2}\right)
+\begin{align} 
+ \varphi_i(\mathbf r)\varphi_j(\mathbf r)&=\mathrm{exp}\left(-\left[ \frac{(\sigma_i^2+\sigma_j^2)\left[\mathbf r^\top\mathbf r-2\mathbf r^\top \frac{\sigma_j^2\boldsymbol\mu_i+\sigma_i^2\boldsymbol\mu_j}{\sigma_i^2+\sigma_j^2}+\frac{(\sigma_j^2\boldsymbol\mu_i+\sigma_i^2\boldsymbol\mu_j)^\top(\sigma_j^2\boldsymbol\mu_i+\sigma_i^2\boldsymbol\mu_j)}{(\sigma_i^2+\sigma_j^2)^2}   \right]  +\frac{\sigma_i^2\sigma_j^2}{\sigma_i^2+\sigma_j^2}(\boldsymbol \mu_i-\boldsymbol\mu_j)^\top(\boldsymbol \mu_i-\boldsymbol\mu_j) }{\sigma_i^2\sigma_j^2}\right] \right) \nonumber\\
+&=\mathrm{exp}\left(-\frac{(\sigma_i^2+\sigma_j^2)\left[(\mathbf r-\frac{\sigma_j^2\boldsymbol\mu_i+\sigma_i^2\boldsymbol\mu_j}{\sigma_i^2+\sigma_j^2})^\top(\mathbf r-\frac{\sigma_j^2\boldsymbol\mu_i+\sigma_i^2\boldsymbol\mu_j}{\sigma_i^2+\sigma_j^2})\right]  }{\sigma_i^2\sigma_j^2}\right)
 \times\mathrm{exp}\left(-\frac{(\boldsymbol \mu_i-\boldsymbol\mu_j)^\top(\boldsymbol \mu_i-\boldsymbol\mu_j)}{\sigma_i^2+\sigma_j^2}\right)
-\end{array}
-\end{equation}
+\end{align}
 therefore we have
 \begin{equation}
  \varphi_i(\mathbf r)\varphi_j(\mathbf r)=c_{i,j}\times\mathrm{exp}\left({-\frac{1}{\sigma^2} (\mathbf r-\boldsymbol \mu)^\top(\mathbf r-\boldsymbol\mu)}\right)
