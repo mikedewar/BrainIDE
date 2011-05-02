@@ -143,74 +143,101 @@ The mapping between the membrane voltage and the electrophysiological data, deno
 \end{equation}
 where $m\left(\mathbf{r}-\mathbf{r}'\right)$ is the observation kernel, $\varepsilon_t(\mathbf{r}_n) \sim \mathcal{N}\left(0,\boldsymbol{\Sigma}_{\varepsilon}\right)$ denotes a multivariate normal distribution with mean zero and the covariance matrix $\boldsymbol{\Sigma}_{\varepsilon} = \sigma_{\varepsilon}^2\mathbf{I}$, where $\mathbf{I}$ is the identity matrix. Since we are considering intracranial measurements recorded directly from the surface of the cortex or within the brain, the lead field is not modeled by the observation equation.
 
-\subsection{Maybe: Basis Function Decomp}
-
-
 \subsection{Estimation of Connectivity Kernel Support}
-The spatial relationship between consecutive observations is governed by the connectivity kernel. Therefore, the cross-correlation between consecutive observations is used to estimate the support of the connectivity kernel. The cross-correlation is defined as
+For the derivation of the spatial properties estimator of the neural field equations we will switch to a more compact notation to define convolution and correlation operators for . The spatial convolution shall be denoted as
 \begin{equation}
-	R_{y_{t+1}y_t}(\boldsymbol{\tau}) = \int_{\Omega} y_{t+1}(\mathbf{r}) y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r},
+	\int_\Omega a(\mathbf{r}-\mathbf{r}')b(\mathbf{r}')d\mathbf{r}' = (a\ast b)(\mathbf{r}),
 \end{equation}
-where $\tau$ is the spatial shift. Now substituting equation~\ref{eq:ObservationEquation} for $y_{t+1}(\mathbf{r})$ \parham{and assuming noise-free observations} gives 
+and the spatial cross-correlation shall be denoted as 
 \begin{equation}
-	R_{y_{t+1}y_t}(\boldsymbol{\tau}) = \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}')v_{t+1}(\mathbf{r}')d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}.
-\end{equation}
-Next the equation~\ref{eq:DiscreteTimeModel} is substituted in for $v_{t+1}(\mathbf{r}')$ giving 
-\begin{align}
-	R_{y_{t+1}y_t}(\boldsymbol{\tau}) &= \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}')\left(\xi v_t(\mathbf{r}') +  T_s g_t(\mathbf{r}')\right. \nonumber \\
-	&+ \left. e_t(\mathbf{r}')\right) d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}. 
-\end{align}
-The cross-correlation is simplified by recognizing that \parham{I multiplied the noise term by $n_y$, I believe it should be there but check it mate}
-\begin{align}
-	\int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}')&\xi v_t(\mathbf{r}')d\mathbf{r}'y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} = \nonumber \\ 
- &\xi \left(R_{y_ty_t}(\boldsymbol{\tau})-\parham{$n_y$}\sigma_{\epsilon}^2  \delta_{K}\left(\tau\right)\right),
-\end{align}
-where $\delta_{K}\left(.\right)$ denotes Kronecker delta. Also letting 
-\begin{align}
-	\beta(\boldsymbol{\tau}) &= \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}') e_t(\mathbf{r}') d\mathbf{r}'y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r} %\\
-	% &= \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}') e_t(\mathbf{r}') d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}	
-\end{align}
-giving 
-\begin{align}
-	R_{y_{t+1}y_t}(\boldsymbol{\tau}) &= \xi R_{y_ty_t}(\boldsymbol{\tau}) \nonumber \\
-	&+ T_s \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}')  g_t(\mathbf{r}') d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}.
-\end{align}
-Rearranging and substituting in equation~\ref{eq:RateBasedInteractions} for $g_t(\mathbf{r}')$ gives
-\begin{align}
-	R_{y_{t+1}y_t}(\boldsymbol{\tau}) &-\xi R_{y_ty_t}(\boldsymbol{\tau}) = T_s \int_{\Omega}\int_{\Omega} m(\mathbf{r}-\mathbf{r}') \nonumber \\
-	&\times \int_{\Omega} w(\mathbf{r}'-\mathbf{r}'') f\left(v_t(\mathbf{r}'')\right)d\mathbf{r}'' d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}. 
-\end{align}  
-Using the commutativity property of convolution, the order can be rearranged to
-\begin{align}
-	R_{y_{t+1}y_t}(\boldsymbol{\tau})&-\xi R_{y_ty_t}(\boldsymbol{\tau}) =  T_s \int_{\Omega}\int_{\Omega} w(\mathbf{r}-\mathbf{r}') \nonumber \\
-	&\times \int_{\Omega} m(\mathbf{r}'-\mathbf{r}'') f\left(v_t(\mathbf{r}'')\right) d\mathbf{r}'' d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}.
-\end{align}
-Next, the nonlinear function $f(\cdot)$ is approximated by the simple linear relationship
-\begin{equation}
-	f\left(v_t(\mathbf{r})\right) \approx \varsigma v_t(\mathbf{r})
+	\int_\Omega a(\mathbf{r})b(\mathbf{r}+\boldsymbol{\tau})d\mathbf{r} = (a\star b)(\boldsymbol{\tau}).
 \end{equation} 
-giving
-\begin{align}
-	R_{y_{t+1}y_t}(\boldsymbol{\tau})&-\xi R_{y_ty_t}(\boldsymbol{\tau}) =  \varsigma T_s \int_{\Omega}\int_{\Omega} w(\mathbf{r}-\mathbf{r}') \nonumber \\
-	&\times \int_{\Omega} m(\mathbf{r}'-\mathbf{r}'')  v_t(\mathbf{r}'') d\mathbf{r}'' d\mathbf{r}' y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r},
-\end{align}
-which simplifies to
-\begin{align}
-	R_{y_{t+1}y_t}(\boldsymbol{\tau})&-\xi R_{y_ty_t}(\boldsymbol{\tau}) =  \varsigma T_s \int_{\Omega}\int_{\Omega} w(\mathbf{r}-\mathbf{r}')y_t(\mathbf{r}') d\mathbf{r}' \nonumber \\
-	&\times y_t(\mathbf{r}+\boldsymbol{\tau}) d\mathbf{r}
-\end{align}
-A property of cross-correlation and convolution is $(a \ast b) \star c = a(-)\ast(b \star c)$, so we can write
-\begin{align}
-	R_{y_{t+1}y_t}(\boldsymbol{\tau}) &-\xi R_{y_ty_t}(\boldsymbol{\tau}) = \varsigma T_s \int_{\Omega} w(\boldsymbol{\tau}-\boldsymbol{\tau}') \nonumber \\
-	&\times \int_{\Omega} y_t(\mathbf{r}) y_t(\mathbf{r}+\boldsymbol{\tau}') d\mathbf{r}d\boldsymbol{\tau}' \\
-	&= \varsigma T_s \int_{\Omega} w(\boldsymbol{\tau}-\boldsymbol{\tau}') R_{y_ty_t}(\boldsymbol{\tau}')d\boldsymbol{\tau}'.
-\end{align}
-The solution of the above equation for the connectivity kernel is a deconvolution. This can be approached from a number of different standpoints. The simplest solution is to use the convolution theorem and find the solution by \parham{needs noise term in denominator}
+The spatial relationship between consecutive observations is governed by the shape of the connectivity kernel. Therefore, the cross-correlation between consecutive observations is used to estimate the support of the connectivity kernel. The cross-correlation is defined as
 \begin{equation}
-	w(\boldsymbol{\tau}) = \frac{1}{\varsigma T_s}\mathcal{F}^{-1}\left\{\frac{\mathcal{F}\left(R_{y_{t+1}y_t}(\boldsymbol{\tau}) -\xi R_{y_ty_t}(\boldsymbol{\tau})\right)}{\mathcal{F}\left(R_{y_ty_t}(\boldsymbol{\tau})\right)}\right\}.
+	R_{y_{t+1}y_t}(\boldsymbol{\tau}) = (y_{t+1}\star y_t)(\boldsymbol{\tau}),
 \end{equation}
+where $\tau$ is the spatial shift. Now substituting equation~\ref{eq:ObservationEquation} for $y_{t+1}(\mathbf{r})$ gives 
+\begin{equation}
+	R_{y_{t+1}y_t}(\boldsymbol{\tau}) = ((m \ast v_{t+1})\star y_t)(\boldsymbol{\tau}) + (\varepsilon_{t+1} \star y_t)(\boldsymbol{\tau}).
+\end{equation}
+Next equation~\ref{eq:DiscreteTimeModel} is substituted in for $v_{t+1}(\mathbf{r})$ giving 
+\begin{align}
+	R_{y_{t+1}y_t}(\boldsymbol{\tau}) &= (\left(m \ast \left(\xi v_t +  T_s g_t + e_t\right)\right) \star y_t)(\boldsymbol{\tau})\\
+	&= \xi\left(\left(m \ast v_t\right) \star y_t \right)(\boldsymbol{\tau}) \nonumber\\
+	&\quad+ T_s \left(\left(m\ast g_t\right)\star y_t \right)(\boldsymbol{\tau}) \nonumber\\
+	&\quad+ \left(\left(m\ast e_t\right)\star y_t \right)(\boldsymbol{\tau}) \nonumber\\
+	&\quad+ (\varepsilon_{t+1} \star y_t)(\boldsymbol{\tau}).
+\end{align}
+By taking the expected value over time gives
+\begin{align}
+	\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] &= \mathbf{E}[\xi\left(\left(m \ast v_t\right) \star y_t \right)(\boldsymbol{\tau})] \nonumber \\
+	 &+ T_s \mathbf{E}[\left(\left(m\ast g_t\right)\star y_t \right)(\boldsymbol{\tau})],
+\end{align}
+since the disturbance and measurement noise is assumed to be independent of the observations. 
+The cross-correlation is further simplified by recognizing that the first term on right hand side can be simplified by
+\begin{align}
+	\mathbf{E}[\xi&\left(\left(m \ast v_t \right) \star y_t \right)(\boldsymbol{\tau})] = \mathbf{E}[\xi\left(\left(y_t-\varepsilon_t\right) \star y_t \right)(\boldsymbol{\tau}) \\
+	&= \xi ((y_t \star y_t)(\boldsymbol{\tau}) - \left(\varepsilon_t\star y_t \right)(\boldsymbol{\tau}))] \\
+	&= \mathbf{E}[\xi (R_{y_ty_t}(\boldsymbol{\tau})  - \left(\varepsilon_t \star (m\ast v_t + \varepsilon_t)\right) (\boldsymbol{\tau}))] \\
+	&=\mathbf{E}[\xi (R_{y_ty_t}(\boldsymbol{\tau})  -\left(\varepsilon_t\star (m\ast v_t)\right)(\boldsymbol{\tau}) - (\varepsilon_t\star\varepsilon_t)(\boldsymbol{\tau}))] \\
+	&= \xi\left(\mathbf{E}[ (R_{y_ty_t}(\boldsymbol{\tau})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\tau})\right).
+\end{align}
+where $\delta\left(\cdot\right)$ denotes Kronecker delta. Now we have
+\begin{align}
+	\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] &= \xi\left(\mathbf{E}[ (R_{y_ty_t}(\boldsymbol{\tau})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\tau})\right) \nonumber \\
+	&+ T_s\mathbf{E}[ \left(\left(m\ast g_t\right)\star y_t \right)(\boldsymbol{\tau})].
+\end{align}
+Now focusing on the second term, we can write
+\begin{align}
+	((m \ast g_t) \star y_t)(\boldsymbol\tau) &\approx \frac{1}{4}((m \ast w \ast (2 + \varsigma v_t - \varsigma v_0))\star y_t)(\boldsymbol\tau) \\
+	&= \frac{1}{4}((m\ast w \ast (2 -\varsigma v_0) + \varsigma m\ast w\ast v_t) \star y_t)(\boldsymbol\tau) \\
+&= \frac{1}{4}((c_1 + \varsigma w \ast m\ast v_t) \star y_t)(\boldsymbol\tau),
+\end{align}
+where
+\begin{equation}
+	c_1 = m\ast w\ast (2 - \varsigma v_0).
+\end{equation}
+Now continuing the derivation, we have
+\begin{align}
+4((m \ast g_t) \star y_t)(\boldsymbol\tau) &\approx (c_1 \star y_t)(\boldsymbol\tau) + \varsigma ((w \ast m\ast v_t) \star y_t)(\boldsymbol\tau) \\
+&= (( w \ast m\ast v_t ) \star y_t)(\boldsymbol\tau) + c_t,
+\end{align}
+where $c_t$ is 
+\begin{equation}
+	c_t = (c_1 \star y_t)(\boldsymbol\tau).
+\end{equation}
+Now we can write
+\begin{equation}
+4((m \ast g_t) \star y_t)(\boldsymbol\tau) \approx (( w \ast \left[y_t-\varepsilon_t \right] ) \star y_t)(\boldsymbol\tau) + c_t.
+\end{equation}
+The order of the convolution and cross-correlation can reversed by recognizing that a property of cross-correlation and convolution is $(a \ast b)(\boldsymbol\tau) \star c(\boldsymbol\tau) = a(-\boldsymbol\tau)\ast(b \star c)(\boldsymbol\tau)$ (see Appendix for proof). Therefore,
+\begin{align}
+4((m \ast g_t) \star y_t)(\boldsymbol\tau) &\approx \varsigma w \ast (\left[y_t-\varepsilon_t \right]\star y_t ) (\boldsymbol\tau) + c_2(\boldsymbol\tau) \\ 
+&= \varsigma w \ast \left[R_{y_ty_t}(\boldsymbol\tau) - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau) \right] + c_t.
+\end{align}
+Now substituting back to equation~\ref{} we get
+\begin{align}
+	\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] &= \xi\left(\mathbf{E}[ (R_{y_ty_t}(\boldsymbol{\tau})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\tau})\right) \nonumber \\
+	&+ \frac{\varsigma T_s}{4}w \ast \mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau)  + \mathbf{E}\left[c_t\right].
+\end{align}
+Rearranging equation~\ref{} we get
+\begin{align}
+	\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] &- \xi\left(\mathbf{E}[ (R_{y_ty_t}(\boldsymbol{\tau})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\tau})\right) - \mathbf{E}\left[c_t(\boldsymbol\tau)\right] \nonumber \\
+	&= \frac{\varsigma T_s}{4}w \ast \mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau).
+\end{align}
 
-Alternatively, the convolution can be written as a system of linear equations by forming the convolution (Toeplitz) matrix. The solution of the convolution equation for $w(\cdot)$ can then be found by either inverting the convolution matrix or directly solving the system of equations. Directly solving the system is the most numerically stable and less computationally demanding then inverting the convolution matrix. 
+The solution of the above equation for the connectivity kernel is a deconvolution. This can be approached from a number of different standpoints. The simplest solution is to use the convolution theorem. To show this we take the spatial Fourier transform of both sides of equation~\ref{} giving
+\begin{align}
+	\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] &- \xi\left(\mathbf{E}[ (R_{y_ty_t}(\boldsymbol{\tau})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\tau})\right) - \mathbf{E}\left[c_t\right]\} \nonumber \\
+	&=\frac{\varsigma T_s}{4}\mathcal{F}\{w(\boldsymbol\tau)\}\mathcal{F}\{\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau)\} \\
+\end{align}
+Now by rearranging and making the appropriate cancelations we get
+\begin{align}
+	\frac{\varsigma T_s}{4}\mathcal{F}\{w(\boldsymbol\tau)\} &= \frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] - \mathbf{E}\left[c_t\right]\}}{\mathcal{F}\{\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau)\}} - \xi \\
+	\frac{\varsigma T_s}{4}\mathcal{F}\{w(\boldsymbol\tau)\} &= \frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\} - \mathbf{E}\left[c_t\right]\delta(\boldsymbol{\nu})}{\mathcal{F}\{\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 } - \xi 
+\end{align}
+From this we see that an error in our guess for $\xi$ will result in a dilation or contraction of the estimated kernel support. 
+% Alternatively, the convolution can be written as a system of linear equations by forming the convolution (Toeplitz) matrix. The solution of the convolution equation for $w(\cdot)$ can then be found by either inverting the convolution matrix or directly solving the system of equations. Directly solving the system is the most numerically stable and less computationally demanding then inverting the convolution matrix. 
 
 
 
@@ -219,31 +246,8 @@ Alternatively, the convolution can be written as a system of linear equations by
 For each simulation I have used 20 seconds of data, with the same parameters as the Neuroimage paper.
 I have used two scenarios for the kernel, three scenarios for the activation function, and two scenarios for the boundary conditions. 1) A isotropic kernel. 2) An anisotropic kernel.
 
-\subsection{Linear Neural Field Model}
-\begin{figure}[htbp]
-	\centering
-		\subfigure[]{\includegraphics[scale=1]{KernelEstimateFullLinear}}
-		\subfigure[]{\includegraphics[scale=1]{KernelCrossSectionLinear}}
-	\caption{Linear model to generate data. Linear model for estimation. Zero boundary conditions.}
-	\label{fig:label}
-\end{figure}
-
-\begin{figure}[htbp]
-	\centering
-		\subfigure[]{\includegraphics[scale=1]{KernelEstimateFullLinearPBC}}
-		\subfigure[]{\includegraphics[scale=1]{KernelCrossSectionLinearPBC}}
-	\caption{Linear model to generate data. Linear model for estimation. Periodic boundary conditions.}
-	\label{fig:label}
-\end{figure}
 
 \subsection{Linearized Neural Field Model}
-\begin{figure}[htbp]
-	\centering
-		\subfigure[]{\includegraphics[scale=1]{KernelEstimateFullLinearized}}
-		\subfigure[]{\includegraphics[scale=1]{KernelCrossSectionLinearized}}
-	\caption{Linearized model to generate data. Linearized model for estimation. Zero boundary conditions.}
-	\label{fig:label}
-\end{figure}
 
 \begin{figure}[htbp]
 	\centering
@@ -254,13 +258,6 @@ I have used two scenarios for the kernel, three scenarios for the activation fun
 \end{figure}
 
 \subsection{Nonlinear Neural Field Model}
-\begin{figure}[htbp]
-	\centering
-		\subfigure[]{\includegraphics[scale=1]{KernelEstimateFullNonlinear}}
-		\subfigure[]{\includegraphics[scale=1]{KernelCrossSectionNonlinear}}
-	\caption{Nonlinear model to generate data. Linearized model for estimation. Zero boundary conditions.}
-	\label{fig:label}
-\end{figure}
 
 \begin{figure}[htbp]
 	\centering
@@ -271,30 +268,9 @@ I have used two scenarios for the kernel, three scenarios for the activation fun
 \end{figure}
 \newpage
 \subsection{Linear Neural Field Model Anisotropic}
-\begin{figure}[htbp]
-	\centering
-		\includegraphics[scale=1]{KernelAniso.pdf}
-	\caption{Anisotropic kernel}
-	\label{fig:label}
-\end{figure}
-
-\begin{figure}[htbp]
-	\centering
-		\subfigure[]{\includegraphics[scale=1]{KernelEstimateFullLinearAniso}}
-		\subfigure[]{\includegraphics[scale=1]{KernelCrossSectionLinearAniso}}
-	\caption{Linear model to generate data. Linear model for estimation. Zero boundary conditions.}
-	\label{fig:label}
-\end{figure}
 
 
 \subsection{Linearized Neural Field Model}
-\begin{figure}[htbp]
-	\centering
-		\subfigure[]{\includegraphics[scale=1]{KernelEstimateFullLinearizedAniso}}
-		\subfigure[]{\includegraphics[scale=1]{KernelCrossSectionLinearizedAniso}}
-	\caption{Linearized model to generate data. Linearized model for estimation. Zero boundary conditions.}
-	\label{fig:label}
-\end{figure}
 
 \begin{figure}[htbp]
 	\centering
@@ -305,13 +281,6 @@ I have used two scenarios for the kernel, three scenarios for the activation fun
 \end{figure}
 
 \subsection{Nonlinear Neural Field Model}
-\begin{figure}[htbp]
-	\centering
-		\subfigure[]{\includegraphics[scale=1]{KernelEstimateFullNonlinearAniso}}
-		\subfigure[]{\includegraphics[scale=1]{KernelCrossSectionNonlinearAniso}}
-	\caption{Nonlinear model to generate data. Linearized model for estimation. Zero boundary conditions.}
-	\label{fig:label}
-\end{figure}
 
 \begin{figure}[htbp]
 	\centering
