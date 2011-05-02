@@ -78,7 +78,7 @@
 
 \section*{Product of two $n$-dimensional Gaussian functions}\label{sec:GaussianProduct} 
 In this section, we provide a derivation for the product of two n-dimensional Gaussian basis functions.
-This derivation is used in the  calculation of $\boldsymbol\lambda_t^{(i)}\left(\mathbf r\right)$ and $\tilde{\boldsymbol\lambda}_t^{(i)}\left(\mathbf r\right)$ defined in equation \ref{eq:lambdai} and \ref{eq:lambdatildei} of the main text. Consider two
+This derivation is used in the  calculation of $\boldsymbol\lambda_t^{(i)}$  defined in equation \eqref{eq:lambdat} of the main text. Consider two
 Gaussian basis functions
 \begin{equation}\label{eq:n_dimensional_Gaussian1}
  \varphi_i(\mathbf r)=\mathrm{exp}\left({-\frac{1}{\sigma_i^2} (\mathbf r-\boldsymbol \mu_i)^\top(\mathbf r-\boldsymbol \mu_i})\right)
@@ -89,17 +89,14 @@ and
 \end{equation}
 the product of two Gauusian basis functions is given by
 \begin{equation}
- \varphi_i(\mathbf r)\varphi_j(\mathbf r)=\mathrm{exp}-\left({\frac{1}{\sigma_i^2} (\mathbf r-\boldsymbol \mu_i)^\top(\mathbf r-\boldsymbol\mu_i)+{\frac{1}{\sigma_j^2} (\mathbf r-\boldsymbol \mu_j)^\top(\mathbf r-\boldsymbol\mu_j)}}\right)
+ \varphi_i(\mathbf r)\varphi_j(\mathbf r)=\mathrm{exp}\left(-\left[ {\frac{1}{\sigma_i^2} (\mathbf r-\boldsymbol \mu_i)^\top(\mathbf r-\boldsymbol\mu_i)+{\frac{1}{\sigma_j^2} (\mathbf r-\boldsymbol \mu_j)^\top(\mathbf r-\boldsymbol\mu_j)}}\right] \right)
 \end{equation}
 the product is expanded to give
-\begin{equation}
-\begin{array}{ccc}
- 
- \varphi_i(\mathbf r)\varphi_j(\mathbf r)&=&\mathrm{exp}-\left(\frac{(\sigma_i^2+\sigma_j^2)\left[\mathbf r^\top\mathbf r-2\mathbf r^\top \frac{\sigma_j^2\boldsymbol\mu_i+\sigma_i^2\boldsymbol\mu_j}{\sigma_i^2+\sigma_j^2}+\frac{(\sigma_j^2\boldsymbol\mu_i+\sigma_i^2\boldsymbol\mu_j)^\top(\sigma_j^2\boldsymbol\mu_i+\sigma_i^2\boldsymbol\mu_j)}{(\sigma_i^2+\sigma_j^2)^2}   \right]  +\frac{\sigma_i^2\sigma_j^2}{\sigma_i^2+\sigma_j^2}(\boldsymbol \mu_i-\boldsymbol\mu_j)^\top(\boldsymbol \mu_i-\boldsymbol\mu_j) }{\sigma_i^2\sigma_j^2}\right)\\
-&=&\mathrm{exp}\left(-\frac{(\sigma_i^2+\sigma_j^2)\left[(\mathbf r-\frac{\sigma_j^2\boldsymbol\mu_i+\sigma_i^2\boldsymbol\mu_j}{\sigma_i^2+\sigma_j^2})^\top(\mathbf r-\frac{\sigma_j^2\boldsymbol\mu_i+\sigma_i^2\boldsymbol\mu_j}{\sigma_i^2+\sigma_j^2})\right]  }{\sigma_i^2\sigma_j^2}\right)
+\begin{align} 
+ \varphi_i(\mathbf r)\varphi_j(\mathbf r)&=\mathrm{exp}\left(-\left[ \frac{(\sigma_i^2+\sigma_j^2)\left[\mathbf r^\top\mathbf r-2\mathbf r^\top \frac{\sigma_j^2\boldsymbol\mu_i+\sigma_i^2\boldsymbol\mu_j}{\sigma_i^2+\sigma_j^2}+\frac{(\sigma_j^2\boldsymbol\mu_i+\sigma_i^2\boldsymbol\mu_j)^\top(\sigma_j^2\boldsymbol\mu_i+\sigma_i^2\boldsymbol\mu_j)}{(\sigma_i^2+\sigma_j^2)^2}   \right]  +\frac{\sigma_i^2\sigma_j^2}{\sigma_i^2+\sigma_j^2}(\boldsymbol \mu_i-\boldsymbol\mu_j)^\top(\boldsymbol \mu_i-\boldsymbol\mu_j) }{\sigma_i^2\sigma_j^2}\right] \right) \nonumber\\
+&=\mathrm{exp}\left(-\frac{(\sigma_i^2+\sigma_j^2)\left[(\mathbf r-\frac{\sigma_j^2\boldsymbol\mu_i+\sigma_i^2\boldsymbol\mu_j}{\sigma_i^2+\sigma_j^2})^\top(\mathbf r-\frac{\sigma_j^2\boldsymbol\mu_i+\sigma_i^2\boldsymbol\mu_j}{\sigma_i^2+\sigma_j^2})\right]  }{\sigma_i^2\sigma_j^2}\right)
 \times\mathrm{exp}\left(-\frac{(\boldsymbol \mu_i-\boldsymbol\mu_j)^\top(\boldsymbol \mu_i-\boldsymbol\mu_j)}{\sigma_i^2+\sigma_j^2}\right)
-\end{array}
-\end{equation}
+\end{align}
 therefore we have
 \begin{equation}
  \varphi_i(\mathbf r)\varphi_j(\mathbf r)=c_{i,j}\times\mathrm{exp}\left({-\frac{1}{\sigma^2} (\mathbf r-\boldsymbol \mu)^\top(\mathbf r-\boldsymbol\mu)}\right)
@@ -214,27 +211,26 @@ It should be noted that when applying expectation, term1 is constant, and term2 
 
 \dean{Motivate the step: To use the covariance estimate from the filter we need to get the $\mathbf{x}_t$ terms together.} To do this the last term on the right hand side of equation \ref{eq:Xi4derivation1} can be rewritten as (\dean{we should talk about this in words and go direct to the next equation})
 \begin{align}
- term4 = \int_\Omega \boldsymbol{\Psi}^\top(\mathbf{r}') \tilde{\boldsymbol\Sigma}_e^{-1}f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) \boldsymbol \phi^\top(\mathbf r')(\mathbf x_t - \mathbf  {\hat x}_t)d\mathbf{r}' \times\int_\Omega  (\mathbf x_t - \mathbf  {\hat x}_t)^\top\boldsymbol \phi(\mathbf r') \boldsymbol{\Psi}(\mathbf{r}')f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'& \nonumber \\
-=\begin{bmatrix} \int_{\Omega} \boldsymbol \Psi^\top(\mathbf r')\tilde{\boldsymbol \Sigma}_e^{-1}\phi_1(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf {\hat x}_t)d\mathbf r' &  \dots & \int_{\Omega} \boldsymbol \Psi^\top(\mathbf r')\tilde{\boldsymbol \Sigma}_e^{-1}\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf {\hat x}_t)d\mathbf r'\end{bmatrix}(\mathbf x_t - \mathbf  {\hat x}_t) & \nonumber \\
-\times (\mathbf x_t - \mathbf  {\hat x}_t)^\top \begin{bmatrix}\int_{\Omega} \boldsymbol \Psi(\mathbf r')\phi_1(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf {\hat x}_t)d\mathbf r' \\  \vdots \\ \int_{\Omega} \boldsymbol \Psi(\mathbf r')\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf {\hat x}_t)d\mathbf r'\end{bmatrix}& \nonumber \\
+ term4 &= \int_\Omega \boldsymbol{\Psi}^\top(\mathbf{r}')f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) \boldsymbol \phi^\top(\mathbf r')(\mathbf x_t - \mathbf  {\hat x}_t)d\mathbf{r}' \times \tilde{\boldsymbol\Sigma}_e^{-1} \times\int_\Omega  (\mathbf x_t - \mathbf  {\hat x}_t)^\top\boldsymbol \phi(\mathbf r') \boldsymbol{\Psi}(\mathbf{r}')f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'& \nonumber \\
+&=\sum_{i,j=1}^{n_x}{\boldsymbol\lambda}_t^{(i)\top}(\mathbf x_{i,t} - \mathbf  {\hat x}_{i,t})(\mathbf x_{j,t} - \mathbf  {\hat x}_{j,t})\tilde{\boldsymbol\Sigma}_e^{-1}{\boldsymbol\lambda}_t^{(j)}
 \end{align}
-which can be written as
-\begin{align}\label{eq:Xi3derivation2}
-  \mathrm{term4}&= q^\top(\mathbf {\hat x}_t)\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf {\hat x}_t)+\Lambda_t(\mathbf r)(\mathbf x_t - \mathbf  {\hat x}_t) (\mathbf x_t - \mathbf  {\hat x}_t)^\top\tilde{\Lambda}_t(\mathbf r)
+where
+\begin{align}
+	{\boldsymbol \lambda}_t^{(i)}&=\int_{\Omega} \boldsymbol \Psi(\mathbf r')\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf {\hat x}_t)d\mathbf r' \label{eq:lambdatildei}
 \end{align}
-where $\Lambda_t(\mathbf r)$ and $\tilde{\Lambda}_t(\mathbf r)$ are defined in equations (\ref{eq:Lambda}-\ref{eq:lambdatildei}) of the main text, and (\dean{replace q tilde as term 2 and 3})
-\begin{align}\label{eq:qtilde}
- \tilde{q}(\mathbf x_t)&=q^\top(\mathbf {\hat x}_t)\tilde{\boldsymbol\Sigma}_e^{-1}\int_\Omega \boldsymbol{\Psi}(\mathbf{r}')\boldsymbol \phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t)f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\nonumber\\
-&+\int_\Omega \boldsymbol{\Psi}^\top(\mathbf{r}')\boldsymbol \phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t)f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf {\hat x}_t)
+therefore term4 can be written in a form of
+\begin{align}\label{eq:Xi4derivation2}
+  \mathrm{term4}&= q^\top(\mathbf {\hat x}_t)\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf {\hat x}_t)+\sum_{i,j=1}^{n_x}{\boldsymbol\lambda}_t^{(i)\top}(\mathbf x_{i,t} - \mathbf  {\hat x}_{i,t})(\mathbf x_{j,t} - \mathbf  {\hat x}_{j,t})\tilde{\boldsymbol\Sigma}_e^{-1}{\boldsymbol\lambda}_t^{(j)}
 \end{align}
-taking expectation from \ref{eq:Xi4derivation1} we have 
-\begin{equation}\label{eq:Xi3derivation3}
-\mathbf E_{\Theta'}\left[ q^\top(\mathbf x_t)\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf x_t)\right]\approx q^\top(\mathbf {\hat x}_t)\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf {\hat x}_t)  +\Lambda_t(\mathbf r)\mathbf E_{\theta'}\left[  (\mathbf x_t - \mathbf  {\hat x}_t) (\mathbf x_t - \mathbf  {\hat x}_t)^\top\right]\tilde{\Lambda}_t(\mathbf r)
-\end{equation}
-Note that the expectation of $\tilde{q}(\mathbf x_t)$ becomes zero since $\mathbf E_{\Theta'}\left[(\mathbf x_t - \mathbf  {\hat x}_t)\right]= \mathbf 0$, and hence
+taking expectation from \eqref{eq:Xi4derivation2}  and noting $\mathbf E_{\boldsymbol\theta'}\left[(\mathbf x_{i,t} - \mathbf  {\hat x}_{i,t})(\mathbf x_{j,t} - \mathbf  {\hat x}_{j,t}) \right]=\left[\mathbf{P}_t\right]_{i,j} $ gives
+\begin{align}
+ \mathrm{term4}&= q^\top(\mathbf {\hat x}_t)\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf {\hat x}_t)+\boldsymbol\Lambda_t
+\end{align}
+where
 \begin{equation}
- \Xi_4= \sum_{t=0}^{T-1}\left[q^\top(\mathbf{\hat x}_t)\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf{\hat x}_t)+\Lambda_t(\mathbf r)\mathbf P_t \tilde{\Lambda}_t(\mathbf r)\right]
+ \boldsymbol\Lambda_t=\sum_{i,j=1}^{n_x}[\mathbf{P_t}]_{ij}{\boldsymbol\lambda}_t^{(i)\top}\tilde{\boldsymbol\Sigma}_e^{-1}{\boldsymbol\lambda}_t^{(j)}
 \end{equation}
+
 \subsection*{Calculating $\Xi_{5}$}
 The last term of equation \ref{eq:Qfunctiontrace2} on page \pageref{eq:Qfunctiontrace2} can be approximated as following, 
 \begin{align}\label{eq:Xi5derivation1}
@@ -359,252 +355,8 @@ substituting for $\mathbf E_{\Theta'}\left[(\mathbf x_t - \mathbf  {\hat x}_t)\m
 % \sigma_e^2=\frac{1}{(T-1)n_x}\left[ \mathrm{tr}\left\lbrace \Xi'_0 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace -2\Xi_0\boldsymbol\theta-
 % 2\xi\mathrm{tr}\left\lbrace \Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace+\boldsymbol\theta^\top \Xi_2\boldsymbol\theta+2\xi\Xi_3 \boldsymbol\theta +\xi^2\mathrm{tr} \left\lbrace\Xi_4\tilde{\boldsymbol\Sigma}_e^{-1} \right\rbrace \right] 
 % \end{eqnarray}
-\section*{Observation Autocorrelation}\label{sec:ObservAutocor} 
-\begin{align}
-	R_{y_{t},y_{t}}(\boldsymbol{\tau}) &= \mathbf{E}\left[y_{t}\left(\mathbf{r}+\boldsymbol{\tau}\right)y_{t}\left(\mathbf{r}\right)\right] \nonumber\\
-	&= \mathbf{E}\left[\left(\int_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} + \boldsymbol{\varepsilon}_t\left(\mathbf{r}+\boldsymbol{\tau}\right)\right) \left(\int_{\Omega}{ m\left(\mathbf{r} - \mathbf{r}''\right) v_{t}\left(\mathbf{r}''\right) \, d\mathbf{r}''} + \boldsymbol{\varepsilon}_{t}\left(\mathbf{r}\right)\right) \right]\nonumber \\
-	&=\mathbf{E}\left[\int_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} \int_{\Omega}{ m\left(\mathbf{r} - \mathbf{r}''\right) v_{t}\left(\mathbf{r}''\right) \, d\mathbf{r}''}\right]+\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\nonumber\\
-	&=\iint_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) m\left(\mathbf{r} - \mathbf{r}''\right) \mathbf{E}\left[v_t\left(\mathbf{r}'\right) v_{t}\left(\mathbf{r}''\right)\right]\, d\mathbf{r}'}{ \, d\mathbf{r}''}+\sigma_{\epsilon}^2\delta(\boldsymbol\tau) \nonumber\\
-	&=\sigma_d\iint_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) m\left(\mathbf{r} - \mathbf{r}''\right)\gamma(\mathbf{r}'-\mathbf{r}'') \, d\mathbf{r}'}{ \, d\mathbf{r}''}+\sigma_{\epsilon}^2\delta(\boldsymbol\tau)\label{eq:ObsCorr1}
-\end{align}
-to simplify the first term in \eqref{eq:ObsCorr1} we define $\mathbf s=\mathbf r-\mathbf r''$ and therefore $d\mathbf r''=-d\mathbf s$ and therefore
-\begin{align}
-\sigma_d&\iint_{\Omega}{m\left(\mathbf{r}  + \boldsymbol{\tau}- \mathbf{r}'\right)m\left(\mathbf{r} - \mathbf{r}''\right)\gamma(\mathbf{r}'-\mathbf{r}'') \, d\mathbf{r}'}{ \, d\mathbf{r}''}\nonumber\\
-&=-\sigma_d\iint_{\Omega}{ m\left(\mathbf{s} + \mathbf{r}''+\boldsymbol{\tau} - \mathbf{r}'\right) m\left(\mathbf{s}\right)\gamma(\mathbf{r}'-\mathbf{r}'') \, d\mathbf{r}'}{ \, d\mathbf{s}}\nonumber\\
-&=-\sigma_d\iint_{\Omega}{ m\left(\mathbf{s}-\tau'\right) m\left(\mathbf{s}\right)\gamma(\mathbf{r}'-\mathbf{r}'') \, d\mathbf{r}'}{ \, d\mathbf{s}}
-\end{align}
-where  $\boldsymbol\tau'=\mathbf{r}'-\mathbf{r}''-\boldsymbol{\tau}$, since the observation kernel is symmetric at origin we have $m\left(\mathbf{s}-\tau'\right)=m\left(\tau'-\mathbf{s}\right)$ and therefore we have
-\begin{align}
- -\sigma_d&\iint_{\Omega}{ m\left(\boldsymbol\tau'-\mathbf{s}\right) m\left(\mathbf{s}\right)\gamma(\mathbf{r}'-\mathbf{r}'') \, d\mathbf{r}'}{ \, d\mathbf{s}}\nonumber\\
-&=-\sigma_d\int_{\Omega}{ \left(m\ast m\right)\left(\mathbf{r}'-\mathbf{r}''-\boldsymbol{\tau}\right)\gamma(\mathbf{r}'-\mathbf{r}'') \, d\mathbf{r}'}\nonumber\\
-&=-\sigma_d\int_{\Omega}{ \left(m\ast m\right)\left(\boldsymbol\tau''-\boldsymbol{\tau}\right)\gamma(\boldsymbol\tau'') \, d\boldsymbol\tau''}\\
-&=-\sigma_d\int_{\Omega}{ \left(m\ast m\right)\left(\boldsymbol{\tau}-\boldsymbol\tau''\right)\gamma(\boldsymbol\tau'') \, d\boldsymbol\tau''}=-\sigma_d\left(m \ast m \ast \gamma\right)\left(\boldsymbol{\tau}\right)
-\end{align}
-where $\boldsymbol\tau''=\mathbf{r}'-\mathbf{r}''$ and $\left(m\ast m\right)\left(\boldsymbol{\tau}-\boldsymbol\tau''\right)= \left(m\ast m\right)\left(\boldsymbol{\tau''}-\boldsymbol\tau\right)$
-Therefore we have
-\begin{align}
-	R_{y_{t},y_{t}}(\boldsymbol{\tau}) &= -\sigma_d\left(m \ast m \ast \gamma\right)\left(\boldsymbol{\tau}\right)+\sigma_{\epsilon}^2\delta(\boldsymbol\tau)
-\end{align}
-\section*{Observation Crosscorrelation}\label{sec:ObservCroocor} 
-\begin{align}
-	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &= \mathbf{E}\left[y_{t}\left(\mathbf{r}+\boldsymbol{\tau}\right)y_{t+1}\left(\mathbf{r}\right)\right] \nonumber\\
-	&= \mathbf{E}\left[\left(\int_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} + \boldsymbol{\varepsilon}_t\left(\mathbf{r}+\boldsymbol{\tau}\right)\right) \left(\int_{\Omega}{ m\left(\mathbf{r} - \mathbf{r}''\right) v_{t+1}\left(\mathbf{r}''\right) \, d\mathbf{r}''} + \boldsymbol{\varepsilon}_{t+1}\left(\mathbf{r}\right)\right) \right]\label{eq:ObsCrossCorr1}
-\end{align}
-we have
-\begin{equation}\label{vt+1}
- v_{t+1}\left(\mathbf{r}''\right)=\xi v_{t}\left(\mathbf{r}''\right)+T_s\int_{\Omega}w\left(\mathbf r'',\mathbf r'''\right)f\left(v_t\left(\mathbf r'''\right)\right)d\mathbf r'''
-\end{equation}
-substituting \eqref{vt+1} in \eqref{eq:ObsCrossCorr2} we get
-\begin{align}
-	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) 
-	&= \mathbf{E}\left[\left(\int_{\Omega}{ m\left(\mathbf{r} + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} + \boldsymbol{\varepsilon}_t\left(\mathbf{r}+\boldsymbol{\tau}\right)\right) \right. \nonumber \\
- \times& \left. \left(\int_{\Omega}{ m\left(\mathbf{r} - \mathbf{r}''\right) v_{t+1}\left(\mathbf{r}''\right)\left[ \xi v_{t}\left(\mathbf{r}''\right)+T_s\int_{\Omega}w\left(\mathbf r'',\mathbf r'''\right)f\left(v_t\left(\mathbf r'''\right)\right)d\mathbf r'''\right]  \, d\mathbf{r}''} + \boldsymbol{\varepsilon}_{t+1}\left(\mathbf{r}\right)\right) \right]\nonumber\\
-&=\mathbf E \left[\int_{\Omega} m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right) v_t\left(\mathbf r'\right) d\mathbf r'\int_{\Omega}m\left(\mathbf r- \mathbf r''\right)\xi v_t\left(\mathbf r''\right)d\mathbf r''\right]\nonumber\\
-+&\mathbf E \left[\int_{\Omega} m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right) v_t\left(\mathbf r'\right) d\mathbf r'\int_{\Omega} m(\mathbf r-\mathbf r'')T_s\int_{\Omega}w(\mathbf r'' -\mathbf r''')\varsigma v_t(\mathbf r''')d\mathbf r''' d\mathbf r''\right]\label{eq:ObsCrossCorr2}
-\end{align}
-from observation autocorrolation the first term of equation \eqref{eq:ObsCrossCorr2} is 
-\begin{equation}
- \mathbf E \left[\int_{\Omega} m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right) v_t\left(\mathbf r'\right) d\mathbf r'\int_{\Omega}m\left(\mathbf r- \mathbf r''\right)\xi v_t\left(\mathbf r''\right)d\mathbf r''\right]=R_{y_{t},y_{t}}(\boldsymbol{\tau}) -\sigma_{\epsilon}^2\delta(\boldsymbol\tau)
-\end{equation}
-to simplify equation \eqref{eq:ObsCrossCorr2} we write
-\begin{equation}\label{eq:KernelIntegral}
- W(\mathbf r'')=\int_{\Omega}w\left(\mathbf r''-\mathbf r'''\right)v_t\left(\mathbf r'''\right)d\mathbf r'''
-\end{equation}
-substituting \eqref{eq:KernelIntegral} in the first term of \eqref{eq:ObsCrossCorr2} we have
-\begin{align}
- &T_s \varsigma\mathbf E \left[\int_{\Omega} m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right) v_t\left(\mathbf r'\right) d\mathbf r'\int_{\Omega}m\left(\mathbf r- \mathbf r''\right)  W(\mathbf r'') d\mathbf r''\right]\nonumber\\
-&=T_s \varsigma\mathbf E \left[\iint_{\Omega} m\left(\mathbf r + \boldsymbol \tau - \mathbf r'\right)m\left(\mathbf r- \mathbf r''\right) v_t\left(\mathbf r'\right)  W(\mathbf r'') d\mathbf r'  d\mathbf r''\right]\nonumber\\
-&=-T_s \varsigma\mathbf E \left[\iint_{\Omega} m\left(\mathbf s+\mathbf r'' + \boldsymbol \tau - \mathbf r'\right)m\left(\mathbf s\right) v_t\left(\mathbf r'\right)  W(\mathbf r'') d\mathbf r'  d\mathbf s\right]\nonumber\\ \label{eq:ObsCrossCorr3}
-\end{align}
-where $\mathbf r -\mathbf r''=\mathbf s $ and therefore $d \mathbf r''=-d\mathbf s $ and again in \eqref{eq:ObsCrossCorr3} by choosing $\boldsymbol\tau'=\mathbf r' -\mathbf r''-\boldsymbol\tau$ the equation \eqref{eq:ObsCrossCorr3} becomes
-\begin{align}
- &-T_s \varsigma\mathbf E \left[\iint_{\Omega} m\left(\mathbf s-\boldsymbol \tau'\right)m\left(\mathbf s\right) v_t\left(\mathbf r'\right)  W(\mathbf r'') d\mathbf r'  d\mathbf s\right]\nonumber\\ 
-&=-T_s \varsigma\mathbf E \left[\int_{\Omega} (m \ast m)\left(\mathbf r'-\mathbf r''-\boldsymbol \tau\right)v_t\left(\mathbf r'\right)  W(\mathbf r'') d\mathbf r'\right]\label{eq:ObsCrossCorr4}
-\end{align}
-replacing for $W(\mathbf r'')$ from \eqref{eq:KernelIntegral}  back to \eqref{eq:ObsCrossCorr4} we get
-\begin{align}
- &-T_s \varsigma\mathbf E \left[\int_{\Omega} (m \ast m)\left(\mathbf r'-\mathbf r''-\boldsymbol \tau\right)v_t\left(\mathbf r'\right)  \int_{\Omega}w\left(\mathbf r''-\mathbf r'''\right)v_t\left(\mathbf r'''\right)d\mathbf r''' d\mathbf r'\right]\nonumber\\
-&=-T_s \varsigma\iint_{\Omega} (m \ast m)\left(\mathbf r'-\mathbf r''-\boldsymbol \tau\right)w\left(\mathbf r''-\mathbf r'''\right)\mathbf E \left[v_t\left(\mathbf r'\right)  v_t\left(\mathbf r'''\right)\right]d\mathbf r''' d\mathbf r' \nonumber \\
-&=-T_s \varsigma\iint_{\Omega} (m \ast m)\left(\mathbf r'-\mathbf r''-\boldsymbol \tau\right)w\left(\mathbf r''-\mathbf r'''\right)\gamma(\mathbf r'-\mathbf r''')d\mathbf r''' d\mathbf r'\nonumber \\
-&=-T_s \varsigma\iint_{\Omega} (m \ast m)\left(\mathbf r'-\mathbf s'-\mathbf r'''-\boldsymbol \tau\right)w\left(\mathbf s'\right)\gamma(\mathbf r'-\mathbf r''')d\mathbf s'd\mathbf r'\label{eq:ObsCrossCorr5}
-\end{align}
-where $\mathbf r'' -\mathbf r'''=\mathbf s' $ and therefore $d \mathbf r'''=-d\mathbf s' $ and again in \eqref{eq:ObsCrossCorr5} by choosing $\boldsymbol\tau''=\mathbf r' -\mathbf r'''-\boldsymbol\tau$ the equation \eqref{eq:ObsCrossCorr5} becomes
-\begin{align}
-&T_s \varsigma\iint_{\Omega} (m \ast m)\left(\boldsymbol \tau''-\mathbf s'\right)w\left(\mathbf s'\right)\gamma(\mathbf r'-\mathbf r''')d\mathbf s'd\mathbf r' \nonumber \\
-&=T_s \varsigma\iint_{\Omega} (m \ast m)\left(\mathbf s'-\boldsymbol \tau''\right)w\left(\mathbf s'\right)\gamma(\mathbf r'-\mathbf r''')d\mathbf s'd\mathbf r' \nonumber \\
-&=T_s \varsigma\int_{\Omega} (m \ast m \ast w)\left(\boldsymbol \tau''\right)\gamma(\mathbf r'-\mathbf r''')d\mathbf r' \nonumber \\
-&=T_s \varsigma\int_{\Omega} (m \ast m \ast w)\left(\mathbf r' -\mathbf r'''-\boldsymbol\tau\right)\gamma(\mathbf r'-\mathbf r''')d\mathbf r' \nonumber \\
-\label{eq:ObsCrossCorr6}
-\end{align}
-Note that im \eqref{eq:ObsCrossCorr6} we use thee property $(m \ast m)\left(\boldsymbol \tau''-\mathbf s'\right)= (m \ast m)\left(\mathbf s'-\boldsymbol \tau''\right)$ by choosing $\boldsymbol\tau'''=\mathbf r'-\mathbf r'''$ and therefore $d\boldsymbol \tau'''=d\mathbf r'$ we therefore equation \ref{eq:ObsCrossCorr6} becomes
-\begin{align}
-&T_s \varsigma\int_{\Omega} (m \ast m \ast w)\left(\boldsymbol \tau'''-\boldsymbol\tau\right)\gamma(\boldsymbol \tau''')d\boldsymbol \tau''' \nonumber \\
-=&T_s \varsigma\int_{\Omega} (m \ast m \ast w)\left(\boldsymbol\tau-\boldsymbol \tau'''\right)\gamma(\boldsymbol \tau''')d\boldsymbol \tau''' \nonumber \\
-=&T_s \varsigma\int_{\Omega} (m \ast m \ast w \ast \gamma)\left(\boldsymbol\tau\right)
-\label{eq:ObsCrossCorr7}
-\end{align}
-we have assumed here that the kernel is isotropic and therefore
-\begin{equation}
- (m \ast m \ast w)\left(\boldsymbol \tau'''-\boldsymbol\tau\right)=(m \ast m \ast w)\left(\boldsymbol\tau-\boldsymbol \tau'''\right)
-\end{equation}
-the relation between $R_{y_{t},y_{t+1}}(\boldsymbol{\tau})$ and $R_{y_{t},y_{t}}(\boldsymbol{\tau})$ becomes
-\begin{align}
-	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &= R_{y_{t},y_{t}}(\boldsymbol{\tau})-\sigma_{\epsilon}^2\delta(\boldsymbol\tau)+T_s\varsigma\left(m\ast m\ast w\ast\gamma\right)\left(\boldsymbol\tau\right)
-\end{align}
-\section*{Estimation of Connectivity Kernel Support}
-The support of the connectivity kernel can be inferred using spatial correlation analysis. The method presented in this paper is based on a similar published method, where the kernel support was estimated using correlation analysis for a linear system described by an IDE~\cite{Scerri2009}. To demonstrate the method for the neural field model, we first define the spatial cross-correlation function between consecutive observations as 
-\begin{align}
-	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &= \mathbf{E}\left[y_{t}\left(\mathbf{r}_n+\boldsymbol{\tau}\right)y_{t+1}\left(\mathbf{r}_n\right)\right] \\
-	&= \mathbf{E}\left[\left(\int_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} + \boldsymbol{\varepsilon}_t\left(\mathbf{r}_n+\boldsymbol{\tau}\right)\right) \left(\int_{\Omega}{ m\left(\mathbf{r}_n - \mathbf{r}'\right) v_{t+1}\left(\mathbf{r}'\right) \, d\mathbf{r}'} + \boldsymbol{\varepsilon}_{t+1}\left(\mathbf{r}_n\right)\right) \right], \label{eq:ObsXCorr}
-\end{align}
-where $\mathbf{E}[\cdot]$ is the expected value. Since the observation noise is temporally white and independent of the field, equation~\ref{eq:ObsXCorr} reduces to
-\begin{align}
-	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &= \mathbf{E}\left[\int_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'}\int_{\Omega}{ m\left(\mathbf{r}_n - \mathbf{r}'\right) v_{t+1}\left(\mathbf{r}'\right)\, d\mathbf{r}'} \right] \\
-	&=\mathbf{E}\left[\bar{y}_t\left(\mathbf{r}_n + \boldsymbol{\tau}\right)\int_{\Omega}{ m\left(\mathbf{r}_n - \mathbf{r}'\right) v_{t+1}\left(\mathbf{r}'\right)\, d\mathbf{r}'} \right],
-\end{align}
-where $\bar{y}_t\left(\mathbf{r}_n + \boldsymbol{\tau}\right)$ is the noise-free observation.
 
-Substituting in equation~\ref{DiscreteTimeModel}  for $v_{t+1}\left(\mathbf{r}\right)$, the cross-correlation function is
-\begin{align}
-	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &= \mathbf{E}\left[\bar{y}_t\left(\mathbf{r}_n + \boldsymbol{\tau}\right) \int_{\Omega}{m\left(\mathbf{r}_n-\mathbf{r}'\right) \left(\xi v_t\left(\mathbf{r}'\right) +T_s \int_\Omega { w\left(\mathbf{r}',\mathbf{r}''\right) f\left(v_t\left(\mathbf{r}''\right)\right)\, d\mathbf{r}''} + e_t\left(\mathbf{r}'\right)\right)\, d\mathbf{r}'} \right] \\	
-	 &= \xi\mathbf{E}\left[\bar{y}_t\left(\mathbf{r}_n + \boldsymbol{\tau}\right)\int_{\Omega}{ m\left(\mathbf{r}_n - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right) d\mathbf{r}'} \right] \nonumber \\
-	&+ T_s\mathbf{E}\left[\bar{y}_t\left(\mathbf{r}_n + \boldsymbol{\tau}\right) \int_{\Omega} {m\left(\mathbf{r}_n-\mathbf{r}'\right) \int_\Omega { w\left(\mathbf{r}',\mathbf{r}''\right) f\left(v_t\left(\mathbf{r}''\right)\right)\, d\mathbf{r}''}\, d\mathbf{r}'} \right] \nonumber \\
-	&+ \mathbf{E}\left[\bar{y}_t\left(\mathbf{r}_n + \boldsymbol{\tau}\right)\int_{\Omega} { m\left(\mathbf{r}_n-\mathbf{r}'\right) e_t \left(\mathbf{r}'\right)\, d\mathbf{r}' } \right]
-	\label{eq:spatialxcorr}
-\end{align}
 
-The first term on the right hand side of equation~\ref{eq:spatialxcorr} is
-\begin{equation}
-	\xi\mathbf{E}\left[\bar{y}_t\left(\mathbf{r}_n + \boldsymbol{\tau}\right) \int_{\Omega}{ m\left(\mathbf{r}_n-\mathbf{r}'\right) v_t\left(\mathbf{r}\right) d\mathbf{r}'} \right] = \xi R_{\bar{y}_{t},\bar{y}_{t}}(\boldsymbol{\tau}),
-\end{equation}
-which is the spatial autocorrelation of the observations scaled by the decay parameter $\xi$. The last term on the right hand side of equation~\ref{eq:spatialxcorr} equates to zero since the disturbance added to the field at time $t$ and assumed to be uncorrelated to the field at time $t$. 
-
-To understand the middle term, the sigmoid activation function, $f(\cdot)$, is approximated by the piecewise function
-\begin{equation}
-	\hat{f}(v_t(\mathbf{r}')) = \left\{ \begin{array}{ll}
-		0, & v_t(\mathbf{r}') \le v_1 \\
-		\varsigma v_t(\mathbf{r}'), &  v_1 < v_t(\mathbf{r}') < v_2 \\
-		1, & v_t(\mathbf{r}') \ge v_2 \\ 
-		\end{array}\right.
-\end{equation}
-Evaluating the middle term of the RHS of equation~\ref{eq:spatialxcorr} for the case where the field is in the linear region of the nonlinearity gives
-\begin{align}
-	middle term &= T_s\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ m\left(\mathbf{r}_n-\mathbf{r}'\right)\int_\Omega { w\left(\mathbf{r}',\mathbf{r}''\right) f\left(v_t\left(\mathbf{r}''\right)\right)\, d\mathbf{r}''}\, d\mathbf{r}'}\right]  \\
-	&=T_s\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ m\left(\mathbf{r}_n-\mathbf{r}'\right)\int_\Omega { w\left(\mathbf{r}',\mathbf{r}''\right) \varsigma v_t\left(\mathbf{r}''\right)\, d\mathbf{r}''}\, d\mathbf{r}'}\right] \label{eq:preswap}  \\
-	&= T_s\varsigma\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ w\left(\mathbf{r}_n,\mathbf{r}'\right) \int_\Omega {  m\left(\mathbf{r}'-\mathbf{r}''\right) v_t\left(\mathbf{r}''\right)\, d\mathbf{r}''}\, d\mathbf{r}'}\right]  \label{eq:postswap} \\
-	&= T_s\varsigma\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ w\left(\mathbf{r}_n,\mathbf{r}'\right) \bar{y}_t\left(\mathbf{r}'\right)\, d\mathbf{r}'}\right],	
-\end{align}
-where the associativity and commutativity algebraic properties of the spatial convolution where used to move from equation~\ref{eq:preswap} to equation~\ref{eq:postswap}.
-% 
-% Evaluating the middle term for the saturation regions. If $v_t(\mathbf{r}') \le v_1$ then the middle term will equate to zero. If $v_t(\mathbf{r}') \ge v_2$ then we get
-% \begin{align}
-% 	middle term &= T_s \mathbf{E} \left[ \bar{y}_t\left(\mathbf{r}_n+\boldsymbol{\tau}\right) \int_{\Omega} { m\left(\mathbf{r}_n-\mathbf{r}'\right) \int_\Omega { w\left(\mathbf{r},\mathbf{r}''\right) \, d\mathbf{r}''} \, d\mathbf{r}'} \right] \\
-% 	&= T_s a_1 \mathbf{E}\left[ \bar{y}_t \left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ m\left(\mathbf{r}_n - \mathbf{r}'\right)\, d\mathbf{r}'} \right] \\
-% 	&= T_s a_1 a_2 \mathbf{E}\left[ \bar{y}_t \left( \mathbf{r}_n + \boldsymbol{\tau} \right) \right],
-% \end{align}
-% where $a_1$ is the integral of the connectivity kernel and $a_2$ is the integral of the observation kernel.
-
-Under the assumption that the field is in the linear region of the sigmoid for the majority of time then
-\begin{equation}\label{eq:approx_xcorr}
-	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) \approx \xi R_{  \bar{y}_{t},\bar{y}_{t} } (\boldsymbol{\tau}) + T_s\varsigma\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ w\left(\mathbf{r}_n,\mathbf{r}'\right) \bar{y}_t\left( \mathbf{r}' \right)\, d\mathbf{r}'}\right].
-\end{equation}
-The autocorrelation of the noisy observations is
-\begin{equation}\label{eq:autocorrelation_of_y}
-	R_{y_{t},y_{t}}(\boldsymbol{\tau}) = R_{\bar{y}_{t},\bar{y}_{t} } (\boldsymbol{\tau}) + \delta(\boldsymbol{\tau})\sigma_{\varepsilon}^2,
-\end{equation}
-where $\delta(\cdot)$ is the Kronecker delta function. Rearranging equation~\ref{eq:autocorrelation_of_y} and substituting it into equation~\ref{eq:approx_xcorr} gives
-\begin{equation}
-	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) \approx \xi (R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \delta(\boldsymbol{\tau}) \sigma_{\varepsilon}^2) + T_s\varsigma\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ w\left(\mathbf{r}_n,\mathbf{r}'\right) \bar{y}_t\left( \mathbf{r}' \right)\, d\mathbf{r}'}\right],	
-\end{equation}
-and
-\begin{equation}\label{eq:support_estimator}
-	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) - \xi (R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \delta(\boldsymbol{\tau}) \sigma_{\varepsilon}^2) \approx T_s\varsigma\mathbf{E}\left[ \bar{y}_t\left( \mathbf{r}_n + \boldsymbol{\tau} \right) \int_{\Omega}{ w\left(\mathbf{r}_n,\mathbf{r}'\right) \bar{y}_t\left( \mathbf{r}' \right)\, d\mathbf{r}'}\right].	
-\end{equation}
-The right hand side of equation~\ref{eq:support_estimator} will have the structure of the connectivity kernel. 
-
-This may hold:
-\begin{equation}
-	R_{\bar{y}_{t},\bar{y}_{t} } (\boldsymbol{\tau}) = \sigma_d \int_{\Omega}{ m(\mathbf{r}_n+\boldsymbol{\tau}-\mathbf{r}')\int_{\Omega}{ m(\mathbf{r}'_n-\mathbf{r}'') \gamma(\mathbf{r}'-\mathbf{r}'') d\mathbf{r}''} d\mathbf{r}'}.
-\end{equation}
-If it does then we can estimate the support of the disturbance using the correlation analysis if the bandwidth of the sensor is wider than the bandwidth of the disturbance.\\
-the proof of the above\\
-\begin{align}
-	R_{y_{t},y_{t}}(\boldsymbol{\tau}) &= \mathbf{E}\left[y_{t}\left(\mathbf{r}_n+\boldsymbol{\tau}\right)y_{t}\left(\mathbf{r}_n\right)\right] \\
-	&= \mathbf{E}\left[\left(\int_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} + \boldsymbol{\varepsilon}_t\left(\mathbf{r}_n+\boldsymbol{\tau}\right)\right) \left(\int_{\Omega}{ m\left(\mathbf{r}_n - \mathbf{r}''\right) v_{t}\left(\mathbf{r}''\right) \, d\mathbf{r}''} + \boldsymbol{\varepsilon}_{t}\left(\mathbf{r}_n\right)\right) \right]\\
-	&=\mathbf{E}\left[\int_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) v_t\left(\mathbf{r}'\right)\, d\mathbf{r}'} \int_{\Omega}{ m\left(\mathbf{r}_n - \mathbf{r}''\right) v_{t}\left(\mathbf{r}''\right) \, d\mathbf{r}''}\right]\\
-	&=\iint_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) m\left(\mathbf{r}_n - \mathbf{r}''\right) \mathbf{E}\left[v_t\left(\mathbf{r}'\right) v_{t}\left(\mathbf{r}''\right)\right]\, d\mathbf{r}'}{ \, d\mathbf{r}''}\\
-	&=\sigma_d\iint_{\Omega}{ m\left(\mathbf{r}_n + \boldsymbol{\tau} - \mathbf{r}'\right) m\left(\mathbf{r}_n - \mathbf{r}''\right)\gamma(\mathbf{r}'-\mathbf{r}'') \, d\mathbf{r}'}{ \, d\mathbf{r}''}\label{eq:ObsCorr}
-\end{align}
-\subsection{Estimation of Connectivity Kernel Support}
-The support of the connectivity kernel can be inferred using spatial correlation analysis. The method presented in this paper is based on a similar published method, where the kernel support was estimated using correlation analysis for a linear system described by an IDE~\cite{Scerri2009}. To demonstrate the method for the neural field model we assume the sensors are infinitesimally close (continuous observation). The spatial cross-correlation function between consecutive observations is defined as 
-\begin{align}
-	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &= \mathbf{E}\left[ y_{t}\left(\mathbf{r}\right) y_{t+1}\left(\mathbf{r}+\boldsymbol{\tau}\right) \right] \\
-	&= \mathbf{E}\left[\left(m\left(\mathbf{r}\right) \ast v_t\left(\mathbf{r}\right) + \boldsymbol{\varepsilon}_t\left(\mathbf{r}\right) \right) \times \left( m\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast v_{t+1}\left(\mathbf{r}+\boldsymbol{\tau}\right) + \boldsymbol{\varepsilon}_{t+1}\left(\mathbf{r}+\boldsymbol{\tau}\right)\right) \right], \label{eq:ObsXCorr}
-\end{align}
-where $\mathbf{E}[\cdot]$ is the expected value. Since the observation noise is temporally white and independent of the field, equation~\ref{eq:ObsXCorr} reduces to
-\begin{equation}
-	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) = \mathbf{E}\left[ m\left(\mathbf{r}\right) \ast v_t\left(\mathbf{r}\right) \times m\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast v_{t+1}\left(\mathbf{r}+\boldsymbol{\tau}\right) \right].
-\end{equation}
-Substituting in equation~\ref{DiscreteTimeModel}  for $v_{t+1}\left(\mathbf{r}\right)$, the cross-correlation function is
-\begin{align}
-	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &= \mathbf{E}\left[ m\left(\mathbf{r}\right) \ast v_t\left(\mathbf{r}\right) \times m\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast \left( \xi v_t\left(\mathbf{r}+\boldsymbol{\tau}\right) + T_s w\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast f\left(v_t\left(\mathbf{r}+\boldsymbol{\tau}\right)\right) + e_t\left(\mathbf{r}+\boldsymbol{\tau}\right)\right) \right] \\	
-	 &= \xi \mathbf{E}\left[ m\left(\mathbf{r}\right) \ast v_t\left(\mathbf{r}\right) \times m\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast v_t\left(\mathbf{r}+\boldsymbol{\tau}\right) \right] \nonumber \\
-	&+ T_s\mathbf{E}\left[ m\left(\mathbf{r}\right) \ast v_t\left(\mathbf{r}\right) \times m\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast w\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast f\left(v_t\left(\mathbf{r}+\boldsymbol{\tau}\right)\right) \right] \nonumber \\
-	&+ \mathbf{E}\left[ m\left(\mathbf{r}\right) \ast v_t\left(\mathbf{r}\right) \times m\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast e_t\left(\mathbf{r}+\boldsymbol{\tau}\right) \right]
-	\\
-	&= R_1(\boldsymbol{\tau}) + R_2(\boldsymbol{\tau}) + R_3(\boldsymbol{\tau}).\label{eq:spatialxcorr} 
-\end{align}
-The last term on the right hand side of equation~\ref{eq:spatialxcorr} is
-\begin{equation}
-	R_3(\boldsymbol{\tau}) = 0,
-\end{equation}
-since the disturbance added to the field at time $t$ and assumed to be uncorrelated to the field at time $t$. Putting to other two terms back together we can write
-\begin{equation}
-	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) = \mathbf{E}\left[ m\left(\mathbf{r}\right) \ast v_t\left(\mathbf{r}\right) \times m\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast \left(\xi v_t\left(\mathbf{r}+\boldsymbol{\tau}\right) + T_s w\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast f\left(v_t\left(\mathbf{r}+\boldsymbol{\tau}\right)\right) \right) \right]
-\end{equation}
-Now we assume that sigmoid activation function, $f(\cdot)$, can be approximated by the piecewise function
-\begin{equation}
-	\hat{f}(v_t(\mathbf{r}')) = \left\{ \begin{array}{ll}
-		0, & v_t(\mathbf{r}') \le v_1 \\
-		\varsigma v_t(\mathbf{r}'), &  v_1 < v_t(\mathbf{r}') < v_2 \\
-		1, & v_t(\mathbf{r}') \ge v_2 \\ 
-		\end{array}\right.
-\end{equation}
-Furthermore, we assume the field is in the linear region of the piecewise function for the majority of the time. 
-\begin{equation}
-	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) \approx \mathbf{E}\left[ m\left(\mathbf{r}\right) \ast v_t\left(\mathbf{r}\right) \times m\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast \left(\xi v_t\left(\mathbf{r}+\boldsymbol{\tau}\right) + T_s w\left(\mathbf{r}+\boldsymbol{\tau}\right) \ast \varsigma v_t\left(\mathbf{r}+\boldsymbol{\tau}\right) \right) \right]
-\end{equation}
-Now we take the Fourier transform of the terms inside the expectation giving
-\begin{align}
-	R_{y_{t},y_{t+1}}(\boldsymbol{\tau}) &\approx \mathbf{E}\left[\mathcal{F}^{-1} \left\{M(\boldsymbol{\nu})V(\boldsymbol{\nu}) \ast \left(\xi e^{i\boldsymbol{\nu}^{\top}\boldsymbol{\tau}} M(\boldsymbol{\nu}) e^{i\boldsymbol{\nu}^{\top}\boldsymbol{\tau}} V(\boldsymbol{\nu}) + T_s e^{i\boldsymbol{\nu}^{\top}\boldsymbol{\tau}} M(\boldsymbol{\nu}) e^{i\boldsymbol{\nu}^{\top}\boldsymbol{\tau}} W(\boldsymbol{\nu}) e^{i\boldsymbol{\nu}^{\top}\boldsymbol{\tau}} \varsigma V(\boldsymbol{\nu}) \right) \right\} \right] \\
-	&= \mathbf{E}\left[\mathcal{F}^{-1} \left\{M(\boldsymbol{\nu}) V(\boldsymbol{\nu}) \ast \left(\xi e^{2i\boldsymbol{\nu}^{\top}\boldsymbol{\tau}} M(\boldsymbol{\nu}) V(\boldsymbol{\nu}) + T_s e^{2i\boldsymbol{\nu}^{\top}\boldsymbol{\tau}} M(\boldsymbol{\nu}) \varsigma V(\boldsymbol{\nu}) e^{i\boldsymbol{\nu}^{\top}\boldsymbol{\tau}} W(\boldsymbol{\nu}) \right) \right\} \right] \\
-	&= \mathbf{E}\left[\mathcal{F}^{-1} \left\{M(\boldsymbol{\nu}) V(\boldsymbol{\nu}) \ast e^{2i\boldsymbol{\nu}^{\top}\boldsymbol{\tau}} M(\boldsymbol{\nu}) V(\boldsymbol{\nu}) \left(\xi + T_s \varsigma e^{i\boldsymbol{\nu}^{\top}\boldsymbol{\tau}} W(\boldsymbol{\nu}) \right) \right\} \right] \\
-	&= \mathbf{E}\left[m(\mathbf{r}) \ast v_t(\mathbf{r}) \times m(\mathbf{r}+\boldsymbol{\tau}) \ast v_t(\mathbf{r}+\boldsymbol{\tau}) \ast \left( \xi\delta_D(\mathbf{r}) + T_s \varsigma w(\mathbf{r}+\boldsymbol{\tau}) \right) \right] \\
-	&= \mathbf{E}\left[m(\mathbf{r}) \ast v_t(\mathbf{r}) \times m(\mathbf{r}+\boldsymbol{\tau}) \ast v_t(\mathbf{r}+\boldsymbol{\tau}) \right] \ast \mathbf{E}\left[\left( \xi\delta_D(\mathbf{r}) + T_s \varsigma w(\mathbf{r}+\boldsymbol{\tau}) \right) \right] \label{eq:xcorr_pre_sub}
-\end{align}
-where $\mathcal{F}^{-1}$ denotes the inverse Fourier transform and $R_{y_{t},y_{t}}(\boldsymbol{\tau})$ is the auto-correlation of the observations, $\delta_K(\cdot)$ is the Kronecker delta function, and $\delta_D(\cdot)$ is the Dirac delta function. We define the auto-correlation of the observations as
-\begin{align}
-	R_{y_{t},y_{t}}(\boldsymbol{\tau}) &= \mathbf{E}\left[ y_{t}\left(\mathbf{r}\right) y_{t}\left(\mathbf{r}+\boldsymbol{\tau}\right) \right]\\
-	&= \mathbf{E}\left[m(\mathbf{r}) \ast v_t(\mathbf{r}) \times m(\mathbf{r}+\boldsymbol{\tau}) \ast v_t(\mathbf{r}+\boldsymbol{\tau})\right] + \delta_K(\boldsymbol{\tau})\sigma_{\varepsilon}^2
-\end{align}
-Rearrange to get
-\begin{equation}\label{eq:autocorr_for_sub}
-	R_{y_{t},y_{t}}(\boldsymbol{\tau}) - \delta_K(\boldsymbol{\tau})\sigma_{\varepsilon}^2 = \mathbf{E}\left[m(\mathbf{r}) \ast v_t(\mathbf{r}) \times m(\mathbf{r}+\boldsymbol{\tau}) \ast v_t(\mathbf{r}+\boldsymbol{\tau})\right].
-\end{equation}
-Now to isolate the kernel equation~\ref{eq:autocorr_for_sub} is substituted into equation~\ref{eq:xcorr_pre_sub} and the Fourier transform is taken giving
-\begin{align}
-	\mathcal{F}\left\{R_{y_{t},y_{t+1}}(\boldsymbol{\tau})\right\} &\approx \mathcal{F}\left\{ \left(R_{y_t,y_t}(\boldsymbol{\tau}) - \delta_K\left(\boldsymbol{\tau}\right)\sigma_{\varepsilon}^2\right) \ast \mathbf{E} \left[ \xi\delta_D(\mathbf{r})  + T_s \varsigma w(\mathbf{r}+\boldsymbol{\tau}) \right] \right\} \\
-	&= \mathcal{F}\left\{ R_{y_t,y_t}(\boldsymbol{\tau}) - \delta_K\left(\boldsymbol{\tau}\right) \sigma_{\varepsilon}^2 \right\} \mathcal{F}\left\{\mathbf{E}[ \xi \delta_D(\mathbf{r})  + T_s \varsigma w(\mathbf{r}+\boldsymbol{\tau}) ]\right\}.
-\end{align}
-Now rearranging
-\begin{equation}
-	\frac{\mathcal{F}\left\{R_{y_{t},y_{t+1}}(\boldsymbol{\tau})\right\}}{\mathcal{F}\left\{ R_{y_t,y_t}(\boldsymbol{\tau}) - \delta_K\left(\boldsymbol{\tau}\right)\sigma_{\varepsilon}^2 \right\}} \approx \mathcal{F}\left\{ \mathbf{E}\left[ \xi\delta_D\left(\mathbf{r}\right)  + T_s \varsigma w(\mathbf{r}+\boldsymbol{\tau}) \right]\right\}.
-\end{equation}
-Take inverse Fourier transform and rearrange to get an approximation of the kernel
-\begin{equation}
-	\mathcal{F}^{-1}\left\{\frac{\mathcal{F}\left\{R_{y_{t},y_{t+1}}(\boldsymbol{\tau})\right\}}{\mathcal{F}\left\{ R_{y_t,y_t}(\boldsymbol{\tau}) - \delta_K\left(\boldsymbol{\tau}\right)\sigma_{\varepsilon}^2 \right\}}\right\} \approx \mathbf{E}[\xi\delta_D\left(\mathbf{r}\right)  + T_s \varsigma w(\mathbf{r}+\boldsymbol{\tau})].
-\end{equation}
-This equation states that the support of the kernel can be estimated given knowledge of $\sigma_\varepsilon^2$. Furthermore, is we assume a local coupling (at $\boldsymbol\tau=0$) regime, either excitation or inhibition, than we don't even need to know $\sigma_\varepsilon^2$. The peak in the kernel at $\mathbf{r}=0$ will be bigger or smaller if we guess incorrectly and the kernel parameters can do the rest! 
 \bibliographystyle{plain}
 \bibliography{EMIDE}
 \end{document}
