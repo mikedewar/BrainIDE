@@ -1,6 +1,8 @@
 
 %
-\documentclass[conference]{IEEEtran}
+\documentclass[conference,onecolumn]{IEEEtran}
+% \documentclass[conference]{IEEEtran}
+
 % Add the compsoc option for Computer Society conferences.
 %
 % If IEEEtran.cls has not been installed into the LaTeX system files,
@@ -234,7 +236,7 @@ The solution of the above equation for the connectivity kernel is a deconvolutio
 Now by rearranging and making the appropriate cancelations we get
 \begin{align}
 	\frac{\varsigma T_s}{4}\mathcal{F}\{w(\boldsymbol\tau)\} &= \frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] - \mathbf{E}\left[c_t\right]\}}{\mathcal{F}\{\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau)\}} - \xi \\
-	\frac{\varsigma T_s}{4}\mathcal{F}\{w(\boldsymbol\tau)\} &= \frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\} - \mathbf{E}\left[c_t\right]\delta(\boldsymbol{\nu})}{\mathcal{F}\{\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 } - \xi 
+	\mathcal{F}\{w(\boldsymbol\tau)\} &= \frac{4}{\varsigma T_s}\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\} - \mathbf{E}\left[c_t\right]\delta(\boldsymbol{\nu})}{\mathcal{F}\{\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 } - \xi \label{eq:Fourier_TF_of_Kernel}
 \end{align}
 From this we see that an error in our guess for $\xi$ will result in a dilation or contraction of the estimated kernel support. An incorrect estimate of $c_t$ will result in a DC shift in the kernel estimate and an incorrect estimate in the observation noise will result in a distortion in the shape of the kernel.
 
@@ -272,16 +274,54 @@ and
 \begin{align}\label{eq:term3}
 	\mathbf{E}[((m\ast g_t) &\star y_{t+1})(\boldsymbol\tau)] \\ 
 	&\approx \frac{1}{4}\mathbf{E}[((m \ast w \ast (2 + \varsigma v_t - \varsigma v_0))\star y_{t+1})(\boldsymbol\tau)] \\
-	&= \varsigma w \ast \mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol\tau)]  + \mathbf{E}[c_t].
+	&= \frac{\varsigma}{4} w \ast \mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol\tau)]  + \mathbf{E}[c_t].
 \end{align}
 Substituting equations~\ref{eq:term1} ~\ref{eq:term2} and ~\ref{eq:term3} back into equation~\ref{eq:expanded_auto_corr} gives
 \begin{align}\label{eq:Auto&CrossNoisy}
 	\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})] &= \xi \mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol{\tau})] \nonumber \\
-	&+ T_s \varsigma w \ast \mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol\tau)]  + \mathbf{E}[c_t] \nonumber \\
-	&+\mathbf{E}[((m\ast e_t)\star y_{t+1})(\boldsymbol\tau)] \nonumber \\ 
-	&+\sigma_{\epsilon}^2\delta(\boldsymbol{\tau}).
+	&\quad+  \frac{\varsigma T_s}{4} w \ast \mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol\tau)]  + \mathbf{E}[c_t] \nonumber \\
+	&\quad+\mathbf{E}[((m\ast e_t)\star y_{t+1})(\boldsymbol\tau)] \nonumber \\ 
+	&\quad+\sigma_{\epsilon}^2\delta(\boldsymbol{\tau}).
 \end{align}
-The second term in equation~\ref{eq:Auto&CrossNoisy} can also be simplified to 
+The third term in \eqref{eq:Auto&CrossNoisy} can be simplified as
+\begin{align}\label{eq:term3Noisy}
+\mathbf{E}[((m\ast e_t)\star y_{t+1})(\boldsymbol\tau)] &= \mathbf{E}[((m\ast e_t)\star (m\ast v_{t+1}+\varepsilon_{t+1})) (\boldsymbol\tau)] \\
+	&= \mathbf{E}[(\left(m \ast e_t\right) \star (m \ast [\xi v_t \nonumber \\
+	&\quad+ T_s \varsigma \left(w \ast v_t\right) + e_t]+\varepsilon_{t+1}))(\boldsymbol\tau)] \\
+	&=\mathbf{E}[\left(m \ast e_t\right)\star\left(m \ast e_t\right)(\boldsymbol\tau)]
+\end{align}
+A property of cross-correlation and convolution is $(a \ast b)(\boldsymbol\tau) \star (a \ast b)(\boldsymbol\tau)=(a \star a)(\boldsymbol\tau)\ast(b \star b)(\boldsymbol\tau)$ (see Appendix II for a proof), using the isotropy property of the observation kernel we can write
+\begin{align}\label{eq:term4}
+\mathbf{E}[(\left(m \ast e_t\right)\star\left(m \ast e_t\right))(\boldsymbol\tau)]&=\mathbf{E}[(\left(m \star m\right)\ast\left(e_t \star e_t\right))(\boldsymbol\tau)] \\
+&=(m\ast m \ast \gamma)(\boldsymbol\tau).
+\end{align}
+Substituting this back into equation~\ref{eq:Auto&CrossNoisy} we get
+\begin{align}
+	\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})] &= \xi \mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol{\tau})] \nonumber \\
+	&\quad+  \frac{\varsigma T_s}{4} w \ast \mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol\tau)]  + \mathbf{E}[c_t] \nonumber \\
+	&\quad+(m\ast m \ast \gamma)(\boldsymbol\tau) \nonumber \\ 
+	&\quad+\sigma_{\varepsilon}^2\delta(\boldsymbol{\tau}).
+\end{align}
+To solve for the disturbance covariance we again turn to the convolution theorem to perform the deconvolution algebraically. Taking the Fourier transform and rearranging we get
+\begin{align}
+	\mathcal{F}\{(m\ast m \ast \gamma)(\boldsymbol\tau)\} &= \xi \mathcal{F}\{\mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol{\tau})]\} \nonumber \\
+	&\quad + \frac{\varsigma T_s}{4} \mathcal{F}\{w(\boldsymbol{\tau})\}\mathcal{F}\{ \mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol\tau)]\}  + \mathcal{F}\{\mathbf{E}[c_t]\} \nonumber \\
+	&\quad + \mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})]\} \nonumber \\ 
+	&\quad+\sigma_{\varepsilon}^2.
+\end{align}
+Now substituting in equation~\ref{eq:Fourier_TF_of_Kernel} for $\mathcal{F}\{w(\boldsymbol{\tau})\}$ we get
+\begin{align}
+	\mathcal{F}\{(m\ast m \ast \gamma)(\boldsymbol\tau)\} &= \xi \mathcal{F}\{\mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol{\tau})]\} \nonumber \\
+	&\quad + (\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\} - \mathbf{E}\left[c_t\right]\delta(\boldsymbol{\nu})}{\mathcal{F}\{\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 } - \xi) \nonumber\\
+	&\quad\times\mathcal{F}\{ \mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol\tau)]\}  + \mathcal{F}\{\mathbf{E}[c_t]\} \nonumber \\
+	&\quad + \mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})]\} \nonumber \\ 
+	&\quad+\sigma_{\varepsilon}^2.
+\end{align}
+Now simplifying gives
+\begin{align}
+	\mathcal{F}\{(m\ast m \ast \gamma)(\boldsymbol\tau)\} &= (\frac{(\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\} - \mathbf{E}\left[c_t\right]\delta(\boldsymbol{\nu}))\mathcal{F}\{ \mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol\tau)]\}}{\mathcal{F}\{\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 }) \nonumber\\
+	&\quad + \mathbf{E}\left[c_t\right]\delta(\boldsymbol{\nu})) + \mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})]\} +\sigma_{\varepsilon}^2.	
+\end{align}
 \section{Results}
 
 For each simulation I have used 20 seconds of data, with the same parameters as the Neuroimage paper.
