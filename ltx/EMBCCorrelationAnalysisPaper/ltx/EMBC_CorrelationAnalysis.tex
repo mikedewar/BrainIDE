@@ -212,8 +212,8 @@ Now we can write
 \end{equation}
 The order of the convolution and cross-correlation can reversed by recognizing that a property of cross-correlation and convolution is $(a \ast b)(\boldsymbol\tau) \star c(\boldsymbol\tau) = a(-\boldsymbol\tau)\ast(b \star c)(\boldsymbol\tau)$ (see Appendix for proof). Therefore,
 \begin{align}
-4((m \ast g_t) \star y_t)(\boldsymbol\tau) &\approx \varsigma w \ast (\left[y_t-\varepsilon_t \right]\star y_t ) (\boldsymbol\tau) + c_2(\boldsymbol\tau) \\ 
-&= \varsigma w \ast \left[R_{y_ty_t}(\boldsymbol\tau) - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau) \right] + c_t.
+4\mathbf{E}[((m \ast g_t) \star y_t)(\boldsymbol\tau)] &\approx \varsigma w \ast \mathbf{E}[(\left[y_t-\varepsilon_t \right]\star y_t ) (\boldsymbol\tau)] + \mathbf{E}[c_t] \\ 
+&= \varsigma w \ast \mathbf{E}[\left[R_{y_ty_t}(\boldsymbol\tau)] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau) \right] + \mathbf{E}[c_t].
 \end{align}
 Now substituting back to equation~\ref{} we get
 \begin{align}
@@ -226,26 +226,66 @@ Rearranging equation~\ref{} we get
 	&= \frac{\varsigma T_s}{4}w \ast \mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau).
 \end{align}
 
-The solution of the above equation for the connectivity kernel is a deconvolution. This can be approached from a number of different standpoints. The simplest solution is to use the convolution theorem. To show this we take the spatial Fourier transform of both sides of equation~\ref{} giving
+The solution of the above equation for the connectivity kernel is a deconvolution. This can be approached from a number of different standpoints. The simplest solution is to use the convolution theorem and to solve for the kernel algebraically in the frequency domain. % Alternatively, the convolution can be written as a system of linear equations by forming the convolution (Toeplitz) matrix. The solution of the convolution equation for $w(\cdot)$ can then be found by either inverting the convolution matrix or directly solving the system of equations. Directly solving the system is the most numerically stable and less computationally demanding then inverting the convolution matrix. To show this we take the spatial Fourier transform of both sides of equation~\ref{} giving
 \begin{align}
 	\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] &- \xi\left(\mathbf{E}[ (R_{y_ty_t}(\boldsymbol{\tau})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\tau})\right) - \mathbf{E}\left[c_t\right]\} \nonumber \\
-	&=\frac{\varsigma T_s}{4}\mathcal{F}\{w(\boldsymbol\tau)\}\mathcal{F}\{\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau)\} \\
+	&=\frac{\varsigma T_s}{4}\mathcal{F}\{w(\boldsymbol\tau)\}\mathcal{F}\{\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau)\}
 \end{align}
 Now by rearranging and making the appropriate cancelations we get
 \begin{align}
 	\frac{\varsigma T_s}{4}\mathcal{F}\{w(\boldsymbol\tau)\} &= \frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] - \mathbf{E}\left[c_t\right]\}}{\mathcal{F}\{\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau)\}} - \xi \\
 	\frac{\varsigma T_s}{4}\mathcal{F}\{w(\boldsymbol\tau)\} &= \frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\} - \mathbf{E}\left[c_t\right]\delta(\boldsymbol{\nu})}{\mathcal{F}\{\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 } - \xi 
 \end{align}
-From this we see that an error in our guess for $\xi$ will result in a dilation or contraction of the estimated kernel support. 
-% Alternatively, the convolution can be written as a system of linear equations by forming the convolution (Toeplitz) matrix. The solution of the convolution equation for $w(\cdot)$ can then be found by either inverting the convolution matrix or directly solving the system of equations. Directly solving the system is the most numerically stable and less computationally demanding then inverting the convolution matrix. 
+From this we see that an error in our guess for $\xi$ will result in a dilation or contraction of the estimated kernel support. An incorrect estimate of $c_t$ will result in a DC shift in the kernel estimate and an incorrect estimate in the observation noise will result in a distortion in the shape of the kernel.
 
+Finally, an expression for the kernel is
+\begin{equation}
+	w(\boldsymbol\tau) = \frac{4}{\varsigma T_s}\mathcal{F}^{-1}\left\{\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\} - \mathbf{E}\left[c_t\right]\delta(\boldsymbol{\nu})}{\mathcal{F}\{\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 } - \xi\right\}.
+\end{equation}
 
-
+\subsection{Disturbance Covariance}
+The observation auto-correlation at time $t+1$ can be expressed as
+\begin{equation}
+	R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})=(y_{t+1} \star y_{t+1})(\boldsymbol\tau).
+\end{equation}
+Substituting equation~\ref{eq:ObservationEquation} in for $y_{t+1}$ we get
+\begin{align}
+	R_{y_{t+1}y_{t+1}}&(\boldsymbol{\tau}) = \\ \nonumber 
+	([\xi(m &\ast v_{t}) + T_s(m\ast g_{t})+(m\ast e_{t})+\varepsilon_{t+1}] \star  y_{t+1})(\boldsymbol{\tau})
+\end{align}
+Now expanding we get
+\begin{align}\label{eq:expanded_auto_corr}
+	R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau}) &= \xi((m \ast v_{t}) \star y_{t+1})(\boldsymbol{\tau}) \nonumber \\
+	&\quad+T_s((m\ast g_{t})\star y_{t+1})(\boldsymbol{\tau}) \nonumber \\
+	&\quad+((m\ast e_{t})\star  y_{t+1})(\boldsymbol{\tau}) \nonumber \\
+	&\quad+(\varepsilon_{t+1} \star y_{t+1})(\boldsymbol{\tau}).
+\end{align}
+By using similar arguments that were used in the derivation for the connectivity kernel support, the autocorrelation can be simplified by recognizing that
+\begin{align}\label{eq:term1}
+  \mathbf{E}[\xi((m\ast v_{t})\star y_{t+1})(\boldsymbol{\tau})]&=\xi \mathbf{E}[ R_{y_ty_{t+1}}(\boldsymbol{\tau})],
+\end{align}
+and
+\begin{align}\label{eq:term2}
+ \mathbf{E}[(\varepsilon_{t+1}\star y_{t+1})(\boldsymbol\tau)]&=\sigma_{\varepsilon}^2\delta(\boldsymbol{\tau}),
+\end{align}
+and
+\begin{align}\label{eq:term3}
+	\mathbf{E}[((m\ast g_t) &\star y_{t+1})(\boldsymbol\tau)] \\ 
+	&\approx \frac{1}{4}\mathbf{E}[((m \ast w \ast (2 + \varsigma v_t - \varsigma v_0))\star y_{t+1})(\boldsymbol\tau)] \\
+	&= \varsigma w \ast \mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol\tau)]  + \mathbf{E}[c_t].
+\end{align}
+Substituting equations~\ref{eq:term1} ~\ref{eq:term2} and ~\ref{eq:term3} back into equation~\ref{eq:expanded_auto_corr} gives
+\begin{align}\label{eq:Auto&CrossNoisy}
+	\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})] &= \xi \mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol{\tau})] \nonumber \\
+	&+ T_s \varsigma w \ast \mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol\tau)]  + \mathbf{E}[c_t] \nonumber \\
+	&+\mathbf{E}[((m\ast e_t)\star y_{t+1})(\boldsymbol\tau)] \nonumber \\ 
+	&+\sigma_{\epsilon}^2\delta(\boldsymbol{\tau}).
+\end{align}
+The second term in equation~\ref{eq:Auto&CrossNoisy} can also be simplified to 
 \section{Results}
 
 For each simulation I have used 20 seconds of data, with the same parameters as the Neuroimage paper.
-I have used two scenarios for the kernel, three scenarios for the activation function, and two scenarios for the boundary conditions. 1) A isotropic kernel. 2) An anisotropic kernel.
-
+I have used two scenarios for the kernel (isotropic and anisotropic) and two scenarios for the activation function (linearized and nonlinear). I have also used periodic boundary conditions in all examples.
 
 \subsection{Linearized Neural Field Model}
 
@@ -267,7 +307,7 @@ I have used two scenarios for the kernel, three scenarios for the activation fun
 	\label{fig:label}
 \end{figure}
 \newpage
-\subsection{Linear Neural Field Model Anisotropic}
+
 
 
 \subsection{Linearized Neural Field Model}
@@ -289,113 +329,6 @@ I have used two scenarios for the kernel, three scenarios for the activation fun
 	\caption{Nonlinear model to generate data. Linearized model for estimation. Periodic boundary conditions.}
 	\label{fig:label}
 \end{figure}
-% \begin{figure}
-% 	\centering
-% 	\subfigure[]{
-% 	\includegraphics[scale=1]{FieldSpatialFreq}
-% 	\label{fig:ObservationSpatialFreq}}
-% 	\subfigure[]{
-% 	\includegraphics[scale=1]{FieldSpatialFreqCrossSection}
-% 	\label{fig:ObservationSpatialFreqCrossSection}}
-% 	\caption{a) Field spatial frequency in dB. b) Spatial frequency cross-section showing cutoff frequency. The black line shows the spatial frequency in the x direction and the red line shows the frequency in the y direction.}
-% \end{figure}
-% 
-% \newpage
-% 
-% \begin{figure*}
-% 	\centering
-% 		\subfigure[]{
-% 		\includegraphics[scale=1]{FFTKernel}
-% 	\label{fig:FFTKernel}}
-% 		\subfigure[]{
-% 		\includegraphics[scale=1]{FFTKernelEstimateFullLinear}
-% 	\label{fig:FFTKernelEstimateFullLinear}}
-% 		\subfigure[]{
-% 		\includegraphics[scale=1]{FFTKernelEstimateThresholdLinear}
-% 	\label{fig:FFTKernelEstimateThreshLinear}}
-% 		\subfigure[]{
-% 		\includegraphics[scale=1]{FFTKernelEstimateFull}
-% 	\label{fig:FFTKernelEstimateFullNonlinear}}
-% 		\subfigure[]{
-% 		\includegraphics[scale=1]{FFTKernelEstimateThreshold}
-% 	\label{fig:FFTKernelEstimateThreshNonlinear}}
-% 	\label{fig:FFTKernels}
-% 	\caption{a) FFT of kernel. b) FFT of kernel estimate when generating data with linear model showing numerical issues. c) Thresholded FFT of kernel estimate when generating data with linear model. d) FFT of kernel estimate when generating data with nonlinear model. e) Thresholded FFT of kernel estimate when generating data with nonlinear linear model.}
-% \end{figure*}
-% 
-% \newpage
-% 
-% \begin{figure}[t!]
-% 	\centering
-% 		\subfigure[]{
-% 		\includegraphics[scale=1]{Kernel}
-% 	\label{fig:Kernel}}
-% 		\subfigure[]{
-% 		\includegraphics[scale=1]{KernelEstimateLinear}
-% 	\label{fig:KernelEstimateLinear}}
-% 		\subfigure[]{
-% 		\includegraphics[scale=1]{KernelEstimate}
-% 	\label{fig:KernelEstimateNonlinear}}
-% 	\label{fig:Kernels}
-% 	\caption{a) The actual kernel. b) Estimate of kernel when generating data using the linear model. b) Estimate of the kernel when using the nonlinear model.}
-% \end{figure}
-% 
-% \newpage
-% 
-% \begin{figure}[t!]
-% 	\centering
-% 	\subfigure[]{
-% 	\includegraphics[scale=1]{KernelsCrossSectionLinear}
-% 	\label{fig:KernelCrossSectionLinear}}
-% 	\subfigure[]{
-% 	\includegraphics[scale=1]{KernelsCrossSection}
-% 	\label{fig:KernelCrossSectionNonlinear}}
-% 	\caption{a) From the linear model. b) from the nonlinear model.}
-% \end{figure}
-% 
-% \begin{figure}[t!]
-% 	\centering
-% 	\subfigure[]{
-% 	\includegraphics[scale=1]{FFTRemovedKernelEstimateThreshold}
-% 	\label{fig:SpectrumOfEstimateWithoutKernel}}
-% 	\subfigure[]{
-% 	\includegraphics[scale=1]{KernelEstimateLeftOvers}
-% 	\label{fig:KernelLeftOvers}}
-% 	\subfigure[]{
-% 	\includegraphics[scale=1]{LeftOverFromEstimate}
-% 	\label{fig:KernelLeftOversCrossSection}}
-% 	\caption{This part is for debugging. a) Removing the kernel from the spectrum of the estimate. b) Kernel left overs. c) Cross section of b.}
-% \end{figure}
-% \begin{figure}[t!]
-% 	\centering
-% 	\subfigure[]{
-% 	\includegraphics[scale=1]{KernelEstimateParham}
-% 	\label{fig:ParhamKernelCrossSectionLinear}}
-% 	\caption {From the nonlinear model. left: Normalised true kernel; right: Normalised estimated kernel}
-% \end{figure}
-% \begin{figure}[t!]
-% 	\centering
-% 	\subfigure[]{
-% 	\includegraphics[scale=1]{KernelsCrossSectionParham}
-% 	\label{fig:ParhamKernelCrossSectionLinear}}
-% 	\caption{Normalised kernel from the nonlinear model. (Black:true; Red:estimate)}
-% \end{figure}
-
-% \begin{figure}[t!]
-% 	\centering
-% 		\subfigure[]{
-% 		\includegraphics[scale=1]{KernelEstimateDataLinsolve}
-% 	\label{fig:Kernel}}
-% 		\subfigure[]{
-% 		\includegraphics[scale=1]{KernelEstimateDataInvConvMat}
-% 	\label{fig:KernelEstimate}}
-% 		\subfigure[]{
-% 		\includegraphics[scale=1]{KernelEstimateDataFFT}
-% 	\label{fig:KernelEstimate}}
-% 	\label{fig:Kernels}
-% 	\caption{Kernel estimates from data. a) Using linsolv. b) Using psuedo inverse of convolution matrix. b) Using FFT.}
-% \end{figure}
-
 
 \section{Discussion}
 
