@@ -146,7 +146,7 @@ The mapping between the membrane voltage and the electrophysiological data, deno
 where $m\left(\mathbf{r}-\mathbf{r}'\right)$ is the observation kernel, $\varepsilon_t(\mathbf{r}_n) \sim \mathcal{N}\left(0,\boldsymbol{\Sigma}_{\varepsilon}\right)$ denotes a multivariate normal distribution with mean zero and the covariance matrix $\boldsymbol{\Sigma}_{\varepsilon} = \sigma_{\varepsilon}^2\mathbf{I}$, where $\mathbf{I}$ is the identity matrix. Since we are considering intracranial measurements recorded directly from the surface of the cortex or within the brain, the lead field is not modeled by the observation equation.
 
 \subsection{Estimation of Connectivity Kernel Support}
-For the derivation of the spatial properties estimator of the neural field equations we will switch to a more compact notation to define convolution and correlation operators for . The spatial convolution shall be denoted as
+For the derivation of the spatial properties estimator of the neural field equations we will switch to a more compact notation to define convolution and correlation operators. The spatial convolution shall be denoted as
 \begin{equation}
 	\int_\Omega a(\mathbf{r}-\mathbf{r}')b(\mathbf{r}')d\mathbf{r}' = (a\ast b)(\mathbf{r}),
 \end{equation}
@@ -154,13 +154,13 @@ and the spatial cross-correlation shall be denoted as
 \begin{equation}
 	\int_\Omega a(\mathbf{r})b(\mathbf{r}+\boldsymbol{\tau})d\mathbf{r} = (a\star b)(\boldsymbol{\tau}).
 \end{equation} 
-The spatial relationship between consecutive observations is governed by the shape of the connectivity kernel. Therefore, the cross-correlation between consecutive observations is used to estimate the support of the connectivity kernel. The cross-correlation is defined as
+The spatial relationship between consecutive observations is governed by the shape of the connectivity kernel. Therefore, the spatial cross-correlation between consecutive observations is used to estimate the support of the connectivity kernel. The cross-correlation is defined as
 \begin{equation}
-	R_{y_{t+1}y_t}(\boldsymbol{\tau}) = (y_{t+1}\star y_t)(\boldsymbol{\tau}),
+	R_{y_{t+1}y_t}(\boldsymbol{\tau}) = \left(y_{t+1}\star y_t\right)\left(\boldsymbol{\tau}\right),
 \end{equation}
 where $\tau$ is the spatial shift. Now substituting equation~\ref{eq:ObservationEquation} for $y_{t+1}(\mathbf{r})$ gives 
 \begin{equation}
-	R_{y_{t+1}y_t}(\boldsymbol{\tau}) = ((m \ast v_{t+1})\star y_t)(\boldsymbol{\tau}) + (\varepsilon_{t+1} \star y_t)(\boldsymbol{\tau}).
+	R_{y_{t+1}y_t}\left(\boldsymbol{\tau}\right) = \left(\left(m \ast v_{t+1}\right)\star y_t\right)\left(\boldsymbol{\tau}\right) + \left(\varepsilon_{t+1} \star y_t\right)\left(\boldsymbol{\tau}\right).
 \end{equation}
 Next equation~\ref{eq:DiscreteTimeModel} is substituted in for $v_{t+1}(\mathbf{r})$ giving 
 \begin{align}
@@ -304,23 +304,21 @@ Substituting this back into equation~\ref{eq:Auto&CrossNoisy} we get
 \end{align}
 To solve for the disturbance covariance we again turn to the convolution theorem to perform the deconvolution algebraically. Taking the Fourier transform and rearranging we get
 \begin{align}
-	\mathcal{F}\{(m\ast m \ast \gamma)(\boldsymbol\tau)\} &= \xi \mathcal{F}\{\mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol{\tau})]\} \nonumber \\
-	&\quad + \frac{\varsigma T_s}{4} \mathcal{F}\{w(\boldsymbol{\tau})\}\mathcal{F}\{ \mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol\tau)]\}  + \mathcal{F}\{\mathbf{E}[c_t]\} \nonumber \\
-	&\quad + \mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})]\} \nonumber \\ 
-	&\quad+\sigma_{\varepsilon}^2.
+	\mathcal{F}\{(m\ast m \ast \gamma)(\boldsymbol\tau)\} &= \mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})]\}-\sigma_{\varepsilon}^2 \nonumber \\ 
+	&\quad-\xi \mathcal{F}\{\mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol{\tau})]\} \nonumber \\
+	&\quad - \frac{\varsigma T_s}{4} \mathcal{F}\{w(\boldsymbol{\tau})\}\mathcal{F}\{ \mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol\tau)]\}  - \mathcal{F}\{\mathbf{E}[c_t]\}
 \end{align}
 Now substituting in equation~\ref{eq:Fourier_TF_of_Kernel} for $\mathcal{F}\{w(\boldsymbol{\tau})\}$ we get
 \begin{align}
-	\mathcal{F}\{(m\ast m \ast \gamma)(\boldsymbol\tau)\} &= \xi \mathcal{F}\{\mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol{\tau})]\} \nonumber \\
-	&\quad + (\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\} - \mathbf{E}\left[c_t\right]\delta(\boldsymbol{\nu})}{\mathcal{F}\{\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 } - \xi) \nonumber\\
-	&\quad\times\mathcal{F}\{ \mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol\tau)]\}  + \mathcal{F}\{\mathbf{E}[c_t]\} \nonumber \\
-	&\quad + \mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})]\} \nonumber \\ 
-	&\quad+\sigma_{\varepsilon}^2.
+	\mathcal{F}\{(m\ast m \ast \gamma)(\boldsymbol\tau)\} &= \mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})]\} -\sigma_{\varepsilon}^2 \nonumber \\ 
+	&\quad-\xi \mathcal{F}\{\mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol{\tau})]\} \nonumber \\
+	&\quad - \left(\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\} - \mathbf{E}\left[c_t\right]\delta(\boldsymbol{\nu})}{\mathcal{F}\{\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 } - \xi\right) \nonumber\\
+	&\quad\times\mathcal{F}\{ \mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol\tau)]\} - \mathcal{F}\{\mathbf{E}[c_t]\}
 \end{align}
 Now simplifying gives
 \begin{align}
-	\mathcal{F}\{(m\ast m \ast \gamma)(\boldsymbol\tau)\} &= (\frac{(\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\} - \mathbf{E}\left[c_t\right]\delta(\boldsymbol{\nu}))\mathcal{F}\{ \mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol\tau)]\}}{\mathcal{F}\{\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 }) \nonumber\\
-	&\quad + \mathbf{E}\left[c_t\right]\delta(\boldsymbol{\nu})) + \mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})]\} +\sigma_{\varepsilon}^2.	
+	\mathcal{F}\{(m\ast m \ast \gamma)(\boldsymbol\tau)\} &= \mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})]\} -\sigma_{\varepsilon}^2 - \mathbf{E}\left[c_t\right]\delta(\boldsymbol{\nu}) \nonumber \\
+	&- \frac{(\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\} - \mathbf{E}\left[c_t\right]\delta(\boldsymbol{\nu}))\mathcal{F}\{ \mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol\tau)]\}}{\mathcal{F}\{\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 }.	
 \end{align}
 \section{Results}
 
