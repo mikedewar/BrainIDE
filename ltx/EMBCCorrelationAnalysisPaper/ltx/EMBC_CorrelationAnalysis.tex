@@ -250,10 +250,10 @@ The observation auto-correlation at time $t+1$ can be expressed as
 \begin{equation}
 	R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})=(y_{t+1} \star y_{t+1})(\boldsymbol\tau).
 \end{equation}
-Substituting equation~\ref{eq:ObservationEquation} in for $y_{t+1}$ we get
+Substituting equation~\ref{eq:ObservationEquation} in for $y_{t+1}$ and expanding we get
 \begin{align}
-	R_{y_{t+1}y_{t+1}}&(\boldsymbol{\tau}) = \\ \nonumber 
-	([\xi(m &\ast v_{t}) + T_s(m\ast g_{t})+(m\ast e_{t})+\varepsilon_{t+1}] \star  y_{t+1})(\boldsymbol{\tau})
+	R_{y_{t+1}y_{t+1}} & (\boldsymbol{\tau}) = \\ \nonumber 
+	\left( \left(\xi( m\ast v_{t}) \right.\right.&+\left.\left. T_s(m\ast g_{t}) + ( m \ast e_{t})+\varepsilon_{t+1} \right) \star y_{t+1} \right) (\boldsymbol{\tau})
 \end{align}
 Now expanding we get
 \begin{align}\label{eq:expanded_auto_corr}
@@ -287,7 +287,7 @@ The third term in \eqref{eq:Auto&CrossNoisy} can be simplified as
 \begin{align}\label{eq:term3Noisy}
 \mathbf{E}[((m\ast e_t)\star y_{t+1})(\boldsymbol\tau)] &= \mathbf{E}[((m\ast e_t)\star (m\ast v_{t+1}+\varepsilon_{t+1})) (\boldsymbol\tau)] \\
 	&= \mathbf{E}[(\left(m \ast e_t\right) \star (m \ast [\xi v_t \nonumber \\
-	&\quad+ T_s \varsigma \left(w \ast v_t\right) + e_t]+\varepsilon_{t+1}))(\boldsymbol\tau)] \\
+	&\quad + T_s g_t + e_t]+\varepsilon_{t+1}))(\boldsymbol\tau)] \\
 	&=\mathbf{E}[\left(m \ast e_t\right)\star\left(m \ast e_t\right)(\boldsymbol\tau)]
 \end{align}
 A property of cross-correlation and convolution is $(a \ast b)(\boldsymbol\tau) \star (a \ast b)(\boldsymbol\tau)=(a \star a)(\boldsymbol\tau)\ast(b \star b)(\boldsymbol\tau)$ (see Appendix II for a proof), using the isotropy property of the observation kernel we can write
