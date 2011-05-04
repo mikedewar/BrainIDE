@@ -187,13 +187,13 @@ The cross-correlation is further simplified by recognizing that the first term o
 where $\delta\left(\cdot\right)$ denotes Kronecker delta. Substituting equation~\ref{eq:FirstTermReduced} back into equation~\ref{eq:ExpectationToCancelNoise} we have
 \begin{align}\label{eq:SimplifiedFirstTerm}
 	\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] &= \xi\left(\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\tau})\right) \nonumber \\
-	&+ T_s\mathbf{E}[ \left(\left(m\ast g_t\right)\star y_t \right)(\boldsymbol{\tau})].
+	&\quad+ T_s\mathbf{E}[ \left(\left(m\ast g_t\right)\star y_t \right)(\boldsymbol{\tau})].
 \end{align}
 Next we simplify second term in equation~\ref{eq:SimplifiedFirstTerm} to get an expression involving the connectivity kernel. By substituting equation~\ref{eq:RateBasedInteractions} for $g_t$ we can write
 \begin{equation}\label{eq:before_linearization}
-	((m \ast g_t) \star y_t)(\boldsymbol\tau) = ((m \ast w\ast f(v_t)) \star y_t)(\boldsymbol\tau).
+	T_s((m \ast g_t) \star y_t)(\boldsymbol\tau) = T_s((m \ast w\ast f(v_t)) \star y_t)(\boldsymbol\tau).
 \end{equation}
-Now the activation function is simplified by linearizing about the threshold using a first order Taylor series expansion. The derivative of the activation function is
+The remainder of the derivation is focused on isolating the connectivity kernel. To show how this is done, the activation function is simplified by linearizing about the threshold using a first order Taylor series expansion. The derivative of the activation function is
 \begin{align}
  f'(v_t\left(\mathbf{r}\right))=& \frac{\varsigma}{\left(1 + \exp \left( \varsigma \left( v_0 - v_t\left(\mathbf{r}\right) \right) \right)\right)^2} \times \exp \left( \varsigma \left( v_0 - v_t\left(\mathbf{r}\right) \right) \right) \nonumber \\
 =&\frac{\varsigma}{1 + \exp \left( \varsigma \left( v_0 - v_t\left(\mathbf{r}\right) \right) \right)} \times \left(1-\frac{1}{1 + \exp \left( \varsigma \left( v_0 - v_t\left(\mathbf{r}\right) \right) \right)}\right) \nonumber \\
@@ -206,52 +206,52 @@ The linearized activation function is
 \end{align}	
 Substituting the linearized activation function back into equation~\ref{eq:before_linearization} we get
 \begin{align}	
-	((m \ast g_t) \star y_t)(\boldsymbol\tau) &\approx \frac{1}{4}((m \ast w \ast (2 + \varsigma v_t - \varsigma v_0))\star y_t)(\boldsymbol\tau) \\
-	&= \frac{1}{4}((m\ast w \ast (2 -\varsigma v_0) + \varsigma m\ast w\ast v_t) \star y_t)(\boldsymbol\tau) \\
-&= \frac{1}{4}((c_1 + \varsigma w \ast m\ast v_t) \star y_t)(\boldsymbol\tau),
+	T_s((m \ast g_t) \star y_t)(\boldsymbol\tau) &\approx \frac{T_s}{4}(( w \ast m \ast (2 + \varsigma v_t - \varsigma v_0))\star y_t)(\boldsymbol\tau) \\
+	&= \frac{T_s}{4}((w \ast (m \ast (2 -\varsigma v_0) + \varsigma m \ast v_t)) \star y_t)(\boldsymbol\tau) \\
+&= \frac{T_s}{4}((w\ast (c_1 + \varsigma m \ast v_t)) \star y_t)(\boldsymbol\tau), \\
 \end{align}
 where
 \begin{equation}
-	c_1 = m\ast w\ast (2 - \varsigma v_0).
+	c_1 = m\ast (2 - \varsigma v_0),
 \end{equation}
-Now continuing the derivation, we have
+is a constant. Now by substituting $y_t - \varepsilon_t$ in for $m\ast v_t$ we can write
 \begin{align}
-4((m \ast g_t) \star y_t)(\boldsymbol\tau) &\approx (c_1 \star y_t)(\boldsymbol\tau) + \varsigma ((w \ast m\ast v_t) \star y_t)(\boldsymbol\tau) \\
-&= (( w \ast m\ast v_t ) \star y_t)(\boldsymbol\tau) + c_t,
+	T_s((m \ast g_t) \star y_t)(\boldsymbol\tau) &\approx \frac{T_s}{4}((w\ast (c_1 + \varsigma (y_t - \varepsilon_t))) \star y_t) (\boldsymbol\tau)
 \end{align}
-where $c_t$ is 
+To isolate the kernel, the order of the convolution and cross-correlation is reversed by recognizing that a property $(a \ast b)(\boldsymbol\tau) \star c(\boldsymbol\tau) = a(-\boldsymbol\tau)\ast(b \star c)(\boldsymbol\tau)$ (see Appendix for proof). Therefore,
+\begin{align}
+	T_s((m \ast g_t) \star y_t)(\boldsymbol\tau) &\approx \frac{T_s}{4} w(-\boldsymbol\tau) \ast ((c_1 + \varsigma (y_t - \varepsilon_t)) \star y_t)(\boldsymbol\tau)\\
+	&= \frac{T_s}{4}w(-\boldsymbol\tau) \ast (( c_t + \varsigma (y_t - \varepsilon_t)) \star y_t) (\boldsymbol\tau),
+\end{align}
+where
 \begin{equation}
-	c_t = (c_1 \star y_t)(\boldsymbol\tau).
+	c_t = c_1\star y_t.
 \end{equation}
-Now we can write
-\begin{equation}
-4((m \ast g_t) \star y_t)(\boldsymbol\tau) \approx (( w \ast \left[y_t-\varepsilon_t \right] ) \star y_t)(\boldsymbol\tau) + c_t.
+Now using the identity established to get equation~\ref{eq:FirstTermReduced} we have
+\begin{equation}\label{eq:second_term_reduced}
+	T_s\mathbf{E}\left[((m \ast g_t) \star y_t)(\boldsymbol\tau)\right] \approx \frac{T_s}{4} w(-\boldsymbol\tau) \ast (\mathbf{E}\left[c_t\right] + \varsigma (\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau)))
 \end{equation}
-The order of the convolution and cross-correlation can reversed by recognizing that a property of cross-correlation and convolution is $(a \ast b)(\boldsymbol\tau) \star c(\boldsymbol\tau) = a(-\boldsymbol\tau)\ast(b \star c)(\boldsymbol\tau)$ (see Appendix for proof). Therefore,
-\begin{align}
-4\mathbf{E}[((m \ast g_t) \star y_t)(\boldsymbol\tau)] &\approx \varsigma w \ast \mathbf{E}[(\left[y_t-\varepsilon_t \right]\star y_t ) (\boldsymbol\tau)] + \mathbf{E}[c_t] \\ 
-&= \varsigma w \ast \mathbf{E}[\left[R_{y_ty_t}(\boldsymbol\tau)] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau) \right] + \mathbf{E}[c_t].
+Now substituting back to equation~\ref{eq:second_term_reduced} into equation~\ref{eq:SimplifiedFirstTerm} we get
+\begin{align}\label{eq:SimplifiedXcorr}
+	\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] &\approx \xi\left(\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\tau})\right) \nonumber \\
+	&\quad+ \frac{T_s}{4} w(-\boldsymbol\tau) \ast (\mathbf{E}\left[c_t\right] + \varsigma (\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau))).
 \end{align}
-Now substituting back to equation~\ref{} we get
+Rearranging equation~\ref{eq:SimplifiedXcorr} we get
 \begin{align}
-	\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] &= \xi\left(\mathbf{E}[ (R_{y_ty_t}(\boldsymbol{\tau})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\tau})\right) \nonumber \\
-	&+ \frac{\varsigma T_s}{4}w \ast \mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau)  + \mathbf{E}\left[c_t\right].
+	w(-\boldsymbol\tau) \ast (\mathbf{E}\left[c_t\right] + \varsigma (\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau))) \approx \frac{4}{T_s}(\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] - \xi\left(\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\tau})\right))
 \end{align}
-Rearranging equation~\ref{} we get
-\begin{align}
-	\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] &- \xi\left(\mathbf{E}[ (R_{y_ty_t}(\boldsymbol{\tau})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\tau})\right) - \mathbf{E}\left[c_t(\boldsymbol\tau)\right] \nonumber \\
-	&= \frac{\varsigma T_s}{4}w \ast \mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau).
-\end{align}
-
 The solution of the above equation for the connectivity kernel is a deconvolution. This can be approached from a number of different standpoints. The simplest solution is to use the convolution theorem and to solve for the kernel algebraically in the frequency domain. % Alternatively, the convolution can be written as a system of linear equations by forming the convolution (Toeplitz) matrix. The solution of the convolution equation for $w(\cdot)$ can then be found by either inverting the convolution matrix or directly solving the system of equations. Directly solving the system is the most numerically stable and less computationally demanding then inverting the convolution matrix. To show this we take the spatial Fourier transform of both sides of equation~\ref{} giving
 \begin{align}
-	\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] &- \xi\left(\mathbf{E}[ (R_{y_ty_t}(\boldsymbol{\tau})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\tau})\right) - \mathbf{E}\left[c_t\right]\} \nonumber \\
-	&=\frac{\varsigma T_s}{4}\mathcal{F}\{w(\boldsymbol\tau)\}\mathcal{F}\{\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau)\}
+	\mathcal{F}\{w(-\boldsymbol\tau)\} \mathcal{F}\{\mathbf{E}\left[c_t\right] + \varsigma (\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau))\} \approx \frac{4}{T_s}\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] - \xi\left(\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\tau})\right)\}
 \end{align}
-Now by rearranging and making the appropriate cancelations we get
+Now by rearranging we get
+% \begin{align}
+% 	\frac{\varsigma T_s}{4}\mathcal{F}\{w(\boldsymbol\tau)\} &= \frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] - \mathbf{E}\left[c_t\right]\}}{\mathcal{F}\{\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau)\}} - \xi \\
+% 	\mathcal{F}\{w(\boldsymbol\tau)\} &= \frac{4}{\varsigma T_s}\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\} - \mathbf{E}\left[c_t\right]\delta(\boldsymbol{\nu})}{\mathcal{F}\{\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 } - \xi \label{eq:Fourier_TF_of_Kernel}
+% \end{align}
 \begin{align}
-	\frac{\varsigma T_s}{4}\mathcal{F}\{w(\boldsymbol\tau)\} &= \frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] - \mathbf{E}\left[c_t\right]\}}{\mathcal{F}\{\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau)\}} - \xi \\
-	\mathcal{F}\{w(\boldsymbol\tau)\} &= \frac{4}{\varsigma T_s}\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\} - \mathbf{E}\left[c_t\right]\delta(\boldsymbol{\nu})}{\mathcal{F}\{\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 } - \xi \label{eq:Fourier_TF_of_Kernel}
+	\mathcal{F}\{w(-\boldsymbol\tau)\} &\approx \frac{4}{T_s} \frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] - \xi\left(\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\tau})\right)\}}{\mathcal{F}\{\mathbf{E}\left[c_t\right] + \varsigma (\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\tau))\}} \\
+	&= \frac{4}{T_s} \frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\} - \xi\left(\mathcal{F}\{\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})]\} - \sigma_{\varepsilon}^2 \right)} {\mathbf{E}\left[c_t\right]\delta(\boldsymbol{\nu}) + \varsigma (\mathcal{F}\{\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 )}  \label{eq:Fourier_TF_of_Kernel}
 \end{align}
 From this we see that an error in our guess for $\xi$ will result in a dilation or contraction of the estimated kernel support. An incorrect estimate of $c_t$ will result in a DC shift in the kernel estimate and an incorrect estimate in the observation noise will result in a distortion in the shape of the kernel.
 
