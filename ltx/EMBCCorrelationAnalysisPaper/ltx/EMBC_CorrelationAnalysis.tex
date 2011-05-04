@@ -154,15 +154,15 @@ and the spatial cross-correlation shall be denoted as
 \begin{equation}
 	\int_\Omega a(\mathbf{r})b(\mathbf{r}+\boldsymbol{\tau})d\mathbf{r} = (a\star b)(\boldsymbol{\tau}).
 \end{equation} 
-The spatial relationship between consecutive observations is governed by the shape of the connectivity kernel. Therefore, the spatial cross-correlation between consecutive observations is used to estimate the support of the connectivity kernel. The cross-correlation is defined as
+The spatial relationship between consecutive observations is governed by the shape of the connectivity kernel. Therefore, the spatial cross-correlation between consecutive observations is used to estimate the kernel's support and shape. To begin the derivation we define the spatial cross-correlation between consecutive observations (in time) as
 \begin{equation}
 	R_{y_{t+1}y_t}(\boldsymbol{\tau}) = \left(y_{t+1}\star y_t\right)\left(\boldsymbol{\tau}\right),
 \end{equation}
-where $\tau$ is the spatial shift. Now substituting equation~\ref{eq:ObservationEquation} for $y_{t+1}(\mathbf{r})$ gives 
+where $\tau$ is the spatial shift. The goal of the derivation is to make the necessary substitutions and simplifications to get an expression of the cross-correlation as a function of the connectivity kernel. In the next step we substitute equation~\ref{eq:ObservationEquation} for $y_{t+1}(\mathbf{r})$ and expand to give
 \begin{equation}
 	R_{y_{t+1}y_t}\left(\boldsymbol{\tau}\right) = \left(\left(m \ast v_{t+1}\right)\star y_t\right)\left(\boldsymbol{\tau}\right) + \left(\varepsilon_{t+1} \star y_t\right)\left(\boldsymbol{\tau}\right).
 \end{equation}
-Next equation~\ref{eq:DiscreteTimeModel} is substituted in for $v_{t+1}(\mathbf{r})$ giving 
+Next we substitute equation~\ref{eq:DiscreteTimeModel} for $v_{t+1}(\mathbf{r})$ giving 
 \begin{align}
 	R_{y_{t+1}y_t}(\boldsymbol{\tau}) &= (\left(m \ast \left(\xi v_t +  T_s g_t + e_t\right)\right) \star y_t)(\boldsymbol{\tau})\\
 	&= \xi\left(\left(m \ast v_t\right) \star y_t \right)(\boldsymbol{\tau}) \nonumber\\
@@ -170,27 +170,42 @@ Next equation~\ref{eq:DiscreteTimeModel} is substituted in for $v_{t+1}(\mathbf{
 	&\quad+ \left(\left(m\ast e_t\right)\star y_t \right)(\boldsymbol{\tau}) \nonumber\\
 	&\quad+ (\varepsilon_{t+1} \star y_t)(\boldsymbol{\tau}).
 \end{align}
-By taking the expected value over time gives
-\begin{align}
+Now we take the expectation over time, so that the observation noise and process disturbance terms have minimal effect on the result, giving 
+\begin{align}\label{eq:ExpectationToCancelNoise}
 	\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] &= \mathbf{E}[\xi\left(\left(m \ast v_t\right) \star y_t \right)(\boldsymbol{\tau})] \nonumber \\
 	 &+ T_s \mathbf{E}[\left(\left(m\ast g_t\right)\star y_t \right)(\boldsymbol{\tau})],
 \end{align}
-since the disturbance and measurement noise is assumed to be independent of the observations. 
-The cross-correlation is further simplified by recognizing that the first term on right hand side can be simplified by
+since the disturbance and measurement noise are assumed to be independent of the observations and temporally white. 
+The cross-correlation is further simplified by recognizing that the first term on right hand side of equation~\ref{eq:ExpectationToCancelNoise} can be written as 
 \begin{align}
-	\mathbf{E}[\xi&\left(\left(m \ast v_t \right) \star y_t \right)(\boldsymbol{\tau})] = \mathbf{E}[\xi\left(\left(y_t-\varepsilon_t\right) \star y_t \right)(\boldsymbol{\tau}) \\
-	&= \xi ((y_t \star y_t)(\boldsymbol{\tau}) - \left(\varepsilon_t\star y_t \right)(\boldsymbol{\tau}))] \\
-	&= \mathbf{E}[\xi (R_{y_ty_t}(\boldsymbol{\tau})  - \left(\varepsilon_t \star (m\ast v_t + \varepsilon_t)\right) (\boldsymbol{\tau}))] \\
-	&=\mathbf{E}[\xi (R_{y_ty_t}(\boldsymbol{\tau})  -\left(\varepsilon_t\star (m\ast v_t)\right)(\boldsymbol{\tau}) - (\varepsilon_t\star\varepsilon_t)(\boldsymbol{\tau}))] \\
-	&= \xi\left(\mathbf{E}[ (R_{y_ty_t}(\boldsymbol{\tau})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\tau})\right).
+	\mathbf{E}[\xi&\left(\left(m \ast v_t \right) \star y_t \right)(\boldsymbol{\tau})] = \mathbf{E}\left[\xi\left(\left(y_t-\varepsilon_t\right) \star y_t \right)(\boldsymbol{\tau})\right] \\
+	&= \xi \mathbf{E}\left[ (y_t \star y_t)(\boldsymbol{\tau}) - \left(\varepsilon_t\star y_t \right)(\boldsymbol{\tau})\right] \\
+	&= \xi\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})  - \left(\varepsilon_t \star (m\ast v_t + \varepsilon_t)\right) (\boldsymbol{\tau})] \\
+	&=\xi\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau}) -\left(\varepsilon_t\star (m\ast v_t)\right)(\boldsymbol{\tau}) - (\varepsilon_t\star\varepsilon_t)(\boldsymbol{\tau})] \\
+	&= \xi\left(\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\tau})\right), \label{eq:FirstTermReduced}
 \end{align}
-where $\delta\left(\cdot\right)$ denotes Kronecker delta. Now we have
-\begin{align}
-	\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] &= \xi\left(\mathbf{E}[ (R_{y_ty_t}(\boldsymbol{\tau})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\tau})\right) \nonumber \\
+where $\delta\left(\cdot\right)$ denotes Kronecker delta. Substituting equation~\ref{eq:FirstTermReduced} back into equation~\ref{eq:ExpectationToCancelNoise} we have
+\begin{align}\label{eq:SimplifiedFirstTerm}
+	\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] &= \xi\left(\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\tau})\right) \nonumber \\
 	&+ T_s\mathbf{E}[ \left(\left(m\ast g_t\right)\star y_t \right)(\boldsymbol{\tau})].
 \end{align}
-Now focusing on the second term, we can write
+Next we simplify second term in equation~\ref{eq:SimplifiedFirstTerm} to get an expression involving the connectivity kernel. By substituting equation~\ref{eq:RateBasedInteractions} for $g_t$ we can write
+\begin{equation}\label{eq:before_linearization}
+	((m \ast g_t) \star y_t)(\boldsymbol\tau) = ((m \ast w\ast f(v_t)) \star y_t)(\boldsymbol\tau).
+\end{equation}
+Now the activation function is simplified by linearizing about the threshold using a first order Taylor series expansion. The derivative of the activation function is
 \begin{align}
+ f'(v_t\left(\mathbf{r}\right))=& \frac{\varsigma}{\left(1 + \exp \left( \varsigma \left( v_0 - v_t\left(\mathbf{r}\right) \right) \right)\right)^2} \times \exp \left( \varsigma \left( v_0 - v_t\left(\mathbf{r}\right) \right) \right) \nonumber \\
+=&\frac{\varsigma}{1 + \exp \left( \varsigma \left( v_0 - v_t\left(\mathbf{r}\right) \right) \right)} \times \left(1-\frac{1}{1 + \exp \left( \varsigma \left( v_0 - v_t\left(\mathbf{r}\right) \right) \right)}\right) \nonumber \\
+=& \varsigma f(v_t\left(\mathbf{r}\right))\left( 1-f( v_t\left(\mathbf{r}\right)\right).
+\end{align}
+The linearized activation function is 
+\begin{align}
+	\hat{f}(v_t\left(\mathbf{r}\right)) &= f(v_0) + f'(v_0)(v_t\left(\mathbf{r}\right) - v_0) \\
+	&= \frac{2 + \varsigma(v_t\left(\mathbf{r}\right) - v_0)}{4}. 
+\end{align}	
+Substituting the linearized activation function back into equation~\ref{eq:before_linearization} we get
+\begin{align}	
 	((m \ast g_t) \star y_t)(\boldsymbol\tau) &\approx \frac{1}{4}((m \ast w \ast (2 + \varsigma v_t - \varsigma v_0))\star y_t)(\boldsymbol\tau) \\
 	&= \frac{1}{4}((m\ast w \ast (2 -\varsigma v_0) + \varsigma m\ast w\ast v_t) \star y_t)(\boldsymbol\tau) \\
 &= \frac{1}{4}((c_1 + \varsigma w \ast m\ast v_t) \star y_t)(\boldsymbol\tau),
