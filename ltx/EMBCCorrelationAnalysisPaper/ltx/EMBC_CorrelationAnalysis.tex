@@ -173,7 +173,7 @@ Next we substitute equation~\ref{eq:DiscreteTimeModel} for $v_{t+1}(\mathbf{r})$
 Now we take the expectation over time, so that the observation noise and process disturbance terms have minimal effect on the result, giving 
 \begin{align}\label{eq:ExpectationToCancelNoise}
 	\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})] &= \mathbf{E}[\xi\left(\left(m \ast v_t\right) \star y_t \right)(\boldsymbol{\tau})] \nonumber \\
-	 &+ T_s \mathbf{E}[\left(\left(m\ast g_t\right)\star y_t \right)(\boldsymbol{\tau})],
+	 &\quad+ T_s \mathbf{E}[\left(\left(m\ast g_t\right)\star y_t \right)(\boldsymbol{\tau})],
 \end{align}
 since the disturbance and measurement noise are assumed to be independent of the observations and temporally white. 
 The cross-correlation is further simplified by recognizing that the first term on right hand side of equation~\ref{eq:ExpectationToCancelNoise} can be written as 
@@ -191,7 +191,7 @@ where $\delta\left(\cdot\right)$ denotes Kronecker delta. Substituting equation~
 \end{align}
 Next we simplify second term in equation~\ref{eq:SimplifiedFirstTerm} to get an expression involving the connectivity kernel. By substituting equation~\ref{eq:RateBasedInteractions} for $g_t$ we can write
 \begin{equation}\label{eq:before_linearization}
-	T_s((m \ast g_t) \star y_t)(\boldsymbol\tau) = T_s((m \ast w\ast f(v_t)) \star y_t)(\boldsymbol\tau).
+	T_s((m \ast g_t) \star y_t)(\boldsymbol\tau) = T_s((w \ast m\ast f(v_t)) \star y_t)(\boldsymbol\tau).
 \end{equation}
 The remainder of the derivation is focused on isolating the connectivity kernel. To show how this is done, the activation function is simplified by linearizing about the threshold using a first order Taylor series expansion. The derivative of the activation function is
 \begin{align}
@@ -257,7 +257,7 @@ From this we see that an error in our guess for $\xi$ will result in a dilation 
 
 Finally, an expression for the kernel is
 \begin{equation}
-	w(-\boldsymbol\tau) = \frac{4}{\varsigma T_s}\mathcal{F}^{-1}\left\{ \frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\} - \xi\left(\mathcal{F}\{\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})]\} - \sigma_{\varepsilon}^2 \right)} {\mathbf{E}\left[c_t\right]\delta(\boldsymbol{\nu}) + \varsigma (\mathcal{F}\{\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 )} \right\}.
+	w(-\boldsymbol\tau) = \frac{4}{T_s}\mathcal{F}^{-1}\left\{ \frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\} - \xi\left(\mathcal{F}\{\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})]\} - \sigma_{\varepsilon}^2 \right)} {\mathbf{E}\left[c_t\right]\delta(\boldsymbol{\nu}) + \varsigma (\mathcal{F}\{\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 )} \right\}.
 \end{equation}
 
 \subsection{Disturbance Covariance}
@@ -286,6 +286,7 @@ and
  \mathbf{E}[(\varepsilon_{t+1}\star y_{t+1})(\boldsymbol\tau)]&=\sigma_{\varepsilon}^2\delta(\boldsymbol{\tau}),
 \end{align}
 and
+\dean{needs repair from here down!!}
 \begin{align}\label{eq:term3}
 	\mathbf{E}[((m\ast g_t) &\star y_{t+1})(\boldsymbol\tau)] \\ 
 	&\approx \frac{1}{4}\mathbf{E}[((m \ast w \ast (2 + \varsigma v_t - \varsigma v_0))\star y_{t+1})(\boldsymbol\tau)] \\
