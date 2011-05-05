@@ -408,7 +408,7 @@ Consider first the maximisation of $\mathcal{Q}$-function with respect to $\xi$,
 \end{equation}
 setting \eqref{eq:Qpartialxi} to zero and solving for $\xi$ gives
 \begin{equation}
- \xi=\frac{\mathrm{tr}\left\lbrace \boldsymbol\Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-\boldsymbol\Xi_5\boldsymbol\Xi_4^{-1}\boldsymbol\Xi_3^\top}{\mathrm{tr}\left\lbrace \boldsymbol\Xi_2 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-\boldsymbol\Xi_5\boldsymbol\Xi_4^{-1}\boldsymbol\Xi_5^{\top}}
+ \hat{\xi}=\frac{\mathrm{tr}\left\lbrace \boldsymbol\Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-\boldsymbol\Xi_5\boldsymbol\Xi_4^{-1}\boldsymbol\Xi_3^\top}{\mathrm{tr}\left\lbrace \boldsymbol\Xi_2 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-\boldsymbol\Xi_5\boldsymbol\Xi_4^{-1}\boldsymbol\Xi_5^{\top}}
 \end{equation}
 In order to maximise $\mathcal{Q}$-function with respect to $\boldsymbol\theta$ we can write
 \begin{equation}\label{eq:Qpartialtheta}
@@ -416,7 +416,7 @@ In order to maximise $\mathcal{Q}$-function with respect to $\boldsymbol\theta$ 
 \end{equation}
 variable $\boldsymbol\Xi_4$ is symmetric and positive-definite by construction, equating \eqref{eq:Qpartialtheta} to the zero vector yields
 \begin{equation}\label{eq:theta}
- \boldsymbol \theta=\boldsymbol\Xi_4^{-1}\left(\boldsymbol\Xi_3^\top-\xi\boldsymbol\Xi_5^\top \right).
+ \hat{\boldsymbol \theta}=\boldsymbol\Xi_4^{-1}\left(\boldsymbol\Xi_3^\top-\xi\boldsymbol\Xi_5^\top \right).
 \end{equation}
 The second derivative is negative definite at this stationary point, and hence it is a global maximizer of $\mathcal{Q}$-function. Now maximizing with respect to $\sigma_{\epsilon}^2$ we get
 \begin{equation}
@@ -424,7 +424,7 @@ The second derivative is negative definite at this stationary point, and hence i
 \end{equation}
 setting above to zero and solving for $\sigma_{\epsilon}^2$ gives
 \begin{equation}
- \sigma_{\epsilon}^2=\frac{1}{(T-1)n_y}\sum_{t=0}^{T-1}\mathrm{tr}\left\lbrace (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top \right\rbrace
+ \hat{\sigma}_{\epsilon}^2=\frac{1}{(T-1)n_y}\sum_{t=0}^{T-1}\mathrm{tr}\left\lbrace (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top \right\rbrace
 \end{equation}
 A second derivative test shows that this is indeed the maximum. Finally differentiating with respec to $\sigma_d^2$ we get
 \begin{align}
@@ -433,7 +433,7 @@ A second derivative test shows that this is indeed the maximum. Finally differen
 \end{align}
 setting above to zero and solving for $\sigma_e^2$ we have
 \begin{align}
-\sigma_d^2=\frac{1}{(T-1)n_x}\left[ \mathrm{tr}\left\lbrace \boldsymbol\Xi_0 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-
+\hat{\sigma}_d^2=\frac{1}{(T-1)n_x}\left[ \mathrm{tr}\left\lbrace \boldsymbol\Xi_0 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-
 2\xi\mathrm{tr}\left\lbrace \boldsymbol\Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace +\xi^2\mathrm{tr} \left\lbrace\boldsymbol\Xi_2\tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace -2\boldsymbol\Xi_3\boldsymbol\theta+\boldsymbol\theta^\top\boldsymbol \Xi_4\boldsymbol\theta+2\xi\boldsymbol\Xi_5 \boldsymbol\theta\right]  
 \end{align}
 In order to confirm calculated parameters are indeed maxima of the lower bound, the second derivative test is carried out for each parameter, giving
@@ -582,7 +582,7 @@ Given the state estimates, $\mathbf {\hat x}_t$ the state covariance $\mathbf P_
 \begin{center}
 \includegraphics{./Figures/Q.pdf}
 \end{center}
-\caption{{\bf Lower-bound of the log-likelihood}. $Q(\boldsymbol\Theta',\boldsymbol\Theta')=-(T-1)\left[n_y(1+\ln \sigma^2_{\epsilon})+ n_x(1+\ln \sigma^2_d)\right]$.}
+\caption{{\bf Lower-bound of the log-likelihood}. $Q(\boldsymbol\Theta',\boldsymbol\Theta')=-(T-1)\left[n_y(1+\ln \hat{\sigma}^2_{\epsilon})+ n_x(1+\ln \hat{\sigma}^2_d)\right]$.}
 \label{fig:FieldObserations}
 \end{figure}
 
