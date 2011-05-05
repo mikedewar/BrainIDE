@@ -221,11 +221,12 @@ is a constant. Now by substituting $y_t - \varepsilon_t$ in for $m\ast v_t$ we c
 To isolate the kernel, the order of the convolution and cross-correlation is reversed by recognizing that a property $(a \ast b)(\boldsymbol\tau) \star c(\boldsymbol\tau) = a(-\boldsymbol\tau)\ast(b \star c)(\boldsymbol\tau)$ (see Appendix for proof). Therefore,
 \begin{align}
 	T_s((m \ast g_t) \star y_t)(\boldsymbol\tau) &\approx \frac{T_s}{4} w(-\boldsymbol\tau) \ast ((c_1 + \varsigma (y_t - \varepsilon_t)) \star y_t)(\boldsymbol\tau)\\
+	&= \frac{T_s}{4} w(-\boldsymbol\tau) \ast ((c_1\star y_t)(\boldsymbol\tau) + \varsigma (y_t - \varepsilon_t) \star y_t)(\boldsymbol\tau))\\
 	&= \frac{T_s}{4}w(-\boldsymbol\tau) \ast (( c_t + \varsigma (y_t - \varepsilon_t)) \star y_t) (\boldsymbol\tau),
 \end{align}
 where
 \begin{equation}
-	c_t = c_1\star y_t.
+	c_t = (c_1\star y_t)(\boldsymbol\tau).
 \end{equation}
 Now using the identity established to get equation~\ref{eq:FirstTermReduced} we have
 \begin{equation}\label{eq:second_term_reduced}
@@ -260,7 +261,7 @@ Finally, an expression for the kernel is
 	w(-\boldsymbol\tau) = \frac{4}{T_s}\mathcal{F}^{-1}\left\{ \frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\} - \xi\left(\mathcal{F}\{\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})]\} - \sigma_{\varepsilon}^2 \right)} {\mathbf{E}\left[c_t\right]\delta(\boldsymbol{\nu}) + \varsigma (\mathcal{F}\{\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 )} \right\}.
 \end{equation}
 
-\subsection{Disturbance Covariance}
+\subsection{Estimation of Disturbance Covariance Support}
 The observation auto-correlation at time $t+1$ can be expressed as
 \begin{equation}
 	R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})=(y_{t+1} \star y_{t+1})(\boldsymbol\tau).
@@ -286,16 +287,15 @@ and
  \mathbf{E}[(\varepsilon_{t+1}\star y_{t+1})(\boldsymbol\tau)]&=\sigma_{\varepsilon}^2\delta(\boldsymbol{\tau}),
 \end{align}
 and
-\dean{needs repair from here down!!}
 \begin{align}\label{eq:term3}
-	\mathbf{E}[((m\ast g_t) &\star y_{t+1})(\boldsymbol\tau)] \\ 
-	&\approx \frac{1}{4}\mathbf{E}[((m \ast w \ast (2 + \varsigma v_t - \varsigma v_0))\star y_{t+1})(\boldsymbol\tau)] \\
-	&= \frac{\varsigma}{4} w \ast \mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol\tau)]  + \mathbf{E}[c_t].
+	T_s\mathbf{E}[((m\ast g_t) &\star y_{t+1})(\boldsymbol\tau)] \\ 
+	&\approx \frac{T_s}{4}\mathbf{E}[((m \ast w \ast (2 + \varsigma v_t - \varsigma v_0))\star y_{t+1})(\boldsymbol\tau)] \\
+	&= \frac{T_s}{4} w(-\boldsymbol\tau) \ast (\mathbf{E}\left[c_t\right] + \varsigma \mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\tau)\right] ).
 \end{align}
-Substituting equations~\ref{eq:term1} ~\ref{eq:term2} and ~\ref{eq:term3} back into equation~\ref{eq:expanded_auto_corr} gives
+Substituting equations~\ref{eq:term1}, \ref{eq:term2}, and ~\ref{eq:term3} back into equation~\ref{eq:expanded_auto_corr} gives
 \begin{align}\label{eq:Auto&CrossNoisy}
 	\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})] &= \xi \mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol{\tau})] \nonumber \\
-	&\quad+  \frac{\varsigma T_s}{4} w \ast \mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol\tau)]  + \mathbf{E}[c_t] \nonumber \\
+	&\quad+  \frac{T_s}{4} w(-\boldsymbol\tau) \ast (\mathbf{E}\left[c_t\right] + \varsigma \mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\tau)\right] ) \nonumber \\
 	&\quad+\mathbf{E}[((m\ast e_t)\star y_{t+1})(\boldsymbol\tau)] \nonumber \\ 
 	&\quad+\sigma_{\epsilon}^2\delta(\boldsymbol{\tau}).
 \end{align}
@@ -314,7 +314,7 @@ A property of cross-correlation and convolution is $(a \ast b)(\boldsymbol\tau) 
 Substituting this back into equation~\ref{eq:Auto&CrossNoisy} we get
 \begin{align}
 	\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})] &= \xi \mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol{\tau})] \nonumber \\
-	&\quad+  \frac{\varsigma T_s}{4} w \ast \mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol\tau)]  + \mathbf{E}[c_t] \nonumber \\
+	&\quad+  \frac{T_s}{4} w(-\boldsymbol\tau) \ast (\mathbf{E}\left[c_t\right] + \varsigma \mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\tau)\right] ) \nonumber \\
 	&\quad+(m\ast m \ast \gamma)(\boldsymbol\tau) \nonumber \\ 
 	&\quad+\sigma_{\varepsilon}^2\delta(\boldsymbol{\tau}).
 \end{align}
@@ -322,15 +322,17 @@ To solve for the disturbance covariance we again turn to the convolution theorem
 \begin{align}
 	\mathcal{F}\{(m\ast m \ast \gamma)(\boldsymbol\tau)\} &= \mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})]\}-\sigma_{\varepsilon}^2 \nonumber \\ 
 	&\quad-\xi \mathcal{F}\{\mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol{\tau})]\} \nonumber \\
-	&\quad - \frac{\varsigma T_s}{4} \mathcal{F}\{w(\boldsymbol{\tau})\}\mathcal{F}\{ \mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol\tau)]\}  - \mathcal{F}\{\mathbf{E}[c_t]\}
+	&\quad - \frac{T_s}{4} \mathcal{F}\{w(-\boldsymbol\tau)\}\mathcal{F}\{\mathbf{E}\left[c_t\right] + \varsigma \mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\tau)\right] \}
 \end{align}
-Now substituting in equation~\ref{eq:Fourier_TF_of_Kernel} for $\mathcal{F}\{w(\boldsymbol{\tau})\}$ we get
+Now substituting in equation~\ref{eq:Fourier_TF_of_Kernel} for $\mathcal{F}\{w(-\boldsymbol{\tau})\}$ we get
 \begin{align}
 	\mathcal{F}\{(m\ast m \ast \gamma)(\boldsymbol\tau)\} &= \mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})]\} -\sigma_{\varepsilon}^2 \nonumber \\ 
 	&\quad-\xi \mathcal{F}\{\mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol{\tau})]\} \nonumber \\
-	&\quad - \left(\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\} - \mathbf{E}\left[c_t\right]\delta(\boldsymbol{\nu})}{\mathcal{F}\{\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 } - \xi\right) \nonumber\\
-	&\quad\times\mathcal{F}\{ \mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol\tau)]\} - \mathcal{F}\{\mathbf{E}[c_t]\}
+	&\quad - \frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\tau})]\} - \xi\left(\mathcal{F}\{\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\tau})]\} - \sigma_{\varepsilon}^2 \right)} {\mathbf{E}\left[c_t\right]\delta(\boldsymbol{\nu}) + \varsigma (\mathcal{F}\{\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\tau)\right]\} - \sigma_{\varepsilon}^2 )} \nonumber \\
+	&\quad \times \mathcal{F}\{\mathbf{E}\left[c_t\right] + \varsigma \mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\tau)\right] \}
 \end{align}
+\dean{needs repair from here down!!}
+
 Now simplifying gives
 \begin{align}
 	\mathcal{F}\{(m\ast m \ast \gamma)(\boldsymbol\tau)\} &= \mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})]\} -\sigma_{\varepsilon}^2 - \mathbf{E}\left[c_t\right]\delta(\boldsymbol{\nu}) \nonumber \\
