@@ -416,11 +416,11 @@ In order to maximise $\mathcal{Q}$-function with respect to $\boldsymbol\theta$ 
 \begin{equation}\label{eq:Qpartialtheta}
  \frac{\partial \mathcal Q}{\partial \boldsymbol\theta}=\frac{2}{\sigma_d^2}\boldsymbol\Xi_3-\frac{1}{\sigma_d^2}\boldsymbol\theta^\top(\boldsymbol\Xi_4^\top+\boldsymbol\Xi_4)-\frac{2\xi}{\sigma_d^2}\boldsymbol\Xi_5,
 \end{equation}
-variable $\boldsymbol\Xi_4$ is symmetric and positive-definite by construction, equating \eqref{eq:Qpartialtheta} to the zero vector yields
+noting that variable $\boldsymbol\Xi_4$ is symmetric by construction, equating \eqref{eq:Qpartialtheta} to the zero vector yields
 \begin{equation}\label{eq:theta}
  \hat{\boldsymbol \theta}=\boldsymbol\Xi_4^{-1}\left(\boldsymbol\Xi_3^\top-\xi\boldsymbol\Xi_5^\top \right).
 \end{equation}
-The second derivative is negative definite at this stationary point, and hence it is a global maximizer of $\mathcal{Q}$-function. Now maximizing with respect to $\sigma_{\epsilon}^2$ we get
+We comment on the condition under which $\boldsymbol\Xi_4$ is invertible later on. The second derivative is negative definite at this stationary point, and hence it is a global maximizer of $\mathcal{Q}$-function. Now maximizing with respect to $\sigma_{\epsilon}^2$ we get
 \begin{equation}
   \frac{\partial \mathcal Q}{\partial \sigma_{\epsilon}^2}=-(T-1)n_y\frac{1}{\sigma_{\epsilon}^2}+\frac{1}{\sigma_{\epsilon}^4}\mathrm{tr}\left\lbrace\sum_{t=0}^{T-1}\left[ (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top\right] \right\rbrace
 \end{equation}
