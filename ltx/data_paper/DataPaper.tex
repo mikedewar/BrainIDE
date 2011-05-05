@@ -449,7 +449,7 @@ $\boldsymbol\Xi_2$ is positive definite under the persistent excitation conditio
 \begin{equation}
  \mathrm{tr}\left\lbrace \boldsymbol\Xi_2 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace >0,
 \end{equation}
-meaning \eqref{eq:SecondDerivativexi} is negative and $\hat{\xi}$ represents a maximum. Equation \eqref{eq:SecondDerivativetheta} is negative where $\boldsymbol\Xi_4$ is positive definite requiring $\mathbf q(\mathbf x_t)$ to be of  rank $n_{\theta}$ \cite{Golub1996}, 
+meaning \eqref{eq:SecondDerivativexi} is negative and $\hat{\xi}$ represents a maximum. Equation \eqref{eq:SecondDerivativetheta} is negative where $\boldsymbol\Xi_4$ is positive definite requiring $\mathbf q(\mathbf x_t)$ to be of  rank $n_{\theta}$ \cite{Golub1996}. The matrix $\boldsymbol\Psi(\mathbf r')$ defined by \eqref{eq:DefPsi} is of rank $n_{\theta}$ as each row of the matrix is the set of equally spaced Gaussian basis functions with equal widths, consequently each row can be considered as a Riesz basis function for the subspaces they generate \cite{Ferrari2004}. (note that multiplying by $\mathbf \Gamma^{-1}$ doesnt change the rank). However, $q(\mathbf x_t)$ defined in \eqref{eq:QmatrixForSigmapoints} cannot be computed analytically as the inner product of a Gaussian and a sigmoid cannot be solved analytically making it difficult to calculate the rank of $q(\mathbf x_t)$ . Therefore, we recommend to check the rank of $q(\mathbf x_t)$ at each iteration.
 % to show this we define
 % \begin{equation}
 %  \boldsymbol\Psi(\mathbf r')=T_s\boldsymbol\Gamma^{-1}\tilde{\boldsymbol\Psi}(\mathbf r')
@@ -459,7 +459,7 @@ meaning \eqref{eq:SecondDerivativexi} is negative and $\hat{\xi}$ represents a m
 % 	\left[ \tilde{\boldsymbol\Psi}(\mathbf{r}')\right]_{:i} =\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\psi_i (2c_i+\mathbf{r}'-\mathbf{r})\textrm{d}\mathbf{r}},
 % \end{equation}
 % since matrix $\boldsymbol\Gamma^{-1}$ is symmetric
-\parham{don't know how to prove $q$ is of rank $n_{\theta}$} According to \eqref{eq:SecondDerivativenoise} and \eqref{eq:SecondDerivativedisturbance}, observation noise and disturbance covariance estimates clearly represent maxima of the $\mathcal{Q}$-function. 
+From \eqref{eq:SecondDerivativenoise} and \eqref{eq:SecondDerivativedisturbance}, observation noise and disturbance covariance estimates clearly represent maxima of the $\mathcal{Q}$-function. 
  
 
 Computing unknown variables, $\boldsymbol\Theta$, in the maximization step requires calculation of covariance and  cross-covariance terms, including both linear, $\boldsymbol\Xi_0$, $\boldsymbol\Xi_1$ and $\boldsymbol\Xi_2$ and non-linear terms, $\boldsymbol\Xi_3$, $\boldsymbol\Xi_4$ and  $\boldsymbol\Xi_5$. Finding linear $\boldsymbol\Xi$-variables is straightforward as they can be obtained using smoother outputs, $\hat{\mathbf x}_t $, $\mathbf P_t$ and $\mathbf M_t$ using the following expressions \cite{Shumway2000} (see supporting information for details)
