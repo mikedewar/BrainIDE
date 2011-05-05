@@ -149,7 +149,7 @@ where $T_s$ is the time step or sampling period. To simplify the notation, the s
 	\textrm{d}\mathbf{r}'} 
 	+ e_t\left(\mathbf{r}\right), 
 \end{equation}
-where $e_t(\mathbf{r}) = \sigma_W[W\left( \mathbf{r},t+T_s \right)-W\left( \mathbf{r},t \right)]$ is the increment of a space-time Wiener process, $i.i.d.$ with zero spatial mean such that $e_t(\mathbf{r})\sim\mathcal{GP}(\mathbf 0,T_s\sigma_W^2\gamma(\mathbf{r}-\mathbf{r}'))$. Here $\mathcal{GP}(\mathbf 0,T_s\sigma_W^2\gamma(\mathbf{r}-\mathbf{r}'))$ denotes a zero mean spatial Gaussian process with covariance function $\gamma(\mathbf{r}-\mathbf{r}')$~\cite{Rasmussen2005}.
+where $e_t(\mathbf{r}) = \sigma_W[W\left( \mathbf{r},t+T_s \right)-W\left( \mathbf{r},t \right)]$ is the increment of a space-time Wiener process, $i.i.d.$ with zero spatial mean such that $e_t(\mathbf{r})\sim\mathcal{GP}(\mathbf 0,\sigma_d^2\gamma(\mathbf{r}-\mathbf{r}'))$, where $\sigma_d^2=T_s\sigma_W^2$. Here $\mathcal{GP}(\mathbf 0,\sigma_d^2\gamma(\mathbf{r}-\mathbf{r}'))$ denotes a zero mean spatial Gaussian process with covariance function $\gamma(\mathbf{r}-\mathbf{r}')$~\cite{Rasmussen2005}.
 To reduce the model to a finite-dimensional system the neural field is approximated by a basis function decomposition where
 \begin{equation}
 	\label{DefFieldDecomp} v_t\left(\mathbf{r}\right) \approx \boldsymbol{\phi}^{\top}\left(\mathbf{r}\right) \mathbf{x}_t 
@@ -330,7 +330,7 @@ The sigma vectors are propagated through the system equations and weighted to fo
 	\mathbf W_0^{(c)}&=\frac{\lambda}{ n_x+\lambda}+(1-\alpha^2+\beta) \\
 	\mathbf W_i^{(m)}&=\mathbf W_i^{(c)}=\frac{1}{2( n_x+\lambda)} \quad i=1, \dots, 2n_x, 
 \end{align}
-where the superscripts $m$ and $c$ denote mean and covariance and $\beta$ incorporates prior knowledge of the distribution of the states, $\mathbf{x}$ (for a Gaussian disturbance, $\beta$ should be set to 2 \cite{Haykin2001}). Since the observation equation is linear (equation~\ref{ObservationEquation}), the standard Kalman Filter update equations are used to correct the predicted states. The state estimates from forward filtering are used to form a new set of sigma points for the smoother, as described above. The predicted and the smoothed cross-covariance matrices of the states, $\mathbf M_{t}^{b-}$ and  $\mathbf M_{t}^{b}$, are also required. The former is used  for computing the smoother gain and the latter is used to compute required expected values in the M-step. The formulation of the cross-covariance matrices are given in the summary of the steps in the URTSS algorithm in Table~\ref{tab:URTSSAlgorithm}.  
+where the superscripts $m$ and $c$ denote mean and covariance and $\beta$ incorporates prior knowledge of the distribution of the states, $\mathbf{x}$ (for a Gaussian disturbance, $\beta$ should be set to 2 \cite{Haykin2001}). Since the observation equation is linear (equation~\ref{ObservationEquation}), the standard Kalman Filter update equations are used to correct the predicted states. The state estimates from forward filtering are used to form a new set of sigma points for the smoother, as described above. The predicted and the smoothed cross-covariance matrices of the states, $\mathbf M_{t}^{b-}$ and  $\mathbf M_{t}^{b}$, are also required. The former is used  for computing the smoother gain and the latter is used to compute $\boldsymbol\Xi$ variables required  in the M-step. The formulation of the cross-covariance matrices are given in the summary of the steps in the URTSS algorithm in Table~\ref{tab:URTSSAlgorithm}.  
 
 
 
@@ -408,7 +408,7 @@ Consider first the maximisation of $\mathcal{Q}$-function with respect to $\xi$,
 \end{equation}
 setting \eqref{eq:Qpartialxi} to zero and solving for $\xi$ gives
 \begin{equation}
- \xi=\frac{\mathrm{tr}\left\lbrace \boldsymbol\Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-\boldsymbol\Xi_5\boldsymbol\Xi_4^{-1}\boldsymbol\Xi_3^\top}{\mathrm{tr}\left\lbrace \boldsymbol\Xi_2 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-\boldsymbol\Xi_5\boldsymbol\Xi_4^{-1}\boldsymbol\Xi_5^{\top}}
+ \hat{\xi}=\frac{\mathrm{tr}\left\lbrace \boldsymbol\Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-\boldsymbol\Xi_5\boldsymbol\Xi_4^{-1}\boldsymbol\Xi_3^\top}{\mathrm{tr}\left\lbrace \boldsymbol\Xi_2 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-\boldsymbol\Xi_5\boldsymbol\Xi_4^{-1}\boldsymbol\Xi_5^{\top}}
 \end{equation}
 In order to maximise $\mathcal{Q}$-function with respect to $\boldsymbol\theta$ we can write
 \begin{equation}\label{eq:Qpartialtheta}
@@ -416,7 +416,7 @@ In order to maximise $\mathcal{Q}$-function with respect to $\boldsymbol\theta$ 
 \end{equation}
 variable $\boldsymbol\Xi_4$ is symmetric and positive-definite by construction, equating \eqref{eq:Qpartialtheta} to the zero vector yields
 \begin{equation}\label{eq:theta}
- \boldsymbol \theta=\boldsymbol\Xi_4^{-1}\left(\boldsymbol\Xi_3^\top-\xi\boldsymbol\Xi_5^\top \right).
+ \hat{\boldsymbol \theta}=\boldsymbol\Xi_4^{-1}\left(\boldsymbol\Xi_3^\top-\xi\boldsymbol\Xi_5^\top \right).
 \end{equation}
 The second derivative is negative definite at this stationary point, and hence it is a global maximizer of $\mathcal{Q}$-function. Now maximizing with respect to $\sigma_{\epsilon}^2$ we get
 \begin{equation}
@@ -424,7 +424,7 @@ The second derivative is negative definite at this stationary point, and hence i
 \end{equation}
 setting above to zero and solving for $\sigma_{\epsilon}^2$ gives
 \begin{equation}
- \sigma_{\epsilon}^2=\frac{1}{(T-1)n_y}\sum_{t=0}^{T-1}\mathrm{tr}\left\lbrace (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top \right\rbrace
+ \hat{\sigma}_{\epsilon}^2=\frac{1}{(T-1)n_y}\sum_{t=0}^{T-1}\mathrm{tr}\left\lbrace (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top \right\rbrace
 \end{equation}
 A second derivative test shows that this is indeed the maximum. Finally differentiating with respec to $\sigma_d^2$ we get
 \begin{align}
@@ -433,7 +433,7 @@ A second derivative test shows that this is indeed the maximum. Finally differen
 \end{align}
 setting above to zero and solving for $\sigma_e^2$ we have
 \begin{align}
-\sigma_d^2=\frac{1}{(T-1)n_x}\left[ \mathrm{tr}\left\lbrace \boldsymbol\Xi_0 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-
+\hat{\sigma}_d^2=\frac{1}{(T-1)n_x}\left[ \mathrm{tr}\left\lbrace \boldsymbol\Xi_0 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-
 2\xi\mathrm{tr}\left\lbrace \boldsymbol\Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace +\xi^2\mathrm{tr} \left\lbrace\boldsymbol\Xi_2\tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace -2\boldsymbol\Xi_3\boldsymbol\theta+\boldsymbol\theta^\top\boldsymbol \Xi_4\boldsymbol\theta+2\xi\boldsymbol\Xi_5 \boldsymbol\theta\right]  
 \end{align}
 In order to confirm calculated parameters are indeed maxima of the lower bound, the second derivative test is carried out for each parameter, giving
@@ -521,6 +521,71 @@ Given the state estimates, $\mathbf {\hat x}_t$ the state covariance $\mathbf P_
 
 % % all figures here
 % % ~~~~~~~~~~~~~~~~
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics{./Figures/KernelWidthEstimation.pdf}
+\end{center}
+\caption{{\bf Connectivity kernel support estimation}.}
+\label{fig:KernelWidthEstimation}
+\end{figure}
+
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics{./Figures/KernelBasis.pdf}
+\end{center}
+\caption{{\bf Connectivity kernel basis functions, $n_{\theta}=25$}, $\sigma^2_{\theta}=3.5$.}
+\label{fig:KernelBasis}
+\end{figure}
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics{./Figures/DisturbanceWidthEstimation.pdf}
+\end{center}
+\caption{{\bf Disturbance support estimation}.}
+\label{fig:DisturbanceWidthEstimation}
+\end{figure}
+
+
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics{./Figures/KernelEstimate.pdf}
+\end{center}
+\caption{{\bf Connectivity kernel estimates over 100 realisations.} left: True kernel; right;Estimated kernel.}
+\label{fig:KernelEstimates}
+\end{figure}
+
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics{./Figures/KernelEstimateCrossSection.pdf}
+\end{center}
+\caption{{\bf Cross-section of connectivity kernel estimates over 100 realisation.} True is blue; Estimate is green; 95\% Confedence interval is red.}
+\label{fig:KernelEstimateCrossSection}
+\end{figure}
+
+
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics{./Figures/ConfedenceIntervel.pdf}
+\end{center}
+\caption{{\bf Cross-section of connectivity kernel estimates over 100 realisation}. An alternative figure which shows estimates outside confedence interval.}
+\label{figConfedenceIntervel}
+\end{figure}
+
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics{./Figures/Histogram.pdf}
+\end{center}
+\caption{{\bf Synaptic dynamic parameter and hyperparameter estimates}.}
+\label{fig:Histogram}
+\end{figure}
+
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics{./Figures/Q.pdf}
+\end{center}
+\caption{{\bf Lower-bound of the log-likelihood}. $Q(\boldsymbol\Theta',\boldsymbol\Theta')=-(T-1)\left[n_y(1+\ln \hat{\sigma}^2_{\epsilon})+ n_x(1+\ln \hat{\sigma}^2_d)\right]$.}
+\label{fig:FieldObserations}
+\end{figure}
+
 % \begin{figure}[!ht]
 % \begin{center}
 % \includegraphics{./Figures/LFPs.eps}
