@@ -322,7 +322,7 @@ To solve for the disturbance covariance we again turn to the convolution theorem
 \begin{align}
 	\mathcal{F}\{(m\ast m \ast \gamma)(\boldsymbol\tau)\} &= \mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\tau})]\}-\sigma_{\varepsilon}^2 \nonumber \\ 
 	&\quad-\xi \mathcal{F}\{\mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol{\tau})]\} \nonumber \\
-	&\quad - \frac{T_s}{4} \mathcal{F}\{w(-\boldsymbol\tau)\}\mathcal{F}\{\mathbf{E}\left[c_t\right] + \varsigma \mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\tau)\right] \}
+	&\quad - \frac{T_s}{4} \mathcal{F}\{w(-\boldsymbol\tau)\}\mathcal{F}\left\{\mathbf{E}\left[c_t\right] + \varsigma \mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\tau)\right] \right\}
 \end{align}
 Now substituting in equation~\ref{eq:Fourier_TF_of_Kernel} for $\mathcal{F}\{w(-\boldsymbol{\tau})\}$ we get
 \begin{align}
