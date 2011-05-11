@@ -513,7 +513,7 @@ This section demonstrates the identification of the proposed IDE model using sim
 
 The correlation analysis described in Section \ref{subsec:CorrAnal} were applied to generated data in order to approximate the unknown supports of both connectivity kernel and the disturbance covariance function. In the algorithm, the unknown variables $\sigma_{\epsilon}^2$ and $\xi$ in equations () and () were set to zero in correlation analysis. By doing so, the exact shape of the kernel and disturbance covariance function cannot be inferred, this step might be considered as an initialisation for the EM algorithm, however, an approximate of their support can be still extracted. In fact, the estimated support for the disturbance covariance function was very accurate. The estimates of the connectivity kernel and disturbance support were normalised and thresholded for values less than 0.01. The result of the correlation analysis for the connectivity kernel is shown in Figure.\ref{fig:KernelWidthEstimation}. The red circle shows the estimated support which encompasses the non-zero values (black area) after thresholding. The estimated support of the disturbance covariance function convolved twice with the observation kernel is shown in Figure.\ref{fig:DisturbanceWidthEstimation}. By fitting a Guassian basis function to the result, and under the assumption that the width of the sensor,$\sigma_m^2$ were known, the width of the disturbance covariance function, $\sigma_d^2$ was calculated analytically using the expression for Gaussian basis functions convolution.
 
-The estimated supports were then applied in the EM algorithm described in Section \ref{sec:EstimationAlgorithm} to estimate the smoothed states $\hat{\mathbf x}_t^b$, the connectivity kernel weights $\boldsymbol\theta$, the synaptic dynamic $\xi$, and the hyperparameters $\sigma_{\epsilon}^2$ and $\sigma^2_d$. A $5 \times 5$ square grid of basis functions with $2.25~mm$ spacing were used to cover the estimated support where $\sigma_{\psi}^2=3.5$. This is shown in Figure.\ref{fig:KernelWidthEstimation} by blue circles, each of which representing full width at half maximum of the connectivity kernel basis functions. The true and estimated connectivity kernel over 100 realisations are shown in Figure~\ref{fig:KernelEstimates}. Cross-sections of the estimates for each run are shown in Figure~\ref{fig:KernelEstimateCrossSection}. The reconstructed kernel is in good accordance with the actual kernel, where the actual kernel lies inside the confidence interval. The large standard deviation is due to the high number of parameters need to be estimated.
+The estimated supports were then applied in the EM algorithm described in Section \ref{sec:EstimationAlgorithm} to estimate the smoothed states $\hat{\mathbf x}_t^b$, the connectivity kernel weights $\boldsymbol\theta$, the synaptic dynamic $\xi$, and the hyperparameters $\sigma_{\epsilon}^2$ and $\sigma^2_d$. A $5 \times 5$ square grid of basis functions with $2.25~mm$ spacing were used to cover the estimated support where $\sigma_{\psi}^2=3.5$. This is shown in Figure.\ref{fig:KernelWidthEstimation} by blue circles, each of which representing full width at half maximum of the connectivity kernel basis functions. The true and estimated connectivity kernel for 100 Monte Carlo simulations are shown in Figure~\ref{fig:KernelEstimates}. Cross-sections of the connectivity kernel estimates for each run are shown in Figure~\ref{fig:KernelEstimateCrossSection}. The reconstructed kernel is in good accordance with the actual kernel, where the actual kernel is inside the confidence interval. The large standard deviation is due to the high number of parameters need to be estimated. Figure~\ref{fig:Histogram} depicts the histogram of parameter estimates from 100 simulations where the true parameter value is shown by the solid line and the mean parameter estimate is shown by the dashed line. These histograms indicate small bias in parameter estimates with a very small standard deviation.
 
 
  
@@ -566,6 +566,25 @@ The estimated supports were then applied in the EM algorithm described in Sectio
 \label{fig:KernelEstimateCrossSection}
 \end{figure}
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics{./Figures/Histogram.pdf}
+\end{center}
+\caption{{\bf Synaptic dynamic parameter and hyperparameter estimates}.}
+\label{fig:Histogram}
+\end{figure}
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+\begin{figure}[!ht]
+\begin{center}
+\includegraphics{./Figures/Q.pdf}
+\end{center}
+\caption{{\bf Lower-bound of the log-likelihood}. $Q(\boldsymbol\Theta',\boldsymbol\Theta')=-(T-1)\left[n_y(1+\ln \hat{\sigma}^2_{\epsilon})+ n_x(1+\ln \hat{\sigma}^2_d)\right]$.}
+\label{fig:FieldObserations}
+\end{figure}
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
 
 \begin{figure}[!ht]
 \begin{center}
@@ -587,21 +606,7 @@ The estimated supports were then applied in the EM algorithm described in Sectio
 
 
 
-\begin{figure}[!ht]
-\begin{center}
-\includegraphics{./Figures/Histogram.pdf}
-\end{center}
-\caption{{\bf Synaptic dynamic parameter and hyperparameter estimates}.}
-\label{fig:Histogram}
-\end{figure}
 
-\begin{figure}[!ht]
-\begin{center}
-\includegraphics{./Figures/Q.pdf}
-\end{center}
-\caption{{\bf Lower-bound of the log-likelihood}. $Q(\boldsymbol\Theta',\boldsymbol\Theta')=-(T-1)\left[n_y(1+\ln \hat{\sigma}^2_{\epsilon})+ n_x(1+\ln \hat{\sigma}^2_d)\right]$.}
-\label{fig:FieldObserations}
-\end{figure}
 
 % \begin{figure}[!ht]
 % \begin{center}
