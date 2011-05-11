@@ -303,15 +303,15 @@ This substitution exploits the isotropy of the connectivity kernel basis functio
 
 As a result of the model reduction via the basis function decomposition and the decomposition of the connectivity kernel the state space model is formed
 \begin{align}
- \mathbf x_{t+1}&=q(\mathbf x_t)\boldsymbol\theta+\xi \mathbf x_t+\boldsymbol e_t(\mathbf r) \\
- \mathbf y_t&=\mathbf C \mathbf x_t+\boldsymbol \epsilon_t,
+ \mathbf x_{t+1}&=q(\mathbf x_t)\boldsymbol\theta+\xi \mathbf x_t+\boldsymbol e_t(\mathbf r) \label{eq:StateEq} \\
+ \mathbf y_t&=\mathbf C \mathbf x_t+\boldsymbol \epsilon_t,\label{eq:OutputEq}
 \end{align}
 where the nonlinear function, $q(\cdot)$, is defined as
 \begin{equation}\label{eq:QmatrixForSigmapoints}
 	q(\mathbf{x}_t) = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) d\mathbf{r}'.
 \end{equation}
 \section{Estimation Algorithm}
-Here we describe the problem of estimating non-linear state-space neural field model using expectation-maximisation (EM) based algorithm \cite{Dempster1977,Shumway2000}. The resulting estimation process is an iterative two step procedure that converges on the maximum-likelihood estimates of the parameters. In the E-step we estimate the states $\mathbf x_t$, of the system and in the M-step we estimate the connectivity kernel parameters $\boldsymbol \theta$, synaptic dynamic $\xi$, disturbance variance $\sigma^2_d$ and the observation noise variance $\sigma^2_{\epsilon}$. Once initialized, at each iteration the sequence of smoothed state vectors is used to update the parameters by maximizing an approximate lower bound on the log likelihood function. The resulting parameters are then used when estimating the new
+Here we describe the problem of estimating non-linear state space neural field model using expectation-maximisation (EM) based algorithm \cite{Dempster1977,Shumway2000}. The resulting estimation process is an iterative two step procedure that converges on the maximum-likelihood estimates of the parameters. In the E-step we estimate the states $\mathbf x_t$, of the system and in the M-step we estimate the connectivity kernel parameters $\boldsymbol \theta$, synaptic dynamic $\xi$, disturbance variance $\sigma^2_d$ and the observation noise variance $\sigma^2_{\epsilon}$. Once initialized, at each iteration the sequence of smoothed state vectors is used to update the parameters by maximizing an approximate lower bound on the log likelihood function. The resulting parameters are then used when estimating the new
 state vector sequence for the next iteration. The stopping criterion is usually associated with either the change in the parameter estimates or the log-likelihood variation \cite{McLachlan1997}.
 \subsection{E-Step}
 In the E-step the additive form of the unscented Rauch-Tung-Striebel smoother (URTSS)~\cite{Sarkka2010} was used for the state estimation. The URTSS incorporates an unscented Kalman filter (UKF) \cite{Julier1997, Merwe2003} in a forward step to estimate posterior states, $\hat{\mathbf x}_t^{f}$, followed by a backward step to compute the smoothed state estimates, $\hat{\mathbf x}_t^{b}$. The first and second order moments of the predicted state are captured by propagating the so-called sigma points through the state equation. The sigma points, $\mathcal X_i$, are calculated using the unscented transform as follows:
@@ -509,6 +509,8 @@ Given the state estimates, $\mathbf {\hat x}_t$ the state covariance $\mathbf P_
 
 
 \section{Results}
+This section demonstrates the identification of the proposed IDE model using simulated data. Data is generated employing state space equation (\ref{eq:StateEq}-\ref{eq:QmatrixForSigmapoints}) using a square grid of $n_x= 9 \times 9$ equally spaced ($2.5~mm$) basis functions with $\sigma_{\phi}^2=1.58~mm^2$  , assuming the observed field can be fully
+described by the decomposed IDE model. 100 realizations of 500 ms of data were generated and the first 100 ms was discarded allowing the model's dynamic to reach steady state. The observation noise was set to $\Sigma_{\epsilon}=0.2\times \mathbf I_{n_y}$ and the field disturbance was set to $\mathcal{GP}(\mathbf 0,0.1 \times\gamma(\mathbf{r}-\mathbf{r}'))$ where the covariance function was chosen as a Gaussian with zero mean and the width $\sigma_{\gamma}^2=1.7~mm^2$ . The distance between adjacent sensors was 1.5 mm resulting into $n_y = 196$ observations. The width of the sensor kernels were set to $\sigma_m^2=0.81~mm^2$. The sampling period and the synaptic time constant were set to $T_s = 1~ms$  and $\tau = 10~ms$, respectively. The sigmoidal activation parameters were $\varsigma=0.56~mV^{-1}$ and $v_0=1.8~mV$.
 \begin{itemize}
 	\item Will show parameter distributions
 	\item Will show lower bound
