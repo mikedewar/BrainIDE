@@ -504,7 +504,7 @@ and
  \boldsymbol\Lambda_t=\sum_{i,j=1}^{n_x}[\mathbf{P_t}]_{ij}{\boldsymbol\lambda}_t^{(i)\top}\tilde{\boldsymbol\Sigma}_e^{-1}{\boldsymbol\lambda}_t^{(j)}
 \end{equation}
 
-Given the state estimates, $\mathbf {\hat x}_t$ the state covariance $\mathbf P_t$ and cross-covariance $\mathbf M_t$ , the $\boldsymbol\Xi$-variables can be computed directly. In the M-step, an update $\boldsymbol\Theta'$ is chosen such that $\mathcal{Q}\left(\boldsymbol\Theta',\boldsymbol\Theta'\right)>\mathcal{Q}\left(\boldsymbol\Theta,\boldsymbol\Theta'\right)$, this will guarantee that the likelihood increases. The computational complexity of the algorithm is given ib Table
+Given the state estimates, $\mathbf {\hat x}_t$ the state covariance $\mathbf P_t$ and cross-covariance $\mathbf M_t$ , the $\boldsymbol\Xi$-variables can be computed directly. In the M-step, an update $\boldsymbol\Theta'$ is chosen such that $\mathcal{Q}\left(\boldsymbol\Theta',\boldsymbol\Theta'\right)>\mathcal{Q}\left(\boldsymbol\Theta,\boldsymbol\Theta'\right)$, this will guarantee that the likelihood increases. The computational complexity of the algorithm is given in Table~\ref{table:ComputationalComplexity}. In this table only the computational complexity of variables specific to the presented algorithm are shown, and the computational complexity of the URTSS can be found in \cite{Sarkka2010}.
  \begin {table}
 \begin{center}
 \scalebox{1}{\begin{tabular}{lll}
@@ -512,15 +512,15 @@ Given the state estimates, $\mathbf {\hat x}_t$ the state covariance $\mathbf P_
 Variable &Order&Order of the approximate\\ \hline\\
 $\Xi_0, \Xi_1, \Xi_2$&$O(Tn_x^2)$&-\\
 $\Xi_3, \Xi_5$&$O(Tn_x^3)+O(Tn_x^2n_{\theta})$&$O(Tn_x^3n_r^2)+O(Tn_x^2n_{\theta}n_r^2)$ \\
-$\Xi_4$&$O(Tn_x^3n_{\theta})+O(Tn_x^2n_{\theta}^2)$&$O(Tn_x^3n_{\theta}n_r^2)+O(Tn_x^2n_{\theta}^2n_r^2)$\\
+$\Xi_4$&$O(Tn_x^3n_{\theta})+O(Tn_x^2n_{\theta}^2)$&$O(Tn_x^4n_{\theta}n_r^2)+O(Tn_x^3n_{\theta}^2n_r^2)$\\
 $\hat{\boldsymbol\theta} $&$O(n_{\theta}^3)$&-\\
 $\hat{\xi}$&$O(n_x^3+n_{\theta}^3)$&-\\
  $\hat{\sigma}_{\epsilon}^2$&$O(Tn_y^2n_x^2)$&-\\
-$\hat{\sigma}_{d}^2$&$O(Tn_x^3)+O(Tn_{\theta}^3)&-$\\
+$\hat{\sigma}_{d}^2$&$O(Tn_x^3)+O(Tn_{\theta}^3)$&-\\
 \hline \hline
 \end{tabular}}
  \caption {Computational complexity of EM algorithm} 
-\label{table:BsplineConvolutionandInnerproduct}
+\label{table:ComputationalComplexity}
 \end{center}
 \end {table}
 
