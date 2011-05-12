@@ -504,12 +504,30 @@ and
  \boldsymbol\Lambda_t=\sum_{i,j=1}^{n_x}[\mathbf{P_t}]_{ij}{\boldsymbol\lambda}_t^{(i)\top}\tilde{\boldsymbol\Sigma}_e^{-1}{\boldsymbol\lambda}_t^{(j)}
 \end{equation}
 
-Given the state estimates, $\mathbf {\hat x}_t$ the state covariance $\mathbf P_t$ and cross-covariance $\mathbf M_t$ , the $\boldsymbol\Xi$-variables can be computed directly. In the M-step, an update $\boldsymbol\Theta'$ is chosen such that $\mathcal{Q}\left(\boldsymbol\Theta',\boldsymbol\Theta'\right)>\mathcal{Q}\left(\boldsymbol\Theta,\boldsymbol\Theta'\right)$, this will guarantee that the likelihood increases. 
+Given the state estimates, $\mathbf {\hat x}_t$ the state covariance $\mathbf P_t$ and cross-covariance $\mathbf M_t$ , the $\boldsymbol\Xi$-variables can be computed directly. In the M-step, an update $\boldsymbol\Theta'$ is chosen such that $\mathcal{Q}\left(\boldsymbol\Theta',\boldsymbol\Theta'\right)>\mathcal{Q}\left(\boldsymbol\Theta,\boldsymbol\Theta'\right)$, this will guarantee that the likelihood increases. The computational complexity of the algorithm is given ib Table
+ \begin {table}
+\begin{center}
+\scalebox{1}{\begin{tabular}{lll}
+\hline \hline
+Variable &Order&Order of the approximate\\ \hline\\
+$\Xi_0, \Xi_1, \Xi_2$&$O(Tn_x^2)$&-\\
+$\Xi_3, \Xi_5$&$O(Tn_x^3)+O(Tn_x^2n_{\theta})$&$O(Tn_x^3n_r^2)+O(Tn_x^2n_{\theta}n_r^2)$ \\
+$\Xi_4$&$O(Tn_x^3n_{\theta})+O(Tn_x^2n_{\theta}^2)$&$O(Tn_x^3n_{\theta}n_r^2)+O(Tn_x^2n_{\theta}^2n_r^2)$\\
+$\hat{\boldsymbol\theta} $&$O(n_{\theta}^3)$&-\\
+$\hat{\xi}$&$O(n_x^3+n_{\theta}^3)$&-\\
+ $\hat{\sigma}_{\epsilon}^2$&$O(Tn_y^2n_x^2)$&-\\
+$\hat{\sigma}_{d}^2$&$O(Tn_x^3)+O(Tn_{\theta}^3)&-$\\
+\hline \hline
+\end{tabular}}
+ \caption {Computational complexity of EM algorithm} 
+\label{table:BsplineConvolutionandInnerproduct}
+\end{center}
+\end {table}
 
 
 
 \section{Results}
-This section demonstrates the identification of the proposed IDE model using simulated data. The observation noise and disturbance were unknown and no assumption were made on the shape of the kernel.  Data was generated employing state space equation (\ref{eq:StateEq}-\ref{eq:QmatrixForSigmapoints}) using a square grid of $n_x= 9 \times 9$ equally spaced ($2.5~mm$) basis functions with $\sigma_{\phi}^2=1.58~mm^2$, assuming the observed field can be fully described by the decomposed IDE model. 100 realizations of 500 ms of data were generated and the first 100 ms was discarded allowing the model's dynamic to reach steady state. The observation noise was set to $\Sigma_{\epsilon}=0.2\times \mathbf I_{n_y}$ and the field disturbance was set to $\mathcal{GP}(\mathbf 0,0.1 \times\gamma(\mathbf{r}-\mathbf{r}'))$ where the covariance function was chosen as a Gaussian with zero mean and the width $\sigma_{\gamma}^2=1.7~mm^2$ . The distance between adjacent sensors was 1.5 mm resulting into $n_y = 196$ observations. The width of the sensor kernels were set to $\sigma_m^2=0.81~mm^2$. The sampling period and the synaptic time constant were set to $T_s = 1~ms$  and $\tau = 10~ms$, respectively. The sigmoidal activation parameters were $\varsigma=0.56~mV^{-1}$ and $v_0=1.8~mV$.
+This section demonstrates the identification of the proposed IDE model using simulated data. The observation noise and disturbance were unknown to the estimation algorithm and no assumption were made on the shape of the kernel.  Data was generated employing state space equation (\ref{eq:StateEq}-\ref{eq:QmatrixForSigmapoints}) using a square grid of $n_x= 9 \times 9$ equally spaced ($2.5~mm$) basis functions with $\sigma_{\phi}^2=1.58~mm^2$, assuming the observed field can be fully described by the decomposed IDE model. 100 realizations of 500 ms of data were generated and the first 100 ms was discarded allowing the model's dynamic to reach steady state. The observation noise was set to $\Sigma_{\epsilon}=0.2\times \mathbf I_{n_y}$ and the field disturbance was set to $\mathcal{GP}(\mathbf 0,0.1 \times\gamma(\mathbf{r}-\mathbf{r}'))$ where the covariance function was chosen as a Gaussian with zero mean and the width $\sigma_{\gamma}^2=1.7~mm^2$ . The distance between adjacent sensors was 1.5 mm resulting into $n_y = 196$ observations. The width of the sensor kernels were set to $\sigma_m^2=0.81~mm^2$. The sampling period and the synaptic time constant were set to $T_s = 1~ms$  and $\tau = 10~ms$, respectively. The sigmoidal activation parameters were $\varsigma=0.56~mV^{-1}$ and $v_0=1.8~mV$.
 
 The correlation analysis described in Section \ref{subsec:CorrAnal} were applied to generated data in order to approximate the unknown supports of both connectivity kernel and the disturbance covariance function. In the algorithm, the unknown variables $\sigma_{\epsilon}^2$ and $\xi$ in equations () and () were set to zero. By doing so, the exact shape of the kernel and disturbance covariance function cannot be inferred, this step might be considered as an initialisation for the EM algorithm, however, an approximate of their support can be still extracted. In fact, the estimated support for the disturbance covariance function was very accurate. The estimates of the connectivity kernel and disturbance support were normalised and thresholded for values less than 0.01. The result of the correlation analysis for the connectivity kernel is shown in Figure.\ref{fig:KernelWidthEstimation}. The red circle shows the estimated support which encompasses the non-zero values (black area) after thresholding. The estimated support of the disturbance covariance function convolved twice with the observation kernel is shown in Figure.\ref{fig:DisturbanceWidthEstimation}. By fitting a Guassian basis function to the result, and under the assumption that the width of the sensor,$\sigma_m^2$ were known, the width of the disturbance covariance function, $\sigma_d^2$ was calculated analytically using the expression for Gaussian basis functions convolution.
 
