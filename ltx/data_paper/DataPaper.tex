@@ -397,32 +397,25 @@ equation \eqref{eq:Voldermont} can be written as
 \end{align}
 Covariance and cross-covariances in equation \eqref{eq:VoldermontwitXivariables}, consist of both linear terms, $\boldsymbol\Xi_0$, $\boldsymbol\Xi_1$ and $\boldsymbol\Xi_2$ and non-linear terms, $\boldsymbol\Xi_3$, $\boldsymbol\Xi_4$ and  $\boldsymbol\Xi_5$. Finding linear $\boldsymbol\Xi$-variables is straightforward as they can be computed directly using smoother outputs, i.e. $\hat{\mathbf x}_t^b $, $\mathbf P_t^b$ and $\mathbf M_t^b$ using the following expressions \cite{Gibsona2005} (see supporting information for details)
 \begin{align}
-	\boldsymbol\Xi_{0}&=\sum_{t=0}^{T-1}\left(\mathbf P_{t+1}+\mathbf{\hat x}_{t+1}\mathbf{\hat x}_{t+1}^\top\right)\label{eq:defofXi0}, \\
-\boldsymbol\Xi_{1}&=\sum_{t=0}^{T-1}\left(\mathbf M_{t+1}+\mathbf{\hat x}_t\mathbf{\hat x}_{t+1}^\top\right) \label{eq:defofXi1}, \\
-\boldsymbol\Xi_{2}&=\sum_{t=0}^{T-1}\left(\mathbf P_t+\mathbf{\hat x}_t\mathbf{\hat x}_t^\top\right).
+	\boldsymbol\Xi_{0}&=\sum_{t=0}^{T-1}\left(\mathbf P_{t+1}^b+\mathbf{\hat x}_{t+1}^b\mathbf{\hat x}_{t+1}^{b\top}\right)\label{eq:defofXi0}, \\
+\boldsymbol\Xi_{1}&=\sum_{t=0}^{T-1}\left(\mathbf M_{t+1}^b+\mathbf{\hat x}_t^b\mathbf{\hat x}_{t+1}^{b\top}\right) \label{eq:defofXi1}, \\
+\boldsymbol\Xi_{2}&=\sum_{t=0}^{T-1}\left(\mathbf P_t^b+\mathbf{\hat x}_t^b\mathbf{\hat x}_t^{b\top}\right).
  \end{align}
 However calculation of non-linear $\boldsymbol\Xi$-variables is not straightforward as in the linear case. Therefore, an additional  Taylor expansion step to the URTSS algorithm is also created to approximate $q(\mathbf{x}_t)$ at each time instant which is to be used in the calculations of the $\boldsymbol\Xi_3$, $\boldsymbol\Xi_4$ and $\boldsymbol\Xi_5$. This is accomplished by taking the first-order truncated Taylor-series expansion of the sigmoidal activation function  around the smoothed state, $\hat{\mathbf x}_t^b$ at each time instant, i.e.
 \begin{equation}\label{eq:SigmoidTaylor}
- f\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\mathbf x_t\right) \approx f\left(\boldsymbol \phi^\top(\mathbf r')\hat{\mathbf x}_t\right)+  \boldsymbol \phi^\top\left(\mathbf r'\right)\left(\mathbf x_t - \hat{\mathbf x}_t\right)f'\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t\right)
+ f\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\mathbf x_t\right) \approx f\left(\boldsymbol \phi^\top(\mathbf r')\hat{\mathbf x}_t^b\right)+  \boldsymbol \phi^\top\left(\mathbf r'\right)\left(\mathbf x_t - \hat{\mathbf x}_t^b\right)f'\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t^b\right)
 \end{equation}
 where 
 \begin{equation}\label{eq:SigmoidDerivative}
- f'\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t\right)=\varsigma f\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t\right)\left( 1-f\left( \boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t\right)\right)
+ f'\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t^b\right)=\varsigma f\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t^b\right)\left( 1-f\left( \boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t^b\right)\right)
 \end{equation}
-substituting \ref{eq:SigmoidTaylor} in \ref{eq:QmatrixForSigmapoints}  we get an approximation for $q(\mathbf x_t)$ around the estimated state $\hat{\mathbf{x}}_t$ 
+substituting \eqref{eq:SigmoidTaylor} in \eqref{eq:QmatrixForSigmapoints}  we get an approximation for $q(\mathbf x_t)$ around the smoothed state $\hat{\mathbf{x}}_t^b$ 
 \begin{equation}\label{eq:qTaylor}
- q_L(\mathbf x_t) \approx q\left(\hat{\mathbf x}_t\right)+\int_\Omega \boldsymbol{\Psi}\left(\mathbf{r}'\right)\boldsymbol \phi^\top\left(\mathbf r'\right) \left(\mathbf x_t -\hat{\mathbf x}_t\right)f'\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t\right) d\mathbf{r}'
-\end{equation}
-Define
-\begin{equation}
-	e(x) = q(x) - q_L(x) \nonumber
+ q_L(\mathbf x_t) \approx q\left(\hat{\mathbf x}_t^b\right)+\int_\Omega \boldsymbol{\Psi}\left(\mathbf{r}'\right)\boldsymbol \phi^\top\left(\mathbf r'\right) \left(\mathbf x_t -\hat{\mathbf x}_t^b\right)f'\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t^b\right) d\mathbf{r}'
 \end{equation}
 
-Then we can write $q(x) = q_L(x) + e(x)$ and use this to show that the error in the estimate is proportional to $e(x)$.
 
-Equation \ref{eq:qTaylor} is used to approximate the lower bound on the log-likelihood function in the M-step. \dean{The difference between the linearised and nonlinear likelihood will be the error in the approximation at the state estimate that maximised the likelihood.}
-
-Having approximated $q\left(\mathbf x_t\right)$ in the E-step, by substituting  \ref{eq:qTaylor} into equations \ref{eq:Xi3}-\ref{eq:Xi5} an approximate to the non-linear $\boldsymbol\Xi$-variables can be calculated which provides an approximate lower bound on the log-likelihood function (see supporting information), 
+Having approximated $q\left(\mathbf x_t\right)$, by substituting  \eqref{eq:qTaylor} into equations (\ref{eq:Xi3}-\ref{eq:Xi5}) an approximate to the non-linear $\boldsymbol\Xi$-variables can be calculated which in turn provides an approximate lower bound on the log-likelihood function (see supporting information), 
 \begin{align}
 \boldsymbol\Xi_{3}&\approx\sum_{t=0}^{T-1}\left[ \mathbf{\hat x}_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf{\hat x}_t)+\int_\Omega\boldsymbol \phi^\top(\mathbf r') \mathbf M_{t+1} \tilde{\boldsymbol\Sigma}_e^{-1} \boldsymbol{\Psi}(\mathbf{r}') f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\right] \\	
 \boldsymbol\Xi_{4}&\approx\sum_{t=0}^{T-1}\left[q^\top(\mathbf{\hat x}_t)\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf{\hat x}_t)+\Lambda_t\right] \\
@@ -437,14 +430,23 @@ and
  \boldsymbol\Lambda_t=\sum_{i,j=1}^{n_x}[\mathbf{P_t}]_{ij}{\boldsymbol\lambda}_t^{(i)\top}\tilde{\boldsymbol\Sigma}_e^{-1}{\boldsymbol\lambda}_t^{(j)}
 \end{equation}
 
-Given the state estimates, $\mathbf {\hat x}_t$ the state covariance $\mathbf P_t$ and cross-covariance $\mathbf M_t$ , the $\boldsymbol\Xi$-variables can be computed directly. In the M-step, an update $\boldsymbol\Theta'$ is chosen such that $\mathcal{Q}\left(\boldsymbol\Theta',\boldsymbol\Theta'\right)>\mathcal{Q}\left(\boldsymbol\Theta,\boldsymbol\Theta'\right)$, this will guarantee that the likelihood increases. The computational complexity of the algorithm is given in Table~\ref{table:ComputationalComplexity}. In this table only the computational complexity of variables specific to the presented algorithm are shown, and the computational complexity of the URTSS can be found in \cite{Sarkka2010}.
+Given the state estimates, $\mathbf {\hat x}_t$ the state covariance $\mathbf P_t$ and cross-covariance $\mathbf M_t$ , the $\boldsymbol\Xi$-variables can be computed directly.  The computational complexity of the algorithm is given in Table~\ref{table:ComputationalComplexity}. In this table only the computational complexity of variables specific to the presented algorithm are shown, and the computational complexity of the URTSS can be found in \cite{Sarkka2010}.
 
 
 
 
+Define
+\begin{equation}
+	e(x) = q(x) - q_L(x) \nonumber
+\end{equation}
 
+Then we can write $q(x) = q_L(x) + e(x)$ and use this to show that the error in the estimate is proportional to $e(x)$.
+
+Equation \ref{eq:qTaylor} is used to approximate the lower bound on the log-likelihood function in the M-step. \dean{The difference between the linearised and nonlinear likelihood will be the error in the approximation at the state estimate that maximised the likelihood.}
 \subsection{M-Step}
-The objective of the M-step is to maximize a lower bound on the joint likelihood function, $p(\mathbf X,\mathbf Y;\boldsymbol \Theta)$, where $\mathbf X$ is the set of all states, $\mathbf Y$ is the set of all observations, and $\boldsymbol \Theta$ denotes the set of all unknown parameters, i.e., connectivity kernel parameters $\boldsymbol\theta$, synaptic dynamic $\xi$, disturbance variance $\sigma^2_d$ and the observation noise variance $\sigma^2_{\epsilon}$.
+% In the M-step, an update $\boldsymbol\Theta'$ is chosen such that $\mathcal{Q}\left(\boldsymbol\Theta',\boldsymbol\Theta'\right)>\mathcal{Q}\left(\boldsymbol\Theta,\boldsymbol\Theta'\right)$, this will guarantee that the likelihood increases.
+The objective of the M-step is to maximize the lower bound found in E-step, whcich consequenly increases the log-likelihood function $p(\mathbf Y;\boldsymbol\Theta)$.
+% on the joint likelihood function, $p(\mathbf X,\mathbf Y;\boldsymbol \Theta)$, where $\mathbf X$ is the set of all states, $\mathbf Y$ is the set of all observations, and $\boldsymbol \Theta$ denotes the set of all unknown parameters, i.e., connectivity kernel parameters $\boldsymbol\theta$, synaptic dynamic $\xi$, disturbance variance $\sigma^2_d$ and the observation noise variance $\sigma^2_{\epsilon}$.
                                                                                                                                                                                                                                                                                                                                                                                                                                                                             Consider first the maximisation of $\mathcal{Q}$-function with respect to $\xi$, we can write
 \begin{equation}\label{eq:Qpartialxi}
  \frac{\partial \mathcal Q}{\partial\xi}=\frac{2}{\sigma_d^2}\mathrm{tr}\left\lbrace \boldsymbol\Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace -\frac{2\xi}{\sigma_d^2}\mathrm{tr}\left\lbrace \boldsymbol\Xi_2 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-\frac{2}{\sigma_d^2}\boldsymbol\Xi_5,
@@ -558,7 +560,7 @@ annealing can be used to tackle such situations but difficult to implement (Mc L
 \begin{center}
 \includegraphics{./Figures/KernelBasis1.pdf}
 \end{center}
-\caption{{\bf Connectivity kernel basis functions, $n_{\theta}=25$}, $\sigma^2_{\theta}=3.5$.}
+\caption{{\bf Connectivity kernel support estimate.} The estimated support of the kernel is shown by the red circle. Black area shows the non-zero values of the support after thresholding. A $5\times5$ grid of basis functions (blue circles) used to reconstruct the connectivity kernel.}
 \label{fig:KernelWidthEstimation}
 \end{figure}
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
