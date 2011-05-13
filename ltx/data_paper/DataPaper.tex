@@ -311,10 +311,13 @@ where the nonlinear function, $q(\cdot)$, is defined as
 	q(\mathbf{x}_t) = \int_\Omega \boldsymbol{\Psi}(\mathbf{r}') f(\boldsymbol{\phi}^{\top}(\mathbf{r}')\mathbf{x}_t) d\mathbf{r}'.
 \end{equation}
 \section{Estimation Algorithm}\label{sec:EstimationAlgorithm}
-Here we describe the problem of estimating non-linear state space neural field model using expectation-maximisation (EM) based algorithm \cite{Dempster1977,Shumway2000}. The resulting estimation process is an iterative two step procedure that converges on the maximum-likelihood estimates of the parameters. In the E-step we estimate the states $\mathbf x_t$, of the system and in the M-step we estimate the connectivity kernel parameters $\boldsymbol \theta$, synaptic dynamic $\xi$, disturbance variance $\sigma^2_d$ and the observation noise variance $\sigma^2_{\epsilon}$. Once initialized, at each iteration the sequence of smoothed state vectors is used to update the parameters by maximizing an approximate lower bound on the log likelihood function. The resulting parameters are then used when estimating the new
-state vector sequence for the next iteration. The stopping criterion is usually associated with either the change in the parameter estimates or the log-likelihood variation \cite{McLachlan1997}.
+Here we describe the problem of estimating non-linear state space neural field model using expectation-maximisation (EM) based algorithm \cite{Dempster1977,Shumway2000}. EM is an iterative algorithm that converges on the maximum-likelihood estimates of the parameters. Both the E and the M steps of the EM algorithm increase a lower bound on the log-likelihood function of the parameters given the observed field.  In the E-step we estimate the state $\mathbf x_t$, of the system given the observed field and current estimate of the model parameters to calculate expected log-likelihood. In the M-step we estimate the system parameters by maximising the expected log-likelihood computed in the E-step. The resulting parameters are then used to estimate the distribution of the state vector sequence for the next iteration. The stopping criterion is usually associated with either the change in the parameter estimates or the log-likelihood variation \cite{McLachlan1997}.
 \subsection{E-Step}
-In the E-step the additive form of the unscented Rauch-Tung-Striebel smoother (URTSS)~\cite{Sarkka2010} was used for the state estimation. The URTSS incorporates an unscented Kalman filter (UKF) \cite{Julier1997, Merwe2003} in a forward step to estimate posterior states, $\hat{\mathbf x}_t^{f}$, followed by a backward step to compute the smoothed state estimates, $\hat{\mathbf x}_t^{b}$. The first and second order moments of the predicted state are captured by propagating the so-called sigma points through the state equation. The sigma points, $\mathcal X_i$, are calculated using the unscented transform as follows:
+In state space models, E-step corresponds to solving the smoothing problem, i.e. estimating the states of the system, $\mathbf x_t$ given all observations and the parameters of the system. The smoother output is then used to calculate the expected log-likelihood function required in M-step. The non-linear behaviour of the state-space neural field described in \eqref{eq:StateEq} requires a non-linear smoother to be employed for state estimation in the E-step.
+% In order to caulculate the expected log-likelihood in the E-step the smoothed states of the system is required.  An additive form of the unscented Rauch-Tung-Striebel smoother (URTSS)~\cite{Sarkka2010} was used to estimate the approximate state distribution in the E-step.
+% It can be shown that the maximum in the E-step occurs when the state distribution is exactly $p(\mathbf X\mid \mathbf Y;\boldsymbol \theta')$, the conditional distribution of X, given all observations and the current value of the parameter estimates which corresponds to solving the smoothing problem. 
+\subsubsection{State estimation}
+The additive form of the unscented Rauch-Tung-Striebel smoother (URTSS)~\cite{Sarkka2010} was used for the state estimation. The URTSS incorporates an unscented Kalman filter (UKF) \cite{Julier1997, Merwe2003} in a forward step to estimate posterior states, $\hat{\mathbf x}_t^{f}$, followed by a backward step to compute the smoothed state estimates, $\hat{\mathbf x}_t^{b}$. The first and second order moments of the predicted state are captured by propagating the so-called sigma points through the state equation. The sigma points, $\mathcal X_i$, are calculated using the unscented transform as follows:
 \begin{align}\label{eq:sigmapoints1}
 	\mathcal X_{0}&=\mathbf{\bar x} \\
 	\mathcal X_{i}&= \mathbf{\bar x}+\left(\sqrt{( n_x + \lambda)\mathbf P_x}\right)_i, \quad i=1, \dots, n_x \\
@@ -332,54 +335,43 @@ The sigma vectors are propagated through the system equations and weighted to fo
 	\mathbf W_0^{(c)}&=\frac{\lambda}{ n_x+\lambda}+(1-\alpha^2+\beta) \\
 	\mathbf W_i^{(m)}&=\mathbf W_i^{(c)}=\frac{1}{2( n_x+\lambda)} \quad i=1, \dots, 2n_x, 
 \end{align}
-where the superscripts $m$ and $c$ denote mean and covariance and $\beta$ incorporates prior knowledge of the distribution of the states, $\mathbf{x}$ (for a Gaussian disturbance, $\beta$ should be set to 2 \cite{Haykin2001}). Since the observation equation is linear (equation~\ref{ObservationEquation}), the standard Kalman Filter update equations are used to correct the predicted states. The state estimates from forward filtering are used to form a new set of sigma points for the smoother, as described above. The predicted and the smoothed cross-covariance matrices of the states, $\mathbf M_{t}^{b-}$ and  $\mathbf M_{t}^{b}$, are also required. The former is used  for computing the smoother gain and the latter is used to compute $\boldsymbol\Xi$ variables required  in the M-step. The formulation of the cross-covariance matrices are given in the summary of the steps in the URTSS algorithm in Table~\ref{tab:URTSSAlgorithm}.  
+where the superscripts $m$ and $c$ denote mean and covariance and $\beta$ incorporates prior knowledge of the distribution of the states, $\mathbf{x}$ (for a Gaussian disturbance, $\beta$ should be set to 2 \cite{Haykin2001}). Since the observation equation is linear (equation~\ref{ObservationEquation}), the standard Kalman Filter update equations are used to correct the predicted states. The state estimates from forward filtering are used to form a new set of sigma points for the smoother, as described above. The predicted and the smoothed cross-covariance matrices of the states, $\mathbf M_{t}^{b-}$ and  $\mathbf M_{t}^{b}$, are also required. The former is used  for computing the smoother gain and the latter is used to compute expected log-likelihood. The formulation of the cross-covariance matrices are given in the summary of the steps in the URTSS algorithm in Table~\ref{tab:URTSSAlgorithm}. 
 
-
-
-
-\subsection{M-Step}
-The goal of the M-step is to maximize a lower bound on the joint likelihood function, $p(\mathbf X,\mathbf Y;\boldsymbol \Theta)$, where $\mathbf X$ is the set of all states, $\mathbf Y$ is the set of all observations, and $\boldsymbol \Theta$ denotes the set of all unknown parameters, i.e., connectivity kernel parameters $\boldsymbol\theta$, synaptic dynamic $\xi$, disturbance variance $\sigma^2_d$ and the observation noise variance $\sigma^2_{\epsilon}$.
-\begin{equation}
-	\boldsymbol\Theta = \left\lbrace \boldsymbol\theta, \xi, \sigma^2_d, \sigma^2_{\epsilon}\right\rbrace 
-\end{equation} We choose to maximise \dean{the joint}, $p(\mathbf X,\mathbf Y;\boldsymbol \Theta)$, since it is not  possible to maximise the likelihood function $p(\mathbf Y;\boldsymbol\Theta)$ directly. Increasing the joint likelihood function increases the likelihood function $p(\mathbf Y;\boldsymbol \Theta)$ \cite{McLachlan1997}. We proceed by expanding the joint distribution $p(\mathbf X,\mathbf Y;\boldsymbol \Theta)$
-\begin{equation}\label{eq:jointdistribution}
- p(\mathbf X,\mathbf Y;\boldsymbol \Theta)=\prod_{t=0}^{T-1} p(\mathbf y_{t+1}|\mathbf x_{t+1}; \sigma_{\epsilon})p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta, \sigma_d)p(\mathbf x_0).
-\end{equation}
-The standard form of the lower bound of the log-likelihood or $\mathcal{Q}$ function, is defined as   
+\subsubsection{Expected log-likelihood} 
+It is well known that the expected joint data log likelihood $\ln p(\mathbf X,\mathbf Y;\boldsymbol\Theta)$, forms a lower bound on the log-likelihood function $\ln p(\mathbf Y;\boldsymbol\Theta)$, where $\mathbf X$ and $\mathbf Y$ are set of all states and the set of all observations respectively and $\boldsymbol \Theta$ denotes the set of all system parameters. Therefore we can write
 \begin{align}\label{eq:QFunction}
  \mathcal Q(\boldsymbol \Theta,\boldsymbol\Theta')&=\mathbf E_{\boldsymbol \Theta'}\left[2\ln p(\mathbf X,\mathbf Y;\boldsymbol \Theta)\right],
 \end{align}
-where $ \mathbf E_{\boldsymbol \Theta'}$ denotes expectation with respect to the distribution $p(\mathbf X | \mathbf Y;\boldsymbol \Theta')$, and $\boldsymbol \Theta'$ is the current parameter estimates. The factor of $2$ is included to simplify the derivation in the later steps. Using the chain rule of probability theory (relationship between conditional and joint) we can right
-\begin{equation}
-	... \nonumber
+where $ \mathbf E_{\boldsymbol \Theta'}\left[ .\right] $ denotes expectation taken with respect to the distribution $p(\mathbf X\mid\mathbf Y;\boldsymbol \Theta'$) which is marginal distribution of the state estimates conditioned on observed field and current estimate of the parameter set $\boldsymbol\Theta'$, i.e. smoother output. The factor of $2$ is included to simplify the derivation in the later steps. We proceed by expanding the joint distribution $p(\mathbf X,\mathbf Y;\boldsymbol \Theta)$ as 
+\begin{equation}\label{eq:jointdistribution}
+ p(\mathbf X,\mathbf Y;\boldsymbol \Theta)=\prod_{t=0}^{T-1} p(\mathbf y_{t+1}|\mathbf x_{t+1}; \sigma_{\epsilon})p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta, \xi, \sigma_d)p(\mathbf x_0).
 \end{equation}
- Substituting equations \ref{eq:jointdistribution} in \ref{eq:QFunction} gives
+ Substituting equations \eqref{eq:jointdistribution} in \eqref{eq:QFunction} gives
 \begin{align}
- \mathcal Q(\boldsymbol \Theta,\boldsymbol\Theta')&=\mathbf E_{\boldsymbol\Theta'}\left[\sum_{t=0}^{T-1}2\ln p(\mathbf y_{t+1}|\mathbf x_{t+1};\sigma_{\epsilon})+\sum_{t=0}^{T-1}2\ln p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta. \sigma_d)+\sum_{t=0}^{T-1}2\ln p(\mathbf x_0)\right].
+ \mathcal Q(\boldsymbol \Theta,\boldsymbol\Theta')&=\mathbf E_{\boldsymbol\Theta'}\left[\sum_{t=0}^{T-1}2\ln p(\mathbf y_{t+1}|\mathbf x_{t+1};\sigma_{\epsilon})+\sum_{t=0}^{T-1}2\ln p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta,\xi, \sigma_d)+\sum_{t=0}^{T-1}2\ln p(\mathbf x_0)\right].
 \end{align}
- It should be noted that the last term is not a function of parameter set and can be ignored, therefore $\mathcal Q$-function can be rewritten as
+ It should be noted that the last term is not a function of parameter set and can be dropped, therefore $\mathcal Q$-function can be rewritten as
 \begin{equation}\label{eq:QIntermsofJointDist}
-\mathcal Q(\boldsymbol \Theta,\boldsymbol\Theta')=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}2\ln p(\mathbf y_{t+1}|\mathbf x_{t+1}; \sigma_{\epsilon})+\sum_{t=0}^{T-1}2\ln p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta ,\sigma_d)\right].
+\mathcal Q(\boldsymbol \Theta,\boldsymbol\Theta')=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}2\ln p(\mathbf y_{t+1}|\mathbf x_{t+1}; \sigma_{\epsilon})+\sum_{t=0}^{T-1}2\ln p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta, \xi ,\sigma_d)\right].
 \end{equation}
-Gaussian distributions of the state disturbance and the observation noise results into the following conditional distributions (ignoring the normalising factor of these conditional distributions)
+Gaussian distributions of the state disturbance and the observation noise results into the following conditional distributions, where the normalising factors are ignored 
 \begin{align}
  p\left(\mathbf y_{t+1}|\mathbf x_{t+1};\sigma_{\epsilon}\right)&= \mid\boldsymbol\Sigma_{\epsilon}\mid^{-\frac{1}{2}}  \exp\left({-\frac{1}{2}\left(\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1}\right)^\top\boldsymbol\Sigma_{\epsilon}^{-1}\left(\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1}\right)}\right),\\
 p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta ,\sigma_d)&= \mid\boldsymbol\Sigma_{e}\mid^{-\frac{1}{2}} \exp \left(-\frac{1}{2}(\mathbf x_{t+1}-q(\mathbf  x_t)\boldsymbol\theta-\xi  \mathbf x_t)^\top\boldsymbol\Sigma_e^{-1}(\mathbf x_{t+1}-q( \mathbf x_t)\boldsymbol\theta-\xi \mathbf  x_t) \right)
 \end{align}
-Note that $\boldsymbol\Sigma_e=\sigma_d^2\tilde{\boldsymbol\Sigma}_e$ (\dean{$\sigma_W$ notation from 18}\parham{I fixed it by defining $\sigma_d^2 =T_s\sigma^2_W$ in the model derivation}) where $\tilde{\boldsymbol\Sigma}_e$ is constant and can be calculated beforehand as the support of the disturbance covariance function is assumed to be known. By expanding the exponent and taking $2\ln$ we get
+Note that the disturbance covariance matrix can be written as a product of the unknown parameter, $\sigma_d^2$ and a constant matrix, $\tilde{\boldsymbol\Sigma}_e$ where the constant part is calculated using the estimated support from the correlation analysis. By expanding the exponent and taking $2\ln$ we get
 \begin{align}\label{eq:CondititionDist1}
 2\ln p\left(\mathbf y_{t+1}|\mathbf x_{t+1};\sigma_{\epsilon}\right)&=-n_y\ln \sigma_{\epsilon}^2-\frac{1}{\sigma_{\epsilon}^2}\left[ (\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1})^\top(\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1})\right],  \\
 2\ln p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta ,\sigma_d)&=-n_x\ln\sigma_d^2-\ln\mid\tilde{\boldsymbol\Sigma}_e\mid-\frac{1}{\sigma_d^2}\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf x_{t+1}+\frac{2}{\sigma_d^2}\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}q( \mathbf x_t)\boldsymbol\theta+\frac{2\xi}{\sigma_d^2}\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf x_t \nonumber \\
 &-\frac{1}{\sigma_e^2}\boldsymbol\theta^\top q^\top(\mathbf x_t)\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf x_t)\boldsymbol\theta-\frac{2\xi}{\sigma_d^2} \mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf x_t)\boldsymbol\theta-\frac{\xi^2}{\sigma_d^2}\mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf x_t. \label{eq:CondititionDist2}
 \end{align}
-\dean{Dean to check expansion.} Now we rearrange the equation so we can write down (or isolate (reason for doing this step is..)) the cross-covariance etc so we can use the information from the filter. Taking trace and rearranging, using the invariant cyclic permutations property of the trace, this distribution can be written as
+\dean{Dean to check expansion.} Now we rearrange the equation so we can  use the information from the smoother. (or isolate (reason for doing this step is..)) the cross-covariance etc. Taking trace and rearranging, using the invariant cyclic permutations property of the trace, thess distributions can be written as
 \begin{align}\label{eq:Qfunctiontrace1}
   2\ln p\left(\mathbf y_{t+1}|\mathbf x_{t+1};\sigma_{\epsilon}\right) &= -n_y\ln \sigma_{\epsilon}^2-\frac{1}{\sigma_{\epsilon}^2}\mathrm{tr}\left\lbrace(\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1})^\top\right\rbrace    \\
  2 \ln p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta ,\sigma_d) &=-n_x\ln\sigma_d^2-\frac{1}{\sigma_d^2}\mathrm{tr}\left\lbrace\mathbf x_{t+1} \mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace+\frac{2}{\sigma_d^2}\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}q( \mathbf x_t)\boldsymbol\theta+\frac{2\xi}{\sigma_d^2} \mathrm{tr} \left\lbrace \mathbf x_t\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace \nonumber \\
 &-\frac{1}{\sigma_d^2}\boldsymbol\theta^\top q^\top(\mathbf x_t)\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf x_t)\boldsymbol\theta-\frac{2\xi}{\sigma_d^2} \mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf x_t)\boldsymbol\theta-\frac{\xi^2}{\sigma_d^2}\mathrm{tr}\left\lbrace \mathbf x_t \mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace. \label{eq:Qfunctiontrace2}
 \end{align}
-
-Substituting  \ref{eq:Qfunctiontrace1} and \ref{eq:Qfunctiontrace2} into \ref{eq:QIntermsofJointDist} and taking the expectation of the log likelihood function for all time instants gives the lower-bound that needs to be maximised to gain optimal parameter estimates,
+Substituting  \eqref{eq:Qfunctiontrace1} and \eqref{eq:Qfunctiontrace2} into \eqref{eq:QIntermsofJointDist} and taking the expectation of the log likelihood function for all time instants gives the lower-bound which is to be maximised in the M-step. 
 \begin{align}\label{eq:Voldermont}
  \mathcal Q(\boldsymbol \Theta,\boldsymbol\Theta')&= -(T-1)n_y\ln \sigma_{\epsilon}^2-\frac{1}{\sigma_{\epsilon}^2}\mathrm{tr}\left\lbrace\boldsymbol\sum_{t=0}^{T-1}\left[ (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top\right] \right\rbrace\nonumber \\
 &-(T-1)n_x\ln\sigma_d^2-\frac{1}{\sigma_d^2}\mathrm{tr}\left\lbrace \mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_{t+1}\mathbf x_{t+1}^\top\right]\tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace +\frac{2\xi}{\sigma_d^2} \mathrm{tr}\left\lbrace \mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_t\mathbf x_{t+1}^\top\right] \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace \nonumber \\
@@ -387,7 +379,7 @@ Substituting  \ref{eq:Qfunctiontrace1} and \ref{eq:Qfunctiontrace2} into \ref{eq
  \nonumber \\
 &-\frac{1}{\sigma_d^2}\boldsymbol\theta^\top \mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}  q^\top(\mathbf  x_t)\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf x_t)\right]\boldsymbol\theta-\frac{2\xi}{\sigma_d^2} \mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1} \mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf x_t)  \right] \boldsymbol\theta
 \end{align}
-It should be noted that the second term in equation \ref{eq:Voldermont} is obtained by adding and subtracting $\mathbf C \mathbf{\hat{x}}_{t+1} \mathbf{\hat{x}}_{t+1}^\top \mathbf C^\top$ to the expectation, $\mathbf E_{\boldsymbol\Theta'}\left[ .\right]$, ref(Shumway). By choosing
+The second term in \eqref{eq:Voldermont} is obtained by adding and subtracting $\mathbf C \mathbf{\hat{x}}_{t+1} \mathbf{\hat{x}}_{t+1}^\top \mathbf C^\top$ to the expectation of the second term in \eqref{eq:Qfunctiontrace1}. By defining $\Xi$-variables as 
 \begin{align}
 	\boldsymbol\Xi_{0}&=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_{t+1}\mathbf x_{t+1}^\top\right]\label{eq:defofXi0} \\
 \boldsymbol\Xi_{1}&=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_t\mathbf x_{t+1}^\top\right]\label{eq:defofXi1} \\
@@ -396,15 +388,64 @@ It should be noted that the second term in equation \ref{eq:Voldermont} is obtai
 \boldsymbol\Xi_{4}&= \mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}  q^\top(\mathbf  x_t)\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf x_t)\right] \label{eq:Xi4}\\
  \boldsymbol\Xi_{5}&=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1} \mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf x_t)  \right] \label{eq:Xi5}
  \end{align}
-equation \ref{eq:Voldermont} can be written as
+equation \eqref{eq:Voldermont} can be written as
 \begin{align}\label{eq:VoldermontwitXivariables}
  \mathcal Q(\boldsymbol \Theta,\boldsymbol\Theta')&=-(T-1)n_y\ln \sigma_{\epsilon}^2-\frac{1}{\sigma_{\epsilon}^2}\mathrm{tr}\left\lbrace\boldsymbol\sum_{t=0}^{T-1}\left[ (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top\right] \right\rbrace\nonumber \\
 &-(T-1)n_x\ln\sigma_d^2-\frac{1}{\sigma_d^2}\mathrm{tr}\left\lbrace \boldsymbol\Xi_{0} \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace +\frac{2\xi}{\sigma_d^2} \mathrm{tr}\left\lbrace \boldsymbol\Xi_{1} \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace -  \frac{\xi^2}{\sigma_d^2}\mathrm{tr} \left\lbrace\boldsymbol\Xi_{2}\tilde{\boldsymbol\Sigma}_e^{-1} \right\rbrace 
  \nonumber \\
 &+\frac{2}{\sigma_d^2}\boldsymbol\Xi_{3}\boldsymbol\theta-\frac{1}{\sigma_d^2}\boldsymbol\theta^\top \boldsymbol\Xi_{4}\boldsymbol\theta-\frac{2\xi}{\sigma_d^2}\boldsymbol \Xi_{5} \boldsymbol\theta.
 \end{align}
+Covariance and cross-covariances in equation \eqref{eq:VoldermontwitXivariables}, consist of both linear terms, $\boldsymbol\Xi_0$, $\boldsymbol\Xi_1$ and $\boldsymbol\Xi_2$ and non-linear terms, $\boldsymbol\Xi_3$, $\boldsymbol\Xi_4$ and  $\boldsymbol\Xi_5$. Finding linear $\boldsymbol\Xi$-variables is straightforward as they can be computed directly using smoother outputs, i.e. $\hat{\mathbf x}_t^b $, $\mathbf P_t^b$ and $\mathbf M_t^b$ using the following expressions \cite{Gibsona2005} (see supporting information for details)
+\begin{align}
+	\boldsymbol\Xi_{0}&=\sum_{t=0}^{T-1}\left(\mathbf P_{t+1}+\mathbf{\hat x}_{t+1}\mathbf{\hat x}_{t+1}^\top\right)\label{eq:defofXi0}, \\
+\boldsymbol\Xi_{1}&=\sum_{t=0}^{T-1}\left(\mathbf M_{t+1}+\mathbf{\hat x}_t\mathbf{\hat x}_{t+1}^\top\right) \label{eq:defofXi1}, \\
+\boldsymbol\Xi_{2}&=\sum_{t=0}^{T-1}\left(\mathbf P_t+\mathbf{\hat x}_t\mathbf{\hat x}_t^\top\right).
+ \end{align}
+However calculation of non-linear $\boldsymbol\Xi$-variables is not straightforward as in the linear case. Therefore, an additional  Taylor expansion step to the URTSS algorithm is also created to approximate $q(\mathbf{x}_t)$ at each time instant which is to be used in the calculations of the $\boldsymbol\Xi_3$, $\boldsymbol\Xi_4$ and $\boldsymbol\Xi_5$. This is accomplished by taking the first-order truncated Taylor-series expansion of the sigmoidal activation function  around the smoothed state, $\hat{\mathbf x}_t^b$ at each time instant, i.e.
+\begin{equation}\label{eq:SigmoidTaylor}
+ f\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\mathbf x_t\right) \approx f\left(\boldsymbol \phi^\top(\mathbf r')\hat{\mathbf x}_t\right)+  \boldsymbol \phi^\top\left(\mathbf r'\right)\left(\mathbf x_t - \hat{\mathbf x}_t\right)f'\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t\right)
+\end{equation}
+where 
+\begin{equation}\label{eq:SigmoidDerivative}
+ f'\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t\right)=\varsigma f\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t\right)\left( 1-f\left( \boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t\right)\right)
+\end{equation}
+substituting \ref{eq:SigmoidTaylor} in \ref{eq:QmatrixForSigmapoints}  we get an approximation for $q(\mathbf x_t)$ around the estimated state $\hat{\mathbf{x}}_t$ 
+\begin{equation}\label{eq:qTaylor}
+ q_L(\mathbf x_t) \approx q\left(\hat{\mathbf x}_t\right)+\int_\Omega \boldsymbol{\Psi}\left(\mathbf{r}'\right)\boldsymbol \phi^\top\left(\mathbf r'\right) \left(\mathbf x_t -\hat{\mathbf x}_t\right)f'\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t\right) d\mathbf{r}'
+\end{equation}
+Define
+\begin{equation}
+	e(x) = q(x) - q_L(x) \nonumber
+\end{equation}
 
-Consider first the maximisation of $\mathcal{Q}$-function with respect to $\xi$, we can write
+Then we can write $q(x) = q_L(x) + e(x)$ and use this to show that the error in the estimate is proportional to $e(x)$.
+
+Equation \ref{eq:qTaylor} is used to approximate the lower bound on the log-likelihood function in the M-step. \dean{The difference between the linearised and nonlinear likelihood will be the error in the approximation at the state estimate that maximised the likelihood.}
+
+Having approximated $q\left(\mathbf x_t\right)$ in the E-step, by substituting  \ref{eq:qTaylor} into equations \ref{eq:Xi3}-\ref{eq:Xi5} an approximate to the non-linear $\boldsymbol\Xi$-variables can be calculated which provides an approximate lower bound on the log-likelihood function (see supporting information), 
+\begin{align}
+\boldsymbol\Xi_{3}&\approx\sum_{t=0}^{T-1}\left[ \mathbf{\hat x}_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf{\hat x}_t)+\int_\Omega\boldsymbol \phi^\top(\mathbf r') \mathbf M_{t+1} \tilde{\boldsymbol\Sigma}_e^{-1} \boldsymbol{\Psi}(\mathbf{r}') f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\right] \\	
+\boldsymbol\Xi_{4}&\approx\sum_{t=0}^{T-1}\left[q^\top(\mathbf{\hat x}_t)\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf{\hat x}_t)+\Lambda_t\right] \\
+ \boldsymbol\Xi_{5}&\approx\sum_{t=0}^{T-1}\left[ \mathbf{\hat x}_{t}^\top\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf{\hat x}_t)+\int_\Omega\boldsymbol \phi^\top(\mathbf r') \mathbf P_t \tilde{\boldsymbol\Sigma}_e^{-1}  \boldsymbol{\Psi}(\mathbf{r}') f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\right] 
+ \end{align}
+where
+\begin{align}\label{eq:lambdat} 
+	{\boldsymbol \lambda}_t^{(i)}&=\int_{\Omega} \boldsymbol \Psi(\mathbf r')\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf {\hat x}_t)d\mathbf r'
+\end{align}
+and
+\begin{equation}
+ \boldsymbol\Lambda_t=\sum_{i,j=1}^{n_x}[\mathbf{P_t}]_{ij}{\boldsymbol\lambda}_t^{(i)\top}\tilde{\boldsymbol\Sigma}_e^{-1}{\boldsymbol\lambda}_t^{(j)}
+\end{equation}
+
+Given the state estimates, $\mathbf {\hat x}_t$ the state covariance $\mathbf P_t$ and cross-covariance $\mathbf M_t$ , the $\boldsymbol\Xi$-variables can be computed directly. In the M-step, an update $\boldsymbol\Theta'$ is chosen such that $\mathcal{Q}\left(\boldsymbol\Theta',\boldsymbol\Theta'\right)>\mathcal{Q}\left(\boldsymbol\Theta,\boldsymbol\Theta'\right)$, this will guarantee that the likelihood increases. The computational complexity of the algorithm is given in Table~\ref{table:ComputationalComplexity}. In this table only the computational complexity of variables specific to the presented algorithm are shown, and the computational complexity of the URTSS can be found in \cite{Sarkka2010}.
+
+
+
+
+
+\subsection{M-Step}
+The objective of the M-step is to maximize a lower bound on the joint likelihood function, $p(\mathbf X,\mathbf Y;\boldsymbol \Theta)$, where $\mathbf X$ is the set of all states, $\mathbf Y$ is the set of all observations, and $\boldsymbol \Theta$ denotes the set of all unknown parameters, i.e., connectivity kernel parameters $\boldsymbol\theta$, synaptic dynamic $\xi$, disturbance variance $\sigma^2_d$ and the observation noise variance $\sigma^2_{\epsilon}$.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                            Consider first the maximisation of $\mathcal{Q}$-function with respect to $\xi$, we can write
 \begin{equation}\label{eq:Qpartialxi}
  \frac{\partial \mathcal Q}{\partial\xi}=\frac{2}{\sigma_d^2}\mathrm{tr}\left\lbrace \boldsymbol\Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace -\frac{2\xi}{\sigma_d^2}\mathrm{tr}\left\lbrace \boldsymbol\Xi_2 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-\frac{2}{\sigma_d^2}\boldsymbol\Xi_5,
 \end{equation}
@@ -460,51 +501,9 @@ meaning \eqref{eq:SecondDerivativexi} is negative and $\hat{\xi}$ represents a m
 % \end{equation}
 % since matrix $\boldsymbol\Gamma^{-1}$ is symmetric
 From \eqref{eq:SecondDerivativenoise} and \eqref{eq:SecondDerivativedisturbance}, observation noise and disturbance covariance estimates clearly represent maxima of the $\mathcal{Q}$-function. 
- 
-
-Computing unknown variables, $\boldsymbol\Theta$, in the maximization step requires calculation of covariance and  cross-covariance terms, including both linear, $\boldsymbol\Xi_0$, $\boldsymbol\Xi_1$ and $\boldsymbol\Xi_2$ and non-linear terms, $\boldsymbol\Xi_3$, $\boldsymbol\Xi_4$ and  $\boldsymbol\Xi_5$. Finding linear $\boldsymbol\Xi$-variables is straightforward as they can be obtained using smoother outputs, $\hat{\mathbf x}_t $, $\mathbf P_t$ and $\mathbf M_t$ using the following expressions \cite{Shumway2000} (see supporting information for details)
-\begin{align}
-	\boldsymbol\Xi_{0}&=\sum_{t=0}^{T-1}\left(\mathbf P_{t+1}+\mathbf{\hat x}_{t+1}\mathbf{\hat x}_{t+1}^\top\right)\label{eq:defofXi0}, \\
-\boldsymbol\Xi_{1}&=\sum_{t=0}^{T-1}\left(\mathbf M_{t+1}+\mathbf{\hat x}_t\mathbf{\hat x}_{t+1}^\top\right) \label{eq:defofXi1}, \\
-\boldsymbol\Xi_{2}&=\sum_{t=0}^{T-1}\left(\mathbf P_t+\mathbf{\hat x}_t\mathbf{\hat x}_t^\top\right).
- \end{align}
-However calculation of non-linear $\boldsymbol\Xi$-variables required for the M-step is not straightforward as in the linear case. Therefore, an additional  Taylor expansion step to the URTSS algorithm is also created to approximate $q(\mathbf{x}_t)$ at each time instant which is to be used in the calculations of the $\boldsymbol\Xi_3$, $\boldsymbol\Xi_4$ and $\boldsymbol\Xi_5$. This is accomplished by taking the first-order truncated Taylor-series expansion of the sigmoidal activation function  around the estimated state, $\hat{\mathbf x}_t$ at each time instant, i.e.
-\begin{equation}\label{eq:SigmoidTaylor}
- f\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\mathbf x_t\right) \approx f\left(\boldsymbol \phi^\top(\mathbf r')\hat{\mathbf x}_t\right)+  \boldsymbol \phi^\top\left(\mathbf r'\right)\left(\mathbf x_t - \hat{\mathbf x}_t\right)f'\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t\right)
-\end{equation}
-where 
-\begin{equation}\label{eq:SigmoidDerivative}
- f'\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t\right)=\varsigma f\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t\right)\left( 1-f\left( \boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t\right)\right)
-\end{equation}
-substituting \ref{eq:SigmoidTaylor} in \ref{eq:QmatrixForSigmapoints}  we get an approximation for $q(\mathbf x_t)$ around the estimated state $\hat{\mathbf{x}}_t$ 
-\begin{equation}\label{eq:qTaylor}
- q_L(\mathbf x_t) \approx q\left(\hat{\mathbf x}_t\right)+\int_\Omega \boldsymbol{\Psi}\left(\mathbf{r}'\right)\boldsymbol \phi^\top\left(\mathbf r'\right) \left(\mathbf x_t -\hat{\mathbf x}_t\right)f'\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t\right) d\mathbf{r}'
-\end{equation}
-Define
 \begin{equation}
-	e(x) = q(x) - q_L(x) \nonumber
-\end{equation}
-
-Then we can write $q(x) = q_L(x) + e(x)$ and use this to show that the error in the estimate is proportional to $e(x)$.
-
-Equation \ref{eq:qTaylor} is used to approximate the lower bound on the log-likelihood function in the M-step. \dean{The difference between the linearised and nonlinear likelihood will be the error in the approximation at the state estimate that maximised the likelihood.}
-
-Having approximated $q\left(\mathbf x_t\right)$ in the E-step, by substituting  \ref{eq:qTaylor} into equations \ref{eq:Xi3}-\ref{eq:Xi5} an approximate to the non-linear $\boldsymbol\Xi$-variables can be calculated which provides an approximate lower bound on the log-likelihood function (see supporting information), 
-\begin{align}
-\boldsymbol\Xi_{3}&\approx\sum_{t=0}^{T-1}\left[ \mathbf{\hat x}_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf{\hat x}_t)+\int_\Omega\boldsymbol \phi^\top(\mathbf r') \mathbf M_{t+1} \tilde{\boldsymbol\Sigma}_e^{-1} \boldsymbol{\Psi}(\mathbf{r}') f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\right] \\	
-\boldsymbol\Xi_{4}&\approx\sum_{t=0}^{T-1}\left[q^\top(\mathbf{\hat x}_t)\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf{\hat x}_t)+\Lambda_t\right] \\
- \boldsymbol\Xi_{5}&\approx\sum_{t=0}^{T-1}\left[ \mathbf{\hat x}_{t}^\top\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf{\hat x}_t)+\int_\Omega\boldsymbol \phi^\top(\mathbf r') \mathbf P_t \tilde{\boldsymbol\Sigma}_e^{-1}  \boldsymbol{\Psi}(\mathbf{r}') f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t) d\mathbf{r}'\right] 
- \end{align}
-where
-\begin{align}\label{eq:lambdat} 
-	{\boldsymbol \lambda}_t^{(i)}&=\int_{\Omega} \boldsymbol \Psi(\mathbf r')\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf {\hat x}_t)d\mathbf r'
-\end{align}
-and
-\begin{equation}
- \boldsymbol\Lambda_t=\sum_{i,j=1}^{n_x}[\mathbf{P_t}]_{ij}{\boldsymbol\lambda}_t^{(i)\top}\tilde{\boldsymbol\Sigma}_e^{-1}{\boldsymbol\lambda}_t^{(j)}
-\end{equation}
-
-Given the state estimates, $\mathbf {\hat x}_t$ the state covariance $\mathbf P_t$ and cross-covariance $\mathbf M_t$ , the $\boldsymbol\Xi$-variables can be computed directly. In the M-step, an update $\boldsymbol\Theta'$ is chosen such that $\mathcal{Q}\left(\boldsymbol\Theta',\boldsymbol\Theta'\right)>\mathcal{Q}\left(\boldsymbol\Theta,\boldsymbol\Theta'\right)$, this will guarantee that the likelihood increases. The computational complexity of the algorithm is given in Table~\ref{table:ComputationalComplexity}. In this table only the computational complexity of variables specific to the presented algorithm are shown, and the computational complexity of the URTSS can be found in \cite{Sarkka2010}.
+	\boldsymbol\Theta = \left\lbrace \boldsymbol\theta, \xi, \sigma^2_d, \sigma^2_{\epsilon}\right\rbrace 
+\end{equation} We choose to maximise \dean{the joint}, $p(\mathbf X,\mathbf Y;\boldsymbol \Theta)$, since it is not  possible to maximise the likelihood function $p(\mathbf Y;\boldsymbol\Theta)$ directly. Increasing the joint likelihood function increases the likelihood function $p(\mathbf Y;\boldsymbol \Theta)$ \cite{McLachlan1997}. 
  \begin {table}
 \begin{center}
 \scalebox{1}{\begin{tabular}{lll}
@@ -548,6 +547,8 @@ that the algorithm converged to steady parameter values.
 	\item comment on how the e step is UKF and M-step is kinda like the EKF, and we dont use EKF in E-step since UKF gives better estimates and the linearisation in M-step would be more accurate. 
 	\item comment on EM has been used with EKS by Ghahramani which has poorer convergance property (I guess) using EM with URTSS
 	\item itterative EM and correlation analysis (maybe)
+	\item{comment on EM might convrge to suboptimal solution,simulated
+annealing can be used to tackle such situations but difficult to implement (Mc Lachlan)}
 \end{itemize}
 
 % % all figures here
