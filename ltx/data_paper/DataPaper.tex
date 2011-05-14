@@ -507,15 +507,6 @@ The correlation analysis described in Section \ref{subsec:CorrAnal} were applied
 
 The estimated supports were then applied in the EM algorithm described in Section \ref{sec:EstimationAlgorithm} to estimate the smoothed states $\hat{\mathbf x}_t^b$, the connectivity kernel weights $\boldsymbol\theta$, the synaptic dynamic $\xi$, and the hyperparameters $\sigma_{\epsilon}^2$ and $\sigma^2_d$. A  square grid of $n_{\theta}=25$ (5 by 5) basis functions with $2.25~mm$ spacing were used to cover the estimated support where $\sigma_{\psi}^2=3.5$. This is shown in Figure.\ref{fig:KernelWidthEstimation} by blue circles, each of which representing full width at half maximum of the connectivity kernel basis functions. The true and estimated connectivity kernel for 100 Monte Carlo simulations are shown in Figure~\ref{fig:KernelEstimates}. Cross-sections of the connectivity kernel estimates for each run are shown in Figure~\ref{fig:KernelEstimateCrossSection}. The reconstructed kernel is in good accordance with the actual kernel, where the actual kernel is inside the confidence interval. The large standard deviation is due to the high number of parameters need to be estimated. Figure~\ref{fig:Histogram} depicts the histogram of parameter estimates from 100 simulations where the true parameter value is shown by the solid line and the mean parameter estimate is shown by the dashed line. These histograms indicate small bias in parameter estimates with a very small standard deviation. Examples of neural field reconstruction are given in Figure.~\ref{fig:FieldEstimates}.  The figure shows snapshots at three time instants of the true neural field and the estimated field. In each subplot neural activity is plotted against spatial index in 1D to provide a comparision between true and the estimated underlying fields. Plot of lower bound of the log likelihood versus iterations of the EM is shown in Figure.~\ref{fig:LowerBound}. In general, for the non-linear dynamical systems the actual lower bound can not be claculated analytically, therefore the approximate of the lower bound obtained by URTSS is shown. The change in lower bound drops below 0.009 percent after 15 iterations, confirming
 that the algorithm converged to steady parameter values.
-
-
- 
-\begin{itemize}
-	\item Will show parameter distributions
-	\item Will show lower bound
-      \end{itemize}
-
-
 \section{Discussion}
 
 \begin{itemize}
