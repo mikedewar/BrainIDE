@@ -363,8 +363,8 @@ Substituting  \eqref{eq:Qfunctiontrace1} and \eqref{eq:Qfunctiontrace2} into \eq
 The second term in \eqref{eq:Voldermont} is obtained by adding and subtracting $\mathbf C \mathbf{\hat{x}}_{t+1} \mathbf{\hat{x}}_{t+1}^\top \mathbf C^\top$ to the expectation of the second term in \eqref{eq:Qfunctiontrace1}. By defining $\Xi$-variables as 
 \begin{align}
 	\boldsymbol\Xi_{0}&=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_{t+1}\mathbf x_{t+1}^\top\right]\label{eq:defofXi0} \\
-\boldsymbol\Xi_{1}&=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_t\mathbf x_{t+1}^\top\right]\label{eq:defofXi1} \\
-\boldsymbol\Xi_{2}&=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_t\mathbf x_{t}^\top\right]\\
+\boldsymbol\Xi_{1}&=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_t\mathbf x_{t+1}^\top\right]\label{eq:Xi1} \\
+\boldsymbol\Xi_{2}&=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_t\mathbf x_{t}^\top\right]\label{eq:Xi2}\\
 \boldsymbol\Xi_{3}&=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}q( \mathbf x_t)\right] \label{eq:Xi3} \\	
 \boldsymbol\Xi_{4}&= \mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}  q^\top(\mathbf  x_t)\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf x_t)\right] \label{eq:Xi4}\\
  \boldsymbol\Xi_{5}&=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1} \mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf x_t)  \right] \label{eq:Xi5}
@@ -378,9 +378,9 @@ equation \eqref{eq:Voldermont} can be written as
 \end{align}
 Covariance and cross-covariances in equation \eqref{eq:VoldermontwitXivariables}, consist of both linear terms, $\boldsymbol\Xi_0$, $\boldsymbol\Xi_1$ and $\boldsymbol\Xi_2$ and non-linear terms, $\boldsymbol\Xi_3$, $\boldsymbol\Xi_4$ and  $\boldsymbol\Xi_5$. Finding linear $\boldsymbol\Xi$-variables is straightforward as they can be computed directly using smoother outputs, i.e. $\hat{\mathbf x}_t^b $, $\mathbf P_t^b$ and $\mathbf M_t^b$ using following expressions \cite{Gibsona2005} (see supporting information for details)
 \begin{align}
-	\boldsymbol\Xi_{0}&=\sum_{t=0}^{T-1}\left(\mathbf P_{t+1}^b+\mathbf{\hat x}_{t+1}^b\mathbf{\hat x}_{t+1}^{b\top}\right)\label{eq:defofXi0}, \\
-\boldsymbol\Xi_{1}&=\sum_{t=0}^{T-1}\left(\mathbf M_{t+1}^b+\mathbf{\hat x}_t^b\mathbf{\hat x}_{t+1}^{b\top}\right) \label{eq:defofXi1}, \\
-\boldsymbol\Xi_{2}&=\sum_{t=0}^{T-1}\left(\mathbf P_t^b+\mathbf{\hat x}_t^b\mathbf{\hat x}_t^{b\top}\right).
+	\boldsymbol\Xi_{0}&=\sum_{t=0}^{T-1}\left(\mathbf P_{t+1}^b+\mathbf{\hat x}_{t+1}^b\mathbf{\hat x}_{t+1}^{b\top}\right)\label{eq:Xi0Gibson}, \\
+\boldsymbol\Xi_{1}&=\sum_{t=0}^{T-1}\left(\mathbf M_{t+1}^b+\mathbf{\hat x}_t^b\mathbf{\hat x}_{t+1}^{b\top}\right) \label{eq:Xi1Gibson}, \\
+\boldsymbol\Xi_{2}&=\sum_{t=0}^{T-1}\left(\mathbf P_t^b+\mathbf{\hat x}_t^b\mathbf{\hat x}_t^{b\top}\right).\label{eq:Xi2Gibson}
  \end{align}
 However calculation of non-linear $\boldsymbol\Xi$-variables is not straightforward as in linear case. Therefore, an additional  Taylor expansion step to the URTSS algorithm is also created to approximate $q(\mathbf{x}_t)$ at each time instant which is to be used in  calculations of $\boldsymbol\Xi_3$, $\boldsymbol\Xi_4$ and $\boldsymbol\Xi_5$. This is accomplished by taking the first-order truncated Taylor-series expansion of the sigmoidal activation function  around the smoothed state, $\hat{\mathbf x}_t^b$ at each time instant, i.e.
 \begin{equation}\label{eq:SigmoidTaylor}
@@ -396,9 +396,9 @@ substituting \eqref{eq:SigmoidTaylor} in \eqref{eq:QmatrixForSigmapoints}  we ge
 \end{equation}
 Having approximated $q\left(\mathbf x_t\right)$, by substituting  \eqref{eq:qTaylor} into equations (\ref{eq:Xi3}-\ref{eq:Xi5}) an approximate to the non-linear $\boldsymbol\Xi$-variables can be calculated (see supporting information) which in turn provides an approximate lower bound on the log-likelihood function, 
 \begin{align}
-\boldsymbol\Xi_{3}&\approx\sum_{t=0}^{T-1}\left[ \mathbf{\hat x}_{t+1}^{b\top}\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf{\hat x}_t^b)+\int_\Omega\boldsymbol \phi^\top(\mathbf r') \mathbf M_{t+1}^b \tilde{\boldsymbol\Sigma}_e^{-1} \boldsymbol{\Psi}(\mathbf{r}') f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t^b) d\mathbf{r}'\right] \\	
-\boldsymbol\Xi_{4}&\approx\sum_{t=0}^{T-1}\left[q^\top(\mathbf{\hat x}_t^b)\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf{\hat x}_t^b)+\Lambda_t\right] \\
- \boldsymbol\Xi_{5}&\approx\sum_{t=0}^{T-1}\left[ \mathbf{\hat x}_{t}^{b\top}\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf{\hat x}_t^b)+\int_\Omega\boldsymbol \phi^\top(\mathbf r') \mathbf P_t^b \tilde{\boldsymbol\Sigma}_e^{-1}  \boldsymbol{\Psi}(\mathbf{r}') f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t^b) d\mathbf{r}'\right] 
+\boldsymbol\Xi_{3}&\approx\sum_{t=0}^{T-1}\left[ \mathbf{\hat x}_{t+1}^{b\top}\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf{\hat x}_t^b)+\int_\Omega\boldsymbol \phi^\top(\mathbf r') \mathbf M_{t+1}^b \tilde{\boldsymbol\Sigma}_e^{-1} \boldsymbol{\Psi}(\mathbf{r}') f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t^b) d\mathbf{r}'\right] \label{eq:Xi3Ap}\\	
+\boldsymbol\Xi_{4}&\approx\sum_{t=0}^{T-1}\left[q^\top(\mathbf{\hat x}_t^b)\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf{\hat x}_t^b)+\Lambda_t\right]\label{eq:Xi4Ap} \\
+ \boldsymbol\Xi_{5}&\approx\sum_{t=0}^{T-1}\left[ \mathbf{\hat x}_{t}^{b\top}\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf{\hat x}_t^b)+\int_\Omega\boldsymbol \phi^\top(\mathbf r') \mathbf P_t^b \tilde{\boldsymbol\Sigma}_e^{-1}  \boldsymbol{\Psi}(\mathbf{r}') f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t^b) d\mathbf{r}'\right] \label{eq:Xi5Ap}
  \end{align}
 where
 \begin{equation}
@@ -430,7 +430,7 @@ The objective of the M-step is to maximize the lower bound found in E-step, whci
  \frac{\partial \mathcal Q}{\partial\xi}=\frac{2}{\sigma_d^2}\mathrm{tr}\left\lbrace \boldsymbol\Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace -\frac{2\xi}{\sigma_d^2}\mathrm{tr}\left\lbrace \boldsymbol\Xi_2 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-\frac{2}{\sigma_d^2}\boldsymbol\Xi_5,
 \end{equation}
 setting \eqref{eq:Qpartialxi} to zero and solving for $\xi$ gives
-\begin{equation}
+\begin{equation}\label{eq:xihat}
  \hat{\xi}=\frac{\mathrm{tr}\left\lbrace \boldsymbol\Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-\boldsymbol\Xi_5\boldsymbol\Xi_4^{-1}\boldsymbol\Xi_3^\top}{\mathrm{tr}\left\lbrace \boldsymbol\Xi_2 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-\boldsymbol\Xi_5\boldsymbol\Xi_4^{-1}\boldsymbol\Xi_5^{\top}}
 \end{equation}
 In order to maximise $\mathcal{Q}$-function with respect to $\boldsymbol\theta$ we can write
@@ -438,7 +438,7 @@ In order to maximise $\mathcal{Q}$-function with respect to $\boldsymbol\theta$ 
  \frac{\partial \mathcal Q}{\partial \boldsymbol\theta}=\frac{2}{\sigma_d^2}\boldsymbol\Xi_3-\frac{1}{\sigma_d^2}\boldsymbol\theta^\top(\boldsymbol\Xi_4^\top+\boldsymbol\Xi_4)-\frac{2\xi}{\sigma_d^2}\boldsymbol\Xi_5,
 \end{equation}
 noting that variable $\boldsymbol\Xi_4$ is symmetric by construction, equating \eqref{eq:Qpartialtheta} to the zero vector yields
-\begin{equation}\label{eq:theta}
+\begin{equation}\label{eq:thetahat}
  \hat{\boldsymbol \theta}=\boldsymbol\Xi_4^{-1}\left(\boldsymbol\Xi_3^\top-\xi\boldsymbol\Xi_5^\top \right).
 \end{equation}
 We comment on the condition under which $\boldsymbol\Xi_4$ is invertible later on. Now maximizing with respect to $\sigma_{\epsilon}^2$ we get
@@ -446,7 +446,7 @@ We comment on the condition under which $\boldsymbol\Xi_4$ is invertible later o
   \frac{\partial \mathcal Q}{\partial \sigma_{\epsilon}^2}=-(T-1)n_y\frac{1}{\sigma_{\epsilon}^2}+\frac{1}{\sigma_{\epsilon}^4}\mathrm{tr}\left\lbrace\sum_{t=0}^{T-1}\left[ (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top\right] \right\rbrace
 \end{equation}
 setting above to zero and solving for $\sigma_{\epsilon}^2$ gives
-\begin{equation}
+\begin{equation}\label{eq:sigmaepsilonhat}
  \hat{\sigma}_{\epsilon}^2=\frac{1}{(T-1)n_y}\sum_{t=0}^{T-1}\mathrm{tr}\left\lbrace (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top \right\rbrace
 \end{equation}
 Finally differentiating with respec to $\sigma_d^2$ we get
@@ -455,7 +455,7 @@ Finally differentiating with respec to $\sigma_d^2$ we get
 &-\frac{2}{\sigma_d^4}\boldsymbol\Xi_3\boldsymbol\theta +\frac{1}{\sigma_d^4}\boldsymbol\theta^\top \boldsymbol\Xi_4\boldsymbol\theta+\frac{2\xi}{\sigma_d^4} \boldsymbol\Xi_5 \boldsymbol\theta 
 \end{align}
 setting above to zero and solving for $\sigma_d^2$ we have
-\begin{align}
+\begin{align}\label{eq:sigmadhat}
 \hat{\sigma}_d^2=\frac{1}{(T-1)n_x}\left[ \mathrm{tr}\left\lbrace \boldsymbol\Xi_0 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-
 2\xi\mathrm{tr}\left\lbrace \boldsymbol\Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace +\xi^2\mathrm{tr} \left\lbrace\boldsymbol\Xi_2\tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace -2\boldsymbol\Xi_3\boldsymbol\theta+\boldsymbol\theta^\top\boldsymbol \Xi_4\boldsymbol\theta+2\xi\boldsymbol\Xi_5 \boldsymbol\theta\right]  
 \end{align}
@@ -486,14 +486,14 @@ From \eqref{eq:SecondDerivativenoise} and \eqref{eq:SecondDerivativedisturbance}
 \begin{center}
 \scalebox{1}{\begin{tabular}{lll}
 \hline \hline
-Variable &Order&Order of the approximate\\ \hline\\
-$\Xi_0, \Xi_1, \Xi_2$&$O(Tn_x^2)$&-\\
-$\Xi_3, \Xi_5$&$O(n_x^3)+O(Tn_x^2)+O(Tn_xn_{\theta})$&$O(Tn_x^3)+O(Tn_x^2n_r)+O(Tn_xn_{\theta}n_r^2)$ \\
-$\Xi_4$&$O(n_x^3)+O(Tn_x^2n_{\theta})+O(Tn_xn_{\theta}^2)$&$O(Tn_x^4n_{\theta})+O(Tn_x^3n_{\theta}^2)+O(Tn_x^3n_{\theta}n_r^2)$\\
-$\hat{\boldsymbol\theta} $&$O(n_{\theta}^3)$&-\\
-$\hat{\xi}$&$O(n_x^3+n_{\theta}^3)$&-\\
- $\hat{\sigma}_{\epsilon}^2$&$O(Tn_x^2n_y)+O(Tn_xn_y^2)$&-\\
-$\hat{\sigma}_{d}^2$&$O(n_x^3)+O(n_{\theta}^2)$&-\\
+Variable &Equation&Order\\ \hline\\
+$\Xi_0, \Xi_1, \Xi_2$&\eqref{eq:Xi0Gibson}, \eqref{eq:Xi1Gibson}, \eqref{eq:Xi2Gibson}&$O(Tn_x^2)$\\
+$\Xi_3, \Xi_5$&\eqref{eq:Xi3Ap},\eqref{eq:Xi5Ap} &$O(Tn_x^3)+O(Tn_x^2n_r)+O(Tn_xn_{\theta}n_r)+O(Tn_{\theta}n_r^2)$ \\
+$\Xi_4$&\eqref{eq:Xi4Ap}&$O(Tn_x^4n_{\theta})+O(Tn_x^3n_{\theta}^2)+O(Tn_x^3n_{\theta}n_r^2)$\\
+$\hat{\boldsymbol\theta} $&\eqref{eq:thetahat}&$O(n_{\theta}^3)$\\
+$\hat{\xi}$&\eqref{eq:xihat}&$O(n_x^3+n_{\theta}^3)$\\
+$\hat{\sigma}_{\epsilon}^2$&\eqref{eq:sigmaepsilonhat}&$O(Tn_x^2n_y)+O(Tn_xn_y^2)$\\
+$\hat{\sigma}_{d}^2$&\eqref{eq:sigmadhat}&$O(n_x^3)+O(n_{\theta}^2)$\\
 \hline \hline
 \end{tabular}}
  \caption {Computational complexity of EM algorithm} 
