@@ -401,13 +401,13 @@ Having approximated $q\left(\mathbf x_t\right)$, by substituting  \eqref{eq:qTay
  \boldsymbol\Xi_{5}&\approx\sum_{t=0}^{T-1}\left[ \mathbf{\hat x}_{t}^{b\top}\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf{\hat x}_t^b)+\int_\Omega\boldsymbol \phi^\top(\mathbf r') \mathbf P_t^b \tilde{\boldsymbol\Sigma}_e^{-1}  \boldsymbol{\Psi}(\mathbf{r}') f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t^b) d\mathbf{r}'\right] 
  \end{align}
 where
-\begin{align}\label{eq:lambdat} 
-	{\boldsymbol \lambda}_t^{(i)}&=\int_{\Omega} \boldsymbol \Psi(\mathbf r')\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf {\hat x}_t^b)d\mathbf r'
-\end{align}
-and
 \begin{equation}
  \boldsymbol\Lambda_t=\sum_{i,j=1}^{n_x}[\mathbf{P}_t^b]_{ij}{\boldsymbol\lambda}_t^{(i)\top}\tilde{\boldsymbol\Sigma}_e^{-1}{\boldsymbol\lambda}_t^{(j)}
 \end{equation}
+and
+\begin{align}\label{eq:lambdat} 
+	{\boldsymbol \lambda}_t^{(i)}&=\int_{\Omega} \boldsymbol \Psi(\mathbf r')\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf {\hat x}_t^b)d\mathbf r'
+\end{align}
 By computing $\boldsymbol\Xi$-variables, calculation of the lower bound is complete. The lower bound now can be used in M-step to find a set of new parameters. An approximate for computational complexity of the algorithm is given in Table~\ref{table:ComputationalComplexity}. Note that computational complexity of the nonlinear terms depend on the number of points, $n_r$ used for spatial discritisation.  In this table only the computational complexity of variables specific to the presented algorithm are shown, and the computational complexity of the URTSS can be found elsewhere \cite{Sarkka2010}.
 
 
