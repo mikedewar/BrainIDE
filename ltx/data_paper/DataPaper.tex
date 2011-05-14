@@ -488,7 +488,7 @@ From \eqref{eq:SecondDerivativenoise} and \eqref{eq:SecondDerivativedisturbance}
 \hline \hline
 Variable &Order&Order of the approximate\\ \hline\\
 $\Xi_0, \Xi_1, \Xi_2$&$O(Tn_x^2)$&-\\
-$\Xi_3, \Xi_5$&$O(Tn_x^2n_{\theta})$&$O(Tn_x^3n_r)+O(Tn_xn_{\theta}n_r)$ \\
+$\Xi_3, \Xi_5$&$O(Tn_x^2n_{\theta})$&$O(Tn_x^3)+O(Tn_x^2n_r)+O(Tn_xn_{\theta}n_r)$ \\
 $\Xi_4$&$O(Tn_x^2n_{\theta})+O(Tn_xn_{\theta}^2)$&$O(Tn_x^4n_{\theta})+O(Tn_x^3n_{\theta}^2)+O(Tn_xn_{\theta}n_r)$\\
 $\hat{\boldsymbol\theta} $&$O(n_{\theta}^3)$&-\\
 $\hat{\xi}$&$O(n_x^3+n_{\theta}^3)$&-\\
@@ -550,7 +550,7 @@ annealing can be used to tackle such situations but difficult to implement (Mc L
 \begin{center}
 \includegraphics{./Figures/KernelEstimate.pdf}
 \end{center}
-\caption{{\bf Connectivity kernel estimates.} (A) Actual kernel. (B) The mean kernel estimate over 100 realisations}
+\caption{{\bf Connectivity kernel estimates.} (A) Actual kernel. (B) The mean kernel estimate over 100 realisations.}
 \label{fig:KernelEstimates}
 \end{figure}
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -566,7 +566,7 @@ annealing can be used to tackle such situations but difficult to implement (Mc L
 \begin{center}
 \includegraphics{./Figures/Histogram.pdf}
 \end{center}
-\caption{{\bf Histograms of the parameter estimates over 100 realizations}. The actual and mean of the estimated parameter values are shown by solid and dotted lines respectively. (A) The histogram of the synaptic dynamic parameter, $\xi$. (B) The histogram of the observation noise variance, $\sigma_{\epsilon}$. (C) The histogram of the disturbance noise variance, $\sigma_d^2$}.
+\caption{{\bf Histograms of the parameter estimates over 100 realizations}. The actual and mean of the estimated parameter values are shown by solid and dotted lines respectively. (A) The histogram of the synaptic dynamic parameter, $\xi$. (B) The histogram of the observation noise variance, $\sigma_{\epsilon}$. (C) The histogram of the disturbance noise variance, $\sigma_d^2$.}
 \label{fig:Histogram}
 \end{figure}
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -582,7 +582,8 @@ annealing can be used to tackle such situations but difficult to implement (Mc L
 \begin{center}
 \includegraphics{./Figures/Q.pdf}
 \end{center}
-\caption{{\bf Lower-bound of the log-likelihood}. $Q(\boldsymbol\Theta',\boldsymbol\Theta')=-(T-1)\left[n_y(1+\ln \hat{\sigma}^2_{\epsilon})+ n_x(1+\ln \hat{\sigma}^2_d)\right]$.}
+\caption{{\bf Convergence of the EM algorithm.} The mean of the lower bound of the log-likelihood function over 100 realisations. The change in lower bound drops below 0.009 percent after 15 iterations}
+%  $Q(\boldsymbol\Theta',\boldsymbol\Theta')=-(T-1)\left[n_y(1+\ln \hat{\sigma}^2_{\epsilon})+ n_x(1+\ln \hat{\sigma}^2_d)\right]$
 \label{fig:LowerBound}
 \end{figure}
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
