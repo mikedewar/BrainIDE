@@ -233,10 +233,174 @@ and
 \subsection{Correlation analysis}\label{subsec:CorrAnal}
 Under the assumption that the sensors are not spatially band-limiting the spectral content of the field and the connectivity kernel is homogeneous, the support for the connectivity kernel can be inferred by studying the spatial cross-correlation between consecutive observations. The deterministic component of the spatial mapping between consecutive fields is due to the convolution of the connectivity kernel with the firing rates. Although the relationship between the field and the firing rate is nonlinear, the cross-correlation analysis still extracts meaningful results. This can be seen by considering the three operating regions of the sigmoid. When the mean membrane voltage is below the active region of the sigmoid, the firing rate will be approximately zero and only very small spatial correlations will observed. Therefore, this will not contribute to the results. Within the active region the sigmoid can be approximated by a linear function between consecutive samples, given a sufficiently high sampling rate. Therefore, linear cross-correlation analysis is appropriate. When the sigmoid is in the saturated region, the correlation coefficients will be higher, but not provide a meaningful measure of the kernel weight or gain. Therefore, we can not estimate the gain for the kernel using cross-correlation analysis, but the spatial extent can still be inferred. The gain for the kernel will be inferred using the EM algorithm described below.
 
-Figure~\ref{fig:SpatialCrossCorrelation} shows the average (across time) cross-correlations between consecutive field observations for the different time periods of the seizure progression. By averaging over time, the effect of the disturbance is reduced allowing for the support of the kernel to be seen. The subplots of the figure show that the connectivity kernel exhibits local excitation with surround inhibition. The plots indicate the support for excitatory aspect of the kernel centred at the origin is -2~mm to 2~mm in the $x$ direction and slightly wider in the $y$ direction. Although the kernel is not isotropic, we will approximate it as being isotropic. This is for computation reasons.
-
-The assumption of homogeneity was tested by performing the cross-correlation analysis on 4 equal sized subsections of the field observations. The subsections consisted $6\times6$ electrode grids, such that they overlapped by one electrode row and column. The overlap was required so the subsections where large enough for the support of the kernel to be seen in the cross-correlation analysis. The results of the analysis can be seen in Figure~\ref{fig:HomogeneityTest}. The results show that each subsection of the field has similar cross-correlations, with each subplot showing local excitation with surround inhibition. From this analysis, we will approximate the connectivity kernel as being homogeneous.
-
+\subsubsection{Estimation of Connectivity Kernel Support}
+For the derivation of the spatial properties estimator of the neural field equations a more compact notation is employed to define convolution and correlation operators. The spatial convolution shall be denoted as
+\begin{equation}
+	\int_\Omega a(\mathbf{r}-\mathbf{r}')b(\mathbf{r}')d\mathbf{r}' = (a\ast b)(\mathbf{r}),
+\end{equation}
+and the spatial cross-correlation shall be denoted as 
+\begin{equation}
+	\int_\Omega a(\mathbf{r})b(\mathbf{r}+\boldsymbol{\iota})d\mathbf{r} = (a\star b)(\boldsymbol{\iota}),
+\end{equation} 
+where $\iota$ is the spatial shift. The spatial relationship between consecutive observations is governed by the shape of the connectivity kernel. Therefore, the spatial cross-correlation between consecutive observations is used to estimate the kernel's support and shape. To begin the derivation the spatial cross-correlation between consecutive observations (in time) is defined as
+\begin{equation}
+	R_{y_{t+1}y_t}(\boldsymbol{\iota}) = \left(y_{t+1}\star y_t\right)\left(\boldsymbol{\iota}\right),
+\end{equation}
+ The aim of the derivation is to make the necessary substitutions and simplifications to get an expression of the cross-correlation as a function of the connectivity kernel. In the next step equation~\eqref{eq:EM-ObservationEquation} is substituted for $y_{t+1}(\mathbf{r})$ and expanded to give
+\begin{equation}
+	R_{y_{t+1}y_t}\left(\boldsymbol{\iota}\right) = \left(\left(m \ast v_{t+1}\right)\star y_t\right)\left(\boldsymbol{\iota}\right) + \left(\varepsilon_{t+1} \star y_t\right)\left(\boldsymbol{\iota}\right).
+\end{equation}
+Next equation~\eqref{eq:EM-DiscreteTimeModel} is substituted for $v_{t+1}(\mathbf{r})$ giving 
+\begin{align}
+	R_{y_{t+1}y_t}(\boldsymbol{\iota}) &= (\left(m \ast \left(\xi v_t +  T_s g_t + e_t\right)\right) \star y_t)(\boldsymbol{\iota})\\
+	&= \xi\left(\left(m \ast v_t\right) \star y_t \right)(\boldsymbol{\iota}) \nonumber\\
+	&\quad+ T_s \left(\left(m\ast g_t\right)\star y_t \right)(\boldsymbol{\iota}) \nonumber\\
+	&\quad+ \left(\left(m\ast e_t\right)\star y_t \right)(\boldsymbol{\iota}) \nonumber\\
+	&\quad+ (\varepsilon_{t+1} \star y_t)(\boldsymbol{\iota}).
+\end{align}
+Now the expectation over time is taken, so that the observation noise and process disturbance terms have minimal effect on the result, giving 
+\begin{align}\label{eq:EM-ExpectationToCancelNoise}
+	\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\iota})] &= \mathbf{E}[\xi\left(\left(m \ast v_t\right) \star y_t \right)(\boldsymbol{\iota})] + T_s \mathbf{E}[\left(\left(m\ast g_t\right)\star y_t \right)(\boldsymbol{\iota})],
+\end{align}
+since the disturbance and measurement noise are assumed to be independent of the observations and temporally white. 
+The cross-correlation is further simplified by recognizing that the first term on right hand side of equation~\eqref{eq:EM-ExpectationToCancelNoise} can be written as 
+\begin{align}
+	\mathbf{E}[\xi&\left(\left(m \ast v_t \right) \star y_t \right)(\boldsymbol{\iota})] = \mathbf{E}\left[\xi\left(\left(y_t-\varepsilon_t\right) \star y_t \right)(\boldsymbol{\iota})\right] \nonumber \\
+	&= \xi \mathbf{E}\left[ (y_t \star y_t)(\boldsymbol{\iota}) - \left(\varepsilon_t\star y_t \right)(\boldsymbol{\iota})\right] \nonumber \\
+	&= \xi\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\iota})  - \left(\varepsilon_t \star (m\ast v_t + \varepsilon_t)\right) (\boldsymbol{\iota})] \nonumber \\
+	&=\xi\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\iota}) -\left(\varepsilon_t\star (m\ast v_t)\right)(\boldsymbol{\iota}) - (\varepsilon_t\star\varepsilon_t)(\boldsymbol{\iota})] \nonumber \\
+	&= \xi\left(\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\iota})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\iota})\right), \label{eq:EM-FirstTermReduced}
+\end{align}
+where $\delta\left(\cdot\right)$ denotes Kronecker delta. Substituting equation~\eqref{eq:EM-FirstTermReduced} back into equation~\eqref{eq:EM-ExpectationToCancelNoise} gives
+\begin{align}\label{eq:EM-SimplifiedFirstTerm}
+	\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\iota})] &= \xi\left(\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\iota})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\iota})\right)+ T_s\mathbf{E}[ \left(\left(m\ast g_t\right)\star y_t \right)(\boldsymbol{\iota})].
+\end{align}
+Next we simplify second term in equation~\eqref{eq:EM-SimplifiedFirstTerm} to get an expression involving the connectivity kernel. By substituting equation~\eqref{eq:EM-RateBasedInteractions} for $g_t$ we can write
+\begin{equation}\label{eq:EM-before_linearization}
+	T_s((m \ast g_t) \star y_t)(\boldsymbol\iota) = T_s((w \ast m\ast f(v_t)) \star y_t)(\boldsymbol\iota).
+\end{equation}
+The remainder of the derivation is focused on isolating the connectivity kernel. To show how this is done, the activation function is assumed to be in the linear region, i.e 
+ \begin{equation}
+	f\left(v_t(\mathbf{r})\right) \approx \varsigma v_t(\mathbf{r})
+\end{equation} 
+Substituting the linear activation function back into equation~\eqref{eq:EM-before_linearization} yields
+\begin{align}\label{eq:EM-after_linearization1}	
+	T_s((m \ast g_t) \star y_t)(\boldsymbol\iota) &\approx T_s\varsigma((w \ast m\ast v_t) \star y_t)(\boldsymbol\iota).
+\end{align}
+Now by substituting $y_t - \varepsilon_t$ in for $m\ast v_t$ equation \eqref{eq:EM-after_linearization1} can be written as 
+\begin{align}
+	T_s((m \ast g_t) \star y_t)(\boldsymbol\iota) &\approx T_s\varsigma(w\ast (y_t - \varepsilon_t)) \star y_t (\boldsymbol\iota)
+\end{align}
+To isolate the kernel, the order of the convolution and cross-correlation is reversed by recognizing that a property $(a \ast b)(\boldsymbol\iota) \star c(\boldsymbol\iota) = a(-\boldsymbol\iota)\ast(b \star c)(\boldsymbol\iota)$ \parham{(see Appendix for proof)}. Therefore,
+\begin{align}
+	T_s((m \ast g_t) \star y_t)(\boldsymbol\iota) &\approx T_s\varsigma w(-\boldsymbol\iota) \ast ((y_t - \varepsilon_t)) \star y_t)(\boldsymbol\iota),
+\end{align}
+Now using the identity established to get equation~\eqref{eq:EM-FirstTermReduced} gives
+\begin{equation}\label{eq:EM-second_term_reduced}
+	T_s\mathbf{E}\left[((m \ast g_t) \star y_t)(\boldsymbol\iota)\right] \approx T_s\varsigma w(-\boldsymbol\iota) \ast  (\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\iota)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\iota))
+\end{equation}
+Now substituting back equation~\eqref{eq:EM-second_term_reduced} into equation~\eqref{eq:EM-SimplifiedFirstTerm} gives
+\begin{align}\label{eq:EM-SimplifiedXcorr}
+	\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\iota})] &= \xi\left(\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\iota})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\iota})\right)\nonumber \\
+&+T_s\varsigma w(-\boldsymbol\iota) \ast  (\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\iota)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\iota))
+\end{align}
+Rearranging equation~\eqref{eq:EM-SimplifiedXcorr} gives
+\begin{align}
+	 w(-\boldsymbol\iota) \ast  (\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\iota)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\iota))&=\frac{1}{T_s\varsigma}\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\iota})]-\frac{\xi}{T_s\varsigma}\left(\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\iota})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\iota})\right)\nonumber \\
+\end{align}
+The solution of the above equation for the connectivity kernel is a deconvolution. This can be approached from a number of different standpoints. The simplest solution is to use the convolution theorem and to solve for the kernel algebraically in the frequency domain.
+\begin{align}\label{eq:EM-XcorrFourier}
+	\mathcal{F}\{w(-\boldsymbol\iota)\} \mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\iota)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\iota))\} &\approx \frac{1}{T_s\varsigma}\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\iota})]\}\nonumber \\
+&-\frac{\xi}{T_s\varsigma}\mathcal{F} \{\left(\mathbf{E}[ R_{y_ty_t}(\boldsymbol{\iota})] - \sigma_{\varepsilon}^2 \delta(\boldsymbol{\iota})\right)\}.
+\end{align}
+Now rearranging \eqref{eq:EM-XcorrFourier} gives
+\begin{equation}\label{eq:EM-Fourier_TF_of_Kernel}
+	\mathcal{F}\left(w(-\boldsymbol\iota)\right) = \frac{1}{T_s\varsigma }\left[\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\iota})]\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\iota)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\iota))\}}-\xi\right].
+\end{equation}
+From \eqref{eq:EM-Fourier_TF_of_Kernel} it can be observed that an error in our guess for $\xi$ will result in a dilation or contraction of the estimated kernel support and an incorrect estimate in the observation noise will result in a distortion in the shape of the kernel, however if the signal to noise ratio is high such a distortion would be insignificant. The denominator in equation \eqref{eq:EM-Fourier_TF_of_Kernel} is in fact the power spectral density of noise free observations which is non-negative and real. This important result is known as Weiner-Khintchine (W-K) theorem in signal processsing which states that the power spectral density of the wide sense stationary process is the Fourier transform of it's autocorrelation function \cite{Ricker2003}. The numerator is also called the cross spectrum or cross spectral density. Since the connectivity kernel is a real function, the following relation holds \cite{Bracewell2000}
+\begin{equation}
+ \mathcal{F}\left(w(\boldsymbol\iota)\right)=\overline{\mathcal{F}\left(w(-\boldsymbol\iota)\right)},
+\end{equation}
+where over-bar denotes complex conjugate operator. Finally, an expression for the kernel is obtained by taking the inverse Fourier tranform 
+\begin{equation}\label{eq:KernelSolution}
+	w(\boldsymbol\iota) = \frac{1}{T_s\varsigma }\mathcal{F}^{-1}\overline{\left\{\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\iota})]\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\iota)\right]\} - \sigma_{\varepsilon}^2 }-\xi\right\}}.
+\end{equation}
+Complex conjugate operator essentially reflects the connectivity kernel through the origin in the spatial domain, therefore, if the connectivity kernel is isotropic, the complex conjugate operator can be dropped. 
+% Alternatively, the convolution can be written as a system of linear equations by forming the convolution (Toeplitz) matrix. The solution of the convolution equation for $w(\cdot)$ can then be found by either inverting the convolution matrix or directly solving the system of equations.  
+% Directly solving the system is the most numerically stable and less computationally demanding then inverting the convolution matrix. To show this we take the spatial Fourier transform of both sides of equation~\ref{} giving
+\subsubsection{Estimation of Disturbance Covariance Support}
+The observation auto-correlation at time $t+1$ can be expressed as
+\begin{equation}
+	R_{y_{t+1}y_{t+1}}(\boldsymbol{\iota})=(y_{t+1} \star y_{t+1})(\boldsymbol\iota).
+\end{equation}
+Substituting equation~\eqref{eq:EM-ObservationEquation} in for $y_{t+1}$ and expanding gives
+\begin{align}\label{eq:EM-expanded_auto_corr}
+	R_{y_{t+1}y_{t+1}}(\boldsymbol{\iota}) &= \xi((m \ast v_{t}) \star y_{t+1})(\boldsymbol{\iota}) +T_s((m\ast g_{t})\star y_{t+1})(\boldsymbol{\iota}) \nonumber \\
+	&+((m\ast e_{t})\star  y_{t+1})(\boldsymbol{\iota})+(\varepsilon_{t+1} \star y_{t+1})(\boldsymbol{\iota}).
+\end{align}
+By using similar arguments that were used in the derivation for the connectivity kernel support, the autocorrelation can be simplified by recognizing that
+\begin{align}\label{eq:EM-Autoterm1}
+  \mathbf{E}[\xi((m\ast v_{t})\star y_{t+1})(\boldsymbol{\iota})]&=\xi \mathbf{E}[ R_{y_ty_{t+1}}(\boldsymbol{\iota})],
+\end{align}
+and
+\begin{align}\label{eq:EM-Autoterm2}
+	T_s\mathbf{E}[((m\ast g_t) \star y_{t+1})(\boldsymbol\iota)] &\approx T_s\varsigma\mathbf{E}[((m \ast w )\star y_{t+1})(\boldsymbol\iota)] \nonumber\\
+	&= T_s\varsigma w(-\boldsymbol\iota) \ast (\mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\iota)\right] ).
+\end{align}
+\begin{align}\label{eq:EM-Autoterm3}
+ \mathbf{E}[(\varepsilon_{t+1}\star y_{t+1})(\boldsymbol\iota)]&=\sigma_{\varepsilon}^2\delta(\boldsymbol{\iota}),
+\end{align}
+Substituting equations~\eqref{eq:EM-Autoterm1}, \eqref{eq:EM-Autoterm2}, and ~\eqref{eq:EM-Autoterm3} back into equation~\eqref{eq:EM-expanded_auto_corr} gives
+\begin{align}\label{eq:EM-Auto&CrossNoisy}
+	\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\iota})] &= \xi \mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol{\iota})]+T_s\varsigma w(-\boldsymbol\iota) \ast (\mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\iota)\right] ) \nonumber \\
+	&+\mathbf{E}[((m\ast e_t)\star y_{t+1})(\boldsymbol\iota)] +\sigma_{\epsilon}^2\delta(\boldsymbol{\iota}).
+\end{align}
+The third term in \eqref{eq:EM-Auto&CrossNoisy} can be simplified as
+\begin{align}\label{eq:EM-term3Noisy}
+\mathbf{E}[((m\ast e_t)\star y_{t+1})(\boldsymbol\iota)] &= \mathbf{E}[((m\ast e_t)\star (m\ast v_{t+1}+\varepsilon_{t+1})) (\boldsymbol\iota)] \nonumber \\
+	&= \mathbf{E}[(\left(m \ast e_t\right) \star (m \ast [\xi v_t + T_s g_t + e_t]+\varepsilon_{t+1}))(\boldsymbol\iota)] \nonumber \\
+	&=\mathbf{E}[\left(m \ast e_t\right)\star\left(m \ast e_t\right)(\boldsymbol\iota)]
+\end{align}
+A property of cross-correlation and convolution is $(a \ast b)(\boldsymbol\tau) \star (a \ast b)(\boldsymbol\tau)=(a \star a)(\boldsymbol\tau)\ast(b \star b)(\boldsymbol\tau)$ \parham{(see Appendix II for a proof)}, using the isotropy property of the observation kernel we can write
+\begin{align}\label{eq:EM-Autoterm4}
+\mathbf{E}[(\left(m \ast e_t\right)\star\left(m \ast e_t\right))(\boldsymbol\iota)]&=\mathbf{E}[(\left(m \star m\right)\ast\left(e_t \star e_t\right))(\boldsymbol\iota)] \nonumber \\
+&=(m\ast m \ast \gamma)(\boldsymbol\iota).
+\end{align}
+Substituting this back into equation~\eqref{eq:EM-Auto&CrossNoisy} gives
+\begin{align}
+	\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\iota})] &= \xi \mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol{\iota})]+T_s\varsigma w(-\boldsymbol\iota) \ast (\mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\iota)\right] ) \nonumber \\
+	&+(m\ast m \ast \gamma)(\boldsymbol\iota) +\sigma_{\epsilon}^2\delta(\boldsymbol{\iota}).
+\end{align}
+To solve for the disturbance covariance, again the convolution theorem is applied to perform the deconvolution algebraically. Taking the Fourier transform and rearranging gives
+\begin{align}
+	\mathcal{F}\{(m\ast m \ast \gamma)(\boldsymbol\iota)\} &= \mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\iota})]\}-\xi \mathcal{F}\{\mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol{\iota})]\}\nonumber \\ 
+	&- T_s\varsigma\mathcal{F}\{w(-\boldsymbol\iota)\}\mathcal{F}\left\{\mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\iota)\right] \right\}-\sigma_{\varepsilon}^2 
+\end{align}
+Now substituting in equation~\eqref{eq:EM-Fourier_TF_of_Kernel} for $\mathcal{F}\{w(-\boldsymbol{\iota})\}$ results in
+\begin{align}
+	\mathcal{F}&\{(m\ast m \ast \gamma)(\boldsymbol\iota)\} = \mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\iota})]\}-\xi \mathcal{F}\{\mathbf{E}[R_{y_ty_{t+1}}(\boldsymbol{\iota})]\}\nonumber \\ 
+	&- T_s\varsigma \times \frac{1}{T_s\varsigma }\left[\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\iota})]\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\iota)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\iota))\}}-\xi\right]\mathcal{F}\left\{\mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\iota)\right] \right\} -\sigma_{\varepsilon}^2\label{eq:EM=mmgamma}
+\end{align}
+Now simplifying gives
+\begin{align}\label{eq:EM-MMGFourier1}
+	\mathcal{F}&\{m(\boldsymbol\iota)\}\mathcal{F}\{m(\boldsymbol\iota)\}\mathcal{F}\{\gamma(\boldsymbol\iota)\} = \nonumber \\
+&\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\iota})]\}- \left[\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\iota})]\}\mathcal{F}\left\{\mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\iota)\right] \right\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\iota)\right]\} - \sigma_{\varepsilon}^2}\right]-\sigma_{\varepsilon}^2 ,
+\end{align}
+rearranging and taking inverse Fourier transform gives the final result
+\begin{align}\label{eq:EM-MMGFourier2}
+	&\gamma(\boldsymbol\iota) = \nonumber \\
+&\mathcal{F}^{-1}\left\lbrace \frac{1}{\tilde{m}(\boldsymbol\iota)}\left[\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\iota})]\}- \left[\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\iota})]\}\mathcal{F}\left\{\mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\iota)\right] \right\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\iota)\right]\} - \sigma_{\varepsilon}^2}\right]-\sigma_{\varepsilon}^2\right]\right\rbrace  ,
+\end{align}
+where
+\begin{equation}
+ \tilde{m}(\boldsymbol\iota)=\mathcal{F}\{m(\boldsymbol\iota)\}\mathcal{F}\{m(\boldsymbol\iota)\}.
+\end{equation}
+% from \eqref{eq:EM=mmgamma},  when considering a sensor with a spatial extent equation \eqref{eq:EM-MMGFourier2} should be used
+From \eqref{eq:EM-MMGFourier2}, to calculate the exact shape of the disturbance covariance function, observation noise variance and the sensor kernel support are required. Again if the signal to noise ratio is high the effect of $\sigma_{\varepsilon}$ would be small. If $m$ is a point sensor then the spatial support of $\gamma$ can be calculated directly, when considering a sensor with a spatial extent, dividing by $\tilde{m}(\boldsymbol\iota)$ in \eqref{eq:EM-MMGFourier2} might generate numerical error.  However, assuming a Gaussian shape for disturbance function and sensor kernel (with known support), the support of the disturbance covariance function, $\sigma^2_d$ can be determined analytically using the expression for Gaussian basis functions' convolution, giving 
+\begin{equation}
+ \sigma_d^2=\sigma_{mm\gamma}^2-4\sigma_m^2.
+\end{equation}
+where $\sigma_{mm\gamma}^2$ is the width of fitted Gaussian to the estimated support of $(m\ast m\ast\gamma)(\boldsymbol\iota)$.
 \subsection{Parametrisation of Connectivity Kernel}
 The connectivity kernel can be decomposed as 
 \begin{equation}\label{eq:DefKernelDecomp}
