@@ -51,6 +51,7 @@
 \else
 \usepackage{graphicx}
 \fi
+\usepackage[font=footnotesize]{subfig}
 \usepackage{color}
 \newcommand{\dean}[1]{\textsf{\emph{\textbf{\textcolor{red}{#1}}}}} 
 \newcommand{\parham}[1]{\textsf{\emph{\textbf{\textcolor{blue}{#1}}}}} 
@@ -811,6 +812,16 @@ annealing can be used to tackle such situations but difficult to implement (Mc L
 \label{fig:LowerBound}
 \end{figure}
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+\begin{figure}[!ht]
+\centering
+% \subfloat[][]{\includegraphics[scale=1]{./Graph/EM/Q.pdf}}\\
+\subfloat[][]{\includegraphics[scale=1]{./Figures/ParameterConvergence.pdf}}\\
+\centering
+\subfloat[][]{\includegraphics[scale=1]{./Figures/KernelConvergence.pdf}}
+\caption{{\bf Convergence of parameters}. All parameters converge after 9 iterations. (\textbf a) The logarithm of the mean of synaptic parameter, observation noise variance and field disturbance variance over 100 realisations. (\textbf b) The mean kernel estimates at each iteration of the EM algorithm.}
+\label{fig:ParameterConvergence}
+\end{figure}
+
 
 
 
