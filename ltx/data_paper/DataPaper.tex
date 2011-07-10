@@ -328,103 +328,179 @@ where $ \mathbf E_{\boldsymbol \Theta'}\left[ .\right] $ denotes expectation tak
  p(\mathbf X,\mathbf Y;\boldsymbol \Theta)=\prod_{t=0}^{T-1} p(\mathbf y_{t+1}|\mathbf x_{t+1}; \sigma_{\epsilon})p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta, \xi, \sigma_d)p(\mathbf x_0).
 \end{equation}
  Substituting equations \eqref{eq:jointdistribution} in \eqref{eq:QFunction} gives
-\begin{align}
- \mathcal Q(\boldsymbol \Theta,\boldsymbol\Theta')&=\mathbf E_{\boldsymbol\Theta'}\left[\sum_{t=0}^{T-1}2\ln p(\mathbf y_{t+1}|\mathbf x_{t+1};\sigma_{\epsilon})+\sum_{t=0}^{T-1}2\ln p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta,\xi, \sigma_d)+\sum_{t=0}^{T-1}2\ln p(\mathbf x_0)\right].
+\begin{align}\label{eq:EM-QwithInitialstates}
+ \mathcal Q(\boldsymbol \Theta,\boldsymbol\Theta')&=\mathbf E_{\boldsymbol\Theta'}\left[\sum_{t=0}^{T-1}2\ln p(\mathbf y_{t+1}|\mathbf x_{t+1};\sigma_{\epsilon})+\sum_{t=0}^{T-1}2\ln p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta,\xi, \sigma_d) \right.\nonumber \\
+&\left.+\sum_{t=0}^{T-1}2\ln p(\mathbf x_0)\right].
 \end{align}
- It should be noted that the last term is not a function of parameter set and can be dropped, therefore $\mathcal Q$-function can be rewritten as
+ The last term on the right-hand side of \eqref{eq:EM-QwithInitialstates} can be omitted as it does not depend on the parameter set, therefore $\mathcal Q$-function can be rewritten as
 \begin{equation}\label{eq:QIntermsofJointDist}
 \mathcal Q(\boldsymbol \Theta,\boldsymbol\Theta')=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}2\ln p(\mathbf y_{t+1}|\mathbf x_{t+1}; \sigma_{\epsilon})+\sum_{t=0}^{T-1}2\ln p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta, \xi ,\sigma_d)\right].
 \end{equation}
-Gaussian distributions of the state disturbance and the observation noise results into the following conditional distributions, where the normalising factors are ignored 
+Gaussian distributions of the state disturbance and the observation noise results into the following conditional distributions, where the normalising factors are ignored since scaling by a constant coefficient does not alter the location of the maximum with respect to the parameters.
 \begin{align}
  p\left(\mathbf y_{t+1}|\mathbf x_{t+1};\sigma_{\epsilon}\right)&= \mid\boldsymbol\Sigma_{\epsilon}\mid^{-\frac{1}{2}}  \exp\left({-\frac{1}{2}\left(\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1}\right)^\top\boldsymbol\Sigma_{\epsilon}^{-1}\left(\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1}\right)}\right),\\
-p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta ,\sigma_d)&= \mid\boldsymbol\Sigma_{e}\mid^{-\frac{1}{2}} \exp \left(-\frac{1}{2}(\mathbf x_{t+1}-q(\mathbf  x_t)\boldsymbol\theta-\xi  \mathbf x_t)^\top\boldsymbol\Sigma_e^{-1}(\mathbf x_{t+1}-q( \mathbf x_t)\boldsymbol\theta-\xi \mathbf  x_t) \right)
+p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta ,\sigma_d)&= \mid\boldsymbol\Sigma_{e}\mid^{-\frac{1}{2}} \nonumber \\
+&\times\exp \left(-\frac{1}{2}(\mathbf x_{t+1}-\mathbf q(\mathbf  x_t)\boldsymbol\theta-\xi  \mathbf x_t)^\top\boldsymbol\Sigma_e^{-1}(\mathbf x_{t+1}-\mathbf q( \mathbf x_t)\boldsymbol\theta-\xi \mathbf  x_t) \right).
 \end{align}
-Note that the disturbance covariance matrix can be written as a product of the unknown parameter, $\sigma_d^2$ and a constant matrix, $\tilde{\boldsymbol\Sigma}_e$ where the constant part is calculated using the estimated support from the correlation analysis. By expanding the exponent and taking $2\ln$ we get
+Note that disturbance covariance matrix, $\boldsymbol\Sigma_e$, can be written as the product of the unknown parameter, $\sigma_d^2$ with the constant matrix, $\tilde{\boldsymbol\Sigma}_e$, where the constant part can be  calculated using the estimated support for disturbance covariance function, $\gamma$ from the correlation analysis (see equation \eqref{eq:EM-MMGFourier2}). By expanding the exponent and taking $2\ln$ we get
 \begin{align}\label{eq:CondititionDist1}
-2\ln p\left(\mathbf y_{t+1}|\mathbf x_{t+1};\sigma_{\epsilon}\right)&=-n_y\ln \sigma_{\epsilon}^2-\frac{1}{\sigma_{\epsilon}^2}\left[ (\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1})^\top(\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1})\right],  \\
-2\ln p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta ,\sigma_d)&=-n_x\ln\sigma_d^2-\ln\mid\tilde{\boldsymbol\Sigma}_e\mid-\frac{1}{\sigma_d^2}\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf x_{t+1}+\frac{2}{\sigma_d^2}\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}q( \mathbf x_t)\boldsymbol\theta+\frac{2\xi}{\sigma_d^2}\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf x_t \nonumber \\
-&-\frac{1}{\sigma_e^2}\boldsymbol\theta^\top q^\top(\mathbf x_t)\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf x_t)\boldsymbol\theta-\frac{2\xi}{\sigma_d^2} \mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf x_t)\boldsymbol\theta-\frac{\xi^2}{\sigma_d^2}\mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf x_t. \label{eq:CondititionDist2}
+2\ln p\left(\mathbf y_{t+1}|\mathbf x_{t+1};\sigma_{\epsilon}\right)&=-n_y\ln \sigma_{\epsilon}^2-\frac{1}{\sigma_{\epsilon}^2}\left[ (\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1})^\top(\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1})\right],
 \end{align}
-\dean{Dean to check expansion.} Now we rearrange the equation so we can  use the information from the smoother. (or isolate (reason for doing this step is..)) the cross-covariance etc. Taking trace and rearranging, using the invariant cyclic permutations property of the trace, equations \eqref{eq:CondititionDist1} and \eqref{eq:CondititionDist2} become
-\parham{In the next step the above equation is rearranged in order to isolate the covariance and the cross-covariance terms, enabling the use of smoother outputs. Taking trace and rearranging, applying the invariant cyclic permutations property of the trace, equations \eqref{eq:CondititionDist1} and \eqref{eq:CondititionDist2} become}
+\begin{align}
+2\ln p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta ,\sigma_d)&=-n_x\ln\sigma_d^2-\ln\mid\tilde{\boldsymbol\Sigma}_e\mid-\frac{1}{\sigma_d^2}\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf x_{t+1}\nonumber \\
+&+\frac{2}{\sigma_d^2}\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q( \mathbf x_t)\boldsymbol\theta 
++\frac{2\xi}{\sigma_d^2}\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf x_t \nonumber \\
+&-\frac{1}{\sigma_e^2}\boldsymbol\theta^\top \mathbf q^\top(\mathbf x_t)\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q(\mathbf x_t)\boldsymbol\theta-\frac{2\xi}{\sigma_d^2} \mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q(\mathbf x_t)\boldsymbol\theta\nonumber \\
+&-\frac{\xi^2}{\sigma_d^2}\mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf x_t. \label{eq:CondititionDist2}
+\end{align}
+In the next step the above equation is rearranged in order to isolate the covariance and the cross-covariance terms, enabling the use of smoother outputs. Taking trace and rearranging, applying the invariant cyclic permutations property of the trace, equations \eqref{eq:CondititionDist1} and \eqref{eq:CondititionDist2} become
 \begin{align}\label{eq:Qfunctiontrace1}
-  2\ln p\left(\mathbf y_{t+1}|\mathbf x_{t+1};\sigma_{\epsilon}\right) &= -n_y\ln \sigma_{\epsilon}^2-\frac{1}{\sigma_{\epsilon}^2}\mathrm{tr}\left\lbrace(\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1})^\top\right\rbrace    \\
- 2 \ln p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta ,\sigma_d) &=-n_x\ln\sigma_d^2-\frac{1}{\sigma_d^2}\mathrm{tr}\left\lbrace\mathbf x_{t+1} \mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace+\frac{2}{\sigma_d^2}\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}q( \mathbf x_t)\boldsymbol\theta+\frac{2\xi}{\sigma_d^2} \mathrm{tr} \left\lbrace \mathbf x_t\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace \nonumber \\
-&-\frac{1}{\sigma_d^2}\boldsymbol\theta^\top q^\top(\mathbf x_t)\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf x_t)\boldsymbol\theta-\frac{2\xi}{\sigma_d^2} \mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf x_t)\boldsymbol\theta-\frac{\xi^2}{\sigma_d^2}\mathrm{tr}\left\lbrace \mathbf x_t \mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace. \label{eq:Qfunctiontrace2}
+  2\ln p\left(\mathbf y_{t+1}|\mathbf x_{t+1};\sigma_{\epsilon}\right) &= -n_y\ln \sigma_{\epsilon}^2-\frac{1}{\sigma_{\epsilon}^2}\mathrm{tr}\left\lbrace(\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1})^\top\right\rbrace    
+\end{align}
+\begin{align}
+ 2 \ln &p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta ,\sigma_d) =-n_x\ln\sigma_d^2-\frac{1}{\sigma_d^2}\mathrm{tr}\left\lbrace\mathbf x_{t+1} \mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace+\frac{2}{\sigma_d^2}\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q( \mathbf x_t)\boldsymbol\theta \nonumber \\
+&+\frac{2\xi}{\sigma_d^2} \mathrm{tr} \left\lbrace \mathbf x_t\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace -\frac{1}{\sigma_d^2}\boldsymbol\theta^\top \mathbf q^\top(\mathbf x_t)\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q(\mathbf x_t)\boldsymbol\theta-\frac{2\xi}{\sigma_d^2} \mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q(\mathbf x_t)\boldsymbol\theta \nonumber \\
+&-\frac{\xi^2}{\sigma_d^2}\mathrm{tr}\left\lbrace \mathbf x_t \mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace. \label{eq:Qfunctiontrace2}
 \end{align}
 Substituting  \eqref{eq:Qfunctiontrace1} and \eqref{eq:Qfunctiontrace2} into \eqref{eq:QIntermsofJointDist} and taking the expectation of the log likelihood function for all time instants gives the lower-bound which is to be maximised in the M-step. 
 \begin{align}\label{eq:Voldermont}
- \mathcal Q(\boldsymbol \Theta,\boldsymbol\Theta')&= -(T-1)n_y\ln \sigma_{\epsilon}^2-\frac{1}{\sigma_{\epsilon}^2}\mathrm{tr}\left\lbrace\boldsymbol\sum_{t=0}^{T-1}\left[ (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top\right] \right\rbrace\nonumber \\
-&-(T-1)n_x\ln\sigma_d^2-\frac{1}{\sigma_d^2}\mathrm{tr}\left\lbrace \mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_{t+1}\mathbf x_{t+1}^\top\right]\tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace +\frac{2\xi}{\sigma_d^2} \mathrm{tr}\left\lbrace \mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_t\mathbf x_{t+1}^\top\right] \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace \nonumber \\
-&-\frac{\xi^2}{\sigma_d^2}\mathrm{tr} \left\lbrace\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_t\mathbf x_{t}^\top\right]\tilde{\boldsymbol\Sigma}_e^{-1} \right\rbrace +\frac{2}{\sigma_d^2}\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}q( \mathbf x_t)\right]\boldsymbol\theta
+ \mathcal Q(\boldsymbol \Theta,\boldsymbol\Theta')&=-(T-1)n_y\ln \sigma_{\epsilon}^2-(T-1)n_x\ln\sigma_d^2\nonumber \\
+& -\frac{1}{\sigma_{\epsilon}^2}\mathrm{tr}\left\lbrace\boldsymbol\sum_{t=0}^{T-1}\left[ (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top\right] \right\rbrace\nonumber \\
+&-\frac{1}{\sigma_d^2}\mathrm{tr}\left\lbrace \mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_{t+1}\mathbf x_{t+1}^\top\right]\tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace+\frac{2\xi}{\sigma_d^2} \mathrm{tr}\left\lbrace \mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_t\mathbf x_{t+1}^\top\right] \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace \nonumber \\
+&-\frac{\xi^2}{\sigma_d^2}\mathrm{tr} \left\lbrace\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_t\mathbf x_{t}^\top\right]\tilde{\boldsymbol\Sigma}_e^{-1} \right\rbrace +\frac{2}{\sigma_d^2}\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q( \mathbf x_t)\right]\boldsymbol\theta
  \nonumber \\
-&-\frac{1}{\sigma_d^2}\boldsymbol\theta^\top \mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}  q^\top(\mathbf  x_t)\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf x_t)\right]\boldsymbol\theta-\frac{2\xi}{\sigma_d^2} \mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1} \mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf x_t)  \right] \boldsymbol\theta
+&-\frac{1}{\sigma_d^2}\boldsymbol\theta^\top \mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}  \mathbf q^\top(\mathbf  x_t)\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q(\mathbf x_t)\right]\boldsymbol\theta-\frac{2\xi}{\sigma_d^2} \mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1} \mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q(\mathbf x_t)  \right] \boldsymbol\theta.
 \end{align}
-The second term in \eqref{eq:Voldermont} is obtained by adding and subtracting $\mathbf C \mathbf{\hat{x}}_{t+1} \mathbf{\hat{x}}_{t+1}^\top \mathbf C^\top$ to the expectation of the second term in \eqref{eq:Qfunctiontrace1}. By defining $\Xi$-variables as 
+The third term in \eqref{eq:Voldermont} is obtained using the same method in \cite{Shumway2000}, i.e. by adding and subtracting $\mathbf C \mathbf{\hat{x}}_{t+1} \mathbf{\hat{x}}_{t+1}^\top \mathbf C^\top$ to the expectation of the second term in \eqref{eq:Qfunctiontrace1} . By defining $\Xi$-variables as 
 \begin{align}
 	\boldsymbol\Xi_{0}&=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_{t+1}\mathbf x_{t+1}^\top\right]\label{eq:defofXi0} \\
-\boldsymbol\Xi_{1}&=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_t\mathbf x_{t+1}^\top\right]\label{eq:Xi1} \\
-\boldsymbol\Xi_{2}&=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_t\mathbf x_{t}^\top\right]\label{eq:Xi2}\\
-\boldsymbol\Xi_{3}&=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}q( \mathbf x_t)\right] \label{eq:Xi3} \\	
-\boldsymbol\Xi_{4}&= \mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}  q^\top(\mathbf  x_t)\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf x_t)\right] \label{eq:Xi4}\\
- \boldsymbol\Xi_{5}&=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1} \mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf x_t)  \right] \label{eq:Xi5}
+\boldsymbol\Xi_{1}&=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_t\mathbf x_{t+1}^\top\right]\label{eq:defofXi1} \\
+\boldsymbol\Xi_{2}&=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_t\mathbf x_{t}^\top\right]\label{eq:defofXi2}\\
+\boldsymbol\Xi_{3}&=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q( \mathbf x_t)\right] \label{eq:defofXi3} \\	
+\boldsymbol\Xi_{4}&= \mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}  \mathbf q^\top(\mathbf  x_t)\tilde{\boldsymbol\Sigma}_e^{-1} \mathbf q(\mathbf x_t)\right] \label{eq:defofXi4}\\
+ \boldsymbol\Xi_{5}&=\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1} \mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q(\mathbf x_t)  \right] \label{eq:defofXi5}
  \end{align}
-equation \eqref{eq:Voldermont} can be written as
+equation \eqref{eq:Voldermont} can be written in a form of
 \begin{align}\label{eq:VoldermontwitXivariables}
- \mathcal Q(\boldsymbol \Theta,\boldsymbol\Theta')&=-(T-1)n_y\ln \sigma_{\epsilon}^2-\frac{1}{\sigma_{\epsilon}^2}\mathrm{tr}\left\lbrace\boldsymbol\sum_{t=0}^{T-1}\left[ (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top\right] \right\rbrace\nonumber \\
-&-(T-1)n_x\ln\sigma_d^2-\frac{1}{\sigma_d^2}\mathrm{tr}\left\lbrace \boldsymbol\Xi_{0} \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace +\frac{2\xi}{\sigma_d^2} \mathrm{tr}\left\lbrace \boldsymbol\Xi_{1} \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace -  \frac{\xi^2}{\sigma_d^2}\mathrm{tr} \left\lbrace\boldsymbol\Xi_{2}\tilde{\boldsymbol\Sigma}_e^{-1} \right\rbrace 
+ \mathcal Q(\boldsymbol \Theta,\boldsymbol\Theta')&=-\frac{1}{\sigma_{\epsilon}^2}\mathrm{tr}\left\lbrace\boldsymbol\sum_{t=0}^{T-1}\left[ (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top\right] \right\rbrace\nonumber \\
+&-(T-1)n_y\ln \sigma_{\epsilon}^2-(T-1)n_x\ln\sigma_d^2-\frac{1}{\sigma_d^2}\mathrm{tr}\left\lbrace \boldsymbol\Xi_{0} \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace +\frac{2\xi}{\sigma_d^2} \mathrm{tr}\left\lbrace \boldsymbol\Xi_{1} \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace 
  \nonumber \\
-&+\frac{2}{\sigma_d^2}\boldsymbol\Xi_{3}\boldsymbol\theta-\frac{1}{\sigma_d^2}\boldsymbol\theta^\top \boldsymbol\Xi_{4}\boldsymbol\theta-\frac{2\xi}{\sigma_d^2}\boldsymbol \Xi_{5} \boldsymbol\theta.
+&-\frac{\xi^2}{\sigma_d^2}\mathrm{tr} \left\lbrace\boldsymbol\Xi_{2}\tilde{\boldsymbol\Sigma}_e^{-1} \right\rbrace +\frac{2}{\sigma_d^2}\boldsymbol\Xi_{3}\boldsymbol\theta-\frac{1}{\sigma_d^2}\boldsymbol\theta^\top \boldsymbol\Xi_{4}\boldsymbol\theta-\frac{2\xi}{\sigma_d^2}\boldsymbol \Xi_{5} \boldsymbol\theta.
 \end{align}
-Covariance and cross-covariances in equation \eqref{eq:VoldermontwitXivariables}, consist of both linear terms, $\boldsymbol\Xi_0$, $\boldsymbol\Xi_1$ and $\boldsymbol\Xi_2$ and non-linear terms, $\boldsymbol\Xi_3$, $\boldsymbol\Xi_4$ and  $\boldsymbol\Xi_5$. Finding linear $\boldsymbol\Xi$-variables is straightforward as they can be computed directly using smoother outputs, i.e. $\hat{\mathbf x}_t^b $, $\mathbf P_t^b$ and $\mathbf M_t^b$ using following expressions \cite{Gibsona2005} (see supporting information for details)
+Covariance and cross-covariance terms in equation \eqref{eq:VoldermontwitXivariables}, consist of both linear terms, $\boldsymbol\Xi_0$, $\boldsymbol\Xi_1$ and $\boldsymbol\Xi_2$ and non-linear terms, $\boldsymbol\Xi_3$, $\boldsymbol\Xi_4$ and  $\boldsymbol\Xi_5$. Finding linear $\boldsymbol\Xi$-variables is straightforward as they can be computed directly using smoother outputs, i.e. $\hat{\mathbf x}_t^b $, $\mathbf P_t^b$ and $\mathbf M_t^b$ \cite{Gibsona2005}. To show how it can be done, the smoothed covariance matrix at time $t+1$ can be written as
+\begin{align}
+ \mathbf P_{t+1}^b&=\mathbf E_{\Theta'}\left[(\mathbf x_{t+1}-\mathbf{\hat x}_{t+1}^b)(\mathbf x_{t+1}-\mathbf{\hat x}_{t+1}^b)^{\top}\right]=\mathbf E_{\theta'}\left[\mathbf x_{t+1}\mathbf x_{t+1}^\top\right]-\mathbf {\hat x}_{t+1}^b\mathbf{\hat x}_{t+1}^{b\top}\label{eq:EM-PrimeryXi0derivation1}\\
+ \mathbf M_{t+1}^b&=\mathbf E_{\Theta'}\left[(\mathbf x_t-\mathbf{\hat x}_t^b)(\mathbf x_{t+1}-\mathbf{\hat x}_{t+1}^b)^{\top}\right]= \mathbf E_{\Theta'}\left[\mathbf x_t\mathbf x_{t+1}^\top\right]-\mathbf {\hat x}_t^b\mathbf{\hat x}_{t+1}^{b\top},\label{eq:EM-PrimeryXi1derivation1}
+\end{align}
+consequently,
+\begin{align}\label{eq:EM-Xi0derivation1}
+ \mathbf E_{\Theta'}\left[\mathbf x_{t+1}\mathbf x_{t+1}^\top\right]=\mathbf P_{t+1}^b+\mathbf {\hat x}_{t+1}^b\mathbf{\hat x}_{t+1}^{b\top}\\
+ \mathbf E_{\Theta'}\left[\mathbf x_t\mathbf x_{t+1}^\top\right]=\mathbf M_{t+1}^b+\mathbf {\hat x}_t^b\mathbf{\hat x}_{t+1}^{b\top}\label{eq:EM-Xi1derivation1},
+\end{align}
+substituting \eqref{eq:EM-Xi0derivation1} and \eqref{eq:EM-Xi1derivation1} in \eqref{eq:defofXi0} and \eqref{eq:defofXi1} respectively , gives the final formula for $\boldsymbol\Xi_{0}$ and $\boldsymbol\Xi_{1}$, i.e.
 \begin{align}
 	\boldsymbol\Xi_{0}&=\sum_{t=0}^{T-1}\left(\mathbf P_{t+1}^b+\mathbf{\hat x}_{t+1}^b\mathbf{\hat x}_{t+1}^{b\top}\right)\label{eq:Xi0Gibson}, \\
-\boldsymbol\Xi_{1}&=\sum_{t=0}^{T-1}\left(\mathbf M_{t+1}^b+\mathbf{\hat x}_t^b\mathbf{\hat x}_{t+1}^{b\top}\right) \label{eq:Xi1Gibson}, \\
+\boldsymbol\Xi_{1}&=\sum_{t=0}^{T-1}\left(\mathbf M_{t+1}^b+\mathbf{\hat x}_t^b\mathbf{\hat x}_{t+1}^{b\top}\right) \label{eq:Xi1Gibson}.
+\end{align}
+The expression for $\boldsymbol\Xi_{2}$ can be derived in a similar manner, giving
+\begin{align}
 \boldsymbol\Xi_{2}&=\sum_{t=0}^{T-1}\left(\mathbf P_t^b+\mathbf{\hat x}_t^b\mathbf{\hat x}_t^{b\top}\right).\label{eq:Xi2Gibson}
- \end{align}
-However calculation of non-linear $\boldsymbol\Xi$-variables is not straightforward as in linear case. Therefore, an additional  Taylor expansion step to the URTSS algorithm is also created to approximate $q(\mathbf{x}_t)$ at each time instant which is to be used in  calculations of $\boldsymbol\Xi_3$, $\boldsymbol\Xi_4$ and $\boldsymbol\Xi_5$. This is accomplished by taking the first-order truncated Taylor-series expansion of the sigmoidal activation function  around the smoothed state, $\hat{\mathbf x}_t^b$ at each time instant, i.e.
+\end{align}
+However calculation of non-linear $\boldsymbol\Xi$-variables is not straightforward as in linear case. Therefore, an additional  Taylor expansion step to the URTSS algorithm is also created to approximate $\mathbf q(\mathbf{x}_t)$ at each time instant which is to be used in  calculations of $\boldsymbol\Xi_3$, $\boldsymbol\Xi_4$ and $\boldsymbol\Xi_5$. This is accomplished by taking the first-order truncated Taylor-series expansion of the sigmoidal activation function  around the smoothed state, $\hat{\mathbf x}_t^b$ at each time instant, i.e.
 \begin{equation}\label{eq:SigmoidTaylor}
- f\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\mathbf x_t\right) \approx f\left(\boldsymbol \phi^\top(\mathbf r')\hat{\mathbf x}_t^b\right)+  \boldsymbol \phi^\top\left(\mathbf r'\right)\left(\mathbf x_t - \hat{\mathbf x}_t^b\right)f'\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t^b\right)
+ f\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\mathbf x_t\right) \approx f\left(\boldsymbol \phi^\top(\mathbf r')\hat{\mathbf x}_t^b\right)+  \boldsymbol \phi^\top\left(\mathbf r'\right)\left(\mathbf x_t - \hat{\mathbf x}_t^b\right)f'\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t^b\right),
 \end{equation}
 where 
-\begin{equation}\label{eq:SigmoidDerivative}
- f'\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t^b\right)=\varsigma f\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t^b\right)\left( 1-f\left( \boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t^b\right)\right)
-\end{equation}
-substituting \eqref{eq:SigmoidTaylor} in \eqref{eq:QmatrixForSigmapoints}  we get an approximation for $q(\mathbf x_t)$ around the smoothed state $\hat{\mathbf{x}}_t^b$ 
+\begin{align}\label{eq:SigmoidDerivative}
+ f'(\boldsymbol \phi^\top\left(\mathbf r'\right)&\hat{\mathbf x}_t^b)= \frac{\varsigma}{\left(1 + \exp \left( \varsigma \left( v_0 - \boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t^b \right) \right)\right)^2} \times \exp \left( \varsigma \left( v_0 - \boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t^b \right) \right) \nonumber \\
+=&\frac{\varsigma}{1 + \exp \left( \varsigma \left( v_0 - \boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t^b \right) \right)} \times \left(1-\frac{1}{1 + \exp \left( \varsigma \left( v_0 - \boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t^b \right) \right)}\right) \nonumber \\
+=& \varsigma f(\boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t^b)\left( 1-f(\boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t^b\right).
+\end{align}
+substituting \eqref{eq:SigmoidTaylor} in \eqref{eq:QmatrixForSigmapoints},  an approximation for $\mathbf q(\mathbf x_t)$ around the smoothed state $\hat{\mathbf{x}}_t^b$ can be obtained
 \begin{equation}\label{eq:qTaylor}
- q_L(\mathbf x_t) \approx q\left(\hat{\mathbf x}_t^b\right)+\int_\Omega \boldsymbol{\Psi}\left(\mathbf{r}'\right)\boldsymbol \phi^\top\left(\mathbf r'\right) \left(\mathbf x_t -\hat{\mathbf x}_t^b\right)f'\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t^b\right) d\mathbf{r}'
+ \mathbf q(\mathbf x_t) \approx \mathbf q(\hat{\mathbf x}_t^b)+\int_\Omega \boldsymbol{\Psi}\left(\mathbf{r}'\right)\boldsymbol \phi^\top\left(\mathbf r'\right) \left(\mathbf x_t -\hat{\mathbf x}_t^b\right)f'\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t^b\right) d\mathbf{r}'.
 \end{equation}
-Having approximated $q\left(\mathbf x_t\right)$, by substituting  \eqref{eq:qTaylor} into equations (\ref{eq:Xi3}-\ref{eq:Xi5}) an approximate to the non-linear $\boldsymbol\Xi$-variables can be calculated (see supporting information) which in turn provides an approximate lower bound on the log-likelihood function, 
+Having approximated $\mathbf q\left(\mathbf x_t\right)$, by substituting  \eqref{eq:qTaylor} into equations (\ref{eq:defofXi3}-\ref{eq:defofXi5}) an approximation to the non-linear $\boldsymbol\Xi$-variables can be made. The three nonlinear variables are dealt with in turn. To start with, first consider equation \eqref{eq:defofXi3}, substituting in equation \eqref{eq:qTaylor} for $\mathbf q\left(\mathbf x_t\right)$, the term under the summation can be approximated by
+\begin{align}\label{eq:Xi3Derivation1}
+ \mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q( \mathbf x_t) &\approx \mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q(\mathbf {\hat x}_t^b)+\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\int_\Omega \boldsymbol{\Psi}(\mathbf{r}')\boldsymbol \phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t^b)f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t^b) d\mathbf{r}',
+\end{align}
+noting that $\phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t^b)$ is a scalar, equation \eqref{eq:Xi3Derivation1} can be rewritten as 
+\begin{align}\label{eq:Xi3Derivation2}
+ \mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q( \mathbf x_t)\approx\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q(\mathbf {\hat x}_t^b)+\int_\Omega \boldsymbol \phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t^b)\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\boldsymbol{\Psi}(\mathbf{r}')f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t^b) d\mathbf{r}',
+\end{align}
+taking expected value of \eqref{eq:Xi3Derivation2} gives
+\begin{align}\label{eq:Xi3Derivation3}
+ \mathbf E_{\boldsymbol\Theta'}\left[\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q( \mathbf x_t)\right] &\approx \mathbf E_{\boldsymbol\Theta'}\left[\mathbf x_{t+1}^\top\right]\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q(\mathbf {\hat x}_t^b) \nonumber \\
+&+\int_\Omega \boldsymbol \phi^\top(\mathbf r')  \mathbf E_{\boldsymbol\Theta'}\left[(\mathbf x_t - \mathbf  {\hat x}_t^b)\mathbf x_{t+1}^\top\right]\tilde{\boldsymbol\Sigma}_e^{-1}\boldsymbol{\Psi}(\mathbf{r}')f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t^b) d\mathbf{r}',
+\end{align}
+Substituting for  $\mathbf E_{\boldsymbol\Theta'}\left[(\mathbf x_t - \mathbf  {\hat x}_t^b)\mathbf x_{t+1}^\top\right]$ from equation \eqref{eq:EM-PrimeryXi1derivation1} and summing over $t \in \left\lbrace 0, \dots, T-1\right\rbrace $ yields
+\begin{equation}
+\boldsymbol\Xi_{3}\approx\sum_{t=0}^{T-1}\left[ \mathbf{\hat x}_{t+1}^{b\top}\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q(\mathbf{\hat x}_t^b)+\int_\Omega\boldsymbol \phi^\top(\mathbf r') \mathbf M_{t+1}^b \tilde{\boldsymbol\Sigma}_e^{-1} \boldsymbol{\Psi}(\mathbf{r}') f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t^b) d\mathbf{r}'\right]. \label{eq:Xi3Ap} \\	
+\end{equation}
+To find an approximation for $\boldsymbol\Xi_4$, the same approach is applied by using \eqref{eq:qTaylor} for the nonlinear experession in equation \eqref{eq:defofXi4} giving
+\begin{align}\label{eq:Xi4derivation1}
+ \mathbf q^\top(\mathbf x_t)\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q(\mathbf x_t)&\approx \left[ \mathbf q(\mathbf {\hat x}_t^b)+\int_\Omega \boldsymbol{\Psi}(\mathbf{r}')\boldsymbol \phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t^b)f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t^b) d\mathbf{r}'\right]^\top  \times \tilde{\boldsymbol\Sigma}_e^{-1}\nonumber \\
+&\times\left[ \mathbf q(\mathbf {\hat x}_t^b)+\int_\Omega \boldsymbol{\Psi}(\mathbf{r}')\boldsymbol \phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t^b)f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t^b) d\mathbf{r}'\right] \nonumber \\
+&= \mathrm{term1} + \mathrm{term2} + \mathrm{term3} + \mathrm{term4}
+\end{align}
+where
 \begin{align}
-\boldsymbol\Xi_{3}&\approx\sum_{t=0}^{T-1}\left[ \mathbf{\hat x}_{t+1}^{b\top}\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf{\hat x}_t^b)+\int_\Omega\boldsymbol \phi^\top(\mathbf r') \mathbf M_{t+1}^b \tilde{\boldsymbol\Sigma}_e^{-1} \boldsymbol{\Psi}(\mathbf{r}') f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t^b) d\mathbf{r}'\right] \label{eq:Xi3Ap}\\	
-\boldsymbol\Xi_{4}&\approx\sum_{t=0}^{T-1}\left[q^\top(\mathbf{\hat x}_t^b)\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf{\hat x}_t^b)+\Lambda_t\right]\label{eq:Xi4Ap} \\
- \boldsymbol\Xi_{5}&\approx\sum_{t=0}^{T-1}\left[ \mathbf{\hat x}_{t}^{b\top}\tilde{\boldsymbol\Sigma}_e^{-1}q(\mathbf{\hat x}_t^b)+\int_\Omega\boldsymbol \phi^\top(\mathbf r') \mathbf P_t^b \tilde{\boldsymbol\Sigma}_e^{-1}  \boldsymbol{\Psi}(\mathbf{r}') f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t^b) d\mathbf{r}'\right] \label{eq:Xi5Ap}
+  \mathrm{term1}&=\mathbf q^\top(\mathbf {\hat x}_t^b)\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q(\mathbf {\hat x}_t^b)
+\end{align}
+\begin{align}
+\mathrm{term2}=&\mathbf q^\top(\mathbf {\hat x}_t^b)\tilde{\boldsymbol\Sigma}_e^{-1}\int_\Omega \boldsymbol{\Psi}(\mathbf{r}')\boldsymbol \phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t^b)f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t^b) d\mathbf{r}'
  \end{align}
+\begin{align}
+\mathrm{term3}=&\int_\Omega \boldsymbol{\Psi}^\top(\mathbf{r}')\boldsymbol \phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t^b)f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t^b) d\mathbf{r}'\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q(\mathbf {\hat x}_t^b)
+\end{align}
+\begin{align}\label{eq:-EMterm4}
+ \mathrm{term4} &=\int_\Omega \boldsymbol{\Psi}^\top(\mathbf{r}')\boldsymbol \phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t^b)f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t^b) d\mathbf{r}' \times \tilde{\boldsymbol  \Sigma}_e^{-1} \nonumber \\
+&\times \int_\Omega \boldsymbol{\Psi}(\mathbf{r}')\boldsymbol \phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t^b)f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t^b) d\mathbf{r}' 
+\end{align}
+It should be noted that when applying expectation, term1 is constant, and term2 and term3 disapears as $\mathbf E_{\Theta'}\left[(\mathbf x_t - \mathbf  {\hat x}_t^b)\right]= \mathbf 0$. However in term4 to use the covariance estimate from the smoother the $\mathbf{x}_t$ terms should be brought together. To do this equation \eqref{eq:-EMterm4} can be rewritten as 
+\begin{align}
+ term4 &= \int_\Omega \boldsymbol{\Psi}^\top(\mathbf{r}')f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t^b) \boldsymbol \phi^\top(\mathbf r')(\mathbf x_t - \mathbf  {\hat x}_t^b)d\mathbf{r}' \times \tilde{\boldsymbol\Sigma}_e^{-1} \nonumber \\
+&\times\int_\Omega  (\mathbf x_t - \mathbf  {\hat x}_t^b)^\top\boldsymbol \phi(\mathbf r') \boldsymbol{\Psi}(\mathbf{r}')f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t^b) d\mathbf{r}'& \nonumber \\
+&=\sum_{i,j=1}^{n_x}{\boldsymbol\Lambda}_t^{(i)\top}(\mathbf x_{i,t} - \mathbf  {\hat x}_{i,t}^b)(\mathbf x_{j,t} - \mathbf  {\hat x}_{j,t}^b)\tilde{\boldsymbol\Sigma}_e^{-1}{\boldsymbol\Lambda}_t^{(j)},
+\end{align}
+where
+\begin{align}
+	{\boldsymbol \Lambda}_t^{(i)}&=\int_{\Omega} \boldsymbol \Psi(\mathbf r')\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf {\hat x}_t^b)d\mathbf r' \label{eq:lambdatildei}.
+\end{align}
+Now taking expectation from \eqref{eq:Xi4derivation1} gives
+\begin{align}\label{eq:Xi4derivation2}
+  \mathbf{E}_{\boldsymbol\Theta'}\left[ \mathbf q^\top(\mathbf x_t)\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q(\mathbf x_t)\right] &= \mathbf q^\top(\mathbf {\hat x}_t^b)\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q(\mathbf {\hat x}_t^b)\nonumber \\
+&+\sum_{i,j=1}^{n_x}{\boldsymbol\Lambda}_t^{(i)\top}\mathbf{E}_{\boldsymbol\Theta'}\left[(\mathbf x_{i,t} - \mathbf  {\hat x}_{i,t}^b)(\mathbf x_{j,t} - \mathbf  {\hat x}_{j,t}^b)\right] \tilde{\boldsymbol\Sigma}_e^{-1}{\boldsymbol\Lambda}_t^{(j)},
+\end{align}
+and noting $\mathbf E_{\boldsymbol\theta'}\left[(\mathbf x_{i,t} - \mathbf  {\hat x}_{i,t}^b)(\mathbf x_{j,t} - \mathbf  {\hat x}_{j,t}^b) \right]=\left[\mathbf{P}_t^b\right]_{i,j} $ gives
+\begin{align}
+ \mathbf{E}_{\boldsymbol\Theta'}\left[ \mathbf q^\top(\mathbf x_t)\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q(\mathbf x_t)\right]&= \mathbf q^\top(\mathbf {\hat x}_t)\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q(\mathbf {\hat x}_t)+\boldsymbol\varLambda_t
+\end{align}
 where
 \begin{equation}
- \boldsymbol\Lambda_t=\sum_{i,j=1}^{n_x}[\mathbf{P}_t^b]_{ij}{\boldsymbol\lambda}_t^{(i)\top}\tilde{\boldsymbol\Sigma}_e^{-1}{\boldsymbol\lambda}_t^{(j)}
+ \boldsymbol\varLambda_t=\sum_{i,j=1}^{n_x}[\mathbf{P}_t^b]_{ij}{\boldsymbol\Lambda}_t^{(i)\top}\tilde{\boldsymbol\Sigma}_e^{-1}{\boldsymbol\Lambda}_t^{(j)},
 \end{equation}
-and
-\begin{align}\label{eq:lambdat} 
-	{\boldsymbol \lambda}_t^{(i)}&=\int_{\Omega} \boldsymbol \Psi(\mathbf r')\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf {\hat x}_t^b)d\mathbf r'
+and summing over $t \in \left\lbrace 0, \dots, T-1\right\rbrace $ yields
+\begin{align}
+ \boldsymbol\Xi_{4}&\approx\sum_{t=0}^{T-1}\left[\mathbf q^\top(\mathbf{\hat x}_t^b)\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf \mathbf q(\mathbf{\hat x}_t^b)+\boldsymbol\varLambda_t\right]\label{eq:Xi4Ap}. 
 \end{align}
+Finally, to calculate $\boldsymbol\Xi_5$, the nonlinear term can be treated in a smae way, using the expression for $\mathbf q(\mathbf x_t)$ in \eqref{eq:defofXi5} and rearranging gives
+\begin{align}\label{eq:Xi5derivation1}
+ \mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q(\mathbf x_t)\approx\mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q(\mathbf {\hat x}_t^b)+\int_\Omega \boldsymbol \phi^\top(\mathbf r') (\mathbf x_t - \mathbf  {\hat x}_t^b)\mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}\boldsymbol{\Psi}(\mathbf{r}')f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t^b) d\mathbf{r}'
+\end{align}
+taking expected value of \eqref{eq:Xi5derivation1} gives
+\begin{align}\label{eq:Xi5derivation2}
+\mathbf E_{\Theta'}\left[\mathbf x_t^\top\boldsymbol\Sigma_e^{-1}\mathbf q(\mathbf x_t)\right]&\approx\mathbf E_{\Theta'}\left[\mathbf x_t^\top\right]\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q(\mathbf {\hat x}_t^b)\nonumber \\
+&+\int_\Omega \boldsymbol \phi^\top(\mathbf r') \mathbf E_{\Theta'}\left[(\mathbf x_t - \mathbf  {\hat x}_t^b)\mathbf x_t^\top\right]\tilde{\boldsymbol\Sigma}_e^{-1}\boldsymbol{\Psi}(\mathbf{r}')f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t^b) d\mathbf{r}' 
+\end{align}
+substituting for $\mathbf E_{\Theta'}\left[(\mathbf x_t - \mathbf  {\hat x}_t^b)\mathbf x_t^\top\right] $ from equation \eqref{eq:EM-PrimeryXi0derivation1} at time $t$, and summing over $t \in \left\lbrace 0, \dots, T-1\right\rbrace $ gives
+\begin{align}
+\boldsymbol\Xi_{5}&\approx\sum_{t=0}^{T-1}\left[ \mathbf{\hat x}_{t}^{b\top}\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q(\mathbf{\hat x}_t^b)+\int_\Omega\boldsymbol \phi^\top(\mathbf r') \mathbf P_t^b \tilde{\boldsymbol\Sigma}_e^{-1}  \boldsymbol{\Psi}(\mathbf{r}') f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t^b) d\mathbf{r}'\right] \label{eq:Xi5Ap}
+ \end{align}
 By computing $\boldsymbol\Xi$-variables, calculation of the lower bound is complete. The lower bound now can be used in M-step to find a set of new parameters. An approximate for computational complexity of the algorithm is given in Table~\ref{table:ComputationalComplexity}. Note that computational complexity of the nonlinear terms depend on the number of points, $n_r$ used for spatial discritisation.  In this table only the computational complexity of variables specific to the presented algorithm are shown, and the computational complexity of the URTSS can be found elsewhere \cite{Sarkka2010}.
-
-
-
-
-Define
-\begin{equation}
-	e(x) = q(x) - q_L(x) \nonumber
-\end{equation}
-
-Then we can write $q(x) = q_L(x) + e(x)$ and use this to show that the error in the estimate is proportional to $e(x)$.
-
-Equation \ref{eq:qTaylor} is used to approximate the lower bound on the log-likelihood function in the M-step. \dean{The difference between the linearised and nonlinear likelihood will be the error in the approximation at the state estimate that maximised the likelihood.}
 \subsection{M-Step}
 % In the M-step, an update $\boldsymbol\Theta'$ is chosen such that $\mathcal{Q}\left(\boldsymbol\Theta',\boldsymbol\Theta'\right)>\mathcal{Q}\left(\boldsymbol\Theta,\boldsymbol\Theta'\right)$, this will guarantee that the likelihood increases.
-The objective of the M-step is to maximize the lower bound found in E-step, whcich consequenly increases the log-likelihood function $p(\mathbf Y;\boldsymbol\Theta)$.
+The objective of the M-step is to maximize the computed lower bound in E-step, whcich consequenly increases the log-likelihood function $p(\mathbf Y;\boldsymbol\Theta)$.
 % on the joint likelihood function, $p(\mathbf X,\mathbf Y;\boldsymbol \Theta)$, where $\mathbf X$ is the set of all states, $\mathbf Y$ is the set of all observations, and $\boldsymbol \Theta$ denotes the set of all unknown parameters, i.e., connectivity kernel parameters $\boldsymbol\theta$, synaptic dynamic $\xi$, disturbance variance $\sigma^2_d$ and the observation noise variance $\sigma^2_{\epsilon}$.
                                                                                                                                                                                                                                                                                                                                                                                                                                                                             Consider first the maximisation of $\mathcal{Q}$-function with respect to $\xi$, we can write
 \begin{equation}\label{eq:Qpartialxi}
@@ -432,7 +508,7 @@ The objective of the M-step is to maximize the lower bound found in E-step, whci
 \end{equation}
 setting \eqref{eq:Qpartialxi} to zero and solving for $\xi$ gives
 \begin{equation}\label{eq:xihat}
- \hat{\xi}=\frac{\mathrm{tr}\left\lbrace \boldsymbol\Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-\boldsymbol\Xi_5\boldsymbol\Xi_4^{-1}\boldsymbol\Xi_3^\top}{\mathrm{tr}\left\lbrace \boldsymbol\Xi_2 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-\boldsymbol\Xi_5\boldsymbol\Xi_4^{-1}\boldsymbol\Xi_5^{\top}}
+ \hat{\xi}=\frac{\mathrm{tr}\left\lbrace \boldsymbol\Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-\boldsymbol\Xi_5\boldsymbol\Xi_4^{-1}\boldsymbol\Xi_3^\top}{\mathrm{tr}\left\lbrace \boldsymbol\Xi_2 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-\boldsymbol\Xi_5\boldsymbol\Xi_4^{-1}\boldsymbol\Xi_5^{\top}}.
 \end{equation}
 In order to maximise $\mathcal{Q}$-function with respect to $\boldsymbol\theta$ we can write
 \begin{equation}\label{eq:Qpartialtheta}
@@ -444,21 +520,21 @@ noting that variable $\boldsymbol\Xi_4$ is symmetric by construction, equating \
 \end{equation}
 We comment on the condition under which $\boldsymbol\Xi_4$ is invertible later on. Now maximizing with respect to $\sigma_{\epsilon}^2$ we get
 \begin{equation}
-  \frac{\partial \mathcal Q}{\partial \sigma_{\epsilon}^2}=-(T-1)n_y\frac{1}{\sigma_{\epsilon}^2}+\frac{1}{\sigma_{\epsilon}^4}\mathrm{tr}\left\lbrace\sum_{t=0}^{T-1}\left[ (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top\right] \right\rbrace
+  \frac{\partial \mathcal Q}{\partial \sigma_{\epsilon}^2}=-(T-1)n_y\frac{1}{\sigma_{\epsilon}^2}+\frac{1}{\sigma_{\epsilon}^4}\mathrm{tr}\left\lbrace\sum_{t=0}^{T-1}\left[ (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top\right] \right\rbrace,
 \end{equation}
 setting above to zero and solving for $\sigma_{\epsilon}^2$ gives
 \begin{equation}\label{eq:sigmaepsilonhat}
- \hat{\sigma}_{\epsilon}^2=\frac{1}{(T-1)n_y}\sum_{t=0}^{T-1}\mathrm{tr}\left\lbrace (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top \right\rbrace
+ \hat{\sigma}_{\epsilon}^2=\frac{1}{(T-1)n_y}\sum_{t=0}^{T-1}\mathrm{tr}\left\lbrace (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top \right\rbrace.
 \end{equation}
 Finally differentiating with respec to $\sigma_d^2$ we get
 \begin{align}
- \frac{\partial \mathcal Q}{\partial \sigma_d^2}&= -(T-1)n_x\frac{1}{\sigma_d^2}+\frac{1}{\sigma_d^4}\mathrm{tr}\left\lbrace \boldsymbol\Xi_0 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-\frac{2\xi}{\sigma_d^4} \mathrm{tr}\left\lbrace \boldsymbol\Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace+\frac{\xi^2}{\sigma_d^4}\mathrm{tr} \left\lbrace\boldsymbol\Xi_2\tilde{\boldsymbol\Sigma}_e^{-1} \right\rbrace  \nonumber \\
-&-\frac{2}{\sigma_d^4}\boldsymbol\Xi_3\boldsymbol\theta +\frac{1}{\sigma_d^4}\boldsymbol\theta^\top \boldsymbol\Xi_4\boldsymbol\theta+\frac{2\xi}{\sigma_d^4} \boldsymbol\Xi_5 \boldsymbol\theta 
+ \frac{\partial \mathcal Q}{\partial \sigma_d^2}&= -(T-1)n_x\frac{1}{\sigma_d^2}+\frac{1}{\sigma_d^4}\mathrm{tr}\left\lbrace \boldsymbol\Xi_0 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-\frac{2\xi}{\sigma_d^4} \mathrm{tr}\left\lbrace \boldsymbol\Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace  \nonumber \\
+&+\frac{\xi^2}{\sigma_d^4}\mathrm{tr} \left\lbrace\boldsymbol\Xi_2\tilde{\boldsymbol\Sigma}_e^{-1} \right\rbrace-\frac{2}{\sigma_d^4}\boldsymbol\Xi_3\boldsymbol\theta +\frac{1}{\sigma_d^4}\boldsymbol\theta^\top \boldsymbol\Xi_4\boldsymbol\theta+\frac{2\xi}{\sigma_d^4} \boldsymbol\Xi_5 \boldsymbol\theta,
 \end{align}
 setting above to zero and solving for $\sigma_d^2$ we have
 \begin{align}\label{eq:sigmadhat}
-\hat{\sigma}_d^2=\frac{1}{(T-1)n_x}\left[ \mathrm{tr}\left\lbrace \boldsymbol\Xi_0 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-
-2\xi\mathrm{tr}\left\lbrace \boldsymbol\Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace +\xi^2\mathrm{tr} \left\lbrace\boldsymbol\Xi_2\tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace -2\boldsymbol\Xi_3\boldsymbol\theta+\boldsymbol\theta^\top\boldsymbol \Xi_4\boldsymbol\theta+2\xi\boldsymbol\Xi_5 \boldsymbol\theta\right]  
+\hat{\sigma}_d^2&=\frac{1}{(T-1)n_x}\left[ \mathrm{tr}\left\lbrace \boldsymbol\Xi_0 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-
+2\xi\mathrm{tr}\left\lbrace \boldsymbol\Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace +\xi^2\mathrm{tr} \left\lbrace\boldsymbol\Xi_2\tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace\right.\nonumber \\ &\left.-2\boldsymbol\Xi_3\boldsymbol\theta+\boldsymbol\theta^\top\boldsymbol \Xi_4\boldsymbol\theta+2\xi\boldsymbol\Xi_5 \boldsymbol\theta\right].
 \end{align}
 In order to confirm calculated parameters are indeed maxima of the lower bound, the second derivative test is carried out for each parameter, giving
 \begin{alignat}{2}%(number of &)+1 divided by 2 here we have (3+1)/2
@@ -471,16 +547,8 @@ $\boldsymbol\Xi_2$ is positive definite under the persistent excitation conditio
 \begin{equation}
  \mathrm{tr}\left\lbrace \boldsymbol\Xi_2 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace >0,
 \end{equation}
-meaning \eqref{eq:SecondDerivativexi} is negative and $\hat{\xi}$ represents a maximum. Equation \eqref{eq:SecondDerivativetheta} is negative where $\boldsymbol\Xi_4$ is positive definite requiring $\mathbf q(\mathbf x_t)$ to be of  rank $n_{\theta}$ \cite{Golub1996}. The matrix $\boldsymbol\Psi(\mathbf r')$ defined by \eqref{eq:DefPsi} is of rank $n_{\theta}$ as each row of the matrix is a set of equally spaced Gaussian basis functions with equal widths, consequently each row can be considered as a Riesz basis function for the subspaces they generate \cite{Ferrari2004}. (note that multiplying by $\mathbf \Gamma^{-1}$ doesn't change the rank). However, $q(\mathbf x_t)$ defined in \eqref{eq:QmatrixForSigmapoints} cannot be computed analytically as the inner product of a Gaussian and a sigmoid cannot be solved analytically, making it difficult to calculate the rank of $q(\mathbf x_t)$ . Therefore, we recommend to check the rank of $q(\mathbf x_t)$ at each iteration of the E-step.
-% to show this we define
-% \begin{equation}
-%  \boldsymbol\Psi(\mathbf r')=T_s\boldsymbol\Gamma^{-1}\tilde{\boldsymbol\Psi}(\mathbf r')
-% \end{equation}
-% where 
-% \begin{equation}\label{eq:DefPsitilde}
-% 	\left[ \tilde{\boldsymbol\Psi}(\mathbf{r}')\right]_{:i} =\int_\Omega {\boldsymbol{\phi}(\mathbf{r})\psi_i (2c_i+\mathbf{r}'-\mathbf{r})\textrm{d}\mathbf{r}},
-% \end{equation}
-% since matrix $\boldsymbol\Gamma^{-1}$ is symmetric
+meaning \eqref{eq:SecondDerivativexi} is negative and $\hat{\xi}$ represents a maximum. Equation \eqref{eq:SecondDerivativetheta} is negative where $\boldsymbol\Xi_4$ is positive definite requiring $\mathbf q(\mathbf x_t)$ to be of  rank $n_{\theta}$ \cite{Golub1996}. The matrix $\boldsymbol\Psi(\mathbf r')$ defined by \eqref{eq:DefPsi} is of rank $n_{\theta}$ as each row of the matrix is a set of equally spaced Gaussian basis functions with equal widths, consequently each row can be considered as a Riesz basis function for the subspaces they generate \cite{Ferrari2004}. (note that multiplying by $\mathbf \Gamma^{-1}$ doesn't change the rank). However, $\mathbf q(\mathbf x_t)$ defined in \eqref{eq:QmatrixForSigmapoints} cannot be computed analytically as the inner product of a Gaussian and a sigmoid cannot be solved analytically, making it difficult to calculate the rank of $\mathbf q(\mathbf x_t)$ . Therefore, we recommend to check the rank of $\mathbf q(\mathbf x_t)$ at each iteration of the E-step.
+
 From \eqref{eq:SecondDerivativenoise} and \eqref{eq:SecondDerivativedisturbance}, observation noise and disturbance variance estimates clearly represent maxima of the $\mathcal{Q}$-function. 
 %  Increasing the joint likelihood function increases the likelihood function $p(\mathbf Y;\boldsymbol \Theta)$ \cite{McLachlan1997}. 
  \begin {table}
