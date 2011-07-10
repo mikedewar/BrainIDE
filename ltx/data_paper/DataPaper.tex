@@ -667,7 +667,7 @@ By computing $\boldsymbol\Xi$-variables, calculation of the lower bound is compl
 % In the M-step, an update $\boldsymbol\Theta'$ is chosen such that $\mathcal{Q}\left(\boldsymbol\Theta',\boldsymbol\Theta'\right)>\mathcal{Q}\left(\boldsymbol\Theta,\boldsymbol\Theta'\right)$, this will guarantee that the likelihood increases.
 The objective of the M-step is to maximize the computed lower bound in E-step, whcich consequenly increases the log-likelihood function $p(\mathbf Y;\boldsymbol\Theta)$.
 % on the joint likelihood function, $p(\mathbf X,\mathbf Y;\boldsymbol \Theta)$, where $\mathbf X$ is the set of all states, $\mathbf Y$ is the set of all observations, and $\boldsymbol \Theta$ denotes the set of all unknown parameters, i.e., connectivity kernel parameters $\boldsymbol\theta$, synaptic dynamic $\xi$, disturbance variance $\sigma^2_d$ and the observation noise variance $\sigma^2_{\epsilon}$.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                            Consider first the maximisation of $\mathcal{Q}$-function with respect to $\xi$, we can write
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                            Consider first the maximisation of $\mathcal{Q}$-function with respect to $\xi$, differentiating equation \eqref{eq:VoldermontwitXivariables} with respec to the synaptic parameter gives
 \begin{equation}\label{eq:Qpartialxi}
  \frac{\partial \mathcal Q}{\partial\xi}=\frac{2}{\sigma_d^2}\mathrm{tr}\left\lbrace \boldsymbol\Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace -\frac{2\xi}{\sigma_d^2}\mathrm{tr}\left\lbrace \boldsymbol\Xi_2 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-\frac{2}{\sigma_d^2}\boldsymbol\Xi_5,
 \end{equation}
@@ -675,7 +675,7 @@ setting \eqref{eq:Qpartialxi} to zero and solving for $\xi$ gives
 \begin{equation}\label{eq:xihat}
  \hat{\xi}=\frac{\mathrm{tr}\left\lbrace \boldsymbol\Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-\boldsymbol\Xi_5\boldsymbol\Xi_4^{-1}\boldsymbol\Xi_3^\top}{\mathrm{tr}\left\lbrace \boldsymbol\Xi_2 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-\boldsymbol\Xi_5\boldsymbol\Xi_4^{-1}\boldsymbol\Xi_5^{\top}}.
 \end{equation}
-In order to maximise $\mathcal{Q}$-function with respect to $\boldsymbol\theta$ we can write
+In order to maximise $\mathcal{Q}$-function with respect to the connectivity kernel parameters, $\boldsymbol\theta$, differentiation is taken as follows
 \begin{equation}\label{eq:Qpartialtheta}
  \frac{\partial \mathcal Q}{\partial \boldsymbol\theta}=\frac{2}{\sigma_d^2}\boldsymbol\Xi_3-\frac{1}{\sigma_d^2}\boldsymbol\theta^\top(\boldsymbol\Xi_4^\top+\boldsymbol\Xi_4)-\frac{2\xi}{\sigma_d^2}\boldsymbol\Xi_5,
 \end{equation}
@@ -683,20 +683,20 @@ noting that variable $\boldsymbol\Xi_4$ is symmetric by construction, equating \
 \begin{equation}\label{eq:thetahat}
  \hat{\boldsymbol \theta}=\boldsymbol\Xi_4^{-1}\left(\boldsymbol\Xi_3^\top-\xi\boldsymbol\Xi_5^\top \right).
 \end{equation}
-We comment on the condition under which $\boldsymbol\Xi_4$ is invertible later on. Now maximizing with respect to $\sigma_{\epsilon}^2$ we get
+The condition under which $\boldsymbol\Xi_4$ is invertible is discussed later in this section. Now maximising the lower bound with respect to $\sigma_{\epsilon}^2$ gives
 \begin{equation}
   \frac{\partial \mathcal Q}{\partial \sigma_{\epsilon}^2}=-(T-1)n_y\frac{1}{\sigma_{\epsilon}^2}+\frac{1}{\sigma_{\epsilon}^4}\mathrm{tr}\left\lbrace\sum_{t=0}^{T-1}\left[ (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top\right] \right\rbrace,
 \end{equation}
-setting above to zero and solving for $\sigma_{\epsilon}^2$ gives
+and setting the above equation to zero and solving for $\sigma_{\epsilon}^2$ gives the result
 \begin{equation}\label{eq:sigmaepsilonhat}
  \hat{\sigma}_{\epsilon}^2=\frac{1}{(T-1)n_y}\sum_{t=0}^{T-1}\mathrm{tr}\left\lbrace (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top \right\rbrace.
 \end{equation}
-Finally differentiating with respec to $\sigma_d^2$ we get
+Finally differentiating the lower bound with respec to $\sigma_d^2$ gives
 \begin{align}
  \frac{\partial \mathcal Q}{\partial \sigma_d^2}&= -(T-1)n_x\frac{1}{\sigma_d^2}+\frac{1}{\sigma_d^4}\mathrm{tr}\left\lbrace \boldsymbol\Xi_0 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-\frac{2\xi}{\sigma_d^4} \mathrm{tr}\left\lbrace \boldsymbol\Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace  \nonumber \\
 &+\frac{\xi^2}{\sigma_d^4}\mathrm{tr} \left\lbrace\boldsymbol\Xi_2\tilde{\boldsymbol\Sigma}_e^{-1} \right\rbrace-\frac{2}{\sigma_d^4}\boldsymbol\Xi_3\boldsymbol\theta +\frac{1}{\sigma_d^4}\boldsymbol\theta^\top \boldsymbol\Xi_4\boldsymbol\theta+\frac{2\xi}{\sigma_d^4} \boldsymbol\Xi_5 \boldsymbol\theta,
 \end{align}
-setting above to zero and solving for $\sigma_d^2$ we have
+setting above to zero and solving for $\sigma_d^2$ completes the maximisation step
 \begin{align}\label{eq:sigmadhat}
 \hat{\sigma}_d^2&=\frac{1}{(T-1)n_x}\left[ \mathrm{tr}\left\lbrace \boldsymbol\Xi_0 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-
 2\xi\mathrm{tr}\left\lbrace \boldsymbol\Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace +\xi^2\mathrm{tr} \left\lbrace\boldsymbol\Xi_2\tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace\right.\nonumber \\ &\left.-2\boldsymbol\Xi_3\boldsymbol\theta+\boldsymbol\theta^\top\boldsymbol \Xi_4\boldsymbol\theta+2\xi\boldsymbol\Xi_5 \boldsymbol\theta\right].
@@ -708,13 +708,11 @@ In order to confirm calculated parameters are indeed maxima of the lower bound, 
  \frac{\partial \mathcal Q^2}{\partial^2\sigma_{\epsilon}^2}&\biggr\rvert_{\sigma_{\epsilon}=\hat{\sigma}_{\epsilon}}&&=-\frac{(T-1)n_y}{\hat{\sigma}_{\epsilon}^4} \label{eq:SecondDerivativenoise} \\
  \frac{\partial \mathcal Q^2}{\partial^2\sigma_{d}^2}&\biggr\rvert_{{\sigma}_{d}=\hat{\sigma}_{d}}&&= -\frac{(T-1)n_x}{\hat{\sigma}_{d}^4} \label{eq:SecondDerivativedisturbance}
 \end{alignat}
-$\boldsymbol\Xi_2$ is positive definite under the persistent excitation condition of state vectors, which is guaranteed by the disturbance, $\mathbf e$, and $\tilde{\boldsymbol\Sigma}_e^{-1}$ is positive definite by construction (Note that the inverse of a positive definite matrix is also positive definite \cite{Horn2005}), therefore we have \cite{Coope1994}
+$\boldsymbol\Xi_2$ is positive definite under the persistent excitation condition of state vectors, which is guaranteed by the disturbance, $\mathbf e$, and $\tilde{\boldsymbol\Sigma}_e^{-1}$ is positive definite by construction (Note that the inverse of a positive definite matrix is also positive definite \cite{Horn2005}), therefore by \cite{Coope1994}
 \begin{equation}
  \mathrm{tr}\left\lbrace \boldsymbol\Xi_2 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace >0,
 \end{equation}
-meaning \eqref{eq:SecondDerivativexi} is negative and $\hat{\xi}$ represents a maximum. Equation \eqref{eq:SecondDerivativetheta} is negative where $\boldsymbol\Xi_4$ is positive definite requiring $\mathbf q(\mathbf x_t)$ to be of  rank $n_{\theta}$ \cite{Golub1996}. The matrix $\boldsymbol\Psi(\mathbf r')$ defined by \eqref{eq:DefPsi} is of rank $n_{\theta}$ as each row of the matrix is a set of equally spaced Gaussian basis functions with equal widths, consequently each row can be considered as a Riesz basis function for the subspaces they generate \cite{Ferrari2004}. (note that multiplying by $\mathbf \Gamma^{-1}$ doesn't change the rank). However, $\mathbf q(\mathbf x_t)$ defined in \eqref{eq:QmatrixForSigmapoints} cannot be computed analytically as the inner product of a Gaussian and a sigmoid cannot be solved analytically, making it difficult to calculate the rank of $\mathbf q(\mathbf x_t)$ . Therefore, we recommend to check the rank of $\mathbf q(\mathbf x_t)$ at each iteration of the E-step.
-
-From \eqref{eq:SecondDerivativenoise} and \eqref{eq:SecondDerivativedisturbance}, observation noise and disturbance variance estimates clearly represent maxima of the $\mathcal{Q}$-function. 
+meaning \eqref{eq:SecondDerivativexi} is negative and $\hat{\xi}$ represents a maximum. Equation \eqref{eq:SecondDerivativetheta} is negative where $\boldsymbol\Xi_4$ is positive definite requiring $\mathbf q(\mathbf x_t)$ to be of  rank $n_{\theta}$ \cite{Golub1996}. The matrix $\boldsymbol\Psi(\mathbf r')$ defined by \eqref{eq:DefPsi} is of rank $n_{\theta}$ as each row of the matrix is a set of equally spaced Gaussian basis functions with equal widths, consequently each row can be considered as a Riesz basis function for the subspaces they generate \cite{Ferrari2004} (note that multiplying by $\mathbf \Gamma^{-1}$ has no effect on the rank). However, $\mathbf q(\mathbf x_t)$ defined in \eqref{eq:QmatrixForSigmapoints} cannot be computed analytically as the inner product of a Gaussian and a sigmoid function cannot be solved analytically, making it difficult to calculate the rank of $\mathbf q(\mathbf x_t)$ . Therefore, the rank of $\mathbf q(\mathbf x_t)$ at each iteration of the algorithm should be examined. From \eqref{eq:SecondDerivativenoise} and \eqref{eq:SecondDerivativedisturbance}, observation noise and disturbance variance estimates clearly represent maxima of the $\mathcal{Q}$-function. 
 %  Increasing the joint likelihood function increases the likelihood function $p(\mathbf Y;\boldsymbol \Theta)$ \cite{McLachlan1997}. 
  \begin {table}
 \begin{center}
