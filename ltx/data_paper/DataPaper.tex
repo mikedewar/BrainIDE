@@ -634,8 +634,8 @@ It should be noted that when applying expectation, term1 is constant, and term2 
 &=\sum_{i,j=1}^{n_x}{\boldsymbol\Lambda}_t^{(i)\top}(\mathbf x_{i,t} - \mathbf  {\hat x}_{i,t}^b)(\mathbf x_{j,t} - \mathbf  {\hat x}_{j,t}^b)\tilde{\boldsymbol\Sigma}_e^{-1}{\boldsymbol\Lambda}_t^{(j)},
 \end{align}
 where
-\begin{align}
-	{\boldsymbol \Lambda}_t^{(i)}&=\int_{\Omega} \boldsymbol \Psi(\mathbf r')\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf {\hat x}_t^b)d\mathbf r' \label{eq:lambdatildei}.
+\begin{align}\label{eq:EM-Lambdat}
+	{\boldsymbol \Lambda}_t^{(i)}&=\int_{\Omega} \boldsymbol \Psi(\mathbf r')\phi_i(\mathbf r')f'(\boldsymbol\phi^\top(\mathbf r')\mathbf {\hat x}_t^b)d\mathbf r'.
 \end{align}
 Now taking expectation from \eqref{eq:Xi4derivation1} gives
 \begin{align}\label{eq:Xi4derivation2}
@@ -825,6 +825,70 @@ annealing can be used to tackle such situations but difficult to implement (Mc L
 \label{fig:ParameterConvergence}
 \end{figure}
 
+\clearpage
+\newpage
+\appendix
+\section{Product of two $n$-dimensional Gaussian functions}\label{sec:GaussianProduct} 
+In this section, we provide a derivation for the product of two n-dimensional Gaussian basis functions.
+This derivation is used in the  calculation of $\boldsymbol\Lambda_t^{(i)}$  defined in equation \eqref{eq:EM-Lambdat} of the main text. Consider two
+Gaussian basis functions
+\begin{equation}\label{eq:n_dimensional_Gaussian1}
+ \varphi_i(\mathbf r)=\mathrm{exp}\left({-\frac{1}{\sigma_i^2} (\mathbf r-\boldsymbol \mu_i)^\top(\mathbf r-\boldsymbol \mu_i})\right)
+\end{equation}
+and 
+\begin{equation}\label{eq:n_dimensional_Gaussian2}
+\varphi_j(\mathbf r)=\mathrm{exp}\left({-\frac{1}{\sigma_j^2} (\mathbf r-\boldsymbol \mu_j)^\top(\mathbf r-\boldsymbol \mu_j})\right).
+\end{equation}
+the product of two Gauusian basis functions is given by
+\begin{equation}
+ \varphi_i(\mathbf r)\varphi_j(\mathbf r)=\mathrm{exp}\left(-\left[ {\frac{1}{\sigma_i^2} (\mathbf r-\boldsymbol \mu_i)^\top(\mathbf r-\boldsymbol\mu_i)+{\frac{1}{\sigma_j^2} (\mathbf r-\boldsymbol \mu_j)^\top(\mathbf r-\boldsymbol\mu_j)}}\right] \right)
+\end{equation}
+the product is expanded to give
+\begin{align} 
+ \varphi_i(\mathbf r)\varphi_j(\mathbf r)&=
+\mathrm{exp}\left(-\left[ \frac{(\sigma_i^2+\sigma_j^2)\left[\mathbf r^\top\mathbf r-2\mathbf r^\top \frac{\sigma_j^2\boldsymbol\mu_i+\sigma_i^2\boldsymbol\mu_j}{\sigma_i^2+\sigma_j^2}+\frac{(\sigma_j^2\boldsymbol\mu_i+\sigma_i^2\boldsymbol\mu_j)^\top(\sigma_j^2\boldsymbol\mu_i+\sigma_i^2\boldsymbol\mu_j)}{(\sigma_i^2+\sigma_j^2)^2}\right]}{\sigma_i^2\sigma_j^2}\right.\right. \nonumber\\
+&\left.\left. \frac{+\frac{\sigma_i^2\sigma_j^2}{\sigma_i^2+\sigma_j^2}(\boldsymbol \mu_i-\boldsymbol\mu_j)^\top(\boldsymbol \mu_i-\boldsymbol\mu_j)}{}\right]\right) \nonumber\\
+  &=\mathrm{exp}\left(-\frac{(\sigma_i^2+\sigma_j^2)\left[(\mathbf r-\frac{\sigma_j^2\boldsymbol\mu_i+\sigma_i^2\boldsymbol\mu_j}{\sigma_i^2+\sigma_j^2})^\top(\mathbf r-\frac{\sigma_j^2\boldsymbol\mu_i+\sigma_i^2\boldsymbol\mu_j}{\sigma_i^2+\sigma_j^2})\right]  }{\sigma_i^2\sigma_j^2}\right) \nonumber \\
+   &\times\mathrm{exp}\left(-\frac{(\boldsymbol \mu_i-\boldsymbol\mu_j)^\top(\boldsymbol \mu_i-\boldsymbol\mu_j)}{\sigma_i^2+\sigma_j^2}\right),
+\end{align}
+therefore we have
+\begin{equation}
+ \varphi_i(\mathbf r)\varphi_j(\mathbf r)=c_{i,j}\times\mathrm{exp}\left({-\frac{1}{\sigma^2} (\mathbf r-\boldsymbol \mu)^\top(\mathbf r-\boldsymbol\mu)}\right)
+\end{equation}
+where
+\begin{equation}
+ c_{i,j}=\mathrm{exp}\left(-\frac{(\boldsymbol \mu_i-\boldsymbol\mu_j)^\top(\boldsymbol \mu_i-\boldsymbol\mu_j)}{\sigma_i^2+\sigma_j^2}\right) \quad \sigma^2=\frac{\sigma_i^2\sigma_j^2}{\sigma_i^2+\sigma_j^2}
+\end{equation}
+and
+\begin{equation}
+ \boldsymbol\mu=\frac{\sigma_j^2\boldsymbol\mu_i+\sigma_i^2\boldsymbol\mu_j}{\sigma_i^2+\sigma_j^2}
+\end{equation}
+
+\section{Cross-correlation and convolution}\label{ap:CorrelationAnalysis}
+This appendix provide a proof for the properties of the cross-correlation and convolution used in the Correlation analysis Section of Chapter 2. To show 
+\begin{equation}\label{eq:app-ConvXcorRelation1}
+ \left(a \ast b \right)\left(\boldsymbol\iota\right)  \star c\left(\boldsymbol\iota\right)  = a\left(-\boldsymbol\iota\right)\ast\left(b \star c\right)\left(\boldsymbol\iota\right)
+\end{equation}
+and
+\begin{equation}\label{eq:app-ConvXcorRelation2}
+(a \ast b)(\boldsymbol \iota) \star (a \ast b)(\boldsymbol\iota)=(a \star a)(\boldsymbol\iota)\ast(b \star b)(\boldsymbol\iota),
+\end{equation}
+first note that cross-correlation function is related to the convolution by \cite{Yarlagadda2009}
+\begin{equation}\label{eq:app-ConvXcorRelation}
+ \left(a \star b\right)\left(\boldsymbol\iota\right)= a\left(-\boldsymbol\iota\right)\ast b\left(\boldsymbol\iota\right).
+\end{equation}
+Therefore, equation \eqref{eq:app-ConvXcorRelation1} can be wriiten as
+\begin{align}
+ \left(a \ast b\right)\left(\boldsymbol\iota\right) \star c\left(\boldsymbol\iota\right)&= \left(a \ast b\right)\left(-\boldsymbol\iota \right)\ast c\left(\boldsymbol\iota\right) \nonumber \\
+&=a\left(-\boldsymbol\iota\right)\ast \left(b\left(-\boldsymbol\iota\right) \ast c\left(\boldsymbol\iota\right)\right)\nonumber \\
+&=a\left(-\boldsymbol\iota\right)\ast\left(b\star c\right)\left(\boldsymbol\iota\right).
+\end{align}
+Similarly, equation \eqref{eq:app-ConvXcorRelation2} can be written as
+\begin{align}
+ (a \ast b)(\boldsymbol \iota) \star (a \ast b)(\boldsymbol\iota)&=(a \ast b)(-\boldsymbol\iota) \ast (a \ast b)(\boldsymbol\iota) \nonumber \\
+&=a(-\boldsymbol\iota)\ast a(\boldsymbol\iota) \ast b(-\boldsymbol\iota)\ast b(\boldsymbol\iota) \nonumber \\
+&=(a \star a)(\boldsymbol\iota)\ast(b \star b)(\boldsymbol\iota).
+\end{align}
 
 
 
