@@ -395,14 +395,14 @@ Now simplifying gives
 rearranging and taking inverse Fourier transform gives the final result
 \begin{align}\label{eq:EM-MMGFourier2}
 	&\gamma(\boldsymbol\iota) = \nonumber \\
-&\mathcal{F}^{-1}\left\lbrace \frac{1}{\tilde{m}(\boldsymbol\iota)}\left[\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\iota})]\}- \left[\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\iota})]\}\mathcal{F}\left\{\mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\iota)\right] \right\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\iota)\right]\} - \sigma_{\varepsilon}^2}\right]-\sigma_{\varepsilon}^2\right]\right\rbrace  ,
+&\mathcal{F}^{-1}\left\lbrace \frac{1}{\tilde{m}(\boldsymbol\iota)}\left[\left[\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_{t+1}}(\boldsymbol{\iota})]\}-\sigma_{\varepsilon}^2\right]- \left[\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\iota})]\}\mathcal{F}\left\{\mathbf{E}\left[R_{y_ty_{t+1}}(\boldsymbol\iota)\right] \right\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\iota)\right]\} - \sigma_{\varepsilon}^2}\right]\right]\right\rbrace  ,
 \end{align}
 where
 \begin{equation}
  \tilde{m}(\boldsymbol\iota)=\mathcal{F}\{m(\boldsymbol\iota)\}\mathcal{F}\{m(\boldsymbol\iota)\}.
 \end{equation}
 % from \eqref{eq:EM=mmgamma},  when considering a sensor with a spatial extent equation \eqref{eq:EM-MMGFourier2} should be used
-From \eqref{eq:EM-MMGFourier2}, to calculate the exact shape of the disturbance covariance function, observation noise variance and the sensor kernel support are required. Again if the signal to noise ratio is high the effect of $\sigma_{\varepsilon}$ would be small. If $m$ is a point sensor then the spatial support of $\gamma$ can be calculated directly, when considering a sensor with a spatial extent, dividing by $\tilde{m}(\boldsymbol\iota)$ in \eqref{eq:EM-MMGFourier2} might generate numerical error.  However, assuming a Gaussian shape for disturbance function and sensor kernel (with known support), the support of the disturbance covariance function, $\sigma^2_d$ can be determined analytically using the expression for Gaussian basis functions' convolution, giving 
+From \eqref{eq:EM-MMGFourier2}, to calculate the exact shape of the disturbance covariance function, observation noise variance and the sensor kernel support are required. Again if the signal to noise ratio is high the effect of $\sigma_{\varepsilon}$ would be small. Note the first bracket and the denominator in \eqref{eq:EM-MMGFourier2} are non-negative power spectral denisties of the noise free observations at time $t+1$ and $t$ respectively. If $m$ is a point sensor then the spatial support of $\gamma$ can be calculated directly, when considering a sensor with a spatial extent, dividing by $\tilde{m}(\boldsymbol\iota)$ in \eqref{eq:EM-MMGFourier2} might generate numerical error.  However, assuming a Gaussian shape for disturbance function and sensor kernel (with known support), the support of the disturbance covariance function, $\sigma^2_d$ can be determined analytically using the expression for Gaussian basis functions' convolution, giving 
 \begin{equation}
  \sigma_d^2=\sigma_{mm\gamma}^2-4\sigma_m^2.
 \end{equation}
