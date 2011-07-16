@@ -800,11 +800,10 @@ While EKS has been  applied in the context of EM algorithm for learning a nonlin
 
 In almost all applications a sequence of likelihood converges to some stationary values i.e. global (local) maximum or a saddle point. If the sequence of EM is trapped in a saddle point a small random purturbation diverges the EM from the saddle point \cite{McLachlan1997}. In general convergence of the EM algorithm to any stationary point either global (local) maxima or saddle points 
 depends on the initialisation. Here a bounded sequence of state vectors were used to initialise the algorithm which gives a satisfactory convergence and good state and good parameter estimations.
+
+Since the non-linearity is a sigmoid function first-order Taylor approximation provides a good approximation to the lower bound of the likelihood function, however in general settings with more complicated nonlinear behaviours higher order terms might need to be included, this however introduces intractable computational complexity.
 \begin{itemize}
 	\item itterative EM and correlation analysis (maybe)
-	\item{comment on EM might convrge to suboptimal solution,simulated
-annealing can be used to tackle such situations but difficult to implement (Mc Lachlan)}
-	\item{since the non-linearity is a sigmoid function first-order Taylor provide a good approximation however in general settings with more complicated nonlinear behaviours higher order terms might need to be included, this however introduce intractable computational complexity.}
 \end{itemize}
 
 
