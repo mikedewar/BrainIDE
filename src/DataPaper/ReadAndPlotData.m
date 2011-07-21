@@ -726,145 +726,147 @@ drawnow
 % % % 
 % % % %%
 % % % 
-% % % % this bit plot the observed field
-% % % % ~~~~~~~~~~~~~~~~~~
-% % % % climit = 80;
-% % % % SampleStep = 2;
-% % % % SampleStart = 40390;
-% % % % figure('units','centimeters','position',[0 0 30 30])
-% % % % for n=SampleStart:SampleStep:size(FiltData,1)
-% % % %     imagesc(squeeze(MatrixData(n,:,:) ))
-% % % %     shading('interp')
-% % % % %     title(['Sample = ' num2str(n)])
-% % % % %     colorbar
-% % % %     axis off
-% % % %     axis square
-% % % %     drawnow
-% % % %     pause
-% % % % end
-% % % %%
-% % % figure('units','centimeters','position',[2,2,TwoColumnWidth,TwoColumnWidth],'renderer','painters',...
-% % %     'filename',FieldObservationsFig)
-% % % climit = 50;
-% % % StartSample = floor(SzEnd*FsDec)+120;
-% % % StartTime = SzEnd+120/FsDec
-% % % SampleStep = 10;
-% % % PlotSample = StartSample;
-% % % 
-% % % subplot(331),imagesc(squeeze(MatrixData(PlotSample,:,:) ),[-climit climit])
-% % % axis square
-% % % set(gca,'fontsize',FS,'fontname','arial','units','centimeters')
-% % % PlotSample = PlotSample + SampleStep;
-% % % title('\bf A','fontsize',FS2,'fontname','arial','position',[-0.5 0.8])  % 11
-% % % 
-% % % subplot(332),imagesc(squeeze(MatrixData(PlotSample,:,:) ),[-climit climit])
-% % % axis square
-% % % title('\bf B','fontsize',FS2,'fontname','arial','position',[-0.5 0.8])
-% % % CB = colorbar('units','centimeters','location','northoutside');%[Pos(1) Pos(2)+Pos(4)+.1 Pos(3) 1])
-% % % Pos = get(CB,'position');
-% % % set(CB, 'position', [Pos(1) Pos(2)+1.3*HeightOffset Pos(3) 2*HeigthScale*Pos(4)] )
-% % % set(gca,'fontsize',FS,'fontname','arial')
-% % % 
-% % % PlotSample = PlotSample + SampleStep;
-% % % subplot(333),imagesc(squeeze(MatrixData(PlotSample,:,:) ),[-climit climit])
-% % % axis square
-% % % set(gca,'fontsize',FS,'fontname','arial')
-% % % title('\bf C','fontsize',FS2,'fontname','arial','position',[-0.5 0.8])
-% % % 
-% % % PlotSample = PlotSample + SampleStep;
-% % % subplot(334),imagesc(squeeze(MatrixData(PlotSample,:,:) ),[-climit climit])
-% % % axis square
-% % % set(gca,'fontsize',FS,'fontname','arial')
-% % % title('\bf D','fontsize',FS2,'fontname','arial','position',[-0.5 0.8])
-% % % ylabel('Space (Electrode Index)','fontsize',FS,'fontname','arial')
-% % % 
-% % % PlotSample = PlotSample + SampleStep;
-% % % subplot(335),imagesc(squeeze(MatrixData(PlotSample,:,:) ),[-climit climit])
-% % % axis square
-% % % set(gca,'fontsize',FS,'fontname','arial')
-% % % title('\bf E','fontsize',FS2,'fontname','arial','position',[-0.5 0.8])
-% % % 
-% % % PlotSample = PlotSample + SampleStep;
-% % % subplot(336),imagesc(squeeze(MatrixData(PlotSample,:,:) ),[-climit climit])
-% % % axis square
-% % % set(gca,'fontsize',FS,'fontname','arial')
-% % % title('\bf F','fontsize',FS2,'fontname','arial','position',[-0.5 0.8])
-% % % 
-% % % PlotSample = PlotSample + SampleStep;
-% % % subplot(337),imagesc(squeeze(MatrixData(PlotSample,:,:) ),[-climit climit])
-% % % axis square
-% % % set(gca,'fontsize',FS,'fontname','arial')
-% % % title('\bf G','fontsize',FS2,'fontname','arial','position',[-0.5 0.8])
-% % % 
-% % % PlotSample = PlotSample + SampleStep;
-% % % subplot(338),imagesc(squeeze(MatrixData(PlotSample,:,:) ),[-climit climit])
-% % % axis square
-% % % set(gca,'fontsize',FS,'fontname','arial')
-% % % title('\bf H','fontsize',FS2,'fontname','arial','position',[-0.5 0.8])
-% % % xlabel('Space (Electrode Index)','fontsize',FS,'fontname','arial')
-% % % 
-% % % PlotSample = PlotSample + SampleStep;
-% % % subplot(339),imagesc(squeeze(MatrixData(PlotSample,:,:) ),[-climit climit])
-% % % axis square
-% % % set(gca,'fontsize',FS,'fontname','arial')
-% % % title('\bf I','fontsize',FS2,'fontname','arial','position',[-0.5 0.8])
-% % % 
-% % % %%
-% % % plot channels as a time series
-% % % ~~~~~~~~~~~~~~~~~~
-% % PlotOffset  = 500;                          % this just puts some space between channels
-% % OffsetMatrix = PlotOffset*(1:100);
-% % OffsetMatrix = repmat(OffsetMatrix,size(FiltData,1),1);
-% % OffsetData = OffsetMatrix+FiltData;
-% % 
-% % % StartChannel = 1;
-% % % EndChannel = 100;
-% % % StartTime = 7.5;
-% % % EndTime = 9;
-% % % plot(t(StartTime*FsDec:EndTime*FsDec),OffsetData(StartTime*FsDec:EndTime*FsDec,StartChannel:EndChannel),'k','linewidth',0.5)
-% % % axis tight
-% % % axis off
-% % 
-% % figure('units','centimeters','position',[2,2,TwoColumnWidth,6],...
-% %     'filename',LFPsFig)
-% % StartChannel = 2;
-% % EndChannel = 9;
-% % plot(t,OffsetData(:,StartChannel:EndChannel),'k','linewidth',0.5)
-% % axis tight
-% % axis off
-% % 
-% % % draw on the scale bars
-% % % ~~~~~~~~~~~~~~
-% % Pos = get(gca,'position');
-% % TimeTotal = t(end);
-% % PlotWidth = Pos(3);
-% % LineTime = 5;        % seconds
-% % LineLength = PlotWidth*LineTime/TimeTotal;
-% % 
-% % MaxAmp = max(OffsetData(:,EndChannel));
-% % MinAmp = min(OffsetData(:,StartChannel));
-% % AmpRange = MaxAmp - MinAmp;
-% % 
-% % LineAmp = 500;
-% % PlotHeight = Pos(4);
-% % AmpLength = PlotHeight*LineAmp/AmpRange;
-% % 
-% % ScaleBarXOffset = 0;
-% % ScaleBarYOffset = -0.05;
-% % annotation('line',[Pos(2) Pos(2)+LineLength]+ScaleBarXOffset,[Pos(1) Pos(1)]+ScaleBarYOffset,'linewidth',3)
-% % annotation('line',[Pos(2) Pos(2)]+ScaleBarXOffset,[Pos(1) Pos(1)+AmpLength]+ScaleBarYOffset,'linewidth',3)
-% % 
-% % TextBoxWidth = 0.1;
-% % TextBoxHeight = 0.05;
-% % annotation('textbox',[Pos(2)+0.02 Pos(1)-0.1 TextBoxWidth TextBoxHeight],...
-% %     'string',[num2str(LineTime) ' s'],'fontsize',FS,'fontname','arial','linestyle','none')
-% % annotation('textbox',[Pos(2)-0.085 Pos(1) TextBoxWidth TextBoxHeight],...
-% %     'string',[num2str(LineAmp) ' \muV'],'fontsize',FS,'fontname','arial','linestyle','none')
-% % % ~~~~~~~~~~~~~~~
-% % 
-% % % draw on the seizure markersSzStart
-% % % ~~~~~~~~~~~~~~~~~~~~~~
-% % LineSzStart = PlotWidth*SzStart/TimeTotal;
-% % LineSzEnd = PlotWidth*SzEnd/TimeTotal;
-% % annotation('line',[LineSzStart LineSzStart]+Pos(1),[Pos(1) Pos(1)+Pos(3)],'linewidth',2,'color','red','linestyle',':')
-% % annotation('line',[LineSzEnd LineSzEnd]+Pos(1),[Pos(1) Pos(1)+Pos(3)],'linewidth',2,'color','blue','linestyle','--')
+% this bit plot the observed field
+% ~~~~~~~~~~~~~~~~~~
+% climit = 80;
+% SampleStep = 2;
+% SampleStart = 40390;
+% figure('units','centimeters','position',[0 0 30 30])
+% for n=SampleStart:SampleStep:size(FiltData,1)
+%     imagesc(squeeze(MatrixData(n,:,:) ))
+%     shading('interp')
+% %     title(['Sample = ' num2str(n)])
+% %     colorbar
+%     axis off
+%     axis square
+%     drawnow
+%     pause
+% end
+%%
+HeightOffset = 1;
+HeigthScale = 0.5;
+figure('units','centimeters','position',[2,2,TwoColumnWidth,TwoColumnWidth],'renderer','painters',...
+    'filename',FieldObservationsFig)
+climit = 50;
+StartSample = floor(SzEnd*FsDec)+120;
+StartTime = SzEnd+120/FsDec
+SampleStep = 10;
+PlotSample = StartSample;
+
+subplot(331),imagesc(squeeze(MatrixData(PlotSample,:,:) ),[-climit climit])
+axis square
+set(gca,'fontsize',FS,'fontname','arial','units','centimeters')
+PlotSample = PlotSample + SampleStep;
+title('\bf A','fontsize',FS2,'fontname','arial','position',[-0.5 0.8])  % 11
+
+subplot(332),imagesc(squeeze(MatrixData(PlotSample,:,:) ),[-climit climit])
+axis square
+title('\bf B','fontsize',FS2,'fontname','arial','position',[-0.5 0.8])
+CB = colorbar('units','centimeters','location','northoutside');%[Pos(1) Pos(2)+Pos(4)+.1 Pos(3) 1])
+Pos = get(CB,'position');
+set(CB, 'position', [Pos(1) Pos(2)+1.3*HeightOffset Pos(3) 2*HeigthScale*Pos(4)] )
+set(gca,'fontsize',FS,'fontname','arial')
+
+PlotSample = PlotSample + SampleStep;
+subplot(333),imagesc(squeeze(MatrixData(PlotSample,:,:) ),[-climit climit])
+axis square
+set(gca,'fontsize',FS,'fontname','arial')
+title('\bf C','fontsize',FS2,'fontname','arial','position',[-0.5 0.8])
+
+PlotSample = PlotSample + SampleStep;
+subplot(334),imagesc(squeeze(MatrixData(PlotSample,:,:) ),[-climit climit])
+axis square
+set(gca,'fontsize',FS,'fontname','arial')
+title('\bf D','fontsize',FS2,'fontname','arial','position',[-0.5 0.8])
+ylabel('Space (Electrode Index)','fontsize',FS,'fontname','arial')
+
+PlotSample = PlotSample + SampleStep;
+subplot(335),imagesc(squeeze(MatrixData(PlotSample,:,:) ),[-climit climit])
+axis square
+set(gca,'fontsize',FS,'fontname','arial')
+title('\bf E','fontsize',FS2,'fontname','arial','position',[-0.5 0.8])
+
+PlotSample = PlotSample + SampleStep;
+subplot(336),imagesc(squeeze(MatrixData(PlotSample,:,:) ),[-climit climit])
+axis square
+set(gca,'fontsize',FS,'fontname','arial')
+title('\bf F','fontsize',FS2,'fontname','arial','position',[-0.5 0.8])
+
+PlotSample = PlotSample + SampleStep;
+subplot(337),imagesc(squeeze(MatrixData(PlotSample,:,:) ),[-climit climit])
+axis square
+set(gca,'fontsize',FS,'fontname','arial')
+title('\bf G','fontsize',FS2,'fontname','arial','position',[-0.5 0.8])
+
+PlotSample = PlotSample + SampleStep;
+subplot(338),imagesc(squeeze(MatrixData(PlotSample,:,:) ),[-climit climit])
+axis square
+set(gca,'fontsize',FS,'fontname','arial')
+title('\bf H','fontsize',FS2,'fontname','arial','position',[-0.5 0.8])
+xlabel('Space (Electrode Index)','fontsize',FS,'fontname','arial')
+
+PlotSample = PlotSample + SampleStep;
+subplot(339),imagesc(squeeze(MatrixData(PlotSample,:,:) ),[-climit climit])
+axis square
+set(gca,'fontsize',FS,'fontname','arial')
+title('\bf I','fontsize',FS2,'fontname','arial','position',[-0.5 0.8])
+
+% %%
+% plot channels as a time series
+% ~~~~~~~~~~~~~~~~~~
+% PlotOffset  = 500;                          % this just puts some space between channels
+% OffsetMatrix = PlotOffset*(1:100);
+% OffsetMatrix = repmat(OffsetMatrix,size(FiltData,1),1);
+% OffsetData = OffsetMatrix+FiltData;
+% 
+% StartChannel = 1;
+% EndChannel = 100;
+% StartTime = 7.5;
+% EndTime = 9;
+% plot(t(StartTime*FsDec:EndTime*FsDec),OffsetData(StartTime*FsDec:EndTime*FsDec,StartChannel:EndChannel),'k','linewidth',0.5)
+% axis tight
+% axis off
+% 
+% figure('units','centimeters','position',[2,2,TwoColumnWidth,6],...
+%     'filename',LFPsFig)
+% StartChannel = 2;
+% EndChannel = 9;
+% plot(t,OffsetData(:,StartChannel:EndChannel),'k','linewidth',0.5)
+% axis tight
+% axis off
+% 
+% draw on the scale bars
+% ~~~~~~~~~~~~~~
+% Pos = get(gca,'position');
+% TimeTotal = t(end);
+% PlotWidth = Pos(3);
+% LineTime = 5;        % seconds
+% LineLength = PlotWidth*LineTime/TimeTotal;
+% 
+% MaxAmp = max(OffsetData(:,EndChannel));
+% MinAmp = min(OffsetData(:,StartChannel));
+% AmpRange = MaxAmp - MinAmp;
+% 
+% LineAmp = 500;
+% PlotHeight = Pos(4);
+% AmpLength = PlotHeight*LineAmp/AmpRange;
+% 
+% ScaleBarXOffset = 0;
+% ScaleBarYOffset = -0.05;
+% annotation('line',[Pos(2) Pos(2)+LineLength]+ScaleBarXOffset,[Pos(1) Pos(1)]+ScaleBarYOffset,'linewidth',3)
+% annotation('line',[Pos(2) Pos(2)]+ScaleBarXOffset,[Pos(1) Pos(1)+AmpLength]+ScaleBarYOffset,'linewidth',3)
+% 
+% TextBoxWidth = 0.1;
+% TextBoxHeight = 0.05;
+% annotation('textbox',[Pos(2)+0.02 Pos(1)-0.1 TextBoxWidth TextBoxHeight],...
+%     'string',[num2str(LineTime) ' s'],'fontsize',FS,'fontname','arial','linestyle','none')
+% annotation('textbox',[Pos(2)-0.085 Pos(1) TextBoxWidth TextBoxHeight],...
+%     'string',[num2str(LineAmp) ' \muV'],'fontsize',FS,'fontname','arial','linestyle','none')
+% ~~~~~~~~~~~~~~~
+% 
+% draw on the seizure markersSzStart
+% ~~~~~~~~~~~~~~~~~~~~~~
+% LineSzStart = PlotWidth*SzStart/TimeTotal;
+% LineSzEnd = PlotWidth*SzEnd/TimeTotal;
+% annotation('line',[LineSzStart LineSzStart]+Pos(1),[Pos(1) Pos(1)+Pos(3)],'linewidth',2,'color','red','linestyle',':')
+% annotation('line',[LineSzEnd LineSzEnd]+Pos(1),[Pos(1) Pos(1)+Pos(3)],'linewidth',2,'color','blue','linestyle','--')
