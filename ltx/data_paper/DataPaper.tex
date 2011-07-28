@@ -37,7 +37,11 @@
 \usepackage{ifpdf}
 
 \usepackage{amsmath,amssymb,amsfonts} % Typical maths resource packages
-
+% Algorithms
+\usepackage{float}
+\floatstyle{ruled}
+\newfloat{algorithm}{htbp}{loa}
+\floatname{algorithm}{Algorithm}
 \newif\ifpdf
 \ifx\pdfoutput\undefined
 \pdffalse % we are not running PDFLaTeX
@@ -716,7 +720,39 @@ $\boldsymbol\Xi_2$ is positive definite under the persistent excitation conditio
 \begin{equation}
  \mathrm{tr}\left\lbrace \boldsymbol\Xi_2 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace >0,
 \end{equation}
-meaning \eqref{eq:SecondDerivativexi} is negative and $\hat{\xi}$ represents a maximum. Equation \eqref{eq:SecondDerivativetheta} is negative where $\boldsymbol\Xi_4$ is positive definite requiring $\mathbf q(\mathbf x_t)$ to be of  rank $n_{\theta}$ \cite{Golub1996}. The matrix $\boldsymbol\Psi(\mathbf r')$ defined by \eqref{eq:DefPsi} is of rank $n_{\theta}$ as each row of the matrix is a set of equally spaced Gaussian basis functions with equal widths, consequently each row can be considered as a Riesz basis function for the subspaces they generate \cite{Ferrari2004} (note that multiplying by $\mathbf \Gamma^{-1}$ has no effect on the rank). However, $\mathbf q(\mathbf x_t)$ defined in \eqref{eq:QmatrixForSigmapoints} cannot be computed analytically as the inner product of a Gaussian and a sigmoid function cannot be solved analytically, making it difficult to calculate the rank of $\mathbf q(\mathbf x_t)$ . Therefore, the rank of $\mathbf q(\mathbf x_t)$ at each iteration of the algorithm should be examined. From \eqref{eq:SecondDerivativenoise} and \eqref{eq:SecondDerivativedisturbance}, observation noise and disturbance variance estimates clearly represent maxima of the $\mathcal{Q}$-function.
+meaning \eqref{eq:SecondDerivativexi} is negative and $\hat{\xi}$ represents a maximum. Equation \eqref{eq:SecondDerivativetheta} is negative where $\boldsymbol\Xi_4$ is positive definite requiring $\mathbf q(\mathbf x_t)$ to be of rank $n_{\theta}$ \cite{Golub1996}.  However, $\mathbf q(\mathbf x_t)$ defined in \eqref{eq:QmatrixForSigmapoints} cannot be computed analytically as the inner product of a Gaussian and a sigmoid function cannot be found analytically \cite{MacKay1992}, making it difficult to calculate the rank of $\mathbf q(\mathbf x_t)$. Therefore, the rank of $\mathbf q(\mathbf x_t)$ at each iteration of the algorithm should be examined numerically. In the experiments of this work the problem of rank deficiency was never encountered. From \eqref{eq:SecondDerivativenoise} and \eqref{eq:SecondDerivativedisturbance}, the observation noise and disturbance variance estimates clearly represent maxima of the $\mathcal{Q}$-function. The joint state and parameter estimation algorithm is summarised in Algorithm~\ref{alg:EM-EMAlgorithm}.
+\begin{algorithm}\footnotesize
+\caption{Joint state and parameter estimation for the IDE model.}
+\label{alg:EM-EMAlgorithm}
+\begin{enumerate}
+\item  Initialise:
+Generate a bounded, random sequence of dimension $n_x$ and use as the initial state sequence estimate.
+\item Approximate $\Xi$-variables
+\begin{align}
+	\boldsymbol\Xi_{0}&=\sum_{t=0}^{T-1}\left(\mathbf P_{t+1}^b+\mathbf{\hat x}_{t+1}^b\mathbf{\hat x}_{t+1}^{b\top}\right)\nonumber \\
+\boldsymbol\Xi_{1}&=\sum_{t=0}^{T-1}\left(\mathbf M_{t+1}^b+\mathbf{\hat x}_t^b\mathbf{\hat x}_{t+1}^{b\top}\right)\nonumber\\
+\boldsymbol\Xi_{2}&=\sum_{t=0}^{T-1}\left(\mathbf P_t^b+\mathbf{\hat x}_t^b\mathbf{\hat x}_t^{b\top}\right)\nonumber\\
+\boldsymbol\Xi_{3}&\approx\sum_{t=0}^{T-1}\left[ \mathbf{\hat x}_{t+1}^{b\top}\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q(\mathbf{\hat x}_t^b)+\int_\Omega\boldsymbol \phi^\top(\mathbf r') \mathbf M_{t+1}^b \tilde{\boldsymbol\Sigma}_e^{-1} \boldsymbol{\Psi}(\mathbf{r}') f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t^b) d\mathbf{r}'\right]  \nonumber \\	
+\boldsymbol\Xi_{4}&\approx\sum_{t=0}^{T-1}\left[\mathbf q^\top(\mathbf{\hat x}_t^b)\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q(\mathbf{\hat x}_t^b)+\sum_{i,j=1}^{n_x}[\mathbf{P}_t^b]_{ij}{\boldsymbol\Lambda}_t^{(i)\top}\tilde{\boldsymbol\Sigma}_e^{-1}{\boldsymbol\Lambda}_t^{(j)}\right]\nonumber\\
+ \boldsymbol\Xi_{5}&\approx\sum_{t=0}^{T-1}\left[ \mathbf{\hat x}_{t}^{b\top}\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q(\mathbf{\hat x}_t^b)+\int_\Omega\boldsymbol \phi^\top(\mathbf r') \mathbf P_t^b \tilde{\boldsymbol\Sigma}_e^{-1}  \boldsymbol{\Psi}(\mathbf{r}') f'(\boldsymbol \phi^\top(\mathbf r')\mathbf {\hat x}_t^b) d\mathbf{r}'\right] \nonumber
+ \end{align}
+\item Calculate the parameter estimates
+\begin{align}
+ \hat{\xi}&=\frac{\mathrm{tr}\left\lbrace \boldsymbol\Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-\boldsymbol\Xi_5\boldsymbol\Xi_4^{-1}\boldsymbol\Xi_3^\top}{\mathrm{tr}\left\lbrace \boldsymbol\Xi_2 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-\boldsymbol\Xi_5\boldsymbol\Xi_4^{-1}\boldsymbol\Xi_5^{\top}} \nonumber\\
+ \hat{\boldsymbol \theta}&=\boldsymbol\Xi_4^{-1}\left(\boldsymbol\Xi_3^\top-\hat{\xi}\boldsymbol\Xi_5^\top \right)\nonumber\\
+\hat{\sigma}_{\epsilon}^2&=\frac{1}{(T-1)n_y}\sum_{t=0}^{T-1}\mathrm{tr}\left\lbrace (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top \right\rbrace \nonumber\\
+\hat{\sigma}_d^2&=\frac{1}{(T-1)n_x}\left[ \mathrm{tr}\left\lbrace \boldsymbol\Xi_0 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-
+2\hat{\xi}\mathrm{tr}\left\lbrace \boldsymbol\Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace +\hat{\xi}^2\mathrm{tr} \left\lbrace\boldsymbol\Xi_2\tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace\right.\nonumber \\ &\left.-2\boldsymbol\Xi_3\hat{\boldsymbol\theta}+\hat{\boldsymbol\theta}^\top\boldsymbol \Xi_4\hat{\boldsymbol\theta}+2\hat{\xi}\boldsymbol\Xi_5 \hat{\boldsymbol\theta}\right] \nonumber
+\end{align}
+\item E step: Execute Algorithm~2.1 of chapter 2, and perform the additional step
+\begin{align}
+\mathbf M_{t +1}^{b}=\mathbf S_t\mathbf P_{t+1}^{b} \nonumber
+\end{align}
+and compute the $\Xi$-variables using step 2.
+\item M step: execute step 3.
+\item Calculate stopping criterion.
+\end{enumerate}
+\end{algorithm}
 \subsection{Initialisation, stopping and algorithmic complexity}
 For initialisation a bounded random state sequence is employed to ensure that the initial parameter estimates describe a stable kernel, although the quality of such initial estimate is poor, it provides an initialisation that typically ensues a satisfactory convergence of the algorithm, as illustrated numerically in Result section. The stopping criterion is usually associated with either the change in the parameter estimates or the log-likelihood variation \cite{McLachlan1997}. Here the change in parameter estimates, $L^2$-norm in the case of connectivity kernel weights, is used to halt the excecution of the algorithm. Besides, the lower bound on the likelihood function is also monitored to further investigate the convergence of the EM algorithm.  
 
