@@ -99,12 +99,22 @@
 
 
 \end{itemize}
+
+The human brain brain is arguably the most complicated system known to man. The development of a complete theory for its function is one of the greatest challenges faced by scientists today. To address this challenge, researchers have naturally used both theoretical and experimental frameworks. Experimental frameworks are typically designed to uncover causal relationships between the systems properties or parameters and its function (reverse engineering the brain). Theoretical studies are typically used in one of two ways. The first is to explain data acquired in an experiment and the second is to predict system behaviour. 
+
+Presently, it is almost half a century since Hodgkin and Huxley shared the Nobel prize (in 1963 with Eccles for Physiology and Medicine) for influential model that established the field of theoretical neuroscience. Over this time period, both experimental and theoretical methods have developed considerably. Experimental approaches have been able to isolate function using various forms or manipulation in greater detail. In parallel, theoretical/computational models have been able to explain and provide new hypotheses for an ever increasing assortment of neural phenomena. Through the development of these models a fundamental set a parametric equations has been established that explain neuronal responses to input a varying spatiotemporal scales from small patches of membrane to networks neural ensembles.
+
+Although the explanatory power of the theoretical models is rather vast, a limitation has been establishing a rigorous method for choosing model parameters. For example, over the last decade it has come to light that there is a significant variability in parameters of neural models across subjects (ref Marder 2006). For example, it has been shown that a target network behaviour may be achieved by continuum of parameter combinations (Tail wagging the ref). We expect an analogous situation in disease states and pathological activity such as epileptic seizures. Therefore, for models to be clinically useful they must be subject-specific. 
+
+To further motivate the development of a framework for patient-specific neural models we will use intracranial EEG monitoring for planning epilepsy surgery as an example. During iEEG monitoring high fidelity spatiotemporal recordings of the electrical fields of the brain are undertaken. The goal is of the clinical work is to record the electrical activity of seizures and locate their origin. This information along with other behaviour and psychophyics studies enables the definition of surgical margins for the resection of pathological tissue. The ability to fuse the iEEG with a model will not only provide 
+
+ 
 The aim of this paper is to create a patient-specific neural field model, by estimating parameters of a general mathematical model using data acquired from an epilepsy surgical candidate in a clinical setting. 
 
 Instead of extracting features we aim to extract meaningful parameters...
 
 
-Another recent approach for large scale neural networks based on graph theory \cite{Albert2002,Bang-Jensen2010}, employs a realistic anatomical connectivity from CoCoMac data base \cite{Kotter2004} to model resting state activity in the brain \cite{Ghosh2008,Deco2009} where each node in the network is modelled by physiologically reasonable neural population model of their internal dynamics. They perform a stability analysis of the network in terms of total connectivity and time delayes in the presence of noise. Such approach has a potential to model a virtual brain which can incorporate data from individual patient, giving insights into how patient specific features can affect its large scale neural dynamics \cite{Jirsa2010,Deco2010}.
+Another recent approach for large scale neural networks based on graph theory \cite{Albert2002,Bang-Jensen2010}, employs a realistic anatomical connectivity from CoCoMac data base \cite{Kotter2004} to model resting state activity in the brain \cite{Ghosh2008,Deco2009} where each node in the network is modelled by physiologically reasonable neural population model of their internal dynamics. They perform a stability analysis of the network in terms of total connectivity and time delays in the presence of noise. Such approach has a potential to model a virtual brain which can incorporate data from individual patient, giving insights into how patient specific features can affect its large scale neural dynamics \cite{Jirsa2010,Deco2010}.
 
 \section{Method}
 
@@ -118,7 +128,7 @@ where $v\left( {\mathbf{r},0} \right)$ is the membrane voltage at the initial ti
 	\label{SynapticRespKernel} h(t) = \eta(t)\exp{\left(-\zeta t\right)}, 
 \end{equation}
 \cyan{small thing: are we using $\exp(x)$ or $e^x$ to represent exponential?}
-$\zeta=\tau^{-1}$, $\tau$ is the synaptic time constant and $\eta(t)$ is the Heaviside step function \parham{(you can keep it here if you wish as it doesn't change the integral equation because of the upper limit. I would remove it)}. $g(\cdot)$ describes the mean firing rate. In practice, the firing rate can rarely be considered as a purely determinstic process because \dean{(can someone write down why?)}. We thus choose to introduce a spatially coloured space-time Wiener process $W(\mathbf{r},t)$ to model the flactuations in the mean firing rate and decompose $g(\cdot)$ as
+$\zeta=\tau^{-1}$, $\tau$ is the synaptic time constant and $\eta(t)$ is the Heaviside step function \parham{(you can keep it here if you wish as it doesn't change the integral equation because of the upper limit. I would remove it)}. $g(\cdot)$ describes the mean firing rate. In practice, the firing rate can rarely be considered as a purely deterministic process because \dean{(can someone write down why?)}. We thus choose to introduce a spatially coloured space-time Wiener process $W(\mathbf{r},t)$ to model the fluctuations in the mean firing rate and decompose $g(\cdot)$ as
 \begin{equation}\label{DecompositionOfg}
 g(\mathbf{r},t)\textrm{d}t = \tilde{g}(\mathbf{r},t)\textrm{d}t + \sigma_W \textrm{d}W(\mathbf{r},t) 
 \end{equation}
