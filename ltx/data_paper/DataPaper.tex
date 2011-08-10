@@ -113,7 +113,7 @@ The aim of this paper is to contribute towards to goal of being able to infer pa
 A key development in making this framework possible is the unscented Kalman filter. blah. 
 Contributions from other groups...
 
-Another recent approach for large scale neural networks based on graph theory \cite{Albert2002,Bang-Jensen2010}, employs a realistic anatomical connectivity from CoCoMac data base \cite{Kotter2004} to model resting state activity in the brain \cite{Ghosh2008,Deco2009} where each node in the network is modelled by physiologically reasonable neural population model of their internal dynamics. They perform a stability analysis of the network in terms of total connectivity and time delays in the presence of noise. Such approach has a potential to model a virtual brain which can incorporate data from individual patient, giving insights into how patient specific features can affect its large scale neural dynamics \cite{Jirsa2010,Deco2010}.
+Another recent approach uses graph theory \cite{Albert2002,Bang-Jensen2010} for large-scale neural networks and employs realistic anatomical connectivity from the CoCoMac database \cite{Kotter2004} to model the brain's resting state activity \cite{Ghosh2008,Deco2009}. Each node in the network is described by a physiologically reasonable neural population model of their internal dynamics. The authors perform stability analysis on the network based on total connectivity and time delays in the presence of noise. Such an approach has the potential to model a virtual brain which can incorporate data from individual patients, giving insights into how patients' specific features can affect its large-scale neural dynamics \cite{Jirsa2010,Deco2010}.
 
 \section{Method}
 
@@ -343,7 +343,7 @@ where over-bar denotes complex conjugate operator. Finally, an expression for th
 \begin{equation}\label{eq:KernelSolution}
 	w(\boldsymbol\iota) = \frac{1}{T_s\varsigma }\mathcal{F}^{-1}\overline{\left\{\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\iota})]\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\iota)\right]\} - \sigma_{\varepsilon}^2 }-\xi\right\}}.
 \end{equation}
-Complex conjugate operator essentially reflects the connectivity kernel through the origin in the spatial domain, therefore, if the connectivity kernel is isotropic, the complex conjugate operator can be dropped. 
+The complex conjugate operator essentially reflects the connectivity kernel through the origin in the spatial domain, therefore, if the connectivity kernel is isotropic, the complex conjugate operator can be dropped. 
 % Alternatively, the convolution can be written as a system of linear equations by forming the convolution (Toeplitz) matrix. The solution of the convolution equation for $w(\cdot)$ can then be found by either inverting the convolution matrix or directly solving the system of equations.  
 % Directly solving the system is the most numerically stable and less computationally demanding then inverting the convolution matrix. To show this we take the spatial Fourier transform of both sides of equation~\ref{} giving
 \subsubsection{Estimation of Disturbance Covariance Support}
