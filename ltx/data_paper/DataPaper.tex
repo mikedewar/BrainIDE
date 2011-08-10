@@ -206,7 +206,7 @@ A property of the basis function decomposition it the preservation of the Gaussi
 	\mathbf{e}_t \triangleq \boldsymbol{\Gamma}^{-1}\int_\Omega {\boldsymbol{\phi} ( \mathbf{r} )e_t( \mathbf{r} )\textrm{d}\mathbf{r}},
 \end{equation}
 where $\mathbf{e}_t \sim\mathcal{N}(\mathbf 0,\boldsymbol\Sigma_e)$. The covariance matrix is defined as (see the Supporting Information, S1, for the derivation)
-\begin{equation}
+\begin{equation}\label{eq:CovarianceMatrix}
 	\boldsymbol\Sigma_e \triangleq \sigma_d^2\mathbf{\Gamma}^{-1}\int_{\Omega}\int_{\Omega}\boldsymbol{\phi}\left(\mathbf r\right) \gamma\left(\mathbf r- \mathbf r' \right)\boldsymbol{\phi}\left(\mathbf r'\right)^{\top}d\mathbf r' d\mathbf r\mathbf{\Gamma}^{- \top}. 
 \end{equation}
 
@@ -530,26 +530,21 @@ Gaussian distributions of the field disturbance and the observation noise result
 p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta , \xi, \sigma_d)&= \mid\boldsymbol\Sigma_{e}\mid^{-\frac{1}{2}} \nonumber \\
 &\times\exp \left(-\frac{1}{2}(\mathbf x_{t+1}-\mathbf q(\mathbf  x_t)\boldsymbol\theta-\xi  \mathbf x_t)^\top\boldsymbol\Sigma_e^{-1}(\mathbf x_{t+1}-\mathbf q( \mathbf x_t)\boldsymbol\theta-\xi \mathbf  x_t) \right).
 \end{align}
-Note that the disturbance covariance matrix, $\boldsymbol\Sigma_e$, can be written as the product of the unknown parameter, $\sigma_d^2$ with a constant matrix, $\tilde{\boldsymbol\Sigma}_e$, where the constant part can be calculated (\parham{from \eqref{eq:DisturbanceCovariance}}) using the estimated support for the disturbance covariance function, $\gamma$, from the correlation analysis (see \eqref{eq:EM-MMGFourier2}). This simplifies the M-step significantly as the estimation of the entire covariance matrix  reduces to the estimation of the single scalar  $\sigma_d^2$. By expanding the exponent in \eqref{eq:EM-twicelog1} and \eqref{eq:EM-twicelog2}, twice the logarithm of the results give
-\begin{align}\label{eq:CondititionDist1}
-2\ln p\left(\mathbf y_{t+1}|\mathbf x_{t+1};\sigma_{\epsilon}\right)&=-n_y\ln \sigma_{\epsilon}^2-\frac{1}{\sigma_{\epsilon}^2}\left[ (\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1})^\top(\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1})\right],
-\end{align}
-\begin{align}
-2\ln p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta ,\xi, \sigma_d)&=-n_x\ln\sigma_d^2-\ln\mid\tilde{\boldsymbol\Sigma}_e\mid-\frac{1}{\sigma_d^2}\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf x_{t+1}+\frac{2}{\sigma_d^2}\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q( \mathbf x_t)\boldsymbol\theta\nonumber \\
-&+\frac{2\xi}{\sigma_d^2}\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf x_t -\frac{1}{\sigma_e^2}\boldsymbol\theta^\top \mathbf q^\top(\mathbf x_t)\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q(\mathbf x_t)\boldsymbol\theta-\frac{2\xi}{\sigma_d^2} \mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q(\mathbf x_t)\boldsymbol\theta\nonumber\nonumber \\
-& -\frac{\xi^2}{\sigma_d^2}\mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf x_t. \label{eq:CondititionDist2}
+Note the disturbance covariance matrix, $\boldsymbol\Sigma_e$, can be written as a product of the unknown parameter, $\sigma_d^2$, with the constant matrix, $\tilde{\boldsymbol\Sigma}_e$, where the constant part can be calculated from \eqref{eq:CovarianceMatrix} using the estimated support of the disturbance covariance function (see \eqref{eq:EM-MMGFourier2}). This simplifies the M-step significantly as the estimation of the entire covariance matrix  reduces to the estimation of the single scalar  $\sigma_d^2$. By expanding the exponent in \eqref{eq:EM-twicelog1} and \eqref{eq:EM-twicelog2}, twice the logarithm of the results give
+\begin{align}\label{eq:EM-CondititionDist1}
+&2\ln p\left(\mathbf y_{t+1}|\mathbf x_{t+1};\sigma_{\epsilon}\right)=-n_y\ln \sigma_{\epsilon}^2-\frac{1}{\sigma_{\epsilon}^2}\left[ (\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1})^\top(\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1})\right],\\
+&2\ln p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta ,\xi, \sigma_d)=-n_x\ln\sigma_d^2-\ln\mid\tilde{\boldsymbol\Sigma}_e\mid-\frac{1}{\sigma_d^2}\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf x_{t+1}-\frac{\xi^2}{\sigma_d^2}\mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf x_t+\nonumber \\
+&\frac{2\xi}{\sigma_d^2}\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf x_t -\frac{1}{\sigma_e^2}\boldsymbol\theta^\top \mathbf q^\top(\mathbf x_t)\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q(\mathbf x_t)\boldsymbol\theta-\frac{2\xi}{\sigma_d^2} \mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q(\mathbf x_t)\boldsymbol\theta+\frac{2}{\sigma_d^2}\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q( \mathbf x_t)\boldsymbol\theta. \label{eq:EM-CondititionDist2}
 % &-\franc{\xi^2}{\sigma_d^2}\mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf x_t. \label{eq:CondititionDist2}
 \end{align}
-In the next step the above equations are rearranged to isolate the covariance and the cross-covariance terms, allowing the smoother outputs to be used. In order to permute the matrices, the scalar nature of the likelihood is exploited, this way the trace operator can be applied to express the likelihood in a more compact form. Taking trace and rearranging, applying the invariant cyclic permutations property of the trace, equations \eqref{eq:CondititionDist1} and \eqref{eq:CondititionDist2} become
-\begin{align}\label{eq:Qfunctiontrace1}
-  2\ln p\left(\mathbf y_{t+1}|\mathbf x_{t+1};\sigma_{\epsilon}\right) &= -n_y\ln \sigma_{\epsilon}^2-\frac{1}{\sigma_{\epsilon}^2}\mathrm{tr}\left\lbrace(\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1})^\top\right\rbrace    
-\end{align}
-\begin{align}
- 2 \ln &p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta, \xi, \sigma_d) =-n_x\ln\sigma_d^2-\frac{1}{\sigma_d^2}\mathrm{tr}\left\lbrace\mathbf x_{t+1} \mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace+\frac{2}{\sigma_d^2}\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q( \mathbf x_t)\boldsymbol\theta \nonumber \\
+In the next step, the above equations are rearranged to isolate the covariance and cross-covariance terms such that  the smoother outputs can be used. In order to permute the matrices, the scalar nature of the likelihood is exploited, this way the trace operator can be applied to express the likelihood in a more compact form. Taking trace and rearranging, applying the invariant cyclic permutations property of the trace, equations \eqref{eq:EM-CondititionDist1} and \eqref{eq:EM-CondititionDist2} become
+\begin{align}\label{eq:EM-Qfunctiontrace1}
+ & 2\ln p\left(\mathbf y_{t+1}|\mathbf x_{t+1};\sigma_{\epsilon}\right) = -n_y\ln \sigma_{\epsilon}^2-\frac{1}{\sigma_{\epsilon}^2}\mathrm{tr}\left\lbrace(\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf  x_{t+1})^\top\right\rbrace  \\ 
+&2 \ln p(\mathbf x_{t+1}|\mathbf x_{t};\boldsymbol \theta, \xi, \sigma_d) =-n_x\ln\sigma_d^2-\frac{1}{\sigma_d^2}\mathrm{tr}\left\lbrace\mathbf x_{t+1} \mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-\frac{\xi^2}{\sigma_d^2}\mathrm{tr}\left\lbrace \mathbf x_t \mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace \nonumber \\
 &+\frac{2\xi}{\sigma_d^2} \mathrm{tr} \left\lbrace \mathbf x_t\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace -\frac{1}{\sigma_d^2}\boldsymbol\theta^\top \mathbf q^\top(\mathbf x_t)\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q(\mathbf x_t)\boldsymbol\theta-\frac{2\xi}{\sigma_d^2} \mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q(\mathbf x_t)\boldsymbol\theta \nonumber \\
-&-\frac{\xi^2}{\sigma_d^2}\mathrm{tr}\left\lbrace \mathbf x_t \mathbf x_t^\top\tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace. \label{eq:Qfunctiontrace2}
+&+\frac{2}{\sigma_d^2}\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q( \mathbf x_t)\boldsymbol\theta .\label{eq:EM-Qfunctiontrace2}
 \end{align}
-Substituting  \eqref{eq:Qfunctiontrace1} and \eqref{eq:Qfunctiontrace2} back into \eqref{eq:QIntermsofJointDist} and taking the expectation of the log-likelihood function at all time instants gives the required lower-bound. Note that the expectation distributes over the trace sum. 
+Substituting  \eqref{eq:EM-Qfunctiontrace1} and \eqref{eq:EM-Qfunctiontrace2} back into \eqref{eq:QIntermsofJointDist} and taking the expectation of the log-likelihood function at all time instants gives the required lower-bound. Note that the expectation distributes over the trace sum. 
 \begin{align}\label{eq:Voldermont}
  \mathcal Q(\boldsymbol \Theta,\boldsymbol\Theta')&=-(T-1)n_y\ln \sigma_{\epsilon}^2-(T-1)n_x\ln\sigma_d^2\nonumber \\
 & -\frac{1}{\sigma_{\epsilon}^2}\mathrm{tr}\left\lbrace\boldsymbol\sum_{t=0}^{T-1}\left[ (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}^b) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}^b)^\top+\mathbf C \mathbf P_{t+1}^b\mathbf C^\top\right] \right\rbrace\nonumber \\
