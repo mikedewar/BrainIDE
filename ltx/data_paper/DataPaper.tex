@@ -603,7 +603,7 @@ where
  =&\frac{\varsigma}{1 + \exp \left( \varsigma \left( v_0 - \boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t^b \right) \right)} \times \left(1-\frac{1}{1 + \exp \left( \varsigma \left( v_0 - \boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t^b \right) \right)}\right) \nonumber \\
  =& \varsigma f(\boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t^b)\left( 1-f(\boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t^b\right).
  \end{align}
-substituting \eqref{eq:SigmoidTaylor} in \eqref{eq:EM-Stateequationnonlinearity},  an approximation for $\mathbf q(\mathbf x_t)$ around the smoothed state $\hat{\mathbf{x}}_t^b$ can be obtained
+substituting \eqref{eq:SigmoidTaylor} in \eqref{eq:QmatrixForSigmapoints},  an approximation for $\mathbf q(\mathbf x_t)$ around the smoothed state $\hat{\mathbf{x}}_t^b$ can be obtained
 \begin{equation}\label{eq:qTaylor}
  \mathbf q(\mathbf x_t) \approx \mathbf q(\hat{\mathbf x}_t^b)+\int_\Omega \boldsymbol{\Psi}\left(\mathbf{r}'\right)\boldsymbol \phi^\top\left(\mathbf r'\right) \left(\mathbf x_t -\hat{\mathbf x}_t^b\right)f'\left(\boldsymbol \phi^\top\left(\mathbf r'\right)\hat{\mathbf x}_t^b\right) d\mathbf{r}'.
 \end{equation}
@@ -742,7 +742,7 @@ An approximate for the computational complexity of the algorithm is given in Tab
 \scalebox{1}{\begin{tabular}{lll}
 \hline \hline
 Variable &Equation&Order\\ \hline\\
-$\mathbf q(\mathbf{x}_t)$&\eqref{eq:EM-Stateequationnonlinearity}&$O(n_xn_{\theta}n_r)$\\
+$\mathbf q(\mathbf{x}_t)$&\eqref{eq:QmatrixForSigmapoints}&$O(n_xn_{\theta}n_r)$\\
 $\boldsymbol\Xi_0, \boldsymbol\Xi_1, \boldsymbol\Xi_2$&\eqref{eq:Xi0Gibson}, \eqref{eq:Xi1Gibson}, \eqref{eq:Xi2Gibson}&$O(Tn_x^2)$\\
 $\boldsymbol\Xi_3, \boldsymbol\Xi_5$&\eqref{eq:Xi3Ap},\eqref{eq:Xi5Ap} &$O(Tn_x^3)+O(Tn_x^2n_r)+O(Tn_xn_{\theta}n_r)$ \\
 $\boldsymbol\Xi_4$&\eqref{eq:Xi4Ap}&$O(Tn_x^4n_{\theta})+O(Tn_x^3n_{\theta}^2)+O(Tn_x^3n_{\theta}n_r)$\\
