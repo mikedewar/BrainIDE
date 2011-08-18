@@ -281,7 +281,7 @@ Now the expectation over time is taken, so that the observation noise and proces
 	\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\iota})] &= \mathbf{E}[\xi\left(\left(m \ast v_t\right) \star y_t \right)(\boldsymbol{\iota})] + T_s \mathbf{E}[\left(\left(m\ast g_t\right)\star y_t \right)(\boldsymbol{\iota})],
 \end{align}
 since the disturbance and measurement noise are assumed to be independent of the observations and temporally white. 
-The cross-correlation is further simplified by recognizing that the first term on right hand side of equation~\eqref{eq:EM-ExpectationToCancelNoise} can be written as 
+The cross-correlation is further simplified by recognising that the first term on right hand side of equation~\eqref{eq:EM-ExpectationToCancelNoise} can be written as 
 \begin{align}
 	\mathbf{E}[\xi&\left(\left(m \ast v_t \right) \star y_t \right)(\boldsymbol{\iota})] = \mathbf{E}\left[\xi\left(\left(y_t-\varepsilon_t\right) \star y_t \right)(\boldsymbol{\iota})\right] \nonumber \\
 	&= \xi \mathbf{E}\left[ (y_t \star y_t)(\boldsymbol{\iota}) - \left(\varepsilon_t\star y_t \right)(\boldsymbol{\iota})\right] \nonumber \\
@@ -299,8 +299,14 @@ Next we simplify second term in equation~\eqref{eq:EM-SimplifiedFirstTerm} to ge
 \end{equation}
 The remainder of the derivation is focused on isolating the connectivity kernel. To show how this is done, the activation function is assumed to be in the linear region, i.e 
  \begin{equation}
-	f\left(v_t(\mathbf{r})\right) \approx \varsigma v_t(\mathbf{r})
+	f\left(v_t(\mathbf{r})\right) \approx \varsigma v_t(\mathbf{r}).
 \end{equation} 
+\dean{I think we should use this activation function (this will fix the distortion across the $x=0,y=0$ axis):
+The function linearised about the firing threshold is 
+\begin{align}
+	\hat{f}(v_t\left(\mathbf{r}\right)) &= f(v_0) + f'(v_0)(v_t\left(\mathbf{r}\right) - v_0) \\
+	&= \frac{2 + \varsigma(v_t\left(\mathbf{r}\right) - v_0)}{4}. \label{eq:LinearActivationFunction} 
+\end{align}}
 Substituting the linear activation function back into equation~\eqref{eq:EM-before_linearization} yields
 \begin{align}\label{eq:EM-after_linearization1}	
 	T_s((m \ast g_t) \star y_t)(\boldsymbol\iota) &\approx T_s\varsigma((w \ast m\ast v_t) \star y_t)(\boldsymbol\iota).
@@ -309,7 +315,7 @@ Now by substituting $y_t - \varepsilon_t$ in for $m\ast v_t$ equation \eqref{eq:
 \begin{align}
 	T_s((m \ast g_t) \star y_t)(\boldsymbol\iota) &\approx T_s\varsigma(w\ast (y_t - \varepsilon_t)) \star y_t (\boldsymbol\iota)
 \end{align}
-To isolate the kernel, the order of the convolution and cross-correlation is reversed by recognizing that a property $(a \ast b)(\boldsymbol\iota) \star c(\boldsymbol\iota) = a(-\boldsymbol\iota)\ast(b \star c)(\boldsymbol\iota)$ \parham{(see Appendix for proof)}. Therefore,
+To isolate the kernel, the order of the convolution and cross-correlation is reversed by recognising that a property $(a \ast b)(\boldsymbol\iota) \star c(\boldsymbol\iota) = a(-\boldsymbol\iota)\ast(b \star c)(\boldsymbol\iota)$ \parham{(see Appendix for proof)}. Therefore,
 \begin{align}
 	T_s((m \ast g_t) \star y_t)(\boldsymbol\iota) &\approx T_s\varsigma w(-\boldsymbol\iota) \ast ((y_t - \varepsilon_t)) \star y_t)(\boldsymbol\iota),
 \end{align}
@@ -335,7 +341,17 @@ Now rearranging \eqref{eq:EM-XcorrFourier} gives
 \begin{equation}\label{eq:EM-Fourier_TF_of_Kernel}
 	\mathcal{F}\left(w(-\boldsymbol\iota)\right) = \frac{1}{T_s\varsigma }\left[\frac{\mathcal{F}\{\mathbf{E}[R_{y_{t+1}y_t}(\boldsymbol{\iota})]\}}{\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\iota)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\iota))\}}-\xi\right].
 \end{equation}
-From \eqref{eq:EM-Fourier_TF_of_Kernel} it can be observed that an error in our guess for $\xi$ will result in a dilation or contraction of the estimated kernel support and an incorrect guess of the observation noise will result in a distortion in the shape of the kernel, however if the signal to noise ratio is high such a distortion becomes insignificant. The denominator in \eqref{eq:EM-Fourier_TF_of_Kernel} is in fact the power spectral density of the noise-free observations and is a non-negative and real quantity. This  is known as Weiner-Khintchine (W-K) theorem in signal processing which states that the power spectral density of the wide sense stationary process is the Fourier transform of its autocorrelation function \cite{Ricker2003}. The numerator is also known as the cross-spectrum or cross-spectral density. Since the connectivity kernel is a real function, the following relation holds \cite{Bracewell2000}
+From \eqref{eq:EM-Fourier_TF_of_Kernel} it can be observed that an error in the initial estimate of $\xi$ will result in a dilation or contraction of the estimated kernel support and an incorrect guess of the observation noise will result in a distortion in the zero frequency (offset) component of the kernel, however if the signal-to-noise ratio is high such a distortion becomes insignificant. 
+
+The denominator of equation \eqref{eq:EM-Fourier_TF_of_Kernel} is equivalent to the power spectral density (PSD) of the noise-free observations. By the Weiner-Khintchine theorem (WKT) the PSD is non-negative and a real quantity. The WKT states that the power spectral density of the wide sense stationary process is the Fourier transform of its autocorrelation function \cite{Ricker2003}. \dean{The WKT allows us establish the bounds}
+\begin{align}
+	\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\iota)\right] - \sigma_{\varepsilon}^2 \delta(\boldsymbol\iota))\}\ge&0 \\
+	\implies & \mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\iota)\right]\}\ge\mathcal{F}\{\sigma_{\varepsilon}^2 \delta(\boldsymbol\iota))\}\ge0 \\
+	\implies & \min_f\mathcal{F}\{(\mathbf{E}\left[R_{y_ty_t}(\boldsymbol\iota)\right]\}\ge\sigma_{\varepsilon}^2\ge0. \label{eq:BoundOnObsVariance}
+\end{align}
+The numerator is also known as the cross-spectrum or cross-spectral density. 
+
+Since the connectivity kernel is a real function, the following relation holds \cite{Bracewell2000}
 \begin{equation}
  \mathcal{F}\left(w(\boldsymbol\iota)\right)=\overline{\mathcal{F}\left(w(-\boldsymbol\iota)\right)},
 \end{equation}
@@ -795,11 +811,11 @@ In this section, a demonstration of the estimation framework for the proposed ID
 \subsection{Estimation of Connectivity Kernel and Field Disturbance Support }
 The correlation analysis, described in \S\ref{subsec:CorrAnal}, was applied to the simulated data to estimate the unknown support of both the connectivity kernel and the disturbance covariance function. The goal of the estimation procedure for the kernel support is to constrain to positioning and number of kernel basis functions. 
 
-From equation~\ref{eq:KernelSolution} it is clear that the an initial estimate of the synaptic time constant is required to estimate the shape of the connectivity kernel from data. \dean{Maybe we can say something like:} From equation~\ref{eq:EM-Fourier_TF_of_Kernel}, it can be seen the an error in the estimate of the value of the synaptic time constant will yield either shift up or down in the frequency domain. Since the goal of the procedure is to constrain the positioning of connectivity kernel basis functions, the initial estimate of the time constant should be conservatively \dean{higher (or lower?)}, which will result in a dilation of shape of the kernel (shift lower in the frequency domain). If the shape of the kernel estimate is wider than the actual kernel, then we can be sure that the positioning of the basis functions will capture the connectivity structure once the basis function coefficients have been estimated. If the kernel shape is too narrow, then the parameter values associated with the basis function can not compensate. 
+From equation~\ref{eq:KernelSolution}, it is clear that the an initial estimate of the synaptic time constant is required to estimate the shape of the connectivity kernel from data. \dean{Maybe we can say something like:} From equation~\ref{eq:EM-Fourier_TF_of_Kernel}, it can be seen the an error in the estimate of the value of the synaptic time constant will yield either shift up or down in the frequency domain, which leads to a constriction or dial. Since the goal of the procedure is to constrain the positioning of connectivity kernel basis functions, the initial estimate of the time constant should be conservatively \dean{higher (or lower?)}, which will result in a dilation of shape of the kernel (shift lower in the frequency domain). If the shape of the kernel estimate is wider than the actual kernel, then we can be sure that the positioning of the basis functions will capture the connectivity structure once the basis function coefficients have been estimated. If the kernel shape is too narrow, then the parameter values associated with the basis function can not compensate. 
 
-In addition to the synaptic time constant, an initial guess for the observation noise variance is also required. 
+In addition to the synaptic time constant, an initial guess for the observation noise variance, $\sigma_{\epsilon}^2$, is also required. From equation~\eqref{eq:BoundOnObsVariance}, the value of $\sigma_{\epsilon}^2$ is bounded. Using the artificial data, the upper bound on $\sigma_{\epsilon}^2$ (the minimum value of the power spectral densities) was found to be approximately $0.23$.
 
-In doing so, the unknown parameters $\sigma_{\epsilon}^2$ and $\xi$ are required and should be guessed beforehand. To form a more accurate initial guess of the unknown parameters and explore the effect of the chosen initial guess on the estimated supports several tests were performed. First consider \eqref{eq:EM-MMGFourier2} for estimating the disturbance covariance function. As mentioned before, the power spectral densities are non-negative. Therefore, the minimum values of $\mathcal F \{\mathbf E\left[ R_{y_ty_t}\right] \}$ and $\mathcal F \{\mathbf E\left[ R_{y_{t+1}y_{t+1}}\right]\}$ should be chosen (\dean{these aren't chosen, they are calculated from data, right? Not sure what you mean. Do mean the initial guess of `$\sigma^2_{\varepsilon}$' should be chosen such that ...? or $\sigma^2_{\varepsilon}$ is bounded by...}) as the higher limit for the initial guess of $\sigma^2_{\varepsilon}$. The minimum value of the power spectral densities was found to be 0.23. 
+To explored the sensitivity of the initial guess of $\sigma_{\epsilon}^2$, several tests were performed. \dean{The connectivity kernel should come first when presenting the results, since the derivation is presented first in the method section.} First consider \eqref{eq:EM-MMGFourier2} for estimating the disturbance covariance function.  
 
 Figure~\ref{fig:DisturbanceSupportExperiment} shows the support estimates for varying  $\sigma^2_{\varepsilon}$ around the calculated limit. This figure shows that for the values less than 0.23 the estimated support is close to the true one (see Figure~\ref{fig:BinaryDisturbanceWidthEstimation}(b)) while for the values above 0.23 the shape of the disturbance covariance function is distorted. The estimated support of the covariance function convolved twice with the sensor kernel for  $\sigma^2_{\varepsilon}<$0.23 is shown in Figure~\ref{fig:BinaryDisturbanceWidthEstimation} (a), where the results were normalised and thresholded for values less than 0.01. By fitting a Gaussian basis function to the result, and under the assumption that the width of the sensor, $\sigma_m^2$, was known the width of the disturbance covariance function, $\sigma_{\gamma}^2$, was analytically calculated  using \eqref{eq:AnalyticSupportCalculation}. Alternatively deconvolution can be performed numerically to directly find the support as shown in Figure~\ref{fig:DisturbanceWidthEstimationCrossSection}. The effect of the observation noise variance on the connectivity kernel support is very much like that of the disturbance covariance function, where an initial guess can be made in a similar manner. To study the influence of the synaptic parameter, $\xi=1-\frac{ T_s}{\tau}$, on the resultant support of the connectivity kernel different values of the synaptic time constant, $\tau$, in a physiologically plausible range were considered, while noting that the chosen values should be higher than the sampling time, $T_s$. In fact synaptic parameter in \eqref{eq:EM-Fourier_TF_of_Kernel}  acts as a scaling factor --- dilating or shrinking the estimated support --- since subtracting a constant in the frequency domain only affects the value at the origin in the spatial domain. The results of the correlation analysis for the connectivity kernel are shown in Figure~\ref{fig:KernelWidthEstimationExperiment} where each subplot is the normalised kernel estimate for varying synaptic time constants while holding the observation noise fixed. Note for clarification the amplitude at the origin was negated when the chosen values of $\tau$ and $\sigma^2_{\varepsilon}$ resulted in a negative value at the origin.  The result suggested that a support of approximately $\left[-5,5 \right] $ is a reasonable choice for the spatial extent of the connectivity kernel. 
 \begin{figure}[!ht]
