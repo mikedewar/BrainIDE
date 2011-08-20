@@ -562,7 +562,7 @@ In the next step, the above equations are rearranged to isolate the covariance a
 \end{align}
 Substituting  \eqref{eq:EM-Qfunctiontrace1} and \eqref{eq:EM-Qfunctiontrace2} back into \eqref{eq:QIntermsofJointDist} and taking the expectation of the log-likelihood function at all time instants gives the required lower-bound. Note that the expectation distributes over the trace sum. 
 \begin{align}\label{eq:Voldermont}
- \mathcal Q(\boldsymbol \Theta,\boldsymbol\Theta')&=-(T-1)n_y\ln \sigma_{\epsilon}^2-(T-1)n_x\ln\sigma_d^2\nonumber \\
+ \mathcal Q(\boldsymbol \Theta,\boldsymbol\Theta')&=-Tn_y\ln \sigma_{\epsilon}^2-Tn_x\ln\sigma_d^2\nonumber \\
 & -\frac{1}{\sigma_{\epsilon}^2}\mathrm{tr}\left\lbrace\boldsymbol\sum_{t=0}^{T-1}\left[ (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}^b) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}^b)^\top+\mathbf C \mathbf P_{t+1}^b\mathbf C^\top\right] \right\rbrace\nonumber \\
 &-\frac{1}{\sigma_d^2}\mathrm{tr}\left\lbrace \mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_{t+1}\mathbf x_{t+1}^\top\right]\tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace+\frac{2\xi}{\sigma_d^2} \mathrm{tr}\left\lbrace \mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_t\mathbf x_{t+1}^\top\right] \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace \nonumber \\
 &-\frac{\xi^2}{\sigma_d^2}\mathrm{tr} \left\lbrace\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_t\mathbf x_{t}^\top\right]\tilde{\boldsymbol\Sigma}_e^{-1} \right\rbrace +\frac{2}{\sigma_d^2}\mathbf E_{\Theta'}\left[\sum_{t=0}^{T-1}\mathbf x_{t+1}^\top\tilde{\boldsymbol\Sigma}_e^{-1}\mathbf q( \mathbf x_t)\right]\boldsymbol\theta
@@ -581,7 +581,7 @@ The third term in \eqref{eq:Voldermont} is obtained using the same method in \ci
 equation \eqref{eq:Voldermont} can be written in a more compact form
 \begin{align}\label{eq:VoldermontwitXivariables}
  \mathcal Q(\boldsymbol \Theta,\boldsymbol\Theta')&=-\frac{1}{\sigma_{\epsilon}^2}\mathrm{tr}\left\lbrace\boldsymbol\sum_{t=0}^{T-1}\left[ (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}^b) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}^b)^\top+\mathbf C \mathbf P_{t+1}^b\mathbf C^\top\right] \right\rbrace\nonumber \\
-&-(T-1)n_y\ln \sigma_{\epsilon}^2-(T-1)n_x\ln\sigma_d^2-\frac{1}{\sigma_d^2}\mathrm{tr}\left\lbrace \boldsymbol\Xi_{0} \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace +\frac{2\xi}{\sigma_d^2} \mathrm{tr}\left\lbrace \boldsymbol\Xi_{1} \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace 
+&-Tn_y\ln \sigma_{\epsilon}^2-Tn_x\ln\sigma_d^2-\frac{1}{\sigma_d^2}\mathrm{tr}\left\lbrace \boldsymbol\Xi_{0} \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace +\frac{2\xi}{\sigma_d^2} \mathrm{tr}\left\lbrace \boldsymbol\Xi_{1} \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace 
  \nonumber \\
 &-\frac{\xi^2}{\sigma_d^2}\mathrm{tr} \left\lbrace\boldsymbol\Xi_{2}\tilde{\boldsymbol\Sigma}_e^{-1} \right\rbrace +\frac{2}{\sigma_d^2}\boldsymbol\Xi_{3}\boldsymbol\theta-\frac{1}{\sigma_d^2}\boldsymbol\theta^\top \boldsymbol\Xi_{4}\boldsymbol\theta-\frac{2\xi}{\sigma_d^2}\boldsymbol \Xi_{5} \boldsymbol\theta.
 \end{align}
@@ -704,9 +704,9 @@ By computing $\boldsymbol\Xi$-variables, the approximation of the lower bound is
 \subsubsection{M-Step}
 The objective of the M-step is to maximise the computed lower bound in the E-step, which consequently increases the log-likelihood function $\ln p(\mathbf Y;\boldsymbol\Theta)$.                                                                                                                                                                                                                                                                                                                                                                                                                                  Consider first the maximisation of the $\mathcal{Q}$-function with respect to $\xi$, differentiating \eqref{eq:VoldermontwitXivariables} with respect to the synaptic parameter gives
 \begin{equation}\label{eq:Qpartialxi}
- \frac{\partial \mathcal Q}{\partial\xi}=\frac{2}{\sigma_d^2}\mathrm{tr}\left\lbrace \boldsymbol\Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace -\frac{2\xi}{\sigma_d^2}\mathrm{tr}\left\lbrace \boldsymbol\Xi_2 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-\frac{2}{\sigma_d^2}\boldsymbol\Xi_5,
+ \frac{\partial \mathcal Q}{\partial\xi}=\frac{2}{\sigma_d^2}\mathrm{tr}\left\lbrace \boldsymbol\Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace -\frac{2\xi}{\sigma_d^2}\mathrm{tr}\left\lbrace \boldsymbol\Xi_2 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-\frac{2}{\sigma_d^2}\boldsymbol\Xi_5\boldsymbol\theta,
 \end{equation}
-setting \eqref{eq:Qpartialxi} to zero and solving for $\xi$ gives
+Substituting for $\boldsymbol\theta$ from \eqref{eq:thetahat} and then setting the result to zero and solving for $\xi$ gives
 \begin{equation}\label{eq:xihat}
  \hat{\xi}=\frac{\mathrm{tr}\left\lbrace \boldsymbol\Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-\boldsymbol\Xi_5\boldsymbol\Xi_4^{-1}\boldsymbol\Xi_3^\top}{\mathrm{tr}\left\lbrace \boldsymbol\Xi_2 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-\boldsymbol\Xi_5\boldsymbol\Xi_4^{-1}\boldsymbol\Xi_5^{\top}}.
 \end{equation}
@@ -720,28 +720,28 @@ noting that the variable $\boldsymbol\Xi_4$ is symmetric by construction, equati
 \end{equation}
 The condition under which $\boldsymbol\Xi_4$ is invertible will be discussed later in this section (see below \eqref{eq:EM-traceinequality}). Now maximising the lower bound with respect to $\sigma_{\epsilon}^2$ gives
 \begin{equation}
-  \frac{\partial \mathcal Q}{\partial \sigma_{\epsilon}^2}=-(T-1)n_y\frac{1}{\sigma_{\epsilon}^2}+\frac{1}{\sigma_{\epsilon}^4}\mathrm{tr}\left\lbrace\sum_{t=0}^{T-1}\left[ (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top\right] \right\rbrace,
+  \frac{\partial \mathcal Q}{\partial \sigma_{\epsilon}^2}=-Tn_y\frac{1}{\sigma_{\epsilon}^2}+\frac{1}{\sigma_{\epsilon}^4}\mathrm{tr}\left\lbrace\sum_{t=0}^{T-1}\left[ (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top\right] \right\rbrace,
 \end{equation}
 and setting the above equation to zero and solving for $\sigma_{\epsilon}^2$ yields
 \begin{equation}\label{eq:sigmaepsilonhat}
- \hat{\sigma}_{\epsilon}^2=\frac{1}{(T-1)n_y}\sum_{t=0}^{T-1}\mathrm{tr}\left\lbrace (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top \right\rbrace.
+ \hat{\sigma}_{\epsilon}^2=\frac{1}{Tn_y}\sum_{t=0}^{T-1}\mathrm{tr}\left\lbrace (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top \right\rbrace.
 \end{equation}
 Finally differentiating the lower bound with respect to $\sigma_d^2$ gives
 \begin{align}
- \frac{\partial \mathcal Q}{\partial \sigma_d^2}&= -(T-1)n_x\frac{1}{\sigma_d^2}+\frac{1}{\sigma_d^4}\mathrm{tr}\left\lbrace \boldsymbol\Xi_0 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-\frac{2\xi}{\sigma_d^4} \mathrm{tr}\left\lbrace \boldsymbol\Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace  \nonumber \\
+ \frac{\partial \mathcal Q}{\partial \sigma_d^2}&= -Tn_x\frac{1}{\sigma_d^2}+\frac{1}{\sigma_d^4}\mathrm{tr}\left\lbrace \boldsymbol\Xi_0 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-\frac{2\xi}{\sigma_d^4} \mathrm{tr}\left\lbrace \boldsymbol\Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace  \nonumber \\
 &+\frac{\xi^2}{\sigma_d^4}\mathrm{tr} \left\lbrace\boldsymbol\Xi_2\tilde{\boldsymbol\Sigma}_e^{-1} \right\rbrace-\frac{2}{\sigma_d^4}\boldsymbol\Xi_3\boldsymbol\theta +\frac{1}{\sigma_d^4}\boldsymbol\theta^\top \boldsymbol\Xi_4\boldsymbol\theta+\frac{2\xi}{\sigma_d^4} \boldsymbol\Xi_5 \boldsymbol\theta,
 \end{align}
 setting the above to zero and solving for $\sigma_d^2$ completes the maximisation step.
 \begin{align}\label{eq:sigmadhat}
-\hat{\sigma}_d^2&=\frac{1}{(T-1)n_x}\left[ \mathrm{tr}\left\lbrace \boldsymbol\Xi_0 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-
+\hat{\sigma}_d^2&=\frac{1}{Tn_x}\left[ \mathrm{tr}\left\lbrace \boldsymbol\Xi_0 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-
 2\xi\mathrm{tr}\left\lbrace \boldsymbol\Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace +\xi^2\mathrm{tr} \left\lbrace\boldsymbol\Xi_2\tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace\right.\nonumber \\ &\left.-2\boldsymbol\Xi_3\boldsymbol\theta+\boldsymbol\theta^\top\boldsymbol \Xi_4\boldsymbol\theta+2\xi\boldsymbol\Xi_5 \boldsymbol\theta\right].
 \end{align}
 In order to confirm that the calculated solutions maximise the lower bound, a second derivative test is performed for each of the parameter giving
 \begin{alignat}{2}%(number of &)+1 divided by 2 here we have (3+1)/2
  \frac{\partial \mathcal Q^2}{\partial^2\xi}&\biggr\rvert_{\xi=\hat{\xi}}&&=-\frac{2}{\sigma_d^2}\mathrm{tr}\left\lbrace \boldsymbol\Xi_2 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace \label{eq:SecondDerivativexi}\\
  \frac{\partial \mathcal Q^2}{\partial^2\boldsymbol\theta}&\biggr\rvert_{\boldsymbol\theta=\hat{\boldsymbol\theta}}&&=-\frac{2}{\sigma_d^2}\boldsymbol\Xi_4 \label{eq:SecondDerivativetheta} \\
- \frac{\partial \mathcal Q^2}{\partial^2\sigma_{\epsilon}^2}&\biggr\rvert_{\sigma_{\epsilon}=\hat{\sigma}_{\epsilon}}&&=-\frac{(T-1)n_y}{\hat{\sigma}_{\epsilon}^4} \label{eq:SecondDerivativenoise} \\
- \frac{\partial \mathcal Q^2}{\partial^2\sigma_{d}^2}&\biggr\rvert_{{\sigma}_{d}=\hat{\sigma}_{d}}&&= -\frac{(T-1)n_x}{\hat{\sigma}_{d}^4} \label{eq:SecondDerivativedisturbance}
+ \frac{\partial \mathcal Q^2}{\partial^2\sigma_{\epsilon}^2}&\biggr\rvert_{\sigma_{\epsilon}=\hat{\sigma}_{\epsilon}}&&=-\frac{Tn_y}{\hat{\sigma}_{\epsilon}^4} \label{eq:SecondDerivativenoise} \\
+ \frac{\partial \mathcal Q^2}{\partial^2\sigma_{d}^2}&\biggr\rvert_{{\sigma}_{d}=\hat{\sigma}_{d}}&&= -\frac{Tn_x}{\hat{\sigma}_{d}^4} \label{eq:SecondDerivativedisturbance}
 \end{alignat}
 $\boldsymbol\Xi_2$ is positive definite under the persistent excitation condition of the state vectors, which is guaranteed by the disturbance, $\mathbf{e}_t(\mathbf r)$, and $\tilde{\boldsymbol\Sigma}_e^{-1}$ is positive definite by construction (Note that the inverse of a positive definite matrix is also positive definite \cite{Horn2005}), therefore by \cite{Coope1994}
 \begin{equation}\label{eq:EM-traceinequality}
