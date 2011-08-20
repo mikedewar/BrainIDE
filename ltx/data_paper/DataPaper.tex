@@ -791,8 +791,8 @@ Generate a bounded, random sequence of dimension $n_x$ and use as the initial st
 \begin{align}
  \hat{\xi}&=\frac{\mathrm{tr}\left\lbrace \boldsymbol\Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-\boldsymbol\Xi_5\boldsymbol\Xi_4^{-1}\boldsymbol\Xi_3^\top}{\mathrm{tr}\left\lbrace \boldsymbol\Xi_2 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-\boldsymbol\Xi_5\boldsymbol\Xi_4^{-1}\boldsymbol\Xi_5^{\top}} \nonumber\\
  \hat{\boldsymbol \theta}&=\boldsymbol\Xi_4^{-1}\left(\boldsymbol\Xi_3^\top-\hat{\xi}\boldsymbol\Xi_5^\top \right)\nonumber\\
-\hat{\sigma}_{\epsilon}^2&=\frac{1}{(T-1)n_y}\sum_{t=0}^{T-1}\mathrm{tr}\left\lbrace (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top \right\rbrace \nonumber\\
-\hat{\sigma}_d^2&=\frac{1}{(T-1)n_x}\left[ \mathrm{tr}\left\lbrace \boldsymbol\Xi_0 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-
+\hat{\sigma}_{\epsilon}^2&=\frac{1}{Tn_y}\sum_{t=0}^{T-1}\mathrm{tr}\left\lbrace (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1}) (\mathbf y_{t+1}-\mathbf C\mathbf{\hat{x}}_{t+1})^\top+\mathbf C \mathbf P_{t+1}\mathbf C^\top \right\rbrace \nonumber\\
+\hat{\sigma}_d^2&=\frac{1}{Tn_x}\left[ \mathrm{tr}\left\lbrace \boldsymbol\Xi_0 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace-
 2\hat{\xi}\mathrm{tr}\left\lbrace \boldsymbol\Xi_1 \tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace +\hat{\xi}^2\mathrm{tr} \left\lbrace\boldsymbol\Xi_2\tilde{\boldsymbol\Sigma}_e^{-1}\right\rbrace\right.\nonumber \\ &\left.-2\boldsymbol\Xi_3\hat{\boldsymbol\theta}+\hat{\boldsymbol\theta}^\top\boldsymbol \Xi_4\hat{\boldsymbol\theta}+2\hat{\xi}\boldsymbol\Xi_5 \hat{\boldsymbol\theta}\right] \nonumber
 \end{align}
 \item E step: Execute Algorithm~2.1 of chapter 2, and perform the additional step
