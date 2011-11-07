@@ -1,7 +1,7 @@
 
 
 % now form the matrix
-% these are the coefficients for the convolution of psi and phi
+% these are the coefficients for the analytic convolution of psi and phi
 psi_phi_coefficient(1) = pi*sigma_psi(1)^2*sigma_phi^2 / (sigma_psi(1)^2+sigma_phi^2);
 psi_phi_coefficient(2) = pi*sigma_psi(2)^2*sigma_phi^2 / (sigma_psi(2)^2+sigma_phi^2);
 psi_phi_coefficient(3) = pi*sigma_psi(3)^2*sigma_phi^2 / (sigma_psi(3)^2+sigma_phi^2);
