@@ -1,0 +1,904 @@
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  19 MAR 2013 17:24
+entering extended mode
+ restricted \write18 enabled.
+ file:line:error style messages enabled.
+ %&-line parsing enabled.
+**LaTeX_Manuscript.tex
+(./LaTeX_Manuscript.tex
+LaTeX2e <2011/06/27>
+Babel <v3.8m> and hyphenation patterns for english, dumylang, nohyphenation, ge
+rman-x-2012-05-30, ngerman-x-2012-05-30, afrikaans, ancientgreek, ibycus, arabi
+c, armenian, basque, bulgarian, catalan, pinyin, coptic, croatian, czech, danis
+h, dutch, ukenglish, usenglishmax, esperanto, estonian, ethiopic, farsi, finnis
+h, french, friulan, galician, german, ngerman, swissgerman, monogreek, greek, h
+ungarian, icelandic, assamese, bengali, gujarati, hindi, kannada, malayalam, ma
+rathi, oriya, panjabi, tamil, telugu, indonesian, interlingua, irish, italian, 
+kurmanji, latin, latvian, lithuanian, mongolian, mongolianlmc, bokmal, nynorsk,
+ polish, portuguese, romanian, romansh, russian, sanskrit, serbian, serbianc, s
+lovak, slovenian, spanish, swedish, turkish, turkmen, ukrainian, uppersorbian, 
+welsh, loaded.
+(./elsarticle.cls
+Document Class: elsarticle 2009/09/17, 1.20b: Elsevier Ltd
+\@bls=\dimen102
+(/usr/local/texlive/2012/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
+(/usr/local/texlive/2012/texmf-dist/tex/latex/base/size10.clo
+File: size10.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen103
+)
+(/usr/local/texlive/2012/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2012/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+(/usr/local/texlive/2012/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2012/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/usr/local/texlive/2012/texmf-dist/tex/latex/latexconfig/graphics.cfg
+File: graphics.cfg 2010/04/23 v1.9 graphics configuration of TeX Live
+)
+Package graphics Info: Driver file: pdftex.def on input line 91.
+
+(/usr/local/texlive/2012/texmf-dist/tex/latex/pdftex-def/pdftex.def
+File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
+
+(/usr/local/texlive/2012/texmf-dist/tex/generic/oberdiek/infwarerr.sty
+Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
+)
+(/usr/local/texlive/2012/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
+Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
+)
+\Gread@gobject=\count87
+))
+\Gin@req@height=\dimen104
+\Gin@req@width=\dimen105
+)
+(/usr/local/texlive/2012/texmf-dist/tex/latex/psnfss/pifont.sty
+Package: pifont 2005/04/12 PSNFSS-v9.2a Pi font support (SPQR) 
+LaTeX Font Info:    Try loading font information for U+pzd on input line 63.
+
+(/usr/local/texlive/2012/texmf-dist/tex/latex/psnfss/upzd.fd
+File: upzd.fd 2001/06/04 font definitions for U/pzd.
+)
+LaTeX Font Info:    Try loading font information for U+psy on input line 64.
+
+(/usr/local/texlive/2012/texmf-dist/tex/latex/psnfss/upsy.fd
+File: upsy.fd 2001/06/04 font definitions for U/psy.
+))
+\c@tnote=\count88
+\c@fnote=\count89
+\c@cnote=\count90
+\c@ead=\count91
+\c@author=\count92
+\@eadauthor=\toks15
+\c@affn=\count93
+\absbox=\box26
+\keybox=\box27
+\Columnwidth=\dimen106
+\space@left=\dimen107
+\els@boxa=\box28
+\els@boxb=\box29
+\leftMargin=\dimen108
+\@enLab=\toks16
+\@sep=\skip43
+\@@sep=\skip44
+
+(./LaTeX_Manuscript.spl)
+(/usr/local/texlive/2012/texmf-dist/tex/latex/natbib/natbib.sty
+Package: natbib 2010/09/13 8.31b (PWD, AO)
+\bibhang=\skip45
+\bibsep=\skip46
+LaTeX Info: Redefining \cite on input line 694.
+\c@NAT@ctr=\count94
+)
+\splwrite=\write3
+\openout3 = `LaTeX_Manuscript.spl'.
+
+
+(/usr/local/texlive/2012/texmf-dist/tex/latex/geometry/geometry.sty
+Package: geometry 2010/09/12 v5.6 Page Geometry
+
+(/usr/local/texlive/2012/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
+Package ifpdf Info: pdfTeX in PDF mode is detected.
+)
+(/usr/local/texlive/2012/texmf-dist/tex/generic/oberdiek/ifvtex.sty
+Package: ifvtex 2010/03/01 v1.5 Detect VTeX and its facilities (HO)
+Package ifvtex Info: VTeX not detected.
+)
+(/usr/local/texlive/2012/texmf-dist/tex/generic/ifxetex/ifxetex.sty
+Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
+)
+\Gm@cnth=\count95
+\Gm@cntv=\count96
+\c@Gm@tempcnt=\count97
+\Gm@bindingoffset=\dimen109
+\Gm@wd@mp=\dimen110
+\Gm@odd@mp=\dimen111
+\Gm@even@mp=\dimen112
+\Gm@layoutwidth=\dimen113
+\Gm@layoutheight=\dimen114
+\Gm@layouthoffset=\dimen115
+\Gm@layoutvoffset=\dimen116
+\Gm@dimlist=\toks17
+)
+\appnamewidth=\dimen117
+)
+(/usr/local/texlive/2012/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2000/07/18 v2.13 AMS math features
+\@mathmargin=\skip47
+
+For additional information on amsmath, use the `?' option.
+(/usr/local/texlive/2012/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2000/06/29 v2.01
+
+(/usr/local/texlive/2012/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0
+\@emptytoks=\toks18
+\ex@=\dimen118
+))
+(/usr/local/texlive/2012/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d
+\pmbraise@=\dimen119
+)
+(/usr/local/texlive/2012/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 1999/12/14 v2.01 operator names
+)
+\inf@bad=\count98
+LaTeX Info: Redefining \frac on input line 211.
+\uproot@=\count99
+\leftroot@=\count100
+LaTeX Info: Redefining \overline on input line 307.
+\classnum@=\count101
+\DOTSCASE@=\count102
+LaTeX Info: Redefining \ldots on input line 379.
+LaTeX Info: Redefining \dots on input line 382.
+LaTeX Info: Redefining \cdots on input line 467.
+\Mathstrutbox@=\box30
+\strutbox@=\box31
+\big@size=\dimen120
+LaTeX Font Info:    Redeclaring font encoding OML on input line 567.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 568.
+\macc@depth=\count103
+\c@MaxMatrixCols=\count104
+\dotsspace@=\muskip10
+\c@parentequation=\count105
+\dspbrk@lvl=\count106
+\tag@help=\toks19
+\row@=\count107
+\column@=\count108
+\maxfields@=\count109
+\andhelp@=\toks20
+\eqnshift@=\dimen121
+\alignsep@=\dimen122
+\tagshift@=\dimen123
+\tagwidth@=\dimen124
+\totwidth@=\dimen125
+\lineht@=\dimen126
+\@envbody=\toks21
+\multlinegap=\skip48
+\multlinetaggap=\skip49
+\mathdisplay@stack=\toks22
+LaTeX Info: Redefining \[ on input line 2666.
+LaTeX Info: Redefining \] on input line 2667.
+)
+(/usr/local/texlive/2012/texmf-dist/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2009/06/22 v3.00
+
+(/usr/local/texlive/2012/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2009/06/22 v3.00 Basic AMSFonts support
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 96.
+))
+(/usr/local/texlive/2012/texmf-dist/tex/latex/setspace/setspace.sty
+Package: setspace 2011/12/19 v6.7a set line spacing
+)
+(/usr/local/texlive/2012/texmf-dist/tex/latex/graphics/color.sty
+Package: color 2005/11/14 v1.0j Standard LaTeX Color (DPC)
+
+(/usr/local/texlive/2012/texmf-dist/tex/latex/latexconfig/color.cfg
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package color Info: Driver file: pdftex.def on input line 130.
+
+(/usr/local/texlive/2012/texmf-dist/tex/latex/graphics/dvipsnam.def
+File: dvipsnam.def 1999/02/16 v3.0i Driver-dependant file (DPC,SPQR)
+))
+(./LaTeX_Manuscript.aux)
+\openout1 = `LaTeX_Manuscript.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+
+(/usr/local/texlive/2012/texmf-dist/tex/context/base/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count110
+\scratchdimen=\dimen127
+\scratchbox=\box32
+\nofMPsegments=\count111
+\nofMParguments=\count112
+\everyMPshowfont=\toks23
+\MPscratchCnt=\count113
+\MPscratchDim=\dimen128
+\MPnumerator=\count114
+\makeMPintoPDFobject=\count115
+\everyMPtoPDFconversion=\toks24
+) (/usr/local/texlive/2012/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
+Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
+)
+
+(/usr/local/texlive/2012/texmf-dist/tex/generic/oberdiek/ifluatex.sty
+Package: ifluatex 2010/03/01 v1.3 Provides the ifluatex switch (HO)
+Package ifluatex Info: LuaTeX not detected.
+)
+Package pdftexcmds Info: LuaTeX not detected.
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
+(/usr/local/texlive/2012/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
+Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
+
+(/usr/local/texlive/2012/texmf-dist/tex/latex/oberdiek/grfext.sty
+Package: grfext 2010/08/19 v1.1 Manage graphics extensions (HO)
+
+(/usr/local/texlive/2012/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty
+Package: kvdefinekeys 2011/04/07 v1.3 Define keys (HO)
+))
+(/usr/local/texlive/2012/texmf-dist/tex/latex/oberdiek/kvoptions.sty
+Package: kvoptions 2011/06/30 v3.11 Key value format for package options (HO)
+
+(/usr/local/texlive/2012/texmf-dist/tex/generic/oberdiek/kvsetkeys.sty
+Package: kvsetkeys 2012/04/25 v1.16 Key value parser (HO)
+
+(/usr/local/texlive/2012/texmf-dist/tex/generic/oberdiek/etexcmds.sty
+Package: etexcmds 2011/02/16 v1.5 Avoid name clashes with e-TeX commands (HO)
+Package etexcmds Info: Could not find \expanded.
+(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
+(etexcmds)             that some package has redefined \expanded.
+(etexcmds)             In the latter case, load this package earlier.
+)))
+Package grfext Info: Graphics extension search list:
+(grfext)             [.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPE
+G,.JBIG2,.JB2,.eps]
+(grfext)             \AppendGraphicsExtensions on input line 452.
+
+(/usr/local/texlive/2012/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: custom
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* hratio: 1:1
+* vratio: 1:1
+* modes: 
+* h-part:(L,W,R)=(64.75394pt, 468.0pt, 64.75394pt)
+* v-part:(T,H,B)=(111.52342pt, 622.0pt, 111.52342pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=468.0pt
+* \textheight=622.0pt
+* \oddsidemargin=-7.51605pt
+* \evensidemargin=-7.51605pt
+* \topmargin=-22.74657pt
+* \headheight=50.0pt
+* \headsep=12.0pt
+* \topskip=10.0pt
+* \footskip=18.0pt
+* \marginparwidth=65.0pt
+* \marginparsep=11.0pt
+* \columnsep=24.0pt
+* \skip\footins=24.0pt plus 2.0pt minus 12.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+LaTeX Font Info:    Try loading font information for U+msa on input line 52.
+(/usr/local/texlive/2012/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2009/06/22 v3.00 AMS symbols A
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 52.
+
+(/usr/local/texlive/2012/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2009/06/22 v3.00 AMS symbols B
+)
+
+Package natbib Warning: Citation `Deco2008' on page 1 undefined on input line 5
+8.
+
+
+Package natbib Warning: Citation `David2003' on page 1 undefined on input line 
+58.
+
+
+Package natbib Warning: Citation `Liley1999' on page 1 undefined on input line 
+58.
+
+
+Package natbib Warning: Citation `RENNIE2000' on page 1 undefined on input line
+ 58.
+
+
+Package natbib Warning: Citation `DaSilva2003' on page 1 undefined on input lin
+e 58.
+
+
+Package natbib Warning: Citation `Suffczynski2004' on page 1 undefined on input
+ line 58.
+
+
+Package natbib Warning: Citation `Wendling2005' on page 1 undefined on input li
+ne 58.
+
+
+Package natbib Warning: Citation `Moran2008' on page 1 undefined on input line 
+58.
+
+
+Package natbib Warning: Citation `Schiff2009' on page 1 undefined on input line
+ 58.
+
+[1
+
+{/usr/local/texlive/2012/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+
+Package natbib Warning: Citation `Brinkmann2009' on page 2 undefined on input l
+ine 60.
+
+
+Package natbib Warning: Citation `Wilson1973' on page 2 undefined on input line
+ 62.
+
+
+Package natbib Warning: Citation `Amari1977' on page 2 undefined on input line 
+62.
+
+
+Package natbib Warning: Citation `Jansen1995' on page 2 undefined on input line
+ 62.
+
+
+Package natbib Warning: Citation `Valdes1999' on page 2 undefined on input line
+ 62.
+
+
+Package natbib Warning: Citation `LopesDaSilva1976' on page 2 undefined on inpu
+t line 62.
+
+
+Package natbib Warning: Citation `Zetterberg1978' on page 2 undefined on input 
+line 62.
+
+
+Package natbib Warning: Citation `Ozaki1993' on page 2 undefined on input line 
+62.
+
+
+Package natbib Warning: Citation `Ozaki1994' on page 2 undefined on input line 
+62.
+
+
+Package natbib Warning: Citation `Ozaki2000' on page 2 undefined on input line 
+62.
+
+
+Package natbib Warning: Citation `David2003' on page 2 undefined on input line 
+64.
+
+
+Package natbib Warning: Citation `David2006' on page 2 undefined on input line 
+64.
+
+
+Package natbib Warning: Citation `Valdes1999' on page 2 undefined on input line
+ 64.
+
+
+Package natbib Warning: Citation `Jansen1995' on page 2 undefined on input line
+ 64.
+
+
+Package natbib Warning: Citation `Galka2008' on page 2 undefined on input line 
+66.
+
+
+Package natbib Warning: Citation `Daunizeau2009' on page 2 undefined on input l
+ine 66.
+
+
+Package natbib Warning: Citation `schiff2008kalman' on page 2 undefined on inpu
+t line 68.
+
+
+Package natbib Warning: Citation `Nunez2000' on page 2 undefined on input line 
+68.
+
+
+Package natbib Warning: Citation `Jirsa2002' on page 2 undefined on input line 
+68.
+
+
+Package natbib Warning: Citation `Robinson2004' on page 2 undefined on input li
+ne 68.
+
+[2]
+
+Package natbib Warning: Citation `schiff2008kalman' on page 3 undefined on inpu
+t line 70.
+
+
+Package natbib Warning: Citation `Dewar2009' on page 3 undefined on input line 
+70.
+
+
+Package natbib Warning: Citation `Scerri2009' on page 3 undefined on input line
+ 70.
+
+
+Package natbib Warning: Citation `Dewar2009' on page 3 undefined on input line 
+70.
+
+
+Package natbib Warning: Citation `Scerri2009' on page 3 undefined on input line
+ 70.
+
+
+Package natbib Warning: Citation `Wilson1973' on page 3 undefined on input line
+ 74.
+
+
+Package natbib Warning: Citation `Jirsa2009' on page 3 undefined on input line 
+79.
+
+
+Package natbib Warning: Citation `Qubbaj2007' on page 3 undefined on input line
+ 79.
+
+
+Package natbib Warning: Citation `Braitenberg1998' on page 3 undefined on input
+ line 79.
+
+
+Package natbib Warning: Citation `Sullivan2006' on page 3 undefined on input li
+ne 79.
+
+
+Package natbib Warning: Citation `David2003' on page 3 undefined on input line 
+79.
+
+
+Package natbib Warning: Citation `Bressloff2001' on page 3 undefined on input l
+ine 79.
+
+
+Package natbib Warning: Citation `Breakspear2006' on page 3 undefined on input 
+line 79.
+
+
+Package natbib Warning: Citation `Amari1977' on page 3 undefined on input line 
+79.
+
+
+Package natbib Warning: Citation `Coombes2005' on page 3 undefined on input lin
+e 79.
+
+
+Package natbib Warning: Citation `Coombes2007' on page 3 undefined on input lin
+e 79.
+
+[3] [4] [5]
+
+Package natbib Warning: Citation `Rasmussen2005' on page 6 undefined on input l
+ine 138.
+
+
+Package natbib Warning: Citation `Jackson1999' on page 6 undefined on input lin
+e 146.
+
+
+Package natbib Warning: Citation `Jackson1999' on page 6 undefined on input lin
+e 146.
+
+[6] [7] [8] [9]
+
+Package natbib Warning: Citation `Sanner1992' on page 10 undefined on input lin
+e 253.
+
+
+Package natbib Warning: Citation `Scerri2009' on page 10 undefined on input lin
+e 253.
+
+
+Package natbib Warning: Citation `Peterson1962' on page 10 undefined on input l
+ine 253.
+
+
+Package natbib Warning: Citation `Sanner1992' on page 10 undefined on input lin
+e 263.
+
+
+Package natbib Warning: Citation `Scerri2009' on page 10 undefined on input lin
+e 263.
+
+
+Package natbib Warning: Citation `Issa2000' on page 10 undefined on input line 
+265.
+
+
+Package natbib Warning: Citation `Freeman2000' on page 10 undefined on input li
+ne 265.
+
+[10]
+
+Package natbib Warning: Citation `Sanner1992' on page 11 undefined on input lin
+e 277.
+
+
+Package natbib Warning: Citation `Scerri2009' on page 11 undefined on input lin
+e 277.
+
+[11]
+
+Package natbib Warning: Citation `Sarkka2010' on page 12 undefined on input lin
+e 310.
+
+
+Package natbib Warning: Citation `Julier1997' on page 12 undefined on input lin
+e 310.
+
+
+Package natbib Warning: Citation `Merwe2003' on page 12 undefined on input line
+ 310.
+
+[12]
+
+Package natbib Warning: Citation `Haykin2001' on page 13 undefined on input lin
+e 320.
+
+
+Package natbib Warning: Citation `Julier2002a' on page 13 undefined on input li
+ne 320.
+
+
+Package natbib Warning: Citation `Haykin2001' on page 13 undefined on input lin
+e 328.
+
+[13]
+
+Package natbib Warning: Citation `Ljung1999' on page 14 undefined on input line
+ 383.
+
+[14] [15] [16] [17]
+
+Package natbib Warning: Citation `Freeman1987' on page 18 undefined on input li
+ne 430.
+
+
+Package natbib Warning: Citation `Brinkmann2009' on page 18 undefined on input 
+line 430.
+
+
+Package natbib Warning: Citation `Freeman2000' on page 18 undefined on input li
+ne 432.
+
+
+Package natbib Warning: Citation `Cheung2007' on page 18 undefined on input lin
+e 432.
+
+[18]
+
+Package natbib Warning: Citation `Hesse2003' on page 19 undefined on input line
+ 435.
+
+
+Package natbib Warning: Citation `Kaminski1991' on page 19 undefined on input l
+ine 435.
+
+
+Package natbib Warning: Citation `Sameshima1999' on page 19 undefined on input 
+line 435.
+
+
+Package natbib Warning: Citation `schiff2008kalman' on page 19 undefined on inp
+ut line 437.
+
+[19]
+
+Package natbib Warning: Citation `Marten2009' on page 20 undefined on input lin
+e 446.
+
+[20]
+
+Package natbib Warning: Citation `Ullah2010' on page 21 undefined on input line
+ 454.
+
+
+Package natbib Warning: Citation `Anselin1988' on page 21 undefined on input li
+ne 454.
+
+
+Package natbib Warning: Citation `Ljung1999' on page 21 undefined on input line
+ 456.
+
+[21]
+No file LaTeX_Manuscript.bbl.
+[22] [23
+
+] [24
+
+]
+
+Package natbib Warning: Citation `Wendling2005' on page 25 undefined on input l
+ine 594.
+
+
+Package natbib Warning: Citation `Marreiros2008' on page 25 undefined on input 
+line 595.
+
+[25
+
+] [26
+
+] [27
+
+] [28
+
+] [29]
+<./Graph/pdf/fig1.pdf, id=123, 232.30469pt x 144.54pt>
+File: ./Graph/pdf/fig1.pdf Graphic file (type pdf)
+
+<use ./Graph/pdf/fig1.pdf>
+Package pdftex.def Info: ./Graph/pdf/fig1.pdf used on input line 715.
+(pdftex.def)             Requested size: 232.30411pt x 144.53963pt.
+ [30
+
+ <./Graph/pdf/fig1.pdf>]
+<./Graph/pdf/fig2.pdf, id=138, 232.30469pt x 130.086pt>
+File: ./Graph/pdf/fig2.pdf Graphic file (type pdf)
+
+<use ./Graph/pdf/fig2.pdf>
+Package pdftex.def Info: ./Graph/pdf/fig2.pdf used on input line 724.
+(pdftex.def)             Requested size: 232.30411pt x 130.08566pt.
+ [31
+
+ <./Graph/pdf/fig2.pdf>]
+<./Graph/pdf/fig3.pdf, id=158, 232.30469pt x 361.35pt>
+File: ./Graph/pdf/fig3.pdf Graphic file (type pdf)
+
+<use ./Graph/pdf/fig3.pdf>
+Package pdftex.def Info: ./Graph/pdf/fig3.pdf used on input line 733.
+(pdftex.def)             Requested size: 232.30411pt x 361.34912pt.
+ [32
+
+ <./Graph/pdf/fig3.pdf>]
+<./Graph/pdf/fig4.pdf, id=178, 210.64282pt x 125.17477pt>
+File: ./Graph/pdf/fig4.pdf Graphic file (type pdf)
+
+<use ./Graph/pdf/fig4.pdf>
+Package pdftex.def Info: ./Graph/pdf/fig4.pdf used on input line 742.
+(pdftex.def)             Requested size: 210.6423pt x 125.17445pt.
+ [33
+
+ <./Graph/pdf/fig4.pdf>]
+<./Graph/pdf/fig5.pdf, id=198, 489.58589pt x 144.54pt>
+File: ./Graph/pdf/fig5.pdf Graphic file (type pdf)
+
+<use ./Graph/pdf/fig5.pdf>
+Package pdftex.def Info: ./Graph/pdf/fig5.pdf used on input line 751.
+(pdftex.def)             Requested size: 489.58469pt x 144.53963pt.
+
+Overfull \hbox (21.58469pt too wide) in paragraph at lines 751--752
+ [] 
+ []
+
+[34
+
+ <./Graph/pdf/fig5.pdf>]
+<./Graph/pdf/fig6.pdf, id=236, 232.30469pt x 144.54pt>
+File: ./Graph/pdf/fig6.pdf Graphic file (type pdf)
+
+<use ./Graph/pdf/fig6.pdf>
+Package pdftex.def Info: ./Graph/pdf/fig6.pdf used on input line 760.
+(pdftex.def)             Requested size: 232.30411pt x 144.53963pt.
+ [35
+
+ <./Graph/pdf/fig6.pdf>]
+<./Graph/pdf/fig7.pdf, id=248, 232.30469pt x 234.8775pt>
+File: ./Graph/pdf/fig7.pdf Graphic file (type pdf)
+
+<use ./Graph/pdf/fig7.pdf>
+Package pdftex.def Info: ./Graph/pdf/fig7.pdf used on input line 769.
+(pdftex.def)             Requested size: 232.30411pt x 234.87692pt.
+ [36
+
+ <./Graph/pdf/fig7.pdf>]
+<./Graph/pdf/fig8.pdf, id=265, 232.30469pt x 144.54pt>
+File: ./Graph/pdf/fig8.pdf Graphic file (type pdf)
+
+<use ./Graph/pdf/fig8.pdf>
+Package pdftex.def Info: ./Graph/pdf/fig8.pdf used on input line 778.
+(pdftex.def)             Requested size: 232.30411pt x 144.53963pt.
+ [37
+
+ <./Graph/pdf/fig8.pdf>]
+<./Graph/pdf/fig9.pdf, id=274, 489.58589pt x 144.54pt>
+File: ./Graph/pdf/fig9.pdf Graphic file (type pdf)
+
+<use ./Graph/pdf/fig9.pdf>
+Package pdftex.def Info: ./Graph/pdf/fig9.pdf used on input line 787.
+(pdftex.def)             Requested size: 489.58469pt x 144.53963pt.
+
+Overfull \hbox (21.58469pt too wide) in paragraph at lines 787--788
+ [] 
+ []
+
+[38
+
+ <./Graph/pdf/fig9.pdf>]
+<./Graph/pdf/fig10.pdf, id=300, 505.89pt x 252.945pt>
+File: ./Graph/pdf/fig10.pdf Graphic file (type pdf)
+
+<use ./Graph/pdf/fig10.pdf>
+Package pdftex.def Info: ./Graph/pdf/fig10.pdf used on input line 796.
+(pdftex.def)             Requested size: 505.88875pt x 252.94438pt.
+
+Overfull \hbox (37.88875pt too wide) in paragraph at lines 796--797
+ [] 
+ []
+
+[39
+
+ <./Graph/pdf/fig10.pdf>]
+<./Graph/pdf/fig11.pdf, id=317, 235.88126pt x 227.85126pt>
+File: ./Graph/pdf/fig11.pdf Graphic file (type pdf)
+
+<use ./Graph/pdf/fig11.pdf>
+Package pdftex.def Info: ./Graph/pdf/fig11.pdf used on input line 805.
+(pdftex.def)             Requested size: 235.88068pt x 227.8507pt.
+ [40
+
+ <./Graph/pdf/fig11.pdf>]
+<./Graph/pdf/fig12.pdf, id=343, 252.945pt x 180.675pt>
+File: ./Graph/pdf/fig12.pdf Graphic file (type pdf)
+
+<use ./Graph/pdf/fig12.pdf>
+Package pdftex.def Info: ./Graph/pdf/fig12.pdf used on input line 814.
+(pdftex.def)             Requested size: 252.94438pt x 180.67455pt.
+ [41
+
+ <./Graph/pdf/fig12.pdf>]
+<./Graph/pdf/fig13.pdf, id=352, 116.435pt x 155.58125pt>
+File: ./Graph/pdf/fig13.pdf Graphic file (type pdf)
+
+<use ./Graph/pdf/fig13.pdf>
+Package pdftex.def Info: ./Graph/pdf/fig13.pdf used on input line 823.
+(pdftex.def)             Requested size: 116.43471pt x 155.58086pt.
+ [42
+
+ <./Graph/pdf/fig13.pdf>]
+<./Graph/pdf/fig14.pdf, id=369, 175.65625pt x 177.66376pt>
+File: ./Graph/pdf/fig14.pdf Graphic file (type pdf)
+
+<use ./Graph/pdf/fig14.pdf>
+Package pdftex.def Info: ./Graph/pdf/fig14.pdf used on input line 832.
+(pdftex.def)             Requested size: 175.6558pt x 177.66331pt.
+ [43
+
+ <./Graph/pdf/fig14.pdf>]
+
+Package natbib Warning: Citation `Butcher2008' on page 44 undefined on input li
+ne 1013.
+
+
+Package natbib Warning: Citation `Ozaki1994' on page 44 undefined on input line
+ 1013.
+
+[44
+
+
+] [45] [46] [47]
+
+Package natbib Warning: Citation `Sanner1992' on page 48 undefined on input lin
+e 1110.
+
+
+Package natbib Warning: Citation `Scerri2009' on page 48 undefined on input lin
+e 1110.
+
+[48] [49]
+
+Package natbib Warning: There were undefined citations.
+
+[50] (./LaTeX_Manuscript.aux)
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 3991 strings out of 493488
+ 54237 string characters out of 3141326
+ 128535 words of memory out of 3000000
+ 7192 multiletter control sequences out of 15000+200000
+ 17458 words of font info for 64 fonts, out of 3000000 for 9000
+ 957 hyphenation exceptions out of 8191
+ 38i,15n,34p,1495b,256s stack positions out of 5000i,500n,10000p,200000b,50000s
+</usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
+></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb><
+/usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></u
+sr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb></
+usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></u
+sr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex9.pfb>
+</usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><
+/usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></u
+sr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr
+/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/l
+ocal/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/loc
+al/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/loc
+al/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmmib9.pfb></usr
+/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/l
+ocal/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/loc
+al/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/
+texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/tex
+live/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texliv
+e/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2
+012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2012
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2012/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2012/te
+xmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2012/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2012/texmf-
+dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2012/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2012/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmti7.pfb></usr/local/texlive/2012/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmti8.pfb></usr/local/texlive/2012/texmf-dist/fo
+nts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive/2012/texmf-dist/font
+s/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/2012/texmf-dist/
+fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2012/texmf-d
+ist/fonts/type1/public/amsfonts/symbols/msbm7.pfb></usr/local/texlive/2012/texm
+f-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2012/texmf-dist/
+fonts/type1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2012/texmf-dist/fonts/t
+ype1/urw/helvetic/uhvro8a.pfb>
+Output written on LaTeX_Manuscript.pdf (50 pages, 2895394 bytes).
+PDF statistics:
+ 529 PDF objects out of 1000 (max. 8388607)
+ 371 compressed objects within 4 object streams
+ 0 named destinations out of 1000 (max. 500000)
+ 71 words of extra memory for PDF output out of 10000 (max. 10000000)
+

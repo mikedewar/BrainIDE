@@ -1,0 +1,13 @@
+\beamer@endinputifotherversion {3.20pt}
+\select@language {english}
+\beamer@sectionintoc {1}{Introduction}{4}{0}{1}
+\beamer@subsectionintoc {1}{1}{Why data-driven modelling}{4}{0}{1}
+\beamer@subsectionintoc {1}{2}{Fitting neural models to EEG}{12}{0}{1}
+\beamer@sectionintoc {2}{Methodology}{12}{0}{2}
+\beamer@subsectionintoc {2}{1}{Neural field model}{12}{0}{2}
+\beamer@subsectionintoc {2}{2}{Kernel basis function decomposition}{37}{0}{2}
+\beamer@subsectionintoc {2}{3}{Field basis function decomposition}{41}{0}{2}
+\beamer@subsectionintoc {2}{4}{Estimation algorithm}{52}{0}{2}
+\beamer@sectionintoc {3}{Results}{80}{0}{3}
+\beamer@sectionintoc {4}{Recent Extensions}{86}{0}{4}
+\beamer@sectionintoc {5}{Summary and Discussion}{92}{0}{5}
